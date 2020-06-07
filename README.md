@@ -30,21 +30,48 @@ It looks like qebrus okay:
 
 ## Syntax
 
+BQN syntax consists of expressions where computation is done with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control so the design tries to do as much as possible with them before introducing special syntax.
+
+### Expressions
+
 Like APL, BQN values have one of four *syntactic classes*:
 * **Values**, like APL arrays or J nouns
 * **Functions**, or verbs in J
 * **Modifiers**, like APL monadic operators or J adverbs
-* **Combinators**, like APL dyadic operators or J conjunctions.
+* **Compositions**, like APL dyadic operators or J conjunctions.
 
-These classes work exactly like they do in APL, with functions applying to one or two arguments, modifiers taking a single function or value on the left, and combinators taking a function or value on each side.
+These classes work exactly like they do in APL, with functions applying to one or two arguments, modifiers taking a single function or value on the left, and compositions taking a function or value on each side.
 
-Unlike APL, in BQN the syntactic class of a value is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a value, an uppercase first letter (`Name`) makes it a function, and underscores are used for modifiers (`_name`) and combinators (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as an argument. With a list of functions, we can make a table of the square and square root of a few numbers:
+Unlike APL, in BQN the syntactic class of a value is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a value, an uppercase first letter (`Name`) makes it a function, and underscores are used for modifiers (`_name`) and compositions (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as an argument. With a list of functions, we can make a table of the square and square root of a few numbers:
 
         ⟨×˜,√⟩ {𝕎𝕩}⌜ 1‿4‿9
     ┌
       1 16 81
       1  2  3
               ┘
+
+BQN's built-in operations also have patterns to indicate the syntactic class: modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and compositions (`∘○⊸⟜⌾⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
+
+### Special syntax
+
+Most of these glyphs are explained further in the section on [literal notation](#Literal notation).
+
+Glyph(s)        | Meaning
+----------------|-----------
+`←`             | Define
+`↩`             | Modify
+`→`             | Return
+`⋄,` or newline | Statement or element separator
+`()`            | Expression grouping
+`{}`            | Explicit function, modifier, or composition
+`⟨⟩`            | List/vector
+`‿`             | Strand (lightweight vector syntax)
+`⦃⦄`            | Set
+`𝕨𝕎`            | Left argument
+`𝕩𝕏`            | Right argument
+`𝕗𝔽`            | Left operand (modifier or composition)
+`𝕘𝔾`            | Right operand (composition)
+`⍝`             | Comment
 
 ## Built-in operations
 
@@ -93,3 +120,29 @@ Unlike APL, in BQN the syntactic class of a value is determined purely by the wa
 | `∊`   | Unique Mask      | Member of
 | `⍷`   |                  | Find
 | `⊔`   | Group            | Key
+
+### Modifiers and compositions
+
+*Combinators* only control the application of functions. Because a non-function operand applies as a constant function, some combinators have extra meanings when passed a constant. For example, `0˜` is the constant function that always returns 0 and `0⊸<` is the function that tests whether its right argument is greater than 0.
+
+Glyph | Name(s)     | Definition                     | Description
+------|-------------|--------------------------------|---------------------------------------
+`˜`   | Self/Swap   | `{𝕩𝔽𝕨⊣𝕩}`                      | Duplicate one argument or exchange two
+`∘`   | Atop        | `{𝔽𝕨𝔾𝕩}`                       | Apply 𝔾 to both arguments and 𝔽 to the result
+`○`   | Over        | `{(𝔾𝕨)𝔽𝔾𝕩}`                    | Apply 𝔾 to each argument and 𝔽 to the results
+`⊸`   | Before/Bind | `{(𝔽𝕨)𝔾𝕩}˜˜`                   | 𝔾's left argument comes from 𝔽
+`⟜`   | After/Bind  | `{𝕨𝔽𝔾𝕩}˜˜`                     | 𝔽's right argument comes from 𝔾
+`⌾`   | Under       | `{𝔾⁼∘𝔽○𝔾}` OR `{(𝔾𝕩)←𝕨𝔽○𝔾𝕩⋄𝕩}` | Apply 𝔽 over 𝔾, then undo 𝔾
+
+Under is not a true combinator since it has an "undo" step at the end. This step might be implemented using the left operand's inverse (*computational* Under) or its structural properties (*structural* Under).
+
+Other modifiers and compositions control array traversal and iteration. In three cases a simpler modifier is paired with a generalized composition: in each case the modifier happens to be the same as the composition with a right operand of `¯1`.
+
+Modifier | Name    | Compositon | Name
+---------|---------|------------|--------
+`˘`      | Cells   | ⎉          | Rank
+`¨`      | Each    | ⚇          | Depth
+`⌜`      | Table   |
+`⁼`      | Inverse | ⍟          | Iterate
+`´`      | Reduce  |
+`` ` ``  | Scan    |
