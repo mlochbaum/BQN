@@ -65,6 +65,7 @@ Glyph(s)        | Meaning
 `()`            | Expression grouping
 `{}`            | Explicit function, modifier, or composition
 `⟨⟩`            | List/vector
+`:`             | Key/value separator for dictionaries
 `‿`             | Strand (lightweight vector syntax)
 `⦃⦄`            | Set
 `𝕨𝕎`            | Left argument
@@ -146,3 +147,33 @@ Modifier | Name    | Compositon | Name
 `⁼`      | Inverse | ⍟          | Iterate
 `´`      | Reduce  |
 `` ` ``  | Scan    |
+
+## Literal notation
+
+### Constant notation
+
+BQN has single-token notation for numbers, strings, and characters.
+
+Numbers allow the typical decimal notation with `¯` for the negative sign (because `-` is a function) and `e` for scientific notation (or `E`, as numeric notation is case-insensitive). `∞` and `π` may be used as special numeric values. Complex numbers are also allowed, with the components separated by `i`.
+
+Strings are written with double quotes `""`, and characters with single quotes `''` with a single character in between. A double quote within a string can be escaped by writing it twice. If two string or two character literals are next to each other, they must be separated by a space.
+
+### Separators
+
+The characters `⋄` and `,` and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or set, or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.
+
+### List, set, and dictionary notation
+
+Lists (1-dimensional arrays) are enclosed in angle brackets `⟨⟩`, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character `‿`. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.
+
+Sets share the same notation with the angle brackets changed to double-struck curly brackets `⦃⦄` and no ligature notation.
+
+Dictionaries use angle brackets `⟨⟩` like lists, but instead of expressions there are pairs of expressions separated by `:`. The first expression evaluates to the key and the second to the corresponding value. The empty dictionary is written `⟨:⟩`.
+
+### Explicit functions
+
+Functions, modifiers, and combinators can be defined using curly braces `{}`. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned. This result can have any value, and its syntactic class in the calling context is determined by the normal rules: functions return values and modifiers and compositions return functions. Operations defined in this way have lexical scope.
+
+The special values `𝕨` and `𝕩`, which stand for arguments, and `𝕗` and `𝕘`, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate values and the uppercase forms `𝕎𝕏𝔽𝔾` indicate functions. The type (including syntactic class) of the result is determined by its contents: a composition contains `𝕘`, a modifier contains `𝕗` but not `𝕘`, and a function contains neither.
+
+A modifier or composition can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains `𝕨` or `𝕩`, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.
