@@ -129,11 +129,11 @@ Glyph(s)        | Meaning
 Glyph | Name(s)     | Definition                     | Description
 ------|-------------|--------------------------------|---------------------------------------
 `˜`   | Self/Swap   | `{𝕩𝔽𝕨⊣𝕩}`                      | Duplicate one argument or exchange two
-`∘`   | Atop        | `{𝔽𝕨𝔾𝕩}`                       | Apply 𝔾 to both arguments and 𝔽 to the result
-`○`   | Over        | `{(𝔾𝕨)𝔽𝔾𝕩}`                    | Apply 𝔾 to each argument and 𝔽 to the results
-`⊸`   | Before/Bind | `{(𝔽𝕨)𝔾𝕩}˜˜`                   | 𝔾's left argument comes from 𝔽
-`⟜`   | After/Bind  | `{𝕨𝔽𝔾𝕩}˜˜`                     | 𝔽's right argument comes from 𝔾
-`⌾`   | Under       | `{𝔾⁼∘𝔽○𝔾}` OR `{(𝔾𝕩)←𝕨𝔽○𝔾𝕩⋄𝕩}` | Apply 𝔽 over 𝔾, then undo 𝔾
+`∘`   | Atop        | `{𝔽𝕨𝔾𝕩}`                       | Apply `𝔾` to both arguments and `𝔽` to the result
+`○`   | Over        | `{(𝔾𝕨)𝔽𝔾𝕩}`                    | Apply `𝔾` to each argument and `𝔽` to the results
+`⊸`   | Before/Bind | `{(𝔽𝕨)𝔾𝕩}˜˜`                   | `𝔾`'s left argument comes from `𝔽`
+`⟜`   | After/Bind  | `{𝕨𝔽𝔾𝕩}˜˜`                     | `𝔽`'s right argument comes from `𝔾`
+`⌾`   | Under       | `{𝔾⁼∘𝔽○𝔾}` OR `{(𝔾𝕩)←𝕨𝔽○𝔾𝕩⋄𝕩}` | Apply `𝔽` over `𝔾`, then undo `𝔾`
 
 Under is not a true combinator since it has an "undo" step at the end. This step might be implemented using the left operand's inverse (*computational* Under) or its structural properties (*structural* Under).
 
@@ -141,10 +141,10 @@ Other modifiers and compositions control array traversal and iteration. In three
 
 Modifier | Name    | Compositon | Name
 ---------|---------|------------|--------
-`˘`      | Cells   | ⎉          | Rank
-`¨`      | Each    | ⚇          | Depth
+`˘`      | Cells   | `⎉`        | Rank
+`¨`      | Each    | `⚇`        | Depth
 `⌜`      | Table   |
-`⁼`      | Inverse | ⍟          | Iterate
+`⁼`      | Inverse | `⍟`        | Iterate
 `´`      | Reduce  |
 `` ` ``  | Scan    |
 
