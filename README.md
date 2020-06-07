@@ -20,6 +20,10 @@ But BQN is redesigned from the ground up, with brand new ideas to make these par
 * Oh, and it naturally leads to **first-class functions**, a feature often missed in APL.
 * The **new symbols** for built-in functionality allow the syntactic role of a primitive to be distinguished at a glance, and aim to be more consistent and intuitive.
 
+## What kind of name is "BQN"?
+
+It's three letters, that happen to match the capitals in "Big Questions Notation". You can pronounce it "bacon", but are advised to avoid this unless there's puns.
+
 ## What does BQN look like?
 
 It looks like qebrus okay:
