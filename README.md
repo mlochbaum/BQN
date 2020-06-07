@@ -28,6 +28,12 @@ It looks like qebrus okay:
 
 [More examples here](https://github.com/mlochbaum/BQN2NGN/tree/master/examples).
 
+## Array model
+
+Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL [array models](https://aplwiki.com/wiki/Array_model). Unlike in APL, non-array data is possible, and common: numbers, characters, and sets are not arrays (see the full list of [types](#data-types) below). This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no "floating" so a value is always different from a scalar array that contains it. This system has been [proposed](https://dl.acm.org/doi/abs/10.1145/586656.586663) in APL's past under the name **based array theory**.
+
+Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).
+
 ## Syntax
 
 BQN syntax consists of expressions where computation is done with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control so the design tries to do as much as possible with them before introducing special syntax.
@@ -177,3 +183,17 @@ Functions, modifiers, and combinators can be defined using curly braces `{}`. Th
 The special values `𝕨` and `𝕩`, which stand for arguments, and `𝕗` and `𝕘`, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate values and the uppercase forms `𝕎𝕏𝔽𝔾` indicate functions. The type (including syntactic class) of the result is determined by its contents: a composition contains `𝕘`, a modifier contains `𝕗` but not `𝕘`, and a function contains neither.
 
 A modifier or composition can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains `𝕨` or `𝕩`, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.
+
+## Data types
+
+BQN will support the following fundamental types:
+- Numbers (complex with 64-bit float precision)
+- Characters (Unicode code points)
+- Arrays
+- Sets
+- Dictionaries
+- Function
+- Modifier
+- Composition
+
+All of the above types are immutable. Other types may be added in the future, such as symbols and namespaces.
