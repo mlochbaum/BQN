@@ -54,7 +54,7 @@ BQN's built-in operations also have patterns to indicate the syntactic class: mo
 
 ### Special syntax
 
-Most of these glyphs are explained further in the section on [literal notation](#Literal notation).
+Most of these glyphs are explained further in the section on [literal notation](#literal-notation).
 
 Glyph(s)        | Meaning
 ----------------|-----------
