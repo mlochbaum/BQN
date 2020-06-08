@@ -121,7 +121,6 @@ Glyph(s)        | Meaning
 | `⌽`   | Reverse          | Rotate
 | `⍉`   | Transpose        | Reorder axes
 | `/`   | Indices          | Replicate
-| `\`   |                  | Partition
 | `⍋`   | Grade Up         | Bins Up
 | `⍒`   | Grade Down       | Bins Down
 | `⊏`   | First Cell       | Select
@@ -130,7 +129,7 @@ Glyph(s)        | Meaning
 | `⊒`   | Occurrence Count | Progressive Index of
 | `∊`   | Unique Mask      | Member of
 | `⍷`   |                  | Find
-| `⊔`   | Group            | Key
+| `⊔`   | Group Indices    | [Group](doc/group.md)
 
 ### Modifiers and compositions
 
