@@ -2,7 +2,7 @@
 
 BQN replaces the [Key](https://aplwiki.com/wiki/Key) operator from J or Dyalog APL, and [many forms of partitioning](https://aplwiki.com/wiki/Partition_representations), with a single (ambivalent) Group function `⊔`. This function is somewhat related to the K function `=` of the same name, but results in an array rather than a dictionary.
 
-The BQN prototype does not implement this function: instead it uses ⊔ for a Group/Key function very similar to `{⊂⍵}⌸` in Dyalog APL, and also has a Cut function `\`. The new BQN Group on numeric arguments (equivalently, rank-1 results) can be defined like this:
+The BQN prototype does not implement this function: instead it uses `⊔` for a Group/Key function very similar to `{⊂⍵}⌸` in Dyalog APL, and also has a Cut function `\`. The new BQN Group on numeric arguments (equivalently, rank-1 results) can be defined like this:
 
     ⊔↩((↕1+(>⌈´))=¨<)∘⊣ /¨⟜< ↕∘≠⍠⊢
 
@@ -73,7 +73,7 @@ Group is closely related to the inverse of Indices, `/⁼`. In fact, inverse Ind
         /⁼∧ 2‿3‿1‿2
     [ 0 1 2 1 ]
 
-A related fact is that calling Indices on the result of Group sorts all the indices passed to Group (removing and ¯1s). This is a kind of counting sort.
+A related fact is that calling Indices on the result of Group sorts all the indices passed to Group (removing any ¯1s). This is a kind of counting sort.
 
         /≠¨⊔ 2‿3‿1‿¯1‿2
     [ 1 2 2 3 ]
@@ -151,9 +151,9 @@ However, trailing spaces are ignored because Group never produces trailing empty
       1 1 0 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 1 1 1
       0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0
         ≍⟜(⊢-˜¬×+`∘(<´≠↕1∾⊢))' '="  string with  spaces   "  ⍝ More processing
-    ┌                                                          
-       1  1 0 0 0 0 0 0  1 0 0 0 0  1  1 0 0 0 0 0 0  1  1  1  
-      ¯1 ¯1 0 0 0 0 0 0 ¯1 1 1 1 1 ¯1 ¯1 2 2 2 2 2 2 ¯1 ¯1 ¯1  
+    ┌
+       1  1 0 0 0 0 0 0  1 0 0 0 0  1  1 0 0 0 0 0 0  1  1  1
+      ¯1 ¯1 0 0 0 0 0 0 ¯1 1 1 1 1 ¯1 ¯1 2 2 2 2 2 2 ¯1 ¯1 ¯1
                                                               ┘
         ' '((⊢-˜¬×+`∘(<´≠↕1∾⊢))∘=⊔⊢)"  string with  spaces   "  ⍝ Final result
     [ [ string ] [ with ] [ spaces ] ]
