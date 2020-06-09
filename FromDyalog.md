@@ -9,10 +9,10 @@ Here are some closest equivalents in Dyalog APL for the BQN functions that don't
 | Monad | `*` | `*∘÷⍨` | `[⍋]` | `[⍒]` | `~`   | `≢` | `⊂` | `↑` | `⍴` | `,` | `⊃,⌿` | `↑,⍥⊂` |
 | Dyad  |     |        | `∧`   | `∨`   | `1+-` | `≠` | `<` | `>` | `≢` | `⍴` | `⍪`   |        |
 
-| BQN   | `↑`  | `↓`     | `↕`  | `/` | `\` | `⍋` | `⍒`   | `⊏`  | `⊑` | `⊐` | `⊒` | `∊` | `⍷` | `⊔` |
-|-------|------|---------|------|-----|-----|-----|-------|------|-----|-----|-----|-----|-----|-----|
-| Monad | `,⍀` | `⌽,⌽⍀⌽` | `⍳`  | `⍸` |     | `⍋` | `⍒`   | `⊣⌿` | `⊃` |     | `…` | `≠` |     | `⌸` |
-| Dyad  | `↑`  | `↓`     | `,⌿` | `⌿` | `⊆` | `⍸` | `⌽⍸⌽` | `⌷`  |     | `⍳` | `…` | `∊` | `⍷` |     |
+| BQN   | `↑`  | `↓`     | `↕`  | `/` | `⍋` | `⍒`   | `⊏`  | `⊑` | `⊐` | `⊒` | `∊` | `⍷` | `⊔`        |
+|-------|------|---------|------|-----|-----|-------|------|-----|-----|-----|-----|-----|------------|
+| Monad | `,⍀` | `⌽,⌽⍀⌽` | `⍳`  | `⍸` | `⍋` | `⍒`   | `⊣⌿` | `⊃` |     | `…` | `≠` |     | `⌸` or `⊆` |
+| Dyad  | `↑`  | `↓`     | `,⌿` | `⌿` | `⍸` | `⌽⍸⌽` | `⌷`  |     | `⍳` | `…` | `∊` | `⍷` |            |
 
 Modifiers and combinators are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
@@ -42,8 +42,8 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>⍪</code>   </td><td> <code>∾˘</code>              </td><td> <code>∾</code></td>        </tr>
 <tr><td> <code>↑</code>   </td><td> <code>></code>               </td><td> <code>↑</code></td>        </tr>
 <tr><td> <code>↓</code>   </td><td> <code><˘<code>              </td> <td> <code>↑</code></td>        </tr>
-<tr><td> <code>⊂</code>   </td><td> <code><<code>               </td> <td> <code>\</code></td>        </tr>
-<tr><td> <code>⊆</code>   </td><td> <code><⍟(0<≡)<code>         </td> <td> <code>\</code></td>        </tr>
+<tr><td> <code>⊂</code>   </td><td> <code><<code>               </td> <td> <code>+`⊸⊔</code></td>     </tr>
+<tr><td> <code>⊆</code>   </td><td> <code><⍟(0<≡)<code>         </td> <td> <code>⊔</code></td>        </tr>
 <tr><td> <code>∊</code>   </td><td> <code>{0=≡𝕩:⥊𝕩⋄∾⥊∇¨𝕩}</code> </td><td> <code>∊</code></td>        </tr>
 <tr><td> <code>⊃</code>   </td><td colspan=2><code>⊑</code></td>                                      </tr>
 <tr><td> <code>⍀</code>   </td><td>                   </td>           <td> <code>/⁼</code></td>       </tr>
@@ -80,7 +80,7 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>f⍥g</code> </td><td colspan=2> <code>f○g</code>                       </td></tr>
 <tr><td> <code>f@v</code> </td><td colspan=2> <code>f⌾(v⊸⊏)</code>                   </td></tr>
 <tr><td> <code>f⍠B</code> </td><td colspan=2> Uh                                     </td></tr>
-<tr><td> <code>f⌸</code>  </td><td colspan=2> <code>⊔</code>                         </td></tr>
+<tr><td> <code>f⌸</code>  </td><td><code>∪⊸⊐⊔↕∘≠</code></td><td><code>∪⊸⊐⊸⊔</code>   </td></tr>
 <tr><td> <code>f⌺B</code> </td><td colspan=2> <code>↕</code>                         </td></tr>
 <tr><td> <code>A⌶</code>  </td><td colspan=2> <code>•</code>                         </td></tr>
 <tr><td> <code>f&</code>  </td><td colspan=2> Nothing yet                            </td></tr>
