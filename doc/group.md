@@ -23,7 +23,7 @@ Group operates on a list of indices and a list of values to produce a list of gr
 For example, we might choose to group a list of words by length. Within each group, values maintain the ordering they had in the list originally.
 
         phrase ← "BQN"‿"uses"‿"notation"‿"as"‿"a"‿"tool"‿"of"‿"thought"
-        ⥊˘ ≠¨⊸⊔
+        ⥊˘ ≠¨⊸⊔ phrase
     ┌
       []
       [ [ a ] ]
