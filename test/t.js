@@ -13,7 +13,7 @@ const t=load('cases.bqn').split('\n').filter(x=>x).map(x=>x.split(' % '))
     , fail=pass.map((p,i)=>p?-1:i).filter(i=>i>=0)
 console.log(
     fail.length
-    ? fail.map(i=>'"'+test[i]+'": expected '+expt[i]+' but received '+rslt[i])
+    ? fail.map(i=>'"'+t[i][1]+'": expected '+expt[i]+' but received '+rslt[i])
     : "All passed!"
 )
 process.exit(+(fail.length>0))
