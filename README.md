@@ -88,48 +88,48 @@ Glyph(s)        | Meaning
 
 ### Functions
 
-| Glyph | Monadic          | Dyadic
-|-------|------------------|---------
-| `+`   | Conjugate        | Add
-| `-`   | Negate           | Subtract
-| `×`   | Signum           | Multiply
-| `÷`   | Reciprocal       | Divide
-| `⋆`   | Exponential      | Power
-| `√`   | Square Root      | Root
-| `⌊`   | Floor            | Min
-| `⌈`   | Ceiling          | Max
-| `∧`   | Sort Up          | And
-| `∨`   | Sort Down        | Or
-| `¬`   | Not              | Span
-| `\|`  | Absolute Value   | Modulus
-| `=`   |                  | Equals
-| `≠`   | Count            | Not Equals
-| `≤`   |                  | Less Than or Equal to
-| `<`   | Box              | Less Than
-| `>`   | Unbox            | Greater Than
-| `≥`   |                  | Greater Than or Equal to
-| `≡`   | Depth            | Match
-| `≢`   | Shape            | Not Match
-| `⊣`   | Identity         | Left
-| `⊢`   | Identity         | Right
-| `⥊`   | Deshape          | Reshape
-| `∾`   | [Join](doc/join.md) | Join to
-| `≍`   | Solo             | Couple
-| `↑`   | Prefixes         | Take
-| `↓`   | Suffixes         | Drop
-| `↕`   | Range            | Windows
-| `⌽`   | Reverse          | Rotate
-| `⍉`   | [Transpose](doc/transpose.md) | Reorder axes
-| `/`   | Indices          | Replicate
-| `⍋`   | Grade Up         | Bins Up
-| `⍒`   | Grade Down       | Bins Down
-| `⊏`   | First Cell       | Select
-| `⊑`   | First            | Pick
-| `⊐`   |                  | Index of
-| `⊒`   | Occurrence Count | Progressive Index of
-| `∊`   | Unique Mask      | Member of
-| `⍷`   |                  | Find
-| `⊔`   | Group Indices    | [Group](doc/group.md)
+| Glyph | Monadic                                             | Dyadic
+|-------|-----------------------------------------------------|---------
+| `+`   | [Conjugate](https://aplwiki.com/wiki/Conjugate)     | [Add](https://aplwiki.com/wiki/Add)
+| `-`   | [Negate](https://aplwiki.com/wiki/Negate)           | [Subtract](https://aplwiki.com/wiki/Subtract)
+| `×`   | [Sign](https://aplwiki.com/wiki/Signum)             | [Multiply](https://aplwiki.com/wiki/Times)
+| `÷`   | [Reciprocal](https://aplwiki.com/wiki/Reciprocal)   | [Divide](https://aplwiki.com/wiki/Divide)
+| `⋆`   | [Exponential](https://aplwiki.com/wiki/Exponential) | [Power](https://aplwiki.com/wiki/Power_(function))
+| `√`   | [Square Root](https://aplwiki.com/wiki/Square_Root) | Root
+| `⌊`   | [Floor](https://aplwiki.com/wiki/Floor)             | [Min](https://aplwiki.com/wiki/Minimum)
+| `⌈`   | [Ceiling](https://aplwiki.com/wiki/Ceiling)         | [Max](https://aplwiki.com/wiki/Maximum)
+| `∧`   | Sort Up                                             | [And](https://aplwiki.com/wiki/And)
+| `∨`   | Sort Down                                           | [Or](https://aplwiki.com/wiki/Or)
+| `¬`   | Not                                                 | Span
+| `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
+| `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
+| `<`   | Box                                                 | [Less Than](https://aplwiki.com/wiki/Less_than)
+| `>`   | [Unbox](https://aplwiki.com/wiki/Mix)               | [Greater Than](https://aplwiki.com/wiki/Greater_than)
+| `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
+| `=`   |                                                     | [Equals](https://aplwiki.com/wiki/Equal_to)
+| `≠`   | [Count](https://aplwiki.com/wiki/Tally)             | [Not Equals](https://aplwiki.com/wiki/Not_Equal_to)
+| `≡`   | [Depth](https://aplwiki.com/wiki/Depth)             | [Match](https://aplwiki.com/wiki/Match)
+| `≢`   | [Shape](https://aplwiki.com/wiki/Shape)             | [Not Match](https://aplwiki.com/wiki/Not_Match)
+| `⊣`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Left](https://aplwiki.com/wiki/Identity)
+| `⊢`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Right](https://aplwiki.com/wiki/Identity)
+| `⥊`   | [Deshape](https://aplwiki.com/wiki/Ravel)           | [Reshape](https://aplwiki.com/wiki/Reshape)
+| `∾`   | [Join](doc/join.md)                                 | [Join to](https://aplwiki.com/wiki/Catenate)
+| `≍`   | Solo                                                | Couple
+| `↑`   | Prefixes                                            | [Take](https://aplwiki.com/wiki/Take)
+| `↓`   | Suffixes                                            | [Drop](https://aplwiki.com/wiki/Drop)
+| `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](doc/windows.md)
+| `⌽`   | [Reverse](https://aplwiki.com/wiki/Reverse)         | Rotate
+| `⍉`   | [Transpose](doc/transpose.md)                       | [Reorder axes](doc/transpose.md)
+| `/`   | [Indices](https://aplwiki.com/wiki/Indices)         | [Replicate](https://aplwiki.com/wiki/Replicate)
+| `⍋`   | Grade Up                                            | [Bins Up](https://aplwiki.com/wiki/Interval_Index)
+| `⍒`   | Grade Down                                          | [Bins Down](https://aplwiki.com/wiki/Interval_Index)
+| `⊏`   | First Cell                                          | Select
+| `⊑`   | [First](https://aplwiki.com/wiki/First)             | Pick
+| `⊐`   |                                                     | [Index of](https://aplwiki.com/wiki/Index_Of)
+| `⊒`   | Occurrence Count                                    | Progressive Index of
+| `∊`   | [Unique Mask](https://aplwiki.com/wiki/Nub_Sieve)   | Member of
+| `⍷`   |                                                     | Find
+| `⊔`   | [Group Indices](doc/group.md)                       | [Group](doc/group.md)
 
 ### Modifiers and compositions
 
