@@ -51,7 +51,7 @@ To exchange multiple axes, use the Power operator. Like Rotate, a negative power
 
 In fact, we have `≢⍉⍟k a ←→ k⌽≢a` for any number `k` and array `a`.
 
-To move axes other than the first, use the Rank operator in order to leave initial axes untouched. A rank of `k>0` transposes the last `k` axes while a rank of `k<0` ignores the first `|k` axes.
+To move axes other than the first, use the Rank operator in order to leave initial axes untouched. A rank of `k>0` transposes only the last `k` axes while a rank of `k<0` ignores the first `|k` axes.
 
         ≢ ⍉⎉3 a23456
     [ 2 3 5 6 4 ]
@@ -65,9 +65,9 @@ Using these forms, we can state BQN's generalized matrix product swapping rule:
 
     a MP b  ←→  ⍉⍟(≠≢a) a ⍉⁼⊸MP⟜⍉ b
 
-Certainly not as concise as APL's version, but not a horror either. And remember that for two-dimensional matrices both kinds of transposition are the same, and APL's rule holds in BQN.
+Certainly not as concise as APL's version, but not a horror either. BQN's rule is actually more parsimonious in that it only performs the axis exchanges necessary for the computation: it moves the two axes that will be paired with the matrix product into place before the product, and directly exchanges all axes afterwards. Each of these steps is equivalent in terms of data movement to a matrix transpose, the simplest nontrivial transpose to perform. Also remember that for two-dimensional matrices both kinds of transposition are the same, and APL's rule holds in BQN.
 
-Axis permutations of the types we've shown generate the complete permutation group on any number of axes, so you could produce any transposition you want with the right sequence of monadic transpositions with Rank. However, this can be unintuitive and tedious. For example, what if you want to transpose the first three axes, leaving the rest alone? With monadic Transpose you have to send some axes to the end, then bring them back to the beginning. For example [following four or five failed tries]:
+Axis permutations of the types we've shown generate the complete permutation group on any number of axes, so you could produce any transposition you want with the right sequence of monadic transpositions with Rank. However, this can be unintuitive and tedious. What if you want to transpose the first three axes, leaving the rest alone? With monadic Transpose you have to send some axes to the end, then bring them back to the beginning. For example [following four or five failed tries]:
 
         ≢ ⍉⁼⎉¯2 ⍉ a23456  ⍝ Restrict Transpose to the first three axes
     [ 3 4 2 5 6 ]
@@ -108,4 +108,4 @@ A non-array right argument to Transpose is always boxed to get a scalar array be
 
 Monadic transpose is identical to `(≠∘≢-1˜)⊸⍉`, except that for scalar arguments it returns the array unchanged rather than giving an error.
 
-In Dyadic transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(≠≢𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `>×´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
+In Dyadic transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(≠≢𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `>⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
