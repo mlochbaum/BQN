@@ -52,7 +52,7 @@ If we'd like to ignore words of 0 letters, or more than 5, we can set all word l
 
 Note that the length of the result is determined by the largest index. So the result never includes trailing empty groups. A reader of the above code might expect 5 groups (lengths 1 through 5), but there are no words of length 5, so the last group isn't there.
 
-When Group is called dyadically, the left argument is used for the indices and the right is used for values, as seen above. When it is called monadically, the right argument gives the indices and the values grouped are the right argument's indices, that is, `≠↕𝕩`.
+When Group is called dyadically, the left argument is used for the indices and the right is used for values, as seen above. When it is called monadically, the right argument gives the indices and the values grouped are the right argument's indices, that is, `↕≠𝕩`.
 
         ⥊˘ ⊔ 2‿3‿¯1‿2
     ┌
