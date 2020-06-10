@@ -114,7 +114,7 @@ Glyph(s)        | Meaning
 | `⊢`   | Identity         | Right
 | `⥊`   | Deshape          | Reshape
 | `∾`   | Join             | Join to
-| `≍`   | Itemize          | Laminate
+| `≍`   | Solo             | Couple
 | `↑`   | Prefixes         | Take
 | `↓`   | Suffixes         | Drop
 | `↕`   | Range            | Windows
