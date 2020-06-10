@@ -113,13 +113,13 @@ Glyph(s)        | Meaning
 | `⊣`   | Identity         | Left
 | `⊢`   | Identity         | Right
 | `⥊`   | Deshape          | Reshape
-| `∾`   | Join             | Join to
+| `∾`   | [Join](doc/join.md) | Join to
 | `≍`   | Solo             | Couple
 | `↑`   | Prefixes         | Take
 | `↓`   | Suffixes         | Drop
 | `↕`   | Range            | Windows
 | `⌽`   | Reverse          | Rotate
-| `⍉`   | Transpose        | Reorder axes
+| `⍉`   | [Transpose](doc/transpose.md) | Reorder axes
 | `/`   | Indices          | Replicate
 | `⍋`   | Grade Up         | Bins Up
 | `⍒`   | Grade Down       | Bins Down
