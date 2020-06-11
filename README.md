@@ -34,7 +34,7 @@ It looks like qebrus okay:
 
 ## Array model
 
-Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL [array models](https://aplwiki.com/wiki/Array_model). Unlike in APL, non-array data is possible, and common: numbers, characters, and sets are not arrays (see the full list of [types](#data-types) below). This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no "floating" so a value is always different from a scalar array that contains it. This system has been [proposed](https://dl.acm.org/doi/abs/10.1145/586656.586663) in APL's past under the name **based array theory**.
+Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL [array models](https://aplwiki.com/wiki/Array_model). Unlike in APL, non-array data is possible, and common: numbers, characters, and functions are not arrays (see the full list of [types](#data-types) below). This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no "floating" so a value is always different from a scalar array that contains it. This system has been [proposed](https://dl.acm.org/doi/abs/10.1145/586656.586663) in APL's past under the name **based array theory**.
 
 Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).
 
@@ -75,9 +75,7 @@ Glyph(s)        | Meaning
 `()`            | Expression grouping
 `{}`            | Explicit function, modifier, or composition
 `⟨⟩`            | List/vector
-`:`             | Key/value separator for dictionaries
 `‿`             | Strand (lightweight vector syntax)
-`⦃⦄`            | Set
 `𝕨𝕎`            | Left argument
 `𝕩𝕏`            | Right argument
 `𝕗𝔽`            | Left operand (modifier or composition)
@@ -169,15 +167,13 @@ Strings are written with double quotes `""`, and characters with single quotes `
 
 ### Separators
 
-The characters `⋄` and `,` and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or set, or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.
+The characters `⋄` and `,` and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.
 
-### List, set, and dictionary notation
+### List notation
 
 Lists (1-dimensional arrays) are enclosed in angle brackets `⟨⟩`, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character `‿`. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.
 
-Sets share the same notation with the angle brackets changed to double-struck curly brackets `⦃⦄` and no ligature notation.
-
-Dictionaries use angle brackets `⟨⟩` like lists, but instead of expressions there are pairs of expressions separated by `:`. The first expression evaluates to the key and the second to the corresponding value. The empty dictionary is written `⟨:⟩`.
+If added, [sets and dictionaries](#sets-and-dictionaries) would also use a list-like notation.
 
 ### Explicit functions
 
@@ -189,14 +185,34 @@ A modifier or composition can be evaluated twice: once when passed operands and 
 
 ## Data types
 
-BQN will support the following fundamental types:
-- Numbers (complex with 64-bit float precision)
-- Characters (Unicode code points)
-- Arrays
-- Sets
-- Dictionaries
+BQN will initially support the following fundamental types:
+
+- Number (complex with 64-bit float precision)
+- Character (Unicode code point)
+- Array
 - Function
 - Modifier
 - Composition
 
-All of the above types are immutable. Other types may be added in the future, such as symbols and namespaces.
+All of these types are immutable, and immutable types should be the default for BQN. The only mutable type likely to be added is the namespace or scope.
+
+## BQN extensions
+
+The above text describes the initial implementation target. The language will probably be extended after this target is reached. This section describes features which are not fully defined but could be added to the language.
+
+### Sets and dictionaries
+
+Sets are unordered collections of distinct values. Dictionaries have a set of keys and associate each key with a corresponding value. These types are a natural fit for the data in some cases; while they can be represented using arrays of keys and values, using the right type can lead to cleaner and faster algorithms.
+
+The following glyphs are added for the dictionary and set literal notation.
+
+Glyph(s)        | Meaning
+----------------|-----------
+`:`             | Key/value separator for dictionaries
+`⦃⦄`            | Set
+
+Set notation matches the bracketed list notation with the angle brackets changed to double-struck curly brackets `⦃⦄`, but there is no ligature notation for sets.
+
+Dictionaries use angle brackets `⟨⟩` like lists, but instead of expressions there are pairs of expressions separated by `:`. The first expression evaluates to the key and the second to the corresponding value. The empty dictionary is written `⟨:⟩`.
+
+Dictionaries and sets should be supported their own set of primitive operations like arrays are. The glyphs `∪⊂⊃⊆⊇` from mathematics are unused for this reason: they could be wanted for set operations.
