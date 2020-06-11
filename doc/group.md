@@ -6,7 +6,7 @@ The BQN prototype does not implement this function: instead it uses `⊔` for a 
 
     ⊔↩((↕1+(>⌈´))=¨<)∘⊣ /¨⟜< ↕∘≠⍠⊢
 
-Once defined, the old BQN Key (dyadic) is `∪⊸⊐⊸⊔` and Group (monadic) is `∪⊸⊐⊔↕∘≠`. Cut on matching-length arguments is `` +`⊸⊔ ``.
+Once defined, the old BQN Key (dyadic) is `⍷⊸⊐⊸⊔` and Group (monadic) is `⍷⊸⊐⊔↕∘≠` using the Deduplicate or Unique Cells function `⍷` (BQN2NGN spells it `∪`). Cut on matching-length arguments is `` +`⊸⊔ ``.
 
 ## Definition
 
@@ -89,11 +89,11 @@ Group can even be implemented with the same techniques as a bucket sort, which c
 
 ## Applications
 
-The obvious application of Group is to group some values according to a known or computed property. If this property isn't an integer, it can be turned into one using Unique and Index Of (the combination `∪⊸⊐` has been called "self-classify").
+The obvious application of Group is to group some values according to a known or computed property. If this property isn't an integer, it can be turned into one using Unique and Index Of (the combination `⍷⊸⊐` has been called "self-classify").
 
         ln ← "Phelps"‿"Latynina"‿"Bjørgen"‿"Andrianov"‿"Bjørndalen"
         co ← "US"    ‿"SU"      ‿"NO"     ‿"SU"       ‿"NO"
-        ⥊˘ co ∪⊸⊐⊸⊔ ln
+        ⥊˘ co ⍷⊸⊐⊸⊔ ln
     ┌
       [ [ Phelps ] ]
       [ [ Latynina ] [ Andrianov ] ]

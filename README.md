@@ -126,7 +126,7 @@ Glyph(s)        | Meaning
 | `⊐`   |                                                     | [Index of](https://aplwiki.com/wiki/Index_Of)
 | `⊒`   | Occurrence Count                                    | Progressive Index of
 | `∊`   | [Unique Mask](https://aplwiki.com/wiki/Nub_Sieve)   | Member of
-| `⍷`   |                                                     | Find
+| `⍷`   | [Deduplicate](https://aplwiki.com/wiki/Unique)      | Find
 | `⊔`   | [Group Indices](doc/group.md)                       | [Group](doc/group.md)
 
 ### Modifiers and compositions
