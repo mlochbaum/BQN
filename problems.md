@@ -19,7 +19,7 @@ A pretty fundamental problem with dynamically-typed array languages. Prototypes 
 At the moment BQN has no control structures, instead preferring function recursion, iteration, and selection. Selection is awkward because the result of selecting from a list of functions must be a value syntactically. It also often doesn't need an argument, since it can refer to values from the containing function because of lexical scoping. There should probably be a function that takes a function argument and invokes it, possible with an empty list as a dummy left argument. Somewhat like the operator `{𝔽}`. But also: should a `{}` object that doesn't refer to its arguments be special? Some kind of "block" construct?
 
 ### Incoherent monad-dyad builtin pairs
-BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason. I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved.
+BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason (that is, both function valences match the symbol but they don't match with each other). I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved.
 
 ### Can't return from inner functions
 This is an issue with using functions as control flow. For example, when looping through an array with Each, you can't decide to exit early. In a curly-brace language you would just use a for loop and a return. In BQN, we need… longjmp? Maybe not as crazy as it sounds, and potentially worth it in exchange for replacing control structures.
@@ -48,12 +48,15 @@ The left argument feels much more like the primary one in these cases (indeed, t
 ### Can't access array ordering directly
 Only `⍋⍒` use array ordering rather than just array comparison or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be.
 
+### Syntactic type erasure
+A programmer can call an operator on either a syntactic function or value, but there's no way to know within the operator which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The array syntax suggest it should be Constant.
+
 ### Comparison tolerance
 Kind of necessary for practical programming, but how should it be invoked or controlled? A system variable like `⎕CT`? Per-primitive control? Both? Which primitives should use it?
 
 Definitely | Maybe      | Definitely not
 -----------|------------|---------------
-`≤<>≥=≠`   | `≡≢⊐⊒∊⍷\|` | `⍋⍒`
+`=≠≤≥<>`   | `≡≢⊐⊒∊⍷\|` | `⍋⍒`
 
 ### High-rank array notation
 The proposed Dyalog array notation `[]` for high-rank arrays: it's the same as BQN's lists `⟨⟩` except it mixes at the end. This works visually because the bottom level—rows—is written with stranding. It also looks okay with BQN strands but clashes with BQN lists. At that point it becomes apparent that specifying whether something is a high-rank array at the top axes is kind of strange: shouldn't it be the lower axes saying to combine with higher ones?
@@ -64,8 +67,11 @@ Characters `⥊∾⟜⎉⚇˜` and double-struck letters are either missing from
 ### Trains don't like monads
 If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing `⟜`. A partial solution is to have a special "no argument" glyph `·` that works like `𝕨` during a monadic function call. In a train it would function like J's Cap (`[:`).
 
+### Converting a function expression to a syntactic value is tricky
+You can name it, or you can do `⊑⟨Fn⟩`. The first is awkward and the second eats at your soul a little. There should probably be a dedicated syntax. Note that going the other way, from value to function, isn't too bad: the operator `{𝔽}` does it.
+
 ### Index Of privileges the first match
-It could be more sound to look at all matches, but using the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: `≠∘⊣-1+⌽⊸⊐`.
+It could be more sound to look at all matches, but using just the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: `≠∘⊣-1+⌽⊸⊐`.
 
 ### Glyphs that aren't great
 Blanket issue for glyphs that need work. Currently I find `⥊⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
