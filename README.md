@@ -96,9 +96,9 @@ Glyph(s)        | Meaning
 | `√`   | [Square Root](https://aplwiki.com/wiki/Square_Root) | Root
 | `⌊`   | [Floor](https://aplwiki.com/wiki/Floor)             | [Min](https://aplwiki.com/wiki/Minimum)
 | `⌈`   | [Ceiling](https://aplwiki.com/wiki/Ceiling)         | [Max](https://aplwiki.com/wiki/Maximum)
-| `∧`   | Sort Up                                             | [And](https://aplwiki.com/wiki/And)
-| `∨`   | Sort Down                                           | [Or](https://aplwiki.com/wiki/Or)
-| `¬`   | Not                                                 | Span
+| `∧`   | Sort Up                                             | [And](doc/logic.md)
+| `∨`   | Sort Down                                           | [Or](doc/logic.md)
+| `¬`   | [Not](doc/logic.md)                                 | [Span](doc/logic.md)
 | `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
 | `<`   | Box                                                 | [Less Than](https://aplwiki.com/wiki/Less_than)
