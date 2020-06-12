@@ -7,8 +7,7 @@ charSet←∾charGroups←⟨
   "⍝"                   ⍝ Remark
   •d ⍝ +⟜(↕10)⌾•UCS'0'  ⍝ Digit
   "¯.π∞"                ⍝ Numeric
-  ' '(⊢∾+)⌾•UCS•a       ⍝ Alphabetic
-  "_"                   ⍝ Underscore
+  "_"∾' '(⊢∾+)⌾•UCS•a   ⍝ Alphabetic
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔" ⍝ Function
   "˜˘¨⌜⁼´`"             ⍝ Modifier
   "∘○⊸⟜⌾⎉⚇⍟"            ⍝ Composition
@@ -20,7 +19,7 @@ charSet←∾charGroups←⟨
   "‿"                   ⍝ Ligature
   "'"""                 ⍝ Quote
 ⟩
-bR‿bD‿bN‿bA‿bU‿bF‿bM‿bC‿bP‿bW‿bS‿bG‿bB‿bL‿bQ←↕∘≠⌾∾charGroups
+bR‿bD‿bN‿bA‿bF‿bM‿bC‿bP‿bW‿bS‿bG‿bB‿bL‿bQ←↕∘≠⌾∾charGroups
 
 Hex←16⊥(•d∾"ABCDEF")⊸⊐
 MakeTab←{{(≠chF)↑⊑¨(chF⊐𝕨)⊔𝕩}○∾⟜(⥊¨∘⥊¨)´⍉(2(÷˜∾⊣)≢)⊸⥊𝕩}
@@ -35,10 +34,14 @@ tab2←MakeTab⟨
 ⟩
 
 Parse←{
-  ⟨⟩Parse𝕩;args←charSet⊐𝕨⋄x←charSet⊐𝕩
-  x(/˜)↩¬(x∊bW)∨<○(⌈`↕∘≠⊸×)´((⊑bS)∾bR)=⌜x
+  ⟨⟩Parse𝕩;args←charSet⊸⊐¨𝕨⋄x←charSet⊐𝕩
+  x(/˜)↩¬<○(⌈`↕∘≠⊸×)´((⊑bS)∾bR)=⌜x
+  w←(<´≠↕0∾⊢)wc←x∊bA
+  id←∪ids←(1-˜wc×+`w)⊔x
+  vi←≠charSet⋄vars←vi+↕≠id⋄args↩vi+id⊐args
+  x↩(w∨¬wc∨x∊bW)/(vi+id⊐ids)⌾(w⊸/)x
   x(/˜)↩¬(1⌾⊑1⌽1⌾⊑)⊸∧x∊bS
-  a←x∊(2↑bG)⋄at←1⌽a⋄vars←at/x⋄x(/˜)↩¬a⋄a(/˜)↩¬at
+  a←x∊(2↑bG)⋄at←1⌽a⋄x(/˜)↩¬a⋄a(/˜)↩¬at
   l←≠x⋄sep←x∊bS⋄x↩(bF⊑˜chF⊐<'⊣')¨⌾(sep⊸/)x
   o←x=0⊑bB⋄c←x=1⊑bB⋄v←a-˜x∊bD∾args∾vars⋄f←¬o∨c∨v∨sep
   na←(2×sep)+f×1+l↑0∾c∨v
@@ -88,6 +91,6 @@ Gen←{
 
 Compile←{
   body←GenFn∘Parse 𝕩
-  rcp←"x" GenFn∘Parse "1÷x"
+  rcp←⟨"x"⟩ GenFn∘Parse "1÷x"
   Gen ⟨⟨0‿1,1‿1⟩/¨¨f64 ⋄ ⥊<"fn" ⋄ ⟨body,rcp⟩⟩
 }
