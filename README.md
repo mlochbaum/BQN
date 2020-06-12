@@ -93,7 +93,7 @@ Glyph(s)        | Meaning
 | `×`   | [Sign](https://aplwiki.com/wiki/Signum)             | [Multiply](https://aplwiki.com/wiki/Times)
 | `÷`   | [Reciprocal](https://aplwiki.com/wiki/Reciprocal)   | [Divide](https://aplwiki.com/wiki/Divide)
 | `⋆`   | [Exponential](https://aplwiki.com/wiki/Exponential) | [Power](https://aplwiki.com/wiki/Power_(function))
-| `√`   | [Square Root](https://aplwiki.com/wiki/Square_Root) | Root
+| `√`   | [Square Root](https://aplwiki.com/wiki/Square_Root) | [Root](https://aplwiki.com/wiki/Root)
 | `⌊`   | [Floor](https://aplwiki.com/wiki/Floor)             | [Min](https://aplwiki.com/wiki/Minimum)
 | `⌈`   | [Ceiling](https://aplwiki.com/wiki/Ceiling)         | [Max](https://aplwiki.com/wiki/Maximum)
 | `∧`   | Sort Up                                             | [And](doc/logic.md)
