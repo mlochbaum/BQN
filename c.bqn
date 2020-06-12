@@ -20,6 +20,7 @@ charSet←∾charGroups←⟨
   "'"""                 ⍝ Quote
 ⟩
 bR‿bD‿bN‿bA‿bF‿bM‿bC‿bP‿bW‿bS‿bG‿bB‿bL‿bQ←↕∘≠⌾∾charGroups
+vi←≠charSet
 
 Hex←16⊥(•d∾"ABCDEF")⊸⊐
 MakeTab←{{(≠chF)↑⊑¨(chF⊐𝕨)⊔𝕩}○∾⟜(⥊¨∘⥊¨)´⍉(2(÷˜∾⊣)≢)⊸⥊𝕩}
@@ -33,14 +34,19 @@ tab2←MakeTab⟨
   "+-×÷⌊⌈", (Hex"A0")+↕6
 ⟩
 
-Parse←{
-  ⟨⟩Parse𝕩;args←charSet⊸⊐¨𝕨⋄x←charSet⊐𝕩
+Tokenize←{
+  args←charSet⊸⊐¨𝕨⋄x←charSet⊐𝕩
   x(/˜)↩¬<○(⌈`↕∘≠⊸×)´((⊑bS)∾bR)=⌜x
   w←(<´≠↕0∾⊢)wc←x∊∾bD‿bN‿bA
   id←∪args∾(bA∊˜w/x)⍒⊸⊏ids←(1-˜wc×+`w)⊔x
-  vi←≠charSet⋄nVar←>+´bA∊˜⊑¨id
+  nVar←>+´bA∊˜⊑¨id
   x↩(w∨¬wc∨x∊bW)/(vi+id⊐ids)⌾(w⊸/)x
   x(/˜)↩¬(1⌾⊑1⌽1⌾⊑)⊸∧x∊bS
+  ⟨x,nVar,nVar-≠args,nVar↓id⟩
+}
+
+Parse←{
+  x←𝕩
   a←x∊(2↑bG)⋄at←1⌽a⋄x(/˜)↩¬a⋄a(/˜)↩¬at
   l←≠x⋄sep←x∊bS⋄x↩(bF⊑˜chF⊐<'⊣')¨⌾(sep⊸/)x
   o←x=0⊑bB⋄c←x=1⊑bB⋄v←a-˜x≥vi⋄f←¬o∨c∨v∨sep
@@ -52,7 +58,7 @@ Parse←{
   fe⌊↩(l-1)-l↑(⌈`↕∘≠⊸×)⌾⌽1∾˜sep
   ia←+`l↑0∾f-l↑/⁼∧f/fe
   sel←¬∘⊏⟜(o∨c)⊸/⍋(fe⌈↕l)-ia
-  ⟨sel⊸⊏¨x‿na,nVar,nVar-≠args,nVar↓id⟩
+  sel⊸⊏¨x‿na
 }
 
 GenNum←{
@@ -63,8 +69,9 @@ GenNum←{
 }
 f64←127-3
 GenFn←{
-  ⟨x‿na,nVar,nLoc,nums⟩←𝕩
-  vi←≠charSet
+  ⟨⟩GenFn𝕩;
+  ⟨tok,nVar,nLoc,nums⟩←𝕨Tokenize𝕩
+  ⟨x,na⟩←Parse tok
   load←((Hex"20")∾¨↕nVar)∾GenNum¨nums
   fns←{
     (𝕩-vi)⊑load
@@ -94,7 +101,7 @@ Gen←{
 }
 
 Compile←{
-  body←GenFn∘Parse 𝕩
-  rcp←⟨"x"⟩ GenFn∘Parse "1÷x"
+  body←GenFn 𝕩
+  rcp←⟨"x"⟩ GenFn "1÷x"
   Gen ⟨⟨0‿1,1‿1⟩/¨¨f64 ⋄ ⥊<"fn" ⋄ ⟨body,rcp⟩⟩
 }
