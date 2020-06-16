@@ -2,7 +2,7 @@
 
 *This repository does not yet have a working implementation. You can try a prototype implementation [online here](https://mlochbaum.github.io/BQN2NGN/web/index.html) (from [this repository](https://github.com/mlochbaum/BQN2NGN))*
 
-**BQN** is a new programming language in the APL lineage, which aims to remove inconsistent and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. BQN is aimed at existing and aspiring APL-family programmers, and using it requires a solid understanding of functions and multidimensional arrays.
+**BQN** is a new programming language in the APL lineage, which aims to remove inconsistent and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. BQN is aimed at existing and aspiring APL-family programmers, and using it requires a solid understanding of functions and multidimensional arrays. However, because of its focus on providing simple, consistent, and powerful array operations, BQN should also be a good language for learning array programming and building stronger array intuition.
 
 BQN maintains many of the ideas that made APL\360 revolutionary in 1966:
 * Human-friendly **infix notation** with no precedence rules to remember.
