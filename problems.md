@@ -108,7 +108,7 @@ Boolean And (`∧`) and Or (`∨`) are identical to Min (`⌊`) and Max (`⌈`) 
 The other drawback of Min (`∧`) and Max (`∨`) is that the symbols are counterintuitive, but I have found a way to remember them: consider the graph of variables `a←x` and `b←¬x` for x from 0 to 1: two crossed lines. Now the graph of `a∧b` is a caret shape and `a∨b` is a vee.
 
 ### Acting on windows can be awkward
-When taking Windows along more than one axis, acting on the resulting array requires the Rank operator, duplicating either the right argument rank or (negated) left argument count. A nested Windows would only require Each.
+When taking Windows along more than one axis, acting on the resulting array requires the Rank operator, duplicating either the right argument rank or (negated) left argument length. A nested Windows would only require Each.
 
 ### Group doesn't include trailing empty groups
 But there are workarounds, described in [its documentation](doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
