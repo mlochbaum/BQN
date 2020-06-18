@@ -17,7 +17,7 @@ Join requires each element of its argument to be an array, and their ranks to ma
         ∾"abc"‿(<'d')‿"ef"  ⍝ Includes a scalar
     RANK ERROR
 
-However, Join has higher-dimensional uses as well. Given a rank-`m` array of rank-`n` arrays (requiring `m≤n`), it will merge arrays along their first `m` axes. For example, if the argument is a matrix of matrices representing a [https://en.wikipedia.org/wiki/Block_matrix](block matrix), Join will give the corresponding unblocked matrix as its result.
+However, Join has higher-dimensional uses as well. Given a rank-`m` array of rank-`n` arrays (requiring `m≤n`), it will merge arrays along their first `m` axes. For example, if the argument is a matrix of matrices representing a [block matrix](https://en.wikipedia.org/wiki/Block_matrix), Join will give the corresponding unblocked matrix as its result.
 
         ⊢ m ← (3‿1∾⌜4‿2‿5) ⥊¨ 2‿3⥊↕6
     ┌
