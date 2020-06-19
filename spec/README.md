@@ -5,7 +5,7 @@ This directory gives a (currently incomplete) specification for BQN. The specifi
 The following aspects define BQN and are or will be specified:
 - Token formation
 - Numeric and character literals
-- Syntactic class and grammar
+- [Grammar](grammar.md)
 - Array model and notation
 - Evaluation semantics
 - Built-in operations ([reference implementations](reference.bqn))
