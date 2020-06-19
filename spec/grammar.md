@@ -38,8 +38,9 @@ Functions can be formed by fully applying operators or as trains. Operators are 
              | Derv
     Fork     = Func
              | Operand Func Fork          ⍝ 3-train
-    FuncExpr = Fork
+    Train    = Fork
              | Func Fork                  ⍝ 2-train
+    FuncExpr = Train
              | F ASGN FuncExpr
 
 Value expressions are complicated by the possibility of list assignment. We also define nothing-statements, which have very similar syntax to value expressions but do not permit assignment.
@@ -58,4 +59,4 @@ Value expressions are complicated by the possibility of list assignment. We also
 
 One aspect of BQN grammar is not context-free: determining the syntactic class of a brace definition. The terms `BraceFunc` `_braceMod` `_braceComp_` all obey the syntax for `BRACED` given below. Then the class is determined by the presence of `𝕗` and `𝕘` (including alternate class spellings) at the top level, that is, not contained within further pairs of braces. If `𝕘` is present, it is a `_braceCmp_`; otherwise, if `𝕗` is present it it a `_braceMod` and otherwise a `BraceFunc`. The presence of `𝕨` or `𝕩` has an effect on the evaluation of modifiers and combinators but not their syntactic class.
 
-    BRACED = "{" ⋄? ( STMT ⋄ )* EXPR ⋄? "}"
+    BRACED   = "{" ⋄? ( STMT ⋄ )* EXPR ⋄? "}"
