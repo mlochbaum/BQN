@@ -49,10 +49,13 @@ Value expressions are complicated by the possibility of list assignment. We also
              | ( value | nothing )? Derv arg
     nothing  = "·"
              | ( value | nothing )? Derv nothing
-    LHS_ATOM = v | F | _m | _c_ | "(" lhs ")"
-    lhs      = v
-             | "⟨" ⋄? ( ( lhs ⋄ )* lhs ⋄? )? "⟩"
-             | LHS_ATOM ( "‿" LHS_ATOM )+
+    LHS_ANY  = lhsValue | F | _m | _c_
+    LHS_ATOM = LHS_ANY | "(" lhsStr ")"
+    LHS_ELT  = LHS_ANY | lhsStr
+    lhsValue = v
+             | "⟨" ⋄? ( ( LHS_ELT ⋄ )* LHS_ELT ⋄? )? "⟩"
+    lhsStr   = LHS_ATOM ( "‿" LHS_ATOM )+
+    lhs      = lhsValue | lhsStr
     valExpr  = arg
              | v ASGN valExpr
              | v Derv "↩" valExpr         ⍝ Modified assignment
