@@ -2,10 +2,10 @@ BQN's grammar is given below. All terms except `BraceFunc` `_braceMod` `_braceCo
 
 The symbols `v`, `F`, `_m`, and `_c_` are identifier tokens with value, function, modifier, and composition classes respectively. Similarly, `vl`, `Fl`, `_ml`, and `_cl_` refer to value literals (numeric and character literals, or primitives) of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic classes are no longer used after parsing and cannot be inspected in a running program.
 
-A program is a list of statements. Almost all statements are expressions. However, valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions.
+A program is a list of statements. Almost all statements are expressions. However, explicit definitions and valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions.
 
     PROGRAM  = ⋄? ( ( STMT ⋄ )* STMT ⋄? )?
-    STMT     = EXPR | nothing
+    STMT     = EXPR | DEF | nothing
     ⋄        = ( "⋄" | "," | \n )+
     EXPR     = valExpr | FuncExpr | _modExpr | _cmpExp_
 
@@ -59,6 +59,15 @@ Value expressions are complicated by the possibility of list assignment. We also
     valExpr  = arg
              | v ASGN valExpr
              | v Derv "↩" valExpr         ⍝ Modified assignment
+
+In an explicit definition, the left hand side looks like application of a function, modifier, or combinator. As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments.
+
+    DEF      = VALDEF | FUNCDEF
+    VALDEF   = valLHS  "⇐" valExpr
+    FUNCDEF  = FuncLHS "⇐" FuncExpr
+    FuncLHS  = F _m
+             | F _c_ F
+    valLHS   = lhs? ( F | FuncLHS ) lhs
 
 One aspect of BQN grammar is not context-free: determining the syntactic class of a brace definition. The terms `braceVal`, `BraceFunc` `_braceMod` `_braceComp_` all obey the syntax for `BRACED` given below. Then the class is determined by the presence of `𝕨`, `𝕩`, `𝕗`, and `𝕘` (including alternate class spellings) at the top level, that is, not contained within further pairs of braces. If `𝕘` is present, it is a `_braceCmp_`; otherwise, if `𝕗` is present it is a `_braceMod`; otherwise is is a `BraceFunc` if `𝕨` or `𝕩` are present and a `braceVal` if no special names appear.
 
