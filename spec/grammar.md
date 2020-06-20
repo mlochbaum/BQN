@@ -12,11 +12,11 @@ A program is a list of statements. Almost all statements are expressions. Howeve
 Here we define the "atomic" forms of functions and operators, which are either single tokens or enclosed in paired symbols. Stranded vectors with `‿`, which binds more tightly than any form of execution, are also included.
 
     ANY      = atom    | Func     | _mod     | _comp_
-    _comp_   = _c_ | _cl_ | _braceComp_ | "(" _cmpExp_ ")"
-    _mod     = _m  | _ml  | _braceMod   | "(" _modExpr ")"
-    Func     =  F  |  Fl  |  BraceFunc  | "(" FuncExpr ")"
-    atom     =  v  |  vl  |  list       | "(" valExpr  ")"
-    list     = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
+    _comp_   = _c_ | _cl_ | "(" _cmpExp_ ")" | _braceComp_
+    _mod     = _m  | _ml  | "(" _modExpr ")" | _braceMod  
+    Func     =  F  |  Fl  | "(" FuncExpr ")" |  BraceFunc 
+    atom     =  v  |  vl  | "(" valExpr  ")" |  braceVal
+             | "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
     value    = atom | ANY ( "‿" ANY )+
 
 Starting at the highest-order objects, modifiers and compositions have fairly simple syntax. In most cases the syntax for `←` and `↩` is the same, but only `↩` can be used for modified assignment.
@@ -60,6 +60,6 @@ Value expressions are complicated by the possibility of list assignment. We also
              | v ASGN valExpr
              | v Derv "↩" valExpr         ⍝ Modified assignment
 
-One aspect of BQN grammar is not context-free: determining the syntactic class of a brace definition. The terms `BraceFunc` `_braceMod` `_braceComp_` all obey the syntax for `BRACED` given below. Then the class is determined by the presence of `𝕗` and `𝕘` (including alternate class spellings) at the top level, that is, not contained within further pairs of braces. If `𝕘` is present, it is a `_braceCmp_`; otherwise, if `𝕗` is present it it a `_braceMod` and otherwise a `BraceFunc`. The presence of `𝕨` or `𝕩` has an effect on the evaluation of modifiers and combinators but not their syntactic class.
+One aspect of BQN grammar is not context-free: determining the syntactic class of a brace definition. The terms `braceVal`, `BraceFunc` `_braceMod` `_braceComp_` all obey the syntax for `BRACED` given below. Then the class is determined by the presence of `𝕨`, `𝕩`, `𝕗`, and `𝕘` (including alternate class spellings) at the top level, that is, not contained within further pairs of braces. If `𝕘` is present, it is a `_braceCmp_`; otherwise, if `𝕗` is present it is a `_braceMod`; otherwise is is a `BraceFunc` if `𝕨` or `𝕩` are present and a `braceVal` if no special names appear.
 
     BRACED   = "{" ⋄? ( STMT ⋄ )* EXPR ⋄? "}"

@@ -79,7 +79,7 @@ _eachm←{
 _reduce←{
   ! 1=≠≢𝕩
   l←≠v←𝕩 ⋄ F←𝔽
-  r←𝕨 (0<l)◶{Identity f}‿{l↩l-1⋄(l-1)⊑𝕩}⊘⊣ 𝕩
+  r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄(l-1)⊑𝕩}⊘⊣ 𝕩
   {r↩(𝕩⊑v)F r}¨(l-1)⊸-¨↕l
   r
 }
