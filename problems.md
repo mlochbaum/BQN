@@ -4,14 +4,6 @@ Every language has some issues that everyone can agree make programming harder. 
 
 I've omitted problems that are obviously addressed by speculated extensions. Of course adding A fixes the problem "doesn't have A". Problems that only exist in reference to some existing convention (e.g. unfamiliarity to APLers) are also left out, unless the convention manifests technically (Unicode support).
 
-### Reduction depth
-There are really three kinds of reduction a BQN programmer might want to use:
-- Apply the function between elements of a list (Lisp).
-- Apply it between major cells of an array (SHARP).
-- Apply it between elements of an array, enclosing results to get a new array (NARS).
-
-Converting between these is not difficult but awkard enough to be an annoyance when programming, and because reductions are extremely common that makes this a big problem. Is there any reduction operator that works as an acceptable compromise? Is there even any combination of two operators that works?
-
 ### Empty arrays lose type information
 A pretty fundamental problem with dynamically-typed array languages. Prototypes are intended to solve it, but they don't really. It doesn't help that the notion of type is fluid: elements of an array in one moment can be axis lengths in the next; did the numeric value go from not being type information to being type information? Inferred type might help here, particularly the ability of one part of the program to ask another part for type information during compilation. But that needs to be specified if programmers are going to rely on it, which sounds difficult.
 
@@ -41,6 +33,14 @@ Currently there's no way to define the two valences separately, and I don't know
 
 ### Right-to-left multi-line functions go upwards
 If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
+
+### Array reductions are annoying
+There are really three kinds of reduction a BQN programmer might want to use.
+- `𝔽´` Apply the function between elements of a list (Lisp).
+- `𝔽´<˘` Apply it between major cells of an array (SHARP).
+- `𝔽¨´<˘` Apply it between elements of an array, enclosing results to get a new array (NARS).
+
+It seems that the first is the most common, but the others aren't really rare. The current list reduction also encourages patterns like `+´˘2↕mat`, which don't work on higher-rank arrays and mix the result (possibly unwanted).
 
 ### Subtraction, division, and span are backwards
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). Not really fixable; too much precedent.
