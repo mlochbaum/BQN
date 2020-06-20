@@ -4,7 +4,7 @@ As in APL, Transpose (`⍉`) is a tool for rearranging the axes of an array. BQN
 
 ## Monadic Transpose
 
-Transposing a matrix exchanges its axes, mirroring it across the diagonal. APL extends the function to any rank by reversing all axes, but this generalization isn't very natural and is almost never used. The main reason for it is to maintain the equivalence `a MP b ←→ a MP⌾⍉ b`, where `MP ← +´∘×⎉1‿∞` is the generalized matrix product. But even here APL's Transpose is suspect. It does much more work than it needs to, as we'll see.
+Transposing a matrix exchanges its axes, mirroring it across the diagonal. APL extends the function to any rank by reversing all axes, but this generalization isn't very natural and is almost never used. The main reason for it is to maintain the equivalence `a MP b ←→ a MP⌾⍉ b`, where `MP ← (+´<˘)∘×⎉1‿∞` is the generalized matrix product. But even here APL's Transpose is suspect. It does much more work than it needs to, as we'll see.
 
 BQN's transpose takes the first axis of its argument and moves it to the end.
 
@@ -108,4 +108,4 @@ A non-array right argument to Transpose is always boxed to get a scalar array be
 
 Monadic transpose is identical to `(≠∘≢-1˜)⊸⍉`, except that for scalar arguments it returns the array unchanged rather than giving an error.
 
-In Dyadic transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(≠≢𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `>⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
+In Dyadic transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(≠≢𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.

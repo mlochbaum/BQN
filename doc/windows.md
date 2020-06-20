@@ -60,7 +60,7 @@ If the left argument has length `0`, then the argument is not sliced along any d
 
 `𝕩` is an array. `𝕨` is a number or numeric list or scalar with `𝕨≤○≠≢𝕩`. The result `z` has shape `𝕨∾¬⟜𝕨⌾((≠𝕨)⊸↑)≢𝕩`, and element `i⊑z` is `𝕩⊑˜(≠𝕨)(↑+⌾((≠𝕨)⊸↑)↓)i`.
 
-Using [Group](group.md) we could also write `i⊑z` ←→ `𝕩⊑˜(𝕨∾○(↕∘≠)≢𝕩) (>+´¨)∘⊔ i`.
+Using [Group](group.md) we could also write `i⊑z` ←→ `𝕩⊑˜(𝕨∾○(↕∘≠)≢𝕩) +´¨∘⊔ i`.
 
 ## Symmetry
 
@@ -103,10 +103,10 @@ A common task is to pair elements, with an initial or final element so the total
 
         -˜´˘2↕0∾ +` 3‿2‿1‿1
     [ 3 2 1 1 ]
-        (-˜´≠↕0∾⊢) +` 3‿2‿1‿1
+        ((-˜´<˘)≠↕0∾⊢) +` 3‿2‿1‿1
     [ 3 2 1 1 ]
 
 This method extends to any number of initial elements. We can modify the running sum above to keep the length constant by starting with two zeros.
 
-        (+´≠↕(2⥊0)⊸∾) ⟨2,6,0,1,4,3⟩
+        ((+´<˘)≠↕(2⥊0)⊸∾) ⟨2,6,0,1,4,3⟩
     [ 2 8 8 7 5 8 ]
