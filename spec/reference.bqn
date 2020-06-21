@@ -50,8 +50,8 @@ Type       ⍝ Scalar (enclosed) prototype of 𝕩
 ˜ ← {𝕩𝔽𝕨⊣𝕩}
 ∘ ← {𝔽𝕨𝔾𝕩}
 ○ ← {(𝔾𝕨)𝔽𝔾𝕩}
-⊸ ← {(𝔽𝕨)𝔾𝕩}˜˜
-⟜ ← {𝕨𝔽𝔾𝕩}˜˜
+⊸ ← {(𝔽𝕨⊣𝕩)𝔾𝕩}
+⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
 
 ⍝ LIMITED to numeric arguments for scalar cases
 √ ← 2⊸√      ⊘ (⋆⟜÷˜)
@@ -218,7 +218,7 @@ _scan←{
 }
 _iterate_←{
   n←𝕨𝔾𝕩
-  F←𝕨(0⊘1)◶⟨𝔽,𝕨⊸𝔽⟩
+  F←𝕨(0⊘1)◶⟨𝔽,𝕨⊸𝔽⟩⊢
   l←u←0
   {!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
   a←𝕩⋄_p←{𝔽∘⊣`(1+𝕩)⥊<a}
