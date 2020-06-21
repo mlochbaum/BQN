@@ -97,7 +97,7 @@ It's an awkward inconsistency. Prefixes and Suffixes have to have a nested resul
 A positive operand to Rank indicates the cell rank, so positive zero means to act on 0-cells. A negative operand indicates the frame length, so negative zero should act on the entire array. But it can't because it's equal to positive zero. Similar issue with Depth. Positive/negative is not really the right way to encode the frame/cell distinction, but it's convenient. Fortunately ∞ can be used in place of negative zero, but there can still be problems if the rank is computed.
 
 ### Must read the body to find explicit definition's type
-You have to scan for `𝕗𝔽𝕘𝔾` (and so does a compiler). A little inelegant, and requires a fair amount of preprocessing to be able to say the parser is still context-free.
+You have to scan for `𝕨𝕎𝕩𝕏𝕗𝔽𝕘𝔾` (and so does a compiler). A little inelegant, and requires preprocessing to be able to use a deterministic context-free parser.
 
 ### Can't take Prefixes or Suffixes on multiple axes
 This is a natural array operation to do, and results in an array with a joinable structure, but as Prefixes and Suffixes are monadic there's no way to specify the number of axes to use.

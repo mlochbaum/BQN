@@ -42,11 +42,11 @@ BQN's variables use another system. Unlike primitives, variables can be spelled 
 
 The associations between spelling and syntactic role are considered part of BQN's [token formation rules](../spec/token.md).
 
+One rule for typing is also best considered to be a pre-parsing rule like the spelling system: the role of a brace construct `{}` is determined by which special arguments it uses: it's a value if there are none, but a `𝕨` or `𝕩` makes it at least a function, an `𝔽` makes it a modifier or composition, and a `𝔾` always makes it a composition.
+
 ## BQN's grammar
 
 A formal treatment is included in [the spec](../spec/grammar.md). BQN's grammar—the ways syntactic roles interact—follows the original APL model (plus trains) closely, with allowances for new features like list notation. In order to keep BQN's syntax context-free, the syntactic role of any expression must be known, just like tokens.
-
-BQN fails to be context-free in one fairly mild way: the role of a brace construct `{}` is determined by which special arguments it uses. This means the grammar is not context-free in the technical sense, but since the "context" in this case is carried between the braces and cannot be left out it's not harmful in the same way as variable values. Informally it still makes sense to call BQN "context-free".
 
 Here is a table of the APL-derived operator and function application rules:
 

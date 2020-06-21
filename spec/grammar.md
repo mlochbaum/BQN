@@ -1,4 +1,4 @@
-BQN's grammar is given below. All terms except `BraceFunc` `_braceMod` `_braceComp_` are defined in a [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) variant; distinguishing these three terms is not strictly context-free and they are explained near the end.
+BQN's grammar is given below. All terms except `braceVal`, `BraceFunc`, `_braceMod`, and `_braceComp_` are defined in a [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) variant; distinguishing these four terms is possible but difficult in BNF and they are explained near the end.
 
 The symbols `v`, `F`, `_m`, and `_c_` are identifier tokens with value, function, modifier, and composition classes respectively. Similarly, `vl`, `Fl`, `_ml`, and `_cl_` refer to value literals (numeric and character literals, or primitives) of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic classes are no longer used after parsing and cannot be inspected in a running program.
 
@@ -69,6 +69,15 @@ In an explicit definition, the left hand side looks like application of a functi
              | F _c_ F
     valLHS   = lhs? ( F | FuncLHS ) lhs
 
-One aspect of BQN grammar is not context-free: determining the syntactic class of a brace definition. The terms `braceVal`, `BraceFunc` `_braceMod` `_braceComp_` all obey the syntax for `BRACED` given below. Then the class is determined by the presence of `𝕨`, `𝕩`, `𝕗`, and `𝕘` (including alternate class spellings) at the top level, that is, not contained within further pairs of braces. If `𝕘` is present, it is a `_braceCmp_`; otherwise, if `𝕗` is present it is a `_braceMod`; otherwise is is a `BraceFunc` if `𝕨` or `𝕩` are present and a `braceVal` if no special names appear.
+The terms `braceVal`, `BraceFunc`, `_braceMod`, and `_braceComp_` all obey the syntax for `BRACED` given below. Then the class is determined by the presence of `𝕨`, `𝕩`, `𝕗`, and `𝕘` (including alternate class spellings) at the top level, that is, not contained within further pairs of braces. If `𝕘` is present, it is a `_braceCmp_`; otherwise, if `𝕗` is present it is a `_braceMod`; otherwise is is a `BraceFunc` if `𝕨` or `𝕩` are present and a `braceVal` if no special names appear.
 
     BRACED   = "{" ⋄? ( STMT ⋄ )* EXPR ⋄? "}"
+
+This rule can be expressed in BNF by making many copies of all the rules above. For each "level" (no special names; arguments; `𝕗`; `𝕘`), a new version of every rule should be made that allows that level but not higher ones, and another version should be made that requires exactly that level. The values themselves should be included in `v`, `F`, `_m`, and `_c_` for these copies. Then the "allowed" rules are made simply by replacing the terms they contain with the same "allowed" versions, and "required" rules are constructed using both "allowed" and "required" rules. For every part of a production rule, an alternative should be created that requires the relevant name in that part while allowing it in the others. For example, `( value | nothing )? Derv arg` would be transformed to
+
+    arg_req1 = valExpr_req1
+             | ( value_req1 | nothing_req1 ) Derv_allow1 arg_allow1
+             | ( value_allow1 | nothing_allow1 )? Derv_req1 arg_allow1
+             | ( value_allow1 | nothing_allow1 )? Derv_allow1 arg_req1
+
+Quite tedious. The explosion of rules is partly due to the fact that the brace-typing rule falls into a weaker class of grammars than the other rules. The rest of BQN is [deterministic context-free](https://en.wikipedia.org/wiki/Deterministic_context-free_grammar) while brace-typing is not, only context-free. Fortunately brace typing does not introduce the parsing difficulties that can be present in a general context-free grammar, and it can easily be performed in linear time: after [scanning](token.md) but before parsing, move through the source code maintaining a stack of the current top-level set of braces. Whenever a special name is encountered, annotate that set of braces to indicate that the name is present. When a closing brace is encountered and the top brace is popped off the stack, the type can be found based on which names were present. One way to present this information to the parser is to replace the brace tokens with new tokens that indicate the type.
