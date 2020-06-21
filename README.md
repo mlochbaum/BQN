@@ -16,7 +16,7 @@ It incorporates concepts developed over years of APL practice:
 
 But BQN is redesigned from the ground up, with brand new ideas to make these paradigms easier to use and less likely to fail.
 * The **based array model** makes non-arrays a fundamental part of the language, and removes the surprise of floating arrays and the hassle of explicit boxes. New **array notation** eliminates the gotchas of [stranding](https://aplwiki.com/wiki/Strand_notation).
-* A **context-free grammar** where a value's syntactic role is determined by its spelling makes it easier for machines and humans to understand code.
+* A [**context-free grammar**](doc/context.md) where a value's syntactic role is determined by its spelling makes it easier for machines and humans to understand code.
 * Oh, and it naturally leads to **first-class functions**, a feature often missed in APL.
 * The **new symbols** for built-in functionality allow the syntactic role of a primitive to be distinguished at a glance, and aim to be more consistent and intuitive.
 
@@ -44,15 +44,15 @@ BQN syntax consists of expressions where computation is done with a little organ
 
 ### Expressions
 
-Like APL, BQN values have one of four *syntactic classes*:
+Like APL, BQN uses four *syntactic roles* for values in expressions:
 * **Values**, like APL arrays or J nouns
 * **Functions**, or verbs in J
 * **Modifiers**, like APL monadic operators or J adverbs
 * **Compositions**, like APL dyadic operators or J conjunctions.
 
-These classes work exactly like they do in APL, with functions applying to one or two arguments, modifiers taking a single function or value on the left, and compositions taking a function or value on each side.
+These roles work exactly like they do in APL, with functions applying to one or two arguments, modifiers taking a single function or value on the left, and compositions taking a function or value on each side.
 
-Unlike APL, in BQN the syntactic class of a value is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a value, an uppercase first letter (`Name`) makes it a function, and underscores are used for modifiers (`_name`) and compositions (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as an argument. With a list of functions, we can make a table of the square and square root of a few numbers:
+Unlike APL, in BQN the syntactic role of a value is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a value, an uppercase first letter (`Name`) makes it a function, and underscores are used for modifiers (`_name`) and compositions (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as an argument. With a list of functions, we can make a table of the square and square root of a few numbers:
 
         ⟨×˜,√⟩ {𝕎𝕩}⌜ 1‿4‿9
     ┌
@@ -60,7 +60,7 @@ Unlike APL, in BQN the syntactic class of a value is determined purely by the wa
       1  2  3
               ┘
 
-BQN's built-in operations also have patterns to indicate the syntactic class: modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and compositions (`∘○⊸⟜⌾⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
+BQN's built-in operations also have patterns to indicate the syntactic role: modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and compositions (`∘○⊸⟜⌾⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
 
 ### Special syntax
 
@@ -179,9 +179,9 @@ If added, [sets and dictionaries](#sets-and-dictionaries) would also use a list-
 
 ### Explicit functions
 
-Functions, modifiers, and combinators can be defined using curly braces `{}`. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned. This result can have any value, and its syntactic class in the calling context is determined by the normal rules: functions return values and modifiers and compositions return functions. Operations defined in this way have lexical scope.
+Functions, modifiers, and combinators can be defined using curly braces `{}`. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return values and modifiers and compositions return functions. Operations defined in this way have lexical scope.
 
-The special values `𝕨` and `𝕩`, which stand for arguments, and `𝕗` and `𝕘`, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate values and the uppercase forms `𝕎𝕏𝔽𝔾` indicate functions. The type (including syntactic class) of the result is determined by its contents: a composition contains `𝕘`, a modifier contains `𝕗` but not `𝕘`, and a function contains neither.
+The special values `𝕨` and `𝕩`, which stand for arguments, and `𝕗` and `𝕘`, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate values and the uppercase forms `𝕎𝕏𝔽𝔾` indicate functions. The type (including syntactic role) of the result is determined by its contents: a composition contains `𝕘`, a modifier contains `𝕗` but not `𝕘`, and a function contains neither.
 
 A modifier or composition can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains `𝕨` or `𝕩`, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.
 
