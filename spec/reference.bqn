@@ -73,7 +73,7 @@ Type       ⍝ Scalar (enclosed) prototype of 𝕩
 
 _eachm←{
   r←⥊𝕩 ⋄ F←𝔽
-  E←(≠r)⟜≤◶{r↩r𝕩_amend˜F𝕩⊑r⋄E𝕩+1}‿⊢
+  E←(≠r)⊸≤◶{r↩r𝕩_amend˜F𝕩⊑r⋄E𝕩+1}‿⊢
   E 0 ⋄ (≢𝕩)⥊r
 }
 _reduce←{
