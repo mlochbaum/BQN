@@ -79,7 +79,7 @@ _eachm←{
 _reduce←{
   ! 1=≠≢𝕩
   l←≠v←𝕩 ⋄ F←𝔽
-  r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄(l-1)⊑𝕩}⊘⊣ 𝕩
+  r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
   {r↩(𝕩⊑v)F r}¨(l-1)⊸-¨↕l
   r
 }
@@ -130,6 +130,7 @@ Nat←IsArray◶⟨0⊸≤∧⌊⊸=,0⟩
 Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Reshape←{
   ! 1≥≠≢𝕨
+  𝕨↩⥊𝕨
   ! ∧´Nat¨𝕨
   n←≠𝕩 ⋄ l←×´𝕨
   ! n≤○(0⊸=)l
@@ -150,8 +151,8 @@ Pick1←{
   𝕨↩𝕨+s×𝕨<0
   (⥊𝕩)⊑˜0(⊑⟜𝕨+⊑⟜s×⊢)´↕≠𝕨
 }
-Pickd←(∨´IsArray¨)◶Pick1‿{Pickd⟜𝕩¨𝕨}
-Pick←IsArray∘⊣◶⊑‿Pickd
+Pickd←(∨´IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
+Pick←IsArray∘⊣◶{!1=≠≢𝕨⋄𝕩⊑𝕨}‿Pickd
 
 match←{¬∘(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨≠○IsArray , 0⟩
