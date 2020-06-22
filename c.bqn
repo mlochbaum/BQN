@@ -1,6 +1,10 @@
 #!/usr/bin/env bqn
 
 ⊔↩((↕1+(>⌈´))=¨<)∘⊣ /¨⟜< ↕∘≠⍠⊢
+⍷↩∪
+
+Base←{+⟜(𝕨⊸×)´⌽𝕩}
+Enc2←{𝕨⥊2(|∾˜(𝕨-1)Enc2⌊∘÷˜)⍟(0<𝕨)𝕩}
 
 lf‿tab←•UCS 10‿9
 charSet←∾charGroups←⟨
@@ -26,7 +30,7 @@ Tokenize←{
   args←charSet⊸⊐¨𝕨⋄c←charSet⊐𝕩
   c(/˜)↩¬<○(⌈`↕∘≠⊸×)´((⊑bS)∾bR)=⌜c
   w←(<´≠↕0∾⊢)l←c∊∾bD‿bN‿bA
-  id←∪args∾(bA∊˜w/c)⍒⊸⊏i←(1-˜l×+`w)⊔c
+  id←⍷args∾(bA∊˜w/c)⍒⊸⊏i←(1-˜l×+`w)⊔c
   nv←>+´bA∊˜⊑¨id
   c↩(w∨¬l∨c∊bW)/(vi+id⊐i)⌾(w⊸/)c
   c(/˜)↩¬(1⌾⊑1⌽1⌾⊑)⊸∧c∊bS
@@ -48,13 +52,13 @@ Parse←{
   sel⊸⊏¨𝕩‿na
 }
 
-Hex←16⊥(•d∾"ABCDEF")⊸⊐
+Hex←16 Base (•d∾"ABCDEF")⊸⊐
 
-ReadNum←10⊥bD⊸⊐
+ReadNum←10 Base bD⊸⊐
 GenF64←{
   𝕩=0:8⥊0
   l←2(⌊⋆⁼)𝕩
-  (Hex"44")∾2⊥˘⌽8‿8(⊣⥊×´⊸↑)∾⟨⥊0,(11⥊2)⊤1023+l,(2⥊˜0⌈l)⊤𝕩⟩
+  (Hex"44")∾2 Base˘⌽8‿8(⊣⥊×´⊸↑)∾⟨⥊0,11 Enc2 1023+l,(0⌈l)Enc2𝕩⟩
 }
 MakeTab←{{(≠chF)↑⊑¨(chF⊐𝕨)⊔𝕩}○∾⟜(⥊¨∘⥊¨)´⍉(2(÷˜∾⊣)≢)⊸⥊𝕩}
 tab1←MakeTab⟨
@@ -88,7 +92,7 @@ GenFn←{
 }
 
 Gen←{
-  LEB←{0≡𝕩:⥊0⋄128⊸+⌾(¯1⊸↓) 2⊥⌽⍉ (∨`⌾⌽∨´˘)⊸/ 10‿7(⊣⥊×´⊸↑) ⍉⌽(8⥊2)⊤𝕩}
+  LEB←{0≡𝕩:⥊0⋄128⊸+⌾(¯1⊸↓) 2 Base ⌽⍉ (∨`⌾⌽∨´˘)⊸/ 10‿7(⊣⥊×´⊸↑) ⌽64 Enc2 𝕩}
   C←LEB∘≠⊸∾
   S←∾⟜C
   V←≠∾∾
