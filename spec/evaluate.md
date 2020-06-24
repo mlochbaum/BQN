@@ -13,18 +13,20 @@ An *assignment* is one of the four rules containing `ASGN`. It is evaluated by f
 We now give rules for evaluating an `atom`, `Func`, `_mod` or `_comp_` expression (the possible options for `ANY`). A literal `vl`, `Fl`, `_ml`, or `_cl_` has a fixed value defined by the specification ([value literals](literal.md) and [built-ins](primitive.md)). An identifier `v`, `F`, `_m`, or `_c_` is evaluated by returning its value; because of the scoping rules it must have one when evaluated. A parenthesized expression such as `"(" _modExpr ")"` simply returns the result of the interior expression. A braced construct such as `BraceFunc` is defined by the evaluation of the statements it contains after all parameters are accepted. Finally, a list `"⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"` or `ANY ( "‿" ANY )+` consists grammatically of a list of expressions. To evaluate it, each expression is evaluated in source order and their results are placed as elements of a rank-1 array. The two forms have identical semantics but different punctuation.
 
 Rules in the table below are function and operator evaluation.
-|  L  | Left                   | Called   | Right              |  R  | Types
-|-----|------------------------|----------|--------------------|-----|-----------
-| `𝕨` | `( value | nothing )?` | `Derv`   | `arg`              | `𝕩` | Function, value
-| `𝕗` | `Operand`              | `_mod`   |                    |     | Modifier
-| `𝕗` | `Operand`              | `_comp_` | `( value | Func )` | `𝕘` | Composition
+|  L  | Left                    | Called   | Right               |  R  | Types
+|-----|-------------------------|----------|---------------------|-----|-----------
+| `𝕨` | `( value \| nothing )?` | `Derv`   | `arg`               | `𝕩` | Function, value
+| `𝕗` | `Operand`               | `_mod`   |                     |     | Modifier
+| `𝕗` | `Operand`               | `_comp_` | `( value \| Func )` | `𝕘` | Composition
+
 In each case the constituent expressions are evaluated in reverse source order: Right, then Called, then Left. Then the expression's result is obtained by calling the Called value on its parameters. A left argument of `nothing` is not used as a parameter, leaving only a right argument in that case. The data type of the Called value must be appropriate to the expression type, as indicated in the "Types" column. For function application, a value type (number, character, or array) is allowed. It is called simply by returning itself. Although the arguments are ignored in this case, they are still evaluated. A braced construct is evaluated by binding the parameter names given in columns L and R to the corresponding values. Then if all parameter levels present have been bound, its body is evaluated to give the result of application.
 
 The following rules derive new functions or operators from existing ones.
-| Left      | Center   | Right              | Result
-|-----------|----------|--------------------|--------------
-|           | `_comp_` | `( value | Func )` | `{𝔽 _C_ R}`
-| `Operand` | `_comp_` |                    | `{L _C_ 𝔽}`
-| `Operand` |  `Func`  | `Fork`             | `{(𝕨L𝕩)C(𝕨R𝕩)}`
-|           |  `Func`  | `Fork`             | `{     C(𝕨R𝕩)}`
+| Left      | Center    | Right               | Result
+|-----------|-----------|---------------------|--------------
+|           | `_comp_`  | `( value \| Func )` | `{𝔽 _C_ R}`
+| `Operand` | `_comp_`  |                     | `{L _C_ 𝔽}`
+| `Operand` |  `Func`   | `Fork`              | `{(𝕨L𝕩)C(𝕨R𝕩)}`
+|           |  `Func`   | `Fork`              | `{     C(𝕨R𝕩)}`
+
 As with applications, all expressions are evaluated in reverse source order before doing anything else. Then a result is formed without calling the center value. Its value in BQN is given in the rightmost column, using `L`, `C`, and `R` for the results of the expressions in the left, center, and right columns, respectively. For the first two rules (*partial application*), the given operand is bound to the composition: the result is a modifier that, when called, calls the center composition with the bound operand on the same side it appeared on and the new operand on the remaining side. A *train* is a function that, when called, calls the right-hand function on all arguments, then the left-hand function, and calls the center function with these results as arguments. In a composition partial application, the result will fail when applied if the center value does not have the composition type, and in a fork, it will fail if any component has a modifier or composition type (that is, cannot be applied as a function). BQN implementations are not required to check for these types when forming the result of these expressions, but may give an error on formation even if the result will never be applied.
