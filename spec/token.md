@@ -14,7 +14,7 @@ Otherwise, a single character forms a token. Only the specified set of character
 
 | Class               | Characters
 |---------------------|------------
-| Function literal    | `+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔`
+| Function literal    | `+-×÷⋆√⌊⌈\|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔`
 | Modifier literal    | `` ˜˘¨⌜⁼´` ``
 | Composition literal | `∘○⊸⟜⌾⎉⚇⍟`
 | Parameter           | `𝕨𝕩𝕗𝕘𝕎𝕏𝔽𝔾`
