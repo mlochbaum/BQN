@@ -7,5 +7,5 @@ The following aspects define BQN and are or will be specified:
 - Numeric and character literals
 - [Grammar](grammar.md)
 - Array model and notation
-- Evaluation semantics
+- [Evaluation semantics](evaluate.md)
 - Built-in operations ([reference implementations](reference.bqn))

@@ -57,8 +57,8 @@ Value expressions are complicated by the possibility of list assignment. We also
     lhsStr   = LHS_ATOM ( "‿" LHS_ATOM )+
     lhs      = lhsValue | lhsStr
     valExpr  = arg
-             | v ASGN valExpr
-             | v Derv "↩" valExpr         ⍝ Modified assignment
+             | lhs ASGN valExpr
+             | lhs Derv "↩" valExpr         ⍝ Modified assignment
 
 In an explicit definition, the left hand side looks like application of a function, modifier, or combinator. As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments.
 
