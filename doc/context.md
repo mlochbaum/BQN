@@ -36,7 +36,7 @@ BQN's expression grammar is a simplified version of the typical APL, removing so
 | Modifier    | Monadic operator | Adverb
 | Composition | Dyadic operator  | Conjunction
 
-BQN primitives have only one spelling, and a fixed role (but their values can be used in a different role by storing them in variables). Superscript glyphs `` ˜¨˘⁼⌜´` `` are used for modifiers, and glyphs `∘○⊸⟜⌾⚇⎉⍟◶⊘` with an unbroken circle are compositions. Other primitives are functions. String and numeric literals are values.
+BQN primitives have only one spelling, and a fixed role (but their values can be used in a different role by storing them in variables). Superscript glyphs `` ˜¨˘⁼⌜´` `` are used for modifiers, and glyphs `∘○⊸⟜⌾⊘◶⚇⎉⍟` with an unbroken circle are compositions. Other primitives are functions. String and numeric literals are values.
 
 BQN's variables use another system. Unlike primitives, variables can be spelled as any of the four syntactic types. Its value remains the same, as the spelling only indicates how this value is used. A variable spelled with a lowercase first letter, like `var`, is a value. Spelled with an uppercase first letter, like `Var`, it is a function. Underscores are placed where operands apply to indicate a modifier `_var` or composition `_var_`. Other than the first letter or underscore, variables are case-insensitive.
 

@@ -60,7 +60,7 @@ Unlike APL, in BQN the syntactic role of a value is determined purely by the way
       1  2  3
               ┘
 
-BQN's built-in operations also have patterns to indicate the syntactic role: modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and compositions (`∘○⊸⟜⌾⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
+BQN's built-in operations also have patterns to indicate the syntactic role: modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and compositions (`∘○⊸⟜⌾⊘◶⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
 
 ### Special syntax
 
@@ -140,11 +140,13 @@ Glyph | Name(s)     | Definition                     | Description
 `˜`   | Self/Swap   | `{𝕩𝔽𝕨⊣𝕩}`                      | Duplicate one argument or exchange two
 `∘`   | Atop        | `{𝔽𝕨𝔾𝕩}`                       | Apply `𝔾` to both arguments and `𝔽` to the result
 `○`   | Over        | `{(𝔾𝕨)𝔽𝔾𝕩}`                    | Apply `𝔾` to each argument and `𝔽` to the results
-`⊸`   | Before/Bind | `{(𝔽𝕨)𝔾𝕩}˜˜`                   | `𝔾`'s left argument comes from `𝔽`
-`⟜`   | After/Bind  | `{𝕨𝔽𝔾𝕩}˜˜`                     | `𝔽`'s right argument comes from `𝔾`
+`⊸`   | Before/Bind | `{(𝔽𝕨⊣𝕩)𝔾𝕩}`                   | `𝔾`'s left argument comes from `𝔽`
+`⟜`   | After/Bind  | `{(𝕨⊣𝕩)𝔽𝔾𝕩}`                   | `𝔽`'s right argument comes from `𝔾`
 `⌾`   | Under       | `{𝔾⁼∘𝔽○𝔾}` OR `{(𝔾𝕩)↩𝕨𝔽○𝔾𝕩⋄𝕩}` | Apply `𝔽` over `𝔾`, then undo `𝔾`
+`⊘`   | Valences    | `{𝔽𝕩;𝕨𝔾𝕩}`                     | Apply `𝔽` if there's one argument but `𝔾` if there are two
+`◶`   | Choose      | `{f←(𝕨𝔽𝕩)⊑𝕘 ⋄ 𝕨F𝕩}`            | Select one of the functions in list `𝕘` based on `𝔽`
 
-Under is not a true combinator since it has an "undo" step at the end. This step might be implemented using the left operand's inverse (*computational* Under) or its structural properties (*structural* Under).
+Choose isn't really a combinator since it calls the function `⊑`, and Under is not a true combinator since it has an "undo" step at the end. This step might be implemented using the left operand's inverse (*computational* Under) or its structural properties (*structural* Under).
 
 Other modifiers and compositions control array traversal and iteration. In three cases a simpler modifier is paired with a generalized composition: in each case the modifier happens to be the same as the composition with a right operand of `¯1`.
 

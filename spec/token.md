@@ -16,7 +16,7 @@ Otherwise, a single character forms a token. Only the specified set of character
 |-----------------------|------------
 | Primitive Function    | `+-×÷⋆√⌊⌈\|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔`
 | Primitive Modifier    | `` ˜˘¨⌜⁼´` ``
-| Primitive Composition | `∘○⊸⟜⌾⎉⚇⍟`
+| Primitive Composition | `∘○⊸⟜⌾⊘◶⎉⚇⍟`
 | Parameter             | `𝕨𝕩𝕗𝕘𝕎𝕏𝔽𝔾`
 | Punctuation           | `←↩→(){}⟨⟩‿⋄,` and newline
 
