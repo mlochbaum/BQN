@@ -66,8 +66,8 @@ A header looks like a name for the thing being headed, or its application to inp
     headX    = value | "𝕩"
     HeadF    = F | "𝕗" | "𝔽"
     HeadG    = G | "𝕘" | "𝔾"
-    ModH1    = HeadF ( _m  | "_𝕣"  | "_ℝ"  )
-    CmpH1    = HeadF ( _c_ | "_𝕣_" | "_ℝ_" ) HeadG
+    ModH1    = HeadF ( _m  | "_𝕣"  )
+    CmpH1    = HeadF ( _c_ | "_𝕣_" ) HeadG
     valHead  =  v
     FuncHead =  F  | ( headW? ( F | "𝕊" ) )? headX
     _modHead = _m  | ModH1 | headW? ModH1 headX
