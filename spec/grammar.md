@@ -38,6 +38,7 @@ Functions can be formed by fully applying operators or as trains. Operators are 
              | Derv
     Fork     = Func
              | Operand Func Fork          ⍝ 3-train
+             | nothing Func Fork          ⍝ 2-train
     Train    = Fork
              | Func Fork                  ⍝ 2-train
     FuncExpr = Train
