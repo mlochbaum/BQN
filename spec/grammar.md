@@ -15,8 +15,8 @@ Here we define the "atomic" forms of functions and operators, which are either s
     _comp_   = _c_ | _cl_ | "(" _cmpExp_ ")" | _brComp_
     _mod     = _m  | _ml  | "(" _modExpr ")" | _brMod  
     Func     =  F  |  Fl  | "(" FuncExpr ")" |  BrFunc 
-    atom     =  v  |  vl  | "(" valExpr  ")" |  brVal
-             | "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
+    atom     =  v  |  vl  | "(" valExpr  ")" |  brVal | list
+    list     = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
     value    = atom | ANY ( "‿" ANY )+
 
 Starting at the highest-order objects, modifiers and compositions have fairly simple syntax. In most cases the syntax for `←` and `↩` is the same, but only `↩` can be used for modified assignment.
@@ -58,7 +58,7 @@ Value expressions are complicated by the possibility of list assignment. We also
     lhs      = lhsValue | lhsStr
     valExpr  = arg
              | lhs ASGN valExpr
-             | lhs Derv "↩" valExpr         ⍝ Modified assignment
+             | lhs Derv "↩" valExpr       ⍝ Modified assignment
 
 A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers and compositions). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. As a special rule, a function header specifically can omit the function.
 
@@ -69,7 +69,8 @@ A header looks like a name for the thing being headed, or its application to inp
     ModH1    = HeadF ( _m  | "_𝕣"  )
     CmpH1    = HeadF ( _c_ | "_𝕣_" ) HeadG
     valHead  =  v
-    FuncHead =  F  | ( headW? ( F | "𝕊" ) )? headX
+    FuncHead =  F  | headW? ( F | "𝕊" ) headX
+             | vl | "(" valExpr ")" | brVal | list  ⍝ value but not v
     _modHead = _m  | ModH1 | headW? ModH1 headX
     _cmpHed_ = _c_ | CmpH1 | headW? CmpH1 headX
 
