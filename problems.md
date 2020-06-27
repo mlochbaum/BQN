@@ -10,11 +10,10 @@ A pretty fundamental problem with dynamically-typed array languages. Prototypes 
 ### Control flow with function selection has awkward syntax
 At the moment BQN has no control structures, instead preferring function recursion, iteration, and selection. Selection is awkward because the result of selecting from a list of functions must be a value syntactically. It also often doesn't need an argument, since it can refer to values from the containing function because of lexical scoping. There should probably be a function that takes a function argument and invokes it, possible with an empty list as a dummy left argument. Somewhat like the operator `{𝔽}`. But also: should a `{}` object that doesn't refer to its arguments be special? Some kind of "block" construct?
 
+*Potentially solved by multiple headers, blocks, and block returns. Needs reevaluation later.*
+
 ### Incoherent monad-dyad builtin pairs
 BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason (that is, both function valences match the symbol but they don't match with each other). I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved.
-
-### Can't return from inner functions
-This is an issue with using functions as control flow. For example, when looping through an array with Each, you can't decide to exit early. In a curly-brace language you would just use a for loop and a return. In BQN, we need… longjmp? Maybe not as crazy as it sounds, and potentially worth it in exchange for replacing control structures.
 
 ### Glyphs are hard to type
 There's been a lot of work done on this. Still there, still a problem. On the other hand, glyphs are easy to read, and write by hand!
@@ -27,9 +26,6 @@ The simplest way to define a search function like Index Of is to require the lef
 
 ### Trigonometry
 There are a lot of standard functions and I don't want to use separate primitives or a menu-style primitive like APL Circle for them. You can define all the functions eventually if you use complex exponential and take real and imaginary parts and inverses, but this doesn't sound well-suited for implementation. And there should be a math library that gives you the standard functions with normal names, but how will it be implemented?
-
-### Ambivalent explicit functions
-Currently there's no way to define the two valences separately, and I don't know of an easy way to check whether there is a left argument.
 
 ### Right-to-left multi-line functions go upwards
 If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
@@ -64,12 +60,6 @@ The proposed Dyalog array notation `[]` for high-rank arrays: it's the same as B
 ### Poor font support 
 Characters `⥊∾⟜⎉⚇˜` and double-struck letters are either missing from many fonts or drawn strangely.
 
-### Trains don't like monads
-If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing `⟜`. A partial solution is to have a special "no argument" glyph `·` that works like `𝕨` during a monadic function call. In a train it would function like J's Cap (`[:`).
-
-### Converting a function expression to a syntactic value is tricky
-You can name it, or you can do `⊑⟨Fn⟩`. The first is awkward and the second eats at your soul a little. There should probably be a dedicated syntax. Note that going the other way, from value to function, isn't too bad: the operator `{𝔽}` does it.
-
 ### Index Of privileges the first match
 It could be more sound to look at all matches, but using just the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: `≠∘⊣-1+⌽⊸⊐`.
 
@@ -79,6 +69,9 @@ Blanket issue for glyphs that need work. Currently I find `⥊⊏⊑⊐⊒⍷⁼
 ### Axis ordering is big-endian
 The most natural ordering for polynomial coefficients and base representations is little-endian, because it aligns element `i` of the list with power `i` of the argument or base. It also allows a forward scan instead of a reverse one. Array axes go the other way. However, there are advantages to this ordering as well. For example, it's common to act only on the first few axes, so having them at the beginning of the array is good (`≠a ←→ ⊑∘≢a`).
 
+### Trains don't like monads
+If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing `⟜`. Largely solved with the "nothing" glyph `·`, which acts like J's Cap (`[:`) in a train, but still a minor frustration.
+
 ### Inverse is not fully specified
 So it seems a bit strange to rely on it for core language features like `/⁼`. On the other hand, this is a good fit for `⋆⁼` since we are taking an arbitrary branch of a complex function that has many of them. I'm pretty sure it's impossible to solve the issue as stated but it might be possible to move to less hazardous constructs. Structural Under is a start.
 
@@ -86,6 +79,9 @@ So it seems a bit strange to rely on it for core language features like `/⁼`. 
 Both pull out elements and reduce the depth. But they face in opposite directions.
 
 The directions of `⊏⊐` and so on were mainly chosen to line up with `∊`: the argument that indices apply to (that is, the one that is searched or selected from) corresponds to the open side of the function. I'd probably prefer new glyphs that don't have this sort of directionality, however.
+
+### Converting a function expression to a syntactic value is tricky
+You can name it, you can write `⊑⟨Expr⟩`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from value to function, isn't too bad: the operator `{𝔽}` does it.
 
 ### Monadic argument corresponds to left for `/` and `⊔`
 Called dyadically, both functions shuffle cells of the right argument around, which is consistent with other selection-type functions. But the monadic case applies to what would be the left argument in the dyadic case.
@@ -97,7 +93,7 @@ It's an awkward inconsistency. Prefixes and Suffixes have to have a nested resul
 A positive operand to Rank indicates the cell rank, so positive zero means to act on 0-cells. A negative operand indicates the frame length, so negative zero should act on the entire array. But it can't because it's equal to positive zero. Similar issue with Depth. Positive/negative is not really the right way to encode the frame/cell distinction, but it's convenient. Fortunately ∞ can be used in place of negative zero, but there can still be problems if the rank is computed.
 
 ### Must read the body to find explicit definition's type
-You have to scan for `𝕨𝕎𝕩𝕏𝕗𝔽𝕘𝔾` (and so does a compiler). A little inelegant, and requires preprocessing to be able to use a deterministic context-free parser.
+You have to scan for headers or double-struck names (and so does a compiler). A little inelegant, and difficult to describe in BNF.
 
 ### Can't take Prefixes or Suffixes on multiple axes
 This is a natural array operation to do, and results in an array with a joinable structure, but as Prefixes and Suffixes are monadic there's no way to specify the number of axes to use.
@@ -140,6 +136,14 @@ I went with "Index of" and "Less Than or Equal to" but the last word blends into
 ## Solved problems
 
 Problems that existed in mainstream APL or a transitional BQN that have in my opinion been put to rest (while in some cases introducing new problems). Listed in reverse chronological order by time solved, by my recollection.
+
+### Can't return from inner functions
+Fixed by adding block returns such as `label←` to jump out of a block with header name `label`. Hopefully these don't cause too many new problems.
+
+This was an issue with using functions as control flow. For example, when looping through an array with Each, you can't decide to exit early. In a curly-brace language you would just use a for loop and a return. In BQN, we need… longjmp? Maybe not as crazy as it sounds, and potentially worth it in exchange for replacing control structures.
+
+### Ambivalent explicit functions
+Fixed with multiple bodies: if there are two bodies with no headers such as `{2×𝕩;𝕨-𝕩}`, they are the monadic and dyadic case.
 
 ### How to choose a partitioning function?
 Fixed with [Group](doc/group.md), which I found May 2020. Group serves as a much improved [Partition](https://aplwiki.com/wiki/Partition). However, it doesn't partition along multiple axes, so a dedicated partition function that does this could also be wanted. Or could Group be made to work with multiple axes as well as multidimensional indices?
