@@ -10,22 +10,22 @@ Enc2←{𝕨⥊2(|∾˜(𝕨-1)Enc2⌊∘÷˜)⍟(0<𝕨)𝕩}
 
 lf‿tab←•UCS 10‿9
 charSet←∾charGroups←⟨
-  •d ⍝ +⟜(↕10)⌾•UCS'0'  ⍝ Digit
-  "¯.π∞"                ⍝ Numeric
-  "_"∾' '(⊢∾+)⌾•UCS•a   ⍝ Alphabetic
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔" ⍝ Function
   "˜˘¨⌜⁼´`"             ⍝ Modifier
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"          ⍝ Composition
-  "𝕨𝕎𝕩𝕏𝕗𝔽𝕘𝔾"            ⍝ Parameter
-  " "∾tab               ⍝ Whitespace
+  "𝕨𝕎𝕩𝕏𝕗𝔽𝕘𝔾"            ⍝ Input
   lf∾"⋄,"               ⍝ Separator
   "←↩→"                 ⍝ Gets
   "(){}⟨⟩"              ⍝ Bracket
   "‿"                   ⍝ Ligature
+  •d ⍝ +⟜(↕10)⌾•UCS'0'  ⍝ Digit
+  "¯.π∞"                ⍝ Numeric
+  "_"∾' '(⊢∾+)⌾•UCS•a   ⍝ Alphabetic
+  " "∾tab               ⍝ Whitespace
 ⍝ ⍝'" eliminated during tokenization
 ⟩
-bD‿bN‿bA‿bF‿bM‿bC‿bP‿bW‿bS‿bG‿bB‿bL←↕∘≠⌾∾charGroups
-vi←≠charSet
+bF‿bM‿bC‿bI‿bS‿bG‿bB‿bL‿bD‿bN‿bA‿bW←↕∘≠⌾∾charGroups
+vi←+´≠¨8↑charGroups
 
 Tokenize←{
   r←𝕩='⍝'⋄s←/(≠↑2⊸↓)⊸∧𝕩=⊑"'"⋄d←/𝕩='"'
@@ -86,18 +86,15 @@ f64←127-3
 
 GenFn←{
   ⟨⟩GenFn𝕩;
-  ⟨tok,nVar,nLoc,nums⟩←𝕨Tokenize𝕩
-  ⟨x,na⟩←Parse tok
-  load←((Hex"20")∾¨↕nVar)∾GenF64∘ReadNum¨nums
-  fns←{
-    (𝕩-vi)⊑load
-  }‿{
-    𝕩≥vi:(Hex"22")∾𝕩-vi
-    (𝕩-⊑bF)⊑tab1
-  }‿{
-    (𝕩-⊑bF)⊑tab2
-  }
-  ((≠∾∾)⟨nLoc∾f64⟩)∾(Hex"0B")∾˜∾na⊑⟜fns⊸{𝕎𝕩}¨x
+  ⟨tok,nVar,nLoc,lits⟩←𝕨Tokenize𝕩
+  ⟨a,na⟩←Parse tok
+  o←vi+n←nVar+≠lits
+  ops←∾o↑¨⟨
+    ∾⟨vi⥊0 ⋄ (Hex"20")∾¨↕nVar ⋄ GenF64∘ReadNum¨lits⟩
+    (vi↑tab1)∾(Hex"22")⊸∾¨↕nVar
+    tab2
+  ⟩
+  ((≠∾∾)⟨nLoc∾f64⟩)∾(Hex"0B")∾˜∾(a+o×na)⊏ops
 }
 
 Gen←{
