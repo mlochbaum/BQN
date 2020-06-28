@@ -108,7 +108,7 @@ Functions that have significant differences from APL functions are marked with a
 | `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
 | `=`   |                                                     | [Equals](https://aplwiki.com/wiki/Equal_to)
 | `≠`   | [Length](https://aplwiki.com/wiki/Tally)            | [Not Equals](https://aplwiki.com/wiki/Not_Equal_to)
-| `≡`   | [Depth](https://aplwiki.com/wiki/Depth)             | [Match](https://aplwiki.com/wiki/Match)
+| `≡`   | [Depth](doc/depth.md)*                              | [Match](https://aplwiki.com/wiki/Match)
 | `≢`   | [Shape](https://aplwiki.com/wiki/Shape)             | [Not Match](https://aplwiki.com/wiki/Not_Match)
 | `⊣`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Left](https://aplwiki.com/wiki/Identity)
 | `⊢`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Right](https://aplwiki.com/wiki/Identity)
