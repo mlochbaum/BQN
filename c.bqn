@@ -82,19 +82,19 @@ tab2←MakeTab⟨
   "¬"      , <∾⥊¨⟨Hex"A1",GenF64 1,Hex"A0"⟩
   "∨"      , <(Hex"10")∾2
 ⟩
+fntab←⍉¯3↑tab1≍tab2
 f64←127-3
 
 GenFn←{
   ⟨⟩GenFn𝕩;
   ⟨tok,nVar,nLoc,lits⟩←𝕨Tokenize𝕩
   ⟨a,na⟩←Parse tok
-  o←vi+n←nVar+≠lits
-  ops←∾o↑¨⟨
-    ∾⟨vi⥊0 ⋄ (Hex"20")∾¨↕nVar ⋄ GenF64∘ReadNum¨lits⟩
-    (vi↑tab1)∾(Hex"22")⊸∾¨↕nVar
-    tab2
+  ops←⥊∾⟨
+    vi↑fntab
+    ⍉3↑(Hex¨"20"‿"22")∾⌜↕nVar
+    ⊣⌜⟜(↕3)GenF64∘ReadNum¨lits
   ⟩
-  ((≠∾∾)⟨nLoc∾f64⟩)∾(Hex"0B")∾˜∾(a+o×na)⊏ops
+  ((≠∾∾)⟨nLoc∾f64⟩)∾(Hex"0B")∾˜∾(na+3×a)⊏ops
 }
 
 Gen←{
