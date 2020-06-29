@@ -51,10 +51,9 @@ Parse←{
   l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(bF⊑˜chF⊐<'⊣')¨⌾(sep⊸/)𝕩
   o←𝕩=0⊑bB⋄c←𝕩=1⊑bB⋄v←a-˜𝕩≥vi⋄f←¬o∨c∨v∨sep
   na←(2×sep)+f×1+l↑0∾c∨v
-  d←+`o-c⋄fe←f×1-˜(+`⌾((⍋d)⊸⊏)o)⊏l∾(⍋⊏⟜d)⊸⊏/c
-  fe⌊↩(l-1)-l↑(⌈`↕∘≠⊸×)⌾⌽1∾˜sep
-  ia←+`l↑0∾f-l↑/⁼∧f/fe
-  sel←¬∘⊏⟜(o∨c)⊸/⍋(fe⌈↕l)-ia
+  d←+`o-c⋄fe←(+`⌾((⍋d)⊸⊏)o)⊏l∾(⍋⊏⟜d)⊸⊏/c
+  fe⌊↩l-l↑(⌈`↕∘≠⊸×)⌾⌽1∾˜sep
+  sel←¬∘⊏⟜(o∨c)⊸/⍋((f×fe)⌈↕l)-+`f-l↑/⁼∧f/fe
   sel⊸⊏¨𝕩‿na
 }
 
