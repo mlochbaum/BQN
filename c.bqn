@@ -48,7 +48,7 @@ Tokenize←{
 
 Parse←{
   a←𝕩∊(2↑bG)⋄at←1⌽a⋄𝕩(/˜)↩¬a⋄a(/˜)↩¬at
-  l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(bF⊑˜chF⊐<'⊣')¨⌾(sep⊸/)𝕩
+  l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(bF⊑˜chF⊐<'⊣')¨⌾(sep⊸/)𝕩⋄sep∨↩𝕩=2⊑bB
   o←𝕩=0⊑bB⋄c←𝕩=1⊑bB⋄v←a-˜𝕩≥vi⋄f←¬o∨c∨v∨sep
   na←(2×sep)+f×1+l↑0∾c∨v
   d←+`o-c⋄fe←(+`⌾((⍋d)⊸⊏)o)⊏l∾(⍋⊏⟜d)⊸⊏/c
@@ -69,28 +69,32 @@ MakeTab←{{(≠chF)↑⊑¨(chF⊐𝕨)⊔𝕩}○∾⟜(⥊¨∘⥊¨)´<˘⍉
 tab1←MakeTab⟨
   "⊣⊢"     , 2⥊<⟨⟩
   "|-⌈⌊√"  , (Hex"99")+(↕4)∾6
-  "÷"      , <(Hex"10")∾1
+  "÷"      , <(Hex"10")∾0
   "¬"      , <∾⥊¨⟨Hex"9A",GenF64 1,Hex"A0"⟩
 ⟩
 tab2←MakeTab⟨
   "⊣"      , Hex"1A"
   "+-×÷⌊⌈∧", (Hex"A0")+(↕6)∾2
   "¬"      , <∾⥊¨⟨Hex"A1",GenF64 1,Hex"A0"⟩
-  "∨"      , <(Hex"10")∾2
+  "∨"      , <(Hex"10")∾1
 ⟩
 fntab←⍉¯3↑tab1≍tab2
 f64←127-3
 
 GenFn←{
   ⟨⟩GenFn𝕩;
-  ⟨tok,nVar,nLoc,lits⟩←𝕨Tokenize𝕩
-  ⟨a,na⟩←Parse tok
+  ⟨t,nVar,nLoc,lits⟩←𝕨Tokenize𝕩
+  t(⊏˜)↩⍋+`-´<˘(2‿3⊏bB)=⌜t
+  nd←+´c←t=3⊑bB
+  t↩((vi+nVar+≠lits)+↕∘≠)⌾(c⊸/)t
+  ⟨a,na⟩←Parse t
+  bB
   ops←⥊∾⟨
     vi↑fntab
     ⍉3↑(Hex¨"20"‿"22")∾⌜↕nVar
-    ⊣⌜⟜(↕3)GenF64∘ReadNum¨lits
+    ⊣⌜⟜(↕3)(GenF64∘ReadNum¨lits)∾(Hex"10")∾¨3+↕nd
   ⟩
-  ((≠∾∾)⟨nLoc∾f64⟩)∾(Hex"0B")∾˜∾(na+3×a)⊏ops
+  (((≠∾∾)⟨nLoc∾f64⟩)∾(Hex"0B")∾˜∾)¨((⊢-˜¬×+`)a=2⊑bB)⊔(na+3×a)⊏ops
 }
 
 Gen←{
@@ -104,7 +108,7 @@ Gen←{
    0∾(•UCS"asm")∾4↑1
    1 S V (96∾⟜∾C¨)¨t
    3 S V ⥊¨↕≠b
-   7 S V I⊸(⊣∾0∾⊢)¨⟜(↕∘≠)n
+   7 S V ⥊<"fn"I⊸(⊣∾0∾⊢)n
   10 S V C¨ b
   ⟩
 }
@@ -113,5 +117,6 @@ Compile←{
   body←GenFn 𝕩
   rcp←⟨"x"⟩ GenFn "1÷x"
   or←⟨"w","x"⟩ GenFn "(w+x)-w∧x"
-  Gen ⟨⟨0‿1,1‿1,2‿1⟩/¨¨f64 ⋄ ⥊<"fn" ⋄ ⟨body,rcp,or⟩⟩
+  f←⟨rcp,or,body⟩
+  Gen ⟨(≠¨f)/⟨1‿1,2‿1,0‿1⟩/¨¨f64 ⋄ 2 ⋄ ∾f⟩
 }
