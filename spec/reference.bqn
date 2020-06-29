@@ -200,7 +200,7 @@ _depthOp_←{
   𝕨 n _d 𝕩
 }
 _rankOp_←{
-  k←𝕨(Pair○(≠≢) (0≤⊢)◶⟨⌊⟜-,0⌈-⟩ 𝔾_ranks)𝕩
+  k←𝕨(Pair○(≠≢) (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
   Enc←{
     f←⊑⟜(≢𝕩)¨↕𝕨
     c←×´s←𝕨Cell𝕩
@@ -220,7 +220,7 @@ _scan←{
 }
 _iterate_←{
   n←𝕨𝔾𝕩
-  F←𝕨(0⊘1)◶⟨𝔽,𝕨⊸𝔽⟩⊢
+  F←𝕨(0⊘1)◶⟨𝔽,𝕨𝔽⊢⟩⊢
   l←u←0
   {!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
   a←𝕩⋄_p←{𝔽∘⊣`(1+𝕩)⥊<a}
@@ -340,7 +340,7 @@ Join←{
 
 Group←{
   ! IsArray 𝕩
-  Chk←{!1=≠≢𝕩⋄!Nat¨𝕩⋄≠𝕩}
+  Chk←{!1=≠≢𝕩⋄!∧´Int¨𝕩⋄!∧´¯1≤𝕩⋄≠𝕩}
   l←(1<≡)◶Chk‿{!1=≠≢𝕩⋄Chk¨𝕩}𝕨
   ! l≤○≠≢𝕩
   ! ∧´l=l≠⊸↑≢𝕩
@@ -361,7 +361,7 @@ Transpose←(≠∘≢-1˜)⊸ReorderAxes⍟(0<≠∘≢)
 IndexOf←{
   c←1-˜≠≢𝕨
   ! 0≤c
-  𝕨 (0<≠𝕨)◶⟨0⎉c∘⊢,(+´∧`)≡⎉c⎉∞‿c⟩ 𝕩
+  𝕨 (0<≠𝕨)◶⟨0⎉c∘⊢,((+´<˘)∧`)≢⎉c⎉∞‿c⟩ 𝕩
 }
 UniqueMask←{
   ! 1≤≠≢𝕩
@@ -375,7 +375,7 @@ Find←{
 
 ⍝ Sorting
 Cmp ← ∨○IsArray◶{ ⍝ No arrays
-  𝕨(<->)𝕩 ⍝ Assume they're numbers
+  𝕨(>-<)𝕩 ⍝ Assume they're numbers
 }‿{ ⍝ At least one array
   e←𝕨-˜○(∨´0=≢)𝕩
   𝕨(e=0)◶e‿{
@@ -383,14 +383,14 @@ Cmp ← ∨○IsArray◶{ ⍝ No arrays
     s←≢𝕨 ⋄ t←≢𝕩 ⋄ r←s⌊○≠t
     l←s{i←+´∧`𝕨=𝕩⋄m←×´i↑𝕨⋄{c↩×-´𝕩⋄m↩m×⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i⋄m}○(r↑⌽)t
     a←⥊𝕨⋄b←⥊𝕩
-    Trav←(=⟜l)◶c‿{Trav∘(1+𝕩)⍟(0⊸=)a Cmp○(𝕩⊸⊑)b}
+    Trav←(=⟜l)◶{Trav∘(1+𝕩)⍟(0⊸=)a Cmp○(𝕩⊸⊑)b}‿c
     Trav 0
   }𝕩
 }
 
 _grade←{
   ! 1≤≠≢𝕩
-  i⊐+´(𝔽⎉∞‿¯1⎉¯1‿∞˜𝕩)(⌈⟜0+=⟜0⊸×)<⌜˜i←↕≠𝕩
+  i⊐+´˘(𝔽⎉∞‿¯1⎉¯1‿∞˜𝕩)(⌈⟜0+=⟜0⊸×)>⌜˜i←↕≠𝕩
 }
 _bins←{
   r←1-˜≠≢𝕨
