@@ -151,7 +151,7 @@ Pick1←{
   𝕨↩𝕨+s×𝕨<0
   (⥊𝕩)⊑˜0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨
 }
-Pickd←(∨´IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
+Pickd←(∨´∘⥊IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
 Pick←IsArray◶⥊‿⊢⊸Pickd
 
 match←{¬∘(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
