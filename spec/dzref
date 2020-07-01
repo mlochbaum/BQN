@@ -331,15 +331,12 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
     n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr
     names↩((i⊑init)∾(•UCS 48+n)∾i⊑post)⌾(i⊑⊢)names
   }
-  Name ← {(⊑chr⊐𝕩)⊑names}
 
   ⍝ starting built-ins
-  ⍎{𝔽 (Name 𝕩)∾"←{⟨𝕨  ⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ 0⊑chrs
-  ⍎{𝔽 (Name 𝕩)∾"←{⟨𝕨,𝕗⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ 1⊑chrs
-  ⍎{𝔽 (Name 𝕩)∾"←{⟨𝕨,𝕘⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ 2⊑chrs
+  names ⍎{𝔽 𝕨∾"←{⟨"∾𝕩∾"⟩ ⋄ ⍎""Using undefined built-in "∾𝕨∾"""}"}¨ nc/⟨"𝕨  ","𝕨,𝕗","𝕨,𝕘"⟩
 
   ⍝ built-in assumptions
-  Mod ← ⍎{𝔽 (Name 𝕨) ∾ " ↩ " ∾ 𝕩}
+  Mod ← ⍎{𝔽 ((⊑chr⊐𝕨)⊑names) ∾ " ↩ " ∾ 𝕩}
 
   ⍎"IsArray ← 0≠≡"
   ⍎"_amend  ← {𝕨{𝕩⋄𝕗}⌾(𝕗⊑⊢)𝕩}"
