@@ -165,7 +165,7 @@ JoinTo←{
   s←𝕨Pair○≢𝕩
   a←1⌈´k←≠¨s
   ! ∧´1≥a-k
-  c←(a-k)+⟜(↕a-1)⊸⊏¨s
+  c←(k¬a)+⟜(↕a-1)⊸⊏¨s
   ! ≡´c
   l←+´(a=k)⊣◶1‿(⊑⊢)¨s
   (⟨l⟩∾⊑c)⥊𝕨∾○⥊𝕩
@@ -175,18 +175,19 @@ Take←{
   T←{
     ! Int 𝕨
     l←≠𝕩
-    i←((𝕨<0)×𝕨+l)+↕|𝕨
-    ((l+1)|¯1⌈l⌊i)⊏𝕩 JoinTo (1 Cell 𝕩)⥊Type 𝕩
+    i←(l+1)|¯1⌈l⌊((𝕨<0)×𝕨+l)+↕|𝕨
+    i⊏JoinTo⟜(1⊸Cell⥊Type)⍟(0∨´l=i)𝕩
   }
   𝕨 T _onAxes_ 0 (⟨1⟩⥊˜0⌈𝕨-○≠⊢)⊸∾∘≢⊸⥊𝕩
 }
 Prefixes ← {!1≤≠≢𝕩 ⋄ (↕1+≠𝕩)Take¨<𝕩}
 ↑ ← Prefixes       ⊘ Take
 Drop←{
-  s←(≠𝕨)(⊣↑⊢∾⥊˜0⌈-⟜≠)≢𝕩
+  s←(≠𝕨)(⊣↑⊢∾˜1⥊˜0⌈-⟜≠)≢𝕩
   ((s×¯1⋆𝕨>0)+(-s)⌈s⌊𝕨)↑𝕩
 }
 Suffixes ← {!1≤≠≢𝕩 ⋄ (↕1+≠𝕩)Drop¨<𝕩}
+↓ ← Suffixes       ⊘ Drop
 
 Windows←{
   ! IsArray 𝕩
@@ -194,12 +195,12 @@ Windows←{
   ! 𝕨≤○≠≢𝕩
   ! ∧´Nat¨⥊𝕨
   s←(≠𝕨)↑≢𝕩
-  ! ∧´𝕨≤s
-  ><¨⊸⊏⟜𝕩¨s(¬+⌜○↕⊢)⥊𝕨
+  ! ∧´𝕨≤1+s
+  𝕨{(∾⟜(𝕨≠⊸↓≢𝕩)∘≢⥊>)<¨⊸⊏⟜𝕩¨s(¬+⌜○↕⊢)⥊𝕨}⍟(0<≠𝕨)𝕩
 }
 
 Reverse ← {!1≤≠≢𝕩 ⋄ (-↕⊸¬≠𝕩)⊏𝕩}
-Rotate ← {!Nat𝕨 ⋄ l←≠𝕩⋄(l|𝕨+↕l)⊏𝕩} _onAxes_ 0
+Rotate ← {!Int𝕨 ⋄ l←≠𝕩⋄(l|𝕨+↕l)⊏𝕩} _onAxes_ 0
 
 Indices←{
   ! 1=≠≢𝕩
@@ -209,7 +210,6 @@ Indices←{
 Rep ← Indices⊸⊏
 Replicate ← {0<≠≢𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩} _onAxes_ (1-0=≠)
 
-↓ ← Suffixes       ⊘ Drop
 ↕ ↩ ↕              ⊘ Windows
 ⌽ ← Reverse        ⊘ Rotate
 / ← Indices        ⊘ Replicate
