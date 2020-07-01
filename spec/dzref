@@ -313,64 +313,54 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 "
 
 {
-  names ← ⥊"AB"∾⌜•a
-  f_chr ← "!√∧∨|≡∾↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔"
-  m_chr ← "˘¨⌜´`"
-  d_chr ← "⌾⎉⚇⍟◶"
-  
-  f_itr ← 0⥊˜≠f_chr
-  m_itr ← 0⥊˜≠m_chr
-  d_itr ← 0⥊˜≠d_chr
-  
-  Name_f ← {i←⊑f_chr⊐𝕩 ⋄          (i⊑names)∾'F'∾⊑•UCS 48+i⊑f_itr}
-  Name_m ← {i←⊑m_chr⊐𝕩 ⋄      '_'∾(i⊑names)∾'M'∾⊑•UCS 48+i⊑m_itr}
-  Name_d ← {i←⊑d_chr⊐𝕩 ⋄ "_"∾˜'_'∾(i⊑names)∾'D'∾⊑•UCS 48+i⊑d_itr}
-  
-  E_type ← {⊑/𝕩∊¨f_chr‿m_chr‿d_chr}
-  Name_a ← {E_type◶Name_f‿Name_m‿Name_d 𝕩}
-  
-  Inc_f ← {i←⊑f_chr⊐𝕩 ⋄ f_itr↩ 1⊸+⌾(i⊑⊢) f_itr}
-  Inc_m ← {i←⊑m_chr⊐𝕩 ⋄ m_itr↩ 1⊸+⌾(i⊑⊢) m_itr}
-  Inc_d ← {i←⊑d_chr⊐𝕩 ⋄ d_itr↩ 1⊸+⌾(i⊑⊢) d_itr}
-  
-  Inc_a ← {E_type◶Inc_f‿Inc_m‿Inc_d 𝕩}
-  
+  chrs←⟨
+    "!√∧∨|≡∾↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔"
+    "˘¨⌜´`"
+    "⌾⎉⚇⍟◶"
+  ⟩
+  nc ← ≠¨chrs
+  chr ← ∾´chrs
+  itr ← 0⥊˜≠chr
+
+  names ← (/⟜"_"¨nc/0‿1‿1)∾¨(nc/"FMD")∾¨(nc+´⊸↑⥊"AB"∾⌜•a)
+  post ← /⟜"_"¨nc/0‿0‿1
+
+  Name ← {i←⊑chr⊐𝕩 ⋄ (i⊑names)∾(•UCS 48+i⊑itr)∾i⊑post}
+  Inc  ← {i←⊑chr⊐𝕩 ⋄ itr↩ 1⊸+⌾(i⊑⊢) itr}
+
   ⍝ starting built-ins
-  ⍎{𝔽 (Name_f 𝕩)∾"←{⟨𝕨  ⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ f_chr
-  ⍎{𝔽 (Name_m 𝕩)∾"←{⟨𝕨,𝕗⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ m_chr
-  ⍎{𝔽 (Name_d 𝕩)∾"←{⟨𝕨,𝕘⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ d_chr
-  
+  ⍎{𝔽 (Name 𝕩)∾"←{⟨𝕨  ⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ 0⊑chrs
+  ⍎{𝔽 (Name 𝕩)∾"←{⟨𝕨,𝕗⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ 1⊑chrs
+  ⍎{𝔽 (Name 𝕩)∾"←{⟨𝕨,𝕘⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ 2⊑chrs
+
   ⍝ built-in assumptions
-  
-  Mod_f ← ⍎{𝔽 (Name_f 𝕨) ∾ " ↩ " ∾ 𝕩}
-  
-  
+  Mod ← ⍎{𝔽 (Name 𝕨) ∾ " ↩ " ∾ 𝕩}
+
   ⍎"IsArray ← 0≠≡"
   ⍎"_amend  ← {𝕨{𝕩⋄𝕗}⌾(𝕗⊑⊢)𝕩}"
   ⍎"Identity← {𝕏´⟨⟩}"
   ⍎"Type    ← ⟨⟩⥊0⊸⥊"
-  
-  '!' Mod_f "{𝕩 ⋄ ≤1}⍟¬"
-  '⊑' Mod_f "⊑"
-  '↕' Mod_f "↕"
-  '≡' Mod_f "≡"
-  
-  
-  E_isdef ← ⊢ ≢ ("^["∾f_chr∾m_chr∾d_chr∾"] [←↩]")•_R_'_' ⍝ checks if line is a builtin redefinition
-  
+
+  '!' Mod "{𝕩 ⋄ ≤1}⍟¬"
+  '⊑' Mod "⊑"
+  '↕' Mod "↕"
+  '≡' Mod "≡"
+
+
+  E_isdef ← ⊢ ≢ ("^["∾chr∾"] [←↩]")•_R_'_' ⍝ checks if line is a builtin redefinition
+
   E_proc ← { ⍝ replaces built-ins with their corresponding names
     curr ← 𝕩
-    {curr↩ ("["∾𝕩∾"]") •_R_ (' '∾˜' '∾Name_a 𝕩) ⊢ curr}¨ f_chr∾m_chr∾d_chr
+    {curr↩ ("["∾𝕩∾"]") •_R_ (' '∾˜' '∾Name 𝕩) ⊢ curr}¨ chr
     curr
   }
-  
+
   E_redef ← { ⍝ handles [fmd] [←↩]
-    ⍝e_prs∾↩ 𝕩 ∾ •UCS 10
     tail ← E_proc 3↓𝕩 ⍝ must use old def
-    Inc_a ⊑𝕩
+    Inc ⊑𝕩
     (E_proc⊑𝕩) ∾ "←" ∾ tail
   }
-  
+
   lf ← •UCS 10
   pre ← E_isdef◶E_proc‿E_redef¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
   ⍎ ∾´ ∾⟜lf¨ pre ∾ E_proc¨ •STDIN⟨⟩
