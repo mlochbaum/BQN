@@ -322,11 +322,16 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
   chr ← ∾´chrs
   itr ← 0⥊˜≠chr
 
-  names ← (/⟜"_"¨nc/0‿1‿1)∾¨(nc/"FMD")∾¨(nc+´⊸↑⥊"AB"∾⌜•a)
-  post ← /⟜"_"¨nc/0‿0‿1
+  init ← " "⊸∾¨(/⟜"_"¨nc/0‿1‿1)∾¨(nc/"FMD")∾¨(nc+´⊸↑⥊"AB"∾⌜•a)
+  post ← ∾⟜" "¨/⟜"_"¨nc/0‿0‿1
+  names ← init∾¨(•UCS 48)∾¨post
 
-  Name ← {i←⊑chr⊐𝕩 ⋄ (i⊑names)∾(•UCS 48+i⊑itr)∾i⊑post}
-  Inc  ← {i←⊑chr⊐𝕩 ⋄ itr↩ 1⊸+⌾(i⊑⊢) itr}
+  Inc  ← {
+    i←⊑chr⊐𝕩
+    n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr
+    names↩((i⊑init)∾(•UCS 48+n)∾i⊑post)⌾(i⊑⊢)names
+  }
+  Name ← {(⊑chr⊐𝕩)⊑names}
 
   ⍝ starting built-ins
   ⍎{𝔽 (Name 𝕩)∾"←{⟨𝕨  ⟩ ⋄ ⍎""Using undefined built-in "∾𝕩∾"""}"}¨ 0⊑chrs
@@ -347,18 +352,16 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
   '≡' Mod "≡"
 
 
-  E_isdef ← ⊢ ≢ ("^["∾chr∾"] [←↩]")•_R_'_' ⍝ checks if line is a builtin redefinition
+  E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩ ⍝ checks if line is a builtin redefinition
 
   E_proc ← { ⍝ replaces built-ins with their corresponding names
-    curr ← 𝕩
-    {curr↩ ("["∾𝕩∾"]") •_R_ (' '∾˜' '∾Name 𝕩) ⊢ curr}¨ chr
-    curr
+    c←chr⊐𝕩 ⋄ ∾´⍟(0<≠)c(≥⟜(≠chr))◶⟨⊑⟜names,⥊∘⊢⟩¨𝕩
   }
 
   E_redef ← { ⍝ handles [fmd] [←↩]
     tail ← E_proc 3↓𝕩 ⍝ must use old def
     Inc ⊑𝕩
-    (E_proc⊑𝕩) ∾ "←" ∾ tail
+    (E_proc 1↑𝕩) ∾ "←" ∾ tail
   }
 
   lf ← •UCS 10
