@@ -333,7 +333,8 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
   }
 
   ⍝ starting built-ins
-  names ⍎{𝔽 𝕨∾"←{⟨"∾𝕩∾"⟩ ⋄ ⍎""Using undefined built-in "∾𝕨∾"""}"}¨ nc/⟨"𝕨  ","𝕨,𝕗","𝕨,𝕘"⟩
+  inps←⟨"𝕨  ","𝕨,𝕗","𝕨,𝕘"⟩
+  ⍎¨names∾¨(nc/("←{⟨"∾∾⟜"⟩ ⋄ ⍎""Using undefined built-in ")¨inps)∾¨∾⟜"""}"¨chr
 
   ⍝ built-in assumptions
   Mod ← ⍎{𝔽 ((⊑chr⊐𝕨)⊑names) ∾ " ↩ " ∾ 𝕩}
