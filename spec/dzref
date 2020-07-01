@@ -350,11 +350,11 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
   '≡' Mod "≡"
 
 
-  E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩ ⍝ checks if line is a builtin redefinition
+  ⍝ checks if line is a builtin redefinition
+  E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩
 
-  E_proc ← { ⍝ replaces built-ins with their corresponding names
-    c←chr⊐𝕩 ⋄ ∾c(≥⟜(≠chr))◶⟨⊑⟜names,⥊∘⊢⟩¨𝕩
-  }
+  ⍝ replaces built-ins with their corresponding names
+  E_proc ← {l←≠chr ⋄ ∾ ((l×≠`𝕩∊"""'")+chr⊐𝕩) (≥⟜l)◶⟨⊑⟜names,⥊∘⊢⟩¨ 𝕩}
 
   E_redef ← { ⍝ handles [fmd] [←↩]
     tail ← E_proc 3↓𝕩 ⍝ must use old def
