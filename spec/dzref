@@ -21,8 +21,6 @@ _eachm←{
 
 ToArray ← IsArray◶<‿⊢
 
-∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩¨↕k+≠𝕩}  ⍝ LIMITED to two vector arguments
-
 _eachd←{
   _e←{ ⍝ 𝕨 has smaller or equal rank
     k←≠p←≢𝕨 ⋄ q←≢𝕩
@@ -43,35 +41,30 @@ _perv←{ ⍝ Pervasion
 
 ⍝⌜
 ⍝ LAYER 3: Remove other limits
-⍝ Now all implementations are full except ∾; ↕ is monadic only
+⍝ Now all implementations are full but ↕ is monadic only
 
 Int←IsArray◶⟨⌊⊸=,0⟩
 Nat←IsArray◶⟨0⊸≤∧⌊⊸=,0⟩
-
-Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
-≡ ← Depth          ⊘ ≡
 
 
 ⍝⌜
 ⍝ LAYER 4: Operators
 
 
-DropV← {⊑⟜𝕩¨𝕨+↕𝕨-˜≠𝕩}
-Cell ← DropV⟜≢
-Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
+Cell ← ↓⟜≢
 
 _ranks ← {⟨2⟩⊘⟨1,0⟩((⊣-1+|)˜⟜≠⊑¨<∘⊢)⥊∘𝔽}
 _depthOp_←{
   neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
   _d←{
     R←(𝕗+neg)_d
-    𝕨(2⥊(neg∧𝕗≥0)∨(0⌈𝕗)≥Pair○≡)◶(⟨R¨⋄R⟜𝕩¨∘⊣⟩≍⟨(𝕨R⊢)¨∘⊢⋄F⟩)𝕩
+    𝕨(2⥊(neg∧𝕗≥0)∨(0⌈𝕗)≥≍○<○≡)◶(⟨R¨⋄R⟜𝕩¨∘⊣⟩≍⟨(𝕨R⊢)¨∘⊢⋄F⟩)𝕩
   }
   𝕨 n _d 𝕩
 }
 ⚇ ← _depthOp_
 _rankOp_←{
-  k←𝕨(Pair○(≠≢) (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
+  k←𝕨(≍○(≠≢) (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
   Enc←{
     f←⊑⟜(≢𝕩)¨↕𝕨
     c←1×´s←𝕨Cell𝕩
@@ -116,7 +109,7 @@ _onAxes_←{
   }‿{ ⍝ Multiple axes
     ! 1≥≠≢𝕨
     ! 𝕨≤○≠≢𝕩
-    R←{(⊑𝕨)F(1 DropV 𝕨)⊸R˘𝕩}⍟{0<≠𝕨}
+    R←{(⊑𝕨)F(1↓𝕨)⊸R˘𝕩}⍟{0<≠𝕨}
     𝕨R𝕩
   }
 }
@@ -132,33 +125,17 @@ SelSub←{
 Select←ToArray⊸(SelSub _onAxes_ 1)
 ⊏ ← 0⊸Select       ⊘ Select
 
-JoinTo←{
-  s←𝕨Pair○≢𝕩
-  a←1⌈´k←≠¨s
-  ! ∧´1≥a-k
-  c←(k¬a)+⟜(↕a-1)⊸⊏¨s
-  ! ≡´c
-  l←+´(a=k)⊣◶1‿(⊑⊢)¨s
-  (⟨l⟩∾⊑c)⥊𝕨∾○⥊𝕩
-}
-
 Take←{
   T←{
     ! Int 𝕨
     l←≠𝕩
     i←(l+1)|¯1⌈l⌊((𝕨<0)×𝕨+l)+↕|𝕨
-    i⊏JoinTo⟜(1⊸Cell⥊Type)⍟(0∨´l=i)𝕩
+    i⊏∾⟜(1⊸Cell⥊Type)⍟(0∨´l=i)𝕩
   }
   𝕨 T _onAxes_ 0 (⟨1⟩⥊˜0⌈𝕨-○≠⊢)⊸∾∘≢⊸⥊𝕩
 }
 Prefixes ← {!1≤≠≢𝕩 ⋄ (↕1+≠𝕩)Take¨<𝕩}
 ↑ ← Prefixes       ⊘ Take
-Drop←{
-  s←(≠𝕨)(⊣↑⊢∾˜1⥊˜0⌈-⟜≠)≢𝕩
-  ((s×¯1⋆𝕨>0)+(-s)⌈s⌊𝕨)↑𝕩
-}
-Suffixes ← {!1≤≠≢𝕩 ⋄ (↕1+≠𝕩)Drop¨<𝕩}
-↓ ← Suffixes       ⊘ Drop
 
 Windows←{
   ! IsArray 𝕩
@@ -212,7 +189,7 @@ Group←{
   (𝕨⊸=/𝕩˜)¨↕1+¯1⌈´⚇1𝕨
 }
 
-∾ ↩ Join           ⊘ JoinTo
+∾ ↩ Join           ⊘ ∾
 ⊔ ← Group⟜(↕≠⚇1)   ⊘ Group
 
 ⍝ Searching
@@ -289,7 +266,7 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 
 {
   chrs←⟨
-    "!√∧∨|≡∾↑↓↕⌽⍉/⍋⍒⊏⊐⊒∊⍷⊔"
+    "!√∧∨|∾↑↕⌽⍉/⍋⍒⊏⊐⊒∊⍷⊔"
     "˘¨`"
     "⎉⚇⍟◶"
   ⟩
@@ -321,7 +298,7 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 
   '!' Mod "{𝕩 ⋄ ≤1}⍟¬"
   '↕' Mod "↕"
-  '≡' Mod "≡"
+  '∾' Mod "∾"
 
 
   ⍝ checks if line is a builtin redefinition
