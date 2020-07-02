@@ -30,7 +30,7 @@ Tokenize←{
   e← g⊏∾⟨2+s⋄ 1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=nl)∾1⟩
   Se←{(⊏˜𝕨)Se𝕩∨(↕≠𝕩)∊𝕩/𝕨}⍟{0=⊑⌽𝕩}
   st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⊸⍋¨e⋄b←st/q∾˘e
-  ToI←(≠𝕩)↑≠¨∘⊔∘⥊⋄f←¬≠`ToI b
+  ToI←¯1↓·≠¨∘⊔(≠𝕩)∾˜⥊⋄f←¬≠`ToI b
   cb←(¬(st/q)⊏r)/b
   nl←≠lu←⍷lit←𝕩⊔˜1-˜(+`ToI⊑˘cb)×≠`ToI cb
   cl←f/ToI⊑∘⌽˘cb
