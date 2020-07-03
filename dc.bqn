@@ -39,12 +39,12 @@ Tokenize←{
   id←⍷args∾(bA∊˜w/c)⍒⊸⊏i←(1-˜l×+`w)⊔c
   nv←+´bA∊˜⊑¨id
   c↩(w∨¬l∨c∊bW)/(vi+id⊐i)_ur_ w(vi+(≠id)+lu⊐lit)_ur_ cl c
-  c(/˜)↩¬(1∾1∾˜2⊸↓)⊸∧c∊bS
+  c/˜↩¬(1∾1∾˜2⊸↓)⊸∧c∊bS
   ⟨c,nv,nv-≠args,(nv↓id)∾lu⟩
 }
 
 Parse←{
-  a←𝕩∊(2↑bG)⋄at←1⌽a⋄𝕩(/˜)↩¬a⋄a(/˜)↩¬at
+  a←𝕩∊(2↑bG)⋄at←1⌽a⋄𝕩/˜↩¬a⋄a/˜↩¬at
   l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(bF⊑˜⥊chF⊐<'⊣')¨_ur_ sep 𝕩⋄sep∨↩𝕩=2⊑bB
   o←𝕩=0⊑bB⋄c←𝕩=1⊑bB⋄v←a-˜𝕩≥vi⋄f←¬o∨c∨v∨sep
   na←(2×sep)+f×1+l↑0∾c∨v
@@ -81,7 +81,7 @@ f64←127-3
 GenFn←{
   ⟨⟩GenFn𝕩;
   ⟨t,nVar,nLoc,lits⟩←𝕨Tokenize𝕩
-  t(⊏˜)↩⍋+`-´<˘(2‿3⊏bB)=⌜t
+  t⊏˜↩⍋+`-´<˘(2‿3⊏bB)=⌜t
   nd←+´c←t=3⊑bB
   t↩((vi+nVar+≠lits)+↕∘≠)_ur_ c t
   ⟨a,na⟩←Parse t
