@@ -8,7 +8,7 @@ const t=load('cases.bqn').split('\n').filter(x=>x).map(x=>x.split(' % '))
     , test=t.map(e=>'"'+e[1]+'"').join('\n')
     , expt=t.map(e=>+e[0])
 
-var compiler = exec('../spec/dzref', function (error, stdout, stderr) {
+var compiler = exec(__dirname+'/../spec/dzref', function (error, stdout, stderr) {
   const rslt=stdout.split('\n').filter(a=>a.length)
             .map(a=>runWasm(a.split("‿").map(n=>+n)))
       , pass=rslt.map((r,i)=>r===expt[i])
