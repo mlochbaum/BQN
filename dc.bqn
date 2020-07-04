@@ -28,7 +28,7 @@ Tokenize←{
   e← g⊏∾⟨2+s⋄ 1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=nl)∾1⟩
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=⊑⌽𝕩}
   st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⊸⍋¨e⋄b←st/q∾˘e
-  ToI←¯1↓·≠¨∘⊔(≠𝕩)∾˜⥊⋄f←¬≠`ToI b
+  ToI←¯1↓·/⁼(≠𝕩)∾˜⥊⋄f←¬≠`ToI b
   cb←(¬(st/q)⊏r)/b
   nl←≠lu←⍷lit←𝕩⊔˜1-˜(+`ToI⊑˘cb)×≠`ToI cb
   cl←f/ToI⊑∘⌽˘cb
@@ -46,9 +46,9 @@ Parse←{
   l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(bF⊑˜⥊chF⊐<'⊣')¨⌾(sep⊸/)𝕩⋄sep∨↩𝕩=2⊑bB
   o←𝕩=0⊑bB⋄c←𝕩=1⊑bB⋄v←a-˜𝕩≥vi⋄f←¬o∨c∨v∨sep
   na←(2×sep)+f×1+l↑0∾c∨v
-  d←+`o-c⋄fe←((⍋⍋d)⊏+`(⍋d)⊏o)⊏l∾(⍋⊏⟜d)⊸⊏/c
+  d←+`o-c⋄fe←(d⍋⊸(⍋∘⊣⊏+`∘⊏)o)⊏l∾(⍋⊏⟜d)⊸⊏/c
   fe⌊↩l-l↑⌽⌈`↕∘≠⊸×⌽1∾˜sep
-  sel←¬∘⊏⟜(o∨c)⊸/⍋((f×fe)⌈↕l)-+`f-l↑≠¨⊔∧f/fe
+  sel←¬∘⊏⟜(o∨c)⊸/⍋((f×fe)⌈↕l)-+`f-l↑/⁼∧f/fe
   sel⊸⊏¨𝕩‿na
 }
 
