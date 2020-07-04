@@ -17,7 +17,7 @@ It incorporates concepts developed over years of APL practice:
 But BQN is redesigned from the ground up, with brand new ideas to make these paradigms easier to use and less likely to fail.
 * The **based array model** makes non-arrays a fundamental part of the language, and removes the surprise of floating arrays and the hassle of explicit boxes. New **array notation** eliminates the gotchas of [stranding](https://aplwiki.com/wiki/Strand_notation).
 * A [**context-free grammar**](doc/context.md) where a value's syntactic role is determined by its spelling makes it easier for machines and humans to understand code.
-* Oh, and it naturally leads to **first-class functions**, a feature often missed in APL.
+* Oh, and it naturally leads to [**first-class functions**](doc/functional.md), a feature often missed in APL.
 * The **new symbols** for built-in functionality allow the syntactic role of a primitive to be distinguished at a glance, and aim to be more consistent and intuitive.
 
 ## What kind of name is "BQN"?
