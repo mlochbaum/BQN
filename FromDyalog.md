@@ -1,18 +1,18 @@
-A few tables to help users of Dyalog APL (or similar) get started quickly on BQN.
+A few tables to help users of Dyalog APL (or similar) get started quickly on BQN. Here we assume `⎕ML` is 1 for Dyalog.
 
 ## For reading
 
 Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs as APL. Correspondence can be approximate, and `⌽` is just used as a decorator to mean "reverse some things".
 
-| BQN   | `⋆` | `√`    | `∧`   | `∨`   | `¬`   | `≠` | `<` | `>` | `≢` | `⥊` | `∾`   | `≍`    |
-|-------|-----|--------|-------|-------|-------|-----|-----|-----|-----|-----|-------|--------|
-| Monad | `*` | `*∘÷⍨` | `[⍋]` | `[⍒]` | `~`   | `≢` | `⊂` | `↑` | `⍴` | `,` | `⊃,⌿` | `↑,⍥⊂` |
-| Dyad  |     |        | `∧`   | `∨`   | `1+-` | `≠` | `<` | `>` | `≢` | `⍴` | `⍪`   |        |
+| BQN   | `⋆` | `√`      | `∧`   | `∨`   | `¬`   | `≠` | `<` | `>` | `≢` | `⥊` | `∾`   | `≍`    |
+|-------|-----|----------|-------|-------|-------|-----|-----|-----|-----|-----|-------|--------|
+| Monad | `*` | `*∘(÷2)` | `[⍋]` | `[⍒]` | `~`   | `≢` | `⊂` | `↑` | `⍴` | `,` | `⊃,⌿` | `↑,⍥⊂` |
+| Dyad  | `*` | `*∘÷⍨`   | `∧`   | `∨`   | `1+-` | `≠` | `<` | `>` | `≢` | `⍴` | `⍪`   | `↑,⍥⊂` |
 
 | BQN   | `↑`  | `↓`     | `↕`  | `/` | `⍋` | `⍒`   | `⊏`  | `⊑` | `⊐` | `⊒` | `∊` | `⍷` | `⊔`        |
 |-------|------|---------|------|-----|-----|-------|------|-----|-----|-----|-----|-----|------------|
-| Monad | `,⍀` | `⌽,⌽⍀⌽` | `⍳`  | `⍸` | `⍋` | `⍒`   | `⊣⌿` | `⊃` |     | `…` | `≠` |     | `⌸` or `⊆` |
-| Dyad  | `↑`  | `↓`     | `,⌿` | `⌿` | `⍸` | `⌽⍸⌽` | `⌷`  |     | `⍳` | `…` | `∊` | `⍷` |            |
+| Monad | `,⍀` | `⌽,⌽⍀⌽` | `⍳`  | `⍸` | `⍋` | `⍒`   | `⊣⌿` | `⊃` |     | `…` | `≠` | `∪` | `⌸`        |
+| Dyad  | `↑`  | `↓`     | `,⌿` | `⌿` | `⍸` | `⌽⍸⌽` | `⌷`  | `⊃` | `⍳` | `…` | `∊` | `⍷` | `⌸` or `⊆` |
 
 Modifiers and combinators are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
@@ -28,38 +28,38 @@ The tables below give approximate implementations of Dyalog primitives for the o
 
 <table>
 <tr><th colspan=3>Functions</th></tr>
-<tr><th> Glyph            </th><th> Monadic                      </th><th> Dyadic </th>               </tr>
-<tr><td> <code>*</code>   </td><td colspan=2><code>⋆</code></td>                                      </tr>
-<tr><td> <code>⍟</code>   </td><td colspan=2><code>⋆⁼</code></td>                                     </tr>
-<tr><td> <code>!</code>   </td><td colspan=2>Implement it yourself</td>                               </tr>
-<tr><td> <code>○</code>   </td><td colspan=2>Some complex exponential stuff, maybe</td>               </tr>
-<tr><td> <code>~</code>   </td><td> <code>¬</code>               </td><td> <code>¬∘∊/⊣</code></td>    </tr>
-<tr><td> <code>?</code>   </td><td colspan=2>Library?</td>                                            </tr>
-<tr><td> <code>⍲</code>   </td><td>                   </td>           <td> <code>¬∘∧</code></td>      </tr>
-<tr><td> <code>⍱</code>   </td><td>                   </td>           <td> <code>¬∘∨</code></td>      </tr>
-<tr><td> <code>⍴</code>   </td><td> <code>≢</code>               </td><td> <code>⥊</code></td>        </tr>
-<tr><td> <code>,</code>   </td><td> <code>⥊</code>               </td><td> <code>∾⎉1</code></td>      </tr>
-<tr><td> <code>⍪</code>   </td><td> <code>∾˘</code>              </td><td> <code>∾</code></td>        </tr>
-<tr><td> <code>↑</code>   </td><td> <code>></code>               </td><td> <code>↑</code></td>        </tr>
-<tr><td> <code>↓</code>   </td><td> <code><˘<code>              </td> <td> <code>↑</code></td>        </tr>
-<tr><td> <code>⊂</code>   </td><td> <code><<code>               </td> <td> <code>+`⊸⊔</code></td>     </tr>
-<tr><td> <code>⊆</code>   </td><td> <code><⍟(0<≡)<code>         </td> <td> <code>⊔</code></td>        </tr>
-<tr><td> <code>∊</code>   </td><td> <code>{0=≡𝕩:⥊𝕩⋄∾⥊∇¨𝕩}</code> </td><td> <code>∊</code></td>        </tr>
-<tr><td> <code>⊃</code>   </td><td colspan=2><code>⊑</code></td>                                      </tr>
-<tr><td> <code>⍀</code>   </td><td>                   </td>           <td> <code>/⁼</code></td>       </tr>
-<tr><td> <code>∩</code>   </td><td>                   </td>           <td> <code>∊/⊣</code></td>      </tr>
-<tr><td> <code>∪</code>   </td><td> <code>∊⊸/</code>             </td><td> <code>⊣∾∊˜¬⊸/⊢</code></td> </tr>
-<tr><td> <code>⍳</code>   </td><td> <code>↕</code>               </td><td> <code>⊐</code></td>        </tr>
-<tr><td> <code>⍸</code>   </td><td> <code>/</code>               </td><td> <code>⍋</code></td>        </tr>
-<tr><td> <code>⍋</code>   </td><td> <code>⍋</code>               </td><td> Give up</td>               </tr>
-<tr><td> <code>⍒</code>   </td><td> <code>⍒</code>               </td><td> Give up</td>               </tr>
-<tr><td> <code>≢</code>   </td><td> <code>≠</code>               </td><td> <code>≢</code></td>        </tr>
-<tr><td> <code>⍎</code>   </td><td colspan=2 rowspan=2>To be decided</td>                             </tr>
-<tr><td> <code>⍕</code>   </td>                                                                       </tr>
-<tr><td> <code>⊥</code>   </td><td>                   </td>           <td rowspan=2>To be decided</td></tr>
-<tr><td> <code>⊤</code>   </td><td>                   </td>                                           </tr>
-<tr><td> <code>⌹</code>   </td><td colspan=2><code>+´∘×⎉1‿∞⁼</code> I guess</td>                      </tr>
-<tr><td> <code>⌷</code>   </td><td> N/A               </td>           <td> <code>⊏</code></td>        </tr>
+<tr><th> Glyph          </th><th> Monadic                      </th><th> Dyadic </th>               </tr>
+<tr><td> <code>*</code> </td><td colspan=2><code>⋆</code></td>                                      </tr>
+<tr><td> <code>⍟</code> </td><td colspan=2><code>⋆⁼</code></td>                                     </tr>
+<tr><td> <code>!</code> </td><td colspan=2>Implement it yourself</td>                               </tr>
+<tr><td> <code>○</code> </td><td colspan=2>Some complex exponential stuff, maybe</td>               </tr>
+<tr><td> <code>~</code> </td><td> <code>¬</code>               </td><td> <code>¬∘∊/⊣</code></td>    </tr>
+<tr><td> <code>?</code> </td><td colspan=2>Library?</td>                                            </tr>
+<tr><td> <code>⍲</code> </td><td>                              </td><td> <code>¬∘∧</code></td>      </tr>
+<tr><td> <code>⍱</code> </td><td>                              </td><td> <code>¬∘∨</code></td>      </tr>
+<tr><td> <code>⍴</code> </td><td> <code>≢</code>               </td><td> <code>⥊</code></td>        </tr>
+<tr><td> <code>,</code> </td><td> <code>⥊</code>               </td><td> <code>∾⎉1</code></td>      </tr>
+<tr><td> <code>⍪</code> </td><td> <code>⥊˘</code>              </td><td> <code>∾</code></td>        </tr>
+<tr><td> <code>↑</code> </td><td> <code>></code>               </td><td> <code>↑</code></td>        </tr>
+<tr><td> <code>↓</code> </td><td> <code><˘<code>               </td><td> <code>↑</code></td>        </tr>
+<tr><td> <code>⊂</code> </td><td> <code><<code>                </td><td> <code>+`⊸⊔</code></td>     </tr>
+<tr><td> <code>⊆</code> </td><td> <code><⍟(0<≡)<code>          </td><td> <code>⊔</code></td>        </tr>
+<tr><td> <code>∊</code> </td><td> <code>{0=≡𝕩:⥊𝕩⋄∾⥊∇¨𝕩}</code> </td><td> <code>∊</code></td>        </tr>
+<tr><td> <code>⊃</code> </td><td colspan=2><code>⊑</code></td>                                      </tr>
+<tr><td> <code>⍀</code> </td><td>                              </td><td> <code>/⁼</code></td>       </tr>
+<tr><td> <code>∩</code> </td><td>                              </td><td> <code>∊/⊣</code></td>      </tr>
+<tr><td> <code>∪</code> </td><td> <code>⍷</code>               </td><td> <code>⊣∾∊˜¬⊸/⊢</code></td> </tr>
+<tr><td> <code>⍳</code> </td><td> <code>↕</code>               </td><td> <code>⊐</code></td>        </tr>
+<tr><td> <code>⍸</code> </td><td> <code>/</code>               </td><td> <code>⍋</code></td>        </tr>
+<tr><td> <code>⍋</code> </td><td> <code>⍋</code>               </td><td> Give up </td>              </tr>
+<tr><td> <code>⍒</code> </td><td> <code>⍒</code>               </td><td> Give up </td>              </tr>
+<tr><td> <code>≢</code> </td><td> <code>≠</code>               </td><td> <code>≢</code></td>        </tr>
+<tr><td> <code>⍎</code> </td><td colspan=2 rowspan=2>To be decided</td>                             </tr>
+<tr><td> <code>⍕</code> </td>                                                                       </tr>
+<tr><td> <code>⊥</code> </td><td>                              </td><td> <code>{+⟜(𝕨⊸×)´⌽𝕩}</code>    </td> </tr>
+<tr><td> <code>⊤</code> </td><td>                              </td><td> <code>{𝕨|1↓⌊∘÷`⌾⌽𝕨∾<𝕩}</code></td> </tr>
+<tr><td> <code>⌹</code> </td><td colspan=2><code>+´∘×⎉1‿∞⁼</code> I guess</td>                      </tr>
+<tr><td> <code>⌷</code> </td><td> N/A                          </td><td> <code>⊏</code></td>        </tr>
 </table>
 
 <table>
@@ -80,7 +80,7 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>f⍥g</code> </td><td colspan=2> <code>f○g</code>                       </td></tr>
 <tr><td> <code>f@v</code> </td><td colspan=2> <code>f⌾(v⊸⊏)</code>                   </td></tr>
 <tr><td> <code>f⍠B</code> </td><td colspan=2> Uh                                     </td></tr>
-<tr><td> <code>f⌸</code>  </td><td><code>∪⊸⊐⊔↕∘≠</code></td><td><code>∪⊸⊐⊸⊔</code>   </td></tr>
+<tr><td> <code>f⌸</code>  </td><td><code>⍷⊸⊐⊔↕∘≠</code></td><td><code>⍷⊸⊐⊸⊔</code>   </td></tr>
 <tr><td> <code>f⌺B</code> </td><td colspan=2> <code>↕</code>                         </td></tr>
 <tr><td> <code>A⌶</code>  </td><td colspan=2> <code>•</code>                         </td></tr>
 <tr><td> <code>f&</code>  </td><td colspan=2> Nothing yet                            </td></tr>
