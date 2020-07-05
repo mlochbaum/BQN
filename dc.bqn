@@ -107,10 +107,10 @@ Gen←{
   ⟩
 }
 
+rcp←⟨"x"⟩ GenFn "1÷x"
+or←⟨"w","x"⟩ GenFn "(w+x)-w∧x"
 Compile←{
   body←GenFn 𝕩
-  rcp←⟨"x"⟩ GenFn "1÷x"
-  or←⟨"w","x"⟩ GenFn "(w+x)-w∧x"
   f←⟨rcp,or,body⟩
   Gen ⟨(≠¨f)/⟨1‿1,2‿1,0‿1⟩⥊¨¨f64 ⋄ 2 ⋄ ∾f⟩
 }
