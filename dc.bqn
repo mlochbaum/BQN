@@ -5,7 +5,7 @@ charSet←∾charGroups←⟨
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔" ⍝ Function
   "˜˘¨⌜⁼´`"             ⍝ Modifier
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"          ⍝ Composition
-  "𝕨𝕎𝕩𝕏𝕗𝔽𝕘𝔾"            ⍝ Input
+  ¯1⊏˘10‿2⥊"𝕨𝕎𝕩𝕏𝕗𝔽𝕘𝔾𝕤𝕊" ⍝ Input (𝕣 pending; ℝ not allowed)
   nl∾"⋄,"               ⍝ Separator
   "←↩→"                 ⍝ Gets
   "(){}⟨⟩"              ⍝ Bracket
@@ -13,10 +13,11 @@ charSet←∾charGroups←⟨
   •d ⍝ +⟜(↕10)⌾•UCS'0'  ⍝ Digit
   "¯.π∞"                ⍝ Numeric
   "_"∾' '(⊢∾+)⌾•UCS•a   ⍝ Alphabetic
+  1↑"𝕨"                 ⍝ Prefix for input (hack around UTF-16)
   " "∾tab               ⍝ Whitespace
 ⍝ ⍝'" eliminated during tokenization
 ⟩
-bF‿bM‿bC‿bI‿bS‿bG‿bB‿bL‿bD‿bN‿bA‿bW←⊔/≠¨charGroups
+bF‿bM‿bC‿bI‿bS‿bG‿bB‿bL‿bD‿bN‿bA‿bP‿bW←⊔/≠¨charGroups
 vi←+´≠¨8↑charGroups
 
 Tokenize←{
@@ -33,7 +34,7 @@ Tokenize←{
   w←(≠↑0∾⊢)⊸<l←c∊∾bD‿bN‿bA
   id←⍷args∾(bA∊˜w/c)⍒⊸⊏i←(1-˜l×+`w)⊔c
   nv←+´bA∊˜⊑¨id
-  c↩(w∨¬l∨c∊bW)/(vi+id⊐i)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
+  c↩(w∨¬l∨c∊bP∾bW)/(vi+id⊐i)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
   c/˜↩¬(1⌾⊑1⌽1⌾⊑)⊸∧c∊bS
   ⟨c,nv,nv-≠args,(nv↓id)∾lu⟩
 }
@@ -112,5 +113,5 @@ or←⟨"w","x"⟩ GenFn "(w+x)-w∧x"
 Compile←{
   body←GenFn 𝕩
   f←⟨rcp,or,body⟩
-  Gen ⟨(≠¨f)/⟨1‿1,2‿1,0‿1⟩⥊¨¨f64 ⋄ 2 ⋄ ∾f⟩
+  Gen ⟨(≠¨f)/(1‿2‿0∾¨1)⥊¨¨f64 ⋄ 2 ⋄ ∾f⟩
 }
