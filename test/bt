@@ -1,0 +1,6 @@
+#! /usr/bin/env dbqn
+
+dRun ← ⟨"dRun"⟩ •EX •path∾"../dcshim.bqn"
+c ← (¬"{"⊑∘∊⊢)¨⊸/ •LNS •path∾"cases.bqn"
+p ← '%' ⍎⊸≡⟜DRun´∘((+`-2⊸×)∘=⊔⊢)¨ c
+• ← "All passed!"⍟(0=≠) /¬p
