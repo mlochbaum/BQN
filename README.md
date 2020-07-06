@@ -104,7 +104,7 @@ Functions that have significant differences from APL functions are marked with a
 | `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
 | `<`   | Box                                                 | [Less Than](https://aplwiki.com/wiki/Less_than)
-| `>`   | [Unbox](https://aplwiki.com/wiki/Mix)               | [Greater Than](https://aplwiki.com/wiki/Greater_than)
+| `>`   | [Merge](https://aplwiki.com/wiki/Mix)               | [Greater Than](https://aplwiki.com/wiki/Greater_than)
 | `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
 | `=`   |                                                     | [Equals](https://aplwiki.com/wiki/Equal_to)
 | `≠`   | [Length](https://aplwiki.com/wiki/Tally)            | [Not Equals](https://aplwiki.com/wiki/Not_Equal_to)
@@ -155,7 +155,7 @@ Modifier | Name    | Compositon | Name
 `˘`      | Cells   | `⎉`        | Rank
 `¨`      | Each    | `⚇`        | Depth
 `⌜`      | Table   |
-`⁼`      | Inverse | `⍟`        | Iterate
+`⁼`      | Undo    | `⍟`        | Repeat
 `´`      | Reduce  |
 `` ` ``  | Scan    |
 
