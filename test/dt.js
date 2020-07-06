@@ -9,9 +9,8 @@ const t=load('cases.bqn').split('\n').filter(x=>x).map(x=>x.split(' % '))
     , expt=t.map(e=>+e[0])
 
 var compiler = execFile(
-  __dirname+'/../spec/dzref',
-  [ __dirname+'/../dc.bqn',
-    '{•←Compile𝕩}¨⟨'+test+'⟩' ],
+  __dirname+'/../dcshim.bqn',
+  [ '{•←Compile𝕩}¨⟨'+test+'⟩' ],
   function (error, stdout, stderr) {
     const rslt=stdout.split('\n').filter(a=>a.length)
               .map(a=>runWasm(a.split("‿").map(n=>+n)))

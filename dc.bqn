@@ -1,4 +1,4 @@
-⍝ Run with spec/dzref
+#! ./spec/dzref
 
 nl‿tab←•UCS 10‿9
 charSet←∾charGroups←⟨
