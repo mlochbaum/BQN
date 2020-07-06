@@ -115,3 +115,31 @@ Compile←{
   f←⟨rcp,or,body⟩
   Gen ⟨(≠¨f)/(1‿2‿0∾¨1)⥊¨¨f64 ⋄ 2 ⋄ ∾f⟩
 }
+
+
+⍝ Targetting dzaima/BQN bytecode:
+
+DParse ← {
+  l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(⌽⍋⍋⌽+`(≠↑0∾⊢)⊸∨sep)⊏𝕩
+  a←𝕩∊2↑bG⋄o←𝕩=1⊑bB⋄c←𝕩=0⊑bB⋄v←𝕩≥vi⋄f←𝕩∊bF
+  d←+`o-c⋄fe←(d⍋⊸(⍋∘⊣⊏+`∘⊏)o)⊏l∾(⍋⊏⟜d)⊸⊏/c
+  dy←1↓0∾˜o∨v⋄la←(¯1⌽f×dy)/(o×fe)⌈↕l⋄mc←/f×¬dy
+  n←𝕩≥vi+𝕨⋄id←/v-n⋄cn←/f∨n⋄s←/sep⋄u←⍷ob←cn⊏𝕩
+  bc←(⍋(∾˜cn∾id)∾(1+/a)∾s∾mc∾la)⊏∾⟨0¨cn,(1+(id-1)⊏a),u⊐ob,vi-˜id⊏𝕩,(11-⊑bG)+a/𝕩,14¨s,5¨mc,6¨la⟩
+  bc‿u
+}
+
+prims←⟨
+  +,-,×,÷,⋆,√,⌊,⌈,|,¬,∧,∨,<,>,≠,=,≤,≥,≡,≢,⊣,⊢,⥊,∾,≍,↑,↓,↕,⌽,⍉,/,⍋,⍒,⊏,⊑,⊐,⊒,∊,⍷,⊔
+  ˜,˘,¨,⌜,⁼,´,`
+  ∘,○,⊸,⟜,⌾,⊘,◶,⎉,⚇,⍟
+⟩
+DGenFn←{
+  ⟨t,nVar,nLoc,lits⟩←⟨⟩Tokenize𝕩
+  ⟨bc,u⟩←nVar DParse t
+  o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾ReadNum¨lits
+  ⟨bc,o,nVar↑•a,⟨⟩⟩
+}
+DRun←{
+  ('f'‿0 •COMP DGenFn 𝕩){𝔽} 0
+}
