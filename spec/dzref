@@ -218,6 +218,7 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 "
 
+X←Raw←{≤4}
 {
   chrs←⟨
     "!∧∨∾↑↕⌽⍉⍋⍒⊐⊒∊⍷⊔"
@@ -267,5 +268,9 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 
   lf ← •UCS 10
   pre ← E_isdef◶E_proc‿E_redef¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
-  ⍎ ∾ ∾⟜lf¨ pre ∾ E_proc¨ •STDIN⟨⟩
+  Raw↩⍎
+  ExecFile←{Raw ∾ ∾⟜lf¨ E_proc¨ •LNS 𝕩}
+  X↩Raw∘E_proc
+  ⍎ ∾ ∾⟜lf¨ pre
+  ≠◶X‿{ExecFile ⊑𝕩}‿{ExecFile ⊑𝕩 ⋄ X 1⊑𝕩} •args
 }0
