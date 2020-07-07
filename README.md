@@ -1,6 +1,6 @@
 # BQN: finally, an APL for your flying saucer
 
-*This repository does not yet have a working implementation. You can try a prototype implementation [online here](https://mlochbaum.github.io/BQN2NGN/web/index.html) (from [this repository](https://github.com/mlochbaum/BQN2NGN))*
+*This repository does not yet have a working implementation. However, there are some incomplete implementations you can use, with one you can try online [here](https://mlochbaum.github.io/BQN2NGN/web/index.html). See [running.md](running.md) for more.*
 
 **BQN** is a new programming language in the APL lineage, which aims to remove inconsistent and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. BQN is aimed at existing and aspiring APL-family programmers, and using it requires a solid understanding of functions and multidimensional arrays. However, because of its focus on providing simple, consistent, and powerful array operations, BQN should also be a good language for learning array programming and building stronger array intuition.
 
