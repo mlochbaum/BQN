@@ -25,8 +25,8 @@ Starting at the highest-order objects, modifiers and compositions have fairly si
     _cmpExp_ = _comp_
              | _c_ ASGN _cmpExp_
     _modExpr = _mod
-             | _comp_ ( value | Func )    ⍝ Right partial application
-             | Operand _comp_             ⍝ Left partial application
+             | _comp_ ( value | Func )    # Right partial application
+             | Operand _comp_             # Left partial application
              | _m  ASGN _modExpr
 
 Functions can be formed by fully applying operators or as trains. Operators are left-associative, so that the left operand (`Operand`) can include operators but the right operand (`value | Func`) cannot. Trains are right-associative, but bind less tightly than operators. Assignment is not allowed in the top level of a train: it must be parenthesized.
@@ -37,10 +37,10 @@ Functions can be formed by fully applying operators or as trains. Operators are 
     Operand  = value
              | Derv
     Fork     = Func
-             | Operand Func Fork          ⍝ 3-train
-             | nothing Func Fork          ⍝ 2-train
+             | Operand Func Fork          # 3-train
+             | nothing Func Fork          # 2-train
     Train    = Fork
-             | Func Fork                  ⍝ 2-train
+             | Func Fork                  # 2-train
     FuncExpr = Train
              | F ASGN FuncExpr
 
@@ -59,7 +59,7 @@ Value expressions are complicated by the possibility of list assignment. We also
     lhs      = lhsValue | lhsStr
     valExpr  = arg
              | lhs ASGN valExpr
-             | lhs Derv "↩" valExpr       ⍝ Modified assignment
+             | lhs Derv "↩" valExpr       # Modified assignment
 
 A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers and compositions). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. As a special rule, a monadic function header specifically can omit the function when the argument is not just a name (as this would conflict with a value label). The following cases define only headers with arguments, which are assumed to be special cases; there can be any number of these. Headers without arguments can only refer to the general case—note that operands are not pattern matched—so there can be at most two of these kinds of headers, indicating the monadic and dyadic cases.
 
@@ -70,8 +70,8 @@ A header looks like a name for the thing being headed, or its application to inp
     ModH1    = HeadF ( _m  | "_𝕣"  )
     CmpH1    = HeadF ( _c_ | "_𝕣_" ) HeadG
     FuncHead = headW? ( F | "𝕊" ) headX
-             | vl | "(" valExpr ")" | brVal | list   ⍝ value,
-             | ANY ( "‿" ANY )+                      ⍝ but not v
+             | vl | "(" valExpr ")" | brVal | list   # value,
+             | ANY ( "‿" ANY )+                      # but not v
     _modHead = headW? ModH1 headX
     _cmpHed_ = headW? CmpH1 headX
 

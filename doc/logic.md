@@ -10,7 +10,7 @@ Both valences of `¬` are equivalent to the fork `1+-`. The dyadic valence, call
 
 We define:
 
-    Not ← 1+-  ⍝ also Span
+    Not ← 1+-  # also Span
     And ← ×
     Or  ← ×⌾¬
 

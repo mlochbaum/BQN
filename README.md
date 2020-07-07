@@ -28,7 +28,7 @@ It's three letters, that happen to match the capitals in "Big Questions Notation
 
 It looks like qebrus okay:
 
-    ⊑+`∘⌽⍟12↕2  ⍝ The 12th Fibonacci number
+    ⊑+`∘⌽⍟12↕2  # The 12th Fibonacci number
 
 [More examples here](https://github.com/mlochbaum/BQN2NGN/tree/master/examples).
 
@@ -80,7 +80,7 @@ Glyph(s)        | Meaning
 `𝕩𝕏`            | Right argument
 `𝕗𝔽`            | Left operand (modifier or composition)
 `𝕘𝔾`            | Right operand (composition)
-`⍝`             | Comment
+`#`             | Comment
 
 ## Built-in operations
 

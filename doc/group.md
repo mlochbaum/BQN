@@ -12,12 +12,12 @@ Once defined, the old BQN Key (dyadic) is `⍷⊸⊐⊸⊔` and Group (monadic) 
 
 Group operates on a numeric list of indices and a value array, treated as a list of its major cells, to produce a list of groups, each of which is a selection from the values. The indices and values have the same length, and each value cell is paired with the index at the same position. That index indicates the result group the value should go into, with an "index" of ¯1 indicating that it should be dropped and not appear in the result.
 
-        0‿1‿2‿0‿1 ≍ "abcde"  ⍝ Corresponding indices and values
+        0‿1‿2‿0‿1 ≍ "abcde"  # Corresponding indices and values
     ┌
       0 1 2 0 1
       a b c d e
                 ┘
-        0‿1‿2‿0‿1 ⊔ "abcde"  ⍝ Values grouped by index
+        0‿1‿2‿0‿1 ⊔ "abcde"  # Values grouped by index
     [ [ ad ] [ be ] [ c ] ]
 
 For example, we might choose to group a list of words by length. Within each group, values maintain the ordering they had in the list originally.
@@ -168,14 +168,14 @@ In other cases, we might want to split on spaces, so that words are separated by
 
 However, trailing spaces are ignored because Group never produces trailing empty groups (to get them back we would use a dummy final character in the string). To avoid empty words, we should increase the word index only once per group of spaces. We can do this by taking the prefix sum of a list that is 1 only for a space with no space before it. To make such a list, we can use the [Windows](windows.md) function. We will extend our list with an initial 1 so that leading spaces will be ignored. Then we take windows of the same length as the original list: the first includes the dummy argument followed by a shifted copy of the list, and the second is the original list. These represent whether the previous and current characters are spaces; we want positions where the previous wasn't a space and the current is.
 
-        ≍⟜((<´<˘)≠↕1∾⊢) ' '="  string with  spaces   "  ⍝ All, then filtered, spaces
+        ≍⟜((<´<˘)≠↕1∾⊢) ' '="  string with  spaces   "  # All, then filtered, spaces
     ┌
       1 1 0 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 1 1 1
       0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0
-        ≍⟜(⊢-˜¬×+`∘((<´<˘)≠↕1∾⊢))' '="  string with  spaces   "  ⍝ More processing
+        ≍⟜(⊢-˜¬×+`∘((<´<˘)≠↕1∾⊢))' '="  string with  spaces   "  # More processing
     ┌
        1  1 0 0 0 0 0 0  1 0 0 0 0  1  1 0 0 0 0 0 0  1  1  1
       ¯1 ¯1 0 0 0 0 0 0 ¯1 1 1 1 1 ¯1 ¯1 2 2 2 2 2 2 ¯1 ¯1 ¯1
                                                               ┘
-        ' '((⊢-˜¬×+`∘((<´<˘)≠↕1∾⊢))∘=⊔⊢)"  string with  spaces   "  ⍝ Final result
+        ' '((⊢-˜¬×+`∘((<´<˘)≠↕1∾⊢))∘=⊔⊢)"  string with  spaces   "  # Final result
     [ [ string ] [ with ] [ spaces ] ]

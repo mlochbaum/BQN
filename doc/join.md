@@ -12,9 +12,9 @@ To join with a separator in between, we might prepend the separator to each stri
 
 Join requires each element of its argument to be an array, and their ranks to match exactly. No rank extension is performed.
 
-        ∾"abc"‿'d'‿"ef"  ⍝ Includes a non-array
+        ∾"abc"‿'d'‿"ef"  # Includes a non-array
     RANK ERROR
-        ∾"abc"‿(<'d')‿"ef"  ⍝ Includes a scalar
+        ∾"abc"‿(<'d')‿"ef"  # Includes a scalar
     RANK ERROR
 
 However, Join has higher-dimensional uses as well. Given a rank-`m` array of rank-`n` arrays (requiring `m≤n`), it will merge arrays along their first `m` axes. For example, if the argument is a matrix of matrices representing a [block matrix](https://en.wikipedia.org/wiki/Block_matrix), Join will give the corresponding unblocked matrix as its result.
@@ -28,7 +28,7 @@ However, Join has higher-dimensional uses as well. Given a rank-`m` array of ran
                 ┘       ┘             ┘
       [ 3 3 3 3 ] [ 4 4 ] [ 5 5 5 5 5 ]
                                         ┘
-        ∾ m  ⍝ Join all that together
+        ∾ m  # Join all that together
     ┌
       0 0 0 0 1 1 2 2 2 2 2
       0 0 0 0 1 1 2 2 2 2 2

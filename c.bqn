@@ -22,13 +22,13 @@ charSet←∾charGroups←⟨
   "¯.π∞"                ⍝ Numeric
   "_"∾' '(⊢∾+)⌾•UCS•a   ⍝ Alphabetic
   " "∾tab               ⍝ Whitespace
-⍝ ⍝'" eliminated during tokenization
+⍝ #'" eliminated during tokenization
 ⟩
 bF‿bM‿bC‿bI‿bS‿bG‿bB‿bL‿bD‿bN‿bA‿bW←⊔/≠¨charGroups
 vi←+´≠¨8↑charGroups
 
 Tokenize←{
-  r←𝕩='⍝'⋄s←/(≠↑2⊸↓)⊸∧𝕩=⊑"'"⋄d←/𝕩='"'
+  r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧𝕩=⊑"'"⋄d←/𝕩='"'
   g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q
   e← g⊏∾⟨2+s⋄ 1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=⊑⌽𝕩}

@@ -69,7 +69,7 @@ Certainly not as concise as APL's version, but not a horror either. BQN's rule i
 
 Axis permutations of the types we've shown generate the complete permutation group on any number of axes, so you could produce any transposition you want with the right sequence of monadic transpositions with Rank. However, this can be unintuitive and tedious. What if you want to transpose the first three axes, leaving the rest alone? With monadic Transpose you have to send some axes to the end, then bring them back to the beginning. For example [following four or five failed tries]:
 
-        ≢ ⍉⁼⎉¯2 ⍉ a23456  ⍝ Restrict Transpose to the first three axes
+        ≢ ⍉⁼⎉¯2 ⍉ a23456  # Restrict Transpose to the first three axes
     [ 3 4 2 5 6 ]
 
 In a case like this BQN's Dyadic transpose is much easier.
@@ -80,7 +80,7 @@ Transpose also allows a left argument that specifies a permutation of the right 
 
         ≢ 1‿3‿2‿0‿4 ⍉ a23456
     [ 5 2 4 3 6 ]
-        ≢ 1‿2‿2‿0‿0 ⍉ a23456  ⍝ Don't worry too much about this case though
+        ≢ 1‿2‿2‿0‿0 ⍉ a23456  # Don't worry too much about this case though
     [ 5 2 3 ]
 
 Since this kind of rearrangement can be counterintuitive, it's often easier to use `⍉⁼` when specifying all axes. If `p≡○≠≢a`, then we have `≢p⍉⁼a ←→ p⊏≢a`.
@@ -95,7 +95,7 @@ So far, all like APL. BQN makes one little extension, which is to allow only som
 
 In particular, the case with only one argument specified is interesting. Here, the first axis ends up at the given location. This gives us a much better solution to the problem at the end of the last section.
 
-        ≢ 2 ⍉ a23456  ⍝ Restrict Transpose to the first three axes
+        ≢ 2 ⍉ a23456  # Restrict Transpose to the first three axes
     [ 3 4 2 5 6 ]
 
 Finally, it's worth noting that, as monadic Transpose moves the first axis to the end, it's equivalent to dyadic Transpose with a "default" left argument: `(≠∘≢-1˜)⊸⍉`.

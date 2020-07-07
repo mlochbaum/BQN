@@ -1,49 +1,49 @@
-⍝ This file gives reference implementations of BQN primitives assuming
-⍝ limited initial functionality. Implementations are designed to be
-⍝ simple and not fast.
+# This file gives reference implementations of BQN primitives assuming
+# limited initial functionality. Implementations are designed to be
+# simple and not fast.
 
-⍝ Not yet included: characters, complex numbers, comparison tolerance,
-⍝ selective assignment, and Under.
+# Not yet included: characters, complex numbers, comparison tolerance,
+# selective assignment, and Under.
 
-⍝ In some cases an operation is defined with limited functionality at
-⍝ first and later expanded. For convenience, rather than renaming these
-⍝ limited versions, every primitive use refers to the most recent
-⍝ definition in source code, as if redefinitions shadowed previous
-⍝ primitive definitions.
-
-
-⍝⌜
-⍝ LAYER 0: Assumed functionality
-
-⍝ IEEE 754, except NaN results cause an error and -0 is converted to 0.
-⍝ LIMITED to the stated cases and real number arguments.
-+          ⍝                Add
--          ⍝ Negate         Subtract
-×          ⍝                Multiply
-÷          ⍝ Reciprocal     Divide
-⋆          ⍝ Exponential    Power
-⌊          ⍝ Floor
-=          ⍝                Equals
-≤          ⍝                Less Than or Equal to
-
-⍝ Other basic functionality that we need to assume
-IsArray    ⍝ Return 1 if 𝕩 is an array
-!          ⍝ 𝕩 is 0 or 1; throw an error if it's 0
-≢          ⍝ LIMITED to monadic case
-⥊          ⍝ LIMITED to array 𝕩 and (×´𝕨)≡≢𝕩
-⊑          ⍝ LIMITED to natural number 𝕩 and vector 𝕨
-_amend     ⍝ {(𝕗⊑𝕩)↩𝕨⋄𝕩}
-↕          ⍝ LIMITED to number 𝕩
-Identity   ⍝ Left or right identity of function 𝕏
-⁼          ⍝ Inverse of function 𝔽
-Type       ⍝ Scalar (enclosed) prototype of 𝕩
+# In some cases an operation is defined with limited functionality at
+# first and later expanded. For convenience, rather than renaming these
+# limited versions, every primitive use refers to the most recent
+# definition in source code, as if redefinitions shadowed previous
+# primitive definitions.
 
 
-⍝⌜
-⍝ LAYER 1: Foundational operators and functions
+#⌜
+# LAYER 0: Assumed functionality
 
-⍝ Combinators
-◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     ⍝ LIMITED to number left operand result
+# IEEE 754, except NaN results cause an error and -0 is converted to 0.
+# LIMITED to the stated cases and real number arguments.
++          #                Add
+-          # Negate         Subtract
+×          #                Multiply
+÷          # Reciprocal     Divide
+⋆          # Exponential    Power
+⌊          # Floor
+=          #                Equals
+≤          #                Less Than or Equal to
+
+# Other basic functionality that we need to assume
+IsArray    # Return 1 if 𝕩 is an array
+!          # 𝕩 is 0 or 1; throw an error if it's 0
+≢          # LIMITED to monadic case
+⥊          # LIMITED to array 𝕩 and (×´𝕨)≡≢𝕩
+⊑          # LIMITED to natural number 𝕩 and vector 𝕨
+_amend     # {(𝕗⊑𝕩)↩𝕨⋄𝕩}
+↕          # LIMITED to number 𝕩
+Identity   # Left or right identity of function 𝕏
+⁼          # Inverse of function 𝔽
+Type       # Scalar (enclosed) prototype of 𝕩
+
+
+#⌜
+# LAYER 1: Foundational operators and functions
+
+# Combinators
+◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
 ⊘ ← {𝕨((1{𝔽}𝕨)-0)◶𝔽‿𝔾 𝕩}
 ⊢ ← {𝕩}
 ⊣ ← {𝕩}⊘{𝕨}
@@ -53,7 +53,7 @@ Type       ⍝ Scalar (enclosed) prototype of 𝕩
 ⊸ ← {(𝔽𝕨⊣𝕩)𝔾𝕩}
 ⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
 
-⍝ LIMITED to numeric arguments for scalar cases
+# LIMITED to numeric arguments for scalar cases
 √ ← 2⊸√      ⊘ (⋆⟜÷˜)
 ∧ ←            ×
 ∨ ←            (+-×)
@@ -66,9 +66,9 @@ Type       ⍝ Scalar (enclosed) prototype of 𝕩
 × ↩ 0⊸(<->)  ⊘ ×
 ⌊ ↩ ⌊        ⊘ {(𝕨>𝕩)⊑𝕨‿𝕩}
 ⌈ ← -∘⌊∘-    ⊘ {(𝕨<𝕩)⊑𝕨‿𝕩}
-≢ ↩ IsArray◶⟨⟩‿≢  ⍝ LIMITED to monadic case
+≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
 
-¨ ← _eachm   ⍝ LIMITED to monadic case and array 𝕩
+¨ ← _eachm   # LIMITED to monadic case and array 𝕩
 ´ ← _reduce
 
 _eachm←{
@@ -86,14 +86,14 @@ _reduce←{
 Length ← (0<0⊑≢)◶⟨1⋄0⊑⊢⟩∘≢
 
 
-⍝⌜
-⍝ LAYER 2: Pervasion
-⍝ After defining _perv, we apply it to all scalar functions,
-⍝ making them pervasive. I'm not going to write that out.
+#⌜
+# LAYER 2: Pervasion
+# After defining _perv, we apply it to all scalar functions,
+# making them pervasive. I'm not going to write that out.
 
 ToArray ← IsArray◶<‿⊢
 
-∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩¨↕k+≠𝕩}  ⍝ LIMITED to two vector arguments
+∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩¨↕k+≠𝕩}  # LIMITED to two vector arguments
 
 _table←{
   m←≠a←⥊𝕨 ⋄ n←≠b←⥊𝕩 ⋄ F←𝔽
@@ -103,7 +103,7 @@ _table←{
 }
 
 _eachd←{
-  _e←{ ⍝ 𝕨 has smaller or equal rank
+  _e←{ # 𝕨 has smaller or equal rank
     k←≠p←≢𝕨 ⋄ q←≢𝕩
     ! ∧´(⊑⟜p=⊑⟜q)¨↕k
     l←×´(q⊑˜k⊸+)¨↕q≠⊸-k
@@ -112,7 +112,7 @@ _eachd←{
   }
   (>○(≠≢))◶⟨𝔽_e⋄𝔽˜_e˜⟩
 }
-_perv←{ ⍝ Pervasion
+_perv←{ # Pervasion
   (⊢⊘∨○IsArray)◶⟨𝔽⋄𝔽{𝕨𝔽_perv𝕩}¨⟩
 }
 
@@ -120,9 +120,9 @@ _perv←{ ⍝ Pervasion
 ¨ ↩ {(𝔽_eachm)⊘(𝔽_eachd)○ToArray}
 
 
-⍝⌜
-⍝ LAYER 3: Remove other limits
-⍝ Now all implementations are full except ∾; ↕ is monadic only
+#⌜
+# LAYER 3: Remove other limits
+# Now all implementations are full except ∾; ↕ is monadic only
 
 Int←IsArray◶⟨⌊⊸=,0⟩
 Nat←IsArray◶⟨0⊸≤∧⌊⊸=,0⟩
@@ -167,14 +167,14 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 ⊑ ↩ (0¨∘≢)⊸Pick    ⊘ Pick
 ⥊ ↩ Deshape        ⊘ Reshape
 ↕ ↩ Range
-◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  ⍝ Same definition, new Pick
+◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 
 ≡ ← Depth          ⊘ Match
 ≢ ↩ ≢              ⊘ (¬Match)
 
 
-⍝⌜
-⍝ LAYER 4: Operators
+#⌜
+# LAYER 4: Operators
 
 > ↩ Unbox          ⊘ >
 ≍ ← >∘Pair
@@ -232,8 +232,8 @@ _iterate_←{
 }
 
 
-⍝⌜
-⍝ LAYER 5: Structural functions
+#⌜
+# LAYER 5: Structural functions
 
 ⊏ ← 0⊸Select       ⊘ Select
 ↑ ← Prefixes       ⊘ Take
@@ -244,10 +244,10 @@ _iterate_←{
 
 _onAxes_←{
   F←𝔽
-  (𝔾<≡)∘⊣◶{ ⍝ One axis
+  (𝔾<≡)∘⊣◶{ # One axis
     ! 1≤≠≢𝕩
     𝕨F𝕩
-  }‿{ ⍝ Multiple axes
+  }‿{ # Multiple axes
     ! 1≥≠≢𝕨
     ! 𝕨≤○≠≢𝕩
     R←{(⊑𝕨)F(1 DropV 𝕨)⊸R˘𝕩}⍟{0<≠𝕨}
@@ -313,8 +313,8 @@ Rep ← Indices⊸⊏
 Replicate ← {0<≠≢𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩} _onAxes_ (1-0=≠)
 
 
-⍝⌜
-⍝ LAYER 6: Everything else
+#⌜
+# LAYER 6: Everything else
 
 ∾ ↩ Join           ⊘ JoinTo
 ⊔ ← ⊔⟜(↕≠⚇1)       ⊘ Group
@@ -329,7 +329,7 @@ Replicate ← {0<≠≢𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 
 Join←{
-  C←(<⟨⟩)⥊⊸∾⌜´⊢  ⍝ Cartesian array product
+  C←(<⟨⟩)⥊⊸∾⌜´⊢  # Cartesian array product
   ! IsArray 𝕩
   s←≢¨𝕩
   d←≠⊑s
@@ -350,7 +350,7 @@ Group←{
   (𝕨⊸=/𝕩˜)¨↕1+¯1⌈´⚇1𝕨
 }
 
-⍝ Searching
+# Searching
 IndexOf←{
   c←1-˜≠≢𝕨
   ! 0≤c
@@ -380,10 +380,10 @@ ReorderAxes←{
 }
 Transpose←(≠∘≢-1˜)⊸ReorderAxes⍟(0<≠∘≢)
 
-⍝ Sorting
-Cmp ← ∨○IsArray◶{ ⍝ No arrays
-  𝕨(>-<)𝕩 ⍝ Assume they're numbers
-}‿{ ⍝ At least one array
+# Sorting
+Cmp ← ∨○IsArray◶{ # No arrays
+  𝕨(>-<)𝕩 # Assume they're numbers
+}‿{ # At least one array
   e←𝕨-˜○(∨´0=≢)𝕩
   𝕨(e=0)◶e‿{
     c←𝕨×∘-○(IsArray+≠∘≢)𝕩
