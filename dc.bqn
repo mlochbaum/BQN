@@ -2,20 +2,20 @@
 
 nl‿tab←•UCS 10‿9
 charSet←∾charGroups←⟨
-  chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔" ⍝ Function
-  "˜˘¨⌜⁼´`"             ⍝ Modifier
-  "∘○⊸⟜⌾⊘◶⎉⚇⍟"          ⍝ Composition
-  ¯1⊏˘10‿2⥊"𝕨𝕎𝕩𝕏𝕗𝔽𝕘𝔾𝕤𝕊" ⍝ Input (𝕣 pending; ℝ not allowed)
-  nl∾"⋄,"               ⍝ Separator
-  "←↩→"                 ⍝ Gets
-  "(){}⟨⟩"              ⍝ Bracket
-  "‿"                   ⍝ Ligature
-  •d ⍝ +⟜(↕10)⌾•UCS'0'  ⍝ Digit
-  "¯.π∞"                ⍝ Numeric
-  "_"∾' '(⊢∾+)⌾•UCS•a   ⍝ Alphabetic
-  1↑"𝕨"                 ⍝ Prefix for input (hack around UTF-16)
-  " "∾tab               ⍝ Whitespace
-⍝ #'" eliminated during tokenization
+  chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔" # Function
+  "˜˘¨⌜⁼´`"             # Modifier
+  "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # Composition
+  ¯1⊏˘10‿2⥊"𝕨𝕎𝕩𝕏𝕗𝔽𝕘𝔾𝕤𝕊" # Input (𝕣 pending; ℝ not allowed)
+  nl∾"⋄,"               # Separator
+  "←↩→"                 # Gets
+  "(){}⟨⟩"              # Bracket
+  "‿"                   # Ligature
+  •d # +⟜(↕10)⌾•UCS'0'  # Digit
+  "¯.π∞"                # Numeric
+  "_"∾' '(⊢∾+)⌾•UCS•a   # Alphabetic
+  1↑"𝕨"                 # Prefix for input (hack around UTF-16)
+  " "∾tab               # Whitespace
+# #'" eliminated during tokenization
 ⟩
 bF‿bM‿bC‿bI‿bS‿bG‿bB‿bL‿bD‿bN‿bA‿bP‿bW←⊔/≠¨charGroups
 vi←+´≠¨8↑charGroups
@@ -117,7 +117,7 @@ Compile←{
 }
 
 
-⍝ Targetting dzaima/BQN bytecode:
+# Targetting dzaima/BQN bytecode:
 
 DParse ← {
   l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(⌽⍋⍋⌽+`(≠↑0∾⊢)⊸∨sep)⊏𝕩

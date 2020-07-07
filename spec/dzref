@@ -5,28 +5,28 @@ impl ← "◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}
 ∨ ←            (+-×)
 
 
-⍝⌜
-⍝ LAYER 2: Pervasion
-⍝ After defining _perv, we apply it to all scalar functions,
-⍝ making them pervasive. I'm not going to write that out.
+#⌜
+# LAYER 2: Pervasion
+# After defining _perv, we apply it to all scalar functions,
+# making them pervasive. I'm not going to write that out.
 
 ToArray ← IsArray◶<‿⊢
 
-_perv←{ ⍝ Pervasion
+_perv←{ # Pervasion
   (⊢⊘∨○IsArray)◶⟨𝔽⋄𝔽{𝕨𝔽_perv𝕩}¨⟩
 }
 
 
-⍝⌜
-⍝ LAYER 3: Remove other limits
-⍝ Now all implementations are full but ↕ is monadic only
+#⌜
+# LAYER 3: Remove other limits
+# Now all implementations are full but ↕ is monadic only
 
 Int←IsArray◶⟨⌊⊸=,0⟩
 Nat←IsArray◶⟨0⊸≤∧⌊⊸=,0⟩
 
 
-⍝⌜
-⍝ LAYER 4: Operators
+#⌜
+# LAYER 4: Operators
 
 
 Cell ← ↓⟜≢
@@ -64,15 +64,15 @@ _iterate_←{
 ⍟ ← _iterate_
 
 
-⍝⌜
-⍝ LAYER 5: Structural functions
+#⌜
+# LAYER 5: Structural functions
 
 _onAxes_←{
   F←𝔽
-  (𝔾<≡)∘⊣◶{ ⍝ One axis
+  (𝔾<≡)∘⊣◶{ # One axis
     ! 1≤≠≢𝕩
     𝕨F𝕩
-  }‿{ ⍝ Multiple axes
+  }‿{ # Multiple axes
     ! 1≥≠≢𝕨
     ! 𝕨≤○≠≢𝕩
     R←{(⊑𝕨)F(1↓𝕨)⊸R˘𝕩}⍟{0<≠𝕨}
@@ -117,12 +117,12 @@ Replicate ← {0<≠≢𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep
 ⌽ ← Reverse        ⊘ Rotate
 
 
-⍝⌜
-⍝ LAYER 6: Everything else
+#⌜
+# LAYER 6: Everything else
 
 
 Join←{
-  C←(<⟨⟩)⥊⊸∾⌜´⊢  ⍝ Cartesian array product
+  C←(<⟨⟩)⥊⊸∾⌜´⊢  # Cartesian array product
   ! IsArray 𝕩
   s←≢¨𝕩
   d←≠⊑s
@@ -146,7 +146,7 @@ Group←{
 ∾ ↩ Join           ⊘ ∾
 ⊔ ← Group⟜(↕≠⚇1)   ⊘ Group
 
-⍝ Searching
+# Searching
 IndexOf←{
   c←1-˜≠≢𝕨
   ! 0≤c
@@ -181,10 +181,10 @@ ReorderAxes←{
 Transpose←(≠∘≢-1˜)⊸ReorderAxes⍟(0<≠∘≢)
 ⍉ ← Transpose      ⊘ ReorderAxes
 
-⍝ Sorting
-Cmp ← ∨○IsArray◶{ ⍝ No arrays
-  𝕨(>-<)𝕩 ⍝ Assume they're numbers
-}‿{ ⍝ At least one array
+# Sorting
+Cmp ← ∨○IsArray◶{ # No arrays
+  𝕨(>-<)𝕩 # Assume they're numbers
+}‿{ # At least one array
   e←𝕨-˜○(0∨´0=≢)𝕩
   𝕨(e=0)◶e‿{
     c←𝕨×∘-○(IsArray+≠∘≢)𝕩
@@ -257,8 +257,12 @@ X←Raw←{≤4}
   ⍝ checks if line is a builtin redefinition
   E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩
 
-  ⍝ replaces built-ins with their corresponding names
-  E_proc ← {l←≠chr ⋄ ∾ ((l×≠`𝕩∊"""'")+chr⊐𝕩) (≥⟜l)◶⟨⊑⟜names,⥊∘⊢⟩¨ 𝕩}
+  ⍝ removes comments and replaces built-ins with names
+  E_proc ← {
+    l←≠chr
+    q←≠`𝕩∊"""'" ⋄ f←¬∨`q¬⊸∧𝕩='#'
+    ∾ (((l×f/q)+chr⊸⊐) (≥⟜l)◶⟨⊑⟜names,⥊∘⊢⟩¨ ⊢) f/𝕩
+  }
 
   E_redef ← { ⍝ handles [fmd] [←↩]
     tail ← E_proc 3↓𝕩 ⍝ must use old def
