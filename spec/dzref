@@ -239,11 +239,11 @@ X←Raw←{≤4}
     names↩((i⊑init)∾(•UCS 48+n)∾i⊑post)⌾(i⊑⊢)names
   }
 
-  ⍝ starting built-ins
+  # starting built-ins
   inps←⟨"𝕨  ","𝕨,𝕗","𝕨,𝕘"⟩
   ⍎¨names∾¨(nc/("←{⟨"∾∾⟜"⟩ ⋄ ⍎""Using undefined built-in ")¨inps)∾¨∾⟜"""}"¨chr
 
-  ⍝ built-in assumptions
+  # built-in assumptions
   Mod ← ⍎{𝔽 ((⊑chr⊐𝕨)⊑names) ∾ " ↩ " ∾ 𝕩}
 
   ⍎"IsArray ← 0≠≡"
@@ -254,18 +254,18 @@ X←Raw←{≤4}
   '∾' Mod "∾"
 
 
-  ⍝ checks if line is a builtin redefinition
+  # checks if line is a builtin redefinition
   E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩
 
-  ⍝ removes comments and replaces built-ins with names
+  # removes comments and replaces built-ins with names
   E_proc ← {
     l←≠chr
     q←≠`𝕩∊"""'" ⋄ f←¬∨`q¬⊸∧𝕩='#'
     ∾ (((l×f/q)+chr⊸⊐) (≥⟜l)◶⟨⊑⟜names,⥊∘⊢⟩¨ ⊢) f/𝕩
   }
 
-  E_redef ← { ⍝ handles [fmd] [←↩]
-    tail ← E_proc 3↓𝕩 ⍝ must use old def
+  E_redef ← { # handles [fmd] [←↩]
+    tail ← E_proc 3↓𝕩 # must use old def
     Inc ⊑𝕩
     (E_proc 1↑𝕩) ∾ "←" ∾ tail
   }
