@@ -1,8 +1,8 @@
 # Tests of primitive functionality
 # Ordering matches the reference implementations
 
-•←/¬∾⟨
-⟨ # LAYER 0
+•←/¬⟨
+  # LAYER 0
   # [0,34)
   0≡¯2+2
   1e4≡5e3+5e3
@@ -252,8 +252,7 @@
   (≍1∾¨1‿2‿2)≡(↕¨/↕)2‿3
   ⟨⟩(/≡⊢)≍"ab"
 
-⟩
-⟨ # LAYER 6
+  # LAYER 6
   # [230,270)
   ≡⟜(∾⥊¨)"abc"
   (∾´≡∾)"ab"‿"cde"‿""
@@ -295,5 +294,4 @@
   (2‿0‿1⥊⟨⟩)≡1‿2‿0‿1⍉↕↕4
   2‿0‿3‿1‿4≡⍋"bdace"
   "edcba"≡∨"bdace"
-⟩
 ⟩
