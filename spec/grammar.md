@@ -61,7 +61,7 @@ Value expressions are complicated by the possibility of list assignment. We also
              | lhs ASGN valExpr
              | lhs Derv "↩" valExpr       ⍝ Modified assignment
 
-A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers and compositions). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. As a special rule, a function header specifically can omit the function.
+A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers and compositions). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. As a special rule, a monadic function header specifically can omit the function when the argument is not just a name (as this would conflict with a value label). The following cases define only headers with arguments, which are assumed to be special cases; there can be any number of these. Headers without arguments can only refer to the general case—note that operands are not pattern matched—so there can be at most two of these kinds of headers, indicating the monadic and dyadic cases.
 
     headW    = value | "𝕨"
     headX    = value | "𝕩"
@@ -69,22 +69,25 @@ A header looks like a name for the thing being headed, or its application to inp
     HeadG    = F | "𝕘" | "𝔾"
     ModH1    = HeadF ( _m  | "_𝕣"  )
     CmpH1    = HeadF ( _c_ | "_𝕣_" ) HeadG
-    valHead  =  v
-    FuncHead =  F  | headW? ( F | "𝕊" ) headX
-             | vl | "(" valExpr ")" | brVal | list  ⍝ value but not v
-    _modHead = _m  | ModH1 | headW? ModH1 headX
-    _cmpHed_ = _c_ | CmpH1 | headW? CmpH1 headX
+    FuncHead = headW? ( F | "𝕊" ) headX
+             | vl | "(" valExpr ")" | brVal | list   ⍝ value,
+             | ANY ( "‿" ANY )+                      ⍝ but not v
+    _modHead = headW? ModH1 headX
+    _cmpHed_ = headW? CmpH1 headX
 
-A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. For a value block there are no inputs, so there can only be one possible case and one body. Functions and operators allow any number of bodies with headers followed by at most two bodies without headers. These bodies refer to the general cases: ambivalent if there is only one and split into monadic and dyadic if there are two.
+A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. For a value block there are no inputs, so there can only be one possible case and one body. Functions and operators allow any number of "matched" bodies, with headers that have arguments, followed by at most two "main" bodies with either no headers or headers without arguments. If there is one main body, it is ambivalent, but two main bodies refer to the monadic and dyadic cases.
 
     BODY     = ⋄? ( STMT ⋄ )* EXPR ⋄?
-    FuncCase = ⋄? FuncHead ":" BODY
-    _modCase = ⋄? _modHead ":" BODY
-    _cmpCas_ = ⋄? _cmpHed_ ":" BODY
-    brVal    = "{" ( ⋄? valHead ":" )? BODY "}"
-    BrFunc   = "{" ( FuncCase ";" )* ( FuncCase | BODY | BODY ";" BODY ) "}"
-    _brMod   = "{" ( _modCase ";" )* ( _modCase | BODY | BODY ";" BODY ) "}"
-    _brComp_ = "{" ( _cmpCas_ ";" )* ( _cmpCas_ | BODY | BODY ";" BODY ) "}"
+    FCase    = ⋄? FuncHead ":" BODY
+    _mCase   = ⋄? _modHead ":" BODY
+    _cCase_  = ⋄? _cmpHed_ ":" BODY
+    FMain    = ( ⋄?    F            ":" )? BODY
+    _mMain   = ( ⋄? ( _m  | ModH1 ) ":" )? BODY
+    _cMain_  = ( ⋄? ( _c_ | CmpH1 ) ":" )? BODY
+    brVal    = "{" ( ⋄? v ":" )? BODY "}"
+    BrFunc   = "{" (  FCase  ";" )* (  FCase  |  FMain ( ";"  FMain )? ) "}"
+    _brMod   = "{" ( _mCase  ";" )* ( _mCase  | _mMain ( ";" _mMain )? ) "}"
+    _brComp_ = "{" ( _cCase_ ";" )* ( _cCase_ | _cMan_ ( ";" _cMan_ )? ) "}"
 
 Two additional rules apply to blocks, based on the special name associations in the table below. First, each block allows the special names in its column to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each column is cumulative and a given entry also includes all the entries above it. Second, for `BrFunc`, `_brMod`, and `_brComp_` terms, if no header is given, then at least one `BODY` term in it *must* contain one of the names on, and not above, the corresponding row. Otherwise the syntax would be ambiguous, since for example a simple `"{" BODY "}"` sequence could have any type.
 
