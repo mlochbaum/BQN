@@ -36,11 +36,11 @@ Functions can be formed by fully applying operators or as trains. Operators are 
              | Operand _comp_ ( value | Func )
     Operand  = value
              | Derv
-    Fork     = Func
-             | Operand Func Fork          # 3-train
-             | nothing Func Fork          # 2-train
+    Fork     = Derv
+             | Operand Derv Fork          # 3-train
+             | nothing Derv Fork          # 2-train
     Train    = Fork
-             | Func Fork                  # 2-train
+             | Derv Fork                  # 2-train
     FuncExpr = Train
              | F ASGN FuncExpr
 

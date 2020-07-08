@@ -40,7 +40,7 @@ The following rules derive new functions or operators from existing ones.
 |------------|-----------|---------------------|--------------
 |            | `_comp_`  | `( value \| Func )` | `{𝔽 _C_ R}`
 | `Operand`  | `_comp_`  |                     | `{L _C_ 𝔽}`
-| `Operand`  |  `Func`   | `Fork`              | `{(𝕨L𝕩)C(𝕨R𝕩)}`
-| `nothing?` |  `Func`   | `Fork`              | `{     C(𝕨R𝕩)}`
+| `Operand`  |  `Derv`   | `Fork`              | `{(𝕨L𝕩)C(𝕨R𝕩)}`
+| `nothing?` |  `Derv`   | `Fork`              | `{     C(𝕨R𝕩)}`
 
 As with applications, all expressions are evaluated in reverse source order before doing anything else. Then a result is formed without calling the center value. Its value in BQN is given in the rightmost column, using `L`, `C`, and `R` for the results of the expressions in the left, center, and right columns, respectively. For the first two rules (*partial application*), the given operand is bound to the composition: the result is a modifier that, when called, calls the center composition with the bound operand on the same side it appeared on and the new operand on the remaining side. A *train* is a function that, when called, calls the right-hand function on all arguments, then the left-hand function, and calls the center function with these results as arguments. In a composition partial application, the result will fail when applied if the center value does not have the composition type, and in a fork, it will fail if any component has a modifier or composition type (that is, cannot be applied as a function). BQN implementations are not required to check for these types when forming the result of these expressions, but may give an error on formation even if the result will never be applied.
