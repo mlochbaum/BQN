@@ -12,7 +12,7 @@ charSet←∾charGroups←⟨
   "‿"                   # Ligature
   •d # +⟜(↕10)⌾•UCS'0'  # Digit
   "¯.π∞"                # Numeric
-  "_"∾' '(⊢∾+)⌾•UCS•a   # Alphabetic
+  "_"∾˜' '(+∾⊢)⌾•UCS•a  # Alphabetic
   1↑"𝕨"                 # Prefix for input (hack around UTF-16)
   " "∾tab               # Whitespace
 # #'" eliminated during tokenization
@@ -30,13 +30,18 @@ Tokenize←{
   cb←(¬(st/q)⊏r)/b
   nl←≠lu←⍷lit←𝕩⊔˜1-˜(+`ToI⊑˘cb)×≠`ToI cb
   cl←f/ToI⊑∘⌽˘cb
+
   args←charSet⊸⊐¨𝕨⋄c←charSet⊐f/𝕩
   w←(≠↑0∾⊢)⊸<l←c∊∾bD‿bN‿bA
-  id←⍷args∾(bA∊˜w/c)⍒⊸⊏i←(1-˜l×+`w)⊔c
-  nv←+´bA∊˜⊑¨id
-  c↩(w∨¬l∨c∊bP∾bW)/(vi+id⊐i)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
+  i←(1-˜l×+`w)⊔c
+  na←≠•a⋄us←¯1⊑bA
+  in←us⊸≠⊸/¨na(⊢-⊣×+⟜(⊑bA)⊸≤)i
+  id←⍷args∾(bA∊˜w/c)⍒⊸⊏in⋄nv←+´bA∊˜⊑¨id
+
+  c↩(w∨¬l∨c∊bP∾bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
   c/˜↩¬(1⌾⊑1⌽1⌾⊑)⊸∧c∊bS
-  ⟨c,nv,nv-≠args,(nv↓id)∾lu⟩
+  t←(us=¯1⊸⊑¨i)(⊢+∧⟜(2⊸=))0⌈na⌊∘÷˜(⊑bA)-˜⊑¨i
+  ⟨c,t⌾(((0⊸≤∧<⟜(≠id))c-vi)⊸/)0¨c,nv,nv-≠args,(nv↓id)∾lu⟩
 }
 
 Parse←{
@@ -79,7 +84,7 @@ f64←127-3
 
 GenFn←{
   ⟨⟩GenFn𝕩;
-  ⟨t,nVar,nLoc,lits⟩←𝕨Tokenize𝕩
+  ⟨t,r,nVar,nLoc,lits⟩←𝕨Tokenize𝕩
   t⊏˜↩⍋+`-´<˘(2‿3⊏bB)=⌜t
   nd←+´c←t=3⊑bB
   t↩((vi+nVar+≠lits)+↕∘≠)⌾(c⊸/)t
@@ -140,7 +145,7 @@ prims←⟨
   ∘,○,⊸,⟜,⌾,⊘,◶,⎉,⚇,⍟
 ⟩
 DGenFn←{
-  ⟨t,nVar,nLoc,lits⟩←⟨⟩Tokenize𝕩
+  ⟨t,r,nVar,nLoc,lits⟩←⟨⟩Tokenize𝕩
   ⟨bc,u⟩←nVar DParse t
   o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾ReadNum¨lits
   ⟨bc,o,nVar↑•a,⟨⟩⟩
