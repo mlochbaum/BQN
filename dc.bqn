@@ -145,5 +145,5 @@ DGenFn←{
   ⟨bc,o,nVar↑•a,⟨⟩⟩
 }
 DRun←{
-  ('f'‿0 •COMP DGenFn 𝕩){𝔽} 0
+  'a' •COMP DGenFn 𝕩
 }
