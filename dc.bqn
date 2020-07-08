@@ -44,7 +44,7 @@ Parse←{
   l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(bF⊑˜⥊chF⊐<'⊣')¨⌾(sep⊸/)𝕩⋄sep∨↩𝕩=2⊑bB
   o←𝕩=0⊑bB⋄c←𝕩=1⊑bB⋄v←a-˜𝕩≥vi⋄f←¬o∨c∨v∨sep
   na←(2×sep)+f×1+l↑0∾c∨v
-  d←+`o-c⋄fe←(d⍋⊸(⍋∘⊣⊏+`∘⊏)o)⊏l∾(⍋⊏⟜d)⊸⊏/c
+  d←+`o-c⋄fe←(+`⌾((⍋d)⊸⊏)o)⊏l∾(⍋⊏⟜d)⊸⊏/c
   fe⌊↩l-l↑⌽⌈`↕∘≠⊸×⌽1∾˜sep
   sel←¬∘⊏⟜(o∨c)⊸/⍋((f×fe)⌈↕l)-+`f-l↑/⁼∧f/fe
   sel⊸⊏¨𝕩‿na
