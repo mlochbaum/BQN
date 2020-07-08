@@ -121,11 +121,16 @@ Compile←{
 
 DParse ← {
   l←≠𝕩⋄sep←𝕩∊bS⋄𝕩↩(⌽⍋⍋⌽+`(≠↑0∾⊢)⊸∨sep)⊏𝕩
-  a←𝕩∊2↑bG⋄o←𝕩=1⊑bB⋄c←𝕩=0⊑bB⋄v←𝕩≥vi⋄f←𝕩∊bF
-  d←+`o-c⋄fe←(d⍋⊸(⍋∘⊣⊏+`∘⊏)o)⊏l∾(⍋⊏⟜d)⊸⊏/c
-  dy←1↓0∾˜o∨v⋄la←(¯1⌽f×dy)/(o×fe)⌈↕l⋄mc←/f×¬dy
-  n←𝕩≥vi+𝕨⋄id←/v-n⋄cn←/f∨n⋄s←/sep⋄u←⍷ob←cn⊏𝕩
-  bc←(⍋(∾˜cn∾id)∾(1+/a)∾s∾mc∾la)⊏∾⟨0¨cn,(1+(id-1)⊏a),u⊐ob,vi-˜id⊏𝕩,(11-⊑bG)+a/𝕩,14¨s,5¨mc,6¨la⟩
+  o←𝕩=1⊑bB⋄c←𝕩=0⊑bB
+  gi←⍋g←⍋d←+`o-c⋄pi←+`ps←g⊏o
+  tr←pi⊏(0∾(⍋⊏⟜d)⊸⊏/o)⊏xf←⌽(¬o)=○(·⌈`(1+↕∘≠)⊸×)○⌽𝕩∊bF
+  tf←(2(|<≤)↕∘≠⊸(⊣-·⌈`×)ps)×tr
+  f←¯1↓(⍋0∾d)⊏xf∾0
+  𝕩↩g⊏𝕩⋄v←𝕩≥vi⋄fa←/tf∨tr<f
+  dy←1↓0∾˜(tr>tf∨ps)∨v∨(g⊏c)>f
+  n←𝕩≥vi+𝕨⋄id←/v-n⋄cn←/n∨𝕩∊bF⋄a←𝕩∊2↑bG⋄s←/𝕩∊bS⋄u←⍷ob←cn⊏𝕩
+  or←⍋g⊏˜∾outa←⟨cn,cn,id,id,1+/a,s,+⟜(⊏⟜dy)fa⟩
+  bc←or⊏∾outb←⟨0¨cn,u⊐ob,(1+(id-1)⊏a),vi-˜id⊏𝕩,(11-⊑bG)+a/𝕩,14¨s,5+fa⊏dy+4×tr⟩
   bc‿u
 }
 
