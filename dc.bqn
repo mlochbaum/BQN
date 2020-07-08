@@ -19,6 +19,7 @@ charSet←∾charGroups←⟨
 ⟩
 bF‿bM‿bC‿bI‿bS‿bG‿bB‿bL‿bD‿bN‿bA‿bP‿bW←⊔/≠¨charGroups
 vi←+´≠¨8↑charGroups
+charRole←(vi+1)↑(/0∾≠¨3↑charGroups)∾10⥊↕2
 
 Tokenize←{
   r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧𝕩=⊑"'"⋄d←/𝕩='"'
@@ -40,8 +41,9 @@ Tokenize←{
 
   c↩(w∨¬l∨c∊bP∾bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
   c/˜↩¬(1⌾⊑1⌽1⌾⊑)⊸∧c∊bS
-  t←(us=¯1⊸⊑¨i)(⊢+∧⟜(2⊸=))0⌈na⌊∘÷˜(⊑bA)-˜⊑¨i
-  ⟨c,t⌾(((0⊸≤∧<⟜(≠id))c-vi)⊸/)0¨c,nv,nv-≠args,(nv↓id)∾lu⟩
+  ti←(us=¯1⊸⊑¨i)(⊢+∧⟜(2⊸=))0⌈na⌊∘÷˜(⊑bA)-˜⊑¨i
+  t←ti⌾(((0⊸≤∧<⟜(≠id))c-vi)⊸/)(vi⌊c)⊏charRole
+  ⟨c,t,nv,nv-≠args,(nv↓id)∾lu⟩
 }
 
 Parse←{
@@ -124,16 +126,16 @@ Compile←{
 
 # Targetting dzaima/BQN bytecode:
 
-DParse ← {
-  l←≠𝕩⋄sep←𝕩∊bS⋄𝕩⊏˜↩⌽⍋⍋⌽+`(≠↑0∾⊢)⊸∨sep
+DParse ← {nv‿r𝕊𝕩:
+  l←≠𝕩⋄sep←𝕩∊bS⋄rev←⌽⍋⍋⌽+`(≠↑0∾⊢)⊸∨sep⋄𝕩⊏˜↩rev⋄r⊏˜↩rev
   o←𝕩=1⊑bB⋄g←⍋d←+`o-𝕩=0⊑bB⋄ps←g⊏o∨sep
-  xf←⌽(¬o∨sep)=○(⌈`(1+↕∘≠)⊸×)○⌽𝕩∊bF
-  𝕩↩g⊏𝕩⋄v←𝕩≥vi⋄a←𝕩∊2↑bG⋄s←/𝕩∊bS⋄f←(l↑0∾1+g)⊏xf∾0
+  xf←⌽(¬o∨sep)=○(⌈`(1+↕∘≠)⊸×)○⌽1=r
+  𝕩⊏˜↩g⋄r⊏˜↩g⋄v←𝕩≥vi⋄a←𝕩∊2↑bG⋄s←/𝕩∊bS⋄f←(l↑0∾1+g)⊏xf∾0
   tr←ps+`⊸⊏(0∾ps/g)⊏xf
   tf←tr∧2(|<≤)ps(⊢-⌈`∘×)↕l
   fa←/(tr<f)∨tf∧a<○(⌈`(1+↕∘≠)⊸×)ps
   dy←fa⊏1↓0∾˜(tr>tf∨ps)∨v∨f<𝕩=0⊑bB
-  n←𝕩≥vi+𝕨⋄id←/v-n⋄cn←/n∨𝕩∊bF⋄u←⍷ob←cn⊏𝕩
+  n←𝕩≥vi+nv⋄id←/v-n⋄cn←/n∨𝕩∊bF⋄u←⍷ob←cn⊏𝕩
   or←⍋g⊏˜∾⟨cn,cn,id,id,1+/a,s,fa+dy⟩
   bc←or⊏∾⟨0¨cn,u⊐ob,1+(id-1)⊏a,vi-˜id⊏𝕩,(11-⊑bG)+a/𝕩,14¨s,5+dy+4×fa⊏tr⟩
   bc‿u
@@ -146,7 +148,7 @@ prims←⟨
 ⟩
 DGenFn←{
   ⟨t,r,nVar,nLoc,lits⟩←⟨⟩Tokenize𝕩
-  ⟨bc,u⟩←nVar DParse t
+  ⟨bc,u⟩←nVar‿r DParse t
   o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾ReadNum¨lits
   ⟨bc,o,nVar↑•a,⟨⟩⟩
 }
