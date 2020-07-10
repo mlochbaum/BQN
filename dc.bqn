@@ -127,10 +127,10 @@ Compile←{
 # Targetting dzaima/BQN bytecode:
 
 DParse ← {nv‿r𝕊𝕩:
-  l←≠𝕩⋄sep←𝕩∊bS⋄rev←⌽⍋⍋⌽+`(≠↑0∾⊢)⊸∨sep⋄𝕩⊏˜↩rev⋄r⊏˜↩rev
+  sep←𝕩∊bS⋄rev←≠⊸-1+⍋⍒+`(≠↑0∾⊢)⊸∨sep⋄𝕩⊏˜↩rev⋄r⊏˜↩rev
   o←𝕩=1⊑bB⋄g←⍋d←+`o-𝕩=0⊑bB⋄ps←g⊏o∨sep
   xf←⌽(¬o∨sep)=○(⌈`(1+↕∘≠)⊸×)○⌽(¯1⌽2≤r)∨1≤r
-  𝕩⊏˜↩g⋄r⊏˜↩g⋄v←𝕩≥vi⋄a←𝕩∊2↑bG⋄s←/𝕩∊bS⋄op←r≥2⋄f←(l↑0∾1+g)⊏xf∾0
+  𝕩⊏˜↩g⋄r⊏˜↩g⋄v←𝕩≥vi⋄a←𝕩∊2↑bG⋄s←/𝕩∊bS⋄op←r≥2⋄f←(¯1↓0∾1+g)⊏xf∾0
   tr←ps+`⊸⊏(0∾ps/g)⊏xf
   tf←tr∧2(|<≤)ps(⊢-⌈`∘×)+`¬op
   opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬(1⌽r=3)∨¯1⊸⌽⊸∨op
