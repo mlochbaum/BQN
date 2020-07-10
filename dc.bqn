@@ -133,8 +133,8 @@ DParse ← {nv‿r𝕊𝕩:
   𝕩⊏˜↩g⋄r⊏˜↩g⋄v←𝕩≥vi⋄a←𝕩∊2↑bG⋄s←/𝕩∊bS⋄op←r≥2⋄f←(l↑0∾1+g)⊏xf∾0
   tr←ps+`⊸⊏(0∾ps/g)⊏xf
   tf←tr∧2(|<≤)ps(⊢-⌈`∘×)+`¬op
-  ro←1⌽r=3⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⊸⌽⊸∨op
-  oa←⌽/op⋄fa←/ro<((tr∨op)<f∨¯1⌽op)∨tf∧a<○(⌈`(1+↕∘≠)⊸×)ps
+  opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬(1⌽r=3)∨¯1⊸⌽⊸∨op
+  oa←⌽/opa⋄fa←/(1⌽opa∧r=3)<((tr∨op)<f∨¯1⌽opa)∨tf∧a<○(⌈`(1+↕∘≠)⊸×)ps
   dy←fa⊏1↓0∾˜(tr>tf∨ps)∨v∨f<𝕩=0⊑bB
   n←𝕩≥vi+nv⋄id←/v-n⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
   or←⍋g⊏˜∾⟨cn,cn,id,id,1+/a,s,oa+1⌈1-˜oa⊏os,fa+dy⟩
