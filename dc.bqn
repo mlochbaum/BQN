@@ -145,7 +145,7 @@ DParse ← {nv‿r𝕊𝕩:
   tf←tr∧2(|<≤)ps(⊢-⌈`∘×)+`¬ro∨op
   opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⊸⌽⊸∨op
   oa←⌽/opa⋄fa←/(ro∧1⌽opa)<((tr∨op)<f∨¯1⌽opa)∨tf∧a<○(⌈`(1+↕∘≠)⊸×)ps
-  dy←fa⊏1↓0∾˜(tr>tf∨ps)∨v∨lc∨f<𝕩=1⊑bB
+  dy←fa⊏1↓0∾˜(tr>tf∨ps)∨(v∧r=0)∨lc∨f<𝕩=1⊑bB
   n←𝕩≥vi+nv⋄id←/v-n⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
   lo←(o/𝕩)=4⊑bB⋄l←/lc⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`s∾0
   dr←/s>(+`o)⊏0∾lo
