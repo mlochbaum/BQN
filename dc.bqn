@@ -137,11 +137,11 @@ RevE←{
 DParse ← {nv‿r𝕊𝕩:
   p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩
   rev←p RevE𝕩⋄𝕩⊏˜↩rev⋄r⊏˜↩rev⋄p⊏˜↩rev
-  xf←⌽(¬𝕩∊bS∾0⊑bB)=○(⌈`(1+↕∘≠)⊸×)○⌽(¯1⌽2≤r)∨1≤r
+  xf←⌽(¬𝕩=0⊑bB)=○(⌈`(1+↕∘≠)⊸×)○⌽(¯1⌽2≤r)∨1≤r
   g←⍋+`p⋄𝕩⊏˜↩g⋄r⊏˜↩g⋄p⊏˜↩g
   v←𝕩≥vi⋄a←𝕩∊2↑bG⋄op←r≥2⋄f←(¯1↓0∾1+g)⊏xf∾0
   s←𝕩∊bS⋄o←p>0⋄ps←s∨o⋄lc←𝕩=5⊑bB
-  tr←ps+`⊸⊏(¯1↓1∾ps)/f
+  tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏f
   tf←tr∧2(|<≤)ps(⊢-⌈`∘×)+`¬op
   opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬(1⌽r=3)∨¯1⊸⌽⊸∨op
   oa←⌽/opa⋄fa←/(1⌽opa∧r=3)<((tr∨op)<f∨¯1⌽opa)∨tf∧a<○(⌈`(1+↕∘≠)⊸×)ps
