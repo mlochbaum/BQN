@@ -127,7 +127,7 @@ Compile←{
 # Targetting dzaima/BQN bytecode:
 
 RevE←{
-  g←⍋+`𝕨⋄q←g⊏𝕨⋄b←q>0⋄e←q<0
+  p‿g←𝕨⋄q←g⊏p⋄b←q>0⋄e←q<0
   l←1+-⟜(b/g)⌾(e/⊢)e×g
   ps←b∨g⊏(𝕩∊bS)
   sl←-⟜(≠↑0∾⊢)(ps∾1)/+`l∾1
@@ -135,11 +135,11 @@ RevE←{
   ⍋+`(¯1↓⍋0∾1+g)⊏1+(1(∾+○PL∾˜)ps)-1(∾+∾˜)l
 }
 DParse ← {nv‿r𝕊𝕩:
-  p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩
-  rev←p RevE𝕩⋄𝕩⊏˜↩rev⋄r⊏˜↩rev⋄p⊏˜↩rev
-  xf←⌽(¬𝕩=0⊑bB)=○(⌈`(1+↕∘≠)⊸×)○⌽(¯1⌽2≤r)∨1≤r
-  g←⍋+`p⋄𝕩⊏˜↩g⋄r⊏˜↩g⋄p⊏˜↩g
-  v←𝕩≥vi⋄a←𝕩∊2↑bG⋄op←r≥2⋄f←(¯1↓0∾1+g)⊏xf∾0
+  g←⍋+`p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩
+  f←(𝕩≠1⊑bB)(∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
+  rev←p‿g RevE𝕩⋄g↩⍋+`rev⊏p
+  gr←g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄p⊏˜↩gr⋄f⊏˜↩gr
+  v←𝕩≥vi⋄a←𝕩∊2↑bG⋄op←r≥2
   s←𝕩∊bS⋄o←p>0⋄ps←s∨o⋄lc←𝕩=5⊑bB
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏f
   tf←tr∧2(|<≤)ps(⊢-⌈`∘×)+`¬op
