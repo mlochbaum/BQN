@@ -136,18 +136,18 @@ RevE←{
 }
 DParse ← {nv‿r𝕊𝕩:
   g←⍋+`p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩
-  f←(𝕩≠1⊑bB)(∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
+  r+↩(𝕩=1⊑bB)(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
   rev←p‿g RevE𝕩⋄g↩⍋+`rev⊏p
-  gr←g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄p⊏˜↩gr⋄f⊏˜↩gr
-  v←𝕩≥vi⋄a←𝕩∊2↑bG⋄op←r≥2⋄ro←1⌽r=3
-  s←𝕩∊bS⋄o←p>0⋄ps←s∨o⋄lc←𝕩=5⊑bB
-  tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏f
+  gr←g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄p⊏˜↩gr
+  s←𝕩∊bS⋄o←p>0⋄ps←s∨o⋄a←𝕩∊2↑bG⋄r-↩ps∨a
+  v←𝕩≥vi⋄op←r≥2⋄ro←1⌽r=3
+  tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏r≥1
   tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧tr∧2(|<≤)ps(⊢-⌈`∘×)+`¬ro∨op
   opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⊸⌽⊸∨op
-  oa←⌽/opa⋄fa←/(ro∧1⌽opa)<((tr∨op)<f∨¯1⌽opa)∨tf
-  dy←fa⊏1↓0∾˜(tr>tf∨ps∨a)∨(v∧r=0)∨lc∨f<𝕩=1⊑bB
+  oa←⌽/opa⋄fa←/(ro∧1⌽opa)<((tr∨op)<(r=1)∨¯1⌽opa)∨tf
+  dy←fa⊏1↓0∾˜((r≥0)∧tr>tf)∨r=0
   n←𝕩≥vi+nv⋄id←/v-n⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
-  lo←(o/𝕩)=4⊑bB⋄l←/lc⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`s∾0
+  lo←(o/𝕩)=4⊑bB⋄l←/𝕩=5⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`s∾0
   dr←/s>(+`o)⊏0∾lo
   or←⍋g⊏˜∾⟨cn,cn,id,id,1+/a,dr,l,l,oa+1⌈1-˜oa⊏os,fa+dy⟩
   bc←or⊏∾⟨0¨cn,u⊐ob,1+(id-1)⊏a,vi-˜id⊏𝕩,(11-⊑bG)+a/𝕩
