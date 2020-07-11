@@ -140,10 +140,10 @@ DParse ← {nv‿r𝕊𝕩:
   rev←p‿g RevE𝕩⋄g↩⍋+`rev⊏p
   gr←g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄o←gr⊏p>0
   s←𝕩∊bS⋄ps←s∨o⋄a←𝕩∊2↑bG
-  r-↩ps∨a⋄op←r≥2⋄ro←1⌽r=3
+  r-↩ps∨a⋄op←r≥2⋄ro←op∨1⌽r=3
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏r≥1
-  tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧2(|<≤)ps(⊢-⌈`∘×)+`¬ro∨op
-  opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⊸⌽⊸∨op
+  tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧2(|<≤)ps(⊢-⌈`∘×)+`¬ro
+  opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⌽op
   oa←⌽/opa⋄fa←/(tf∨¬tr)∧(ro∧1⌽opa)<(r=1)∨op<¯1⌽opa
   dy←fa⊏1↓0∾˜(tr∧r≥0)∨r=0
   n←𝕩≥vi+nv⋄id←/n<𝕩≥vi⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
