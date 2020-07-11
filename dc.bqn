@@ -127,13 +127,13 @@ Compile←{
 # Targetting dzaima/BQN bytecode:
 
 RevE←{
-  g←⍋d←+`p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩
-  i←(⍋⊏⟜d)⊸⊏/p>0⋄f←(⍋⊏⟜d)⊸⊏/p<0
-  l←1+(f-i)⌾((g⊏p<0)⊸/)0¨𝕩
-  ps←g⊏(𝕩∊bS)∨p>0
+  g←⍋+`p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩
+  q←g⊏p⋄b←q>0⋄e←q<0
+  l←1+-⟜(b/g)⌾(e/⊢)e×g
+  ps←b∨g⊏(𝕩∊bS)
   sl←-⟜(≠↑0∾⊢)(ps∾1)/+`l∾1
   PL←{sl⌾(𝕩⊸/)0¨𝕩}
-  ⍋¯1↓+`(⍋0∾1+g)⊏1+((1⊸∾+○PL∾⟜1)ps)-(1⊸∾+∾⟜1)l
+  ⍋+`(¯1↓⍋0∾1+g)⊏1+(1(∾+○PL∾˜)ps)-1(∾+∾˜)l
 }
 DParse ← {nv‿r𝕊𝕩:
   rev←RevE𝕩⋄𝕩⊏˜↩rev⋄r⊏˜↩rev
