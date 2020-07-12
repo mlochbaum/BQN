@@ -146,7 +146,7 @@ DParse ← {nv‿r𝕊𝕩:
   g⊏˜↩⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄o⊏˜↩gr⋄l←/gr⊏sr>sl
   s←𝕩∊bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩∊2↑bG
   r-↩ps∨a⋄op←r≥2⋄ro←op∨1⌽r=3
-  tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏r≥1
+  tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏ro∨r≥1
   tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧2(|<≤)ps(⊢-⌈`∘×)+`¬ro
   opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⌽op
   oa←⌽/opa⋄fa←/(tf∨¬tr)∧(ro∧1⌽opa)<(r=1)∨op<¯1⌽opa
