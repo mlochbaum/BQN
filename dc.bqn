@@ -129,11 +129,12 @@ Compile←{
 DParse ← {nv‿r𝕊𝕩:
   g←⍋+`p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩
   r+↩(𝕩=1⊑bB)(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
-  rev←⍋+`1+¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⍋1(+`∘∾-∾˜)g⊏(p>0)∨𝕩∊bS
+  lg←1⊸⌽⊸∨𝕩∊bL⋄o←p>0
+  rev←⍋+`1+¯1↓(⍋∘⊏⟜lg⊸⊏g)((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨lg∨𝕩∊bS
   g↩⍋+`rev⊏p
-  gr←g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄o←gr⊏p>0
-  s←𝕩∊bS⋄ps←s∨o⋄a←𝕩∊2↑bG
-  r-↩ps∨a⋄op←r≥2⋄ro←op∨1⌽r=3
+  gr←g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄o⊏˜↩gr
+  s←𝕩∊bS⋄ps←s∨o⋄a←𝕩∊2↑bG⋄lg↩¯1⊸⌽⊸∨𝕩∊bL
+  r∧↩¬1⊸⌽⊸∨lg⋄r-↩ps∨a⋄op←r≥2⋄ro←op∨1⌽r=3
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏r≥1
   tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧2(|<≤)ps(⊢-⌈`∘×)+`¬ro
   opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⌽op
@@ -141,6 +142,7 @@ DParse ← {nv‿r𝕊𝕩:
   dy←fa⊏1↓0∾˜(tr∧r≥0)∨r=0
   n←𝕩≥vi+nv⋄id←/n<𝕩≥vi⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
   lo←(o/𝕩)=4⊑bB⋄l←/𝕩=5⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`s∾0
+  l∾↩sd←/1⊸⌽⊸<lg⋄ll∾↩1+2÷˜sd-/1⊸⌽⊸>lg
   dr←/s>o+`⊸⊏0∾lo
   or←⍋g⊏˜∾⟨cn,cn,id,id,1+/a,dr,l,l,oa+1⌈1-˜oa⊏os,fa+dy⟩
   bc←or⊏∾⟨0¨cn,u⊐ob,1+(id-1)⊏a,vi-˜id⊏𝕩,(11-⊑bG)+a/𝕩
