@@ -147,14 +147,14 @@ DParse ← {nv‿r𝕊𝕩:
   s←𝕩∊bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩∊2↑bG
   r-↩ps∨a⋄op←r≥2⋄ro←op∨1⌽r=3
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏ro∨r≥1
-  tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧2(|<≤)ps(⊢-⌈`∘×)+`¬ro
-  opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⌽op
+  tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧(⊢∧2(|<≤)ps(⊢-⌈`∘×)+`)¬ro
+  opa←op>1↓0∾˜ps∨a⋄os←0⌈1-˜⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨¯1⌽op
   oa←⌽/opa⋄fa←/(tf∨¬tr)∧(ro∧1⌽opa)<(r=1)∨op<¯1⌽opa
   dy←fa⊏1↓0∾˜(tr∧r≥0)∨r=0
   n←𝕩≥vi+nv⋄id←/n<𝕩≥vi⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
   lo←(o/𝕩)=4⊑bB⋄l←/𝕩=5⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
   dr←/s>o+`⊸⊏0∾lo
-  or←⍋g⊏˜∾⟨cn,cn,id,id,1+/a,dr,l,l,si,si,oa+1⌈1-˜oa⊏os,fa+dy⟩
+  or←⍋g⊏˜∾⟨cn,cn,id,id,1+/a,dr,l,l,si,si,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy⟩
   bc←or⊏∾⟨0¨cn,u⊐ob,1+(id-1)⊏a,vi-˜id⊏𝕩,(11-⊑bG)+a/𝕩
           14¨dr,3¨l,ll,3¨si,sll,5+oa⊏r,5+dy+4×fa⊏tr⟩
   bc‿u
