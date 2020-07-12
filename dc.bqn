@@ -62,7 +62,17 @@ Enc2←{2|⌊∘÷⟜2⍟(↕𝕨)𝕩}
 
 Hex←16 Base⟜⌽ (•d∾"ABCDEF")⊸⊐
 
-ReadNum←10 Base⟜⌽ bD⊸⊐
+ReadNum←{
+  n‿d‿p‿i←bN  # ¯.π∞
+  Nat←10 Base⟜⌽ -⟜(⊑bD)
+  Int←(n=⊑)◶⟨Nat,-·Nat 1⊸↓⟩
+  Dec←⊐⟜(<d)⊸(Nat∘↑ + ·(0<≠)◶⟨0,Nat÷10⋆≠⟩+⟜1⊸↓)
+  Pos←(⊑p‿i⊐⊏)◶⟨π,∞,Dec⟩
+  e←⊑𝕩⊐charSet⊐<'e'
+  m←(n=⊑)◶⟨Pos,-·Pos 1⊸↓⟩e↑𝕩
+  𝕩×⟜(10⋆·Nat(e+1)↓⊣)˜⍟(e<≠𝕩)m
+}
+LitVal←(⊑"'"""⊐⊏)◶⟨1⊸⊑,1⊸↓,ReadNum⟩
 GenF64←{
   0:8⥊0;
   l←2(⌊⋆⁼)𝕩
@@ -158,7 +168,7 @@ prims←⟨
 DGenFn←{
   ⟨t,r,nVar,nLoc,lits⟩←⟨⟩Tokenize𝕩
   ⟨bc,u⟩←nVar‿r DParse t
-  o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾ReadNum¨lits
+  o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾LitVal¨lits
   ⟨bc,o,nVar↑•a,⟨⟩⟩
 }
 DRun←{
