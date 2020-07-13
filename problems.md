@@ -42,7 +42,7 @@ It seems that the first is the most common, but the others aren't really rare. T
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). Not really fixable; too much precedent.
 
 ### Can't access array ordering directly
-Only `⍋⍒` use array ordering rather than just array comparison or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be.
+Only `⍋⍒` use array ordering rather than just array comparison or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not *that* difficult: `⥊⊸⍋⌾<` is TAO `≤`).
 
 ### Syntactic type erasure
 A programmer can call an operator on either a syntactic function or value, but there's no way to know within the operator which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The array syntax suggest it should be Constant.
