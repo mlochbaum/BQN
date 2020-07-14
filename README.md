@@ -26,11 +26,11 @@ It's three letters, that happen to match the capitals in "Big Questions Notation
 
 ## What does BQN look like?
 
-It looks like qebrus okay:
+Rather strange, most likely:
 
     ⊑+`∘⌽⍟12↕2  # The 12th Fibonacci number
 
-[More examples here](https://github.com/mlochbaum/BQN2NGN/tree/master/examples).
+For longer samples, you can [gaze into the abyss](dc.bqn) that is the (incomplete) self-hosted compiler, or take a look at [some translations](examples/fifty.md) from ["A History of APL in 50 Functions"](https://www.jsoftware.com/papers/50/). While it's certainly possible to write BQN in a more spread-out and better commented style, nobody has done that to date.
 
 ## Array model
 
