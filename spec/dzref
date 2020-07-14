@@ -1,10 +1,6 @@
 #!/usr/bin/env dbqn
 
 impl ← "
-∧ ←            ×
-∨ ←            (+-×)
-
-
 #⌜
 # LAYER 3: Remove other limits
 # Now all implementations are full but ↕ is monadic only
@@ -154,10 +150,6 @@ Cmp ← ∨○IsArray◶{ # No arrays
   }𝕩
 }
 
-_grade←{
-  ! 1≤≠≢𝕩
-  i⊐˜+´˘((2⥊≠𝕩)⥊𝔽⎉∞‿¯1⎉¯1‿∞˜𝕩)(⌈⟜0+=⟜0⊸×)>⌜˜i←↕≠𝕩
-}
 _bins←{
   c←1-˜≠≢𝕨
   ! 0≤c
@@ -169,17 +161,15 @@ _bins←{
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
 ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 
-⍋ ←   Cmp _grade   ⊘ (  Cmp _bins)
-⍒ ← -∘Cmp _grade   ⊘ (-∘Cmp _bins)
-∧ ↩ ⍋⊸⊏            ⊘ ∧
-∨ ↩ ⍒⊸⊏            ⊘ ∨
+⍋ ↩ ⍋              ⊘ (  Cmp _bins)
+⍒ ↩ ⍒              ⊘ (-∘Cmp _bins)
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 "
 
 X←Raw←{≤4}
 {
   chrs←⟨
-    "!∧∨∾↑↕⌽⍉⍋⍒⊐⊒∊⍷⊔"
+    "!∾↑↕⌽⍉⍋⍒⊐⊒∊⍷⊔"
     ""
     "⚇"
   ⟩
@@ -208,7 +198,7 @@ X←Raw←{≤4}
   ⍎"Type    ← ⟨⟩⥊0⊸⥊"
 
   '!' Mod "{𝕩 ⋄ ≤1}⍟¬"
-  Mod⟜⥊¨ "↕∾⌽⊐"
+  Mod⟜⥊¨ "↕∾⌽⊐⍋⍒"
 
 
   # checks if line is a builtin redefinition
