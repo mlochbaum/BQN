@@ -103,7 +103,7 @@ Functions that have significant differences from APL functions are marked with a
 | `¬`   | [Not](doc/logic.md)*                                | [Span](doc/logic.md)*
 | `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
-| `<`   | Box                                                 | [Less Than](https://aplwiki.com/wiki/Less_than)
+| `<`   | [Box](https://aplwiki.com/wiki/Enclose)             | [Less Than](https://aplwiki.com/wiki/Less_than)
 | `>`   | [Merge](https://aplwiki.com/wiki/Mix)               | [Greater Than](https://aplwiki.com/wiki/Greater_than)
 | `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
 | `=`   |                                                     | [Equals](https://aplwiki.com/wiki/Equal_to)
@@ -118,17 +118,17 @@ Functions that have significant differences from APL functions are marked with a
 | `↑`   | Prefixes*                                           | [Take](https://aplwiki.com/wiki/Take)
 | `↓`   | Suffixes*                                           | [Drop](https://aplwiki.com/wiki/Drop)
 | `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](doc/windows.md)*
-| `⌽`   | [Reverse](https://aplwiki.com/wiki/Reverse)         | Rotate
+| `⌽`   | [Reverse](https://aplwiki.com/wiki/Reverse)         | [Rotate](https://aplwiki.com/wiki/Rotate)
 | `⍉`   | [Transpose](doc/transpose.md)*                      | [Reorder axes](doc/transpose.md)*
 | `/`   | [Indices](https://aplwiki.com/wiki/Indices)         | [Replicate](https://aplwiki.com/wiki/Replicate)
-| `⍋`   | Grade Up                                            | [Bins Up](https://aplwiki.com/wiki/Interval_Index)
-| `⍒`   | Grade Down                                          | [Bins Down](https://aplwiki.com/wiki/Interval_Index)
+| `⍋`   | [Grade Up](https://aplwiki.com/wiki/Grade)          | [Bins Up](https://aplwiki.com/wiki/Interval_Index)
+| `⍒`   | [Grade Down](https://aplwiki.com/wiki/Grade)        | [Bins Down](https://aplwiki.com/wiki/Interval_Index)
 | `⊏`   | First Cell*                                         | Select*
 | `⊑`   | [First](https://aplwiki.com/wiki/First)             | Pick*
 | `⊐`   |                                                     | [Index of](https://aplwiki.com/wiki/Index_Of)
 | `⊒`   | Occurrence Count*                                   | Progressive Index of*
-| `∊`   | [Unique Mask](https://aplwiki.com/wiki/Nub_Sieve)   | Member of
-| `⍷`   | [Deduplicate](https://aplwiki.com/wiki/Unique)      | Find
+| `∊`   | [Unique Mask](https://aplwiki.com/wiki/Nub_Sieve)   | [Member of](https://aplwiki.com/wiki/Membership)
+| `⍷`   | [Deduplicate](https://aplwiki.com/wiki/Unique)      | [Find](https://aplwiki.com/wiki/Find)
 | `⊔`   | [Group Indices](doc/group.md)*                      | [Group](doc/group.md)*
 
 ### Modifiers and compositions
