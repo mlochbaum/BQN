@@ -41,7 +41,7 @@ Tokenize←{
   id←⍷args∾(bA∊˜w/c)⍒⊸⊏in⋄nv←+´bA∊˜⊑¨id
 
   c↩(w∨¬l∨c∊bP∾bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
-  c/˜↩¬(1⌾⊑1⌽1⌾⊑)⊸∧c∊bS
+  c/˜↩¬(≠↑1∾(c∊2‿4⊏bB)∨⊢)⊸∧c∊bS⋄c/˜↩¬(1↓1∾˜c∊3‿5⊏bB)∧c∊bS
   ti←(us=¯1⊸⊑¨i)(⊢+∧⟜(2⊸=))0⌈na⌊∘÷˜(⊑bA)-˜⊑¨i
   t←ti⌾(((0⊸≤∧<⟜(≠id))c-vi)⊸/)(vi⌊c)⊏charRole
   ⟨c,t,nv,nv-≠args,(nv↓id)∾lu⟩
