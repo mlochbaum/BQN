@@ -30,7 +30,7 @@ Rather strange, most likely:
 
     ⊑+`∘⌽⍟12↕2  # The 12th Fibonacci number
 
-For longer samples, you can [gaze into the abyss](dc.bqn) that is the (incomplete) self-hosted compiler, or take a look at [some translations](examples/fifty.md) from ["A History of APL in 50 Functions"](https://www.jsoftware.com/papers/50/). While it's certainly possible to write BQN in a more spread-out and better commented style, nobody has done that to date.
+For longer samples, you can [gaze into the abyss](dc.bqn) that is the (incomplete) self-hosted compiler, or take a look at [some translations](examples/fifty.bqn) from ["A History of APL in 50 Functions"](https://www.jsoftware.com/papers/50/). While it's certainly possible to write BQN in a more spread-out and better commented style, nobody has done that to date.
 
 ## Array model
 
