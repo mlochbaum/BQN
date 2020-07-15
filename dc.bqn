@@ -23,14 +23,14 @@ vi←+´≠¨9↑charGroups
 charRole←(vi+1)↑(/0∾≠¨3↑charGroups)∾10⥊↕2
 
 Tokenize←{
-  r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧𝕩=⊑"'"⋄d←/𝕩='"'
+  r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧𝕩='''⋄d←/𝕩='"'
   g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q
   e← g⊏∾⟨2+s⋄ 1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=nl)∾1⟩
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=⊑⌽𝕩}
   st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⍋e⋄b←st/q∾˘e
   ToI←¯1↓·/⁼(≠𝕩)∾˜⥊⋄f←¬≠`ToI b
   cb←(¬(st/q)⊏r)/b
-  nl←≠lu←⍷lit←𝕩⊔˜1-˜(+`ToI⊑˘cb)×≠`ToI cb
+  lu←⍷lit←𝕩⊔˜1-˜(+`ToI⊑˘cb)×≠`ToI cb
   cl←f/ToI⊑∘⌽˘cb
 
   args←charSet⊸⊐¨𝕨⋄c←charSet⊐f/𝕩
