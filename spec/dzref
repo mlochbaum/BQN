@@ -43,18 +43,6 @@ _onAxes_←{
   }
 }
 
-Take←{
-  T←{
-    ! Int 𝕨
-    l←≠𝕩
-    i←(l+1)|¯1⌈l⌊((𝕨<0)×𝕨+l)+↕|𝕨
-    i⊏∾⟜(1⊸Cell⥊Type)⍟(0∨´l=i)𝕩
-  }
-  𝕨 T _onAxes_ 0 (⟨1⟩⥊˜0⌈𝕨-○≠⊢)⊸∾∘≢⊸⥊𝕩
-}
-Prefixes ← {!1≤≠≢𝕩 ⋄ (↕1+≠𝕩)Take¨<𝕩}
-↑ ← Prefixes       ⊘ Take
-
 Windows←{
   ! IsArray 𝕩
   ! 1≥≠≢𝕨
@@ -159,7 +147,7 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 X←Raw←{≤4}
 {
   chrs←⟨
-    "!∾↑↕⌽⍉⍋⍒⊐⊒∊⍷"
+    "!∾↕⌽⍉⍋⍒⊐⊒∊⍷"
     ""
     "⚇"
   ⟩
