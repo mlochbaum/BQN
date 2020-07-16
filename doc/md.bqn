@@ -19,16 +19,29 @@
 # strings (they don't include any line ending character).
 # The html file is constructed directly as a string, using Html.
 
-JoinLines ← ∾ ∾⟜lf¨
+################################
+# Utilities
 
-# Create an html node
-Html ← {
-  tag ← "<"‿"</" ∾¨ <𝕨∾">"
-  ∾ ⟨⊑tag , 𝕩 , ¯1⊑tag⟩
+# 𝕨 is a list of lists. Find the first of these lists each cell of 𝕩
+# belongs to.
+FindGroup ← {
+  i ← (∾𝕨) ⊐ 𝕩  # Index in all cells of 𝕨
+  e ← +`≠¨𝕨     # Index past the end of each group of 𝕨
+  e ⍋ i         # How many end-indices does each element pass?
 }
 
+# Join lines with newline characters. Include the trailing newline.
+JoinLines ← ∾ ∾⟜lf¨
+
+# Create an html node from a tag name and interior text
+Html ← {
+  𝕨 ∾↩ ">"
+  ∾ ⟨"<",𝕨 , 𝕩 , "</",𝕨⟩
+}
+
+################################
 Markdown ← {
-  # ⌜
+  ######
   # Utilities
 
   # Index of first zero, or number of leading 1s
@@ -38,17 +51,23 @@ Markdown ← {
   Shl ←   ≠∘⊢ ↑ ∾   # From the left
   Shr ← -∘≠∘⊢ ↑ ∾˜  # From the right
 
-  # Find whether 𝕨 was true at the last index where 𝕩 was false, in each
+  # Find whether 𝕨 was true at the last index where 𝕩 was true, in each
   # position.
   PrecedesGroup ← {
-    (0 ∾ 𝕨) ⊏˜ ⌈` (1 + ↕≠𝕩) × ¬𝕩
+    # We prepend a 0 to 𝕨, so that 0 is the "before start" index, with a
+    # false value, and normal indices are increased by 1.
+    𝕨 ∾˜↩ 0
+    inds ← 1 + ↕≠𝕩
+    # Zero out indices where x was false, and find the greatest index so
+    # far at each position.
+    last ← ⌈` inds × ¬𝕩
+    last ⊏ 𝕨
   }
 
-  # ⌜
+  ######
   # First we classify each line based on the type of block it can start.
   ClassifyLine ← (0<≠)◶(0‿0)‿{
-    FindGroup ← { ⊑ (+`≠¨𝕨) ⍋ 𝕨 ∾⊸⊐ 𝕩 }
-    ind ← lineChars FindGroup ⊑𝕩
+    ind ← ⊑ lineChars FindGroup ⊏𝕩
     getLen ← ind ⊑ lineClas∾⟨0˜⟩
     l ← GetLen 𝕩
     ⟨ind ∧ l>0 ⋄ l⟩
@@ -58,8 +77,8 @@ Markdown ← {
   IsCode ← 4 (≤⟜≠)◶⟨0,∧´' '=↑⟩ ⊢
   ProcCode ← {
     lines ← JoinLines 4 ↓¨ 𝕩
-    #lines ↩ ∾⥊¨ ("<>"⊸⊐ ⊑⟜⟨"&lt;","&gt;"⟩⍟(2>⊣)¨ ⊢) lines
-    "pre" Html doHighlight◶⟨"code"⊸Html,Highlight⟩ lines
+    Esc ← (∾⥊¨) ("<>"⊸⊐ ⊑⟜⟨"&lt;","&gt;"⟩⍟(2>⊣)¨ ⊢)
+    "pre" Html doHighlight◶⟨"code"Html Esc,Highlight⟩ lines
   }
 
   # Headings start with #, and require 1-6 #s followed by a space.
@@ -104,7 +123,7 @@ Markdown ← {
   # Inline elements
   ProcInline ← {
     s←"`*"=⌜𝕩
-    d←<∘/˘s
+    d←(⊢-2|⊢)∘≠⊸↑¨<∘/˘s
     c←⊏s⋄r←¯1⌽l←≠`c⋄cs←l∧c
     code←Highlight⍟doHighlight¨(1-˜(l∧r)×+`cs)⊔𝕩
     inc←¬l∨∨´<˘s
@@ -116,48 +135,51 @@ Markdown ← {
     ""    ‿ (!∘0)       ‿ ProcParagraph
     "#"   ‿ LenHeading  ‿ ProcHeading
     " "   ‿ IsCode      ‿ ProcCode
-    "-+*" ‿ LenBullet   ‿ (∾⊢) # ProcBullet
-    •d    ‿ LenListNum  ‿ (∾⊢) # ProcListNum
-    "|"   ‿ IsTable     ‿ (∾⊢) # ProcTable
+  # "-+*" ‿ LenBullet   ‿ ProcBullet
+  # •d    ‿ LenListNum  ‿ ProcListNum
+  # "|"   ‿ IsTable     ‿ ProcTable
   ⟩
 
-  # ⌜
-  # We will also use the length and number of leading blanks.
-  lengths ← ≠¨ 𝕩
-  blanks ← (Lead ' '⊸=)¨ 𝕩
-  nonEmptyMask ← blanks < lengths
-  # Now let's use the line classifications to get the block structure.
+  ######
+  # Create the block structure using line classifications.
+  lengths ← ≠¨ 𝕩                   # Length of each line
+  blanks ← (Lead ' '⊸=)¨ 𝕩         # Number of leading blanks
+  nonEmptyMask ← blanks < lengths  # Empty ←→ all leading blanks
+
+  # Get line classifications: type of line, and data to be passed into
+  # the line processor. Note that leading blanks aren't passed in.
   lineType‿lineDat ← <˘⍉ > ClassifyLine¨ blanks ↓¨ 𝕩
+  # Empty lines have type ¯1.
+  lineType ↩ ¯1¨⌾((¬nonEmptyMask)⊸/) lineType
 
-  # We will construct a mask of lines that start new blocks, blockStart.
-
+  # Lines that could be included in code blocks (will be refined)
   codeMask ← nonEmptyMask ∧ blanks ≥ 4
+  paragraphMask ← 0 = lineType
+  # A header can't have 4 spaces of indentation. If it doesn't become
+  # part of a code block, it will be included in a paragraph.
   lineType -↩ codeMask ∧ 1 = lineType
-  paragraphMask ← nonEmptyMask ∧ 0 = lineType
 
   # Code blocks consist of indented lines, possibly with blank lines
   # in between. They must be separated from paragraphs by blank lines.
   codeMask ∧↩ ¬ paragraphMask PrecedesGroup codeMask
-  codeMask ∨↩ codeMask (⊢ ∧ PrecedesGroup ∧ PrecedesGroup⌾⌽) ¬ nonEmptyMask
+  codeMask ∨↩ codeMask (⊢ ∧ PrecedesGroup ∧ PrecedesGroup⌾⌽) lineType < 0
   lineType ↩ 2¨⌾(codeMask⊸/) lineType
-  paragraphMask ∧↩ ¬ codeMask
-
-  # Lists group together for now
-  bulletListMask‿orderedListMask ← <˘ 3‿4 =⌜ lineType
-
-  drop ← blanks × lineType < 2
 
   # Lines continue blocks if they are part of the same multi-line
   # type as the previous line, and otherwise start new ones.
-  blockMasks ← codeMask‿bulletListMask‿orderedListMask‿paragraphMask
-  blockStart ← nonEmptyMask ∧ ¬ ∨´ (⊢ ∧ 0⊸Shl)¨ blockMasks
+  # Headers (type 1) always start new blocks.
+  blockStart ← nonEmptyMask ∧ (1 = lineType) ∨ ¯1⊸Shl⊸≠ lineType
+  # Headers and paragraphs ignore leading blanks.
+  drop ← blanks × lineType < 2
+  # Group blocks based on blockStart, with type ¯1 lines excluded.
+  blocks ← (1 -˜ (lineType ≥ 0) × +`blockStart) ⊔ drop ↓¨ 𝕩
 
+  # To process a block, pick the appropriate function from procFns.
   ProcBlock ← {t‿l G b: f←t⊑procFns ⋄ l F ⊑b }
-  blocks ← (1 -˜ (nonEmptyMask ∨ codeMask) × +`blockStart) ⊔ drop ↓¨ 𝕩
   JoinLines (blockStart / lineType≍˘lineDat) <∘ProcBlock˘ blocks
 }
 
-# ⌜
+################################
 # Testing
 # Uses the test cases at https://spec.commonmark.org/0.29/spec.json
 # since Github doesn't seem to have published theirs
@@ -182,7 +204,7 @@ TestSections ← {
   res
 }
 
-# ⌜
+################################
 # Syntax highlighting
 doHighlight ← 1
 Highlight ← {
@@ -210,7 +232,6 @@ Highlight ← {
     "String"      , "'"""
   ⟩
   classTag ← ""‿""∾>{⟨"<span class='"∾𝕩∾"'>","</span>"⟩}¨1↓classes
-  FindGroup ← { (+`≠¨𝕨) ⍋ (∾𝕨) ⊐ 𝕩 }
 
   r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧𝕩='''⋄d←/𝕩='"'
   g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q
