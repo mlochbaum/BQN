@@ -30,6 +30,18 @@ FindGroup ← {
   e ⍋ i         # How many end-indices does each element pass?
 }
 
+# 𝕨 is a list of possible expression start indices in any order and 𝕩 is
+# the corresponding endpoints. The expressions are mutually exclusive
+# and do not nest, and are enabled in index order. Return a shape ·‿2
+# array where the rows give the start and end of each enabled expression
+# in index order.
+Trace ← {
+  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=⊑⌽𝕩}
+  g←⍋𝕨 ⋄ s←g⊏𝕨 ⋄ e←g⊏𝕩
+  st←¯1↓Se⟜(1↑˜≠)∾⟜≠s⍋e
+  st/s≍˘e
+}
+
 # Join lines with newline characters. Include the trailing newline.
 JoinLines ← ∾ ∾⟜lf¨
 
@@ -133,25 +145,35 @@ Markdown ← {
   # Inline elements
   ProcInline ← {
     puncChars ← "!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
-    # Characters that start or end inline elements
-    # (we don't do fancy processing for these yet)
-    delimiters ← "`*_"
-    # The corresponding tags
-    dTags ← {("<"∾⊢∾𝕩∾">"˜)¨""‿"/"}¨ 1‿2/"code"‿"em"
 
+    # Code spans
     ProcCodeSpan ← {
       𝕩 ↩ ' '¨⌾((𝕩=lf)⊸/) 𝕩
       𝕩 ↩ (1↓¯1↓⊢)⍟((⊢<○(∧´)⊑∾⊑∘⌽) ' '⊸=) 𝕩
-      Highlight⍟doHighlight 𝕩
+      "code" Html Highlight⍟doHighlight 𝕩
     }
+    tick ← 𝕩='`'
+    tend ← / (⊢ > 0⊸Shr) tick
+    tcount ← (1+↕∘≠)⊸(⊣-⌈`∘×) ¬ tick
+    tlen ← tend ⊏ tcount
+    c ← Trace´ tlen {m←(⊢=0⊸Shl)𝕨⋄(⌽⟜m/𝕩˜)¨1‿0}○((⍋tlen)⊸⊏) tend
+    cl ← (⊏˘c) ⊏ tcount
+    ctInds ← ⥊˘ 1 + c -⌜˘ cl×⌜1‿0
+    I2M ← (≠𝕩)↑/⁼  # Index to mask
+    include ← ¬ ≠` I2M ⥊ 0‿3⊸⊏˘ ctInds
+    codeStart ← I2M 1 ⊏˘ ctInds
+    codeGroup ← 1 -˜ codeStart (⊣×>)○(+`) I2M 2 ⊏˘ ctInds
+    code ← ProcCodeSpan¨ codeGroup ⊔ 𝕩
 
-    dMasks ← 𝕩⊸=¨ delimiters
-    dInds ← (⊢-2|⊢)∘≠⊸↑∘/¨ dMasks
-    c←⊑dMasks⋄r←¯1⌽l←≠`c⋄cs←l∧c
-    code←ProcCodeSpan¨(1-˜(l∧r)×+`cs)⊔𝕩
-    inc←¬l∨∨´dMasks
-    tags ← ∾ dInds ≠⊸⥊¨ dTags
-    ((/inc)∾(≠¨tags∾code)/(∾dInds)∾/cs) ⍋⊸⊏ (inc/𝕩)∾∾tags∾code
+    # Emphasis (still rudimentary)
+    eMasks ← (include ∧ 𝕩⊸=)¨ "*_"
+    eInds ← (⊢-2|⊢)∘≠⊸↑∘/¨ eMasks
+    include ∧↩ ¬∨´eMasks
+    eTags ← ∾ eInds ≠⊸⥊¨ <"<em>"‿"</em>"
+
+    new ← eTags ∾ code         # Text to be added
+    inds← (∾eInds)∾/codeStart  # Where to add it
+    ((/include)∾(≠¨new)/inds) ⍋⊸⊏ (include/𝕩)∾∾new
   }
 
   ######
@@ -248,12 +270,8 @@ Highlight ← {
   classTag ← ""‿""∾>{⟨"<span class='"∾𝕩∾"'>","</span>"⟩}¨1↓classes
 
   r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧𝕩='''⋄d←/𝕩='"'
-  g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q
-  e← g⊏∾⟨2+s⋄ 1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
-  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=⊑⌽𝕩}
-  st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⍋e⋄b←st/q∾˘e
-  ToI←¯1↓·/⁼(≠𝕩)∾˜⥊
-  sc←+´(1‿2-˜≠classes)×(≠`∨⊢)∘ToI∘>¨¯1↓((st/q)⊏r)⊔○(∾⟜2)<˘b
+  b←⟨s⋄¯1↓d⋄/r⟩ Trace○∾ ⟨2+s⋄1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
+  sc←+´(1‿2-˜≠classes)×(≠`∨⊢)∘((≠𝕩)↑/⁼∘∾)¨2↑((⊏˘b)⊏r)⊔○(∾⟜2)<˘b
   col←sc⌈14|chars FindGroup 𝕩
 
   w←(≠↑0∾⊢)⊸<id←col=5
