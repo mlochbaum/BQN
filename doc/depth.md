@@ -92,7 +92,7 @@ For Select, the depth-1 case is still quite useful, but it may also be desirable
 
 ## The Depth composition
 
-The Depth composition (`⚇`) is a generalization of Each that allows diving deeper into an array. To illustrate it we'll use a shape 4‿3 array of lists of lists.
+The Depth composition (`⚇`) is a generalization of Each that allows diving deeper into an array. To illustrate it we'll use a shape `4‿3` array of lists of lists.
 
         ⊢ n ← <⎉1⍟2 4‿3‿2‿2⥊↕48
     ┌

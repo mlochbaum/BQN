@@ -1,3 +1,5 @@
+# Join
+
 Join (`∾`) is an extension of the monadic function [Raze](https://aplwiki.com/wiki/Raze) from A+ and J to arbitrary argument ranks. It has the same relationship to Join to, the dyadic function sharing the same glyph, as Unbox (`>`) does to Couple (`≍`): `a≍b` is `>a‿b` and `a∾b` is `∾a‿b`. While Unbox and Couple combine arrays (the elements of Unbox's argument, or the arguments themselves for Coups) along a new leading axis, Join and Join to combine them along the existing leading axis. Both Unbox and Join can also be called on a higher-rank array, causing Unbox to add multiple leading axes while Join combines elements along multiple existing axes.
 
 Join can be used to combine several strings into a single string, like `array.join()` in Javascript (but it doesn't force the result to be a string).
