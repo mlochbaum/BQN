@@ -120,17 +120,6 @@ Markdown ← {
     "p" Html ProcInline ¯1 ↓ JoinLines ((Lead ' '⊸=)+"\#"≡2⊸↑)⊸↓¨ 𝕩
   }
 
-  # Inline elements
-  ProcInline ← {
-    s←"`*"=⌜𝕩
-    d←(⊢-2|⊢)∘≠⊸↑¨<∘/˘s
-    c←⊏s⋄r←¯1⌽l←≠`c⋄cs←l∧c
-    code←Highlight⍟doHighlight¨(1-˜(l∧r)×+`cs)⊔𝕩
-    inc←¬l∨∨´<˘s
-    tags←∾d≠⊸⥊¨⟨"<code>"‿"</code>","<em>"‿"</em>"⟩
-    ((/inc)∾(≠¨tags∾code)/(∾d)∾/cs) ⍋⊸⊏ (inc/𝕩)∾∾tags∾code
-  }⍟doHighlight
-
   lineChars‿lineClas‿procFns ← <˘⍉>⟨
     ""    ‿ (!∘0)       ‿ ProcParagraph
     "#"   ‿ LenHeading  ‿ ProcHeading
@@ -139,6 +128,31 @@ Markdown ← {
   # •d    ‿ LenListNum  ‿ ProcListNum
   # "|"   ‿ IsTable     ‿ ProcTable
   ⟩
+
+  ######
+  # Inline elements
+  ProcInline ← {
+    puncChars ← "!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+    # Characters that start or end inline elements
+    # (we don't do fancy processing for these yet)
+    delimiters ← "`*_"
+    # The corresponding tags
+    dTags ← {("<"∾⊢∾𝕩∾">"˜)¨""‿"/"}¨ 1‿2/"code"‿"em"
+
+    ProcCodeSpan ← {
+      𝕩 ↩ ' '¨⌾((𝕩=lf)⊸/) 𝕩
+      𝕩 ↩ (1↓¯1↓⊢)⍟((⊢<○(∧´)⊑∾⊑∘⌽) ' '⊸=) 𝕩
+      Highlight⍟doHighlight 𝕩
+    }
+
+    dMasks ← 𝕩⊸=¨ delimiters
+    dInds ← (⊢-2|⊢)∘≠⊸↑∘/¨ dMasks
+    c←⊑dMasks⋄r←¯1⌽l←≠`c⋄cs←l∧c
+    code←ProcCodeSpan¨(1-˜(l∧r)×+`cs)⊔𝕩
+    inc←¬l∨∨´dMasks
+    tags ← ∾ dInds ≠⊸⥊¨ dTags
+    ((/inc)∾(≠¨tags∾code)/(∾dInds)∾/cs) ⍋⊸⊏ (inc/𝕩)∾∾tags∾code
+  }
 
   ######
   # Create the block structure using line classifications.
