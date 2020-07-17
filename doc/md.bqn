@@ -22,6 +22,10 @@
 ################################
 # Utilities
 
+# Shift cells 𝕨 into array 𝕩, maintaining its total length
+Shl ←   ≠∘⊢ ↑ ∾   # From the left
+Shr ← -∘≠∘⊢ ↑ ∾˜  # From the right
+
 # 𝕨 is a list of lists. Find the first of these lists each cell of 𝕩
 # belongs to.
 FindGroup ← {
@@ -42,6 +46,18 @@ Trace ← {
   st/s≍˘e
 }
 
+# Count the number of consecutive true values up to the current element.
+# To do this, subtract the index of the last false character from the
+# current index.
+CountRuns ← { (1+↕≠𝕩) (⊣ - ⌈`∘×) ¬𝕩 }
+
+# 𝕩 is a string; return a mask of the characters that are escaped, that
+# is, preceded by an odd number of backslashes (since a backslash can
+# escape another backslash).
+IsEscaped ← {
+  0 Shl 2 | CountRuns 𝕩 = '\'
+}
+
 # Join lines with newline characters. Include the trailing newline.
 JoinLines ← ∾ ∾⟜lf¨
 
@@ -57,10 +73,6 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
 
   # Index of first zero, or number of leading 1s
   Lead ← ⊑ ⊐⟜0
-
-  # Shift cells 𝕨 into array 𝕩, maintaining its total length
-  Shl ←   ≠∘⊢ ↑ ∾   # From the left
-  Shr ← -∘≠∘⊢ ↑ ∾˜  # From the right
 
   # Find whether 𝕨 was true at the last index where 𝕩 was true, in each
   # position.
@@ -163,8 +175,9 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   ######
   # Inline elements
   ProcInline ← {
-    puncChars ← "!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
-    I2M ← (≠𝕩)↑/⁼  # Index to mask
+    I2M ← (≠𝕩) ↑ /⁼  # Index to mask
+    punc ← 𝕩 ∊ "!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+    actual ← ¬ punc ∧ IsEscaped 𝕩  # backtick or *actual* backtick?
 
     # Code spans
     ProcCodeSpan ← {
@@ -172,11 +185,24 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
       𝕩 ↩ (1↓¯1↓⊢)⍟((⊢<○(∧´)⊑∾⊑∘⌽) ' '⊸=) 𝕩
       "code" Html Highlight⍟extensions 𝕩
     }
-    tick ← 𝕩='`'
+    tick ← 𝕩 = '`'
     tend ← / (⊢ > 0⊸Shr) tick
-    tcount ← (1+↕∘≠)⊸(⊣-⌈`∘×) ¬ tick
+    tcount ← CountRuns tick
+    # 𝕨 are tick lengths and 𝕩 are positions, both sorted by length
+    MatchTicks ← {
+      # Tick runs other than the last of each length
+      notLast ← (⊢=0⊸Shr) 𝕨
+      # Ticks preceded by backslashes can't start code blocks, but can
+      # end them. This approach is wrong for multiple ticks with a
+      # leading backslash in front, which are excluded but should just
+      # be treated as one shorter when leading.
+      filter ← notLast / (𝕩¬𝕨) ⊏ actual
+      # For leading ticks, filter by not-last; for trailing ones, rotate
+      # by ¯1 to filter by not-first.
+      (filter / ⌽⟜notLast / 𝕩˜)¨ 0‿¯1
+    }
     tlen ← tend ⊏ tcount
-    c ← Trace´ tlen {m←(⊢=0⊸Shl)𝕨⋄(⌽⟜m/𝕩˜)¨1‿0}○((⍋tlen)⊸⊏) tend
+    c ← Trace´ tlen MatchTicks○((⍋tlen)⊸⊏) tend
     cl ← (⊏˘c) ⊏ tcount
     ctInds ← ⥊˘ 1 + c -⌜˘ cl×⌜1‿0
     include ← ¬ ≠` I2M ⥊ 0‿3⊸⊏˘ ctInds
@@ -188,7 +214,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     ReplaceMDSub ← { ¯2 (↓∾"html"˜)⍟(("md"≡↑)∧'/'∧´∘≠⊢) 𝕩 }
     ReplaceMD ← { ReplaceMDSub⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
     ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",𝕨,"</a>"⟩ }
-    brak ← /∘(include ∧ 𝕩⊸=)¨ "]()["
+    brak ← /∘(actual ∧ include ∧ 𝕩⊸=)¨ "]()["
     link ← (∊/⊣)´ 0‿¯1 + 2 ↑ brak
     chains ← (⍋˜ ⊏ ⊢∾(≠𝕩)˜)` ¯1 ⌽ (<link) ∾ 2 ↓ brak
     chains ↩ > (∧´ (∊ ∧ <⟜(≠𝕩))¨ 1 ↓ chains)⊸/¨ chains
@@ -199,10 +225,13 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     links ← <∘ProcLink´˘ 2⊸(÷˜⟜≠∾⊣)⊸⥊ linkGroup ⊔ 𝕩
 
     # Emphasis (still rudimentary)
-    eMasks ← (include ∧ 𝕩⊸=)¨ "*_"
+    eMasks ← (actual ∧ include ∧ 𝕩⊸=)¨ "*_"
     eInds ← (⊢-2|⊢)∘≠⊸↑∘/¨ eMasks
     include ∧↩ ¬∨´eMasks
     eTags ← ∾ eInds ≠⊸⥊¨ <"<em>"‿"</em>"
+
+    # Remove backslashes used for escaping
+    include ∧↩ 1 ⌽ actual
 
     new ← ∾⟨eTags,code,links⟩           # Text to be added
     inds← ∾eInds∾/¨codeStart‿linkStart  # Where to add it
@@ -256,12 +285,13 @@ TestSections ← {
   tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊2↓•LNS •path∾"spec.json"
   tests ↩ ((⊑2+⊐⟜':')¨∘⊏ ((-','=¯1⊑⊢)↓↓)¨⎉1 ⊢) tests
   testSection ← (1↓¯1↓⊢)¨ 5⊏˘tests
-  UnEsc ← {
-    esc ← (2 | (1+↕∘≠) (⊣-⌈`∘×) '\'≠⊢) 𝕩
-    esc ¬⊸/ (("\"""∾•UCS 9‿10)⊏˜"\""tn"⊐⊢)⌾((¯1⌽esc)⊸/) 𝕩
+  UnEscape ← {
+    EscapeChar ← { ("\""tn"⊐𝕩) ⊏ "\"""∾•UCS 9‿10 }
+    esc ← IsEscaped 𝕩
+    (¬1⌽esc) / EscapeChar⌾(esc⊸/) 𝕩
   }
   RunTest ← {
-    in‿exp ← UnEsc∘(1↓¯1↓⊢)¨2↑𝕩
+    in‿exp ← UnEscape∘(1↓¯1↓⊢)¨2↑𝕩
     out ← 0 Markdown (•UCS 10) ((⊢-˜¬×+`)∘=⊔⊢) in
     ⟨exp≡out,in,exp,out,2⊑𝕩⟩
   }
