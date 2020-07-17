@@ -99,7 +99,7 @@ You have to scan for headers or double-struck names (and so does a compiler). A 
 This is a natural array operation to do, and results in an array with a joinable structure, but as Prefixes and Suffixes are monadic there's no way to specify the number of axes to use.
 
 ### And/Or/Max/Min are all tangled up
-Boolean And (`∧`) and Or (`∨`) are identical to Min (`⌊`) and Max (`⌈`) when restricted to Boolean arguments, and this would fit nicely with their monadic role as sorting functions: for example `a∧b ←→ ⊑∧a‿b`. Furthermore the pairing of Min with Floor and Max with Ceiling is mnemonic only and not especially natural. The reason I have not used these glyphs for Min and Max, and have instead extended them to the somewhat superfluous [arithmetic logical functions](doc/logical.md) is that Min and Max have different [identity elements](https://aplwiki.com/wiki/Identity_element) of `∞` and `¯∞` rather than `1` and `0`. Having to code around empty arrays when using `∧´` would be a fairly big issue.
+Boolean And (`∧`) and Or (`∨`) are identical to Min (`⌊`) and Max (`⌈`) when restricted to Boolean arguments, and this would fit nicely with their monadic role as sorting functions: for example `a∧b ←→ ⊑∧a‿b`. Furthermore the pairing of Min with Floor and Max with Ceiling is mnemonic only and not especially natural. The reason I have not used these glyphs for Min and Max, and have instead extended them to the somewhat superfluous [arithmetic logical functions](docsrc/logical.md) is that Min and Max have different [identity elements](https://aplwiki.com/wiki/Identity_element) of `∞` and `¯∞` rather than `1` and `0`. Having to code around empty arrays when using `∧´` would be a fairly big issue.
 
 The other drawback of Min (`∧`) and Max (`∨`) is that the symbols are counterintuitive, but I have found a way to remember them: consider the graph of variables `a←x` and `b←¬x` for x from 0 to 1: two crossed lines. Now the graph of `a∧b` is a caret shape and `a∨b` is a vee.
 
@@ -107,7 +107,7 @@ The other drawback of Min (`∧`) and Max (`∨`) is that the symbols are counte
 When taking Windows along more than one axis, acting on the resulting array requires the Rank operator, duplicating either the right argument rank or (negated) left argument length. A nested Windows would only require Each.
 
 ### Group doesn't include trailing empty groups
-But there are workarounds, described in [its documentation](doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
+But there are workarounds, described in [its documentation](docsrc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
 
 ### Scan ordering is weird
 Scan moves along the array so that it uses results as left arguments, which is opposite to the usual right-to-left order of evaluation. But I think this is still better than scanning the array in reverse. You can always use Swap on the operand, or recover the APL scan ordering by doing a Reduce-Each on Prefixes.
@@ -146,10 +146,10 @@ This was an issue with using functions as control flow. For example, when loopin
 Fixed with multiple bodies: if there are two bodies with no headers such as `{2×𝕩;𝕨-𝕩}`, they are the monadic and dyadic case.
 
 ### How to choose a partitioning function?
-Fixed with [Group](doc/group.md), which I found May 2020. Group serves as a much improved [Partition](https://aplwiki.com/wiki/Partition). However, it doesn't partition along multiple axes, so a dedicated partition function that does this could also be wanted. Or could Group be made to work with multiple axes as well as multidimensional indices?
+Fixed with [Group](docsrc/group.md), which I found May 2020. Group serves as a much improved [Partition](https://aplwiki.com/wiki/Partition). However, it doesn't partition along multiple axes, so a dedicated partition function that does this could also be wanted. Or could Group be made to work with multiple axes as well as multidimensional indices?
 
 ### Key doesn't do what you want
-Fixed with [Group](doc/group.md) to my satisfaction, except for the trailing-empty-group problem. There were various issues with Key operators in J and Dyalog, such as the fact that the ordering and presence of groups depends on where and whether the keys appear. Also, Dyalog's Key can return keys and values, but they are in a different format than the input: an array of pairs instead of two arrays. Monadic Group returns indices, which can be used how the programmer wants.
+Fixed with [Group](docsrc/group.md) to my satisfaction, except for the trailing-empty-group problem. There were various issues with Key operators in J and Dyalog, such as the fact that the ordering and presence of groups depends on where and whether the keys appear. Also, Dyalog's Key can return keys and values, but they are in a different format than the input: an array of pairs instead of two arrays. Monadic Group returns indices, which can be used how the programmer wants.
 
 ### Greek letter issues
 Fixed by not using Greek letters. In particular, the idea of using fancy Latin letters as fixed names for function arguments was suggested in proto-BQN sessions, possibly by Nathan Rogers.

@@ -4,7 +4,7 @@ BQN is in a very early stage of development, and there is currently no complete 
 
 ### BQN2NGN
 
-[BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript build to experiment with the langauge, which is now abandoned. Because you can [use it online](https://mlochbaum.github.io/BQN2NGN/web/index.html), this is probably the quickest way to get started with BQN. It has good primitive support, with the main issues being that it uses a J-style insert instead of BQN-style vector reduction, that it has a different version of [Group](doc/group.md) (`⊔`), and that it is missing Choose (`◶`). There are also some spelling differences, with Deduplicate (`⍷`) spelled with `∪` and Valences (`⊘`) spelled with `⍠`. It is missing value blocks and function headers.
+[BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript build to experiment with the langauge, which is now abandoned. Because you can [use it online](https://mlochbaum.github.io/BQN2NGN/web/index.html), this is probably the quickest way to get started with BQN. It has good primitive support, with the main issues being that it uses a J-style insert instead of BQN-style vector reduction, that it has a different version of [Group](docsrc/group.md) (`⊔`), and that it is missing Choose (`◶`). There are also some spelling differences, with Deduplicate (`⍷`) spelled with `∪` and Valences (`⊘`) spelled with `⍠`. It is missing value blocks and function headers.
 
 For automated testing I run BQN2NGN using the `bqn` executable, which is just a symlink to `apl.js` in the BQN2NGN repository. It requires Node to run.
 

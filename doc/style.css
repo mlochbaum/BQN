@@ -1,0 +1,60 @@
+body{
+  color: #0a0a0a;
+  margin: 1em auto;
+  max-width: 46em;
+  padding: 0 0.62em;
+  line-height: 1.6;
+}
+h1,h2,h3 {
+  line-height:1.2;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+table td, th {
+  padding: 0.4em 0.9em;
+  border: 1px solid #939b97;
+}
+table th {
+  background-color: #eaeeee;
+  border-bottom-color: #5a5f5d;
+}
+
+pre,code {
+  background-color: #e3e7e7;
+  color: #292929;
+  border: 1px solid #bdcac4;
+  letter-spacing: 0.2;
+}
+code {
+  padding: 0.15em 0.1em 0.05em;
+  white-space: nowrap;
+  border-width: 0.3px;
+}
+pre {
+  font-family: monospace;
+  margin: 1.6em 0;
+  padding: 0.8em;
+  font-size:1.16em;
+  line-height: 1.4;
+}
+.Value      { color: #1f2020; }
+.Function   { color: #1f7229; }
+.Modifier   { color: #7b3b60; }
+.Composition{ color: #857614; }
+.Gets       { color: #16170a; }
+.Paren      { color: #585f5b; }
+.Ligature,
+.Separator,
+.Bracket    { color: #30241f; }
+.Brace      { color: #9130ad; }
+.Nothing,
+.Number     { color: #6f251f; }
+.Comment    { color: #32328b; }
+.String     { color: #2d7583; }
+.Result     { color: #292929; }
+
+a:link      { color: #0b39dc; }
+a:visited   { color: #3d155f; }
