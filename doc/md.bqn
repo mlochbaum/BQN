@@ -177,6 +177,11 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     "p" Html ProcInline ¯1 ↓ JoinLines Trim⌾(¯1⊸⊑) (Lead ' '⊸=)⊸↓¨ 𝕩
   }
 
+  # HTML blocks
+  # Lazy rule: if it starts with < and contains >, it's probably HTML
+  IsHtmlBlock ← ⊑ ">"⊸∊
+  ProcHtmlBlock ← JoinLines∘⊢
+
   lineChars‿lineClas‿procFns ← <˘⍉>⟨
     ""    ‿ (!∘0)       ‿ ProcParagraph
     "#"   ‿ LenHeading  ‿ ProcHeading
@@ -184,6 +189,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   # "-+*" ‿ LenBullet   ‿ ProcBullet
   # •d    ‿ LenListNum  ‿ ProcListNum
     "|"   ‿ IsTable     ‿ ProcTable
+    "<"   ‿ IsHtmlBlock ‿ ProcHtmlBlock
   ⟩
 
   ######
