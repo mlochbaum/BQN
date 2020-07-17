@@ -66,6 +66,10 @@ Html ← {
   ∾ ⟨"<",𝕨,">" , 𝕩 , "</",(⊑⊐⟜" ")⊸↑𝕨,">"⟩
 }
 
+Modify ← { ⟨include,add,pos⟩𝕊𝕩:
+  ((/include)∾˜(≠¨add)/pos) ⍋⊸⊏ (include/𝕩)∾˜∾add
+}
+
 # Character entity escaping
 # In order to use this with other modifications such as highlighting,
 # CharEntities returns a mask of characters to be escaped, and their
@@ -75,13 +79,9 @@ CharEntities ← {1¨⊸𝕊𝕩;  # 𝕨 gives characters to potentially escape
   chars ← ⊑¨ce ⋄ entities ← ("&"∾∾⟜";")¨ 1↓¨ce
   ind ← chars ⊐ 𝕩
   useEntity ← 𝕨 ∧ ind < ≠chars
-  ⟨useEntity , entities ⊏˜ useEntity / ind⟩
+  ⟨¬ useEntity , entities ⊏˜ useEntity/ind , /useEntity⟩
 }
-HtmlEsc ← {
-  u‿e ← CharEntities 𝕩
-  i ← / ¬u
-  (⍋i∾(≠¨e)//u) ⊏ (i⊏𝕩)∾∾e
-}
+HtmlEsc ← CharEntities⊸Modify
 
 ################################
 Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
@@ -200,11 +200,6 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     actual ← ¬ punc ∧ IsEscaped 𝕩  # backtick or *actual* backtick?
 
     # Code spans
-    ProcCodeSpan ← {
-      𝕩 ↩ ' '¨⌾((𝕩=lf)⊸/) 𝕩
-      𝕩 ↩ (1↓¯1↓⊢)⍟((⊢<○(∧´)⊑∾⊑∘⌽) ' '⊸=) 𝕩
-      "code" Html extensions◶HtmlEsc‿Highlight 𝕩
-    }
     tick ← 𝕩 = '`'
     tend ← / (⊢ > 0⊸Shr) tick
     tcount ← CountRuns tick
@@ -228,7 +223,14 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     include ← ¬ ≠` I2M ⥊ 0‿3⊸⊏˘ ctInds
     codeStart ← I2M 1 ⊏˘ ctInds
     codeGroup ← 1 -˜ codeStart (⊣×>)○(+`) I2M 2 ⊏˘ ctInds
-    code ← ProcCodeSpan¨ codeGroup ⊔ 𝕩
+    codeBounds ← 1‿2⊸⊏˘ ctInds
+    𝕩 ↩ ' '¨⌾(((0≤codeGroup)∧𝕩=lf)⊸/) 𝕩
+    # If span has both a leading and a trailing space, they are removed.
+    remSpace ← I2M ⥊ ((1<-˜´˘)∧·∧´˘' '=⊏⟜𝕩)⊸/ -⟜0‿1˘ codeBounds
+    include ∧↩ ¬ remSpace
+    ProcCodeSpan ← extensions◶HtmlEsc‿Highlight
+    code ← ProcCodeSpan¨ (remSpace (⊣-˜¬⊸×) codeGroup) ⊔ 𝕩
+    codeBounds ↩ ⥊ codeBounds
 
     # Links
     ReplaceMDSub ← { ¯2 (↓∾"html"˜)⍟(("md"≡↑)∧'/'∧´∘≠⊢) 𝕩 }
@@ -246,18 +248,20 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
 
     # Emphasis (still rudimentary)
     eMasks ← (actual ∧ include ∧ 𝕩⊸=)¨ "*_"
-    eInds ← (⊢-2|⊢)∘≠⊸↑∘/¨ eMasks
-    include ∧↩ ¬∨´eMasks
-    eTags ← ∾ eInds ≠⊸⥊¨ <"<em>"‿"</em>"
+    eInds ← ∾ (⊢-2|⊢)∘≠⊸↑∘/¨ eMasks
+    include ∧↩ ¬ I2M ∧ eInds
+    eTags ← eInds ≠⊸⥊ "<em>"‿"</em>"
+    eInds ∾↩ codeBounds
+    eTags ∾↩ codeBounds ≠⊸⥊ "<code>"‿"</code>"
 
     # Remove backslashes used for escaping
     include ∧↩ 1 ⌽ actual
 
-    em‿ent ← include CharEntities 𝕩
-    include ∧↩ ¬ em
+    em‿ent‿ei ← include CharEntities 𝕩
+    include ∧↩ em
 
     new ← ∾⟨eTags,code,links,ent⟩           # Text to be added
-    inds← ∾eInds∾/¨codeStart‿linkStart‿em   # Where to add it
+    inds← eInds∾(∾/¨codeStart‿linkStart)∾ei # Where to add it
     ((/include)∾(≠¨new)/inds) ⍋⊸⊏ (include/𝕩)∾∾new
   }
 
@@ -326,7 +330,7 @@ TestSections ← {
 
 ################################
 # Syntax highlighting
-Highlight ← {
+GetHighlights ← {
   idChars ← ⟨
     •d∾"¯.π∞"
     ' '+⌾•UCS•a
@@ -363,14 +367,14 @@ Highlight ← {
 
   col↩(1⌽col)⊣⌾((𝕩=⊑"𝕩")⊸/)col
 
-  em‿ent ← CharEntities 𝕩
-  inc ← ¬ em
+  inc‿ent‿ei ← CharEntities 𝕩
   bd←(≠↑¯1∾⊢)⊸≠col
   f←0<bd/col
-  add←ent  ∾˜⥊f/(bd/col)⊏classTag
-  pos←(/em)∾˜⥊f/2↕/bd∾1
-  ((/inc)∾˜(≠¨add)/pos) ⍋⊸⊏ (inc/𝕩)∾˜∾add
+  add←ent∾˜⥊f/(bd/col)⊏classTag
+  pos←ei ∾˜⥊f/2↕/bd∾1
+  ⟨inc,add,pos⟩
 }
+Highlight ← GetHighlights⊸Modify
 
 head ← "<head><link href=""style.css"" rel=""stylesheet""/></head>"∾lf
 ConvertFile ← head ∾ Markdown∘•LNS
