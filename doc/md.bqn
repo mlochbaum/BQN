@@ -182,7 +182,10 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   # HTML blocks
   # Lazy rule: if it starts with < and contains >, it's probably HTML
   IsHtmlBlock ← ⊑ ">"⊸∊
-  ProcHtmlBlock ← JoinLines∘⊢
+  ProcHtmlBlock ← {
+    codeMask ← "<code>" ¯6⊸⌽⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
+    (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
+  }⍟extensions⟜JoinLines
 
   lineChars‿lineClas‿procFns ← <˘⍉>⟨
     ""    ‿ (!∘0)       ‿ ProcParagraph
@@ -226,11 +229,8 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     𝕩 ↩ ' '¨⌾((codeMask∧𝕩=lf)⊸/) 𝕩
     # If span has both a leading and a trailing space, they are removed.
     remSpace ← I2M ⥊ ((1<-˜´˘)∧·∧´˘' '=⊏⟜𝕩)⊸/ -⟜0‿1˘ codeBounds
-    codeMaskl ← 1⊸⌽⊸∨ codeMask
-    fillMask ← ¬ codeMaskl / codeMask
-    allCode ← ' '¨⌾(fillMask⊸/) codeMaskl / 𝕩
-    ⟨code,codePos⟩ ← extensions◶(2⥊<⟨⟩)‿GetHighlights allCode
-    codePos +↩ fillMask ((1-˜⍋⟜codePos) ⊏ -˜)○/ codeMaskl>codeMask
+    codeMask ∧↩ ¬ remSpace
+    ⟨code,codePos⟩ ← codeMask extensions◶(2⥊<⟨⟩)‿GetMultiHighlights 𝕩
     include ← ¬ remSpace ∨ ≠` I2M ⥊ ctInds
     codeBounds ↩ ⥊ -⟜1‿0˘ codeBounds
     unused ← actual ∧ include ∧ ¬ codeMask
@@ -373,6 +373,13 @@ GetHighlights ← {
   bd←(≠↑¯1∾⊢)⊸≠col
   bc←bd/col
   (⥊(0<bc)⊸/)¨⟨bc⊏classTag,2↕1-˜/bd∾1⟩
+}
+# Return highlights for areas in 𝕩 where 𝕨 is true.
+GetMultiHighlights ← {
+  mask ← 1⊸⌽⊸∨ 𝕨
+  fill ← ¬ mask / 𝕨
+  ⟨c,pos⟩ ← GetHighlights ' '¨⌾(fill⊸/) mask / 𝕩
+  ⟨c, pos + fill ((1-˜⍋⟜pos) ⊏ -˜)○/ mask > 𝕨⟩
 }
 
 head ← "<head><link href=""style.css"" rel=""stylesheet""/></head>"∾lf
