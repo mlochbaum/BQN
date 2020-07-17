@@ -47,8 +47,7 @@ JoinLines ← ∾ ∾⟜lf¨
 
 # Create an html node from a tag name and interior text
 Html ← {
-  𝕨 ∾↩ ">"
-  ∾ ⟨"<",𝕨 , 𝕩 , "</",𝕨⟩
+  ∾ ⟨"<",𝕨,">" , 𝕩 , "</",(⊑⊐⟜" ")⊸↑𝕨,">"⟩
 }
 
 ################################
@@ -111,6 +110,13 @@ Markdown ← {
     tail ← ∧`⌾⌽ trsp∨𝕩='#'  # Mask of trailing hashes
     f ← tail < 0 Shr tail   # Character before trailing hashes
     𝕩 /˜↩ ¬ f (⊑⟨"\"," ",""⟩⊐<f/𝕩)◶⟨⊣,⊢,⊢,0¨⊢⟩ tail
+    # Add an id: lowercase the header, replacing non-•a with hyphens
+    Slugify ← {
+      ch ← •UCS "-Aa"
+      bounds ← ⥊ (1↓ch) +⌜ 0‿26  # Of the upper and lowercase alphabet
+      (bounds⊸⍋ {(⊑ch)¨⌾((¬2|𝕨)⊸/)𝕩+32×1=𝕨} ⊢)⌾•UCS 𝕩
+    }
+    tag ∾↩ " id="∾""""(∾∾⊣) Slugify 𝕩
     tag Html ProcInline Trim 𝕩
   }⟜⊑
 
