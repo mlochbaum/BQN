@@ -76,6 +76,9 @@ Markdown ← {
     last ⊏ 𝕨
   }
 
+  # Remove leading and trailing spaces
+  Trim ← { 𝕩 /˜ ¬ (∧` ∨ ∧`⌾⌽) ' '=𝕩 }
+
   ######
   # First we classify each line based on the type of block it can start.
   ClassifyLine ← (0<≠)◶(0‿0)‿{
@@ -108,8 +111,7 @@ Markdown ← {
     tail ← ∧`⌾⌽ trsp∨𝕩='#'  # Mask of trailing hashes
     f ← tail < 0 Shr tail   # Character before trailing hashes
     𝕩 /˜↩ ¬ f (⊑⟨"\"," ",""⟩⊐<f/𝕩)◶⟨⊣,⊢,⊢,0¨⊢⟩ tail
-    𝕩 /˜↩ ¬ (∧` ∨ ∧`⌾⌽) ' '=𝕩
-    tag Html ProcInline 𝕩
+    tag Html ProcInline Trim 𝕩
   }⟜⊑
 
   # List items start with a bullet (unordered) or number (ordered).
@@ -122,8 +124,19 @@ Markdown ← {
     l ∧ (" " ≡ 1↓t) ∧ ⊑(")." ∊˜ 1↑t)
   }
 
-  # Tables are not yet supported
-  IsTable ← 0˜
+  # Any line that starts with a | is a table, at least in my lazy version
+  IsTable ← 1˜
+  ProcTable ← {
+    rows ← (Trim¨ ((1-˜¬×+`)'|'⊸=)⊸⊔)¨ 𝕩
+    inc ← ¬ rule ← ∧´∘∾¨'-'=rows
+    rows ↩ ProcInline¨¨⌾(inc⊸/) rows
+    rowType ← inc / +` rule  # Head or body
+    DoRow ← { lf ∾ JoinLines 𝕨⊸Html¨ 𝕩 }
+    rows ↩ (rowType ⊏ "th"‿"td") DoRow¨ inc/rows
+    rowGroups ← ¯1 ↓ rowType ⊔○(∾⟜2) "tr"⊸Html¨ rows
+    sections ← "thead"‿"tbody" Html⟜(lf ∾ JoinLines)¨ rowGroups
+    "table" Html lf ∾ JoinLines (0 < ≠¨rowGroups) / sections
+  }
 
   # Paragraphs
   ProcParagraph ← {
@@ -138,7 +151,7 @@ Markdown ← {
     " "   ‿ IsCode      ‿ ProcCode
   # "-+*" ‿ LenBullet   ‿ ProcBullet
   # •d    ‿ LenListNum  ‿ ProcListNum
-  # "|"   ‿ IsTable     ‿ ProcTable
+    "|"   ‿ IsTable     ‿ ProcTable
   ⟩
 
   ######
