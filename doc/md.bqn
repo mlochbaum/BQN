@@ -51,7 +51,7 @@ Html ← {
 }
 
 ################################
-Markdown ← {
+Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   ######
   # Utilities
 
@@ -92,7 +92,7 @@ Markdown ← {
   ProcCode ← {
     lines ← JoinLines 4 ↓¨ 𝕩
     Esc ← (∾⥊¨) ("<>"⊸⊐ ⊑⟜⟨"&lt;","&gt;"⟩⍟(2>⊣)¨ ⊢)
-    "pre" Html doHighlight◶⟨"code"Html Esc,Highlight⟩ lines
+    "pre" Html extensions◶⟨"code"Html Esc,Highlight⟩ lines
   }
 
   # Headings start with #, and require 1-6 #s followed by a space.
@@ -116,7 +116,7 @@ Markdown ← {
       bounds ← ⥊ (1↓ch) +⌜ 0‿26  # Of the upper and lowercase alphabet
       (bounds⊸⍋ {(⊑ch)¨⌾((¬2|𝕨)⊸/)𝕩+32×1=𝕨} ⊢)⌾•UCS 𝕩
     }
-    tag ∾↩ " id="∾""""(∾∾⊣) Slugify 𝕩
+    extensions { tag ∾↩ " id="∾""""(∾∾⊣) Slugify 𝕩 }⍟⊣ 𝕩
     tag Html ProcInline Trim 𝕩
   }⟜⊑
 
@@ -170,7 +170,7 @@ Markdown ← {
     ProcCodeSpan ← {
       𝕩 ↩ ' '¨⌾((𝕩=lf)⊸/) 𝕩
       𝕩 ↩ (1↓¯1↓⊢)⍟((⊢<○(∧´)⊑∾⊑∘⌽) ' '⊸=) 𝕩
-      "code" Html Highlight⍟doHighlight 𝕩
+      "code" Html Highlight⍟extensions 𝕩
     }
     tick ← 𝕩='`'
     tend ← / (⊢ > 0⊸Shr) tick
@@ -253,7 +253,6 @@ Markdown ← {
 # Uses the test cases at https://spec.commonmark.org/0.29/spec.json
 # since Github doesn't seem to have published theirs
 TestSections ← {
-  doHighlight ↩ 0
   tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊2↓•LNS •path∾"spec.json"
   tests ↩ ((⊑2+⊐⟜':')¨∘⊏ ((-','=¯1⊑⊢)↓↓)¨⎉1 ⊢) tests
   testSection ← (1↓¯1↓⊢)¨ 5⊏˘tests
@@ -263,19 +262,17 @@ TestSections ← {
   }
   RunTest ← {
     in‿exp ← UnEsc∘(1↓¯1↓⊢)¨2↑𝕩
-    out ← Markdown (•UCS 10) ((⊢-˜¬×+`)∘=⊔⊢) in
+    out ← 0 Markdown (•UCS 10) ((⊢-˜¬×+`)∘=⊔⊢) in
     ⟨exp≡out,in,exp,out,2⊑𝕩⟩
   }
 
   ignore ← (2 ⊏˘ tests) ∊ ⟨"47","85"⟩
   res ← 1 ↓˘ (¬⊏˘)⊸/ RunTest˘ tests /˜ ignore < testSection ∊ 𝕩
-  doHighlight ↩ 1
   res
 }
 
 ################################
 # Syntax highlighting
-doHighlight ← 1
 Highlight ← {
   idChars ← ⟨
     •d∾"¯.π∞"
