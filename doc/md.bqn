@@ -67,7 +67,7 @@ Html ← {
 }
 
 Modify ← { ⟨include,add,pos⟩𝕊𝕩:
-  ((/include)∾˜(≠¨add)/pos) ⍋⊸⊏ (include/𝕩)∾˜∾add
+  ((/include)∾(≠¨add)/pos) ⍋⊸⊏ (include/𝕩)∾∾add
 }
 
 # Character entity escaping
@@ -81,7 +81,6 @@ CharEntities ← {1¨⊸𝕊𝕩;  # 𝕨 gives characters to potentially escape
   useEntity ← 𝕨 ∧ ind < ≠chars
   ⟨¬ useEntity , entities ⊏˜ useEntity/ind , /useEntity⟩
 }
-HtmlEsc ← CharEntities⊸Modify
 
 ################################
 Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
@@ -120,7 +119,10 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   IsCode ← 4 (≤⟜≠)◶⟨0,∧´' '=↑⟩ ⊢
   ProcCode ← {
     lines ← JoinLines 4 ↓¨ 𝕩
-    "pre" Html extensions◶⟨"code"Html HtmlEsc,Highlight⟩ lines
+    c‿ci ← extensions◶(2⥊<⟨⟩)‿GetHighlights lines
+    em‿e‿ei ← CharEntities lines
+    mod ← ⟨em,e∾c,ei∾ci⟩ Modify lines
+    "pre" Html "code" Html⍟(¬extensions) mod
   }
 
   # Headings start with #, and require 1-6 #s followed by a space.
@@ -220,34 +222,35 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     c ← Trace´ tlen MatchTicks○((⍋tlen)⊸⊏) tend
     cl ← (⊏˘c) ⊏ tcount
     ctInds ← ⥊˘ 1 + c -⌜˘ cl×⌜1‿0
-    include ← ¬ ≠` I2M ⥊ 0‿3⊸⊏˘ ctInds
-    codeStart ← I2M 1 ⊏˘ ctInds
-    codeGroup ← 1 -˜ codeStart (⊣×>)○(+`) I2M 2 ⊏˘ ctInds
-    codeBounds ← 1‿2⊸⊏˘ ctInds
-    𝕩 ↩ ' '¨⌾(((0≤codeGroup)∧𝕩=lf)⊸/) 𝕩
+    codeMask ← ≠` I2M ⥊ codeBounds ← 1‿2⊸⊏˘ ctInds
+    𝕩 ↩ ' '¨⌾((codeMask∧𝕩=lf)⊸/) 𝕩
     # If span has both a leading and a trailing space, they are removed.
     remSpace ← I2M ⥊ ((1<-˜´˘)∧·∧´˘' '=⊏⟜𝕩)⊸/ -⟜0‿1˘ codeBounds
-    include ∧↩ ¬ remSpace
-    ProcCodeSpan ← extensions◶HtmlEsc‿Highlight
-    code ← ProcCodeSpan¨ (remSpace (⊣-˜¬⊸×) codeGroup) ⊔ 𝕩
-    codeBounds ↩ ⥊ codeBounds
+    codeMaskl ← 1⊸⌽⊸∨ codeMask
+    fillMask ← ¬ codeMaskl / codeMask
+    allCode ← ' '¨⌾(fillMask⊸/) codeMaskl / 𝕩
+    ⟨code,codePos⟩ ← extensions◶(2⥊<⟨⟩)‿GetHighlights allCode
+    codePos +↩ fillMask ((1-˜⍋⟜codePos) ⊏ -˜)○/ codeMaskl>codeMask
+    include ← ¬ remSpace ∨ ≠` I2M ⥊ ctInds
+    codeBounds ↩ ⥊ -⟜1‿0˘ codeBounds
+    unused ← actual ∧ include ∧ ¬ codeMask
 
     # Links
     ReplaceMDSub ← { ¯2 (↓∾"html"˜)⍟(("md"≡↑)∧'/'∧´∘≠⊢) 𝕩 }
     ReplaceMD ← { ReplaceMDSub⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
     ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",𝕨,"</a>"⟩ }
-    brak ← /∘(actual ∧ include ∧ 𝕩⊸=)¨ "]()["
+    brak ← /∘(unused ∧ 𝕩⊸=)¨ "]()["
     link ← (∊/⊣)´ 0‿¯1 + 2 ↑ brak
     chains ← (⍋˜ ⊏ ⊢∾(≠𝕩)˜)` ¯1 ⌽ (<link) ∾ 2 ↓ brak
     chains ↩ > (∧´ (∊ ∧ <⟜(≠𝕩))¨ 1 ↓ chains)⊸/¨ chains
-    linkStart ← I2M 0 ⊏ chains
+    linkPos ← 0 ⊏ chains
     lInds ← 1‿0‿2‿0⊸+˘ (⥊2⊸↕)˘ ⍉ chains
-    include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
+    unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
     linkGroup ← 1 -˜ (1‿0⥊˜≢)⊸(/ (⊣×>)○(+`I2M) ¬⊸/) ⥊lInds
     links ← <∘ProcLink´˘ 2⊸(÷˜⟜≠∾⊣)⊸⥊ linkGroup ⊔ 𝕩
 
     # Emphasis (still rudimentary)
-    eMasks ← (actual ∧ include ∧ 𝕩⊸=)¨ "*_"
+    eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
     eInds ← ∾ (⊢-2|⊢)∘≠⊸↑∘/¨ eMasks
     include ∧↩ ¬ I2M ∧ eInds
     eTags ← eInds ≠⊸⥊ "<em>"‿"</em>"
@@ -255,14 +258,14 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     eTags ∾↩ codeBounds ≠⊸⥊ "<code>"‿"</code>"
 
     # Remove backslashes used for escaping
-    include ∧↩ 1 ⌽ actual
+    include ∧↩ codeMask ∨ 1 ⌽ actual
 
     em‿ent‿ei ← include CharEntities 𝕩
     include ∧↩ em
 
-    new ← ∾⟨eTags,code,links,ent⟩           # Text to be added
-    inds← eInds∾(∾/¨codeStart‿linkStart)∾ei # Where to add it
-    ((/include)∾(≠¨new)/inds) ⍋⊸⊏ (include/𝕩)∾∾new
+    add ← ∾⟨eTags,ent,code,links⟩         # Text to be added
+    pos ← ∾⟨eInds,ei,codePos,linkPos⟩     # Where to add it
+    ⟨include,add,pos⟩ Modify 𝕩
   }
 
   ######
@@ -367,14 +370,10 @@ GetHighlights ← {
 
   col↩(1⌽col)⊣⌾((𝕩=⊑"𝕩")⊸/)col
 
-  inc‿ent‿ei ← CharEntities 𝕩
   bd←(≠↑¯1∾⊢)⊸≠col
-  f←0<bd/col
-  add←ent∾˜⥊f/(bd/col)⊏classTag
-  pos←ei ∾˜⥊f/2↕/bd∾1
-  ⟨inc,add,pos⟩
+  bc←bd/col
+  (⥊(0<bc)⊸/)¨⟨bc⊏classTag,2↕1-˜/bd∾1⟩
 }
-Highlight ← GetHighlights⊸Modify
 
 head ← "<head><link href=""style.css"" rel=""stylesheet""/></head>"∾lf
 ConvertFile ← head ∾ Markdown∘•LNS
