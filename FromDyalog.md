@@ -41,9 +41,9 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>,</code> </td><td> <code>⥊</code>               </td><td> <code>∾⎉1</code></td>      </tr>
 <tr><td> <code>⍪</code> </td><td> <code>⥊˘</code>              </td><td> <code>∾</code></td>        </tr>
 <tr><td> <code>↑</code> </td><td> <code>></code>               </td><td> <code>↑</code></td>        </tr>
-<tr><td> <code>↓</code> </td><td> <code><˘<code>               </td><td> <code>↑</code></td>        </tr>
-<tr><td> <code>⊂</code> </td><td> <code><<code>                </td><td> <code>+`⊸⊔</code></td>     </tr>
-<tr><td> <code>⊆</code> </td><td> <code><⍟(0<≡)<code>          </td><td> <code>⊔</code></td>        </tr>
+<tr><td> <code>↓</code> </td><td> <code><˘</code>              </td><td> <code>↑</code></td>        </tr>
+<tr><td> <code>⊂</code> </td><td> <code><</code>               </td><td> <code>+`⊸⊔</code></td>     </tr>
+<tr><td> <code>⊆</code> </td><td> <code><⍟(0<≡)</code>         </td><td> <code>⊔</code></td>        </tr>
 <tr><td> <code>∊</code> </td><td> <code>{0=≡𝕩:⥊𝕩⋄∾⥊∇¨𝕩}</code> </td><td> <code>∊</code></td>        </tr>
 <tr><td> <code>⊃</code> </td><td colspan=2><code>⊑</code></td>                                      </tr>
 <tr><td> <code>⍀</code> </td><td>                              </td><td> <code>/⁼</code></td>       </tr>
