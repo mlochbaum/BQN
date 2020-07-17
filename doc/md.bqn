@@ -158,6 +158,7 @@ Markdown ← {
   # Inline elements
   ProcInline ← {
     puncChars ← "!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+    I2M ← (≠𝕩)↑/⁼  # Index to mask
 
     # Code spans
     ProcCodeSpan ← {
@@ -172,11 +173,24 @@ Markdown ← {
     c ← Trace´ tlen {m←(⊢=0⊸Shl)𝕨⋄(⌽⟜m/𝕩˜)¨1‿0}○((⍋tlen)⊸⊏) tend
     cl ← (⊏˘c) ⊏ tcount
     ctInds ← ⥊˘ 1 + c -⌜˘ cl×⌜1‿0
-    I2M ← (≠𝕩)↑/⁼  # Index to mask
     include ← ¬ ≠` I2M ⥊ 0‿3⊸⊏˘ ctInds
     codeStart ← I2M 1 ⊏˘ ctInds
     codeGroup ← 1 -˜ codeStart (⊣×>)○(+`) I2M 2 ⊏˘ ctInds
     code ← ProcCodeSpan¨ codeGroup ⊔ 𝕩
+
+    # Links
+    ReplaceMDSub ← { ¯2 (↓∾"html"˜)⍟(("md"≡↑)∧'/'∧´∘≠⊢) 𝕩 }
+    ReplaceMD ← { ReplaceMDSub⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
+    ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",𝕨,"</a>"⟩ }
+    brak ← /∘(include ∧ 𝕩⊸=)¨ "]()["
+    link ← (∊/⊣)´ 0‿¯1 + 2 ↑ brak
+    chains ← (⍋˜ ⊏ ⊢∾(≠𝕩)˜)` ¯1 ⌽ (<link) ∾ 2 ↓ brak
+    chains ↩ > (∧´ (∊ ∧ <⟜(≠𝕩))¨ 1 ↓ chains)⊸/¨ chains
+    linkStart ← I2M 0 ⊏ chains
+    lInds ← 1‿0‿2‿0⊸+˘ (⥊2⊸↕)˘ ⍉ chains
+    include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
+    linkGroup ← 1 -˜ (1‿0⥊˜≢)⊸(/ (⊣×>)○(+`I2M) ¬⊸/) ⥊lInds
+    links ← <∘ProcLink´˘ 2⊸(÷˜⟜≠∾⊣)⊸⥊ linkGroup ⊔ 𝕩
 
     # Emphasis (still rudimentary)
     eMasks ← (include ∧ 𝕩⊸=)¨ "*_"
@@ -184,8 +198,8 @@ Markdown ← {
     include ∧↩ ¬∨´eMasks
     eTags ← ∾ eInds ≠⊸⥊¨ <"<em>"‿"</em>"
 
-    new ← eTags ∾ code         # Text to be added
-    inds← (∾eInds)∾/codeStart  # Where to add it
+    new ← ∾⟨eTags,code,links⟩           # Text to be added
+    inds← ∾eInds∾/¨codeStart‿linkStart  # Where to add it
     ((/include)∾(≠¨new)/inds) ⍋⊸⊏ (include/𝕩)∾∾new
   }
 
