@@ -26,6 +26,6 @@ The left argument for `•EX` or the shell arguments can contain up to two argum
 
 ### BQN
 
-This repository contains the beginnings of a self-hosted compiler for BQN, which is not yet complete enough to do any real programming with. There are currently several versions of the compiler: [c.bqn](c.bqn) is run with BQN2NGN, while [dc.bqn](dc.bqn) is run with dzaima+reference. Both compilers have a backend targetting [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly), and dc.bqn additionally has a backend that targets dzaima/BQN's own bytecode, so that the compiler uses only BQN, but the runtime uses the Java implementations of BQN primitives from dzaima/BQN.
+This repository contains the beginnings of a self-hosted compiler for BQN, which is not yet complete enough to do any real programming with. There are currently several versions of the compiler: [nc.bqn](nc.bqn) is run with BQN2NGN, while [c.bqn](c.bqn) is run with dzaima+reference. Both compilers have a backend targetting [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly), and c.bqn additionally has a backend that targets dzaima/BQN's own bytecode, so that the compiler uses only BQN, but the runtime uses the Java implementations of BQN primitives from dzaima/BQN.
 
 All versions have automated tests in the [test](test/) directory, with the WebAssembly versions tested with Javascript using Node ([test/t.js](test/t.js) and [test/dt.js](test/dt.js) for BQN2NGN and dzaima/BQN respectively) and the dzaima/BQN backend tested with BQN itself ([test/bt](test/bt)).

@@ -254,7 +254,7 @@ Markdown ← {
 # since Github doesn't seem to have published theirs
 TestSections ← {
   doHighlight ↩ 0
-  tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊2↓•LNS •path∾"../spec.json"
+  tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊2↓•LNS •path∾"spec.json"
   tests ↩ ((⊑2+⊐⟜':')¨∘⊏ ((-','=¯1⊑⊢)↓↓)¨⎉1 ⊢) tests
   testSection ← (1↓¯1↓⊢)¨ 5⊏˘tests
   UnEsc ← {

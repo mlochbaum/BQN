@@ -1,6 +1,6 @@
 #! /usr/bin/env dbqn
 
-dRun ← ⟨"dRun"⟩ •EX •path∾"../dcshim.bqn"
+dRun ← ⟨"dRun"⟩ •EX •path∾"../cshim.bqn"
 l ← ∾(•LNS •path∾∾⟜"cases.bqn")¨""‿"b"
 { l ∾↩ "1 %"⊸∾¨ (3≤≠)◶0‿(('#'≠2⊸⊑)∧"  "≡2⊸↑)¨⊸/ •LNS •path∾"testref.bqn" }⍟⊢(<"-ref")∊•args
 c ← (¬"{"⊑∘∊⊢)¨⊸/ l

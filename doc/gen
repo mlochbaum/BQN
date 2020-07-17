@@ -1,3 +1,3 @@
 #! /usr/bin/env bash
 
-for f in *.md; do ../spec/dzref md.bqn "•←ConvertFile \"$PWD/$f\"" > ../doc/${f%md}html; done
+for f in *.md; do ../dzref md.bqn "•←ConvertFile \"$PWD/$f\"" > ../docs/${f%md}html; done
