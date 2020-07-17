@@ -16,8 +16,8 @@ It incorporates concepts developed over years of APL practice:
 
 But BQN is redesigned from the ground up, with brand new ideas to make these paradigms easier to use and less likely to fail.
 * The **based array model** makes non-arrays a fundamental part of the language, and removes the surprise of floating arrays and the hassle of explicit boxes. New **array notation** eliminates the gotchas of [stranding](https://aplwiki.com/wiki/Strand_notation).
-* A [**context-free grammar**](docsrc/context.md) where a value's syntactic role is determined by its spelling makes it easier for machines and humans to understand code.
-* Oh, and it naturally leads to [**first-class functions**](docsrc/functional.md), a feature often missed in APL.
+* A [**context-free grammar**](doc/context.md) where a value's syntactic role is determined by its spelling makes it easier for machines and humans to understand code.
+* Oh, and it naturally leads to [**first-class functions**](doc/functional.md), a feature often missed in APL.
 * The **new symbols** for built-in functionality allow the syntactic role of a primitive to be distinguished at a glance, and aim to be more consistent and intuitive.
 
 ## What kind of name is "BQN"?
@@ -98,9 +98,9 @@ Functions that have significant differences from APL functions are marked with a
 | `√`   | [Square Root](https://aplwiki.com/wiki/Square_Root) | [Root](https://aplwiki.com/wiki/Root)
 | `⌊`   | [Floor](https://aplwiki.com/wiki/Floor)             | [Minimum](https://aplwiki.com/wiki/Minimum)
 | `⌈`   | [Ceiling](https://aplwiki.com/wiki/Ceiling)         | [Maximum](https://aplwiki.com/wiki/Maximum)
-| `∧`   | Sort Up                                             | [And](docsrc/logic.md)*
-| `∨`   | Sort Down                                           | [Or](docsrc/logic.md)*
-| `¬`   | [Not](docsrc/logic.md)*                             | [Span](docsrc/logic.md)*
+| `∧`   | Sort Up                                             | [And](doc/logic.md)*
+| `∨`   | Sort Down                                           | [Or](doc/logic.md)*
+| `¬`   | [Not](doc/logic.md)*                                | [Span](doc/logic.md)*
 | `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
 | `<`   | [Box](https://aplwiki.com/wiki/Enclose)             | [Less Than](https://aplwiki.com/wiki/Less_than)
@@ -108,18 +108,18 @@ Functions that have significant differences from APL functions are marked with a
 | `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
 | `=`   |                                                     | [Equals](https://aplwiki.com/wiki/Equal_to)
 | `≠`   | [Length](https://aplwiki.com/wiki/Tally)            | [Not Equals](https://aplwiki.com/wiki/Not_Equal_to)
-| `≡`   | [Depth](docsrc/depth.md)*                           | [Match](https://aplwiki.com/wiki/Match)
+| `≡`   | [Depth](doc/depth.md)*                              | [Match](https://aplwiki.com/wiki/Match)
 | `≢`   | [Shape](https://aplwiki.com/wiki/Shape)             | [Not Match](https://aplwiki.com/wiki/Not_Match)
 | `⊣`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Left](https://aplwiki.com/wiki/Identity)
 | `⊢`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Right](https://aplwiki.com/wiki/Identity)
 | `⥊`   | [Deshape](https://aplwiki.com/wiki/Ravel)           | [Reshape](https://aplwiki.com/wiki/Reshape)
-| `∾`   | [Join](docsrc/join.md)*                             | [Join to](https://aplwiki.com/wiki/Catenate)
+| `∾`   | [Join](doc/join.md)*                                | [Join to](https://aplwiki.com/wiki/Catenate)
 | `≍`   | Solo*                                               | Couple*
 | `↑`   | Prefixes*                                           | [Take](https://aplwiki.com/wiki/Take)
 | `↓`   | Suffixes*                                           | [Drop](https://aplwiki.com/wiki/Drop)
-| `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](docsrc/windows.md)*
+| `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](doc/windows.md)*
 | `⌽`   | [Reverse](https://aplwiki.com/wiki/Reverse)         | [Rotate](https://aplwiki.com/wiki/Rotate)
-| `⍉`   | [Transpose](docsrc/transpose.md)*                   | [Reorder axes](docsrc/transpose.md)*
+| `⍉`   | [Transpose](doc/transpose.md)*                      | [Reorder axes](doc/transpose.md)*
 | `/`   | [Indices](https://aplwiki.com/wiki/Indices)         | [Replicate](https://aplwiki.com/wiki/Replicate)
 | `⍋`   | [Grade Up](https://aplwiki.com/wiki/Grade)          | [Bins Up](https://aplwiki.com/wiki/Interval_Index)
 | `⍒`   | [Grade Down](https://aplwiki.com/wiki/Grade)        | [Bins Down](https://aplwiki.com/wiki/Interval_Index)
@@ -129,7 +129,7 @@ Functions that have significant differences from APL functions are marked with a
 | `⊒`   | Occurrence Count*                                   | Progressive Index of*
 | `∊`   | [Unique Mask](https://aplwiki.com/wiki/Nub_Sieve)   | [Member of](https://aplwiki.com/wiki/Membership)
 | `⍷`   | [Deduplicate](https://aplwiki.com/wiki/Unique)      | [Find](https://aplwiki.com/wiki/Find)
-| `⊔`   | [Group Indices](docsrc/group.md)*                   | [Group](docsrc/group.md)*
+| `⊔`   | [Group Indices](doc/group.md)*                      | [Group](doc/group.md)*
 
 ### Modifiers and compositions
 
