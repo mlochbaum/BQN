@@ -12,6 +12,7 @@ h1,h2,h3 {
 table {
   border-spacing: 0;
   border-collapse: collapse;
+  margin: 0.4em;
 }
 table td, th {
   padding: 0.4em 0.9em;

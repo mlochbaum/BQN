@@ -1,3 +1,5 @@
+# BQN–Dyalog APL dictionary
+
 A few tables to help users of Dyalog APL (or similar) get started quickly on BQN. Here we assume `⎕ML` is 1 for Dyalog.
 
 ## For reading
