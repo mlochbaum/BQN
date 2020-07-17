@@ -66,6 +66,23 @@ Html ← {
   ∾ ⟨"<",𝕨,">" , 𝕩 , "</",(⊑⊐⟜" ")⊸↑𝕨,">"⟩
 }
 
+# Character entity escaping
+# In order to use this with other modifications such as highlighting,
+# CharEntities returns a mask of characters to be escaped, and their
+# corresponding escapes.
+CharEntities ← {1¨⊸𝕊𝕩;  # 𝕨 gives characters to potentially escape
+  ce ← (1-˜¬×+`)∘=⟜⊑⊸⊔ " ""quot &amp <lt >gt"
+  chars ← ⊑¨ce ⋄ entities ← ("&"∾∾⟜";")¨ 1↓¨ce
+  ind ← chars ⊐ 𝕩
+  useEntity ← 𝕨 ∧ ind < ≠chars
+  ⟨useEntity , entities ⊏˜ useEntity / ind⟩
+}
+HtmlEsc ← {
+  u‿e ← CharEntities 𝕩
+  i ← / ¬u
+  (⍋i∾(≠¨e)//u) ⊏ (i⊏𝕩)∾∾e
+}
+
 ################################
 Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   ######
@@ -103,8 +120,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   IsCode ← 4 (≤⟜≠)◶⟨0,∧´' '=↑⟩ ⊢
   ProcCode ← {
     lines ← JoinLines 4 ↓¨ 𝕩
-    Esc ← (∾⥊¨) ("<>"⊸⊐ ⊑⟜⟨"&lt;","&gt;"⟩⍟(2>⊣)¨ ⊢)
-    "pre" Html extensions◶⟨"code"Html Esc,Highlight⟩ lines
+    "pre" Html extensions◶⟨"code"Html HtmlEsc,Highlight⟩ lines
   }
 
   # Headings start with #, and require 1-6 #s followed by a space.
@@ -158,9 +174,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
 
   # Paragraphs
   ProcParagraph ← {
-    Trsp ← { m←∧`⌾⌽𝕩=' ' ⋄ (m¬⊸/𝕩)∾(𝕨<∨´m)/"<br />" }
-    𝕩 ↩ (/(≠𝕩)(-∾⊢)1) Trsp¨ 𝕩
-    "p" Html ProcInline ¯1 ↓ JoinLines ((Lead ' '⊸=)+"\#"≡2⊸↑)⊸↓¨ 𝕩
+    "p" Html ProcInline ¯1 ↓ JoinLines Trim⌾(¯1⊸⊑) (Lead ' '⊸=)⊸↓¨ 𝕩
   }
 
   lineChars‿lineClas‿procFns ← <˘⍉>⟨
@@ -183,7 +197,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     ProcCodeSpan ← {
       𝕩 ↩ ' '¨⌾((𝕩=lf)⊸/) 𝕩
       𝕩 ↩ (1↓¯1↓⊢)⍟((⊢<○(∧´)⊑∾⊑∘⌽) ' '⊸=) 𝕩
-      "code" Html Highlight⍟extensions 𝕩
+      "code" Html extensions◶HtmlEsc‿Highlight 𝕩
     }
     tick ← 𝕩 = '`'
     tend ← / (⊢ > 0⊸Shr) tick
@@ -233,8 +247,11 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     # Remove backslashes used for escaping
     include ∧↩ 1 ⌽ actual
 
-    new ← ∾⟨eTags,code,links⟩           # Text to be added
-    inds← ∾eInds∾/¨codeStart‿linkStart  # Where to add it
+    em‿ent ← include CharEntities 𝕩
+    include ∧↩ ¬ em
+
+    new ← ∾⟨eTags,code,links,ent⟩           # Text to be added
+    inds← ∾eInds∾/¨codeStart‿linkStart‿em   # Where to add it
     ((/include)∾(≠¨new)/inds) ⍋⊸⊏ (include/𝕩)∾∾new
   }
 
@@ -340,11 +357,13 @@ Highlight ← {
 
   col↩(1⌽col)⊣⌾((𝕩=⊑"𝕩")⊸/)col
 
+  em‿ent ← CharEntities 𝕩
+  inc ← ¬ em
   bd←(≠↑¯1∾⊢)⊸≠col
   f←0<bd/col
-  tags←⥊f/(bd/col)⊏classTag
-  pos←⥊f/2↕/bd∾1
-  ((↕≠𝕩)∾˜(≠¨tags)/pos) ⍋⊸⊏ 𝕩∾˜∾tags
+  add←ent  ∾˜⥊f/(bd/col)⊏classTag
+  pos←(/em)∾˜⥊f/2↕/bd∾1
+  ((/inc)∾˜(≠¨add)/pos) ⍋⊸⊏ (inc/𝕩)∾˜∾add
 }
 
 head ← "<head><link href=""style.css"" rel=""stylesheet""/></head>"∾lf
