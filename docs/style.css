@@ -62,26 +62,26 @@ a:visited     { color: #3d155f; }
 
 @media (prefers-color-scheme: dark) {
   body        { color: #d1d1d1; background-color: #141515; }
-  pre, code   { color: #777777; background-color: #0c0d0e; border-color: #040509; }
-  code        { border-color: #0a0b0c; }
+  pre, code   { color: #888888; background-color: #0c0d0e; border-color: #040509; }
+  code        { border-color: #0c0d0e; background-color: #0f1011; }
   table td, th{ border-color: #636967; }
   table th    { border-color: #88918c; background-color: #292a2b; }
 
-  .Value      { color: #8c9495; }
-  .Function   { color: #339240; }
-  .Modifier   { color: #813a7a; }
-  .Composition{ color: #8c7d17; }
-  .Gets       { color: #929585; }
-  .Paren      { color: #4e473f; }
+  .Value      { color: #a2acad; }
+  .Function   { color: #3aa548; }
+  .Modifier   { color: #92428a; }
+  .Composition{ color: #998819; }
+  .Gets       { color: #a5a896; }
+  .Paren      { color: #585047; }
   .Ligature,
   .Separator,
-  .Bracket    { color: #886ba8; }
-  .Brace      { color: #7b2b91; }
+  .Bracket    { color: #9a79be; }
+  .Brace      { color: #862f9e; }
   .Nothing,
-  .Number     { color: #89222b; }
-  .Comment    { color: #38389d; }
-  .String     { color: #368696; }
+  .Number     { color: #a43126; }
+  .Comment    { color: #3f3fb1; }
+  .String     { color: #3f9bae; }
 
-  a:link      { color: #477ec2; text-decoration-color:#477ec278; }
-  a:visited   { color: #756ea6; }
+  a:link      { color: #508dd9; text-decoration-color:#508dd978; }
+  a:visited   { color: #847cbc; }
 }
