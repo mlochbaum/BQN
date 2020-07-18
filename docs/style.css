@@ -1,11 +1,11 @@
-body{
+body {
   color: #0a0a0a;
   margin: 1em auto;
   max-width: 46em;
   padding: 0 0.62em;
   line-height: 1.6;
 }
-h1,h2,h3 {
+h1, h2, h3 {
   line-height: 1.2;
 }
 
@@ -23,7 +23,7 @@ table th {
   border-bottom-color: #5a5f5d;
 }
 
-pre,code {
+pre, code {
   background-color: #e3e7e7;
   color: #292929;
   border: 1px solid #bdcac4;
@@ -41,21 +41,47 @@ pre {
   font-size: 1.16em;
   line-height: 1.4;
 }
-.Value      { color: #1f2020; }
-.Function   { color: #1f7229; }
-.Modifier   { color: #7b3b60; }
-.Composition{ color: #857614; }
-.Gets       { color: #16170a; }
-.Paren      { color: #585f5b; }
+
+.Value        { color: #1f2020; }
+.Function     { color: #1f7229; }
+.Modifier     { color: #7b3b60; }
+.Composition  { color: #857614; }
+.Gets         { color: #16170a; }
+.Paren        { color: #585f5b; }
 .Ligature,
 .Separator,
-.Bracket    { color: #30241f; }
-.Brace      { color: #9130ad; }
+.Bracket      { color: #30241f; }
+.Brace        { color: #9130ad; }
 .Nothing,
-.Number     { color: #6f251f; }
-.Comment    { color: #32328b; }
-.String     { color: #2d7583; }
-.Result     { color: #292929; }
+.Number       { color: #6f251f; }
+.Comment      { color: #32328b; }
+.String       { color: #2d7583; }
 
-a:link      { color: #0b39dc; text-decoration-color:#0b39dc91; }
-a:visited   { color: #3d155f; }
+a:link        { color: #0b39dc; text-decoration-color:#0b39dc91; }
+a:visited     { color: #3d155f; }
+
+@media (prefers-color-scheme: dark) {
+  body        { color: #d1d1d1; background-color: #141515; }
+  pre, code   { color: #777777; background-color: #0c0d0e; border-color: #040509; }
+  code        { border-color: #0a0b0c; }
+  table td, th{ border-color: #636967; }
+  table th    { border-color: #88918c; background-color: #292a2b; }
+
+  .Value      { color: #8c9495; }
+  .Function   { color: #339240; }
+  .Modifier   { color: #813a7a; }
+  .Composition{ color: #8c7d17; }
+  .Gets       { color: #929585; }
+  .Paren      { color: #4e473f; }
+  .Ligature,
+  .Separator,
+  .Bracket    { color: #886ba8; }
+  .Brace      { color: #7b2b91; }
+  .Nothing,
+  .Number     { color: #89222b; }
+  .Comment    { color: #38389d; }
+  .String     { color: #368696; }
+
+  a:link      { color: #477ec2; text-decoration-color:#477ec278; }
+  a:visited   { color: #756ea6; }
+}
