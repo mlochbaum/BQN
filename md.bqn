@@ -245,7 +245,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     unused ← actual ∧ include ∧ ¬ codeMask
 
     # Links
-    ReplaceMDSub ← { ¯2 (↓∾"html"˜)⍟(("md"≡↑)∧':'∧´∘≠⊢) 𝕩 }
+    ReplaceMDSub ← { ¯2 ("README"•_r_"index"∘↓∾"html"˜)⍟(("md"≡↑)∧':'∧´∘≠⊢) 𝕩 }
     ReplaceMD ← { ReplaceMDSub⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
     ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",𝕨,"</a>"⟩ }
     brak ← /∘(unused ∧ 𝕩⊸=)¨ "]()["
