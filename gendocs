@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+for f in *.md */*.md; do ./dzref md.bqn "•←ConvertFile \"$f\"" > docs/${f%md}html; done

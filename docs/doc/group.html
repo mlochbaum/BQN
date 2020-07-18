@@ -1,4 +1,4 @@
-<head><link href="style.css" rel="stylesheet"/></head>
+<head><link href="../style.css" rel="stylesheet"/></head>
 <h1 id="group">Group</h1>
 <p>BQN replaces the <a href="https://aplwiki.com/wiki/Key">Key</a> operator from J or Dyalog APL, and <a href="https://aplwiki.com/wiki/Partition_representations">many forms of partitioning</a>, with a single (ambivalent) Group function <code><span class='Function'>⊔</span></code>. This function is somewhat related to the K function <code><span class='Function'>=</span></code> of the same name, but results in an array rather than a dictionary.</p>
 <p>The BQN prototype does not implement this function: instead it uses <code><span class='Function'>⊔</span></code> for a Group/Key function very similar to <code><span class='Brace'>{</span><span class='Value'>⊂⍵</span><span class='Brace'>}</span><span class='Value'>⌸</span></code> in Dyalog APL, and also has a Cut function <code><span class='Value'>\</span></code>. The new BQN Group on numeric arguments (equivalently, rank-1 results) can be defined like this:</p>

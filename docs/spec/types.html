@@ -1,0 +1,20 @@
+<head><link href="../style.css" rel="stylesheet"/></head>
+<p>BQN programs manipulate data of six types:</p>
+<ul>
+<li>Character</li>
+<li>Number</li>
+<li>Array</li>
+<li>Function</li>
+<li>Modifier</li>
+<li>Composition</li>
+</ul>
+<p>Of these, the first three are considered <em>value types</em> and the remaining three <em>function types</em>. We first describe the much simpler function types; the remainder of this page will be dedicated to the value types. A member of any function type accepts some number of <em>inputs</em> and either returns a <em>result</em> or causes an error; inputs and the result are data of any type. When a function is given inputs (<em>called</em>), it may produce side effects before returning, such as manipulating variables and calling other functions within its scope, or performing I/O.</p>
+<ul>
+<li>A <em>function</em> takes one (monadic call) or two (dyadic call) <em>arguments</em>.</li>
+<li>A <em>modifier</em> takes one <em>operand</em>.</li>
+<li>A <em>composition</em> takes two <em>operands</em>.</li>
+</ul>
+<p>To begin the value types, a <em>character</em> is a <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a> code point, that is, its value is a non-negative integer within the ranges defined by Unicode (however, it is distinct from this number as a BQN value). Characters are ordered by this numeric value. BQN deals with code points as abstract entities and does not use encodings such as UTF-8 or UTF-16.</p>
+<p>The precise type of a <em>number</em> may vary across BQN implementations or instances. A <em>real number</em> is a member of some supported subset of the <a href="https://en.wikipedia.org/wiki/Extended_real_number_line">extended real numbers</a>, that is, the real numbers and positive or negative infinity. Some system must be defined for rounding an arbitrary real number to a member of this subset, and the basic arithmetic operations add, subtract, multiply, divide, and natural exponent (base <em>e</em>) are defined by performing these operations on exact real values and rounding the result. The Power function (dyadic <code><span class='Function'>⋆</span></code>) is also used but need not be exactly rounded. A <em>complex number</em> is a value with two real number <em>components</em>, a <em>real part</em> and an <em>imaginary part</em>. A BQN implementation can either support real numbers only, or complex numbers.</p>
+<p>An <em>array</em> is a rectangular collection of data. It is defined by a <em>shape</em>, which is a list of non-negative integer lengths, and a <em>ravel</em>, which is a list of <em>elements</em> whose length (the array's <em>bound</em>) is the product of all lengths in the shape. Arrays are defined inductively: any value (of a value or function type) can be used as an element of an array, but it is not possible for an array to contain itself as an element, or an array that contains itself, and so on.</p>
+

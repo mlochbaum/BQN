@@ -245,7 +245,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     unused ← actual ∧ include ∧ ¬ codeMask
 
     # Links
-    ReplaceMDSub ← { ¯2 (↓∾"html"˜)⍟(("md"≡↑)∧'/'∧´∘≠⊢) 𝕩 }
+    ReplaceMDSub ← { ¯2 (↓∾"html"˜)⍟(("md"≡↑)∧':'∧´∘≠⊢) 𝕩 }
     ReplaceMD ← { ReplaceMDSub⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
     ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",𝕨,"</a>"⟩ }
     brak ← /∘(unused ∧ 𝕩⊸=)¨ "]()["
@@ -390,5 +390,5 @@ GetMultiHighlights ← {
   <∘∾˘ ⍉ ((≠∾2˜) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
 }
 
-head ← "<head><link href=""style.css"" rel=""stylesheet""/></head>"∾lf
-ConvertFile ← head ∾ Markdown∘•LNS
+Head ← "<head><link href="""∾("../"/˜"/"⊑∘∊⊢)∾"style.css"" rel=""stylesheet""/></head>"∾lf˜
+ConvertFile ← Head ∾ · Markdown∘•LNS •path∾⊢
