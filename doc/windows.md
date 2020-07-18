@@ -1,6 +1,6 @@
 # Windows
 
-In BQN, it's strongly preferred to use functions, and not operators (modifiers and compositions), for array manipulation. Functions are simpler as they have fewer moving parts. They are more concrete, since the array results can always be viewed right away. They are easier to implement with reasonable performance as well, since there is no need to recognize many possible function operands as special cases.
+In BQN, it's strongly preferred to use functions, and not modifiers, for array manipulation. Functions are simpler as they have fewer moving parts. They are more concrete, since the array results can always be viewed right away. They are easier to implement with reasonable performance as well, since there is no need to recognize many possible function operands as special cases.
 
 The Window function replaces APL's Windowed Reduction, J's more general Infix operator, and Dyalog's Stencil, which is adapted from one case of J's Cut operator.
 
@@ -24,11 +24,11 @@ You can take a slice of an array `𝕩` that has length `l` and starts at index 
         5↑2↓"abcdefg"
     [ cdefg ]
 
-Windows differs from Prefixes and Suffixes in that it doesn't add a layer of nesting (it doesn't box each slice). This is possible because the slices have a fixed size.
+Windows differs from Prefixes and Suffixes in that it doesn't add a layer of nesting (it doesn't enclose each slice). This is possible because the slices have a fixed size.
 
 ### Multiple dimensions
 
-The above description applies to a higher-rank right argument. As an example, we'll look at two-row slices of a shape `3‿4` array. For convenience, we will box each slice. Note that slices always have the same rank as the argument array.
+The above description applies to a higher-rank right argument. As an example, we'll look at two-row slices of a shape `3‿4` array. For convenience, we will enclose each slice. Note that slices always have the same rank as the argument array.
 
         <⎉2 2↕"0123"∾"abcd"≍"ABCD"
     ┌

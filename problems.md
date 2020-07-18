@@ -8,7 +8,7 @@ I've omitted problems that are obviously addressed by speculated extensions. Of 
 A pretty fundamental problem with dynamically-typed array languages. Prototypes are intended to solve it, but they don't really. It doesn't help that the notion of type is fluid: elements of an array in one moment can be axis lengths in the next; did the numeric value go from not being type information to being type information? Inferred type might help here, particularly the ability of one part of the program to ask another part for type information during compilation. But that needs to be specified if programmers are going to rely on it, which sounds difficult.
 
 ### Control flow with function selection has awkward syntax
-At the moment BQN has no control structures, instead preferring function recursion, iteration, and selection. Selection is awkward because the result of selecting from a list of functions must be a value syntactically. It also often doesn't need an argument, since it can refer to values from the containing function because of lexical scoping. There should probably be a function that takes a function argument and invokes it, possible with an empty list as a dummy left argument. Somewhat like the operator `{𝔽}`. But also: should a `{}` object that doesn't refer to its arguments be special? Some kind of "block" construct?
+At the moment BQN has no control structures, instead preferring function recursion, iteration, and selection. Selection is awkward because the result of selecting from a list of functions is a subject syntactically. It also often doesn't need an argument, since it can refer to values from the containing function because of lexical scoping. There should possibly be a function that takes a function argument and invokes it, possible with an empty list as a dummy left argument. Somewhat like the modifier `{𝔽}`.
 
 *Potentially solved by multiple headers, blocks, and block returns. Needs reevaluation later.*
 
@@ -22,7 +22,7 @@ There's been a lot of work done on this. Still there, still a problem. On the ot
 This problem hasn't manifested yet as BQN has no debugger, but it's something to keep in mind. Traditional line-by-line debuggers don't work when the line is doing so much work. Something like J's dissect or some kind of hybrid would probably do better.
 
 ### Search function depth
-The simplest way to define a search function like Index Of is to require the left argument to be a list, and search for an element that matches the right argument. But this means you can only search for one element at a time, which is annoying and doesn't work for Progressive Index Of. So we instead treat the searched argument as a list of major cells. Then we decide to search for cells of the other argument that have the same rank as those cells, since only cells with the same rank can match. That's a little strange for Bins, where it still makes sense to compare cells of different ranks. Furthermore, the result of any search function is always an array. To search for a single element and get an unboxed number, you need something like `list⊸⊐⌾<elt`.
+The simplest way to define a search function like Index Of is to require the left argument to be a list, and search for an element that matches the right argument. But this means you can only search for one element at a time, which is annoying and doesn't work for Progressive Index Of. So we instead treat the searched argument as a list of major cells. Then we decide to search for cells of the other argument that have the same rank as those cells, since only cells with the same rank can match. That's a little strange for Bins, where it still makes sense to compare cells of different ranks. Furthermore, the result of any search function is always an array. To search for a single element and get an plain number, you need something like `list⊸⊐⌾<elt`.
 
 ### Trigonometry
 There are a lot of standard functions and I don't want to use separate primitives or a menu-style primitive like APL Circle for them. You can define all the functions eventually if you use complex exponential and take real and imaginary parts and inverses, but this doesn't sound well-suited for implementation. And there should be a math library that gives you the standard functions with normal names, but how will it be implemented?
@@ -42,10 +42,10 @@ It seems that the first is the most common, but the others aren't really rare. T
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). Not really fixable; too much precedent.
 
 ### Can't access array ordering directly
-Only `⍋⍒` use array ordering rather than just array comparison or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not *that* difficult: `⥊⊸⍋⌾<` is TAO `≤`).
+Only `⍋⍒` use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not *that* difficult: `⥊⊸⍋⌾<` is TAO `≤`).
 
 ### Syntactic type erasure
-A programmer can call an operator on either a syntactic function or value, but there's no way to know within the operator which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The array syntax suggest it should be Constant.
+A programmer can call a modifier on either a syntactic function or subject, but there's no way to know within the modifier which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The subject syntax suggests it should be Constant.
 
 ### Comparison tolerance
 Kind of necessary for practical programming, but how should it be invoked or controlled? A system variable like `⎕CT`? Per-primitive control? Both? Which primitives should use it?
@@ -80,8 +80,8 @@ Both pull out elements and reduce the depth. But they face in opposite direction
 
 The directions of `⊏⊐` and so on were mainly chosen to line up with `∊`: the argument that indices apply to (that is, the one that is searched or selected from) corresponds to the open side of the function. I'd probably prefer new glyphs that don't have this sort of directionality, however.
 
-### Converting a function expression to a syntactic value is tricky
-You can name it, you can write `⊑⟨Expr⟩`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from value to function, isn't too bad: the operator `{𝔽}` does it.
+### Converting a function expression to a subject is tricky
+You can name it, you can write `⊑⟨Expr⟩`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from subject to function, isn't too bad: the modifier `{𝔽}` does it.
 
 ### Monadic argument corresponds to left for `/` and `⊔`
 Called dyadically, both functions shuffle cells of the right argument around, which is consistent with other selection-type functions. But the monadic case applies to what would be the left argument in the dyadic case.
@@ -104,7 +104,7 @@ Boolean And (`∧`) and Or (`∨`) are identical to Min (`⌊`) and Max (`⌈`) 
 The other drawback of Min (`∧`) and Max (`∨`) is that the symbols are counterintuitive, but I have found a way to remember them: consider the graph of variables `a←x` and `b←¬x` for x from 0 to 1: two crossed lines. Now the graph of `a∧b` is a caret shape and `a∨b` is a vee.
 
 ### Acting on windows can be awkward
-When taking Windows along more than one axis, acting on the resulting array requires the Rank operator, duplicating either the right argument rank or (negated) left argument length. A nested Windows would only require Each.
+When taking Windows along more than one axis, acting on the resulting array requires the Rank modifier, duplicating either the right argument rank or (negated) left argument length. A nested Windows would only require Each.
 
 ### Group doesn't include trailing empty groups
 But there are workarounds, described in [its documentation](doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
@@ -124,9 +124,6 @@ Select chooses whether the left argument maps to right argument axes or selects 
 ### Unclear primitive names
 Blanket issue for names that I don't find informative: "Solo", "Bins", "Unique Mask", "Find", and "Group".
 
-### "Modifier" and "composition" terminology
-Since the two have different syntax, it's important that they have completely separate names. "Modifier" is good but "composition" is not, as it doesn't seem to fit with Rank, Depth, or Iterate. There's also often a need for a term that refers to both. I've been using "operator" but that can be confusing.
-
 ### Should have a rounding function
 There is a standard way to round floats—to nearest integer, ties to even—but it's fairly hard to implement and would have to be specially recognized for performance. It would be nice to have a better way to access this.
 
@@ -136,6 +133,9 @@ I went with "Index of" and "Less Than or Equal to" but the last word blends into
 ## Solved problems
 
 Problems that existed in mainstream APL or a transitional BQN that have in my opinion been put to rest (while in some cases introducing new problems). Listed in reverse chronological order by time solved, by my recollection.
+
+### "Modifier" and "composition" terminology
+1-modifiers and 2-modifiers used to be called "modifiers" and "compositions", respectively, and sometimes "operators" collectively. The new names are much better, although they do leave a disconnect between the names for modifiers, and those for their inputs—"operands".
 
 ### Can't return from inner functions
 Fixed by adding block returns such as `label←` to jump out of a block with header name `label`. Hopefully these don't cause too many new problems.

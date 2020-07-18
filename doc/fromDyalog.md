@@ -16,7 +16,7 @@ Here are some closest equivalents in Dyalog APL for the BQN functions that don't
 | Monad | `,⍀` | `⌽,⌽⍀⌽` | `⍳`  | `⍸` | `⍋` | `⍒`   | `⊣⌿` | `⊃` |     | `…` | `≠` | `∪` | `⌸`        |
 | Dyad  | `↑`  | `↓`     | `,⌿` | `⌿` | `⍸` | `⌽⍸⌽` | `⌷`  | `⊃` | `⍳` | `…` | `∊` | `⍷` | `⌸` or `⊆` |
 
-Modifiers and combinators are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
+Modifiers are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
 | BQN    | `¨` | `⌜`  | `´` | `⎉` | `⍟` | `˜` | `∘` | `○` | `⟜` |
 |--------|-----|------|-----|-----|-----|-----|-----|-----|-----|

@@ -6,7 +6,7 @@ A BQN *character literal* consists of a single character between single quotes, 
 
 A comment consists of the hash character `#` and any following text until (not including) the next newline character. The initial `#` must not be part of a string literal started earlier. Comments are ignored entirely and do not form tokens.
 
-Identifiers and numeric literals share the same token formation rule. These tokens are formed from the *numeric characters* `¯∞π.0123456789` and *alphabetic characters* `_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ` and the oddball `𝕣`. Any sequence of these characters adjacent to each other forms a single token, which is a *numeric literal* if it begins with a numeric character and an *identifier* if it begins with an alphabetic character. Numeric literals are also subject to [numeric literal rules](literal.md), which specify which numeric literals are valid and which numbers they represent. If the token contains `𝕣` it must be either `𝕣`, `_𝕣`, or `_𝕣_` and is considered a special name (see below). As the value taken by this identifier can only be a modifier or composition, the uppercase character `ℝ` is not allowed.
+Identifiers and numeric literals share the same token formation rule. These tokens are formed from the *numeric characters* `¯∞π.0123456789` and *alphabetic characters* `_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ` and the oddball `𝕣`. Any sequence of these characters adjacent to each other forms a single token, which is a *numeric literal* if it begins with a numeric character and an *identifier* if it begins with an alphabetic character. Numeric literals are also subject to [numeric literal rules](literal.md), which specify which numeric literals are valid and which numbers they represent. If the token contains `𝕣` it must be either `𝕣`, `_𝕣`, or `_𝕣_` and is considered a special name (see below). As the value taken by this identifier can only be a modifier, the uppercase character `ℝ` is not allowed.
 
 Following this step, the whitespace characters space and tab are ignored, and do not form tokens. Only these whitespace characters, and the newline character, which does form a token, are allowed.
 
@@ -15,8 +15,8 @@ Otherwise, a single character forms a token. Only the specified set of character
 | Class                 | Characters
 |-----------------------|------------
 | Primitive Function    | `+-×÷⋆√⌊⌈\|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔`
-| Primitive Modifier    | `` ˜˘¨⌜⁼´` ``
-| Primitive Composition | `∘○⊸⟜⌾⊘◶⎉⚇⍟`
+| Primitive 1-Modifier  | `` ˜˘¨⌜⁼´` ``
+| Primitive 1-Modifier  | `∘○⊸⟜⌾⊘◶⎉⚇⍟`
 | Special name          | `𝕨𝕩𝕗𝕘𝕤𝕎𝕏𝔽𝔾𝕊`
 | Punctuation           | `←↩→(){}⟨⟩‿⋄,` and newline
 

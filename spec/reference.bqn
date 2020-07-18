@@ -176,7 +176,7 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 #⌜
 # LAYER 4: Operators
 
-> ↩ Unbox          ⊘ >
+> ↩ Merge          ⊘ >
 ≍ ← >∘Pair
 ⎉ ← _rankOp_
 ⚇ ← _depthOp_
@@ -188,7 +188,7 @@ DropV← {⊑⟜𝕩¨𝕨+↕𝕨-˜≠𝕩}
 Cell ← DropV⟜≢
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 
-Unbox←(0<≠∘⥊)◶⊢‿{
+Merge←(0<≠∘⥊)◶⊢‿{
   c←≢⊑𝕩
   ! ∧´⥊(c≡≢)¨𝕩
   𝕩⊑⟜ToArray˜⌜↕c

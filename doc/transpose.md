@@ -42,7 +42,7 @@ But, reading in ravel order, the argument and result have exactly the same eleme
                              ┘
                                ┘
 
-To exchange multiple axes, use the Power operator. Like Rotate, a negative power will move axes in the other direction. In particular, to move the last axis to the front, use Inverse (as you might expect, this exactly inverts `⍉`).
+To exchange multiple axes, use the Power modifier. Like Rotate, a negative power will move axes in the other direction. In particular, to move the last axis to the front, use Inverse (as you might expect, this exactly inverts `⍉`).
 
         ≢ ⍉⍟3 a23456
     [ 5 6 2 3 4 ]
@@ -51,7 +51,7 @@ To exchange multiple axes, use the Power operator. Like Rotate, a negative power
 
 In fact, we have `≢⍉⍟k a ←→ k⌽≢a` for any number `k` and array `a`.
 
-To move axes other than the first, use the Rank operator in order to leave initial axes untouched. A rank of `k>0` transposes only the last `k` axes while a rank of `k<0` ignores the first `|k` axes.
+To move axes other than the first, use the Rank modifier in order to leave initial axes untouched. A rank of `k>0` transposes only the last `k` axes while a rank of `k<0` ignores the first `|k` axes.
 
         ≢ ⍉⎉3 a23456
     [ 2 3 5 6 4 ]
@@ -104,7 +104,7 @@ Finally, it's worth noting that, as monadic Transpose moves the first axis to th
 
 Here we define the two valences of Transpose more precisely.
 
-A non-array right argument to Transpose is always boxed to get a scalar array before doing anything else.
+A non-array right argument to Transpose is always enclosed to get a scalar array before doing anything else.
 
 Monadic transpose is identical to `(≠∘≢-1˜)⊸⍉`, except that for scalar arguments it returns the array unchanged rather than giving an error.
 

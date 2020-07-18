@@ -1,6 +1,6 @@
 # Depth
 
-The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching a non-array. The monadic function Depth (`≡`) returns the depth of its argument, while the composition Depth (`⚇`) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.
+The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching a non-array. The monadic function Depth (`≡`) returns the depth of its argument, while the 2-modifier Depth (`⚇`) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.
 
 ## The Depth function
 
@@ -27,7 +27,7 @@ Also unlike rank, Depth *does* care about the elements of its argument: in fact,
         ≡ ⟨2,<3,4,<<<5⟩
     4
 
-As the above expressions suggest, the depth of an array is the maximum of its elements, plus one. The base case, a non-array (including a function, modifier, or combinator), has depth 0.
+As the above expressions suggest, the depth of an array is the maximum of its elements' depths, plus one. The base case, a non-array (including a function or modifier), has depth 0.
 
         ≡'c'
     0
@@ -38,7 +38,7 @@ As the above expressions suggest, the depth of an array is the maximum of its el
         ≡⟨5,⟨'c',f,2⟩⟩
     2
 
-If the function `IsArray` indicates whether its argument is an array, then we can write a recursive definition of Depth using the Choose composition.
+If the function `IsArray` indicates whether its argument is an array, then we can write a recursive definition of Depth using the Choose modifier.
 
     Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 
@@ -73,7 +73,7 @@ In these cases the flexibility seems trivial because the left argument has depth
       [ 2 1 ] [ 2 4 ] [ 2 1 ]
                               ┘
 
-This means the left argument is homogeneous of depth 2. What should an argument of depth 1, or an argument that contains non-arrays, do? One option is to continue to require the left argument to be a vector, and convert any non-array argument into an array by boxing it:
+This means the left argument is homogeneous of depth 2. What should an argument of depth 1, or an argument that contains non-arrays, do? One option is to continue to require the left argument to be a list, and convert any non-array argument into an array by enclosing it:
 
         ⟨3‿2,1⟩ <⍟(0=≡)¨⊸⊏ ↕6‿7
     [ [ 3 1 ] [ 2 1 ] ]
@@ -90,9 +90,9 @@ For Select, the depth-1 case is still quite useful, but it may also be desirable
         2‿1‿4 <¨⊸⊏ ↕3‿4‿5‿2
     [ [ 2 1 4 0 ] [ 2 1 4 1 ] ]
 
-## The Depth composition
+## The Depth modifier
 
-The Depth composition (`⚇`) is a generalization of Each that allows diving deeper into an array. To illustrate it we'll use a shape `4‿3` array of lists of lists.
+The Depth 2-modifier (`⚇`) is a generalization of Each that allows diving deeper into an array. To illustrate it we'll use a shape `4‿3` array of lists of lists.
 
         ⊢ n ← <⎉1⍟2 4‿3‿2‿2⥊↕48
     ┌

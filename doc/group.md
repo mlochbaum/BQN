@@ -10,7 +10,7 @@ Once defined, the old BQN Key (dyadic) is `⍷⊸⊐⊸⊔` and Group (monadic) 
 
 ## Definition
 
-Group operates on a numeric list of indices and a value array, treated as a list of its major cells, to produce a list of groups, each of which is a selection from the values. The indices and values have the same length, and each value cell is paired with the index at the same position. That index indicates the result group the value should go into, with an "index" of ¯1 indicating that it should be dropped and not appear in the result.
+Group operates on a numeric list of indices and an array, treated as a list of its major cells or "values", to produce a list of groups, each of which is a selection from those cells. The two arrays have the same length, and each value cell is paired with the index at the same position. That index indicates the result group the cell should go into, with an "index" of ¯1 indicating that it should be dropped and not appear in the result.
 
         0‿1‿2‿0‿1 ≍ "abcde"  # Corresponding indices and values
     ┌
@@ -20,7 +20,7 @@ Group operates on a numeric list of indices and a value array, treated as a list
         0‿1‿2‿0‿1 ⊔ "abcde"  # Values grouped by index
     [ [ ad ] [ be ] [ c ] ]
 
-For example, we might choose to group a list of words by length. Within each group, values maintain the ordering they had in the list originally.
+For example, we might choose to group a list of words by length. Within each group, cells maintain the ordering they had in the list originally.
 
         phrase ← "BQN"‿"uses"‿"notation"‿"as"‿"a"‿"tool"‿"of"‿"thought"
         ⥊˘ ≠¨⊸⊔ phrase
@@ -40,7 +40,7 @@ For example, we might choose to group a list of words by length. Within each gro
 
 If we'd like to ignore words of 0 letters, or more than 5, we can set all word lengths greater than 5 to 0, then reduce the lengths by 1. Two words end up with left argument values of ¯1 and are omitted from the result.
 
-        1-˜≤⟜5⊸×≠¨phrase
+        1 -˜ ≤⟜5⊸× ≠¨ phrase
     [ 2 3 ¯1 1 0 3 1 ¯1 ]
         ⥊˘ {1-˜≤⟜5⊸×≠¨𝕩}⊸⊔ phrase
     ┌
@@ -52,7 +52,7 @@ If we'd like to ignore words of 0 letters, or more than 5, we can set all word l
 
 Note that the length of the result is determined by the largest index. So the result never includes trailing empty groups. A reader of the above code might expect 5 groups (lengths 1 through 5), but there are no words of length 5, so the last group isn't there.
 
-When Group is called dyadically, the left argument is used for the indices and the right is used for values, as seen above. When it is called monadically, the right argument gives the indices and the values grouped are the right argument's indices, that is, `↕≠𝕩`.
+When Group is called dyadically, the left argument is used for the indices and the right is used for values, as seen above. When it is called monadically, the right argument, which must be a list, gives the indices and the values grouped are the right argument's indices, that is, `↕≠𝕩`.
 
         ⥊˘ ⊔ 2‿3‿¯1‿2
     ┌
@@ -66,7 +66,7 @@ Here, the index 2 appears at indices 0 and 3 while the index 3 appears at index 
 
 ### Multidimensional grouping
 
-Dyadic Group allows the right argument to be grouped along multiple axes by using a nested left argument. In this case, the left argument must be a vector of numeric vectors, and the result has rank `≠𝕨` while its elements—as always—have the same rank as `𝕩`. The result shape is `1+⌈´¨𝕨`, while the shape of element `i⊑𝕨⊔𝕩` is `i+´∘=¨𝕨`. If every element of `𝕨` is sorted ascending and contains only non-negative numbers, we have `𝕩≡∾𝕨⊔𝕩`, that is, Join is the inverse of Partition.
+Dyadic Group allows the right argument to be grouped along multiple axes by using a nested left argument. In this case, the left argument must be a list of numeric lists, and the result has rank `≠𝕨` while its elements—as always—have the same rank as `𝕩`. The result shape is `1+⌈´¨𝕨`, while the shape of element `i⊑𝕨⊔𝕩` is `i+´∘=¨𝕨`. If every element of `𝕨` is sorted ascending and contains only non-negative numbers, we have `𝕩≡∾𝕨⊔𝕩`, that is, Join is the inverse of Partition.
 
 Here we split up a rank-2 array into a rank-2 array of rank-2 arrays. Along the first axis we simply separate the first pair and second pair of rows—a partition. Along the second axis we separate odd from even indices.
 
@@ -84,7 +84,7 @@ Here we split up a rank-2 array into a rank-2 array of rank-2 arrays. Along the 
 
 Each group `i⊑𝕨⊔𝕩` is composed of the cells `j<¨⊸⊏𝕩` such that `i≢j⊑¨𝕨`. The groups retain their array structure and ordering along each argument axis. Using multidimensional Replicate we can say that `i⊑𝕨⊔𝕩` is `(i=𝕨)/𝕩`.
 
-The monadic case works similarly: Group Indices always satisfies `⊔𝕩 ←→ 𝕩⊔↕≠⚇1 x`. As with `↕`, the depth of the result of Group Indices is always one greater than that of its argument. A depth-0 argument is not allowed.
+The monadic case works similarly: Group Indices always satisfies `⊔𝕩 ←→ 𝕩⊔↕≠⚇1𝕩`. As with `↕`, the depth of the result of Group Indices is always one greater than that of its argument. A depth-0 argument is not allowed.
 
 ## Properties
 

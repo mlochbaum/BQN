@@ -45,7 +45,7 @@ pre {
 .Value        { color: #1f2020; }
 .Function     { color: #1f7229; }
 .Modifier     { color: #7b3b60; }
-.Composition  { color: #857614; }
+.Modifier2    { color: #857614; }
 .Gets         { color: #16170a; }
 .Paren        { color: #585f5b; }
 .Ligature,
@@ -70,7 +70,7 @@ a:visited     { color: #3d155f; }
   .Value      { color: #a2acad; }
   .Function   { color: #3aa548; }
   .Modifier   { color: #92428a; }
-  .Composition{ color: #998819; }
+  .Modifier2  { color: #998819; }
   .Gets       { color: #a5a896; }
   .Paren      { color: #585047; }
   .Ligature,

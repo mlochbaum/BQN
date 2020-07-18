@@ -14,7 +14,7 @@ We define:
     And ← ×
     Or  ← ×⌾¬
 
-Note that `¬⁼ ←→ ¬`, since the first added 1 will be negated but the second won't; the two 1s cancel leaving two subtractions, and `-⁼ ←→ -`. An alternate definition of Or that matches the typical formula from probability theory is
+Note that `¬⁼ ←→ ¬`, since when applying `¬` twice the first added 1 will be negated but the second won't; the two 1s cancel leaving two subtractions, and `-⁼ ←→ -`. An alternate definition of Or that matches the typical formula from probability theory is
 
     Or  ← +-×
 

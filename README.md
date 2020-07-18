@@ -34,7 +34,7 @@ For longer samples, you can [gaze into the abyss](c.bqn) that is the (incomplete
 
 ## Array model
 
-Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL [array models](https://aplwiki.com/wiki/Array_model). Unlike in APL, non-array data is possible, and common: numbers, characters, and functions are not arrays (see the full list of [types](#data-types) below). This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no "floating" so a value is always different from a scalar array that contains it. This system has been [proposed](https://dl.acm.org/doi/abs/10.1145/586656.586663) in APL's past under the name **based array theory**.
+Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL [array models](https://aplwiki.com/wiki/Array_model). Unlike in APL, non-array data is possible, and common: numbers, characters, and functions are not arrays (see the full list of [types](#types) below). This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no "floating" so a value is always different from a scalar array that contains it. This system has been [proposed](https://dl.acm.org/doi/abs/10.1145/586656.586663) in APL's past under the name **based array theory**.
 
 Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).
 
@@ -45,14 +45,14 @@ BQN syntax consists of expressions where computation is done with a little organ
 ### Expressions
 
 Like APL, BQN uses four *syntactic roles* for values in expressions:
-* **Values**, like APL arrays or J nouns
+* **Subjects**, like APL arrays or J nouns
 * **Functions**, or verbs in J
-* **Modifiers**, like APL monadic operators or J adverbs
-* **Compositions**, like APL dyadic operators or J conjunctions.
+* **1-Modifiers**, like APL monadic operators or J adverbs
+* **2-Modifiers**, like APL dyadic operators or J conjunctions.
 
-These roles work exactly like they do in APL, with functions applying to one or two arguments, modifiers taking a single function or value on the left, and compositions taking a function or value on each side.
+These roles work exactly like they do in APL, with functions applying to one or two subject arguments, 1-modifiers taking a single function or subject on the left, and 2-modifiers taking a function or subject on each side.
 
-Unlike APL, in BQN the syntactic role of a value is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a value, an uppercase first letter (`Name`) makes it a function, and underscores are used for modifiers (`_name`) and compositions (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as an argument. With a list of functions, we can make a table of the square and square root of a few numbers:
+Unlike APL, in BQN the syntactic role of a value is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a subject, an uppercase first letter (`Name`) makes it a function, and underscores are used for 1-modifiers (`_name`) and 2-modifiers (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:
 
         ⟨×˜,√⟩ {𝕎𝕩}⌜ 1‿4‿9
     ┌
@@ -60,7 +60,7 @@ Unlike APL, in BQN the syntactic role of a value is determined purely by the way
       1  2  3
               ┘
 
-BQN's built-in operations also have patterns to indicate the syntactic role: modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and compositions (`∘○⊸⟜⌾⊘◶⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
+BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and 2-modifiers (`∘○⊸⟜⌾⊘◶⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
 
 ### Special syntax
 
@@ -69,17 +69,17 @@ Most of these glyphs are explained further in the section on [literal notation](
 Glyph(s)        | Meaning
 ----------------|-----------
 `←`             | Define
-`↩`             | Modify
+`↩`             | Change
 `→`             | Return
 `⋄,` or newline | Statement or element separator
 `()`            | Expression grouping
-`{}`            | Explicit function, modifier, or composition
-`⟨⟩`            | List/vector
-`‿`             | Strand (lightweight vector syntax)
+`{}`            | Explicit function or modifier
+`⟨⟩`            | List (rank-1 array)
+`‿`             | Strand (lightweight list syntax)
 `𝕨𝕎`            | Left argument
 `𝕩𝕏`            | Right argument
-`𝕗𝔽`            | Left operand (modifier or composition)
-`𝕘𝔾`            | Right operand (composition)
+`𝕗𝔽`            | Left operand of a modifier
+`𝕘𝔾`            | Right operand of a 2-modifier
 `#`             | Comment
 
 ## Built-in operations
@@ -103,7 +103,7 @@ Functions that have significant differences from APL functions are marked with a
 | `¬`   | [Not](doc/logic.md)*                                | [Span](doc/logic.md)*
 | `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
-| `<`   | [Box](https://aplwiki.com/wiki/Enclose)             | [Less Than](https://aplwiki.com/wiki/Less_than)
+| `<`   | [Enclose](https://aplwiki.com/wiki/Enclose)         | [Less Than](https://aplwiki.com/wiki/Less_than)
 | `>`   | [Merge](https://aplwiki.com/wiki/Mix)               | [Greater Than](https://aplwiki.com/wiki/Greater_than)
 | `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
 | `=`   |                                                     | [Equals](https://aplwiki.com/wiki/Equal_to)
@@ -131,7 +131,7 @@ Functions that have significant differences from APL functions are marked with a
 | `⍷`   | [Deduplicate](https://aplwiki.com/wiki/Unique)      | [Find](https://aplwiki.com/wiki/Find)
 | `⊔`   | [Group Indices](doc/group.md)*                      | [Group](doc/group.md)*
 
-### Modifiers and compositions
+### Modifiers
 
 *Combinators* only control the application of functions. Because a non-function operand applies as a constant function, some combinators have extra meanings when passed a constant. For example, `0˜` is the constant function that always returns 0 and `0⊸<` is the function that tests whether its right argument is greater than 0.
 
@@ -148,16 +148,16 @@ Glyph | Name(s)     | Definition                     | Description
 
 Choose isn't really a combinator since it calls the function `⊑`, and Under is not a true combinator since it has an "undo" step at the end. This step might be implemented using the left operand's inverse (*computational* Under) or its structural properties (*structural* Under).
 
-Other modifiers and compositions control array traversal and iteration. In three cases a simpler modifier is paired with a generalized composition: in each case the modifier happens to be the same as the composition with a right operand of `¯1`.
+Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: in each case the 1-modifier happens to be the same as the 2-modifier with a right operand of `¯1`.
 
-Modifier | Name    | Compositon | Name
----------|---------|------------|--------
-`˘`      | Cells   | `⎉`        | Rank
-`¨`      | Each    | `⚇`        | Depth
-`⌜`      | Table   |
-`⁼`      | Undo    | `⍟`        | Repeat
-`´`      | Reduce  |
-`` ` ``  | Scan    |
+1-Modifier | Name    | 2-Modifier | Name
+-----------|---------|------------|--------
+`˘`        | Cells   | `⎉`        | Rank
+`¨`        | Each    | `⚇`        | Depth
+`⌜`        | Table   |
+`⁼`        | Undo    | `⍟`        | Repeat
+`´`        | Reduce  |
+`` ` ``    | Scan    |
 
 ## Literal notation
 
@@ -167,7 +167,7 @@ BQN has single-token notation for numbers, strings, and characters.
 
 Numbers allow the typical decimal notation with `¯` for the negative sign (because `-` is a function) and `e` for scientific notation (or `E`, as numeric notation is case-insensitive). `∞` and `π` may be used as special numeric values. Complex numbers are also allowed, with the components separated by `i`.
 
-Strings are written with double quotes `""`, and characters with single quotes `''` with a single character in between. A double quote within a string can be escaped by writing it twice. If two string or two character literals are next to each other, they must be separated by a space.
+Strings are written with double quotes `""`, and characters with single quotes `''` with a single character in between. A double quote within a string can be escaped by writing it twice; if two string literals are next to each other, they must be separated by a space. In contrast, character literals do not use escapes, as the length is already known.
 
 ### Separators
 
@@ -179,15 +179,15 @@ Lists (1-dimensional arrays) are enclosed in angle brackets `⟨⟩`, with the r
 
 If added, [sets and dictionaries](#sets-and-dictionaries) would also use a list-like notation.
 
-### Explicit functions
+### Blocks
 
-Functions, modifiers, and combinators can be defined using curly braces `{}`. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return values and modifiers and compositions return functions. Operations defined in this way have lexical scope.
+Blocks are written with curly braces `{}` and can be used to group expressions or define functions and modifiers. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned in order to evaluate the block. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return subjects and modifiers return functions. Blocks have lexical scope.
 
-The special values `𝕨` and `𝕩`, which stand for arguments, and `𝕗` and `𝕘`, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate values and the uppercase forms `𝕎𝕏𝔽𝔾` indicate functions. The type (including syntactic role) of the result is determined by its contents: a composition contains `𝕘`, a modifier contains `𝕗` but not `𝕘`, and a function contains neither.
+The special names `𝕨` and `𝕩`, which stand for arguments, and `𝕗` and `𝕘`, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate subjects and the uppercase forms `𝕎𝕏𝔽𝔾` indicate functions. The type and syntactic role of the block is determined by its contents: a 2-modifier contains `𝕘`, a 1-modifier contains `𝕗` but not `𝕘`, and a function contains neither but does have one of `𝕨𝕩𝕤𝕎𝕏𝕊`. If no special names are present the block is an *immediate block* and is evaluated as soon as it appears, with the result having a subject role.
 
-A modifier or composition can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains `𝕨` or `𝕩`, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.
+A modifier can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains `𝕨` or `𝕩`, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.
 
-## Data types
+## Types
 
 BQN will initially support the following fundamental types:
 
@@ -195,8 +195,8 @@ BQN will initially support the following fundamental types:
 - Character (Unicode code point)
 - Array
 - Function
-- Modifier
-- Composition
+- 1-Modifier
+- 2-Modifier
 
 All of these types are immutable, and immutable types should be the default for BQN. The only mutable type likely to be added is the namespace or scope.
 
