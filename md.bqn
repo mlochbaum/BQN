@@ -90,14 +90,14 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   # Index of first zero, or number of leading 1s
   Lead ← ⊑ ⊐⟜0
 
-  # Find whether 𝕨 was true at the last index where 𝕩 was true, in each
+  # Find whether 𝕨 was true at the last index where 𝕩 was false, in each
   # position.
   PrecedesGroup ← {
     # We prepend a 0 to 𝕨, so that 0 is the "before start" index, with a
     # false value, and normal indices are increased by 1.
     𝕨 ∾˜↩ 0
     inds ← 1 + ↕≠𝕩
-    # Zero out indices where x was false, and find the greatest index so
+    # Zero out indices where x was true, and find the greatest index so
     # far at each position.
     last ← ⌈` inds × ¬𝕩
     last ⊏ 𝕨
@@ -163,15 +163,15 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     l ∧ (" " ≡ 1↓t) ∧ ⊑(")." ∊˜ 1↑t)
   }
 
-  # Any line that starts with a | is a table, at least in my lazy version
-  IsTable ← 1˜
+  # Table detection handled specially because the spec is... special
+  CutTableRow ← {
+    b ← '|' = 𝕩            # Mask of bars
+    o ← (¬b) ≠○Lead ' '=𝕩  # Leading | omitted
+    r ← b > 0 Shl '\' = 𝕩  # Non-escaped bars
+    1 -˜ (¬r∨1⌽b>r) × o + +` r
+  }
   ProcTable ← {
-    CutRow ← {
-      b ← '|' = 𝕩
-      r ← b > 0 Shl '\' = 𝕩
-      1 -˜ (¬r∨1⌽b>r) × +`r
-    }
-    rows ← (Trim¨ CutRow⊸⊔)¨ 𝕩
+    rows ← (Trim¨ CutTableRow⊸⊔)¨ 𝕩
     inc ← ¬ rule ← ∧´∘∾¨'-'=rows
     rows ↩ ProcInline¨¨⌾(inc⊸/) rows
     rows ↩ (⊏rows) (⊢ ∾ ⟨""⟩ /˜ 0⌈-○≠)¨ rows
@@ -199,10 +199,10 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   lineChars‿lineClas‿procFns ← <˘⍉>⟨
     ""    ‿ (!∘0)       ‿ ProcParagraph
     "#"   ‿ LenHeading  ‿ ProcHeading
-    " "   ‿ IsCode      ‿ ProcCode
+    ""    ‿ 0           ‿ ProcCode
+    ""    ‿ 0           ‿ ProcTable
     "-+*" ‿ LenBullet   ‿ ProcBullet
   # •d    ‿ LenListNum  ‿ ProcListNum
-    "|"   ‿ IsTable     ‿ ProcTable
     "<"   ‿ IsHtmlBlock ‿ ProcHtmlBlock
   ⟩
 
@@ -295,6 +295,18 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   # A header can't have 4 spaces of indentation. If it doesn't become
   # part of a code block, it will be included in a paragraph.
   lineType -↩ codeMask ∧ 1 = lineType
+
+  # Tables are made up of rows that would otherwise be paragraph rows.
+  # They are indicated by the delimiter row, consisting of only a few
+  # allowed characters, preceded (!) by a header row with the same
+  # number of cells.
+  IsTD ← (∧´ ∊ ∾ ⊣ ∊˜ 2↑⊢)⟜"-|: "
+  tableMask ← (0⌾⊑ nonEmptyMask) ∧ paragraphMask ∧¬ codeMask
+  tableDelimMask ← { 𝕩 IsTD¨∘⊣⌾(𝕨⊸/) 𝕨 }⟜𝕩 tableMask
+  delimValid ← (⊢ =○(≠∘⊔∘CutTableRow¨ ⊏⟜𝕩) -⟜1) / tableDelimMask
+  headerMask ← 1 ⌽ delimValid⌾(tableDelimMask⊸/) 0¨𝕩
+  tableMask ↩ headerMask (⊢ ∧ ⊣ ∨ ⊣ PrecedesGroup <) tableMask
+  lineType ↩ 3¨⌾(tableMask⊸/) lineType
 
   # Code blocks consist of indented lines, possibly with blank lines
   # in between. They must be separated from paragraphs by blank lines.
