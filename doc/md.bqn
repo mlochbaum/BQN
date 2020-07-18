@@ -163,7 +163,12 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   # Any line that starts with a | is a table, at least in my lazy version
   IsTable ← 1˜
   ProcTable ← {
-    rows ← (Trim¨ ((1-˜¬×+`)'|'⊸=)⊸⊔)¨ 𝕩
+    CutRow ← {
+      b ← '|' = 𝕩
+      r ← b > 0 Shl '\' = 𝕩
+      1 -˜ (¬r∨1⌽b>r) × +`r
+    }
+    rows ← (Trim¨ CutRow⊸⊔)¨ 𝕩
     inc ← ¬ rule ← ∧´∘∾¨'-'=rows
     rows ↩ ProcInline¨¨⌾(inc⊸/) rows
     rowType ← inc / +` rule  # Head or body
