@@ -151,8 +151,11 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   }⟜⊑
 
   # List items start with a bullet (unordered) or number (ordered).
-  LenBullet ← 2 × 1 (<⟜≠)◶⟨0,' '=⊑⟩ ⊢
-  LenListNum ← {
+  LenBullet ← +⟜× ·≤⟜4⊸× ·Lead ' '=1⊸↓
+  ProcBullet ← {
+    "ul" Html lf ∾ JoinLines ("li" Html ProcInline)¨ 𝕨 ↓¨ 𝕩
+  }
+  LenListNum ← { # Not used yet
     n ← Lead 𝕩∊•d
     l ← (1≤n) ∧ (9≥n)
     ' ' = n ↓ 𝕩
@@ -196,7 +199,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     ""    ‿ (!∘0)       ‿ ProcParagraph
     "#"   ‿ LenHeading  ‿ ProcHeading
     " "   ‿ IsCode      ‿ ProcCode
-  # "-+*" ‿ LenBullet   ‿ ProcBullet
+    "-+*" ‿ LenBullet   ‿ ProcBullet
   # •d    ‿ LenListNum  ‿ ProcListNum
     "|"   ‿ IsTable     ‿ ProcTable
     "<"   ‿ IsHtmlBlock ‿ ProcHtmlBlock
