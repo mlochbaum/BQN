@@ -174,6 +174,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     rows ← (Trim¨ CutRow⊸⊔)¨ 𝕩
     inc ← ¬ rule ← ∧´∘∾¨'-'=rows
     rows ↩ ProcInline¨¨⌾(inc⊸/) rows
+    rows ↩ (⊏rows) (⊢ ∾ ⟨""⟩ /˜ 0⌈-○≠)¨ rows
     rowType ← inc / +` rule  # Head or body
     DoRow ← { lf ∾ JoinLines 𝕨⊸Html¨ 𝕩 }
     rows ↩ (rowType ⊏ "th"‿"td") DoRow¨ inc/rows
