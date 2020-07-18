@@ -57,5 +57,5 @@ pre {
 .String     { color: #2d7583; }
 .Result     { color: #292929; }
 
-a:link      { color: #0b39dc; }
+a:link      { color: #0b39dc; text-decoration-color:#0b39dc91; }
 a:visited   { color: #3d155f; }
