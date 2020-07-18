@@ -384,10 +384,9 @@ GetHighlights ← {
 }
 # Return highlights for areas in 𝕩 where 𝕨 is true.
 GetMultiHighlights ← {
-  mask ← 1⊸⌽⊸∨ 𝕨
-  fill ← ¬ mask / 𝕨
-  ⟨c,pos⟩ ← GetHighlights ' '¨⌾(fill⊸/) mask / 𝕩
-  ⟨c, pos + fill ((1-˜⍋⟜pos) ⊏ -˜)○/ mask > 𝕨⟩
+  start ← 0⊸Shl⊸< 𝕨
+  groups ← (1 -˜ 𝕨 × +` start) ⊔ 𝕩
+  <∘∾˘ ⍉ ((≠∾2˜) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
 }
 
 head ← "<head><link href=""style.css"" rel=""stylesheet""/></head>"∾lf
