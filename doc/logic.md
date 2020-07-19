@@ -25,21 +25,10 @@ Note that `¬⁼ ←→ ¬`, since when applying `¬` twice the first added 1 wi
 We can form truth tables including the non-integer value one-half:
 
         ¬ 0‿0.5‿1
-    [ 1 0.5 0 ]
 
         ∧⌜˜ 0‿0.5‿1
-    ┌
-      0    0   0
-      0 0.25 0.5
-      0  0.5   1
-                 ┘
 
         ∨⌜˜ 0‿0.5‿1
-    ┌
-        0  0.5 1
-      0.5 0.75 1
-        1    1 1
-                 ┘
 
 As with logical And and Or, any value and 0 is 0, while any value or 1 is 1. The other boolean values give the identity elements for the two functions: 1 and any value gives that value, as does 0 or the value.
 

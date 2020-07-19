@@ -4,42 +4,42 @@
 <h2 id="the-depth-function">The Depth function</h2>
 <p>To find the depth of an array, use Depth (<code><span class='Function'>≡</span></code>). For example, the depth of a list of numbers or characters is 1:</p>
 <pre>    <span class='Function'>≡</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
-<span class='Number'>1</span>
+1
     <span class='Function'>≡</span> <span class='String'>&quot;a string is a list of characters&quot;</span>
-<span class='Number'>1</span>
+1
 </pre>
 <p>Depth is somewhat analogous to an array's rank <code><span class='Function'>≠≢</span><span class='Value'>𝕩</span></code>, and in fact rank can be &quot;converted&quot; to depth by splitting rows with <code><span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>1</span></code>, reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:</p>
 <pre>    <span class='Function'>≡</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊</span><span class='String'>&quot;characters&quot;</span>
-<span class='Number'>1</span>
+1
     <span class='Function'>≡</span> <span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>10</span><span class='Paren'>)</span><span class='Function'>⥊</span><span class='String'>&quot;characters&quot;</span>
-<span class='Number'>1</span>
+1
 </pre>
 <p>Also unlike rank, Depth <em>does</em> care about the elements of its argument: in fact, to find the depth of an array, every element must be inspected.</p>
 <pre>    <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
-<span class='Number'>1</span>
+1
     <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Function'>&lt;</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
-<span class='Number'>2</span>
+2
     <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Function'>&lt;</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Function'>&lt;&lt;&lt;</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
-<span class='Number'>4</span>
+4
 </pre>
 <p>As the above expressions suggest, the depth of an array is the maximum of its elements' depths, plus one. The base case, a non-array (including a function or modifier), has depth 0.</p>
 <pre>    <span class='Function'>≡</span><span class='String'>'c'</span>
-<span class='Number'>0</span>
+0
     <span class='Function'>F</span><span class='Gets'>←</span><span class='Function'>+</span><span class='Separator'>⋄</span><span class='Function'>≡</span><span class='Value'>f</span>
-<span class='Number'>0</span>
+0
     <span class='Function'>≡</span><span class='Bracket'>⟨</span><span class='String'>'c'</span><span class='Separator'>,</span><span class='Value'>f</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩</span>
-<span class='Number'>1</span>
+1
     <span class='Function'>≡</span><span class='Bracket'>⟨</span><span class='Number'>5</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='String'>'c'</span><span class='Separator'>,</span><span class='Value'>f</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩⟩</span>
-<span class='Number'>2</span>
+2
 </pre>
 <p>If the function <code><span class='Function'>IsArray</span></code> indicates whether its argument is an array, then we can write a recursive definition of Depth using the Choose modifier.</p>
 <pre><span class='Function'>Depth</span><span class='Gets'>←</span><span class='Function'>IsArray</span><span class='Modifier2'>◶</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Brace'>{</span><span class='Number'>1</span><span class='Function'>+</span><span class='Number'>0</span><span class='Function'>⌈</span><span class='Modifier'>´</span><span class='Function'>Depth</span><span class='Modifier'>¨</span><span class='Function'>⥊</span><span class='Value'>𝕩</span><span class='Brace'>}</span>
 </pre>
 <p>The minimum element depth of 0 implies that an empty array's depth is 1.</p>
 <pre>    <span class='Function'>≡</span><span class='Bracket'>⟨⟩</span>
-<span class='Number'>1</span>
+1
     <span class='Function'>≡</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Function'>⥊</span><span class='Number'>0</span>
-<span class='Number'>1</span>
+1
 </pre>
 <h2 id="testing-depth-for-multiple-axis-primitives">Testing depth for multiple-axis primitives</h2>
 <p>Several primitive functions use the left argument to manipulate the right argument along one or more axes: see <a href="leading.html">leading.md</a>.</p>
@@ -63,73 +63,128 @@
 </table>
 <p>Functions such as Take and Drop use a single number per axis. When the left argument is a list of numbers, they apply to initial axes. But for convenience, a single number is also accepted, and applied to the first axis only. This is equivalent to ravelling the left argument before applying the function.</p>
 <pre>    <span class='Function'>≢</span><span class='Number'>2</span><span class='Function'>↑</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Function'>⥊</span><span class='String'>&quot;abc&quot;</span>
-<span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>7</span> <span class='Number'>7</span> <span class='Number'>7</span> <span class='Value'>]</span>
+2‿7‿7‿7
     <span class='Function'>≢</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Function'>↑</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Function'>⥊</span><span class='String'>&quot;abc&quot;</span>
-<span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>1</span> <span class='Number'>1</span> <span class='Number'>7</span> <span class='Value'>]</span>
+2‿1‿1‿7
 </pre>
 <p>In these cases the flexibility seems trivial because the left argument has depth 1 or 0: it is an array or isn't, and it's obvious what a plain number should do. But for the second row in the table, the left argument is always an array. The general case is that the left argument is a vector and its elements correspond to right argument axes:</p>
 <pre>    <span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>⊏</span> <span class='Function'>↕</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span>
-<span class='Value'>┌</span>
-  <span class='Value'>[</span> <span class='Number'>3</span> <span class='Number'>1</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>3</span> <span class='Number'>4</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>3</span> <span class='Number'>1</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>1</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>4</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>1</span> <span class='Value'>]</span>
-                          <span class='Value'>┘</span>
+┌───┬───┬───┐
+│3‿1│3‿4│3‿1│
+├───┼───┼───┤
+│2‿1│2‿4│2‿1│
+└───┴───┴───┘
 </pre>
 <p>This means the left argument is homogeneous of depth 2. What should an argument of depth 1, or an argument that contains non-arrays, do? One option is to continue to require the left argument to be a list, and convert any non-array argument into an array by enclosing it:</p>
 <pre>    <span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>&lt;</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>=≡</span><span class='Paren'>)</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span> <span class='Function'>↕</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span>
-<span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>3</span> <span class='Number'>1</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>1</span> <span class='Value'>]</span> <span class='Value'>]</span>
+┌───┬───┐
+│3‿1│2‿1│
+└───┴───┘
 </pre>
 <p>While very consistent, this extension represents a small convenience and makes it difficult to act on a single axis, which for Replicate and <a href="group.html">Group</a> is probably the most common way the primitive is used:</p>
 <pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>/</span> <span class='String'>&quot;abcde&quot;</span>
-<span class='Value'>[</span> <span class='Value'>aaabbcddeee</span> <span class='Value'>]</span>
+aaabbcddeee
 </pre>
 <p>With the extension above, every case like this would have to use <code><span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>/</span></code> instead of just <code><span class='Function'>/</span></code>. BQN avoids this difficulty by testing the left argument's depth. A depth-1 argument applies to the first axis only, giving the behavior above.</p>
 <p>For Select, the depth-1 case is still quite useful, but it may also be desirable to choose a single cell using a list of numbers. In this case the left argument depth can be increased from the bottom using <code><span class='Function'>&lt;</span><span class='Modifier'>¨</span></code>.</p>
 <pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>&lt;</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span> <span class='Function'>↕</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>2</span>
-<span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>1</span> <span class='Number'>4</span> <span class='Number'>0</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>1</span> <span class='Number'>4</span> <span class='Number'>1</span> <span class='Value'>]</span> <span class='Value'>]</span>
+┌───────┬───────┐
+│2‿1‿4‿0│2‿1‿4‿1│
+└───────┴───────┘
 </pre>
 <h2 id="the-depth-modifier">The Depth modifier</h2>
 <p>The Depth 2-modifier (<code><span class='Modifier2'>⚇</span></code>) is a generalization of Each that allows diving deeper into an array. To illustrate it we'll use a shape <code><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span></code> array of lists of lists.</p>
 <pre>    <span class='Function'>⊢</span> <span class='Value'>n</span> <span class='Gets'>←</span> <span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>1</span><span class='Modifier2'>⍟</span><span class='Number'>2</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊↕</span><span class='Number'>48</span>
-<span class='Value'>┌</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Value'>]</span> <span class='Value'>]</span>     <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>4</span> <span class='Number'>5</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>6</span> <span class='Number'>7</span> <span class='Value'>]</span> <span class='Value'>]</span>     <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>8</span> <span class='Number'>9</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>10</span> <span class='Number'>11</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>12</span> <span class='Number'>13</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>14</span> <span class='Number'>15</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>16</span> <span class='Number'>17</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>18</span> <span class='Number'>19</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>20</span> <span class='Number'>21</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>22</span> <span class='Number'>23</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>24</span> <span class='Number'>25</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>26</span> <span class='Number'>27</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>28</span> <span class='Number'>29</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>30</span> <span class='Number'>31</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>32</span> <span class='Number'>33</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>34</span> <span class='Number'>35</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>36</span> <span class='Number'>37</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>38</span> <span class='Number'>39</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>40</span> <span class='Number'>41</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>42</span> <span class='Number'>43</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>44</span> <span class='Number'>45</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>46</span> <span class='Number'>47</span> <span class='Value'>]</span> <span class='Value'>]</span>
-                                                                          <span class='Value'>┘</span>
+┌─────────────┬─────────────┬─────────────┐
+│┌───┬───┐    │┌───┬───┐    │┌───┬─────┐  │
+││0‿1│2‿3│    ││4‿5│6‿7│    ││8‿9│10‿11│  │
+│└───┴───┘    │└───┴───┘    │└───┴─────┘  │
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││12‿13│14‿15│││16‿17│18‿19│││20‿21│22‿23││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││24‿25│26‿27│││28‿29│30‿31│││32‿33│34‿35││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││36‿37│38‿39│││40‿41│42‿43│││44‿45│46‿47││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+└─────────────┴─────────────┴─────────────┘
     <span class='Function'>≡</span> <span class='Value'>n</span>
-<span class='Number'>3</span>
+3
 </pre>
 <p>Reversing n swaps all the rows:</p>
 <pre>    <span class='Function'>⌽</span> <span class='Value'>n</span>
-<span class='Value'>┌</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>36</span> <span class='Number'>37</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>38</span> <span class='Number'>39</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>40</span> <span class='Number'>41</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>42</span> <span class='Number'>43</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>44</span> <span class='Number'>45</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>46</span> <span class='Number'>47</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>24</span> <span class='Number'>25</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>26</span> <span class='Number'>27</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>28</span> <span class='Number'>29</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>30</span> <span class='Number'>31</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>32</span> <span class='Number'>33</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>34</span> <span class='Number'>35</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>12</span> <span class='Number'>13</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>14</span> <span class='Number'>15</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>16</span> <span class='Number'>17</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>18</span> <span class='Number'>19</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>20</span> <span class='Number'>21</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>22</span> <span class='Number'>23</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Value'>]</span> <span class='Value'>]</span>     <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>4</span> <span class='Number'>5</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>6</span> <span class='Number'>7</span> <span class='Value'>]</span> <span class='Value'>]</span>     <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>8</span> <span class='Number'>9</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>10</span> <span class='Number'>11</span> <span class='Value'>]</span> <span class='Value'>]</span>
-                                                                          <span class='Value'>┘</span>
+┌─────────────┬─────────────┬─────────────┐
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││36‿37│38‿39│││40‿41│42‿43│││44‿45│46‿47││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││24‿25│26‿27│││28‿29│30‿31│││32‿33│34‿35││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││12‿13│14‿15│││16‿17│18‿19│││20‿21│22‿23││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌───┬───┐    │┌───┬───┐    │┌───┬─────┐  │
+││0‿1│2‿3│    ││4‿5│6‿7│    ││8‿9│10‿11│  │
+│└───┴───┘    │└───┴───┘    │└───┴─────┘  │
+└─────────────┴─────────────┴─────────────┘
 </pre>
 <p>Depth <code><span class='Number'>¯1</span></code> is equivalent to Each, and reverses the larger vectors, while depth <code><span class='Number'>¯2</span></code> applies Each twice to reverse the smaller vectors:</p>
 <pre>    <span class='Function'>⌽</span><span class='Modifier2'>⚇</span><span class='Number'>¯1</span> <span class='Value'>n</span>
-<span class='Value'>┌</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Value'>]</span> <span class='Value'>]</span>     <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>6</span> <span class='Number'>7</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>4</span> <span class='Number'>5</span> <span class='Value'>]</span> <span class='Value'>]</span>     <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>10</span> <span class='Number'>11</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>8</span> <span class='Number'>9</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>14</span> <span class='Number'>15</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>12</span> <span class='Number'>13</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>18</span> <span class='Number'>19</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>16</span> <span class='Number'>17</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>22</span> <span class='Number'>23</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>20</span> <span class='Number'>21</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>26</span> <span class='Number'>27</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>24</span> <span class='Number'>25</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>30</span> <span class='Number'>31</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>28</span> <span class='Number'>29</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>34</span> <span class='Number'>35</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>32</span> <span class='Number'>33</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>38</span> <span class='Number'>39</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>36</span> <span class='Number'>37</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>42</span> <span class='Number'>43</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>40</span> <span class='Number'>41</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>46</span> <span class='Number'>47</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>44</span> <span class='Number'>45</span> <span class='Value'>]</span> <span class='Value'>]</span>
-                                                                          <span class='Value'>┘</span>
+┌─────────────┬─────────────┬─────────────┐
+│┌───┬───┐    │┌───┬───┐    │┌─────┬───┐  │
+││2‿3│0‿1│    ││6‿7│4‿5│    ││10‿11│8‿9│  │
+│└───┴───┘    │└───┴───┘    │└─────┴───┘  │
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││14‿15│12‿13│││18‿19│16‿17│││22‿23│20‿21││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││26‿27│24‿25│││30‿31│28‿29│││34‿35│32‿33││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││38‿39│36‿37│││42‿43│40‿41│││46‿47│44‿45││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+└─────────────┴─────────────┴─────────────┘
     <span class='Function'>⌽</span><span class='Modifier2'>⚇</span><span class='Number'>¯2</span> <span class='Value'>n</span>
-<span class='Value'>┌</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>1</span> <span class='Number'>0</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>3</span> <span class='Number'>2</span> <span class='Value'>]</span> <span class='Value'>]</span>     <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>5</span> <span class='Number'>4</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>7</span> <span class='Number'>6</span> <span class='Value'>]</span> <span class='Value'>]</span>     <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>9</span> <span class='Number'>8</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>11</span> <span class='Number'>10</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>13</span> <span class='Number'>12</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>15</span> <span class='Number'>14</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>17</span> <span class='Number'>16</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>19</span> <span class='Number'>18</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>21</span> <span class='Number'>20</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>23</span> <span class='Number'>22</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>25</span> <span class='Number'>24</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>27</span> <span class='Number'>26</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>29</span> <span class='Number'>28</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>31</span> <span class='Number'>30</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>33</span> <span class='Number'>32</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>35</span> <span class='Number'>34</span> <span class='Value'>]</span> <span class='Value'>]</span>
-  <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>37</span> <span class='Number'>36</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>39</span> <span class='Number'>38</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>41</span> <span class='Number'>40</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>43</span> <span class='Number'>42</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Number'>45</span> <span class='Number'>44</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>47</span> <span class='Number'>46</span> <span class='Value'>]</span> <span class='Value'>]</span>
-                                                                          <span class='Value'>┘</span>
+┌─────────────┬─────────────┬─────────────┐
+│┌───┬───┐    │┌───┬───┐    │┌───┬─────┐  │
+││1‿0│3‿2│    ││5‿4│7‿6│    ││9‿8│11‿10│  │
+│└───┴───┘    │└───┴───┘    │└───┴─────┘  │
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││13‿12│15‿14│││17‿16│19‿18│││21‿20│23‿22││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││25‿24│27‿26│││29‿28│31‿30│││33‿32│35‿34││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+├─────────────┼─────────────┼─────────────┤
+│┌─────┬─────┐│┌─────┬─────┐│┌─────┬─────┐│
+││37‿36│39‿38│││41‿40│43‿42│││45‿44│47‿46││
+│└─────┴─────┘│└─────┴─────┘│└─────┴─────┘│
+└─────────────┴─────────────┴─────────────┘
 </pre>
 <p>While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth <code><span class='Number'>2</span></code> is equivalent to <code><span class='Number'>¯1</span></code> and depth <code><span class='Number'>1</span></code> is equivalent to <code><span class='Number'>¯2</span></code>. A depth of <code><span class='Number'>0</span></code> means to loop until non-arrays are reached, that is, apply <a href="https://aplwiki.com/wiki/Pervasion">pervasively</a>, like a scalar function.</p>
 <pre>    <span class='Bracket'>⟨</span><span class='String'>'a'</span><span class='Separator'>,</span><span class='String'>&quot;bc&quot;</span><span class='Bracket'>⟩</span> <span class='Function'>≍</span><span class='Modifier2'>⚇</span><span class='Number'>0</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩</span>
-<span class='Value'>[</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Value'>a</span> <span class='Number'>2</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>a</span> <span class='Number'>3</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>[</span> <span class='Value'>b</span> <span class='Number'>4</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Value'>c</span> <span class='Number'>4</span> <span class='Value'>]</span> <span class='Value'>]</span> <span class='Value'>]</span>
+┌─────────────┬─────────────┐
+│┌─────┬─────┐│┌─────┬─────┐│
+││'a'‿2│'a'‿3│││'b'‿4│'c'‿4││
+│└─────┴─────┘│└─────┴─────┘│
+└─────────────┴─────────────┘
 </pre>
 <p>With a positive operand, Depth doesn't have to use the same depth everywhere. Here, Length is applied as soon as the depth for a particular element is 1 or less, including if the argument has depth 0. For example, it maps over <code><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩⟩</span></code>, but not over <code><span class='Bracket'>⟨</span><span class='Number'>11</span><span class='Separator'>,</span><span class='Number'>12</span><span class='Bracket'>⟩</span></code>, even though these are elements of the same array.</p>
 <pre>    <span class='Function'>≠</span><span class='Modifier2'>⚇</span><span class='Number'>1</span> <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩⟩</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='Number'>5</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='Number'>6</span><span class='Separator'>,</span><span class='Number'>7</span><span class='Bracket'>⟩</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='Number'>8</span><span class='Separator'>,</span><span class='Number'>9</span><span class='Separator'>,</span><span class='Number'>10</span><span class='Bracket'>⟩⟩</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='Number'>11</span><span class='Separator'>,</span><span class='Number'>12</span><span class='Bracket'>⟩⟩</span>
-<span class='Value'>[</span> <span class='Number'>1</span> <span class='Value'>[</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Value'>]</span> <span class='Value'>[</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Value'>]</span> <span class='Number'>2</span> <span class='Value'>]</span>
+┌─┬───┬─────┬─┐
+│1│1‿2│1‿2‿3│2│
+└─┴───┴─────┴─┘
 </pre>
 
