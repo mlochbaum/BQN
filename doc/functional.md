@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/functional.html).*
+
 # Functional programming
 
 BQN boasts of its functional capabilities, including first-class functions. What sort of functional support does it have, and how can a BQN programmer exercise these and out themself as a Schemer at heart?

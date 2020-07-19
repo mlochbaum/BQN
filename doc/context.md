@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/context.html).*
+
 # BQN's context-free grammar
 
 APL has a problem. To illustrate, let's look at an APL expression:

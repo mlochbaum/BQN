@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/transpose.html).*
+
 # Transpose
 
 As in APL, Transpose (`⍉`) is a tool for rearranging the axes of an array. BQN's version is tweaked to align better with the leading axis model and make common operations easier.

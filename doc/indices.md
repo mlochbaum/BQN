@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/indices.html).*
+
 # Indices
 
 One-dimensional arrays such as K lists or Python arrays have only one kind of index, a single number that refers to an element. For multidimensional arrays using the leading axis theory, there are several types of indexing that can be useful. Historically, nested APL designs have equivocated between these, which I believe can lead to subtle errors when programming. BQN focuses on single-number (depth 0) indices, which can refer to list elements or array major cells (or more generally indexing along any particular axis). When using this kind of element index, indexed arrays are required to be lists. Only two functions allow the use of list element indices: Range (`↕`), which can accept a list argument, and Pick (`⊑`), which uses the depth-1 arrays in its left argument as index scalars or lists. Others use single-number indices to refer to cells.

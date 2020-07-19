@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/running.html).*
+
 # How to run BQN
 
 BQN is in a very early stage of development, and there is currently no complete implementation of the language. However, it's a relatively simple language to implement, and a few implementations come close.

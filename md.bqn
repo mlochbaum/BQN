@@ -292,6 +292,10 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
 
   ######
   # Create the block structure using line classifications.
+
+  # First remove the html link line: the output *is* the html file.
+  𝕩 ↩ 2⊸↓⍟("*View this file" (⊣ ≡ ⌊○≠↑⊢) ⊑) 𝕩
+
   lengths ← ≠¨ 𝕩                   # Length of each line
   blanks ← (Lead ' '⊸=)¨ 𝕩         # Number of leading blanks
   nonEmptyMask ← blanks < lengths  # Empty ←→ all leading blanks

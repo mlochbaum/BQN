@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/windows.html).*
+
 # Windows
 
 In BQN, it's strongly preferred to use functions, and not modifiers, for array manipulation. Functions are simpler as they have fewer moving parts. They are more concrete, since the array results can always be viewed right away. They are easier to implement with reasonable performance as well, since there is no need to recognize many possible function operands as special cases.

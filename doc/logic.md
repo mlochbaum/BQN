@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/logic.html).*
+
 # Logic functions: And, Or, Not (also Span)
 
 BQN retains the APL symbols `∧` and `∨` for logical *and* and *or*, and changed APL's `~` to `¬` for *not*, since `~` looks too much like `˜` and `¬` is more common in mathematics today. Like J, BQN extends Not to the linear function `1⊸-`. However, it discards [GCD](https://aplwiki.com/wiki/GCD) and [LCM](https://aplwiki.com/wiki/LCM) as extensions of And and Or, and instead uses bilinear extensions: And is identical to Times (`×`), while Or is `×⌾¬`, following De Morgan's laws (other ways of obtaining a function for Or give an equivalent result—there is only one bilinear extension).

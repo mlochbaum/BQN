@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/join.html).*
+
 # Join
 
 Join (`∾`) is an extension of the monadic function [Raze](https://aplwiki.com/wiki/Raze) from A+ and J to arbitrary argument ranks. It has the same relationship to Join to, the dyadic function sharing the same glyph, as Merge (`>`) does to Couple (`≍`): `a≍b` is `>a‿b` and `a∾b` is `∾a‿b`. While Merge and Couple combine arrays (the elements of Merge's argument, or the arguments themselves for Couple) along a new leading axis, Join and Join to combine them along the existing leading axis. Both Merge and Join can also be called on a higher-rank array, causing Merge to add multiple leading axes while Join combines elements along multiple existing axes.

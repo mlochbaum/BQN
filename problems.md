@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/problems.html).*
+
 # Problems with BQN
 
 Every language has some issues that everyone can agree make programming harder. Sometimes there is a simple solution that has not yet been discovered; sometimes the problem is inherent to the language because it's caused by fundamental choices (or anywhere in between). Below are problems I have identified in BQN, ordered from what I consider the most severe to the least. This is independent of whether the issue can be solved—if it somehow went away, how much better would the language be?
