@@ -129,7 +129,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     # execute each one and insert the results.
     addRslt ← ∧´ ' ' = ∾ 4 (⌊⟜≠ ↑ ⊢)¨ 𝕩
     r‿ri ← addRslt◶(2⥊<⟨⟩)‿{
-      ⟨ (⥊∾⟜lf⎉1)∘⍕∘CodeExec¨ 𝕩
+      ⟨ (⥊∾⟜lf⎉1)∘⍕∘CodeExec⍟(0<≠)¨ 𝕩
         1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
     } 𝕩
 
