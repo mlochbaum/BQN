@@ -83,7 +83,9 @@ CharEntities ← {1¨⊸𝕊𝕩;  # 𝕨 gives characters to potentially escape
 }
 
 ################################
-Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
+Markdown ← {filename𝕊𝕩:
+  extensions ← filename ≢ 0
+  path ← extensions◶""‿(⊢/˜·∨`⌾⌽'/'⊸=) filename
   ######
   # Utilities
 
@@ -258,8 +260,9 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     unused ← actual ∧ include ∧ ¬ codeMask
 
     # Links
-    ReplaceMDSub ← { ¯2 ("README"•_r_"index"∘↓∾"html"˜)⍟(("md"≡↑)∧':'∧´∘≠⊢) 𝕩 }
-    ReplaceMD ← { ReplaceMDSub⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
+    ghPath ← "https://github.com/mlochbaum/BQN/blob/master/"∾path
+    ReplaceMDSub ← { ¯2 ("md"≡↑)◶(ghPath⊸∾)‿("README"•_r_"index"∘↓∾"html"˜)⍟(':'∧´∘≠⊢) 𝕩 }
+    ReplaceMD ← { ReplaceMDSub⍟(0<≠)⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
     ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",ProcInline 𝕨,"</a>"⟩ }
     # Find matched-depth [] and () pairs, then join adjacent ones
     brak ← (unused ∧ 𝕩⊸=)¨ 2‿2⥊"[]()"
@@ -428,4 +431,4 @@ GetMultiHighlights ← {
 
 Head ← "<head><link href="""∾("../"/˜"/"⊑∘∊⊢)∾"style.css"" rel=""stylesheet""/></head>"∾lf˜
 nav  ← "<div class=""nav""><a href=""https://github.com/mlochbaum/BQN"">BQN</a></div>"∾lf
-ConvertFile ← Head ∾ nav ∾ · Markdown∘•LNS •path∾⊢
+ConvertFile ← Head ∾ nav ∾ Markdown⟜(•LNS •path∾⊢)
