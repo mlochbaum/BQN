@@ -261,12 +261,18 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     ReplaceMDSub ← { ¯2 ("README"•_r_"index"∘↓∾"html"˜)⍟(("md"≡↑)∧':'∧´∘≠⊢) 𝕩 }
     ReplaceMD ← { ReplaceMDSub⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
     ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",𝕨,"</a>"⟩ }
-    brak ← /∘(unused ∧ 𝕩⊸=)¨ "]()["
-    link ← (∊/⊣)´ 0‿¯1 + 2 ↑ brak
-    chains ← (⍋˜ ⊏ ⊢∾(≠𝕩)˜)` ¯1 ⌽ (<link) ∾ 2 ↓ brak
-    chains ↩ > (∧´ (∊ ∧ <⟜(≠𝕩))¨ 1 ↓ chains)⊸/¨ chains
-    linkPos ← 0 ⊏ chains
-    lInds ← 1‿0‿2‿0⊸+˘ (⥊2⊸↕)˘ ⍉ chains
+    # Find matched-depth [] and () pairs, then join adjacent ones
+    brak ← (unused ∧ 𝕩⊸=)¨ 2‿2⥊"[]()"
+    depth ← (+`-0⌊⊢)∘(-´)˘ brak
+    FindPairs ← ⟨⟩‿2 ⥊ 1⊸⊏ /˜ 2⊸⊏ ≠ (¯∞⊸Shl⊸=(∧+⊢)∞⊸Shr⊸=)∘⊏
+    pairs ← depth <∘(FindPairs⍟(0<≠))∘⍉∘(∧(⊏˜≍˘⊢)⟜∾∾˘·/≠¨∘⊢)˘ /¨brak
+    JoinPairs ← {
+      e←1+1⊏˘𝕨 ⋄ b←⊏˘𝕩 ⋄ m←(≠b)>i←b⊐e
+      (m/𝕨) ∾˘ (m/i)⊏𝕩
+    }
+    lInds ← ∧○(0<≠)◶(0‿4⥊0)‿JoinPairs´ pairs
+    linkPos ← ⊏˘ lInds
+    lInds +⎉1↩ 1‿0‿1‿0
     unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
     linkGroup ← 1 -˜ (1‿0⥊˜≢)⊸(/ (⊣×>)○(+`I2M) ¬⊸/) ⥊lInds
     links ← <∘ProcLink´˘ (lInds≠⊸∾2) (⊣⥊×´⊸↑) linkGroup ⊔ 𝕩
