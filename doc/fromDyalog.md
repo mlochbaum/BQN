@@ -72,7 +72,7 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>¨</code>   </td><td colspan=2> <code>¨</code>                         </td></tr>
 <tr><td> <code>⍨</code>   </td><td colspan=2> <code>˜</code>                         </td></tr>
 <tr><td> <code>⍣</code>   </td><td colspan=2> <code>⍟</code>                         </td></tr>
-<tr><td> <code>f.g</code> </td><td>                  </td><td> <code>f´∘g⍟1‿∞</code> </td></tr>
+<tr><td> <code>f.g</code> </td><td>                  </td><td> <code>(f´<˘)∘g⎉1‿∞</code></td></tr>
 <tr><td> <code>∘.f</code> </td><td>                  </td><td> <code>f⌜</code>       </td></tr>
 <tr><td> <code>A∘g</code> </td><td> <code>A⊸g</code> </td><td>                       </td></tr>
 <tr><td> <code>f∘B</code> </td><td> <code>f⟜B</code> </td><td>                       </td></tr>
