@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/index.html).*
+
 # BQN: finally, an APL for your flying saucer
 
 *This repository does not yet have a working implementation. However, there are some incomplete implementations you can use, with one you can try online [here](https://mlochbaum.github.io/BQN2NGN/web/index.html). See [running.md](running.md) for more.*

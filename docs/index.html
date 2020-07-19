@@ -1,0 +1,499 @@
+<head><link href="style.css" rel="stylesheet"/></head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="bqn--finally--an-apl-for-your-flying-saucer">BQN: finally, an APL for your flying saucer</h1>
+<p><em>This repository does not yet have a working implementation. However, there are some incomplete implementations you can use, with one you can try online <a href="https://mlochbaum.github.io/BQN2NGN/web/index.html">here</a>. See <a href="running.html">running.md</a> for more.</em></p>
+<p><strong>BQN</strong> is a new programming language in the APL lineage, which aims to remove inconsistent and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. BQN is aimed at existing and aspiring APL-family programmers, and using it requires a solid understanding of functions and multidimensional arrays. However, because of its focus on providing simple, consistent, and powerful array operations, BQN should also be a good language for learning array programming and building stronger array intuition.</p>
+<p>BQN maintains many of the ideas that made APL\360 revolutionary in 1966:</p>
+<ul>
+<li>Human-friendly <strong>infix notation</strong> with no precedence rules to remember.</li>
+<li><strong>Built-in array operations</strong> handle any number of dimensions easily.</li>
+<li><strong>Higher-order functions</strong> allow basic functions to be applied in more powerful ways.</li>
+</ul>
+<p>It incorporates concepts developed over years of APL practice:</p>
+<ul>
+<li>The <strong>leading axis model</strong>, which allows for simpler built-in functions.</li>
+<li>Trains and combinators for <strong>tacit programming</strong>.</li>
+<li>Lightweight <strong>anonymous functions</strong> (like <a href="https://aplwiki.com/wiki/Dfn">dfns</a>).</li>
+</ul>
+<p>But BQN is redesigned from the ground up, with brand new ideas to make these paradigms easier to use and less likely to fail.</p>
+<ul>
+<li>The <strong>based array model</strong> makes non-arrays a fundamental part of the language, and removes the surprise of floating arrays and the hassle of explicit boxes. New <strong>array notation</strong> eliminates the gotchas of <a href="https://aplwiki.com/wiki/Strand_notation">stranding</a>.</li>
+<li>A <a href="doc/context.html"><strong>context-free grammar</strong></a> where a value's syntactic role is determined by its spelling makes it easier for machines and humans to understand code.</li>
+<li>Oh, and it naturally leads to <a href="doc/functional.html"><strong>first-class functions</strong></a>, a feature often missed in APL.</li>
+<li>The <strong>new symbols</strong> for built-in functionality allow the syntactic role of a primitive to be distinguished at a glance, and aim to be more consistent and intuitive.</li>
+</ul>
+<h2 id="what-kind-of-name-is--bqn--">What kind of name is &quot;BQN&quot;?</h2>
+<p>It's three letters, that happen to match the capitals in &quot;Big Questions Notation&quot;. You can pronounce it &quot;bacon&quot;, but are advised to avoid this unless there's puns.</p>
+<h2 id="what-does-bqn-look-like-">What does BQN look like?</h2>
+<p>Rather strange, most likely:</p>
+<pre><span class='Function'>⊑+</span><span class='Modifier'>`</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span><span class='Modifier2'>⍟</span><span class='Number'>12</span><span class='Function'>↕</span><span class='Number'>2</span>  <span class='Comment'># The 12th Fibonacci number
+</span></pre>
+<p>For longer samples, you can <a href="https://github.com/mlochbaum/BQN/blob/master/c.bqn">gaze into the abyss</a> that is the (incomplete) self-hosted compiler, or take a look at the friendlier <a href="https://github.com/mlochbaum/BQN/blob/master/md.bqn">markdown processor</a> used to format and highlight documentation files. There are also <a href="https://github.com/mlochbaum/BQN/blob/master/examples/fifty.bqn">some translations</a> from <a href="https://www.jsoftware.com/papers/50/">&quot;A History of APL in 50 Functions&quot;</a> here.</p>
+<h2 id="array-model">Array model</h2>
+<p>Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL <a href="https://aplwiki.com/wiki/Array_model">array models</a>. Unlike in APL, non-array data is possible, and common: numbers, characters, and functions are not arrays (see the full list of <a href="#types">types</a> below). This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no &quot;floating&quot; so a value is always different from a scalar array that contains it. This system has been <a href="https://dl.acm.org/doi/abs/10.1145/586656.586663">proposed</a> in APL's past under the name <strong>based array theory</strong>.</p>
+<p>Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).</p>
+<h2 id="syntax">Syntax</h2>
+<p>BQN syntax consists of expressions where computation is done with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control so the design tries to do as much as possible with them before introducing special syntax.</p>
+<h3 id="expressions">Expressions</h3>
+<p>Like APL, BQN uses four <em>syntactic roles</em> for values in expressions:</p>
+<ul>
+<li><strong>Subjects</strong>, like APL arrays or J nouns</li>
+<li><strong>Functions</strong>, or verbs in J</li>
+<li><strong>1-Modifiers</strong>, like APL monadic operators or J adverbs</li>
+<li><strong>2-Modifiers</strong>, like APL dyadic operators or J conjunctions.</li>
+</ul>
+<p>These roles work exactly like they do in APL, with functions applying to one or two subject arguments, 1-modifiers taking a single function or subject on the left, and 2-modifiers taking a function or subject on each side.</p>
+<p>Unlike APL, in BQN the syntactic role of a value is determined purely by the way it's spelled: a lowercase first letter (<code><span class='Value'>name</span></code>) makes it a subject, an uppercase first letter (<code><span class='Function'>Name</span></code>) makes it a function, and underscores are used for 1-modifiers (<code><span class='Modifier'>_name</span></code>) and 2-modifiers (<code><span class='Modifier2'>_name_</span></code>). Below, the function <code><span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> treats its left argument <code><span class='Function'>𝕎</span></code> as a function and its right argument <code><span class='Value'>𝕩</span></code> as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:</p>
+<pre>    <span class='Bracket'>⟨</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Separator'>,</span><span class='Function'>√</span><span class='Bracket'>⟩</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>⌜</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>9</span>
+<span class='Value'>┌</span>
+  <span class='Number'>1</span> <span class='Number'>16</span> <span class='Number'>81</span>
+  <span class='Number'>1</span>  <span class='Number'>2</span>  <span class='Number'>3</span>
+          <span class='Value'>┘</span>
+</pre>
+<p>BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (<code><span class='Modifier'>˜¨˘⁼⌜´`</span></code>) are all superscript characters, and 2-modifiers (<code><span class='Modifier2'>∘○⊸⟜⌾⊘◶⚇⎉⍟</span></code>) all have an unbroken circle (two functions <code><span class='Function'>⌽⍉</span></code> have broken circles with lines through them). Every other built-in constant is a function, although the special symbols <code><span class='Number'>¯</span></code>, <code><span class='Number'>∞</span></code>, and <code><span class='Number'>π</span></code> are used as part of numeric literal notation.</p>
+<h3 id="special-syntax">Special syntax</h3>
+<p>Most of these glyphs are explained further in the section on <a href="#literal-notation">literal notation</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Glyph(s)</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Gets'>←</span></code></td>
+<td>Define</td>
+</tr>
+<tr>
+<td><code><span class='Gets'>↩</span></code></td>
+<td>Change</td>
+</tr>
+<tr>
+<td><code><span class='Gets'>→</span></code></td>
+<td>Return</td>
+</tr>
+<tr>
+<td><code><span class='Separator'>⋄,</span></code> or newline</td>
+<td>Statement or element separator</td>
+</tr>
+<tr>
+<td><code><span class='Paren'>()</span></code></td>
+<td>Expression grouping</td>
+</tr>
+<tr>
+<td><code><span class='Brace'>{}</span></code></td>
+<td>Explicit function or modifier</td>
+</tr>
+<tr>
+<td><code><span class='Bracket'>⟨⟩</span></code></td>
+<td>List (rank-1 array)</td>
+</tr>
+<tr>
+<td><code><span class='Ligature'>‿</span></code></td>
+<td>Strand (lightweight list syntax)</td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕨</span><span class='Function'>𝕎</span></code></td>
+<td>Left argument</td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕩</span><span class='Function'>𝕏</span></code></td>
+<td>Right argument</td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕗</span><span class='Function'>𝔽</span></code></td>
+<td>Left operand of a modifier</td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕘</span><span class='Function'>𝔾</span></code></td>
+<td>Right operand of a 2-modifier</td>
+</tr>
+<tr>
+<td><code><span class='Comment'>#</span></code></td>
+<td>Comment</td>
+</tr>
+</tbody>
+</table>
+<h2 id="built-in-operations">Built-in operations</h2>
+<h3 id="functions">Functions</h3>
+<p>Functions that have significant differences from APL functions are marked with an asterisk. Links for these entries go to dedicated BQN documentation while other links go to the APL Wiki.</p>
+<table>
+<thead>
+<tr>
+<th>Glyph</th>
+<th>Monadic</th>
+<th>Dyadic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>+</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Conjugate">Conjugate</a></td>
+<td><a href="https://aplwiki.com/wiki/Add">Add</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>-</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Negate">Negate</a></td>
+<td><a href="https://aplwiki.com/wiki/Subtract">Subtract</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>×</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Signum">Sign</a></td>
+<td><a href="https://aplwiki.com/wiki/Times">Multiply</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>÷</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Reciprocal">Reciprocal</a></td>
+<td><a href="https://aplwiki.com/wiki/Divide">Divide</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⋆</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Exponential">Exponential</a></td>
+<td><a href="https://aplwiki.com/wiki/Power_(function)">Power</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>√</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Square_Root">Square Root</a></td>
+<td><a href="https://aplwiki.com/wiki/Root">Root</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⌊</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Floor">Floor</a></td>
+<td><a href="https://aplwiki.com/wiki/Minimum">Minimum</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⌈</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Ceiling">Ceiling</a></td>
+<td><a href="https://aplwiki.com/wiki/Maximum">Maximum</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>∧</span></code></td>
+<td>Sort Up</td>
+<td><a href="doc/logic.html">And</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>∨</span></code></td>
+<td>Sort Down</td>
+<td><a href="doc/logic.html">Or</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>¬</span></code></td>
+<td><a href="doc/logic.html">Not</a>*</td>
+<td><a href="doc/logic.html">Span</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>|</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Magnitude">Absolute Value</a></td>
+<td><a href="https://aplwiki.com/wiki/Residue">Modulus</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≤</span></code></td>
+<td></td>
+<td><a href="https://aplwiki.com/wiki/Less_than_or_Equal_to">Less Than or Equal to</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>&lt;</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Enclose">Enclose</a></td>
+<td><a href="https://aplwiki.com/wiki/Less_than">Less Than</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>&gt;</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Mix">Merge</a></td>
+<td><a href="https://aplwiki.com/wiki/Greater_than">Greater Than</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≥</span></code></td>
+<td></td>
+<td><a href="https://aplwiki.com/wiki/Greater_than_or_Equal_to">Greater Than or Equal to</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>=</span></code></td>
+<td></td>
+<td><a href="https://aplwiki.com/wiki/Equal_to">Equals</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≠</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Tally">Length</a></td>
+<td><a href="https://aplwiki.com/wiki/Not_Equal_to">Not Equals</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≡</span></code></td>
+<td><a href="doc/depth.html">Depth</a>*</td>
+<td><a href="https://aplwiki.com/wiki/Match">Match</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≢</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Shape">Shape</a></td>
+<td><a href="https://aplwiki.com/wiki/Not_Match">Not Match</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊣</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Identity">Identity</a></td>
+<td><a href="https://aplwiki.com/wiki/Identity">Left</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊢</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Identity">Identity</a></td>
+<td><a href="https://aplwiki.com/wiki/Identity">Right</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⥊</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Ravel">Deshape</a></td>
+<td><a href="https://aplwiki.com/wiki/Reshape">Reshape</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>∾</span></code></td>
+<td><a href="doc/join.html">Join</a>*</td>
+<td><a href="https://aplwiki.com/wiki/Catenate">Join to</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≍</span></code></td>
+<td>Solo*</td>
+<td>Couple*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>↑</span></code></td>
+<td>Prefixes*</td>
+<td><a href="https://aplwiki.com/wiki/Take">Take</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>↓</span></code></td>
+<td>Suffixes*</td>
+<td><a href="https://aplwiki.com/wiki/Drop">Drop</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>↕</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Index_Generator">Range</a></td>
+<td><a href="doc/windows.html">Windows</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>⌽</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Reverse">Reverse</a></td>
+<td><a href="https://aplwiki.com/wiki/Rotate">Rotate</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍉</span></code></td>
+<td><a href="doc/transpose.html">Transpose</a>*</td>
+<td><a href="doc/transpose.html">Reorder axes</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>/</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Indices">Indices</a></td>
+<td><a href="https://aplwiki.com/wiki/Replicate">Replicate</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍋</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Grade">Grade Up</a></td>
+<td><a href="https://aplwiki.com/wiki/Interval_Index">Bins Up</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍒</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Grade">Grade Down</a></td>
+<td><a href="https://aplwiki.com/wiki/Interval_Index">Bins Down</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊏</span></code></td>
+<td>First Cell*</td>
+<td>Select*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊑</span></code></td>
+<td><a href="https://aplwiki.com/wiki/First">First</a></td>
+<td>Pick*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊐</span></code></td>
+<td></td>
+<td><a href="https://aplwiki.com/wiki/Index_Of">Index of</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊒</span></code></td>
+<td>Occurrence Count*</td>
+<td>Progressive Index of*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>∊</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Nub_Sieve">Unique Mask</a></td>
+<td><a href="https://aplwiki.com/wiki/Membership">Member of</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍷</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Unique">Deduplicate</a></td>
+<td><a href="https://aplwiki.com/wiki/Find">Find</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊔</span></code></td>
+<td><a href="doc/group.html">Group Indices</a>*</td>
+<td><a href="doc/group.html">Group</a>*</td>
+</tr>
+</tbody>
+</table>
+<h3 id="modifiers">Modifiers</h3>
+<p><em>Combinators</em> only control the application of functions. Because a non-function operand applies as a constant function, some combinators have extra meanings when passed a constant. For example, <code><span class='Number'>0</span><span class='Modifier'>˜</span></code> is the constant function that always returns 0 and <code><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span></code> is the function that tests whether its right argument is greater than 0.</p>
+<table>
+<thead>
+<tr>
+<th>Glyph</th>
+<th>Name(s)</th>
+<th>Definition</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Modifier'>˜</span></code></td>
+<td>Self/Swap</td>
+<td><code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>𝔽</span><span class='Value'>𝕨</span><span class='Function'>⊣</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Duplicate one argument or exchange two</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>∘</span></code></td>
+<td>Atop</td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Value'>𝕨</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔾</span></code> to both arguments and <code><span class='Function'>𝔽</span></code> to the result</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>○</span></code></td>
+<td>Over</td>
+<td><code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝔾</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>𝔽𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔾</span></code> to each argument and <code><span class='Function'>𝔽</span></code> to the results</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⊸</span></code></td>
+<td>Before/Bind</td>
+<td><code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝔽</span><span class='Value'>𝕨</span><span class='Function'>⊣</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td><code><span class='Function'>𝔾</span></code>'s left argument comes from <code><span class='Function'>𝔽</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⟜</span></code></td>
+<td>After/Bind</td>
+<td><code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>⊣</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>𝔽𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td><code><span class='Function'>𝔽</span></code>'s right argument comes from <code><span class='Function'>𝔾</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⌾</span></code></td>
+<td>Under</td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝔾</span><span class='Modifier'>⁼</span><span class='Modifier2'>∘</span><span class='Function'>𝔽</span><span class='Modifier2'>○</span><span class='Function'>𝔾</span><span class='Brace'>}</span></code> OR <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Gets'>↩</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Modifier2'>○</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔽</span></code> over <code><span class='Function'>𝔾</span></code>, then undo <code><span class='Function'>𝔾</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⊘</span></code></td>
+<td>Valences</td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Value'>𝕩;𝕨</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔽</span></code> if there's one argument but <code><span class='Function'>𝔾</span></code> if there are two</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>◶</span></code></td>
+<td>Choose</td>
+<td><code><span class='Brace'>{</span><span class='Value'>f</span><span class='Gets'>←</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>⊑</span><span class='Value'>𝕘</span> <span class='Separator'>⋄</span> <span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Select one of the functions in list <code><span class='Value'>𝕘</span></code> based on <code><span class='Function'>𝔽</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Choose isn't really a combinator since it calls the function <code><span class='Function'>⊑</span></code>, and Under is not a true combinator since it has an &quot;undo&quot; step at the end. This step might be implemented using the left operand's inverse (<em>computational</em> Under) or its structural properties (<em>structural</em> Under).</p>
+<p>Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: in each case the 1-modifier happens to be the same as the 2-modifier with a right operand of <code><span class='Number'>¯1</span></code>.</p>
+<table>
+<thead>
+<tr>
+<th>1-Modifier</th>
+<th>Name</th>
+<th>2-Modifier</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Modifier'>˘</span></code></td>
+<td>Cells</td>
+<td><code><span class='Modifier2'>⎉</span></code></td>
+<td>Rank</td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>¨</span></code></td>
+<td>Each</td>
+<td><code><span class='Modifier2'>⚇</span></code></td>
+<td>Depth</td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>⌜</span></code></td>
+<td>Table</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>⁼</span></code></td>
+<td>Undo</td>
+<td><code><span class='Modifier2'>⍟</span></code></td>
+<td>Repeat</td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>´</span></code></td>
+<td>Reduce</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>`</span></code></td>
+<td>Scan</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="literal-notation">Literal notation</h2>
+<h3 id="constant-notation">Constant notation</h3>
+<p>BQN has single-token notation for numbers, strings, and characters.</p>
+<p>Numbers allow the typical decimal notation with <code><span class='Number'>¯</span></code> for the negative sign (because <code><span class='Function'>-</span></code> is a function) and <code><span class='Value'>e</span></code> for scientific notation (or <code><span class='Function'>E</span></code>, as numeric notation is case-insensitive). <code><span class='Number'>∞</span></code> and <code><span class='Number'>π</span></code> may be used as special numeric values. Complex numbers are also allowed, with the components separated by <code><span class='Value'>i</span></code>.</p>
+<p>Strings are written with double quotes <code><span class='String'>&quot;&quot;</span></code>, and characters with single quotes <code>''</code> with a single character in between. A double quote within a string can be escaped by writing it twice; if two string literals are next to each other, they must be separated by a space. In contrast, character literals do not use escapes, as the length is already known.</p>
+<h3 id="separators">Separators</h3>
+<p>The characters <code><span class='Separator'>⋄</span></code> and <code><span class='Separator'>,</span></code> and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.</p>
+<h3 id="list-notation">List notation</h3>
+<p>Lists (1-dimensional arrays) are enclosed in angle brackets <code><span class='Bracket'>⟨⟩</span></code>, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character <code><span class='Ligature'>‿</span></code>. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.</p>
+<p>If added, <a href="#sets-and-dictionaries">sets and dictionaries</a> would also use a list-like notation.</p>
+<h3 id="blocks">Blocks</h3>
+<p>Blocks are written with curly braces <code><span class='Brace'>{}</span></code> and can be used to group expressions or define functions and modifiers. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned in order to evaluate the block. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return subjects and modifiers return functions. Blocks have lexical scope.</p>
+<p>The special names <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code>, which stand for arguments, and <code><span class='Value'>𝕗</span></code> and <code><span class='Value'>𝕘</span></code>, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate subjects and the uppercase forms <code><span class='Function'>𝕎𝕏𝔽𝔾</span></code> indicate functions. The type and syntactic role of the block is determined by its contents: a 2-modifier contains <code><span class='Value'>𝕘</span></code>, a 1-modifier contains <code><span class='Value'>𝕗</span></code> but not <code><span class='Value'>𝕘</span></code>, and a function contains neither but does have one of <code><span class='Value'>𝕨𝕩𝕤</span><span class='Function'>𝕎𝕏𝕊</span></code>. If no special names are present the block is an <em>immediate block</em> and is evaluated as soon as it appears, with the result having a subject role.</p>
+<p>A modifier can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code>, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.</p>
+<h2 id="types">Types</h2>
+<p>BQN will initially support the following fundamental types:</p>
+<ul>
+<li>Number (complex with 64-bit float precision)</li>
+<li>Character (Unicode code point)</li>
+<li>Array</li>
+<li>Function</li>
+<li>1-Modifier</li>
+<li>2-Modifier</li>
+</ul>
+<p>All of these types are immutable, and immutable types should be the default for BQN. The only mutable type likely to be added is the namespace or scope.</p>
+<h2 id="bqn-extensions">BQN extensions</h2>
+<p>The above text describes the initial implementation target. The language will probably be extended after this target is reached. This section describes features which are not fully defined but could be added to the language.</p>
+<h3 id="sets-and-dictionaries">Sets and dictionaries</h3>
+<p>Sets are unordered collections of distinct values. Dictionaries have a set of keys and associate each key with a corresponding value. These types are a natural fit for the data in some cases; while they can be represented using arrays of keys and values, using the right type can lead to cleaner and faster algorithms.</p>
+<p>The following glyphs are added for the dictionary and set literal notation.</p>
+<table>
+<thead>
+<tr>
+<th>Glyph(s)</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Value'>:</span></code></td>
+<td>Key/value separator for dictionaries</td>
+</tr>
+<tr>
+<td><code><span class='Value'>⦃⦄</span></code></td>
+<td>Set</td>
+</tr>
+</tbody>
+</table>
+<p>Set notation matches the bracketed list notation with the angle brackets changed to double-struck curly brackets <code><span class='Value'>⦃⦄</span></code>, but there is no ligature notation for sets.</p>
+<p>Dictionaries use angle brackets <code><span class='Bracket'>⟨⟩</span></code> like lists, but instead of expressions there are pairs of expressions separated by <code><span class='Value'>:</span></code>. The first expression evaluates to the key and the second to the corresponding value. The empty dictionary is written <code><span class='Bracket'>⟨</span><span class='Value'>:</span><span class='Bracket'>⟩</span></code>.</p>
+<p>Dictionaries and sets should be supported their own set of primitive operations like arrays are. The glyphs <code><span class='Value'>∪⊂⊃⊆⊇</span></code> from mathematics are unused for this reason: they could be wanted for set operations.</p>
+<h3 id="namespaces-and-symbols">Namespaces and symbols</h3>
+<p>Sometimes it is useful to have a mutable type, particularly if a part of the program should maintain its own state over the course of execution. The <a href="https://en.wikipedia.org/wiki/Closure_(computer_programming)">closures</a> required as part of a complete lexical scoping implementation actually allow something like this. If a function defines and returns an explicit function, then that function can read and change variables in its environment. As the environment includes the scope created to execute the outer function, calling the outer function creates a mutable environment that can be indirectly accessed through the returned function.</p>
+<p>A namespace would allow such an environment to be directly accessed and manipulated. While it's possible there would be facilities to create a namespace, a simpler mechanism is simply to add a primitive that returns the current scope as a variable. This scope would then behave the same way as a returned function's environment, and would allow member access by a dot-like syntax.</p>
+<p>A symbol is a variable representing a name in the program. Symbols would make it easier to interact with namespaces dynamically.</p>
+
