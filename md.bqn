@@ -260,7 +260,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     # Links
     ReplaceMDSub ← { ¯2 ("README"•_r_"index"∘↓∾"html"˜)⍟(("md"≡↑)∧':'∧´∘≠⊢) 𝕩 }
     ReplaceMD ← { ReplaceMDSub⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
-    ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",𝕨,"</a>"⟩ }
+    ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",ProcInline 𝕨,"</a>"⟩ }
     # Find matched-depth [] and () pairs, then join adjacent ones
     brak ← (unused ∧ 𝕩⊸=)¨ 2‿2⥊"[]()"
     depth ← (+`-0⌊⊢)∘(-´)˘ brak
