@@ -279,11 +279,12 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
 
     # Emphasis (still rudimentary)
     eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
-    eInds ← ∾ (⊢-2|⊢)∘≠⊸↑∘/¨ eMasks
-    include ∧↩ ¬ I2M ∧ eInds
-    eTags ← eInds ≠⊸⥊ "<em>"‿"</em>"
-    eInds ∾↩ codeBounds
-    eTags ∾↩ codeBounds ≠⊸⥊ "<code>"‿"</code>"
+    eMasks ↩ 0⊸Shr⊸∧¨⊸(⊣∾˜0⊸Shl⊸∨⊸<¨) eMasks
+    eInds ← (⊢-2|⊢)∘≠⊸↑∘/¨ eMasks
+    include ∧↩ ¬ I2M ∧ ∾ eInds∾1+2↓eInds
+    eInds ∾↩ ⟨codeBounds⟩
+    eTags ← ∾ eInds ≠⊸⥊¨ 2‿2‿1 / ("<"‿"</"∾¨·<∾⟜">")¨ "em"‿"strong"‿"code"
+    eInds ↩ ∾ eInds
 
     # Remove backslashes used for escaping
     include ∧↩ codeMask ∨ 1 ⌽ actual
