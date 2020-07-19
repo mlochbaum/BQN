@@ -420,4 +420,5 @@ GetMultiHighlights ← {
 }
 
 Head ← "<head><link href="""∾("../"/˜"/"⊑∘∊⊢)∾"style.css"" rel=""stylesheet""/></head>"∾lf˜
-ConvertFile ← Head ∾ · Markdown∘•LNS •path∾⊢
+nav  ← "<div class=""nav""><a href=""https://github.com/mlochbaum/BQN"">BQN</a></div>"∾lf
+ConvertFile ← Head ∾ nav ∾ · Markdown∘•LNS •path∾⊢

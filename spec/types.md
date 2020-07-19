@@ -1,5 +1,7 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/spec/types.html).*
 
+# Specification: BQN types
+
 BQN programs manipulate data of six types:
 - Character
 - Number

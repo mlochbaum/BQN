@@ -1,5 +1,7 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/spec/literal.html).*
 
+# Specification: BQN literal notation
+
 A *literal* is a single [token](token.md) that indicates a fixed character, number, or array. While literals indicate values of a data type, [primitives](primitive.md) indicate values of an operation type: function, 1-modifier, or 2-modifier.
 
 Two types of literal deal with text. As the source code is considered to be a sequence of unicode code points ("characters"), and these code points are also used for BQN's character [data type](types.md), the representation of a text literal is very similar to its value. In a text literal, the newline character is always represented using the ASCII line feed character, code point 10. A *character literal* is enclosed with single quotes `'` and its value is identical to the single character between them. A *string literal* is enclosed in double quotes `"`, and any double quotes between them must come in pairs, as a lone double quote marks the end of the literal. The value of a string literal is a rank-1 array whose elements are the characters in between the enclosing quotes, after replacing each pair of double quotes with only one such quote.

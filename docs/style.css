@@ -5,6 +5,10 @@ body {
   padding: 0 0.62em;
   line-height: 1.6;
 }
+.nav {
+  text-align: right;
+  margin-bottom: -2em;
+}
 h1, h2, h3 {
   line-height: 1.2;
 }

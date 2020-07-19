@@ -1,5 +1,7 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/spec/evaluate.html).*
 
+# Specification: BQN evaluation
+
 This page describes the semantics of the code constructs whose grammar is given in [grammar.md](grammar.md). The formation rules there are not named, and here they are identified by either the name of the term or by copying the rule entirely if there are several alternative productions.
 
 Here we assume that the referent of each identifier, or equivalently the connections between identifiers, have been identified according to the [scoping rules](scope.md).
