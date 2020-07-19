@@ -116,14 +116,27 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
   }
 
   # Non-empty lines in code blocks have 4 leading spaces
-  IsCode ← 4 (≤⟜≠)◶⟨0,∧´' '=↑⟩ ⊢
   ProcCode ← {
-    lines ← JoinLines 4 ↓¨ 𝕩
-    c‿ci ← extensions◶(2⥊<⟨⟩)‿GetHighlights lines
-    em‿e‿ei ← CharEntities lines
-    mod ← ⟨em,e∾c,ei∾ci⟩ Modify lines
+    # Strip the leading spaces
+    𝕩 ↩ 4 ↓¨ 𝕩
+    code ← JoinLines 𝕩
+
+    # Highlight and unescape html-unsafe characters
+    c‿ci ← extensions◶(2⥊<⟨⟩)‿GetHighlights code
+    em‿e‿ei ← CharEntities code
+
+    # If every line is indented by at least 4 additional spaces, we will
+    # execute each one and insert the results.
+    addRslt ← ∧´ ' ' = ∾ 4 (⌊⟜≠ ↑ ⊢)¨ 𝕩
+    r‿ri ← addRslt◶(2⥊<⟨⟩)‿{
+      ⟨ (⥊∾⟜lf⎉1)∘⍕∘CodeExec¨ 𝕩
+        1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
+    } 𝕩
+
+    mod ← ⟨em,e∾c∾r,ei∾ci∾ri⟩ Modify code
     "pre" Html "code" Html⍟(¬extensions) mod
   }
+  CodeExec ← X  # dzaima+reference exec. Should be {⍎}
 
   # Headings start with #, and require 1-6 #s followed by a space.
   # Any trailing #s are ignored.
@@ -256,7 +269,7 @@ Markdown ← {𝕊𝕩:1𝕊𝕩; extensions𝕊𝕩:
     lInds ← 1‿0‿2‿0⊸+˘ (⥊2⊸↕)˘ ⍉ chains
     unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
     linkGroup ← 1 -˜ (1‿0⥊˜≢)⊸(/ (⊣×>)○(+`I2M) ¬⊸/) ⥊lInds
-    links ← <∘ProcLink´˘ 2⊸(÷˜⟜≠∾⊣)⊸⥊ linkGroup ⊔ 𝕩
+    links ← <∘ProcLink´˘ (lInds≠⊸∾2) (⊣⥊×´⊸↑) linkGroup ⊔ 𝕩
 
     # Emphasis (still rudimentary)
     eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
@@ -366,7 +379,7 @@ GetHighlights ← {
     "Value"       , ¯1⊏˘5‿2⥊"𝕨𝕩𝕗𝕘𝕤"
     "Function"    , "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"∾¯1⊏˘5‿2⥊"𝕎𝕏𝔽𝔾𝕊"
     "Modifier"    , "˜˘¨⌜⁼´`"
-    "Composition" , "∘○⊸⟜⌾⊘◶⎉⚇⍟"
+    "Modifier2"   , "∘○⊸⟜⌾⊘◶⎉⚇⍟"
     "Number"      , ∾idChars
     "Gets"        , "←↩→"
     "Paren"       , "()"
