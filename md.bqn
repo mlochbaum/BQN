@@ -130,8 +130,15 @@ Markdown ← {filename𝕊𝕩:
     # If every line is indented by at least 4 additional spaces, we will
     # execute each one and insert the results.
     addRslt ← ∧´ ' ' = ∾ 4 (⌊⟜≠ ↑ ⊢)¨ 𝕩
+    # Don't show assignment results by default
+    ShowRslt ← {
+      depth ← +` "(){}⟨⟩" (⊣(≠⊸>×¯1⋆2|⊢)⊐) 𝕩
+      𝕩 /˜↩ ¬ ∨`⌾⌽ (0=depth) ∧ 𝕩∊"⋄,"  # Just the last statement
+      g ← 𝕩∊"←↩"
+      (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
+    }
     r‿ri ← addRslt◶(2⥊<⟨⟩)‿{
-      ⟨ (⥊∾⟜lf⎉1)∘⍕∘CodeExec⍟(0<≠)¨ 𝕩
+      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘⍕∘⊢⟩ CodeExec)⍟(0<≠)¨ 𝕩
         1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
     } 𝕩
 
@@ -383,13 +390,13 @@ TestSections ← {
 
 ################################
 # Syntax highlighting
+idChars ← ⟨
+  •d∾"¯.π∞"
+  ' '+⌾•UCS•a
+  •a
+  "_"
+⟩
 GetHighlights ← {
-  idChars ← ⟨
-    •d∾"¯.π∞"
-    ' '+⌾•UCS•a
-    •a
-    "_"
-  ⟩
   classes‿chars ← <˘ ⍉ 2⊸(÷˜⟜≠∾⊣)⊸⥊⟨
     0             , " "∾•UCS 9‿10
     "Value"       , ¯1⊏˘5‿2⥊"𝕨𝕩𝕗𝕘𝕤"

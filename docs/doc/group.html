@@ -18,9 +18,6 @@ a b c d e
 </pre>
 <p>For example, we might choose to group a list of words by length. Within each group, cells maintain the ordering they had in the list originally.</p>
 <pre>    <span class='Value'>phrase</span> <span class='Gets'>←</span> <span class='String'>&quot;BQN&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;uses&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;notation&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;as&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;tool&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;of&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;thought&quot;</span>
-┌───┬────┬────────┬──┬─┬────┬──┬───────┐
-│BQN│uses│notation│as│a│tool│of│thought│
-└───┴────┴────────┴──┴─┴────┴──┴───────┘
     <span class='Function'>⥊</span><span class='Modifier'>˘</span> <span class='Function'>≠</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>⊔</span> <span class='Value'>phrase</span>
 ┌───────────┐
 │⟨⟩         │
@@ -126,13 +123,7 @@ caeb
 <h2 id="applications">Applications</h2>
 <p>The obvious application of Group is to group some values according to a known or computed property. If this property isn't an integer, it can be turned into one using Unique and Index Of (the combination <code><span class='Function'>⍷</span><span class='Modifier2'>⊸</span><span class='Function'>⊐</span></code> has been called &quot;self-classify&quot;).</p>
 <pre>    <span class='Value'>ln</span> <span class='Gets'>←</span> <span class='String'>&quot;Phelps&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;Latynina&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;Bjørgen&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;Andrianov&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;Bjørndalen&quot;</span>
-┌──────┬────────┬───────┬─────────┬──────────┐
-│Phelps│Latynina│Bjørgen│Andrianov│Bjørndalen│
-└──────┴────────┴───────┴─────────┴──────────┘
     <span class='Value'>co</span> <span class='Gets'>←</span> <span class='String'>&quot;US&quot;</span>    <span class='Ligature'>‿</span><span class='String'>&quot;SU&quot;</span>      <span class='Ligature'>‿</span><span class='String'>&quot;NO&quot;</span>     <span class='Ligature'>‿</span><span class='String'>&quot;SU&quot;</span>       <span class='Ligature'>‿</span><span class='String'>&quot;NO&quot;</span>
-┌──┬──┬──┬──┬──┐
-│US│SU│NO│SU│NO│
-└──┴──┴──┴──┴──┘
     <span class='Function'>⥊</span><span class='Modifier'>˘</span> <span class='Value'>co</span> <span class='Function'>⍷</span><span class='Modifier2'>⊸</span><span class='Function'>⊐</span><span class='Modifier2'>⊸</span><span class='Function'>⊔</span> <span class='Value'>ln</span>
 ┌────────────────────┐
 │┌──────┐            │
@@ -150,9 +141,6 @@ caeb
 </pre>
 <p>If we would like a particular index to key correspondence, we can use a fixed left argument to Index Of.</p>
 <pre>    <span class='Value'>countries</span> <span class='Gets'>←</span> <span class='String'>&quot;IT&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;JP&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;NO&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;SU&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;US&quot;</span>
-┌──┬──┬──┬──┬──┐
-│IT│JP│NO│SU│US│
-└──┴──┴──┴──┴──┘
     <span class='Value'>countries</span> <span class='Function'>∾</span><span class='Modifier'>˘</span> <span class='Value'>co</span> <span class='Value'>countries</span><span class='Modifier2'>⊸</span><span class='Function'>⊐</span><span class='Modifier2'>⊸</span><span class='Function'>⊔</span> <span class='Value'>ln</span>
 ┌──┬────────────────────┐
 │IT│⟨⟩                  │
@@ -174,9 +162,6 @@ caeb
 </pre>
 <p>However, this solution will fail if there are trailing keys with no values. To force the result to have a particular length you can append that length as a dummy index to each argument, then remove the last group after grouping.</p>
 <pre>    <span class='Value'>countries</span> <span class='Gets'>↩</span> <span class='String'>&quot;IT&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;JP&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;NO&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;SU&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;US&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;ZW&quot;</span>
-┌──┬──┬──┬──┬──┬──┐
-│IT│JP│NO│SU│US│ZW│
-└──┴──┴──┴──┴──┴──┘
     <span class='Value'>countries</span> <span class='Function'>∾</span><span class='Modifier'>˘</span> <span class='Value'>co</span> <span class='Value'>countries</span><span class='Brace'>{</span><span class='Value'>𝕗</span><span class='Modifier2'>⊸</span><span class='Function'>⊐</span><span class='Modifier2'>⊸</span><span class='Paren'>(</span><span class='Number'>¯1</span><span class='Function'>↓⊔</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Function'>∾</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕗</span><span class='Paren'>)))</span><span class='Brace'>}</span> <span class='Value'>ln</span>
 ┌──┬────────────────────┐
 │IT│⟨⟩                  │
