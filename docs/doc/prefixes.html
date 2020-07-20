@@ -1,0 +1,226 @@
+<head><link href="../style.css" rel="stylesheet"/></head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="prefixes-and-suffixes">Prefixes and Suffixes</h1>
+<p>The Prefixes (<code><span class='Function'>↑</span></code>) function gives a list of all prefixes of its argument array along the <a href="leading.html">first axis</a>, and Suffixes (<code><span class='Function'>↓</span></code>) gives a similar list for suffixes. Because the result can be much larger than the argument, these functions may not be used often in high-performance code, but they are a powerful conceptual tool and can make sense for algorithms that are inherently quadratic.</p>
+<pre>    <span class='Function'>↑</span> <span class='String'>&quot;abcde&quot;</span>
+┌──┬─┬──┬───┬────┬─────┐
+│⟨⟩│a│ab│abc│abcd│abcde│
+└──┴─┴──┴───┴────┴─────┘
+    <span class='Function'>↓</span> <span class='String'>&quot;abcde&quot;</span>
+┌─────┬────┬───┬──┬─┬──┐
+│abcde│bcde│cde│de│e│⟨⟩│
+└─────┴────┴───┴──┴─┴──┘
+</pre>
+<p>The functions are closely related to Take and Drop, as we might expect from their glyphs. Element <code><span class='Value'>i</span><span class='Function'>⊑↑</span><span class='Value'>𝕩</span></code> is <code><span class='Value'>i</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code>, and <code><span class='Value'>i</span><span class='Function'>⊑↓</span><span class='Value'>𝕩</span></code> is <code><span class='Value'>i</span><span class='Function'>↓</span><span class='Value'>𝕩</span></code>.</p>
+<p>In both cases, an empty array and the entire argument are included in the result, meaning its length is one more than that of the argument. Using <a href="logic.html">Span</a>, we can say that the result has elements whose lengths go from <code><span class='Number'>0</span></code> to <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code>, inclusive, so there are <code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>¬</span><span class='Number'>0</span></code> or <code><span class='Number'>1</span><span class='Function'>+≠</span><span class='Value'>𝕩</span></code> elements. The total number or cells in the result (for example, <code><span class='Function'>≠∾↑</span><span class='Value'>𝕩</span></code> or <code><span class='Function'>+</span><span class='Modifier'>´</span><span class='Function'>≠</span><span class='Modifier'>¨</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code>) scales with the square of the argument length—it is quadratic in <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code>. We can find the exact total by looking at Prefixes and Suffixes together:</p>
+<pre>    <span class='Paren'>(</span><span class='Function'>↑</span> <span class='Function'>≍</span><span class='Modifier'>˘</span> <span class='Function'>↓</span><span class='Paren'>)</span> <span class='String'>&quot;abcde&quot;</span>
+┌─────┬─────┐
+│⟨⟩   │abcde│
+├─────┼─────┤
+│a    │bcde │
+├─────┼─────┤
+│ab   │cde  │
+├─────┼─────┤
+│abc  │de   │
+├─────┼─────┤
+│abcd │e    │
+├─────┼─────┤
+│abcde│⟨⟩   │
+└─────┴─────┘
+    <span class='Paren'>(</span><span class='Function'>↑</span> <span class='Function'>∾</span><span class='Modifier'>¨</span> <span class='Function'>↓</span><span class='Paren'>)</span> <span class='String'>&quot;abcde&quot;</span>
+┌─────┬─────┬─────┬─────┬─────┬─────┐
+│abcde│abcde│abcde│abcde│abcde│abcde│
+└─────┴─────┴─────┴─────┴─────┴─────┘
+</pre>
+<p>Joining corresponding elements of <code><span class='Function'>↑</span><span class='Value'>𝕩</span></code> and <code><span class='Function'>↓</span><span class='Value'>𝕩</span></code> gives <code><span class='Value'>𝕩</span></code> again. This is because <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Paren'>(</span><span class='Function'>↑∾</span><span class='Modifier'>¨</span><span class='Function'>↓</span><span class='Paren'>)</span><span class='Value'>𝕩</span></code> is <code><span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>⊑↑</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>∾</span><span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>⊑↓</span><span class='Value'>𝕩</span><span class='Paren'>)</span></code>, or, using the Take and Drop correspondences, <code><span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>↑</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>∾</span><span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>↓</span><span class='Value'>𝕩</span><span class='Paren'>)</span></code>, which is <code><span class='Value'>𝕩</span></code>. Element-wise, we are combining the first <code><span class='Value'>i</span></code> cells of <code><span class='Value'>𝕩</span></code> with all but the first <code><span class='Value'>i</span></code>. Looking at the entire result, we now know that <code><span class='Paren'>(</span><span class='Function'>↑∾</span><span class='Modifier'>¨</span><span class='Function'>↓</span><span class='Paren'>)</span><span class='Value'>𝕩</span></code> is <code><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>+≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>⥊&lt;</span><span class='Value'>𝕩</span></code>. The total number of cells in this combined array is therefore <code><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>+≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>×≠</span><span class='Value'>𝕩</span></code>, or <code><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Modifier2'>⊸</span><span class='Function'>×≠</span><span class='Value'>𝕩</span></code>. Each of Prefixes and Suffixes must have the same total number of cells (in fact, <code><span class='Function'>↑</span><span class='Value'>𝕩</span></code> is <code><span class='Function'>⌽</span><span class='Modifier'>¨</span><span class='Modifier2'>∘</span><span class='Function'>↓</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span><span class='Value'>𝕩</span></code>, and Reverse doesn't change an array's shape). So the total number in either one is <code><span class='Number'>2</span><span class='Function'>÷</span><span class='Modifier'>˜</span><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Modifier2'>⊸</span><span class='Function'>×≠</span><span class='Value'>𝕩</span></code>. With <code><span class='Value'>n</span><span class='Gets'>←</span><span class='Function'>≠</span><span class='Value'>𝕩</span></code>, it is <code><span class='Number'>2</span><span class='Function'>÷</span><span class='Modifier'>˜</span><span class='Value'>n</span><span class='Function'>×</span><span class='Number'>1</span><span class='Function'>+</span><span class='Value'>n</span></code>.</p>
+<h2 id="definition">Definition</h2>
+<p>Knowing the length and the elements, it's easy to define functions for Prefixes and Suffixes: <code><span class='Function'>↑</span></code> is equivalent to <code><span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+≠</span><span class='Paren'>)</span><span class='Function'>↑</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span></code> while <code><span class='Function'>↓</span></code> is <code><span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+≠</span><span class='Paren'>)</span><span class='Function'>↓</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span></code>. Each primitive is defined only on arrays with at least one axis.</p>
+<h2 id="working-with-pairs">Working with pairs</h2>
+<p>Sometimes it's useful to apply an operation to every unordered pair of elements from a list. For example, consider all possible products of numbers between 1 and 6:</p>
+<pre>    <span class='Function'>×</span><span class='Modifier'>⌜˜</span> <span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>6</span>
+1  2  3  4  5  6
+2  4  6  8 10 12
+3  6  9 12 15 18
+4  8 12 16 20 24
+5 10 15 20 25 30
+6 12 18 24 30 36
+</pre>
+<p>It's easy enough to use the Table modifier here, but it also computes most products twice. If we only care about the unique products, we could multiply each number by all the ones after it. &quot;After&quot; sounds like suffixes, so let's look at those:</p>
+<pre>    <span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>6</span>
+1‿2‿3‿4‿5‿6
+    <span class='Function'>↓</span> <span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>6</span>
+┌───────────┬─────────┬───────┬─────┬───┬───┬──┐
+│1‿2‿3‿4‿5‿6│2‿3‿4‿5‿6│3‿4‿5‿6│4‿5‿6│5‿6│⟨6⟩│⟨⟩│
+└───────────┴─────────┴───────┴─────┴───┴───┴──┘
+</pre>
+<p>We want to include the diagonal, so we'll pair each element with the corresponding element of the suffixes, reducing the suffixes to the original array's length by dropping the last element, which is empty. In other cases, we might not want to include it and we should instead drop the first element.</p>
+<pre>    <span class='Paren'>(</span><span class='Function'>⊢</span> <span class='Function'>×</span> <span class='Function'>≠</span> <span class='Function'>↑</span> <span class='Function'>↓</span><span class='Paren'>)</span> <span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>6</span>
+┌───────────┬───────────┬──────────┬────────┬─────┬────┐
+│1‿2‿3‿4‿5‿6│4‿6‿8‿10‿12│9‿12‿15‿18│16‿20‿24│25‿30│⟨36⟩│
+└───────────┴───────────┴──────────┴────────┴─────┴────┘
+    <span class='Paren'>(</span><span class='Function'>⊢</span> <span class='Function'>×</span> <span class='Number'>1</span> <span class='Function'>↓</span> <span class='Function'>↓</span><span class='Paren'>)</span> <span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>6</span>
+┌─────────┬─────────┬────────┬─────┬────┬──┐
+│2‿3‿4‿5‿6│6‿8‿10‿12│12‿15‿18│20‿24│⟨30⟩│⟨⟩│
+└─────────┴─────────┴────────┴─────┴────┴──┘
+</pre>
+<p>By using <code><span class='Function'>≍</span></code> instead of <code><span class='Function'>×</span></code>, we can see the argument ordering, demonstrating that we are looking at the upper right half of the matrix produced by Table. While in this case we could use <code><span class='Function'>≍</span><span class='Modifier2'>⚇</span><span class='Number'>0</span></code> to mimic the pervasion of <code><span class='Function'>×</span></code>, we'd like this to work even on nested arguments so we should figure out how the mapping structure works to apply Each appropriately.</p>
+<pre>    <span class='Function'>≍</span><span class='Modifier'>⌜˜</span> <span class='String'>&quot;abc&quot;</span>
+┌──┬──┬──┐
+│aa│ab│ac│
+├──┼──┼──┤
+│ba│bb│bc│
+├──┼──┼──┤
+│ca│cb│cc│
+└──┴──┴──┘
+    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Function'>≍</span><span class='Modifier'>¨¨</span> <span class='Function'>≠</span> <span class='Function'>↑</span> <span class='Function'>↓</span><span class='Paren'>)</span> <span class='String'>&quot;abc&quot;</span>
+┌──────────┬───────┬────┐
+│┌──┬──┬──┐│┌──┬──┐│┌──┐│
+││aa│ab│ac│││bb│bc│││cc││
+│└──┴──┴──┘│└──┴──┘│└──┘│
+└──────────┴───────┴────┘
+</pre>
+<p>As before, we can exclude the diagonal, and using Prefixes instead of Suffixes gives us the lower left half instead of the upper right—in terms of the arguments given to <code><span class='Function'>≍</span></code> it reverses the argument pairs and iterates in a different order.</p>
+<pre>    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Function'>≍</span><span class='Modifier'>¨¨</span> <span class='Number'>1</span> <span class='Function'>↓</span> <span class='Function'>↓</span><span class='Paren'>)</span> <span class='String'>&quot;abc&quot;</span>
+┌───────┬────┬──┐
+│┌──┬──┐│┌──┐│⟨⟩│
+││ab│ac│││bc││  │
+│└──┴──┘│└──┘│  │
+└───────┴────┴──┘
+    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Function'>≍</span><span class='Modifier'>¨¨</span> <span class='Number'>1</span> <span class='Function'>↓</span> <span class='Function'>↑</span><span class='Paren'>)</span> <span class='String'>&quot;abc&quot;</span>
+┌────┬───────┬──────────┐
+│┌──┐│┌──┬──┐│┌──┬──┬──┐│
+││aa│││ba│bb│││ca│cb│cc││
+│└──┘│└──┴──┘│└──┴──┴──┘│
+└────┴───────┴──────────┘
+    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Function'>≍</span><span class='Modifier'>¨¨</span> <span class='Function'>≠</span> <span class='Function'>↑</span> <span class='Function'>↑</span><span class='Paren'>)</span> <span class='String'>&quot;abc&quot;</span>
+┌──┬────┬───────┐
+│⟨⟩│┌──┐│┌──┬──┐│
+│  ││ba│││ca│cb││
+│  │└──┘│└──┴──┘│
+└──┴────┴───────┘
+</pre>
+<h2 id="slices">Slices</h2>
+<p>Prefixes and Suffixes give certain restricted slices of the argument array, where a slice is a contiguous selection of cells. If we want all slices along the first axis, we can take the suffixes of each prefix, or vice-versa:</p>
+<pre>    <span class='Function'>↓</span><span class='Modifier'>¨</span><span class='Function'>↑</span> <span class='String'>&quot;abc&quot;</span>
+┌────┬──────┬─────────┬─────────────┐
+│┌──┐│┌─┬──┐│┌──┬─┬──┐│┌───┬──┬─┬──┐│
+││⟨⟩│││a│⟨⟩│││ab│b│⟨⟩│││abc│bc│c│⟨⟩││
+│└──┘│└─┴──┘│└──┴─┴──┘│└───┴──┴─┴──┘│
+└────┴──────┴─────────┴─────────────┘
+    <span class='Function'>↑</span><span class='Modifier'>¨</span><span class='Function'>↓</span> <span class='String'>&quot;abc&quot;</span>
+┌─────────────┬─────────┬──────┬────┐
+│┌──┬─┬──┬───┐│┌──┬─┬──┐│┌──┬─┐│┌──┐│
+││⟨⟩│a│ab│abc│││⟨⟩│b│bc│││⟨⟩│c│││⟨⟩││
+│└──┴─┴──┴───┘│└──┴─┴──┘│└──┴─┘│└──┘│
+└─────────────┴─────────┴──────┴────┘
+</pre>
+<p>Effectively, this parametrizes the slices either by ending then starting index, or by starting index then length. Four empty slices are included because in a list of length 3 there are 4 places an empty slice can start: all the spaces between or outside elements (these also correspond to all the possible positions for the result of <a href="bins.html">Bins</a>). The slices can also be parametrized by length and then starting index using <a href="windows.html">Windows</a>.</p>
+<pre>    <span class='Paren'>((</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+≠</span><span class='Paren'>)</span><span class='Function'>↕</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span><span class='Paren'>)</span> <span class='String'>&quot;abc&quot;</span>
+┌──────┬─┬──┬───┐
+│4‿0⥊⟨⟩│a│ab│abc│
+│      │b│bc│   │
+│      │c│  │   │
+└──────┴─┴──┴───┘
+    <span class='Paren'>((</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+≠</span><span class='Paren'>)</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span><span class='Modifier2'>∘</span><span class='Function'>↕</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span><span class='Paren'>)</span> <span class='String'>&quot;abc&quot;</span>  <span class='Comment'># Split them to match Prefixes/Suffixes
+</span>┌─────────────┬───────┬───────┬─────┐
+│┌──┬──┬──┬──┐│┌─┬─┬─┐│┌──┬──┐│┌───┐│
+││⟨⟩│⟨⟩│⟨⟩│⟨⟩│││a│b│c│││ab│bc│││abc││
+│└──┴──┴──┴──┘│└─┴─┴─┘│└──┴──┘│└───┘│
+└─────────────┴───────┴───────┴─────┘
+</pre>
+<p>We might view a slice as a selection for not two but <em>three</em> parameters: the number of cells before, in, and after the slice. The conditions are that each parameter, being a length, is at least 0, and the total of the three parameters is equal to the array length. With three parameters and one equality constraint, the space of slices is two-dimensional; the above ways to enumerate it each pick two parameters and allow the third to be dependent on these two. If you're familiar with <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system">barycentric coordinates</a> on a triangle, this should sound very familiar because that's exactly what the three parameters are!</p>
+<p>We might also consider the question of slices along multiple axes. Because axes are orthogonal, we can choose such a slice by independently slicing along each axis. To use the homogeneous shape of arrays as much as possible, the result should still only have two added layers of nesting for the two coordinates we choose, with all possible choices for the first axis along the axes of the outer array and those for the second along the axes of each inner array. Our Windows-based solution adapts to multidimensional arrays easily:</p>
+<pre>    <span class='Paren'>((</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+≢</span><span class='Paren'>)</span><span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>2</span><span class='Modifier2'>∘</span><span class='Function'>↕</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span><span class='Paren'>)</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;abcdef&quot;</span>
+┌──────────────────────┬───────────────┬────────┐
+│┌──────┬──────┬──────┐│┌──────┬──────┐│┌──────┐│
+││0‿0⥊⟨⟩│0‿0⥊⟨⟩│0‿0⥊⟨⟩│││0‿1⥊⟨⟩│0‿1⥊⟨⟩│││0‿2⥊⟨⟩││
+│├──────┼──────┼──────┤│├──────┼──────┤│├──────┤│
+││0‿0⥊⟨⟩│0‿0⥊⟨⟩│0‿0⥊⟨⟩│││0‿1⥊⟨⟩│0‿1⥊⟨⟩│││0‿2⥊⟨⟩││
+│├──────┼──────┼──────┤│├──────┼──────┤│├──────┤│
+││0‿0⥊⟨⟩│0‿0⥊⟨⟩│0‿0⥊⟨⟩│││0‿1⥊⟨⟩│0‿1⥊⟨⟩│││0‿2⥊⟨⟩││
+│├──────┼──────┼──────┤│├──────┼──────┤│├──────┤│
+││0‿0⥊⟨⟩│0‿0⥊⟨⟩│0‿0⥊⟨⟩│││0‿1⥊⟨⟩│0‿1⥊⟨⟩│││0‿2⥊⟨⟩││
+│└──────┴──────┴──────┘│└──────┴──────┘│└──────┘│
+├──────────────────────┼───────────────┼────────┤
+│┌──────┬──────┬──────┐│┌─────┬─────┐  │┌──┐    │
+││1‿0⥊⟨⟩│1‿0⥊⟨⟩│1‿0⥊⟨⟩│││1‿1⥊a│1‿1⥊b│  ││ab│    │
+│├──────┼──────┼──────┤│├─────┼─────┤  │├──┤    │
+││1‿0⥊⟨⟩│1‿0⥊⟨⟩│1‿0⥊⟨⟩│││1‿1⥊c│1‿1⥊d│  ││cd│    │
+│├──────┼──────┼──────┤│├─────┼─────┤  │├──┤    │
+││1‿0⥊⟨⟩│1‿0⥊⟨⟩│1‿0⥊⟨⟩│││1‿1⥊e│1‿1⥊f│  ││ef│    │
+│└──────┴──────┴──────┘│└─────┴─────┘  │└──┘    │
+├──────────────────────┼───────────────┼────────┤
+│┌──────┬──────┬──────┐│┌─┬─┐          │┌──┐    │
+││2‿0⥊⟨⟩│2‿0⥊⟨⟩│2‿0⥊⟨⟩│││a│b│          ││ab│    │
+│├──────┼──────┼──────┤││c│d│          ││cd│    │
+││2‿0⥊⟨⟩│2‿0⥊⟨⟩│2‿0⥊⟨⟩││├─┼─┤          │├──┤    │
+│└──────┴──────┴──────┘││c│d│          ││cd│    │
+│                      ││e│f│          ││ef│    │
+│                      │└─┴─┘          │└──┘    │
+├──────────────────────┼───────────────┼────────┤
+│┌──────┬──────┬──────┐│┌─┬─┐          │┌──┐    │
+││3‿0⥊⟨⟩│3‿0⥊⟨⟩│3‿0⥊⟨⟩│││a│b│          ││ab│    │
+│└──────┴──────┴──────┘││c│d│          ││cd│    │
+│                      ││e│f│          ││ef│    │
+│                      │└─┴─┘          │└──┘    │
+└──────────────────────┴───────────────┴────────┘
+</pre>
+<p>This array can be <a href="join.html">joined</a>, indicating that the length of each inner axis depends only on the position in the corresponding outer axis (let's also drop those empty slices to take up less space).</p>
+<pre>    <span class='Function'>∾</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span> <span class='Function'>↓</span> <span class='Paren'>((</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+≢</span><span class='Paren'>)</span><span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>2</span><span class='Modifier2'>∘</span><span class='Function'>↕</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span><span class='Paren'>)</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;abcdef&quot;</span>
+┌─────┬─────┬──┐
+│1‿1⥊a│1‿1⥊b│ab│
+├─────┼─────┼──┤
+│1‿1⥊c│1‿1⥊d│cd│
+├─────┼─────┼──┤
+│1‿1⥊e│1‿1⥊f│ef│
+├─────┼─────┼──┤
+│a    │b    │ab│
+│c    │d    │cd│
+├─────┼─────┼──┤
+│c    │d    │cd│
+│e    │f    │ef│
+├─────┼─────┼──┤
+│a    │b    │ab│
+│c    │d    │cd│
+│e    │f    │ef│
+└─────┴─────┴──┘
+</pre>
+<p>But Prefixes and Suffixes <a href="../problems.html#cant-take-prefixes-or-suffixes-on-multiple-axes">don't have</a> any way to specify that they should work on multiple axes, and always work on exactly one. So to extend this pattern we will have to define multi-dimensional versions. This turns out to be very easy: just replace Length with Shape in the <a href="#definition">definitions</a> above.</p>
+<pre>    <span class='Function'>Prefs</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+≢</span><span class='Paren'>)</span><span class='Function'>↑</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span>
+    <span class='Function'>Suffs</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+≢</span><span class='Paren'>)</span><span class='Function'>↓</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span>
+    <span class='Function'>Prefs</span><span class='Modifier'>¨</span><span class='Function'>Suffs</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;abcdef&quot;</span>
+┌──────────────────────┬───────────────┬────────┐
+│┌──────┬──────┬──────┐│┌──────┬──────┐│┌──────┐│
+││0‿0⥊""│0‿1⥊""│0‿2⥊""│││0‿0⥊""│0‿1⥊""│││0‿0⥊""││
+│├──────┼──────┼──────┤│├──────┼──────┤│├──────┤│
+││1‿0⥊""│1‿1⥊a │ab    │││1‿0⥊""│1‿1⥊b │││1‿0⥊""││
+│├──────┼──────┼──────┤│├──────┼──────┤│├──────┤│
+││2‿0⥊""│a     │ab    │││2‿0⥊""│b     │││2‿0⥊""││
+││      │c     │cd    │││      │d     ││├──────┤│
+│├──────┼──────┼──────┤│├──────┼──────┤││3‿0⥊""││
+││3‿0⥊""│a     │ab    │││3‿0⥊""│b     ││└──────┘│
+││      │c     │cd    │││      │d     ││        │
+││      │e     │ef    │││      │f     ││        │
+│└──────┴──────┴──────┘│└──────┴──────┘│        │
+├──────────────────────┼───────────────┼────────┤
+│┌──────┬──────┬──────┐│┌──────┬──────┐│┌──────┐│
+││0‿0⥊""│0‿1⥊""│0‿2⥊""│││0‿0⥊""│0‿1⥊""│││0‿0⥊""││
+│├──────┼──────┼──────┤│├──────┼──────┤│├──────┤│
+││1‿0⥊""│1‿1⥊c │cd    │││1‿0⥊""│1‿1⥊d │││1‿0⥊""││
+│├──────┼──────┼──────┤│├──────┼──────┤│├──────┤│
+││2‿0⥊""│c     │cd    │││2‿0⥊""│d     │││2‿0⥊""││
+││      │e     │ef    │││      │f     ││└──────┘│
+│└──────┴──────┴──────┘│└──────┴──────┘│        │
+├──────────────────────┼───────────────┼────────┤
+│┌──────┬──────┬──────┐│┌──────┬──────┐│┌──────┐│
+││0‿0⥊""│0‿1⥊""│0‿2⥊""│││0‿0⥊""│0‿1⥊""│││0‿0⥊""││
+│├──────┼──────┼──────┤│├──────┼──────┤│├──────┤│
+││1‿0⥊""│1‿1⥊e │ef    │││1‿0⥊""│1‿1⥊f │││1‿0⥊""││
+│└──────┴──────┴──────┘│└──────┴──────┘│└──────┘│
+├──────────────────────┼───────────────┼────────┤
+│┌──────┬──────┬──────┐│┌──────┬──────┐│┌──────┐│
+││0‿0⥊""│0‿1⥊""│0‿2⥊""│││0‿0⥊""│0‿1⥊""│││0‿0⥊""││
+│└──────┴──────┴──────┘│└──────┴──────┘│└──────┘│
+└──────────────────────┴───────────────┴────────┘
+</pre>
+
