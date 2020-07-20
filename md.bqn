@@ -155,11 +155,13 @@ Markdown ← {filename𝕊𝕩:
     tail ← ∧`⌾⌽ trsp∨𝕩='#'  # Mask of trailing hashes
     f ← tail < 0 Shr tail   # Character before trailing hashes
     𝕩 /˜↩ ¬ f (⊑⟨"\"," ",""⟩⊐<f/𝕩)◶⟨⊣,⊢,⊢,0¨⊢⟩ tail
-    # Add an id: lowercase the header, replacing non-•a with hyphens
+    # Add an id, containing only a-z, digits, and hyphens
     Slugify ← {
-      ch ← •UCS "-Aa"
-      bounds ← ⥊ (1↓ch) +⌜ 0‿26  # Of the upper and lowercase alphabet
-      (bounds⊸⍋ {(⊑ch)¨⌾((¬2|𝕨)⊸/)𝕩+32×1=𝕨} ⊢)⌾•UCS 𝕩
+      𝕩 ↩ '-'¨⌾((𝕩=' ')⊸/) 𝕩  # Replace spaces with dashes
+      bounds ← ⥊ +⌜⟜0‿26⌾•UCS "Aa"  # Of the upper and lowercase alphabet
+      # Lowercase alphabetic characters and remove special characters
+      b ← bounds ⍋ 𝕩
+      ((2|b)∨∊⟜("-"∾•d))⊸/ +⟜(32×1=b)⌾•UCS 𝕩
     }
     extensions { tag ∾↩ " id="∾""""(∾∾⊣) Slugify 𝕩 }⍟⊣ 𝕩
     tag Html ProcInline Trim 𝕩

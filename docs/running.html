@@ -2,12 +2,12 @@
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
 <h1 id="how-to-run-bqn">How to run BQN</h1>
 <p>BQN is in a very early stage of development, and there is currently no complete implementation of the language. However, it's a relatively simple language to implement, and a few implementations come close.</p>
-<h3 id="bqn-ngn">BQN2NGN</h3>
+<h3 id="bqn2ngn">BQN2NGN</h3>
 <p><a href="https://github.com/mlochbaum/BQN2NGN">BQN2NGN</a> is a prototype implementation in Javascript build to experiment with the langauge, which is now abandoned. Because you can <a href="https://mlochbaum.github.io/BQN2NGN/web/index.html">use it online</a>, this is probably the quickest way to get started with BQN. It has good primitive support, with the main issues being that it uses a J-style insert instead of BQN-style vector reduction, that it has a different version of <a href="doc/group.html">Group</a> (<code><span class='Function'>⊔</span></code>), and that it is missing Choose (<code><span class='Modifier2'>◶</span></code>). There are also some spelling differences, with Deduplicate (<code><span class='Function'>⍷</span></code>) spelled with <code><span class='Value'>∪</span></code> and Valences (<code><span class='Modifier2'>⊘</span></code>) spelled with <code><span class='Value'>⍠</span></code>. It is missing value blocks and function headers.</p>
 <p>For automated testing I run BQN2NGN using the <code><span class='Value'>bqn</span></code> executable, which is just a symlink to <code><span class='Value'>apl.js</span></code> in the BQN2NGN repository. It requires Node to run.</p>
-<h3 id="dzaima-bqn">dzaima/BQN</h3>
+<h3 id="dzaimabqn">dzaima/BQN</h3>
 <p><a href="https://github.com/dzaima/BQN/">dzaima/BQN</a> is an implementation in Java created by modifying the existing dzaima/APL. It should be easy to run on desktop Linux and Android. It is still in development and has almost complete syntax support but incomplete primitive support.</p>
-<h3 id="dzaima-reference-bqn">dzaima+reference BQN</h3>
+<h3 id="dzaimareference-bqn">dzaima+reference BQN</h3>
 <p>This repository contains a dzaima/BQN script <code><span class='Value'>dzref</span></code> that fills in the gaps in primitive support using BQN implementations of primitives which are not yet up to spec (<a href="https://github.com/mlochbaum/BQN/blob/master/spec/reference.bqn">reference implementations</a> of all primitives starting from a small set of pre-existing functions are part of BQN's specification). These alternate implementations can be very slow.</p>
 <p>You can run <code><span class='Value'>dzref</span></code> from ordinary dzaima/BQN using the <code><span class='Value'>•</span><span class='Function'>EX</span></code> command; see for example <a href="https://github.com/mlochbaum/BQN/blob/master/dcshim.bqn">dcshim.bqn</a>. For testing, it is run as a Unix script, in which case it depends on an executable <code><span class='Value'>dbqn</span></code> that runs dzaima/BQN on a file argument. I use the following script, using the path to a clone of dzaima/BQN for the jar file.</p>
 <pre><span class='Comment'>#! /bin/bash

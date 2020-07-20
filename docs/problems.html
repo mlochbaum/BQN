@@ -28,9 +28,9 @@
 <li><code><span class='Function'>𝔽</span><span class='Modifier'>¨´</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span></code> Apply it between elements of an array, enclosing results to get a new array (NARS).</li>
 </ul>
 <p>It seems that the first is the most common, but the others aren't really rare. The current list reduction also encourages patterns like <code><span class='Function'>+</span><span class='Modifier'>´˘</span><span class='Number'>2</span><span class='Function'>↕</span><span class='Value'>mat</span></code>, which don't work on higher-rank arrays and mix the result (possibly unwanted).</p>
-<h3 id="subtraction--division--and-span-are-backwards">Subtraction, division, and span are backwards</h3>
+<h3 id="subtraction-division-and-span-are-backwards">Subtraction, division, and span are backwards</h3>
 <p>The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). Not really fixable; too much precedent.</p>
-<h3 id="can-t-access-array-ordering-directly">Can't access array ordering directly</h3>
+<h3 id="cant-access-array-ordering-directly">Can't access array ordering directly</h3>
 <p>Only <code><span class='Function'>⍋⍒</span></code> use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not <em>that</em> difficult: <code><span class='Function'>⥊</span><span class='Modifier2'>⊸</span><span class='Function'>⍋</span><span class='Modifier2'>⌾</span><span class='Function'>&lt;</span></code> is TAO <code><span class='Function'>≤</span></code>).</p>
 <h3 id="syntactic-type-erasure">Syntactic type erasure</h3>
 <p>A programmer can call a modifier on either a syntactic function or subject, but there's no way to know within the modifier which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that <code><span class='Value'>f</span><span class='Modifier'>˜</span></code> is <code><span class='Value'>f</span></code>-Swap if <code><span class='Value'>f</span></code> has a function value. The subject syntax suggests it should be Constant.</p>
@@ -58,35 +58,35 @@
 <p>Characters <code><span class='Function'>⥊∾</span><span class='Modifier2'>⟜⎉⚇</span><span class='Modifier'>˜</span></code> and double-struck letters are either missing from many fonts or drawn strangely.</p>
 <h3 id="index-of-privileges-the-first-match">Index Of privileges the first match</h3>
 <p>It could be more sound to look at all matches, but using just the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: <code><span class='Function'>≠</span><span class='Modifier2'>∘</span><span class='Function'>⊣-</span><span class='Number'>1</span><span class='Function'>+⌽</span><span class='Modifier2'>⊸</span><span class='Function'>⊐</span></code>.</p>
-<h3 id="glyphs-that-aren-t-great">Glyphs that aren't great</h3>
+<h3 id="glyphs-that-arent-great">Glyphs that aren't great</h3>
 <p>Blanket issue for glyphs that need work. Currently I find <code><span class='Function'>⥊⊏⊑⊐⊒⍷</span><span class='Modifier'>⁼</span><span class='Modifier2'>⎉⚇</span></code> to not be particularly good fits for what they describe.</p>
 <h3 id="axis-ordering-is-big-endian">Axis ordering is big-endian</h3>
 <p>The most natural ordering for polynomial coefficients and base representations is little-endian, because it aligns element <code><span class='Value'>i</span></code> of the list with power <code><span class='Value'>i</span></code> of the argument or base. It also allows a forward scan instead of a reverse one. Array axes go the other way. However, there are advantages to this ordering as well. For example, it's common to act only on the first few axes, so having them at the beginning of the array is good (<code><span class='Function'>≠</span><span class='Value'>a</span> <span class='Gets'>←→</span> <span class='Function'>⊑</span><span class='Modifier2'>∘</span><span class='Function'>≢</span><span class='Value'>a</span></code>).</p>
-<h3 id="trains-don-t-like-monads">Trains don't like monads</h3>
+<h3 id="trains-dont-like-monads">Trains don't like monads</h3>
 <p>If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing <code><span class='Modifier2'>⟜</span></code>. Largely solved with the &quot;nothing&quot; glyph <code><span class='Nothing'>·</span></code>, which acts like J's Cap (<code><span class='Value'>[:</span></code>) in a train, but still a minor frustration.</p>
 <h3 id="inverse-is-not-fully-specified">Inverse is not fully specified</h3>
 <p>So it seems a bit strange to rely on it for core language features like <code><span class='Function'>/</span><span class='Modifier'>⁼</span></code>. On the other hand, this is a good fit for <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code> since we are taking an arbitrary branch of a complex function that has many of them. I'm pretty sure it's impossible to solve the issue as stated but it might be possible to move to less hazardous constructs. Structural Under is a start.</p>
-<h3 id="monadic-----versus----">Monadic <code><span class='Function'>⊑</span></code> versus <code><span class='Function'>&gt;</span></code></h3>
+<h3 id="monadic--versus-">Monadic <code><span class='Function'>⊑</span></code> versus <code><span class='Function'>&gt;</span></code></h3>
 <p>Both pull out elements and reduce the depth. But they face in opposite directions.</p>
 <p>The directions of <code><span class='Function'>⊏⊐</span></code> and so on were mainly chosen to line up with <code><span class='Function'>∊</span></code>: the argument that indices apply to (that is, the one that is searched or selected from) corresponds to the open side of the function. I'd probably prefer new glyphs that don't have this sort of directionality, however.</p>
 <h3 id="converting-a-function-expression-to-a-subject-is-tricky">Converting a function expression to a subject is tricky</h3>
 <p>You can name it, you can write <code><span class='Function'>⊑</span><span class='Bracket'>⟨</span><span class='Function'>Expr</span><span class='Bracket'>⟩</span></code>, and if it doesn't use special names you can write <code><span class='Brace'>{</span><span class='Function'>Expr</span><span class='Brace'>}</span></code>. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from subject to function, isn't too bad: the modifier <code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Brace'>}</span></code> does it.</p>
-<h3 id="monadic-argument-corresponds-to-left-for-----and----">Monadic argument corresponds to left for <code><span class='Function'>/</span></code> and <code><span class='Function'>⊔</span></code></h3>
+<h3 id="monadic-argument-corresponds-to-left-for--and-">Monadic argument corresponds to left for <code><span class='Function'>/</span></code> and <code><span class='Function'>⊔</span></code></h3>
 <p>Called dyadically, both functions shuffle cells of the right argument around, which is consistent with other selection-type functions. But the monadic case applies to what would be the left argument in the dyadic case.</p>
-<h3 id="prefixes-suffixes-add-depth-and-windows-doesn-t">Prefixes/Suffixes add depth and Windows doesn't</h3>
+<h3 id="prefixessuffixes-add-depth-and-windows-doesnt">Prefixes/Suffixes add depth and Windows doesn't</h3>
 <p>It's an awkward inconsistency. Prefixes and Suffixes have to have a nested result, but Windows doesn't have to be flat; it's just that making it nested ignores the fact that it does have an array structure.</p>
-<h3 id="rank-depth-negative-zero">Rank/Depth negative zero</h3>
+<h3 id="rankdepth-negative-zero">Rank/Depth negative zero</h3>
 <p>A positive operand to Rank indicates the cell rank, so positive zero means to act on 0-cells. A negative operand indicates the frame length, so negative zero should act on the entire array. But it can't because it's equal to positive zero. Similar issue with Depth. Positive/negative is not really the right way to encode the frame/cell distinction, but it's convenient. Fortunately ∞ can be used in place of negative zero, but there can still be problems if the rank is computed.</p>
-<h3 id="must-read-the-body-to-find-explicit-definition-s-type">Must read the body to find explicit definition's type</h3>
+<h3 id="must-read-the-body-to-find-explicit-definitions-type">Must read the body to find explicit definition's type</h3>
 <p>You have to scan for headers or double-struck names (and so does a compiler). A little inelegant, and difficult to describe in BNF.</p>
-<h3 id="can-t-take-prefixes-or-suffixes-on-multiple-axes">Can't take Prefixes or Suffixes on multiple axes</h3>
+<h3 id="cant-take-prefixes-or-suffixes-on-multiple-axes">Can't take Prefixes or Suffixes on multiple axes</h3>
 <p>This is a natural array operation to do, and results in an array with a joinable structure, but as Prefixes and Suffixes are monadic there's no way to specify the number of axes to use.</p>
-<h3 id="and-or-max-min-are-all-tangled-up">And/Or/Max/Min are all tangled up</h3>
+<h3 id="andormaxmin-are-all-tangled-up">And/Or/Max/Min are all tangled up</h3>
 <p>Boolean And (<code><span class='Function'>∧</span></code>) and Or (<code><span class='Function'>∨</span></code>) are identical to Min (<code><span class='Function'>⌊</span></code>) and Max (<code><span class='Function'>⌈</span></code>) when restricted to Boolean arguments, and this would fit nicely with their monadic role as sorting functions: for example <code><span class='Value'>a</span><span class='Function'>∧</span><span class='Value'>b</span> <span class='Gets'>←→</span> <span class='Function'>⊑∧</span><span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span></code>. Furthermore the pairing of Min with Floor and Max with Ceiling is mnemonic only and not especially natural. The reason I have not used these glyphs for Min and Max, and have instead extended them to the somewhat superfluous <a href="doc/logic.html">arithmetic logical functions</a> is that Min and Max have different <a href="https://aplwiki.com/wiki/Identity_element">identity elements</a> of <code><span class='Number'>∞</span></code> and <code><span class='Number'>¯∞</span></code> rather than <code><span class='Number'>1</span></code> and <code><span class='Number'>0</span></code>. Having to code around empty arrays when using <code><span class='Function'>∧</span><span class='Modifier'>´</span></code> would be a fairly big issue.</p>
 <p>The other drawback of Min (<code><span class='Function'>∧</span></code>) and Max (<code><span class='Function'>∨</span></code>) is that the symbols are counterintuitive, but I have found a way to remember them: consider the graph of variables <code><span class='Value'>a</span><span class='Gets'>←</span><span class='Value'>x</span></code> and <code><span class='Value'>b</span><span class='Gets'>←</span><span class='Function'>¬</span><span class='Value'>x</span></code> for x from 0 to 1: two crossed lines. Now the graph of <code><span class='Value'>a</span><span class='Function'>∧</span><span class='Value'>b</span></code> is a caret shape and <code><span class='Value'>a</span><span class='Function'>∨</span><span class='Value'>b</span></code> is a vee.</p>
 <h3 id="acting-on-windows-can-be-awkward">Acting on windows can be awkward</h3>
 <p>When taking Windows along more than one axis, acting on the resulting array requires the Rank modifier, duplicating either the right argument rank or (negated) left argument length. A nested Windows would only require Each.</p>
-<h3 id="group-doesn-t-include-trailing-empty-groups">Group doesn't include trailing empty groups</h3>
+<h3 id="group-doesnt-include-trailing-empty-groups">Group doesn't include trailing empty groups</h3>
 <p>But there are workarounds, described in <a href="doc/group.html">its documentation</a>. dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.</p>
 <h3 id="scan-ordering-is-weird">Scan ordering is weird</h3>
 <p>Scan moves along the array so that it uses results as left arguments, which is opposite to the usual right-to-left order of evaluation. But I think this is still better than scanning the array in reverse. You can always use Swap on the operand, or recover the APL scan ordering by doing a Reduce-Each on Prefixes.</p>
@@ -104,16 +104,16 @@
 <p>I went with &quot;Index of&quot; and &quot;Less Than or Equal to&quot; but the last word blends into surrounding text. Should they be fully capitalized or hyphenated?</p>
 <h2 id="solved-problems">Solved problems</h2>
 <p>Problems that existed in mainstream APL or a transitional BQN that have in my opinion been put to rest (while in some cases introducing new problems). Listed in reverse chronological order by time solved, by my recollection.</p>
-<h3 id="-modifier--and--composition--terminology">&quot;Modifier&quot; and &quot;composition&quot; terminology</h3>
+<h3 id="modifier-and-composition-terminology">&quot;Modifier&quot; and &quot;composition&quot; terminology</h3>
 <p>1-modifiers and 2-modifiers used to be called &quot;modifiers&quot; and &quot;compositions&quot;, respectively, and sometimes &quot;operators&quot; collectively. The new names are much better, although they do leave a disconnect between the names for modifiers, and those for their inputs—&quot;operands&quot;.</p>
-<h3 id="can-t-return-from-inner-functions">Can't return from inner functions</h3>
+<h3 id="cant-return-from-inner-functions">Can't return from inner functions</h3>
 <p>Fixed by adding block returns such as <code><span class='Value'>label</span><span class='Gets'>←</span></code> to jump out of a block with header name <code><span class='Value'>label</span></code>. Hopefully these don't cause too many new problems.</p>
 <p>This was an issue with using functions as control flow. For example, when looping through an array with Each, you can't decide to exit early. In a curly-brace language you would just use a for loop and a return. In BQN, we need… longjmp? Maybe not as crazy as it sounds, and potentially worth it in exchange for replacing control structures.</p>
 <h3 id="ambivalent-explicit-functions">Ambivalent explicit functions</h3>
 <p>Fixed with multiple bodies: if there are two bodies with no headers such as <code><span class='Brace'>{</span><span class='Number'>2</span><span class='Function'>×</span><span class='Value'>𝕩;𝕨</span><span class='Function'>-</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code>, they are the monadic and dyadic case.</p>
-<h3 id="how-to-choose-a-partitioning-function-">How to choose a partitioning function?</h3>
+<h3 id="how-to-choose-a-partitioning-function">How to choose a partitioning function?</h3>
 <p>Fixed with <a href="doc/group.html">Group</a>, which I found May 2020. Group serves as a much improved <a href="https://aplwiki.com/wiki/Partition">Partition</a>. However, it doesn't partition along multiple axes, so a dedicated partition function that does this could also be wanted. Or could Group be made to work with multiple axes as well as multidimensional indices?</p>
-<h3 id="key-doesn-t-do-what-you-want">Key doesn't do what you want</h3>
+<h3 id="key-doesnt-do-what-you-want">Key doesn't do what you want</h3>
 <p>Fixed with <a href="doc/group.html">Group</a> to my satisfaction, except for the trailing-empty-group problem. There were various issues with Key operators in J and Dyalog, such as the fact that the ordering and presence of groups depends on where and whether the keys appear. Also, Dyalog's Key can return keys and values, but they are in a different format than the input: an array of pairs instead of two arrays. Monadic Group returns indices, which can be used how the programmer wants.</p>
 <h3 id="greek-letter-issues">Greek letter issues</h3>
 <p>Fixed by not using Greek letters. In particular, the idea of using fancy Latin letters as fixed names for function arguments was suggested in proto-BQN sessions, possibly by Nathan Rogers.</p>
@@ -125,8 +125,8 @@
 <p>Fixed with the casing conventions for variable names, which I think I first saw in <a href="https://aplwiki.com/wiki/APL%5Civ">APL\iv</a>, although the cases are swapped relative to BQN.</p>
 <h3 id="selective-assignment-requires-a-named-variable">Selective assignment requires a named variable</h3>
 <p>Fixed with structural Under, which I developed in 2017 and 2018.</p>
-<h3 id="it-s-hard-use-an-array-as-a-major-cell">It's hard use an array as a major cell</h3>
+<h3 id="its-hard-use-an-array-as-a-major-cell">It's hard use an array as a major cell</h3>
 <p>Fixed with <code><span class='Function'>≍</span></code>: dyadic form from A+ and monadic/dyadic pair from J.</p>
-<h3 id="scan-and-windowed-reduce-shouldn-t-always-reduce">Scan and Windowed Reduce shouldn't always reduce</h3>
+<h3 id="scan-and-windowed-reduce-shouldnt-always-reduce">Scan and Windowed Reduce shouldn't always reduce</h3>
 <p>Fixed with Prefix, Suffix, and Infix operators in J. Changed to functions in BQN.</p>
 
