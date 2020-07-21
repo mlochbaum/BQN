@@ -14,6 +14,7 @@ Primitives:
 - [Group](group.md) (`⊔`)
 - [Join](join.md) (`∾`)
 - [Logical functions](logic.md) (`∧∨¬`)
+- [Prefixes and Suffixes](prefixes.md) (`↑↓`)
 - [Transpose](transpose.md) (`⍉`)
 - [Windows](windows.md) (`↕`)
 

@@ -117,8 +117,8 @@ Functions that have significant differences from APL functions are marked with a
 | `⥊`   | [Deshape](https://aplwiki.com/wiki/Ravel)           | [Reshape](https://aplwiki.com/wiki/Reshape)
 | `∾`   | [Join](doc/join.md)*                                | [Join to](https://aplwiki.com/wiki/Catenate)
 | `≍`   | Solo*                                               | Couple*
-| `↑`   | Prefixes*                                           | [Take](https://aplwiki.com/wiki/Take)
-| `↓`   | Suffixes*                                           | [Drop](https://aplwiki.com/wiki/Drop)
+| `↑`   | [Prefixes](doc/prefixes.md)*                        | [Take](https://aplwiki.com/wiki/Take)
+| `↓`   | [Suffixes](doc/prefixes.md)*                        | [Drop](https://aplwiki.com/wiki/Drop)
 | `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](doc/windows.md)*
 | `⌽`   | [Reverse](https://aplwiki.com/wiki/Reverse)         | [Rotate](https://aplwiki.com/wiki/Rotate)
 | `⍉`   | [Transpose](doc/transpose.md)*                      | [Reorder axes](doc/transpose.md)*
