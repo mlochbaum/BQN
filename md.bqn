@@ -82,6 +82,7 @@ CharEntities ← {1¨⊸𝕊𝕩;  # 𝕨 gives characters to potentially escape
   ⟨¬ useEntity , entities ⊏˜ useEntity/ind , /useEntity⟩
 }
 
+
 ################################
 Markdown ← {filename𝕊𝕩:
   extensions ← filename ≢ 0
@@ -138,7 +139,7 @@ Markdown ← {filename𝕊𝕩:
       (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
     }
     r‿ri ← addRslt◶(2⥊<⟨⟩)‿{
-      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘⍕∘⊢⟩ CodeExec)⍟(0<≠)¨ 𝕩
+      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⍟(0<≠)¨ 𝕩
         1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
     } 𝕩
 
@@ -364,6 +365,7 @@ Markdown ← {filename𝕊𝕩:
   JoinLines (blockStart / lineType≍˘lineDat) <∘ProcBlock˘ blocks
 }
 
+
 ################################
 # Testing
 # Uses the test cases at https://spec.commonmark.org/0.29/spec.json
@@ -387,6 +389,7 @@ TestSections ← {
   res ← 1 ↓˘ (¬⊏˘)⊸/ RunTest˘ tests /˜ ignore < testSection ∊ 𝕩
   res
 }
+
 
 ################################
 # Syntax highlighting
@@ -438,6 +441,72 @@ GetMultiHighlights ← {
   <∘∾˘ ⍉ ((≠∾2˜) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
 }
 
+
+################################
+# Format an array to a character matrix
+# Won't work on functions until we can catch errors
+Fmt ← {
+  # Vertical padding for arrays of rank greater than 2
+  PadV ← {
+    # Leading shape
+    ls ← ¯1↓≢𝕩
+    # Empty lines after each row: 1 if it's at the end of a 2-cell, plus
+    # 1 if it's at the end of a 2-cell and a 3-cell, and so on
+    p ← ⥊ +⎉¯1‿∞´ ×⌜˜`⌾⌽ (-1⌈ls)↑¨1
+    # But none at the very end
+    p ↩ 0⌾(¯1⊸⊑) p
+    Pad ← {i←/1+𝕨 ⋄ (¯1¨⌾((¬∊i)⊸/)i) ⊏ 𝕩∾(¯1⊑≢𝕩)⥊" "}
+    p (⊑0∊ls)◶⟨Pad,+´⊸↑⟩ ((×´ls)∾¯1⊑≢𝕩) ⥊ 𝕩
+  }⍟(2 < ≠∘≢)
+  # Horizontal padding: just some spaces on either side
+  PadH ← {
+    (𝕨/" ") (∾⎉1∾⎉1⊣) 𝕩
+  }
+  Pad ← PadH⟜PadV
+  Enframe ← {(1≠𝕨)∨(1≠≠𝕩)∨⊑2∊+`-´<˘"⟨⟩"=⌜⊏𝕩}◶{
+    ≍"⟨"∾(¯1↓1↓⊏𝕩)∾"⟩"
+  }‿{
+    l ← ¯1 ⊑ ≢𝕩
+    ∾ ⟨ # "┼╒╛╪"
+      1‿l↑≍∾⟨"┌",⥊(1⌊𝕨)⊏"·─",(5⊸<)◶""‿⍕𝕨⟩
+      ((4⌊0⌈𝕨-1)⊑"·╵╎┆┊")⌾⊑ 𝕩
+      (1∾-l)↑≍"┘"
+    ⟩
+  }
+  FmtEmpty ← (0‿0≢≢)◶("┌┐"≍"└┘")‿(((2≠≠∘≢)∨0=≠)◶{
+    '┐'⌾(0‿¯1⊸⊑) 2 Enframe 1 PadH " "¨𝕩
+  }‿{
+    ≍"⟨⟩"∾˜(1<≠)◶⟨"",'⥊'⌾(¯1⊸⊑)·∾·∾⟜"‿"¨⍕¨⟩≢𝕩
+  })
+  PaddingJoin ← {1𝕊𝕩;
+    s ← ≢¨ 𝕩
+    w ← ⌈´⥊<⎉1 1⊑¨s
+    h ← ⌈´⎉1 ⊑¨s
+    ∾⎉2 ≍⍟(0⌈2-≠∘≢) (h ∾⌜ 𝕨×w¬(-𝕨×≠w)↑1) ↑¨ 𝕩
+  }
+  FmtMixed ← {
+    (≠≢𝕩) Enframe 2 Pad 𝕨 PaddingJoin F¨𝕩
+  }
+  F ← (2⌊≡)◶(≍≤⟜∞◶⟨"'"⊸(∾∾⊣),⍕⟩)‿{
+    num ← 𝕩≤∞ ⋄ r ← ≠≢𝕩
+    ((≠(0⊸<+≤)+´)⥊num)◶{
+      # All characters
+      k ← -≠ c ← ¯1↓≢𝕩
+      (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (c↑'"') ∾⎉k 𝕩 ∾⎉k c-⊸↑'"'
+    }‿{
+      # Not homogeneous, or empty
+      (∨´0=≢)◶FmtMixed‿FmtEmpty 𝕩
+    }‿{
+      # All numbers
+      ¯1 FmtMixed 𝕩
+    } 𝕩
+  }‿FmtMixed
+  F 𝕩
+}
+
+
+################################
+# Creating HTML files
 Head ← "<head><link href="""∾("../"/˜"/"⊑∘∊⊢)∾"style.css"" rel=""stylesheet""/></head>"∾lf˜
 nav  ← "<div class=""nav""><a href=""https://github.com/mlochbaum/BQN"">BQN</a></div>"∾lf
 ConvertFile ← Head ∾ nav ∾ Markdown⟜(•LNS •path∾⊢)

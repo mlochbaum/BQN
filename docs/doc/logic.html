@@ -16,17 +16,21 @@
 <h2 id="examples">Examples</h2>
 <p>We can form truth tables including the non-integer value one-half:</p>
 <pre>    <span class='Function'>¬</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0.5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
-1‿0.5‿0
+⟨ 1 0.5 0 ⟩
 
     <span class='Function'>∧</span><span class='Modifier'>⌜˜</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0.5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
-0    0   0
-0 0.25 0.5
-0  0.5   1
+┌─            
+╵ 0    0   0  
+  0 0.25 0.5  
+  0  0.5   1  
+             ┘
 
     <span class='Function'>∨</span><span class='Modifier'>⌜˜</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0.5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
-  0  0.5 1
-0.5 0.75 1
-  1    1 1
+┌─            
+╵   0  0.5 1  
+  0.5 0.75 1  
+    1    1 1  
+             ┘
 </pre>
 <p>As with logical And and Or, any value and 0 is 0, while any value or 1 is 1. The other boolean values give the identity elements for the two functions: 1 and any value gives that value, as does 0 or the value.</p>
 <h2 id="why-not-gcd-and-lcm">Why not GCD and LCM?</h2>
