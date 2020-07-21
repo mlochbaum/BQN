@@ -11,7 +11,7 @@ To find the depth of an array, use Depth (`≡`). For example, the depth of a li
         ≡ 2‿3‿4
         ≡ "a string is a list of characters"
 
-Depth is somewhat analogous to an array's rank `≠≢𝕩`, and in fact rank can be "converted" to depth by splitting rows with `<⎉1`, reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:
+Depth is somewhat analogous to an array's rank `=𝕩`, and in fact rank can be "converted" to depth by splitting rows with `<⎉1`, reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:
 
         ≡ 3‿4⥊"characters"
         ≡ (1+↕10)⥊"characters"

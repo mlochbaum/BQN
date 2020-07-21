@@ -45,7 +45,7 @@ And of course, Rank and Power can be combined to do more complicated transpositi
 
 Using these forms, we can state BQN's generalized matrix product swapping rule:
 
-    a MP b  ←→  ⍉⍟(≠≢a) a ⍉⁼⊸MP⟜⍉ b
+    a MP b  ←→  ⍉⍟(=a) a ⍉⁼⊸MP⟜⍉ b
 
 Certainly not as concise as APL's version, but not a horror either. BQN's rule is actually more parsimonious in that it only performs the axis exchanges necessary for the computation: it moves the two axes that will be paired with the matrix product into place before the product, and directly exchanges all axes afterwards. Each of these steps is equivalent in terms of data movement to a matrix transpose, the simplest nontrivial transpose to perform. Also remember that for two-dimensional matrices both kinds of transposition are the same, and APL's rule holds in BQN.
 
@@ -80,7 +80,7 @@ In particular, the case with only one argument specified is interesting. Here, t
         ≢ 2 ⍉ a23456  # Restrict Transpose to the first three axes
     ⟨ 3 4 2 5 6 ⟩
 
-Finally, it's worth noting that, as monadic Transpose moves the first axis to the end, it's equivalent to dyadic Transpose with a "default" left argument: `(≠∘≢-1˜)⊸⍉`.
+Finally, it's worth noting that, as monadic Transpose moves the first axis to the end, it's equivalent to dyadic Transpose with a "default" left argument: `(=-1˜)⊸⍉`.
 
 ## Definitions
 
@@ -88,6 +88,6 @@ Here we define the two valences of Transpose more precisely.
 
 A non-array right argument to Transpose is always enclosed to get a scalar array before doing anything else.
 
-Monadic transpose is identical to `(≠∘≢-1˜)⊸⍉`, except that for scalar arguments it returns the array unchanged rather than giving an error.
+Monadic transpose is identical to `(=-1˜)⊸⍉`, except that for scalar arguments it returns the array unchanged rather than giving an error.
 
-In Dyadic transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(≠≢𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
+In Dyadic transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
