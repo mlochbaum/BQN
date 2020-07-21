@@ -38,7 +38,7 @@ BQN's expression grammar is a simplified version of the typical APL, removing so
 | 1-modifier  | Monadic operator | Adverb
 | 2-modifier  | Dyadic operator  | Conjunction
 
-Unlike variables, BQN primitives have only one spelling, and a fixed role (but their values can be used in a different role by storing them in variables). Superscript glyphs `` ˜¨˘⁼⌜´` `` are used for 1-modifiers, and glyphs `∘○⊸⟜⌾⊘◶⚇⎉⍟` with an unbroken circle are 2-modifiers. Other primitives are functions. String and numeric literals are subjects.
+Unlike variables, BQN primitives have only one spelling, and a fixed role (but their values can be used in a different role by storing them in variables). Superscript glyphs `` ˜¨˘⁼⌜´˝` `` are used for 1-modifiers, and glyphs `∘○⊸⟜⌾⊘◶⚇⎉⍟` with an unbroken circle are 2-modifiers. Other primitives are functions. String and numeric literals are subjects.
 
 BQN's variables use another system, where the spelling indicates how the variable's value is used. A variable spelled with a lowercase first letter, like `var`, is a subject. Spelled with an uppercase first letter, like `Var`, it is a function. Underscores are placed where operands apply to indicate a 1-modifier `_var` or 2-modifier `_var_`. Other than the first letter or underscore, variables are case-insensitive.
 

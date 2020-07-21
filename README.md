@@ -159,6 +159,7 @@ Other modifiers control array traversal and iteration. In three cases a simpler 
 `⌜`        | Table   |
 `⁼`        | Undo    | `⍟`        | Repeat
 `´`        | Reduce  |
+`˝`        | Insert  |
 `` ` ``    | Scan    |
 
 ## Literal notation

@@ -6,7 +6,7 @@ As in APL, Transpose (`⍉`) is a tool for rearranging the axes of an array. BQN
 
 ## Monadic Transpose
 
-Transposing a matrix exchanges its axes, mirroring it across the diagonal. APL extends the function to any rank by reversing all axes, but this generalization isn't very natural and is almost never used. The main reason for it is to maintain the equivalence `a MP b ←→ a MP⌾⍉ b`, where `MP ← (+´<˘)∘×⎉1‿∞` is the generalized matrix product. But even here APL's Transpose is suspect. It does much more work than it needs to, as we'll see.
+Transposing a matrix exchanges its axes, mirroring it across the diagonal. APL extends the function to any rank by reversing all axes, but this generalization isn't very natural and is almost never used. The main reason for it is to maintain the equivalence `a MP b ←→ a MP⌾⍉ b`, where `MP ← +˝∘×⎉1‿∞` is the generalized matrix product. But even here APL's Transpose is suspect. It does much more work than it needs to, as we'll see.
 
 BQN's transpose takes the first axis of its argument and moves it to the end.
 

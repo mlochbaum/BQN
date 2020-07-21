@@ -68,8 +68,8 @@ Windows can be followed up with a reduction on each slice to give a windowed red
 A common task is to pair elements, with an initial or final element so the total length stays the same. This can also be done with a pairwise reduction, but another good way (and more performant without special support in the interpreter) is to add the element and then use windows matching the original length. Here both methods are used to invert `` +` ``, which requires we take pairwise differences starting at initial value 0.
 
         -˜´˘2↕0∾ +` 3‿2‿1‿1
-        ((-˜´<˘)≠↕0∾⊢) +` 3‿2‿1‿1
+        (-˜˝≠↕0∾⊢) +` 3‿2‿1‿1
 
 This method extends to any number of initial elements. We can modify the running sum above to keep the length constant by starting with two zeros.
 
-        ((+´<˘)≠↕(2⥊0)⊸∾) ⟨2,6,0,1,4,3⟩
+        (+˝≠↕(2⥊0)⊸∾) ⟨2,6,0,1,4,3⟩

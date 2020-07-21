@@ -20,7 +20,7 @@ Here are some closest equivalents in Dyalog APL for the BQN functions that don't
 
 Modifiers are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
-| BQN    | `¨` | `⌜`  | `´` | `⎉` | `⍟` | `˜` | `∘` | `○` | `⟜` |
+| BQN    | `¨` | `⌜`  | `˝` | `⎉` | `⍟` | `˜` | `∘` | `○` | `⟜` |
 |--------|-----|------|-----|-----|-----|-----|-----|-----|-----|
 | Dyalog | `¨` | `∘.` | `⌿` | `⍤` | `⍣` | `⍨` | `⍤` | `⍥` | `∘` |
 
@@ -62,19 +62,19 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>⍕</code> </td>                                                                       </tr>
 <tr><td> <code>⊥</code> </td><td>                              </td><td> <code>{+⟜(𝕨⊸×)´⌽𝕩}</code>    </td> </tr>
 <tr><td> <code>⊤</code> </td><td>                              </td><td> <code>{𝕨|1↓⌊∘÷`⌾⌽𝕨∾<𝕩}</code></td> </tr>
-<tr><td> <code>⌹</code> </td><td colspan=2><code>+´∘×⎉1‿∞⁼</code> I guess</td>                      </tr>
+<tr><td> <code>⌹</code> </td><td colspan=2><code>+˝∘×⎉1‿∞⁼</code> I guess</td>                      </tr>
 <tr><td> <code>⌷</code> </td><td> N/A                          </td><td> <code>⊏</code></td>        </tr>
 </table>
 
 <table>
 <tr><th colspan=3>Operators</th></tr>
 <tr><th> Syntax           </th><th> Monadic          </th><th> Dyadic                </th></tr>
-<tr><td> <code>⌿</code>   </td><td> <code>´</code>   </td><td> <code>↕</code>        </td></tr>
+<tr><td> <code>⌿</code>   </td><td> <code>¨˝</code>  </td><td> <code>↕</code>        </td></tr>
 <tr><td> <code>⍀</code>   </td><td colspan=2> <code>↑</code> or <code>`</code>       </td></tr>
 <tr><td> <code>¨</code>   </td><td colspan=2> <code>¨</code>                         </td></tr>
 <tr><td> <code>⍨</code>   </td><td colspan=2> <code>˜</code>                         </td></tr>
 <tr><td> <code>⍣</code>   </td><td colspan=2> <code>⍟</code>                         </td></tr>
-<tr><td> <code>f.g</code> </td><td>                  </td><td> <code>(f´<˘)∘g⎉1‿∞</code></td></tr>
+<tr><td> <code>f.g</code> </td><td>                  </td><td> <code>f˝∘g⎉1‿∞</code> </td></tr>
 <tr><td> <code>∘.f</code> </td><td>                  </td><td> <code>f⌜</code>       </td></tr>
 <tr><td> <code>A∘g</code> </td><td> <code>A⊸g</code> </td><td>                       </td></tr>
 <tr><td> <code>f∘B</code> </td><td> <code>f⟜B</code> </td><td>                       </td></tr>

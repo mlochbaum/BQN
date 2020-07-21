@@ -32,14 +32,6 @@ There are a lot of standard functions and I don't want to use separate primitive
 ### Right-to-left multi-line functions go upwards
 If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
 
-### Array reductions are annoying
-There are really three kinds of reduction a BQN programmer might want to use.
-- `𝔽´` Apply the function between elements of a list (Lisp).
-- `𝔽´<˘` Apply it between major cells of an array (SHARP).
-- `𝔽¨´<˘` Apply it between elements of an array, enclosing results to get a new array (NARS).
-
-It seems that the first is the most common, but the others aren't really rare. The current list reduction also encourages patterns like `+´˘2↕mat`, which don't work on higher-rank arrays and mix the result (possibly unwanted).
-
 ### Subtraction, division, and span are backwards
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). Not really fixable; too much precedent.
 
@@ -135,6 +127,14 @@ I went with "Index of" and "Less Than or Equal to" but the last word blends into
 ## Solved problems
 
 Problems that existed in mainstream APL or a transitional BQN that have in my opinion been put to rest (while in some cases introducing new problems). Listed in reverse chronological order by time solved, by my recollection.
+
+### Array reductions are annoying
+There are really three kinds of reduction a BQN programmer might want to use.
+- `𝔽´` Apply the function between elements of a list (Lisp).
+- `𝔽˝` Apply it between major cells of an array (SHARP).
+- `𝔽¨˝` Apply it between elements of an array, enclosing results to get a new array (NARS).
+
+BQN bounced between these some at first; eventually I decided it really needed two, with `𝔽˝` equivalent to `𝔽´<˘`. The last requires two symbols, but they can always be used together as a unit, so I think this is no longer annoying.
 
 ### "Modifier" and "composition" terminology
 1-modifiers and 2-modifiers used to be called "modifiers" and "compositions", respectively, and sometimes "operators" collectively. The new names are much better, although they do leave a disconnect between the names for modifiers, and those for their inputs—"operands".

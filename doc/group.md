@@ -103,6 +103,6 @@ In other cases, we might want to split on spaces, so that words are separated by
 
 However, trailing spaces are ignored because Group never produces trailing empty groups (to get them back we would use a dummy final character in the string). To avoid empty words, we should increase the word index only once per group of spaces. We can do this by taking the prefix sum of a list that is 1 only for a space with no space before it. To make such a list, we can use the [Windows](windows.md) function. We will extend our list with an initial 1 so that leading spaces will be ignored. Then we take windows of the same length as the original list: the first includes the dummy argument followed by a shifted copy of the list, and the second is the original list. These represent whether the previous and current characters are spaces; we want positions where the previous wasn't a space and the current is.
 
-        ≍⟜((<´<˘)≠↕1∾⊢) ' '="  string with  spaces   "  # All, then filtered, spaces
-        ≍⟜(⊢-˜¬×+`∘((<´<˘)≠↕1∾⊢))' '="  string with  spaces   "  # More processing
-        ' '((⊢-˜¬×+`∘((<´<˘)≠↕1∾⊢))∘=⊔⊢)"  string with  spaces   "  # Final result
+        ≍⟜(<˝≠↕1∾⊢) ' '="  string with  spaces   "  # All, then filtered, spaces
+        ≍⟜(⊢-˜¬×+`∘(<˝≠↕1∾⊢))' '="  string with  spaces   "  # More processing
+        ' '((⊢-˜¬×+`∘(<˝≠↕1∾⊢))∘=⊔⊢)"  string with  spaces   "  # Final result
