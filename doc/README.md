@@ -8,6 +8,7 @@ Concepts:
 - [Context-free grammar](context.md)
 - [Functional programming](functional.md)
 - [Array indices](indices.md)
+- [The leading axis model](leading.md)
 
 Primitives:
 - [Array depth](depth.md) (`≡` and `⚇`)

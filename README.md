@@ -12,7 +12,7 @@ BQN maintains many of the ideas that made APL\360 revolutionary in 1966:
 * **Higher-order functions** allow basic functions to be applied in more powerful ways.
 
 It incorporates concepts developed over years of APL practice:
-* The **leading axis model**, which allows for simpler built-in functions.
+* The [**leading axis model**](doc/leading.md), which allows for simpler built-in functions.
 * Trains and combinators for **tacit programming**.
 * Lightweight **anonymous functions** (like [dfns](https://aplwiki.com/wiki/Dfn)).
 
