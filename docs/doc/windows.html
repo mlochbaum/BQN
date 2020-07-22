@@ -9,7 +9,7 @@
 ┌─       
 ╵"abcde  
   bcdef  
-  cdefg  
+  cdefg" 
         ┘
 </pre>
 <p>There are <code><span class='Number'>1</span><span class='Function'>+</span><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕨</span></code>, or <code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>¬</span><span class='Value'>𝕨</span></code>, of these sections, because the starting index must be at least <code><span class='Number'>0</span></code> and at most <code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕨</span></code>. Another way to find this result is to look at the number of cells in or before a given slice: there are always <code><span class='Value'>𝕨</span></code> in the slice and there are only <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code> in total, so the number of slices is the range spanned by these two endpoints.</p>
@@ -26,7 +26,7 @@
 ┌─                   
 · ┌─       ┌─        
   ╵"0123   ╵"abcd    
-    abcd     ABCD    
+    abcd"    ABCD"   
          ┘        ┘  
                     ┘
 </pre>
@@ -35,11 +35,11 @@
 ┌─                      
 ╵ ┌─     ┌─     ┌─      
   ╵"01   ╵"12   ╵"23    
-    ab     bc     cd    
+    ab"    bc"    cd"   
        ┘      ┘      ┘  
   ┌─     ┌─     ┌─      
   ╵"ab   ╵"bc   ╵"cd    
-    AB     BC     CD    
+    AB"    BC"    CD"   
        ┘      ┘      ┘  
                        ┘
 </pre>
@@ -55,9 +55,9 @@
 · ┌─        ┌─       
   ╵"abcde   ╵"abc    
     bcdef     bcd    
-    cdefg     cde    
+    cdefg"    cde    
           ┘   def    
-              efg    
+              efg"   
                   ┘  
                     ┘
 </pre>
