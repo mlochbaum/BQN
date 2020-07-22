@@ -69,14 +69,14 @@ Type       # Scalar (enclosed) prototype of 𝕩
 ≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
 
 ¨ ← _eachm   # LIMITED to monadic case and array 𝕩
-´ ← _reduce
+´ ← _fold
 
 _eachm←{
   r←⥊𝕩 ⋄ F←𝔽
   E←(≠r)⊸≤◶{r↩r𝕩_amend˜F𝕩⊑r⋄E𝕩+1}‿⊢
   E 0 ⋄ (≢𝕩)⥊r
 }
-_reduce←{
+_fold←{
   ! 1==𝕩
   l←≠v←𝕩 ⋄ F←𝔽
   r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
