@@ -40,7 +40,7 @@ The minimum element depth of 0 implies that an empty array's depth is 1.
 
 ## Testing depth for multiple-axis primitives
 
-Several primitive functions use the left argument to manipulate the right argument along one or more axes: see [leading.md](leading.md).
+Several primitive functions use the left argument to manipulate the right argument along one or more axes, using [the leading axis convention](leading.md#multiple-axes).
 
 | Single-axis depth | Functions
 |-------------------|----------
