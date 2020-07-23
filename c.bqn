@@ -170,8 +170,8 @@ DGenFn←{
   ⟨t,r,nVar,lits⟩←Tokenize𝕩
   ⟨bc,u⟩←nVar‿r DParse t
   o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾LitVal¨lits
-  ⟨bc,o,nVar↑•a,⟨⟩⟩
+  ⟨bc,o,nVar↑•a,⟨'f'‿1‿0⟩⟩
 }
 DRun←{
-  'a' •COMP DGenFn 𝕩
+  •COMP DGenFn 𝕩
 }
