@@ -85,9 +85,9 @@ Functions with single-axis depth 1 tend to be more complicated; see for example 
 Scalar functions, and the Each (`¨`) and Depth (`⚇`) modifiers, use leading axis agreement to match their arguments together. All axes of the lower-rank argument are matched with the leading axes of the higher-rank one, and axes matched together must have the same length. After pairing axes in this way, a single element of the lower-rank argument might correspond to any number of elements of the higher-rank one. It's reused for each of those corresponding elements.
 
         ⊢ x ← 3‿2‿4 ⥊ ↕60     # A rank-3 array
-        100‿0‿200 +¨ x        # 0-cells paired with 2-cells
+        100‿0‿200 + x         # 0-cells paired with 2-cells
         ⊢ c ← 100 × 3 =⌜○↕ 2  # A rank-2 array to add
-        c +¨ x                # 0-cells paired with 1-cells
+        c + x                 # 0-cells paired with 1-cells
         x + x                 # Pairwise addition
 
 If one argument is a scalar, that is, it has no axes, then leading axis agreement reduces to "scalar extension", where a single scalar is matched with an entire array by repeating it at every application. A scalar always agrees with any other array under leading axis agreement because it has no axes whose lengths would need to be checked.
