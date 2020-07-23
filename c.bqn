@@ -33,18 +33,18 @@ Tokenize←{
   lu←⍷lit←𝕩⊔˜1-˜(+`ToI⊑˘cb)×≠`ToI cb
   cl←f/ToI⊑∘⌽˘cb
 
-  args←charSet⊸⊐¨𝕨⋄c←charSet⊐f/𝕩
+  c←charSet⊐f/𝕩
   w←(≠↑0∾⊢)⊸<l←c∊∾bD‿bN‿bA
   i←(1-˜l×+`w)⊔c
   na←≠•a⋄us←¯1⊑bA
   in←us⊸≠⊸/¨na(⊢-⊣×+⟜(⊑bA)⊸≤)i
-  id←⍷args∾(bA∊˜w/c)⍒⊸⊏in⋄nv←+´bA∊˜⊑¨id
+  id←⍷(bA∊˜w/c)⍒⊸⊏in⋄nv←+´bA∊˜⊑¨id
 
   c↩(w∨¬l∨c∊bP∾bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
   c/˜↩¬(≠↑1∾(c∊2‿4⊏bB)∨⊢)⊸∧c∊bS⋄c/˜↩¬(1↓1∾˜c∊3‿5⊏bB)∧c∊bS
   ti←(us=¯1⊸⊑¨i)(⊢+∧⟜(2⊸=))0⌈na⌊∘÷˜(⊑bA)-˜⊑¨i
   t←ti⌾(((0⊸≤∧<⟜(≠id))c-vi)⊸/)(vi⌊c)⊏charRole
-  ⟨c,t,nv,nv-≠args,(nv↓id)∾lu⟩
+  ⟨c,t,nv,(nv↓id)∾lu⟩
 }
 
 Parse←{
@@ -96,8 +96,8 @@ fntab←⍉(0¨tab1)∾tab1≍tab2
 f64←127-3
 
 GenFn←{
-  ⟨⟩GenFn𝕩;
-  ⟨t,r,nVar,nLoc,lits⟩←𝕨Tokenize𝕩
+  ⟨t,r,nVar,lits⟩←Tokenize𝕩
+  nLoc←nVar-𝕨⊢0
   t⊏˜↩⍋+`-˝(2‿3⊏bB)=⌜t
   nd←+´c←t=3⊑bB
   t↩((vi+nVar+≠lits)+↕∘≠)⌾(c⊸/)t
@@ -126,8 +126,8 @@ Gen←{
   ⟩
 }
 
-rcp←⟨"x"⟩ GenFn "1÷x"
-or←⟨"w","x"⟩ GenFn "(w+x)-w∧x"
+rcp←1 GenFn "1÷x"
+or ←2 GenFn "(w+x)-w∧x"
 Compile←{
   body←GenFn 𝕩
   f←⟨rcp,or,body⟩
@@ -167,7 +167,7 @@ prims←⟨
   ∘,○,⊸,⟜,⌾,⊘,◶,⎉,⚇,⍟
 ⟩
 DGenFn←{
-  ⟨t,r,nVar,nLoc,lits⟩←⟨⟩Tokenize𝕩
+  ⟨t,r,nVar,lits⟩←Tokenize𝕩
   ⟨bc,u⟩←nVar‿r DParse t
   o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾LitVal¨lits
   ⟨bc,o,nVar↑•a,⟨⟩⟩
