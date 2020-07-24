@@ -150,8 +150,8 @@ DParse ← {nv‿r𝕊𝕩:
   ft←(H↕3)+2×(H⥊3)⌈2×H⥊4
   r↩(ft⊏(1+2⊸≤)⊸/↕4)⌾((be/rev)⊸⊏)r
 
-  g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl
-  g⊏˜↩⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄o⊏˜↩gr⋄si←/gr⊏sr>sl⋄b⊏↩⍋g
+  g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/gr⊏𝕩=5⊑bB
+  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩gr⋄r⊏˜↩gr⋄o⊏˜↩gr⋄si←/gr⊏sr>sl⋄b⊏↩⍋g⋄l⊏↩⍋gs
   s←𝕩∊bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩∊2↑bG
   r-↩ps∨a⋄op←r≥2⋄ro←op∨1⌽r=3
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏ro∨r≥1
@@ -160,7 +160,7 @@ DParse ← {nv‿r𝕊𝕩:
   oa←⌽/opa⋄fa←/(tf∨¬tr)∧(ro∧1⌽opa)<(r=1)∨op<¯1⌽opa
   dy←fa⊏1↓0∾˜(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
   n←𝕩≥vi+nv⋄id←/(n<𝕩≥vi)∨𝕩∊bI⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
-  lo←(o/𝕩)=4⊑bB⋄l←/𝕩=5⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
+  lo←(o/𝕩)=4⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
   dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2⊑bB
   or←⍋g⊏˜∾⟨cn,cn,id,id,b,b,rt,1+/a,dr,l,l,si,si,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy⟩
   bc1←⟨0¨cn,u⊐ob,1+(id-1)⊏a,5+vi-˜id⊏𝕩,15¨b,1+↕≠b⟩
