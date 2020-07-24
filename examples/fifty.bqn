@@ -89,7 +89,7 @@ SeventeenTwentyNine ← {F:
   c ← 3⋆˜1+↕200
   t ← (<⌜˜↕200) × +⌜˜c
   d ← ⍷⊸⊐⊸⊔ ⥊t
-  ⌊´ ⊑¨ (2=≠)⊸/ d
+  ⌊´ ⊑¨ (2=≠¨)⊸/ d
 }
 # ! 1729 ≡ SeventeenTwentyNine⟨⟩  # slow
 
