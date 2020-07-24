@@ -37,7 +37,7 @@ Tokenize←{
   w←(≠↑0∾⊢)⊸<l←c∊∾bD‿bN‿bA
   i←(1-˜l×+`w)⊔c
   na←≠•a⋄us←¯1⊑bA
-  in←us⊸≠⊸/¨na(⊢-⊣×+⟜(⊑bA)⊸≤)i
+  in←na(⊢-⊣×+⟜(⊑bA)⊸≤)us⊸≠⊸/¨i
   id←⍷(bA∊˜w/c)⍒⊸⊏in⋄nv←+´bA∊˜⊑¨id
 
   c↩(w∨¬l∨c∊bP∾bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
