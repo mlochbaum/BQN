@@ -8,15 +8,38 @@ hook global BufCreate .*\.bqn %{
 # Initialization
 # ‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
-hook global WinSetOption filetype=bqn %`
+hook global WinSetOption filetype=bqn %¹
     require-module bqn
 
     hook window InsertChar \n -group bqn-indent bqn-indent-on-new-line
     hook window InsertChar [}⟩\]] -group bqn-indent bqn-indent-on-closing
     set-option buffer matching_pairs ( ) { } [ ] ⟨ ⟩
 
+    declare-user-mode bqn
+    map buffer insert '\' '<esc>:enter-user-mode bqn<ret>' -docstring 'enter bqn character'
+
+    evaluate-commands %sh²
+        a='`1234567890=' ;a+='~!@#$%^&*()_+'
+        a+='qwertyuiop[]';a+='QWERTYUIOP{}'
+        a+='asdfghjkl;\' ;a+='ASDFGHJKL:"|'
+        a+='zxcvbnm,./'  ;a+='ZXCVBNM<>?'
+
+        b='˜˘¨⁼⌜´˝7∞¯•×' ;b+='¬⎉⚇⍟◶⊘⎊⍎⍕⟨⟩√⋆'
+        b+='⌽𝕨∊↑∧y⊔⊏⊐π←→';b+='↙𝕎⍷𝕣⍋YU⊑⊒⍳⊣⊢'
+        b+='⍉𝕤↕𝕗𝕘⊸∘○⟜⋄\' ;b+='↖𝕊D𝔽𝔾HJ⌾L·˙|'
+        b+='⥊𝕩↓∨⌊n≡∾≍≠'  ;b+='Z𝕏C⍒⌈N≢≤≥?'
+
+        for (( i=0; i<${#a}; i++ )); do
+            o=${b:$i:1}
+            echo "map buffer bqn '${a:$i:1}' ':exec i$o<ret>' -docstring '$o'"
+        done
+    ²
+    map buffer bqn <minus> ':exec i÷<ret>' -docstring '÷'
+    map buffer bqn "'"     ':exec i↩<ret>' -docstring '↩'
+    map buffer bqn <space> ':exec i‿<ret>' -docstring '‿'
+
     hook -once -always window WinSetOption filetype=.* %{ remove-hooks window bqn-.+ }
-`
+¹
 
 hook -group bqn-highlight global WinSetOption filetype=bqn %{
     add-highlighter window/bqn ref bqn
