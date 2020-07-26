@@ -190,8 +190,12 @@ SelSub←{
   ! ∧´⥊Int¨ 𝕨
   ! ∧´⥊ 𝕨 (≥⟜-∧<) ≠𝕩
   𝕨↩𝕨+(≠𝕩)×𝕨<0
-  c←×´s←1 Cell 𝕩
-  ⊑⟜(⥊𝕩)¨(c×𝕨)+⌜s⥊↕c
+  𝕨(1≠=∘⊢)◶{
+    ⊑⟜𝕩¨𝕨
+  }‿{
+    c←×´s←1 Cell 𝕩
+    ⊑⟜(⥊𝕩)¨(c×𝕨)+⌜s⥊↕c
+  }𝕩
 }
 Select←ToArray⊸(SelSub _onAxes_ 1)
 ⊏ ← 0⊸Select       ⊘ Select
