@@ -362,11 +362,19 @@ Cmp ← ∨○IsArray◶{ # No arrays
   Cc˜0
 }
 
+_binSearch ← {
+  B ← 𝔽
+  {
+    R←{𝕨{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×2|𝕨)R a⊑𝕩‿m}⍟(>⟜1)𝕩}
+    1+(𝕩+1)R ¯1
+  }⍟(0⊸<)
+}
 _grade←{
   ! 1≤=𝕩
   m←×´1 Cell 𝕩 ⋄ Ci←𝔽○(⊑⟜(⥊𝕩))
   cc←m Ci _getCellCmp 0
-  i⊐˜+´˘((Cc⌜˜m×⊢)(⌈⟜0+=⟜0⊸×)>⌜˜)i←↕≠𝕩
+  Ins←{𝕨⊸(≤+<)◶⟨⊑⟜𝕩,i,-⟜1⊑𝕩˜⟩¨↕1+i←≠𝕩}
+  ⟨⟩ {𝕩Ins˜(𝕨(Cc≤0˜)˜m×⊑⟜𝕩)_binSearch≠𝕩}´ m×(↕-˜-⟜1)≠𝕩
 }
 _bins←{
   c←1-˜=𝕨
@@ -378,14 +386,8 @@ _bins←{
   cx←c-˜=𝕩
   sx←cx Cell 𝕩 ⋄ lc←sw 0 _cmpLen sx
   cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
-  n←≠𝕨
   B←(×´sw)⊸×⊸Cc≤0˜
-  BS ← (0<n)◶0‿{
-    Bx←B⟜𝕩
-    R←{𝕨{a←Bx m←𝕩+h←⌊𝕨÷2⋄(h+a×2|𝕨)R a⊑𝕩‿m}⍟(>⟜1)𝕩}
-    1+(n+1)R ¯1
-  }
-  BS¨ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)¨↕cx
+  (≠𝕨) {B⟜𝕩 _binSearch 𝕨}¨ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)¨↕cx
 }
 
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
