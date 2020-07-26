@@ -29,6 +29,9 @@ Length ← (0<0⊑≢)◶⟨1⋄0⊑⊢⟩∘≢
 × ↩ 0⊸(<->)  ⊘ ×
 | ← ×⟜×      ⊘ {𝕩-𝕨×⌊𝕩÷𝕨}
 
+Id←{(0⊑𝕨){𝕗=𝕩}◶𝕩‿(1⊑𝕨)}
+identity ← +‿0 Id -‿0 Id ×‿1 Id ÷‿1 Id ⋆‿1 Id √‿1 Id ∧‿1 Id ∨‿0 Id |‿0 Id <‿0 Id ≤‿1 Id =‿1 Id ≥‿1 Id >‿0 Id ≠‿0 Id ⊑⟨!∘0⟩ # ⌊‿∞ ⌈‿¯∞
+
 _fold←{
   ! 1==𝕩
   l←≠v←𝕩 ⋄ F←𝔽
@@ -52,7 +55,7 @@ _eachd←{
   _e←{ # 𝕨 has smaller or equal rank
     k←≠p←≢𝕨 ⋄ q←≢𝕩
     ! ∧´(⊑⟜p=⊑⟜q)⌜↕k
-    l←1×´(q⊑˜k⊸+)⌜↕q≠⊸-k
+    l←×´(q⊑˜k⊸+)⌜↕q≠⊸-k
     a←⥊𝕨 ⋄ b←⥊𝕩
     q⥊⥊(≠a) (⊑⟜a𝔽l⊸×⊸+⊑b˜)⌜○↕ l
   }
@@ -80,8 +83,8 @@ Reshape←{
   ! 1≥=𝕨
   𝕨↩⥊𝕨
   ! ∧´Nat¨𝕨
-  l←1×´𝕨
-  n←1×´≢𝕩
+  l←×´𝕨
+  n←×´≢𝕩
   𝕨⥊(l=n)◶{
     𝕩(0<n)◶⟨Type⊸(⊣⌜)⋄⥊⊸{⊑⟜𝕨¨n|𝕩}⟩↕l
   }‿⊢𝕩
@@ -102,14 +105,14 @@ Pick1←{
   𝕨↩𝕨+s×𝕨<0
   (⥊𝕩)⊑˜0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨
 }
-Pickd←(0∨´⟜⥊IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
+Pickd←(∨´∘⥊IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
 Pick←IsArray◶⥊‿⊢⊸Pickd
 
 match←{¬∘(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨≠○IsArray , 0⟩
   ⟨¬IsArray∘⊢, =⟩
   ⟨≠○=       , 0⟩
-  ⟨0∨´≠○≢    , 0⟩
+  ⟨∨´≠○≢     , 0⟩
   {∧´⥊𝕨Match¨𝕩}
 ⟩
 
@@ -152,8 +155,8 @@ _rankOp_←{
   k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
   Enc←{
     f←⊑⟜(≢𝕩)¨↕𝕨
-    c←1×´s←𝕨Cell𝕩
-    f⥊⊑⟜(⥊𝕩)¨∘((s⥊↕c)+c×⊢)¨↕1×´f
+    c←×´s←𝕨Cell𝕩
+    f⥊⊑⟜(⥊𝕩)¨∘((s⥊↕c)+c×⊢)¨↕×´f
   }
   > ((⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
 }
@@ -162,7 +165,7 @@ _scan←{
   ! 1≤=𝕩
   F←𝔽
   (0<≠∘⥊)◶⊢‿{
-    r←⥊𝕩 ⋄ l←≠𝕩 ⋄ c←1×´1 Cell 𝕩
+    r←⥊𝕩 ⋄ l←≠𝕩 ⋄ c←×´1 Cell 𝕩
     {r↩r𝕩_amend˜𝕨F○(⊑⟜r)𝕩}⟜(c⊸+)¨↕c-˜≠r
     (≢𝕩)⥊r
   }𝕩
@@ -209,7 +212,7 @@ SelSub←{
   ! ∧´⥊Int¨ 𝕨
   ! ∧´⥊ 𝕨 (≥⟜-∧<) ≠𝕩
   𝕨↩𝕨+(≠𝕩)×𝕨<0
-  c←1×´s←1 Cell 𝕩
+  c←×´s←1 Cell 𝕩
   ⊑⟜(⥊𝕩)¨(c×𝕨)+⌜s⥊↕c
 }
 Select←ToArray⊸(SelSub _onAxes_ 1)
@@ -230,7 +233,7 @@ Take←{
     ! Int 𝕨
     l←≠𝕩
     i←(l+1)|¯1⌈l⌊((𝕨<0)×𝕨+l)+↕|𝕨
-    i⊏JoinTo⟜(1⊸Cell⥊Type)⍟(0∨´l=i)𝕩
+    i⊏JoinTo⟜(1⊸Cell⥊Type)⍟(∨´l=i)𝕩
   }
   𝕨 T _onAxes_ 0 (⟨1⟩⥊˜0⌈𝕨-○≠⊢)⊸∾∘≢⊸⥊𝕩
 }
@@ -337,11 +340,11 @@ Transpose←(=-1˜)⊸ReorderAxes⍟(0<=)
 Cmp ← ∨○IsArray◶{ # No arrays
   𝕨(>-<)𝕩 # Assume they're numbers
 }‿{ # At least one array
-  e←𝕨-˜○(0∨´0=≢)𝕩
+  e←𝕨-˜○(∨´0=≢)𝕩
   𝕨(e=0)◶e‿{
     c←𝕨×∘-○(IsArray+=)𝕩
     s←≢𝕨 ⋄ t←≢𝕩 ⋄ r←𝕨⌊○=𝕩
-    l←s{i←+´∧`𝕨=𝕩⋄m←1×´i↑𝕨⋄{c↩×-´𝕩⋄m↩m×⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i⋄m}○(r↑⌽)t
+    l←s{i←+´∧`𝕨=𝕩⋄m←×´i↑𝕨⋄{c↩×-´𝕩⋄m↩m×⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i⋄m}○(r↑⌽)t
     a←⥊𝕨⋄b←⥊𝕩
     Trav←(=⟜l)◶{Trav∘(1+𝕩)⍟(0⊸=)a Cmp○(𝕩⊸⊑)b}‿c
     Trav 0
@@ -400,7 +403,6 @@ X←Raw←{≤4}
 
   ⍎"IsArray ← 0≠≡"
   ⍎"_amend  ← {𝕨{𝕩⋄𝕗}⌾(𝕗⊑⊢)𝕩}"
-  ⍎"Identity← {𝕏´⟨⟩}"
   ⍎"Type    ← ⟨⟩⥊0⊸⥊"
 
   '!' Mod "{𝕩 ⋄ ≤1}⍟¬"
