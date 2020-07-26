@@ -168,11 +168,11 @@ DParse ← {nv‿r𝕊𝕩:
   opa←op>1↓0∾˜ps∨a⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro
   oa←⌽/opa⋄fa←/(tf∨¬tr)∧(ro∧1⌽opa)<(r=1)∨op<¯1⌽opa
   dy←fa⊏1↓0∾˜(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
-  n←𝕩≥vi+nv⋄id←/(n<𝕩≥vi)∨𝕩∊bI⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
+  n←𝕩≥vi+nv⋄id←/n<𝕩≥vi⋄sp←/𝕩∊bI⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
   lo←(o/𝕩)=4⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
   dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2⊑bB
-  or←⍋g⊏˜∾⟨cn,cn,id,id,b,b,rt,1+/a,dr,l,l,si,si,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy⟩
-  bc1←⟨0¨cn,u⊐ob,1+(id-1)⊏a,-⟜(3⊸≥)(≠special)+vi-˜id⊏𝕩,15¨b,1+↕≠b⟩
+  or←⍋g⊏˜∾⟨cn,cn,id,id,sp,sp,sp,b,b,rt,1+/a,dr,l,l,si,si,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy⟩
+  bc1←⟨0¨cn,u⊐ob,1+(id-1)⊏a,vi-˜id⊏𝕩,21+(sp-1)⊏a,0¨sp,(+⟜(0⊸≤)2+vi-˜sp⊏𝕩)+3×2|((sp⊏g)⊏+`bv>0)⊏ft,15¨b,1+↕≠b⟩
   bc←or⊏∾bc1∾⟨25¨rt,(11-⊑bG)+a/𝕩,14¨dr,3¨l,ll,3¨si,sll,5+oa⊏r,5+dy+4×fa⊏tr⟩
   ⟨LEBv bc,u,(ft⊏⥊"fmd"≍⌜⌽↕2)∾¨(ft⊏spd)<∘≍˘˜/1∾or∊(+´≠¨bc1)+↕≠rt⟩
 }
@@ -186,7 +186,7 @@ DGenFn←{
   ⟨t,r,nVar,lits⟩←Tokenize𝕩
   ⟨bc,u,blk⟩←nVar‿r DParse t
   o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾LitVal¨lits
-  ⟨bc,o,special∾⥊¨nVar↑•a,blk⟩
+  ⟨bc,o,⥊¨nVar↑•a,blk⟩
 }
 DRun←{
   •COMP DGenFn 𝕩
