@@ -2,18 +2,7 @@
 
 impl ← "
 #⌜
-# LAYER 3: Remove other limits
-# Now all implementations are full but ↕ is monadic only
-
-Int←IsArray◶⟨⌊⊸=,0⟩
-Nat←IsArray◶⟨0⊸≤∧⌊⊸=,0⟩
-
-
-#⌜
 # LAYER 4: Operators
-
-
-Cell ← ↓⟜≢
 
 _ranks ← {⟨2⟩⊘⟨1,0⟩((⊣-1+|)˜⟜≠⊑¨<∘⊢)⥊∘𝔽}
 _depthOp_←{
@@ -29,6 +18,8 @@ _depthOp_←{
 
 #⌜
 # LAYER 5: Structural functions
+
+Nat←IsArray◶⟨0⊸≤∧⌊⊸=,0⟩
 
 _onAxes_←{
   F←𝔽
@@ -173,7 +164,6 @@ X←Raw←{≤4}
   Mod ← ⍎{𝔽 ((⊑chr⊐𝕨)⊑names) ∾ " ↩ " ∾ 𝕩}
 
   ⍎"IsArray ← 0≠≡"
-  ⍎"Type    ← ⟨⟩⥊0⊸⥊"
 
   '!' Mod "{𝕩 ⋄ ≤1}⍟¬"
   Mod⟜⥊¨ "↕∾⌽⊐⍋⍒"
