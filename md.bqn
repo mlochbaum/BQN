@@ -26,24 +26,15 @@
 Shl ←   ≠∘⊢ ↑ ∾   # From the left
 Shr ← -∘≠∘⊢ ↑ ∾˜  # From the right
 
+# Index of first zero, or number of leading 1s in a boolean list
+Lead ← ⊑ ⊐⟜0
+
 # 𝕨 is a list of lists. Find the first of these lists each cell of 𝕩
 # belongs to.
 FindGroup ← {
   i ← (∾𝕨) ⊐ 𝕩  # Index in all cells of 𝕨
   e ← +`≠¨𝕨     # Index past the end of each group of 𝕨
   e ⍋ i         # How many end-indices does each element pass?
-}
-
-# 𝕨 is a list of possible expression start indices in any order and 𝕩 is
-# the corresponding endpoints. The expressions are mutually exclusive
-# and do not nest, and are enabled in index order. Return a shape ·‿2
-# array where the rows give the start and end of each enabled expression
-# in index order.
-Trace ← {
-  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=⊑⌽𝕩}
-  g←⍋𝕨 ⋄ s←g⊏𝕨 ⋄ e←g⊏𝕩
-  st←¯1↓Se⟜(1↑˜≠)∾⟜≠s⍋e
-  st/s≍˘e
 }
 
 # Count the number of consecutive true values up to the current element.
@@ -58,28 +49,66 @@ IsEscaped ← {
   0 Shl 2 | CountRuns 𝕩 = '\'
 }
 
-# Join lines with newline characters. Include the trailing newline.
+# Remove leading (∧`) and trailing (∧`⌾⌽) spaces
+Trim ← { 𝕩 /˜ ¬ (∧` ∨ ∧`⌾⌽) ' '=𝕩 }
+
+# Find whether 𝕨 was true at the last index where 𝕩 was false, in each
+# position.
+PrecedesGroup ← {
+  # We prepend a 0 to 𝕨, so that 0 is the "before start" index, with a
+  # false value, and normal indices are increased by 1.
+  𝕨 ∾˜↩ 0
+  inds ← 1 + ↕≠𝕩
+  # Zero out indices where x was true, and find the greatest index so
+  # far at each position.
+  last ← ⌈` inds × ¬𝕩
+  last ⊏ 𝕨
+}
+
+# 𝕨 is a list of possible expression start indices in any order and 𝕩 is
+# the corresponding endpoints. The expressions are mutually exclusive
+# and do not nest, and are enabled in index order. Return a shape ·‿2
+# array where the rows give the start and end of each enabled expression
+# in index order.
+Trace ← {
+  # 𝕨 is a list with one index for each possible start, giving a later
+  # start that is known to be enabled if that one is.
+  # 𝕩 is a mask of all starts known to be enabled.
+  # A "stop" position that follows all expressions tells when to stop.
+  # At each step the distance from a start to its successor in 𝕨 is
+  # doubled, so the maximum number of steps is about 2⋆⁼≠𝕩.
+  En ← {
+    𝕩 ↩ 1¨⌾((𝕩/𝕨)⊸⊏)𝕩  # Starts following from an enabled one are enabled
+    𝕨 ↩ ⊏˜ 𝕨           # Double the number of steps in 𝕨
+    𝕨 En 𝕩             # Repeat
+  }⍟{0=¯1⊑𝕩}           #        until the stop is enabled
+
+  g ← ⍋𝕨               # Order expressions by starting index
+  start ← g⊏𝕨
+  end   ← g⊏𝕩
+  next ← start ⍋ end   # An expression's successor starts after it ends
+  next ∾↩ ≠next        # The stop node is its own successor
+  enabled ← ¯1 ↓ next En (≠next)↑1  # Search and remove the stop
+  enabled / start≍˘end # List of enabled starts and ends
+}
+
+# Join lines with newline characters. Include a trailing newline.
 JoinLines ← ∾ ∾⟜lf¨
 
-# Create an html node from a tag name and interior text
-Html ← {
-  ∾ ⟨"<",𝕨,">" , 𝕩 , "</",(⊑⊐⟜" ")⊸↑𝕨,">"⟩
+# Create an html node from a tag name and interior text.
+Html ← {open 𝕊 contents:
+  close ← (⊑open⊐" ") ↑ open
+  ∾ ⟨"<",open,">" , contents , "</",close,">"⟩
 }
 
+# Insert and remove things from the list 𝕩:
+# - include is the mask of elements to keep in 𝕩
+# - add is a list of lists to be inserted
+# - pos is the list of positions where they should start
+# Elements are added just after the given position in 𝕩, in the order
+# they appear in ∾add.
 Modify ← { ⟨include,add,pos⟩𝕊𝕩:
   ((/include)∾(≠¨add)/pos) ⍋⊸⊏ (include/𝕩)∾∾add
-}
-
-# Character entity escaping
-# In order to use this with other modifications such as highlighting,
-# CharEntities returns a mask of characters to be escaped, and their
-# corresponding escapes.
-CharEntities ← {1¨⊸𝕊𝕩;  # 𝕨 gives characters to potentially escape
-  ce ← (1-˜¬×+`)∘=⟜⊑⊸⊔ " ""quot &amp <lt >gt"
-  chars ← ⊑¨ce ⋄ entities ← ("&"∾∾⟜";")¨ 1↓¨ce
-  ind ← chars ⊐ 𝕩
-  useEntity ← 𝕨 ∧ ind < ≠chars
-  ⟨¬ useEntity , entities ⊏˜ useEntity/ind , /useEntity⟩
 }
 
 
@@ -87,27 +116,6 @@ CharEntities ← {1¨⊸𝕊𝕩;  # 𝕨 gives characters to potentially escape
 Markdown ← {filename𝕊𝕩:
   extensions ← filename ≢ 0
   path ← extensions◶""‿(⊢/˜·∨`⌾⌽'/'⊸=) filename
-  ######
-  # Utilities
-
-  # Index of first zero, or number of leading 1s
-  Lead ← ⊑ ⊐⟜0
-
-  # Find whether 𝕨 was true at the last index where 𝕩 was false, in each
-  # position.
-  PrecedesGroup ← {
-    # We prepend a 0 to 𝕨, so that 0 is the "before start" index, with a
-    # false value, and normal indices are increased by 1.
-    𝕨 ∾˜↩ 0
-    inds ← 1 + ↕≠𝕩
-    # Zero out indices where x was true, and find the greatest index so
-    # far at each position.
-    last ← ⌈` inds × ¬𝕩
-    last ⊏ 𝕨
-  }
-
-  # Remove leading and trailing spaces
-  Trim ← { 𝕩 /˜ ¬ (∧` ∨ ∧`⌾⌽) ' '=𝕩 }
 
   ######
   # First we classify each line based on the type of block it can start.
@@ -116,6 +124,25 @@ Markdown ← {filename𝕊𝕩:
     getLen ← ind ⊑ lineClas∾⟨0˜⟩
     l ← GetLen 𝕩
     ⟨ind ∧ l>0 ⋄ l⟩
+  }
+
+  # Character entity escaping
+  # In order to use this with other modifications such as highlighting,
+  # CharEntities returns a mask of characters to be escaped, and their
+  # corresponding escapes.
+  CharEntities ← {1¨⊸𝕊𝕩;  # 𝕨 gives characters to potentially escape
+    # The string gives escapes and their names, separated by spaces.
+    # First split it on the first character.
+    ce ← (1-˜¬×+`)∘=⟜⊑⊸⊔ " ""quot &amp <lt >gt"
+    # Characters to escape are given first
+    chars ← ⊑¨ce
+    # HTML character entities start with & and end with ;
+    entities ← ("&"∾∾⟜";")¨ 1↓¨ce
+
+    # Replace a character if 𝕨 is not set and it's on our list.
+    ind ← chars ⊐ 𝕩
+    useEntity ← 𝕨 ∧ ind < ≠chars
+    ⟨¬ useEntity , entities ⊏˜ useEntity/ind , /useEntity⟩
   }
 
   # Non-empty lines in code blocks have 4 leading spaces
