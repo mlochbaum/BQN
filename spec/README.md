@@ -9,6 +9,6 @@ The following aspects define BQN and are or will be specified:
 - [Token formation](token.md)
 - [Literals](literal.md)
 - [Grammar](grammar.md)
-- Scoping
+- [Variable scoping](scope.md)
 - [Evaluation semantics](evaluate.md)
 - Primitives ([reference implementations](reference.bqn))
