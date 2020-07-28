@@ -163,13 +163,11 @@ DParse ← {nv‿r𝕊𝕩:
   ft←0∾(H↕3)+2×(H⥊3)⌈2×H⥊4
   r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾(b⊸⊏)rev⊏r
 
-  id←/(0⊸≤∧<⟜nv)𝕩-vi⋄d←id⊏dec←¯1⌽𝕩=⊑bG⋄sp←/𝕩∊bI
+  id←/(0⊸≤∧<⟜nv)xv←𝕩-vi⋄d←id⊏dec←¯1⌽𝕩=⊑bG⋄sp←/𝕩∊bI
   ig←⍋(⊏⟜(¯1∾c/g)∾d⊸/⊏((≠𝕩)∾b⊏g)˜)id⊏fi
-  ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾¯1⥊˜+´d))⊸⊏(⍋⊏⟜(∾⟜(d⊸/)id⊏𝕩))⊸⊏ig
+  ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏(⍋⊏⟜(∾⟜(d⊸/)id⊏𝕩))⊸⊏ig
   ui←d(⌈`↕∘≠⊸×)⊸⊏⌾(ig⊸⊏)id
-  ii←1-˜ui⊏-⟜(⌈`c⊸×)+`dec
-  ii∾↩+⟜(0⊸≤)2+vi-˜sp⊏𝕩
-  ii+↩(fi⊏˜ui∾sp)⊏3×2|ft
+  ii←((fi⊏˜ui∾sp)⊏3×2|ft)+(1-˜ui⊏-⟜(⌈`c⊸×)+`dec)∾+⟜(0⊸≤)2+sp⊏xv
   idor←∾3⥊<is←id∾sp
   idbc←⟨21+(is-1)⊏𝕩∊2↑bG,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
   lc←FC dec
