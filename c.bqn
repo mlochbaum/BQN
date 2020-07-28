@@ -167,7 +167,7 @@ DParse ← {nv‿r𝕊𝕩:
   ig←⍋(⊏⟜(¯1∾c/g)∾d⊸/⊏((≠𝕩)∾b⊏g)˜)id⊏fi
   ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏(⍋⊏⟜(∾⟜(d⊸/)id⊏𝕩))⊸⊏ig
   ui←d(⌈`↕∘≠⊸×)⊸⊏⌾(ig⊸⊏)id
-  ii←((fi⊏˜ui∾sp)⊏3×2|ft)+(1-˜ui⊏-⟜(⌈`c⊸×)+`dec)∾+⟜(0⊸≤)2+sp⊏xv
+  ii←(ui⊏(fi⊏ft⊏≠¨spd)-(⌈`c⊸×)⊸¬+`dec)∾((sp⊏fi)⊏3×2|ft)++⟜(0⊸≤)2+sp⊏xv
   idor←∾3⥊<is←id∾sp
   idbc←⟨21+(is-1)⊏𝕩∊2↑bG,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
   lc←FC dec
