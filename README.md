@@ -30,7 +30,7 @@ It's three letters, that happen to match the capitals in "Big Questions Notation
 
 Rather strange, most likely:
 
-    ⊑+`∘⌽⍟12↕2  # The 12th Fibonacci number
+        ⊑+`∘⌽⍟12↕2  # The 12th Fibonacci number
 
 For longer samples, you can [gaze into the abyss](c.bqn) that is the (incomplete) self-hosted compiler, or take a look at the friendlier [markdown processor](md.bqn) used to format and highlight documentation files. There are also [some translations](examples/fifty.bqn) from ["A History of APL in 50 Functions"](https://www.jsoftware.com/papers/50/) here.
 
@@ -57,10 +57,6 @@ These roles work exactly like they do in APL, with functions applying to one or 
 Unlike APL, in BQN the syntactic role of a value is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a subject, an uppercase first letter (`Name`) makes it a function, and underscores are used for 1-modifiers (`_name`) and 2-modifiers (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:
 
         ⟨×˜,√⟩ {𝕎𝕩}⌜ 1‿4‿9
-    ┌
-      1 16 81
-      1  2  3
-              ┘
 
 BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and 2-modifiers (`∘○⊸⟜⌾⊘◶⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
 

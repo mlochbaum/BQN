@@ -26,8 +26,9 @@
 <p>It's three letters, that happen to match the capitals in &quot;Big Questions Notation&quot;. You can pronounce it &quot;bacon&quot;, but are advised to avoid this unless there's puns.</p>
 <h2 id="what-does-bqn-look-like">What does BQN look like?</h2>
 <p>Rather strange, most likely:</p>
-<pre><span class='Function'>⊑+</span><span class='Modifier'>`</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span><span class='Modifier2'>⍟</span><span class='Number'>12</span><span class='Function'>↕</span><span class='Number'>2</span>  <span class='Comment'># The 12th Fibonacci number
-</span></pre>
+<pre>    <span class='Function'>⊑+</span><span class='Modifier'>`</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span><span class='Modifier2'>⍟</span><span class='Number'>12</span><span class='Function'>↕</span><span class='Number'>2</span>  <span class='Comment'># The 12th Fibonacci number
+</span>144
+</pre>
 <p>For longer samples, you can <a href="https://github.com/mlochbaum/BQN/blob/master/c.bqn">gaze into the abyss</a> that is the (incomplete) self-hosted compiler, or take a look at the friendlier <a href="https://github.com/mlochbaum/BQN/blob/master/md.bqn">markdown processor</a> used to format and highlight documentation files. There are also <a href="https://github.com/mlochbaum/BQN/blob/master/examples/fifty.bqn">some translations</a> from <a href="https://www.jsoftware.com/papers/50/">&quot;A History of APL in 50 Functions&quot;</a> here.</p>
 <h2 id="array-model">Array model</h2>
 <p>Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL <a href="https://aplwiki.com/wiki/Array_model">array models</a>. Unlike in APL, non-array data is possible, and common: numbers, characters, and functions are not arrays (see the full list of <a href="#types">types</a> below). This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no &quot;floating&quot; so a value is always different from a scalar array that contains it. This system has been <a href="https://dl.acm.org/doi/abs/10.1145/586656.586663">proposed</a> in APL's past under the name <strong>based array theory</strong>.</p>
@@ -45,10 +46,10 @@
 <p>These roles work exactly like they do in APL, with functions applying to one or two subject arguments, 1-modifiers taking a single function or subject on the left, and 2-modifiers taking a function or subject on each side.</p>
 <p>Unlike APL, in BQN the syntactic role of a value is determined purely by the way it's spelled: a lowercase first letter (<code><span class='Value'>name</span></code>) makes it a subject, an uppercase first letter (<code><span class='Function'>Name</span></code>) makes it a function, and underscores are used for 1-modifiers (<code><span class='Modifier'>_name</span></code>) and 2-modifiers (<code><span class='Modifier2'>_name_</span></code>). Below, the function <code><span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> treats its left argument <code><span class='Function'>𝕎</span></code> as a function and its right argument <code><span class='Value'>𝕩</span></code> as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:</p>
 <pre>    <span class='Bracket'>⟨</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Separator'>,</span><span class='Function'>√</span><span class='Bracket'>⟩</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>⌜</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>9</span>
-<span class='Value'>┌</span>
-  <span class='Number'>1</span> <span class='Number'>16</span> <span class='Number'>81</span>
-  <span class='Number'>1</span>  <span class='Number'>2</span>  <span class='Number'>3</span>
-          <span class='Value'>┘</span>
+┌─         
+╵ 1 16 81  
+  1  2  3  
+          ┘
 </pre>
 <p>BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (<code><span class='Modifier'>˜¨˘⁼⌜´`</span></code>) are all superscript characters, and 2-modifiers (<code><span class='Modifier2'>∘○⊸⟜⌾⊘◶⚇⎉⍟</span></code>) all have an unbroken circle (two functions <code><span class='Function'>⌽⍉</span></code> have broken circles with lines through them). Every other built-in constant is a function, although the special symbols <code><span class='Number'>¯</span></code>, <code><span class='Number'>∞</span></code>, and <code><span class='Number'>π</span></code> are used as part of numeric literal notation.</p>
 <h3 id="special-syntax">Special syntax</h3>
