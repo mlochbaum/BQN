@@ -383,13 +383,13 @@ _bins←{
   (≠𝕨) {B⟜𝕩 _binSearch 𝕨}¨ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)¨↕cx
 }
 
-OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
-ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
-
 ⍋ ←   Cmp _grade   ⊘ (  Cmp _bins)
 ⍒ ← -∘Cmp _grade   ⊘ (-∘Cmp _bins)
 ∧ ↩ ⍋⊸⊏            ⊘ ∧
 ∨ ↩ ⍒⊸⊏            ⊘ ∨
+
+OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
+ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 
 _repeat_←{

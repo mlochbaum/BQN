@@ -150,23 +150,19 @@ X←Raw←{≤4}
   post ← ∾⟜" "¨/⟜"_"¨nc/0‿0‿1
   names ← init∾¨(•UCS 48)∾¨post
 
-  Inc  ← {
+  Inc ← {
     i←⊑chr⊐𝕩
     n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr
     names↩((i⊑init)∾(•UCS 48+n)∾i⊑post)⌾(i⊑⊢)names
   }
 
-  # starting built-ins
-  inps←⟨"𝕨  ","𝕨,𝕗","𝕨,𝕘"⟩
-  ⍎¨names∾¨(nc/("←{⟨"∾∾⟜"⟩ ⋄ ⍎""Using undefined built-in ")¨inps)∾¨∾⟜"""}"¨chr
-
   # built-in assumptions
-  Mod ← ⍎{𝔽 ((⊑chr⊐𝕨)⊑names) ∾ " ↩ " ∾ 𝕩}
+  Mod ← {((⊑chr⊐𝕨)⊑names) ∾ " ← " ∾ 𝕩}
 
-  ⍎"IsArray ← 0≠≡"
-
-  '!' Mod "{𝕩 ⋄ ≤1}⍟¬"
-  Mod⟜⥊¨ "↕∾⌽⊐⍋⍒"
+  ⍎¨ ⟨
+    "IsArray ← 0≠≡"
+    '!' Mod "{𝕩 ⋄ ≤1}⍟¬"
+  ⟩∾Mod⟜⥊¨ "↕∾⌽⊐⍋⍒"
 
 
   # checks if line is a builtin redefinition
