@@ -152,11 +152,10 @@ DParse ← {nv‿r𝕊𝕩:
   sl←1⊸⌽⊸∨𝕩∊bL⋄sr←¯1⊸⌽⌾(g⊸⊏)sl⋄sa←sl∨sr
   g⊏˜↩⍋g⊏sl⋄r×↩¬sa⋄o←p>0
   r+↩(sa<𝕩=1⊑bB)(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
-  r↩¯2¨⌾((+`¯1↓1⊸⌽⌾((0∾1+g)⊸⊏)⊸-1⌽0∾𝕩∊bG)⊸/)r
   rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨sl∨𝕩∊bS
 
-  g↩⍋fd←+`rev⊏br
-  rev⊏˜↩g⋄fd⊏˜↩g
+  gf←⍋fd←+`rev⊏br
+  rev⊏˜↩gf⋄fd⊏˜↩gf
   𝕩⊏˜↩rev⋄bv←rev⊏br⋄b←/bv<0⋄fi←+`c←bv>0
 
   FC←-⟜(≠↑0∾⊢)(c∾1)/·+`∾⟜0
@@ -164,18 +163,13 @@ DParse ← {nv‿r𝕊𝕩:
   ft←0∾(H↕3)+2×(H⥊3)⌈2×H⥊4
   r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾(b⊸⊏)rev⊏r
 
-  id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄sp←/𝕩∊bI
-  d←id⊏dec←idm∧((⌈`↕∘≠⊸×𝕩∊bG)⊏𝕩=⊑bG)∧r=¯2
-  ig←⍋(⊏⟜(¯1∾c/g)∾d⊸/⊏((≠𝕩)∾b⊏g)˜)id⊏fi
-  ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏(⍋⊏⟜(∾⟜(d⊸/)id⊏𝕩))⊸⊏ig
-  ui←d(⌈`↕∘≠⊸×)⊸⊏⌾(ig⊸⊏)id
-  ii←(ui⊏(fi⊏ft⊏≠¨spd)-(⌈`c⊸×)⊸¬+`dec)∾((sp⊏fi)⊏3×2|ft)++⟜(0⊸≤)2+sp⊏xv
-  idor←∾3⥊<is←id∾sp
-  idbc←⟨21+¯2=is⊏r,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
-  lc←FC dec
+  id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩∊bI
+  ad←(⌈`↕∘≠⊸×𝕩∊bG)⊏𝕩=⊑bG
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5⊑bB
-  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩g⋄o⊏˜↩gr⋄si←/gr⊏sr>sl⋄b⊏↩⍋g⋄l⊏↩⍋gs
+  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩g⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
+  gi←⍋g⋄b⊏↩gi⋄l⊏↩⍋gs
+  asn←¯1⌽+`gi⊏-⟜(≠↑0∾⊢)𝕩∊bG⋄r↩¯2¨⌾((g⊏asn)⊸/)r
   s←𝕩∊bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩∊2↑bG
   r-↩ps∨a⋄op←r≥2⋄ro←op∨1⌽r=3
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏ro∨r≥1
@@ -186,6 +180,15 @@ DParse ← {nv‿r𝕊𝕩:
   n←𝕩≥vi+nv⋄cn←/n∨𝕩≤¯1⊑bC⋄u←⍷ob←cn⊏𝕩
   lo←(o/𝕩)=4⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
   dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2⊑bB
+
+  d←id⊏dec←idm∧ad∧asn⋄lc←FC dec
+  ig←⍋(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
+  ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏(⍋⊏⟜(∾⟜(d⊸/)idx))⊸⊏ig
+  ui←d(⌈`↕∘≠⊸×)⊸⊏⌾(ig⊸⊏)id
+  ii←(ui⊏(fi⊏ft⊏≠¨spd)-(⌈`c⊸×)⊸¬+`dec)∾((sp⊏fi)⊏3×2|ft)++⟜(0⊸≤)2+sp⊏xv
+  idor←∾3⥊<is←id∾sp
+  idbc←⟨21+is⊏asn,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
+
   or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,rt,dr,l,l,si,si,1+/a,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy⟩
   bc0←∾idbc∾⟨0¨cn,u⊐ob,15¨b,1+↕≠b⟩
   bc←or⊏bc0∾∾⟨25¨rt,14¨dr,3+¯2=l⊏r,ll,3+¯2=si⊏r,sll,(11-⊑bG)+a/𝕩,5+oa⊏r,16+dy-7×fa⊏tr⟩
