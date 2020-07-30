@@ -53,6 +53,6 @@ E_redef ← { # handles [fmd] [←↩]
 }
 
 pre ∾↩ E_isdef◶E_proc‿E_redef¨ impl
-t ← (¬∘⊑'{'∊⊢)¨⊸/ 3⊸↓⌾(3⊸⊑) •LNS •path∾"testref.bqn"
+t ← (¬∘⊑':'∊⊢)¨⊸/ 3⊸↓⌾(3⊸⊑) •LNS •path∾"testref.bqn"
 res ← DRun ∾ ∾⟜(•UCS 10)¨ pre ∾ E_proc¨ t
 • ← ("All "∾(⍕≠res)∾" passed!")⍟(0=≠) /res
