@@ -168,7 +168,7 @@ DParse ← {nv‿r𝕊𝕩:
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩g⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
-  gi←⍋g⋄b⊏↩gi⋄l⊏↩⍋gs
+  gi←⍋g⋄l⊏↩⍋gs
   s←𝕩∊bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩∊2↑bG
   r-↩ps∨a⋄op←r≥2⋄fe←(r≥1)∨1⌽r=3
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏fe
@@ -191,6 +191,7 @@ DParse ← {nv‿r𝕊𝕩:
   idor←∾3⥊<is←id∾sp
   idbc←⟨21+is⊏asn,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
 
+  b⊏↩gi
   or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,rt,dr,l,l,si,si,at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy⟩
   bc0←∾idbc∾⟨0¨cn,u⊐ob,15¨b,1+↕≠b⟩
   bc←or⊏bc0∾∾⟨25¨rt,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll,(11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏tr⟩
