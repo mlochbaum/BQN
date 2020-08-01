@@ -205,9 +205,10 @@ prims←⟨
   ∘,○,⊸,⟜,⌾,⊘,◶,⎉,⚇,⍟
 ⟩
 DGenFn←{
+  p←𝕨⊣prims
   ⟨t,r,nVar,lits⟩←Tokenize𝕩
   ⟨bc,u,blk⟩←nVar‿r DParse t
-  o←(u-(vi+nVar-≠prims)×u≥vi)⊏prims∾LitVal¨lits
+  o←(u-(vi+nVar-≠p)×u≥vi)⊏p∾LitVal¨lits
   ⟨bc,o,⟨⟩,blk⟩
 }
 DRun←{
