@@ -71,9 +71,11 @@ Indices←{
   l←≠𝕩
   {
     ! 1×´Nat¨𝕩
-    es ← +`𝕩 ⋄ e←0 ⋄ Ei←{e↩𝕩⊑es}
-    Ei i←0
-    {j←𝕩⋄U←{U⍟(j=Ei)1+𝕩}⋄{i↩U𝕩}⍟(𝕩=e)i}¨↕(l-1)⊑es
+    k←l-1
+    N ← ((⊢+-×0=𝕩⊑˜⊢)`k⊸-⌜↕l)⊑˜k-⊢  # Next nonzero
+    E ← ⊑⟜(+`𝕩)
+    ei←E i←N 0
+    {{ei↩E i↩N𝕩+1⋄i}⍟(𝕩=ei)i}¨↕E k
   }⍟(0<l)𝕩
 }
 
