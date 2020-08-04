@@ -204,7 +204,7 @@ SelSub←{
 Select←ToArray⊸(SelSub _onAxes_ 1)
 ⊏ ← 0⊸Select       ⊘ Select
 
-JoinTo←{
+JoinTo←∨○(1≠=)◶∾‿{
   s←𝕨Pair○≢𝕩
   a←1⌈´k←≠¨s
   ! ∧´1≥a-k
