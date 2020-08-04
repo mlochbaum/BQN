@@ -352,15 +352,14 @@ _cmpLen ← {
 }
 _getCellCmp ← {
   Ci←𝔽⋄l←𝕨⋄c←𝕩
-  {
+  Cc←{
     a←𝕨⋄b←𝕩
     S←(l⊸=)◶{S∘(1+𝕩)⍟(0⊸=)a Ci○(𝕩⊸+)b}‿c
     S 0
   }
+  (1≠l)⊑(𝕩⍟(0⊸=)𝔽)‿Cc
 }
-Cmp ← ∨○IsArray◶{ # No arrays
-  𝕨(>-<)𝕩 # Assume they're numbers
-}‿{ # At least one array
+Cmp ← ∨○IsArray◶(>-<)‿{
   lc←𝕨(𝕨-○IsArray𝕩)_cmpLen○≢𝕩
   cc ← (⊑⟜(⥊𝕨))⊸Cmp⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
   Cc˜0
