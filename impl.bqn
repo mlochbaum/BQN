@@ -375,10 +375,17 @@ _binSearch ← {
 }
 _grade←{
   ! 1≤=𝕩
-  m←×´1 Cell 𝕩 ⋄ Ci←𝔽○(⊑⟜(⥊𝕩))
-  cc←m Ci _getCellCmp 0
-  Ins←{𝕨⊸(≤+<)◶⟨⊑⟜𝕩,i,-⟜1⊑𝕩˜⟩¨↕1+i←≠𝕩}
-  ⟨⟩ {𝕩Ins˜(𝕨(Cc≤0˜)˜m×⊑⟜𝕩)_binSearch≠𝕩}´ m×(↕-˜-⟜1)≠𝕩
+  m←×´1 Cell 𝕩
+  cc←m 𝔽○(⊑⟜(⥊𝕩)) _getCellCmp 0
+  GT←Cc>0˜
+  l←≠𝕩
+  (↕l){
+    i←-d←𝕨 ⋄ j←ei←ej←0
+    e←3 ⋄ c←⟨GT○(⊑⟜𝕩),0,1,2⟩
+    N←{i↩d+𝕨⋄ej↩l⌊d+ei↩l⌊j↩d+𝕩⋄e↩j≥l⋄i R j}
+    R←{𝕨e◶c𝕩}◶{e+↩2×ei=i↩1+𝕨⋄𝕨}‿{e+↩ej=j↩1+𝕩⋄𝕩}‿N
+    {𝕩⋄i R j}¨⊸⊏𝕩
+  }´2⋆⌽↕⌈2 Log 1⌈l
 }
 _bins←{
   c←1-˜=𝕨
