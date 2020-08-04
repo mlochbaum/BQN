@@ -296,8 +296,6 @@ Pick1←{
 }
 Pickd←(∨´∘⥊IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
 Pick←IsArray◶⥊‿⊢⊸Pickd
-⊑ ↩ (0¨∘≢)⊸Pick    ⊘ Pick
-◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 
 # Searching
 IndexOf←{
@@ -308,7 +306,7 @@ IndexOf←{
 UniqueMask←{
   ! 1≤=𝕩
   u←0↑𝕩
-  {(≠u)>⊑u IndexOf 𝕩}◶{u↩u∾𝕩⋄1}‿0˘𝕩
+  {(≠u)>0⊑⥊u IndexOf 𝕩}◶{u↩u∾𝕩⋄1}‿0˘𝕩
 }
 Find←{
   r←=𝕨
@@ -329,7 +327,7 @@ ReorderAxes←{
   r←(=𝕩)-+´¬∊𝕨
   ! ∧´𝕨<r
   𝕨↩𝕨∾𝕨(¬∘∊˜/⊢)↕r
-  (𝕨⊸⊏⊑𝕩˜)¨↕⌊´¨𝕨⊔≢𝕩
+  (𝕨⊸⊏Pick𝕩˜)¨↕⌊´¨𝕨⊔≢𝕩
 }
 Transpose←(=-1˜)⊸ReorderAxes⍟(0<=)
 ⍉ ← Transpose      ⊘ ReorderAxes
@@ -408,6 +406,9 @@ _bins←{
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
 ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
+
+⊑ ↩ (0¨∘≢)⊸Pick    ⊘ Pick
+◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 
 inverse ← {(⊑(0⊏𝕩)⊐<) ⊑ ((1⊏𝕩)∾⟨!∘0⟩)˜} ⍉ (2∾˜2÷˜≠)⊸⥊ ⟨
   +, +⊘(-˜)
