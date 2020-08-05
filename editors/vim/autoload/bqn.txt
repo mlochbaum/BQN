@@ -1,3 +1,17 @@
+← Define
+↩ Change
+→ Return
+⋄ Statement or element separator
+() Expression grouping
+{} Explicit function or modifier
+⟨⟩ List (rank-1 array)
+‿ Strand (lightweight list syntax)
+𝕨𝕎 Left argument
+𝕩𝕏 Right argument
+𝕗𝔽 Left operand of a modifier
+𝕘𝔾 Right operand of a 2-modifier
+# Comment
+
 + Conjugate ; Add
 - Negate ; Subtract
 × Sign ; Multiply
@@ -6,9 +20,9 @@
 √ Square Root ; Root
 ⌊ Floor ; Minimum
 ⌈ Ceiling ; Maximum
-∧ Sort Up ; And*
-∨ Sort Down ; Or*
-¬ Not* ; Span*
+∧ Sort Up ; And
+∨ Sort Down ; Or
+¬ Not ; Span
 | Absolute Value ; Modulus
 ≤ ; Less Than or Equal to
 < Enclose ; Less Than
@@ -16,25 +30,49 @@
 ≥ ; Greater Than or Equal to
 = Rank ; Equals
 ≠ Length ; Not Equals
-≡ Depth* ; Match
+≡ Depth ; Match
 ≢ Shape ; Not Match
 ⊣ Identity ; Left
 ⊢ Identity ; Right
 ⥊ Deshape ; Reshape
-∾ Join* ; Join to
-≍ Solo* ; Couple*
-↑ Prefixes* ; Take
-↓ Suffixes* ; Drop
-↕ Range ; Windows*
+∾ Join ; Join to
+≍ Solo ; Couple
+↑ Prefixes ; Take
+↓ Suffixes ; Drop
+↕ Range ; Windows
 ⌽ Reverse ; Rotate
-⍉ Transpose* ; Reorder axes*
+⍉ Transpose ; Reorder axes
 / Indices ; Replicate
 ⍋ Grade Up ; Bins Up
 ⍒ Grade Down ; Bins Down
-⊏ First Cell* ; Select*
-⊑ First ; Pick*
+⊏ First Cell ; Select
+⊑ First ; Pick
 ⊐ ; Index of
-⊒ Occurrence Count* ; Progressive Index of*
+⊒ Occurrence Count ; Progressive Index of
 ∊ Unique Mask ; Member of
 ⍷ Deduplicate ; Find
-⊔ Group Indices* ; Group*
+⊔ Group Indices ; Group
+
+˜ Self/Swap {𝕩𝔽𝕨⊣𝕩} Duplicate one argument or exchange two
+∘ Atop {𝔽𝕨𝔾𝕩} Apply 𝔾 to both arguments and 𝔽 to the result
+○ Over {(𝔾𝕨)𝔽𝔾𝕩} Apply 𝔾 to each argument and 𝔽 to the results
+⊸ Before/Bind {(𝔽𝕨⊣𝕩)𝔾𝕩} 𝔾's left argument comes from 𝔽
+⟜ After/Bind {(𝕨⊣𝕩)𝔽𝔾𝕩} 𝔽's right argument comes from 𝔾
+⌾ Under {𝔾⁼∘𝔽○𝔾} OR {(𝔾𝕩)↩𝕨𝔽○𝔾𝕩⋄𝕩} Apply 𝔽 over 𝔾, then undo 𝔾
+⊘ Valences {𝔽𝕩;𝕨𝔾𝕩} Apply 𝔽 if there's one argument but 𝔾 if there are two
+◶ Choose {f←(𝕨𝔽𝕩)⊑𝕘 ⋄ 𝕨F𝕩} Select one of the functions in list 𝕘 based on 𝔽
+
+˘ Cells
+¨ Each
+⌜ Table
+⁼ Undo
+´ Fold
+˝ Insert
+` Scan
+
+⎉ Rank
+⚇ Depth
+⍟ Repeat
+
+: Key/value separator for dictionaries
+⦃⦄ Set
