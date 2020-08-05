@@ -407,7 +407,7 @@ OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
 ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 
-⊑ ↩ (0¨∘≢)⊸Pick    ⊘ Pick
+⊑ ↩ (0⊑⥊)          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 
 inverse ← {(⊑(0⊏𝕩)⊐<) ⊑ ((1⊏𝕩)∾⟨!∘0⟩)˜} ⍉ (2∾˜2÷˜≠)⊸⥊ ⟨
