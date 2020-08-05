@@ -1,0 +1,40 @@
++ Conjugate ; Add
+- Negate ; Subtract
+× Sign ; Multiply
+÷ Reciprocal ; Divide
+⋆ Exponential ; Power
+√ Square Root ; Root
+⌊ Floor ; Minimum
+⌈ Ceiling ; Maximum
+∧ Sort Up ; And*
+∨ Sort Down ; Or*
+¬ Not* ; Span*
+| Absolute Value ; Modulus
+≤ ; Less Than or Equal to
+< Enclose ; Less Than
+> Merge ; Greater Than
+≥ ; Greater Than or Equal to
+= Rank ; Equals
+≠ Length ; Not Equals
+≡ Depth* ; Match
+≢ Shape ; Not Match
+⊣ Identity ; Left
+⊢ Identity ; Right
+⥊ Deshape ; Reshape
+∾ Join* ; Join to
+≍ Solo* ; Couple*
+↑ Prefixes* ; Take
+↓ Suffixes* ; Drop
+↕ Range ; Windows*
+⌽ Reverse ; Rotate
+⍉ Transpose* ; Reorder axes*
+/ Indices ; Replicate
+⍋ Grade Up ; Bins Up
+⍒ Grade Down ; Bins Down
+⊏ First Cell* ; Select*
+⊑ First ; Pick*
+⊐ ; Index of
+⊒ Occurrence Count* ; Progressive Index of*
+∊ Unique Mask ; Member of
+⍷ Deduplicate ; Find
+⊔ Group Indices* ; Group*
