@@ -22,6 +22,7 @@ charSet←∾charGroups←⟨
 # #'" eliminated during tokenization
 ⟩
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW←⊔/≠¨charGroups
+M←⊢(0⊸≤∧≠⊸>)-⟜⊑
 vi←+´≠¨9↑charGroups
 charRole←((vi-≠bI)↑/0∾≠¨3↑charGroups)∾(5/⌽↕2)∾0
 spc←⥊3‿5‿6-⌜3‿0
@@ -38,17 +39,17 @@ Tokenize←{
   cl←f/ToI⊑∘⌽˘cb
 
   c←charSet⊐f/𝕩
-  w←(≠↑0∾⊢)⊸<l←c∊∾bD‿bN‿bA
+  w←(≠↑0∾⊢)⊸<l←c M∾bD‿bN‿bA
   i←(1-˜l×+`w)⊔c
   na←≠alph⋄us←¯1⊑bA
   in←na(⊢-⊣×+⟜(⊑bA)⊸≤)us⊸≠⊸/¨i
-  id←⍷(bA∊˜w/c)⍒⊸⊏in⋄nv←+´bA∊˜⊑¨id
+  id←⍷(bA M˜w/c)⍒⊸⊏in⋄nv←+´bA M˜⊑¨id
 
-  c↩(w∨¬l∨c∊bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
-  c/˜↩¬(≠↑1∾(c∊2‿4⊏bB)∨⊢)⊸∧c∊bS⋄c/˜↩¬(1↓1∾˜c∊3‿5⊏bB)∧c∊bS
+  c↩(w∨¬l∨c M bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
+  c/˜↩¬(≠↑1∾(c∊2‿4⊏bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5⊏bB)∧c M bS
   ti←(us=¯1⊸⊑¨i)(⊢+∧⟜(2⊸=))0⌈na⌊∘÷˜(⊑bA)-˜⊑¨i
   ic←(0⊸≤∧<⟜(≠id))c-vi⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
-  c+↩5×c∊5↑bI
+  c+↩5×c M 5↑bI
   ⟨c,t,nv,(nv↓id)∾lu⟩
 }
 
@@ -73,28 +74,28 @@ LEBv ← {
 }
 
 Parse ← {nv‿r←𝕨
-  g←⍋+`p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩⋄br←p×𝕩∊2‿3⊏bB
-  sl←1⊸⌽⊸∨𝕩∊bL⋄sr←¯1⊸⌽⌾(g⊸⊏)sl⋄sa←sl∨sr
+  g←⍋+`p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩⋄br←p×𝕩 M 2‿3⊏bB
+  sl←1⊸⌽⊸∨𝕩 M bL⋄sr←¯1⊸⌽⌾(g⊸⊏)sl⋄sa←sl∨sr
   g⊏˜↩⍋g⊏sl⋄r×↩¬sa⋄o←p>0
   r+↩(sa<𝕩=1⊑bB)(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
-  rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨sl∨𝕩∊bS
+  rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨sl∨𝕩 M bS
 
   gf←⍋fd←+`rev⊏br
   rev⊏˜↩gf⋄fd⊏˜↩gf
   𝕩⊏˜↩rev⋄bv←rev⊏br⋄b←/bv<0⋄fi←+`c←bv>0
 
   FC←-⟜(≠↑0∾⊢)(c∾1)/·+`∾⟜0
-  H←0<1↓·FC𝕩∊(5⊑bI)+⊢
+  H←0<1↓·FC𝕩 M (5⊑bI)+⊢
   ft←0∾(H↕3)+2×(H⥊3)⌈2×H⥊4
   r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾(b⊸⊏)rev⊏r
 
-  id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩∊bI
-  ad←(⌈`↕∘≠⊸×𝕩∊bG)⊏𝕩=⊑bG
+  id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
+  ad←(⌈`↕∘≠⊸×𝕩 M bG)⊏𝕩=⊑bG
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩g⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
   gi←⍋g⋄l⊏↩⍋gs
-  s←𝕩∊bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩∊2↑bG
+  s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩 M 2↑bG
   r-↩ps∨a⋄op←r≥2⋄fe←(r≥1)∨1⌽r=3
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏fe
   ma←tr<(𝕩=1⊑bG)∧1⌽fe
