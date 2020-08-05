@@ -13,13 +13,19 @@
 ⟩ End list
 ‿ Strand
 · Nothing
+' Character
+" String (list of characters)
+• System
+𝕤 Current function (as subject)
+𝕊 Current function
 𝕨 Left argument
-𝕎 Left argument (function)
+𝕎 Left argument (as function)
 𝕩 Right argument
-𝕏 Right argument (function)
-𝕗 Modifier left operand (subject)
+𝕏 Right argument (as function)
+𝕣 Current modifier
+𝕗 Modifier left operand (as subject)
 𝔽 Modifier left operand
-𝕘 2-modifier right operand (subject)
+𝕘 2-modifier right operand (as subject)
 𝔾 2-modifier right operand
 # Comment
 + Conjugate ; Add
@@ -30,9 +36,9 @@
 √ Square Root ; Root
 ⌊ Floor ; Minimum
 ⌈ Ceiling ; Maximum
-∧ Sort Up ; And*
-∨ Sort Down ; Or*
-¬ Not* ; Span*
+∧ Sort Up ; And
+∨ Sort Down ; Or
+¬ Not ; Span
 | Absolute Value ; Modulus
 ≤ ; Less Than or Equal to
 < Enclose ; Less Than
@@ -40,37 +46,37 @@
 ≥ ; Greater Than or Equal to
 = Rank ; Equals
 ≠ Length ; Not Equals
-≡ Depth* ; Match
+≡ Depth ; Match
 ≢ Shape ; Not Match
 ⊣ Identity ; Left
 ⊢ Identity ; Right
 ⥊ Deshape ; Reshape
-∾ Join* ; Join to
-≍ Solo* ; Couple*
-↑ Prefixes* ; Take
-↓ Suffixes* ; Drop
-↕ Range ; Windows*
+∾ Join ; Join to
+≍ Solo ; Couple
+↑ Prefixes ; Take
+↓ Suffixes ; Drop
+↕ Range ; Windows
 ⌽ Reverse ; Rotate
-⍉ Transpose* ; Reorder axes*
+⍉ Transpose ; Reorder axes
 / Indices ; Replicate
 ⍋ Grade Up ; Bins Up
 ⍒ Grade Down ; Bins Down
-⊏ First Cell* ; Select*
-⊑ First ; Pick*
+⊏ First Cell ; Select
+⊑ First ; Pick
 ⊐ ; Index of
-⊒ Occurrence Count* ; Progressive Index of*
+⊒ Occurrence Count ; Progressive Index of
 ∊ Unique Mask ; Member of
 ⍷ Deduplicate ; Find
-⊔ Group Indices* ; Group*
+⊔ Group Indices ; Group
 ! Assert ; Assert with message
-˜ Self/Swap  {𝕩𝔽𝕨⊣𝕩}
-∘ Atop  {𝔽𝕨𝔾𝕩}
-○ Over  {(𝔾𝕨)𝔽𝔾𝕩}
-⊸ Before/Bind  {(𝔽𝕨⊣𝕩)𝔾𝕩}
-⟜ After/Bind  {(𝕨⊣𝕩)𝔽𝔾𝕩}
-⌾ Under  {𝔾⁼∘𝔽○𝔾} OR {(𝔾𝕩)↩𝕨𝔽○𝔾𝕩⋄𝕩}
-⊘ Valences  {𝔽𝕩;𝕨𝔾𝕩}
-◶ Choose  {f←(𝕨𝔽𝕩)⊑𝕘 ⋄ 𝕨F𝕩}
+˜ Self/Swap | {𝕩𝔽𝕨⊣𝕩} | Duplicate one argument or exchange two
+∘ Atop | {𝔽𝕨𝔾𝕩} | Apply 𝔾 to both arguments and 𝔽 to the result
+○ Over | {(𝔾𝕨)𝔽𝔾𝕩} | Apply 𝔾 to each argument and 𝔽 to the results
+⊸ Before/Bind | {(𝔽𝕨⊣𝕩)𝔾𝕩} | 𝔾's left argument comes from 𝔽
+⟜ After/Bind | {(𝕨⊣𝕩)𝔽𝔾𝕩} | 𝔽's right argument comes from 𝔾
+⌾ Under | {𝔾⁼∘𝔽○𝔾} | OR {(𝔾𝕩)↩𝕨𝔽○𝔾𝕩⋄𝕩} Apply 𝔽 over 𝔾, then undo 𝔾
+⊘ Valences | {𝔽𝕩;𝕨𝔾𝕩} | Apply 𝔽 if there's one argument but 𝔾 if there are two
+◶ Choose | {f←(𝕨𝔽𝕩)⊑𝕘 ⋄ 𝕨F𝕩} | Select one of the functions in list 𝕘 based on 𝔽
 ˘ Cells
 ⎉ Rank
 ¨ Each
