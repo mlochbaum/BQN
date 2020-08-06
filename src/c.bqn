@@ -21,11 +21,11 @@ charSet←∾charGroups←⟨
   " "∾tab               # Whitespace
 # #'" eliminated during tokenization
 ⟩
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW←⊔/≠¨charGroups
-bA_e←4⊑bA
-M←⊢(0⊸≤∧≠⊸>)-⟜⊑
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
+bA_e←4+⊑bA
+M←1⊸⊑(0⊸≤∧>)-⟜⊑
 vi←+´≠¨9↑charGroups
-charRole←((vi-≠bI)↑/0∾≠¨3↑charGroups)∾(5/⌽↕2)∾0
+charRole←((vi-1⊑bI)↑/0∾≠¨3↑charGroups)∾(5/⌽↕2)∾0
 spc←⥊3‿5‿6-⌜3‿0
 
 Tokenize←{
@@ -40,22 +40,22 @@ Tokenize←{
   cl←f/ToI⊑∘⌽˘cb
 
   c←charSet⊐f/𝕩
-  w←(≠↑0∾⊢)⊸<l←c M∾bD‿bN‿bA
+  w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
   i←(1-˜l×+`w)⊔c
-  na←≠alph⋄us←¯1⊑bA
+  na←≠alph⋄us←¯1++´bA
   in←na(⊢-⊣×+⟜(⊑bA)⊸≤)us⊸≠⊸/¨i
   id←⍷(bA M˜w/c)⍒⊸⊏in⋄nv←+´bA M˜⊑¨id
 
   c↩(w∨¬l∨c M bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
-  c/˜↩¬(≠↑1∾(c∊2‿4⊏bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5⊏bB)∧c M bS
+  c/˜↩¬(≠↑1∾(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5+⊑bB)∧c M bS
   ti←(us=¯1⊸⊑¨i)(⊢+∧⟜(2⊸=))0⌈na⌊∘÷˜(⊑bA)-˜⊑¨i
   ic←(0⊸≤∧<⟜(≠id))c-vi⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
-  c+↩5×c M 5↑bI
+  c+↩5×c M 5≍˜⊑bI
   ⟨c,t,nv,(nv↓id)∾lu⟩
 }
 
 ReadNum←{
-  n‿d‿p‿i←bN  # ¯.π∞
+  n‿d‿p‿i←4↕⊸+⊑bN  # ¯.π∞
   Nat←+⟜(10⊸×)´∘⌽ -⟜(⊑bD)
   Int←(n=⊑)◶⟨Nat,-·Nat 1⊸↓⟩
   Dec←⊐⟜(<d)⊸(Nat∘↑ + ·(0<≠)◶⟨0,Nat÷10⋆≠⟩+⟜1⊸↓)
@@ -75,10 +75,10 @@ LEBv ← {
 }
 
 Parse ← {nv‿r←𝕨
-  g←⍋+`p←bB(⊣(≠⊸>×¯1⋆2|⊢)⊐)𝕩⋄br←p×𝕩 M 2‿3⊏bB
+  g←⍋+`p←𝕩(M×¯1⋆2|-⟜⊑)bB⋄br←p×𝕩M 2≍˜2+⊑bB
   sl←1⊸⌽⊸∨𝕩 M bL⋄sr←¯1⊸⌽⌾(g⊸⊏)sl⋄sa←sl∨sr
   g⊏˜↩⍋g⊏sl⋄r×↩¬sa⋄o←p>0
-  r+↩(sa<𝕩=1⊑bB)(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
+  r+↩(sa<𝕩=1+⊑bB)(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
   rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨sl∨𝕩 M bS
 
   gf←⍋fd←+`rev⊏br
@@ -86,30 +86,30 @@ Parse ← {nv‿r←𝕨
   𝕩⊏˜↩rev⋄bv←rev⊏br⋄b←/bv<0⋄fi←+`c←bv>0
 
   FC←-⟜(≠↑0∾⊢)(c∾1)/·+`∾⟜0
-  H←0<1↓·FC𝕩 M (5⊑bI)+⊢
-  ft←0∾(H↕3)+2×(H⥊3)⌈2×H⥊4
+  H←0<1↓FC∘=
+  ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
   fsc←ft⊏spc
   r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾(b⊸⊏)rev⊏r
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
   ad←(⌈`↕∘≠⊸×𝕩 M bG)⊏𝕩=⊑bG
 
-  g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5⊑bB
+  g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩g⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
   gi←⍋g⋄l⊏↩⍋gs
-  s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩 M 2↑bG
+  s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩 M 2≍˜⊑bG
   r-↩ps∨a⋄op←r≥2⋄fe←(r≥1)∨1⌽r=3
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏fe
-  ma←tr<(𝕩=1⊑bG)∧1⌽fe
+  ma←tr<(𝕩=1+⊑bG)∧1⌽fe
   ro←op∨a<1⌽r=3⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨ma⋄at←(⊢+1+⊏⟜os)/a
   aa←g⊏asn←¯1⌽+`gi⊏-⟜(≠↑0∾⊢)(↕≠𝕩)∊at-1⋄r↩¯1¨⌾(aa⊸/)r
   tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧(⊢∧2(|<≤)ps(⊢-⌈`∘×)+`)¬ro
   opa←op>1↓0∾˜ps∨a
   oa←⌽/opa⋄fa←/(1⌽aa)<(tf∨¬tr)∧(ro∧1⌽opa)<(r=1)∨op<¯1⌽opa
   dy←fa⊏1↓0∾˜(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
-  n←𝕩≥vi+nv⋄cn←/n∨𝕩≤¯1⊑bC⋄u←∧⍷ob←cn⊏𝕩
-  lo←(o/𝕩)=4⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
-  dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2⊑bB
+  n←𝕩≥vi+nv⋄cn←/n∨𝕩≤¯1++´bC⋄u←∧⍷ob←cn⊏𝕩
+  lo←(o/𝕩)=4+⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
+  dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2+⊑bB
 
   d←id⊏dec←idm∧ad∧asn⋄lc←FC dec
   ig←⍋(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
