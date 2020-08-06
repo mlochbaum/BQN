@@ -77,6 +77,21 @@ Cmp ← +○IsArray◶⟨
     Cc˜0
   }
 ⟩
+_grade←{
+  ! 1≤=𝕩
+  m←1×´1 Cell 𝕩
+  cc←m 𝔽○(⊑⟜(⥊𝕩)) _getCellCmp 0
+  GT←Cc>0˜
+  l←≠𝕩
+  B←l⊸≤◶⊢‿l
+  (↕l){
+    i←-d←𝕨 ⋄ j←ei←ej←0
+    e←3 ⋄ c←⟨GT○(⊑⟜(m⊸×¨⍟(1-m=1)𝕩)),0,1,2⟩
+    N←{i↩d+𝕨⋄ej↩B d+ei↩B j↩d+𝕩⋄e↩l≤j⋄i R j}
+    R←{𝕨e◶c𝕩}◶{e+↩2×ei=i↩1+𝕨⋄𝕨}‿{e+↩ej=j↩1+𝕩⋄𝕩}‿N
+    {(i R j)⊑𝕩}⟜𝕩¨𝕩
+  }´(2⋆ni-1+⊢)¨↕ni←-⌊-2 Log l+l=0
+}
 
 Indices←{
   ! 1==𝕩
@@ -375,20 +390,6 @@ _binSearch ← {
     R←{𝕨{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×2|𝕨)R a⊑𝕩‿m}⍟(>⟜1)𝕩}
     1+(𝕩+1)R ¯1
   }⍟(0⊸<)
-}
-_grade←{
-  ! 1≤=𝕩
-  m←×´1 Cell 𝕩
-  cc←m 𝔽○(⊑⟜(⥊𝕩)) _getCellCmp 0
-  GT←Cc>0˜
-  l←≠𝕩
-  (↕l){
-    i←-d←𝕨 ⋄ j←ei←ej←0
-    e←3 ⋄ c←⟨GT○(⊑⟜(m×⍟(≠⟜1)𝕩)),0,1,2⟩
-    N←{i↩d+𝕨⋄ej↩l⌊d+ei↩l⌊j↩d+𝕩⋄e↩j≥l⋄i R j}
-    R←{𝕨e◶c𝕩}◶{e+↩2×ei=i↩1+𝕨⋄𝕨}‿{e+↩ej=j↩1+𝕩⋄𝕩}‿N
-    {𝕩⋄i R j}¨⊸⊏𝕩
-  }´2⋆⌽↕⌈2 Log 1⌈l
 }
 _bins←{
   c←1-˜=𝕨
