@@ -66,6 +66,18 @@ match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   {1×´⥊𝕨Match¨𝕩}
 ⟩
 
+Cmp0 ← ≤˜-≤
+Cmp1 ← (0<1×´≢∘⊢)◶⟨1, IsArray∘⊢◶(1-2×≤)‿{𝕨Cmp1𝕩}⟜(0⊑⥊)⟩
+Cmp ← +○IsArray◶⟨
+  Cmp0
+  IsArray∘⊣◶⟨Cmp1,-Cmp1˜⟩
+  {
+    lc←𝕨CmpLen○≢𝕩
+    cc ← (⊑⟜(⥊𝕨))⊸Cmp⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
+    Cc˜0
+  }
+⟩
+
 Indices←{
   ! 1==𝕩
   l←≠𝕩
@@ -333,11 +345,10 @@ Transpose←(=-1˜)⊸ReorderAxes⍟(0<=)
 ⍉ ← Transpose      ⊘ ReorderAxes
 
 # Sorting
-_cmpLen ← {
+CmpLen ← {
   e←𝕨-˜○(∨´0⊸=)𝕩
-  c←𝕗
   𝕨(e=0)◶⟨0,e⟩‿{
-    c←×c+𝕨-○≠𝕩
+    c←×𝕨-○≠𝕩
     r←𝕨⌊○≠𝕩
     l←𝕨{
       i←+´∧`𝕨=𝕩
@@ -356,11 +367,6 @@ _getCellCmp ← {
     S 0
   }
   (1≠l)⊑(𝕩⍟(0⊸=)𝔽)‿Cc
-}
-Cmp ← ∨○IsArray◶(>-<)‿{
-  lc←𝕨(𝕨-○IsArray𝕩)_cmpLen○≢𝕩
-  cc ← (⊑⟜(⥊𝕨))⊸Cmp⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
-  Cc˜0
 }
 
 _binSearch ← {
@@ -392,7 +398,7 @@ _bins←{
   cw←lw 𝔽○(⊑⟜(⥊𝕨)) _getCellCmp 0
   ! 0⊸<◶⟨1,∧´0≤˜·cw¨⟜(lw⊸+)lw×↕∘-⟜1⟩≠𝕨
   cx←c-˜=𝕩
-  sx←cx Cell 𝕩 ⋄ lc←sw 0 _cmpLen sx
+  sx←cx Cell 𝕩 ⋄ lc←sw CmpLen sx
   cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
   B←(×´sw)⊸×⊸Cc≤0˜
   (≠𝕨) {B⟜𝕩 _binSearch 𝕨}¨ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)¨↕cx
