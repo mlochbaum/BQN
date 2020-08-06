@@ -5,7 +5,7 @@ tab←'	'⋄nl←'
 dig ← "0123456789"
 alph ← "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 alow ← "abcdefghijklmnopqrstuvwxyz"
-charSet←∾charGroups←⟨
+charGroups←⟨
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
   "˜˘¨⌜⁼´˝`"            # Modifier
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # Composition
@@ -21,6 +21,7 @@ charSet←∾charGroups←⟨
   " "∾tab               # Whitespace
 # #'" eliminated during tokenization
 ⟩
+CharCode←(∾charGroups){g←⍋𝕗⋄g⊏˜1-˜(g⊏𝕗)⍋⊢}
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
 bA_e←4+⊑bA
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
@@ -39,7 +40,7 @@ Tokenize←{
   lu←⍷lit←𝕩⊔˜1-˜(+`ToI⊑˘cb)×≠`ToI cb
   cl←f/ToI⊑∘⌽˘cb
 
-  c←charSet⊐f/𝕩
+  c←CharCode f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
   i←(1-˜l×+`w)⊔c
   na←≠alph⋄us←¯1++´bA
