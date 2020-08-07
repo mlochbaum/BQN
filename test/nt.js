@@ -1,4 +1,5 @@
-//usr/bin/env node "$0" $@;exit $?
+#! /usr/bin/env node
+
 const bqn=require(require('os').homedir+'/bin/bqn')
     , load=f=>require('fs').readFileSync(__dirname+'/'+f,'utf8')
     , runWasm=w=>new WebAssembly.Instance(new WebAssembly.Module(Uint8Array.from(w)))

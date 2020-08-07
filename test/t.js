@@ -1,4 +1,5 @@
-//usr/bin/env node "$0" $@;exit $?
+#! /usr/bin/env node
+
 const execFile = require('child_process').execFile
     , load=f=>require('fs').readFileSync(__dirname+'/'+f,'utf8')
     , runWasm=w=>new WebAssembly.Instance(new WebAssembly.Module(Uint8Array.from(w)))

@@ -1,4 +1,4 @@
-//usr/bin/env node "$0" $@;exit $?
+#! /usr/bin/env node
 
 const bqn=require(__dirname+'/../bqn.js')
     , load=f=>require('fs').readFileSync(__dirname+'/'+f,'utf8');
