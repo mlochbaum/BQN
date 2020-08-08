@@ -12,9 +12,14 @@
 ⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
 ⍟ ← {𝕨((𝕨𝔾𝕩)⊑⊢‿𝕗){𝔽}𝕩}   # LIMITED to boolean right operand result
 
+Int←IsArray◶⟨⌊⊸=,0⟩
+Nat←IsArray◶⟨0⊸≤×⌊⊸=,0⟩
+
 # LIMITED to numeric arguments for scalar cases
 < ← {⟨⟩⥊⟨𝕩⟩} ⊘ (1-≤˜)
 > ←            (1-≤)
+⌊ ↩ ⌊        ⊘ (>⊑{𝕨‿𝕩})
+⌈ ← -∘⌊∘-    ⊘ (<⊑{𝕨‿𝕩})
 ≢ ↩ IsArray◶⟨⟩‿≢   # LIMITED to monadic case
 ≠ ← (0<=)◶⟨1⋄0⊑≢⟩  # LIMITED to monadic case
 
@@ -27,10 +32,7 @@ _fold←{
 }
 ´ ← _fold
 
-
 ToArray ← <⍟(1-IsArray)
-Int←IsArray◶⟨⌊⊸=,0⟩
-Nat←IsArray◶⟨0⊸≤×⌊⊸=,0⟩
 Cell←{(𝕨⊸+⊑𝕩˜)⌜↕(≠𝕩)-𝕨}⟜≢
 
 ∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩⌜↕k+≠𝕩}  # LIMITED to two vector arguments
@@ -67,21 +69,26 @@ Cmp ← +○IsArray◶⟨
     Cc˜0
   }
 ⟩
-_grade←{
+_grade_←{
   ! 1≤=𝕩
-  m←1×´1 Cell 𝕩
-  cc←m 𝔽○(⊑⟜(⥊𝕩)) _getCellCmp 0
-  GT←Cc>0˜
   l←≠𝕩
-  B←l⊸≤◶⊢‿l
-  (↕l){
-    i←-d←𝕨 ⋄ j←ei←ej←0
-    e←3 ⋄ G←GT○(⊑⟜(m⊸×⌜⍟(1-m=1)𝕩)) ⋄ c←⟨G,0,1,2⟩
-    s←(8≤d)⊑⟨+,{(𝕩-1){𝕩⋄e↩2⋄j↩i⋄i↩𝕩}⍟(1-G)⍟(1-e)𝕩}⟩
-    N←{i↩d+𝕨⋄ej↩B d+ei↩B j↩d+𝕩⋄e↩l≤j⋄S ei⋄i R j}
-    R←{𝕨e◶c𝕩}◶{e+↩2×ei=i↩1+𝕨⋄𝕨}‿{e+↩ej=j↩1+𝕩⋄𝕩}‿N
-    {(i R j)⊑𝕩}⟜𝕩⌜𝕩
-  }´(2⋆ni-1+⊢)⌜↕ni←-⌊-2 Log l+l=0
+  m←1×´1 Cell 𝕩
+  d←⥊𝕩
+  # Counting sort for small-range ints
+  bl←bu←0⋄r←1-{((bu↩⌈´𝕩)-bl↩⌊´𝕩)≤2×l}⟜𝕩⍟⊢((m=1)×32<l)◶0‿(1×´Int⌜)d
+  r◶⟨GroupLen⊸GroupOrd (𝕘⊑⟨-⟜bl,bu⊸-⟩)⌜ ⋄ 𝔽{𝕩⋄
+    # Merge sort
+    GT←(m 𝔽○(⊑⟜d) _getCellCmp 0)>0˜
+    B←l⊸≤◶⊢‿l
+    (↕l){
+      i←-d←𝕨 ⋄ j←ei←ej←0
+      e←3 ⋄ G←GT○(⊑⟜(m⊸×⌜⍟(1-m=1)𝕩)) ⋄ c←⟨G,0,1,2⟩
+      s←(8≤d)⊑⟨+,{(𝕩-1){𝕩⋄e↩2⋄j↩i⋄i↩𝕩}⍟(1-G)⍟(1-e)𝕩}⟩
+      N←{i↩d+𝕨⋄ej↩B d+ei↩B j↩d+𝕩⋄e↩l≤j⋄S ei⋄i R j}
+      R←{𝕨e◶c𝕩}◶{e+↩2×ei=i↩1+𝕨⋄𝕨}‿{e+↩ej=j↩1+𝕩⋄𝕩}‿N
+      {(i R j)⊑𝕩}⟜𝕩⌜𝕩
+    }´(2⋆ni-1+⊢)⌜↕ni←⌈2 Log l+l=0
+  }⟩𝕩
 }
 
 Indices←{
@@ -118,7 +125,7 @@ SelSub←{
 _under_←{
   i←↕l←1×´s←≢𝕩
   v←⥊𝕨𝔽○𝔾𝕩
-  g←Cmp0 _grade gi←⥊𝔾s⥊i
+  g←Cmp0 _grade_ 0 gi←⥊𝔾s⥊i
   P←(≠g)⊸≤◶⟨(⊑⟜g)⊑gi˜,l⟩
   e←P j←0
   s⥊{e=𝕩}◶⟨⊑⟜(⥊𝕩),{𝕩⋄r←(j⊑g)⊑v⋄e↩P j↩1+j⋄r}⟩⌜i
@@ -151,7 +158,7 @@ Merge←{
 √ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)
 | ← (×⟜×     ⊘ {𝕩-𝕨×⌊𝕩÷𝕨}) _perv
 ⌊ ↩ (⌊       ⊘ {(𝕨>𝕩)⊑𝕨‿𝕩}) _perv
-⌈ ← (-∘⌊∘-   ⊘ {(𝕨<𝕩)⊑𝕨‿𝕩}) _perv
+⌈ ↩ (-∘⌊∘-   ⊘ {(𝕨<𝕩)⊑𝕨‿𝕩}) _perv
 ¬ ← 1+-
 ∧ ←            ×
 ∨ ←            (+-×)
@@ -342,7 +349,7 @@ IndexOf←{
 }
 UniqueMask←{
   ! 1≤=𝕩
-  g←Cmp _grade 𝕩
+  g←Cmp _grade_ 0 𝕩
   (1¨⊸GroupOrd g)⊏0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
 }
 Find←{
@@ -414,8 +421,8 @@ _bins←{
   (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)⌜↕cx
 }
 
-⍋ ←   Cmp _grade   ⊘ (  Cmp _bins)
-⍒ ← -∘Cmp _grade   ⊘ (-∘Cmp _bins)
+⍋ ← Cmp  _grade_ 0 ⊘ (Cmp  _bins)
+⍒ ← Cmp˜ _grade_ 1 ⊘ (Cmp˜ _bins)
 ∧ ↩ ⍋⊸⊏            ⊘ ∧
 ∨ ↩ ⍒⊸⊏            ⊘ ∨
 
