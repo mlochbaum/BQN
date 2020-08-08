@@ -86,10 +86,13 @@ let table = m1(f => (x,w) => !has(w)
   : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
 let scan = m1(f => (x,w) => {
   let s=x.sh;assert(!has(w)&&x.a&&s.length>0);
-  let c=1;for(let i=1;i<s.length;i++)c*=s[i];
-  let l=x.length,r=Array(l),i=0;
-  for(;i<c;i++) r[i]=x[i];
-  for(;i<l;i++) r[i]=call(f,x[i],r[i-c]);
+  let l=x.length,r=Array(l);
+  if (l>0) {
+    let c=1;for(let i=1;i<s.length;i++)c*=s[i];
+    let i=0;
+    for(;i<c;i++) r[i]=x[i];
+    for(;i<l;i++) r[i]=call(f,x[i],r[i-c]);
+  }
   return arr(r,s);
 });
 
