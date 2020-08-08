@@ -1,3 +1,6 @@
+# BQN runtime. Requires:
+# IsArray Type Log  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`
+
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
 ⊘ ← {𝕨((1{𝔽}𝕨)-0)◶𝔽‿𝔾 𝕩}
 ⊢ ← {𝕩}
@@ -12,8 +15,8 @@
 # LIMITED to numeric arguments for scalar cases
 < ← {⟨⟩⥊⟨𝕩⟩} ⊘ (1-≤˜)
 > ←            (1-≤)
-≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
-≠ ← (0<=)◶⟨1⋄0⊑≢⟩
+≢ ↩ IsArray◶⟨⟩‿≢   # LIMITED to monadic case
+≠ ← (0<=)◶⟨1⋄0⊑≢⟩  # LIMITED to monadic case
 
 _fold←{
   ! 1==𝕩
@@ -24,9 +27,6 @@ _fold←{
 }
 ´ ← _fold
 
-
-#⌜
-# LAYER 2: Pervasion
 
 ToArray ← <⍟(1-IsArray)
 Int←IsArray◶⟨⌊⊸=,0⟩
@@ -151,10 +151,6 @@ SelSub←{
 }
 
 
-#⌜
-# LAYER 3: Remove other limits
-# Now all implementations are full except ∾ and ⊑; ↕ is monadic only
-
 Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Reshape←{
   ! 1≥=𝕨
@@ -178,10 +174,6 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 
 ≡ ← Depth          ⊘ Match
 ≢ ↩ ≢              ⊘ (¬Match)
-
-
-#⌜
-# LAYER 4: Operators
 
 
 DropV← {⊑⟜𝕩¨𝕨+↕𝕨-˜≠𝕩}
@@ -223,9 +215,6 @@ _insert←{
 }
 ˝ ← _insert
 
-
-#⌜
-# LAYER 5: Structural functions
 
 _onAxes_←{
   F←𝔽
@@ -291,9 +280,6 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 ⌽ ← Reverse        ⊘ Rotate
 / ← Indices        ⊘ Replicate
 
-
-#⌜
-# LAYER 6: Everything else
 
 Join←(1≠=)◶⟨∨´1≠=¨,1⟩◶{
   # List of lists
