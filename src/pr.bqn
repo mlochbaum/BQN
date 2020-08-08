@@ -24,7 +24,7 @@ Inc ← {
 }
 
 # Required functionality passed in as an argument
-pnam ← ⟨"IsArray", "Type", "Log"⟩∾names⊏˜chr⊐"!+-×÷⋆⌊=≤≢⥊⊑↕⌜`"
+pnam ← ⟨"IsArray","Type","Log","GroupLen","GroupOrd"⟩∾names⊏˜chr⊐"!+-×÷⋆⌊=≤≢⥊⊑↕⌜`"
 
 
 E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩

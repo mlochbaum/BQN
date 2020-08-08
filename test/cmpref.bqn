@@ -32,6 +32,8 @@ pre ← ⟨
   "IsArray ← 0≠≡"
   "Type    ← ⟨⟩⥊0⊸⥊"
   "Log     ← ⋆⁼"
+  "GroupLen← ≠¨⊔"
+  "GroupOrd← ∾⊔∘⊢"
   '!' Mod "{𝕩 ⋄ ≤1}⍟¬"
 ⟩∾Mod⟜⥊¨ "+-×÷⋆⌊=≤≢⥊⊑↕⌜`"
 
