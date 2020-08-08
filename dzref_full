@@ -5,7 +5,7 @@
 # BQN runtime; use plain dzref if you just want to run BQN as it's much
 # faster and supports inverses better.
 
-impl ← •LNS "impl.bqn"
+impl ← •LNS "src/r.bqn"
 
 X←Raw←{≤4}
 {

@@ -2,7 +2,7 @@
 
 # Process BQN runtime
 
-impl ← •LNS •path∾"../impl.bqn"
+impl ← •LNS •path∾"r.bqn"
 
 chrs←⟨
   "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"

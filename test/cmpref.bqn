@@ -2,7 +2,7 @@
 
 # Compile and run the primitive implementations, and testref.bqn
 
-impl ← •LNS •path∾"../impl.bqn"
+impl ← •LNS •path∾"../src/r.bqn"
 
 drun ← ((<•path∾"../c.bqn")∾<"DRun") •EX •path∾"../dzref"
 
