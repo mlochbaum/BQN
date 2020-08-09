@@ -12,4 +12,4 @@ Gen ← L G
 GenLong ← ∾ (1‿2/⟨"  new Uint8Array("∾∾⟜")"⋄((•UCS 10)∾" ,")⊸∾⟩) {𝕎𝕩}¨ G
 • ← ∾∾⟜(•UCS 10)¨ Gen¨ •args
 #• ← GenLong •EX •path∾"pr.bqn"
-#• ← GenLong ∾∾⟜(•UCS 10)¨ (•LNS •path∾"c.bqn")∾<"Compile"
+#• ← GenLong ∾∾⟜(•UCS 10)¨ •LNS •path∾"c.bqn"
