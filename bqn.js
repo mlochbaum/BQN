@@ -61,7 +61,7 @@ let run = (B,O,S) => { // Bytecode, Objects, Sections/blocks
       case 15:{s.push(D[num()](e));break;}
       case 21:{let v=e[num()][num()];assert(v!==null);s.push(v);break;}
       case 22:{s.push([e[num()],num()]);break;}
-      case 25:if(s.length!==1){console.log(p-28,B.length,B.slice(p-28,p));console.log(s);}assert(s.length===1);return s[0];
+      case 25:assert(s.length===1);return s[0];
     }
   }
   try {
