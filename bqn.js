@@ -25,7 +25,7 @@ let run = (B,O,S) => { // Bytecode, Objects, Sections/blocks
   // Turn each block into an environment=>pushable value map
   let D = S.map(([t,i,st,l]) => e => {
     let v=Array(l).fill(null);
-    let c = sv => vm(st,[sv.concat(v)].concat(e));
+    let c = sv => vm(st,[sv.concat(v),e]);
     return [
       n => n([]),
       n => {let r=(f  )=>n([r,f  ]);r.m1=1;return r;},
@@ -35,6 +35,7 @@ let run = (B,O,S) => { // Bytecode, Objects, Sections/blocks
       c
     ][i]);
   });
+  let ge = (e,i) => i?ge(e[1],i-1):e[0];
   // Execute
   let vm = (p,e) => { // Program counter, Environment
     let s=[]; // Stack
@@ -59,8 +60,8 @@ let run = (B,O,S) => { // Bytecode, Objects, Sections/blocks
       case 13:        {let[x,f,i]=s.splice(-3);s.push(set(0,i,call(f,x,get(i))));break;}
       case 14:{s.pop();break;}
       case 15:{s.push(D[num()](e));break;}
-      case 21:{let v=e[num()][num()];assert(v!==null);s.push(v);break;}
-      case 22:{s.push([e[num()],num()]);break;}
+      case 21:{let v=ge(e,num())[num()];assert(v!==null);s.push(v);break;}
+      case 22:{s.push([ge(e,num()),num()]);break;}
       case 25:assert(s.length===1);return s[0];
     }
   }
