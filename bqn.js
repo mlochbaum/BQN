@@ -2,13 +2,10 @@
 let assert = x => { if (!x) throw Error(); }
 let has = x => x!==undefined;
 let call = (f,x,w) => {
-  let ff = f;
-  if (typeof f === "function") {
-    assert(!f.m1&&!f.m2);
-  } else {
-    ff = ()=>f;
-  }
-  return !has(x) ? x : ff(x,w);
+  if (x===undefined) return x;
+  if (typeof f !== "function") return f;
+  assert(!f.m1&&!f.m2);
+  return f(x, w);
 }
 let get1= i => (v=>(assert(v!==null),v))(i[0][i[1]]);
 let get = i => i.a ? arr(i.map(get),i.sh) : get1(i);
