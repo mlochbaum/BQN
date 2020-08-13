@@ -1,4 +1,5 @@
 // Virtual machine
+let err = () => { throw Error(); }
 let assert = x => { if (!x) throw Error(); }
 let has = x => x!==undefined;
 let call = (f,x,w) => {
@@ -7,66 +8,72 @@ let call = (f,x,w) => {
   assert(!f.m1&&!f.m2);
   return f(x, w);
 }
-let get1= i => (v=>(assert(v!==null),v))(i[0][i[1]]);
-let get = i => i.sh ? arr(i.map(get),i.sh) : get1(i);
-let set = (d,id,v) => {
+
+let get = x => x.e ? x.e[x.p] : arr(x.map(c=>get(c)), x.sh);
+let set = (d, id, v) => {
   let eq = (a,b) => a.length===b.length && a.every((e,i)=>e===b[i]);
-  if (id.sh) {
-    assert(v.sh&&eq(id.sh,v.sh)); id.map((n,j)=>set(d,n,v[j]));
+  if (id.e) {
+    assert((+id.e[id.p]===null) !== d); id.e[id.p] = v;
   } else {
-    let [a,i]=id; assert((a[i]===null)==d); a[i]=v;
+    assert(v.sh && eq(id.sh,v.sh)); id.map((n,j)=>set(d,n,v[j]));
   }
   return v;
 }
+
+let genjs = (B, p) => { // Bytecode -> Javascript compiler
+  let rD = 0;
+  let r = "";
+  let szM = 1;
+  let rV = n => { szM=Math.max(szM,n+1); return 'v'+n; };
+  let rP = val => rV(rD++) + "="+val+";";
+  let rG = () => rV(--rD);
+  let num = () => {
+    let b=128,n=B[p++];
+    if (n<b) return n;
+    let i=1, t=0;
+    do { t+=i*(n-b); i*=b; n=B[p++]; } while (n>=b);
+    return t+i*n;
+  }
+  let ge = n => "e"+".p".repeat(n);
+  loop: while(true) { r+="\n";
+    if (p>B.length) err();
+    switch(B[p++]) {
+      case 0:          { r+= rP("O["+num()+"]");                                                                                               break; }
+      case 3: case  4: { let n=num(); rD-= n; r+= rP("list(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])");                      break; }
+      case 5: case 16: { let [  f,x]=[     rG(),rG()]; r+=rP("call("+f+","+x      +")");                                                       break; }
+      case 6: case 17: { let [w,f,x]=[rG(),rG(),rG()]; r+=rP("call("+f+","+x+","+w+")");                                                       break; }
+      case 7:          { let [f,m  ]=[rG(),rG()     ]; r+="if(!"+m+".m1)err();"+rP(m+"("+f      +")");                                         break; }
+      case 8:          { let [f,m,g]=[rG(),rG(),rG()]; r+="if(!"+m+".m2)err();"+rP(m+"("+f+","+g+")");                                         break; }
+      case 9:          { let [  g,h]=[     rG(),rG()]; r+=rP("((  g,h)=>(x,w)=>call(g,call(h,x,w))"+                  ")("      +g+","+h+")"); break; }
+      case 10:case 19: { let [f,g,h]=[rG(),rG(),rG()]; r+=rP("((f,g,h)=>(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f))("+f+","+g+","+h+")"); break; }
+      case 11:         { let [i,  v]=[rG(),     rG()]; r+=rP("set(1,"+i+","+v                       +")");                                     break; }
+      case 12:         { let [i,  v]=[rG(),     rG()]; r+=rP("set(0,"+i+","+v                       +")");                                     break; }
+      case 13:         { let [i,f,x]=[rG(),rG(),rG()]; r+=rP("set(0,"+i+",call("+f+","+x+",get("+i+")))");                                     break; }
+      case 14:         { rD--;                                                                                                                 break; }
+      case 15:         { r+= rP("D["+num()+"](e)");                                                                                            break; }
+      case 21:         { r+= rP(ge(num())+"["+num()+"]")+"if("+rV(rD-1)+"===null)err();";                                                      break; }
+      case 22:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                                              break; }
+      case 25:         { if(rD!==1)err(); r+= "return v0;";                                                                                    break loop; }
+    }
+  }
+  return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r;
+}
 let run = (B,O,S) => { // Bytecode, Objects, Sections/blocks
-  // Turn each block into an environment=>pushable value map
-  let D = S.map(([t,i,st,l]) => e => {
-    let v=Array(l).fill(null);
-    let c = sv => vm(st,[sv.concat(v),e]);
-    return [
-      n => n([]),
-      n => {let r=(f  )=>n([r,f  ]);r.m1=1;return r;},
-      n => {let r=(f,g)=>n([r,f,g]);r.m2=1;return r;}
-    ][t]([
-      v => {let r=(x,w)=>c([r,x,w].concat(v));return r;},
-      c
-    ][i]);
+  let D = S.map(([type,imm,pos,varam],i) => {
+    let I = imm? 0 : 3; // Operand start
+    let def = new Array(I + (type==0?0:type+1) + varam).fill(null);
+    let c = genjs(B, pos);
+    if (imm) c =               "const e=[...e2];e.p=oe;"+c;
+    else c = "const fn=(x, w)=>{const e=[...e2];e.p=oe;e[0]=fn;e[1]=x;e[2]=w;"+c+"};return fn;";
+    
+    if (type===0) c = "let e2=def;"+c;
+    if (type===1) c = "const mod=(f  ) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;"                +c+"}; mod.m1=1;return mod;";
+    if (type===2) c = "const mod=(f,g) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;e2["+(I+2)+"]=g;"+c+"}; mod.m2=1;return mod;";
+    return Function("'use strict'; return (err,has,call,get,set,list,O,def) => D => oe => {"+c+"};")()
+                                          (err,has,call,get,set,list,O,def);
   });
-  let ge = (e,i) => i?ge(e[1],i-1):e[0];
-  // Execute
-  let vm = (p,e) => { // Program counter, Environment
-    let s=[]; // Stack
-    let num = () => {
-      let b=128,n=B[p++];
-      if (n<b) return n;
-      let i=1, t=0;
-      do { t+=i*(n-b); i*=b; n=B[p++]; } while (n>=b);
-      return t+i*n;
-    }
-    while (1) switch(B[p++]) {
-      case 0: s.push(O[num()]);break;
-      case 3: case 4: {let a=s.splice(s.length-num());s.push(list(a));break;}
-      case 5: case 16:{let[x,f]  =s.splice(-2);s.push(call(f,x  ));break;}
-      case 6: case 17:{let[x,f,w]=s.splice(-3);s.push(call(f,x,w));break;}
-      case 7:         {let[m,f]  =s.splice(-2);assert(m.m1);s.push(m(f  ));break;}
-      case 8:         {let[g,m,f]=s.splice(-3);assert(m.m2);s.push(m(f,g));break;}
-      case 9:         {let[h,g]  =s.splice(-2);s.push((x,w)=>call(g,call(h,x,w)));break;}
-      case 10:case 19:{let[h,g,f]=s.splice(-3);s.push((x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f));break;}
-      case 11:        {let[v,  i]=s.splice(-2);s.push(set(1,i,v));break;}
-      case 12:        {let[v,  i]=s.splice(-2);s.push(set(0,i,v));break;}
-      case 13:        {let[x,f,i]=s.splice(-3);s.push(set(0,i,call(f,x,get(i))));break;}
-      case 14:{s.pop();break;}
-      case 15:{s.push(D[num()](e));break;}
-      case 21:{let v=ge(e,num())[num()];assert(v!==null);s.push(v);break;}
-      case 22:{s.push([ge(e,num()),num()]);break;}
-      case 25:assert(s.length===1);return s[0];
-    }
-  }
-  try {
+  D.forEach((d,i) => {D[i]=d(D)});
   return D[0]([]);
-  } catch (err) {
-  return "error"
-  }
 }
 
 // Runtime
