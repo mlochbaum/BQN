@@ -1,5 +1,7 @@
-body {
+body, input {
   color: #0a0a0a;
+}
+body {
   margin: 1em auto;
   max-width: 46em;
   padding: 0 0.62em;
@@ -27,7 +29,7 @@ table th {
   border-bottom-color: #5a5f5d;
 }
 
-pre, code {
+pre, code, .bqn {
   background-color: #e3e7e7;
   color: #292929;
   border: 1px solid #bdcac4;
@@ -38,12 +40,14 @@ code {
   white-space: nowrap;
   border-width: 0.3px;
 }
-pre {
+pre, .bqn {
   font-family: monospace;
-  margin: 1.6em 0.4em;
-  padding: 0.8em;
   font-size: 1.16em;
   line-height: 1.2;
+}
+pre {
+  margin: 1.6em 0.4em;
+  padding: 0.8em;
 }
 
 .Value        { color: #1f2020; }
@@ -65,9 +69,10 @@ a:link        { color: #0b39dc; text-decoration-color:#0b39dc91; }
 a:visited     { color: #3d155f; }
 
 @media (prefers-color-scheme: dark) {
-  body        { color: #d6d7d9; background-color: #141515; }
-  pre, code   { color: #969698; background-color: #0c0d0e; border-color: #040509; }
-  code        { border-color: #0c0d0e; background-color: #0f1011; }
+  body, input { color: #d6d7d9; background-color: #141515; }
+  input       { border-color: #0c0d0e; }
+  pre, code, .bqn { color: #969698; background-color: #0c0d0e; border-color: #040509; }
+  code            { border-color: #0c0d0e; background-color: #0f1011; }
   table td, th{ border-color: #636967; }
   table th    { border-color: #88918c; background-color: #292a2b; }
 

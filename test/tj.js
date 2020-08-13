@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-let bqn = require(__dirname+'/../bqn.js');
+let bqn = require(__dirname+'/../docs/bqn.js');
 let load = f=>require('fs').readFileSync(__dirname+'/'+f,'utf8');
 let args = process.argv.slice(2);
 let ref = args[0]==="-ref";

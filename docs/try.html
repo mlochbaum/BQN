@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>BQN online REPL</title>
+  <link href="style.css" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; }
+    #code { width:100%; outline:none; }
+    #run, #perm { float:right; }
+    .cont { margin:1.3em 0; }
+    #rslt { white-space:pre; }
+    #rslt.err { color:#d11; }
+    #kb { line-height:1.5; width:100%; padding:0.3em 0; background:inherit; }
+    #kb span { cursor:default; padding:1px; }
+    #kb span:hover { background-color:#bce; }
+    #kb.backslash  { background-color:#cee; }
+    @media (prefers-color-scheme:dark) {
+      #kb span:hover { background-color:#237; }
+      #kb.backslash  { background-color:#1e2430; }
+    }
+  </style>
+</head>
+<body>
+  <a href="https://mlochbaum.github.io/BQN/" title='BQN homepage'>BQN</a>
+  <a id="perm" href="#" title='Permalink'>#</a>
+  <div class="cont">
+    <div id="kb" class="bqn"></div>
+    <textarea id="code" class="bqn" rows="8" autofocus></textarea>
+    <input id="run" type="submit" value="Run (or shift-enter)">
+  </div>
+  <div id="rslt"></div>
+
+<script src="bqn.js"></script>
+<script>
+let body = document.body;
+let doc={}; // html elements with an id
+body.querySelectorAll('[id]').forEach(e=>doc[e.id]=e);
+let repl = ()=>{
+  try {
+    let s=doc.code.value;
+    doc.rslt.classList.remove('err');
+    doc.rslt.textContent=""+bqn(s);
+  } catch(e) {
+  //if (console&&console.error) console.error(e.stack);
+    doc.rslt.classList.add('err');
+    doc.rslt.textContent=e;
+  }
+}
+doc.run.onclick = repl;
+
+let keymode=0; // 1 for backslash
+doc.code.onkeydown = ev => {
+  let k = ev.which;
+  if (16<=k && k<=20) {
+    return;
+  } if (ev.shiftKey && k==13) { // shift-enter
+    repl(); return false;
+  } if (keymode) {
+    keymode = 0;
+    doc.kb.classList.remove('backslash');
+    let c = keys[ev.key];
+    if (c) return typeChar(ev.target, c, ev);
+  } else if (k===220) { // \
+    keymode = 1;
+    doc.kb.classList.add('backslash');
+    ev.preventDefault();
+  }
+}
+let typeChar = (t, c, ev) => {
+  ev.preventDefault();
+  let v = t.value;
+  let i = t.selectionStart;
+  t.value = v.slice(0,i)+c+v.slice(t.selectionEnd);
+  t.selectionStart = t.selectionEnd = i+c.length;
+  return false;
+}
+
+let keydesc='+Conjugate;Add_-Negate;Subtract_×Sign;Multiply_÷Reciprocal;Divide_⋆Exponential;Power_√Square Root;Root_⌊Floor;Minimum_⌈Ceiling;Maximum_∧Sort Up;And_∨Sort Down;Or_¬Not;Span_|Absolute Value;Modulus_≤Less Than or Equal to_<Enclose;Less Than_>Merge;Greater Than_≥Greater Than or Equal to_=Rank;Equals_≠Length;Not Equals_≡Depth;Match_≢Shape;Not Match_⊣Identity;Left_⊢Identity;Right_⥊Deshape;Reshape_∾Join;Join to_≍Solo;Couple_↑Prefixes;Take_↓Suffixes;Drop_↕Range;Windows_⌽Reverse;Rotate_⍉Transpose;Reorder axes_/Indices;Replicate_⍋Grade Up;Bins Up_⍒Grade Down;Bins Down_⊏First Cell;Select_⊑First;Pick_⊐Index of_⊒Occurrence Count;Progressive Index of_∊Unique Mask;Member of_⍷Deduplicate;Find_⊔Group Indices;Group_!Assert;Assert with message_˜Self/Swap_∘Atop_○Over_⊸Before/Bind_⟜After/Bind_⌾Under_⊘Valences_◶Choose_˘Cells_⎉Rank_¨Each_⚇Depth_⌜Table_⁼Undo_⍟Repeat_´Fold_˝Insert_\`Scan_←Define_↩Change_→Return_⋄Separator;(equivalent to ,)_⟨Begin list_⟩End list_‿Strand_·Nothing_•System_𝕤Current function (as subject)_𝕊Current function_𝕨Left argument_𝕎Left argument (as function)_𝕩Right argument_𝕏Right argument (as function)_𝕣Current modifier_𝕗Modifier left operand (as subject)_𝔽Modifier left operand_𝕘2-modifier right operand (as subject)_𝔾2-modifier right operand'.split(/[\n_]/);
+let kk=Array.from('`1234567890=~!@#$%^&*()_+qwertyuiop[]QWERTYUIOP{}asdfghjkl;\\ASDFGHJKL:"|zxcvbnm,./ZXCVBNM<>? ');
+let kv=Array.from('˜˘¨⁼⌜´˝7∞¯•×¬⎉⚇⍟◶⊘⎊⍎⍕⟨⟩√⋆⌽𝕨∊↑∧y⊔⊏⊐π←→↙𝕎⍷𝕣⍋YU⊑⊒⍳⊣⊢⍉𝕤↕𝕗𝕘⊸∘○⟜⋄\\↖𝕊D𝔽𝔾HJ⌾L·˙|⥊𝕩↓∨⌊n≡∾≍≠Z𝕏C⍒⌈N≢≤≥?‿');
+let keys={}, revkeys={};
+kk.map((k,i)=>{keys[k]=kv[i];revkeys[kv[i]]=k;});
+doc.kb.innerHTML = keydesc.map(d=>{
+  let c = Array.from(d)[0];
+  let t = d.slice(c.length).replace(';','\n');
+  let k = revkeys[c]; if (k) t += '\n\\ '+k;
+  return '<span title="'+t+'">'+c+'</span>'
+}).join("&#8203;"); // zero-width space
+doc.kb.onmousedown = ev => {
+  let t = ev.target;
+  if (t.nodeName === 'SPAN') {
+    return typeChar(doc.code, t.textContent, ev);
+  }
+}
+
+doc.perm.onmouseover = doc.perm.onfocus = () => {
+  doc.perm.href='#code='+escape(doc.code.value)
+}
+
+if (location.hash) {
+  let hp={};
+  location.hash.substring(1).split(',').map(s=>{
+    let[k,v]=s.split('=');hp[k]=unescape(v)
+  });
+  doc.code.value = hp.code||'';
+  if (hp.run) repl();
+}
+doc.code.focus();
+</script>
+</body>
+</html>
