@@ -19,7 +19,6 @@ Nat←IsArray◶⟨0⊸≤×⌊⊸=,0⟩
 > ←            (1-≤)
 ⌊ ↩ ⌊        ⊘ (>⊑{𝕨‿𝕩})
 ⌈ ← -∘⌊∘-    ⊘ (<⊑{𝕨‿𝕩})
-≢ ↩ IsArray◶⟨⟩‿≢   # LIMITED to monadic case
 ≠ ← (0<=)◶⟨1⋄0⊑≢⟩  # LIMITED to monadic case
 
 _fold←{
@@ -142,6 +141,7 @@ match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
 Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 
 ≡ ← Depth          ⊘ Match
+≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
 
 Merge←{
   c←≢0⊑⥊𝕩
@@ -187,8 +187,6 @@ Range←{
   M←{!1==𝕩⋄(<⟨⟩)⥊⊸∾⌜´I⌜𝕩}
   IsArray◶I‿M 𝕩
 }
-
-≢ ↩ ≢              ⊘ (¬Match)
 
 
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
