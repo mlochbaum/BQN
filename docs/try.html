@@ -9,7 +9,7 @@
     #code { width:100%; outline:none; }
     #run, #perm { float:right; }
     .cont { margin:1.3em 0; }
-    #rslt { white-space:pre; }
+    #rslt { border:none; background:none; }
     #rslt.err { color:#d11; }
     #kb { line-height:1.5; width:100%; padding:0.3em 0; background:inherit; }
     #kb span { cursor:default; padding:1px; }
@@ -29,7 +29,7 @@
     <textarea id="code" class="bqn" rows="8" autofocus></textarea>
     <input id="run" type="submit" value="Run (or shift-enter)">
   </div>
-  <div id="rslt"></div>
+  <pre id="rslt"></pre>
 
 <script src="bqn.js"></script>
 <script>
@@ -40,7 +40,7 @@ let repl = ()=>{
   try {
     let s=doc.code.value;
     doc.rslt.classList.remove('err');
-    doc.rslt.textContent=""+bqn(s);
+    doc.rslt.textContent=fmt(bqn(s));
   } catch(e) {
   //if (console&&console.error) console.error(e.stack);
     doc.rslt.classList.add('err');
