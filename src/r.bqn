@@ -125,8 +125,9 @@ Rot ← {!Int𝕨 ⋄ l←≠𝕩 ⋄ 𝕨-↩l×⌊𝕨÷l ⋄ ((𝕨+⊢-l×(l
 
 _under_←{
   i←↕l←1×´s←≢𝕩
-  v←⥊𝕨𝔽○𝔾𝕩
-  g←Cmp0 _grade_ 0 gi←⥊𝔾s⥊i
+  v←𝕨𝔽○𝔾𝕩 ⋄ gi←𝔾s⥊i
+  n←(IsArray gi)⊑{⟨𝕩⟩}‿⥊ ⋄ v↩N v ⋄ gi↩N gi
+  g←Cmp0 _grade_ 0 gi
   P←(≠g)⊸≤◶⟨(⊑⟜g)⊑gi˜,l⟩
   e←P j←0
   s⥊{e=𝕩}◶⟨⊑⟜(⥊𝕩),{𝕩⋄r←(j⊑g)⊑v⋄e↩P j↩1+j⋄r}⟩⌜i
