@@ -54,7 +54,7 @@ doc.code.onkeydown = ev => {
   let k = ev.which;
   if (16<=k && k<=20) {
     return;
-  } if (ev.shiftKey && k==13) { // shift-enter
+  } if (k==13 && (ev.shiftKey||ev.ctrlKey||ev.altKey||ev.metaKey)) { // *-enter
     repl(); return false;
   } if (keymode) {
     keymode = 0;
