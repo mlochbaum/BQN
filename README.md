@@ -2,7 +2,7 @@
 
 # BQN: finally, an APL for your flying saucer
 
-*This repository does not yet have a working implementation. However, there are some incomplete implementations you can use, with one you can try online [here](https://mlochbaum.github.io/BQN2NGN/web/index.html). See [running.md](running.md) for more.*
+*Try it [here](https://mlochbaum.github.io/BQN/try.html)! The online version is mainly good for small programs currently; see [running.md](running.md) for more options.*
 
 **BQN** is a new programming language in the APL lineage, which aims to remove inconsistent and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. BQN is aimed at existing and aspiring APL-family programmers, and using it requires a solid understanding of functions and multidimensional arrays. However, because of its focus on providing simple, consistent, and powerful array operations, BQN should also be a good language for learning array programming and building stronger array intuition.
 
@@ -32,7 +32,7 @@ Rather strange, most likely:
 
         ⊑+`∘⌽⍟12↕2  # The 12th Fibonacci number
 
-For longer samples, you can [gaze into the abyss](c.bqn) that is the (incomplete) self-hosted compiler, or take a look at the friendlier [markdown processor](md.bqn) used to format and highlight documentation files. There are also [some translations](examples/fifty.bqn) from ["A History of APL in 50 Functions"](https://www.jsoftware.com/papers/50/) here.
+For longer samples, you can [gaze into the abyss](src/c.bqn) that is the self-hosted compiler, or the [shallower but wider abyss](src/r.bqn) of the runtime, or take a look at the friendlier [markdown processor](md.bqn) used to format and highlight documentation files. There are also [some translations](examples/fifty.bqn) from ["A History of APL in 50 Functions"](https://www.jsoftware.com/papers/50/) here.
 
 ## Array model
 

@@ -4,12 +4,6 @@
 
 BQN replaces the [Key](https://aplwiki.com/wiki/Key) operator from J or Dyalog APL, and [many forms of partitioning](https://aplwiki.com/wiki/Partition_representations), with a single (ambivalent) Group function `⊔`. This function is somewhat related to the K function `=` of the same name, but results in an array rather than a dictionary.
 
-The BQN prototype does not implement this function: instead it uses `⊔` for a Group/Key function very similar to `{⊂⍵}⌸` in Dyalog APL, and also has a Cut function `\`. The new BQN Group on numeric arguments (equivalently, rank-1 results) can be defined like this:
-
-    ⊔↩((↕1+(>⌈´))=¨<)∘⊣ /¨⟜< ↕∘≠⍠⊢
-
-Once defined, the old BQN Key (dyadic) is `⍷⊸⊐⊸⊔` and Group (monadic) is `⍷⊸⊐⊔↕∘≠` using the Deduplicate or Unique Cells function `⍷` (BQN2NGN spells it `∪`). Cut on matching-length arguments is `` +`⊸⊔ ``.
-
 ## Definition
 
 Group operates on a numeric list of indices and an array, treated as a list of its major cells or "values", to produce a list of groups, each of which is a selection from those cells. The two arrays have the same length, and each value cell is paired with the index at the same position. That index indicates the result group the cell should go into, with an "index" of ¯1 indicating that it should be dropped and not appear in the result.

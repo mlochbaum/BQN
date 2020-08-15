@@ -2,13 +2,15 @@
 
 # How to run BQN
 
-BQN is in a very early stage of development, and there is currently no complete implementation of the language. However, it's a relatively simple language to implement, and a few implementations come close.
+BQN is in an early stage of development, and no implementation is complete yet. However, it's a relatively simple language to implement, and a few implementations come close. At the moment, dzaima/BQN is the most usable version, with good performance and error reporting.
 
-### BQN2NGN
+### BQN
 
-[BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript build to experiment with the langauge, which is now abandoned. Because you can [use it online](https://mlochbaum.github.io/BQN2NGN/web/index.html), this is probably the quickest way to get started with BQN. It has good primitive support, with the main issues being that it has no Fold and Insert is spelled `´` even though current BQN uses `˝`, that it has a different version of [Group](doc/group.md) (`⊔`), and that it is missing Choose (`◶`). There are also some spelling differences, with Deduplicate (`⍷`) spelled with `∪` and Valences (`⊘`) spelled with `⍠`. It is missing value blocks and function headers.
+This repository contains a BQN implementation written mainly in BQN: the bytecode [compiler](src/c.bqn) is completely self-hosted, and the [majority of the runtime](src/r.bqn) is written in BQN except that it is allowed to define primitives; some preprocessing turns the primitives into identifiers. The remaining part, a VM, can be implemented in any language to obtain a version of BQN running in that language. A [Javascript implementation](docs/bqn.js) allows BQN to be run as a REPL (running locally) from [this webpage](https://mlochbaum.github.io/BQN/try.html) or in Node.js as a library. The bytecode is also the same as dzaima/BQN's format, and [another version](c.bqn) of the compiler runs on and targets dzaima+reference BQN. This version also contains an earlier experiment targetting [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly) that works only on a very small subset of BQN.
 
-For automated testing I run BQN2NGN using the `bqn` executable, which is just a symlink to `apl.js` in the BQN2NGN repository. It requires Node to run.
+This version is not yet suitable for serious programming. The runtime checks for errors but the compiler does not, so syntax errors go unreported. It does not yet support function headers or multiple bodies. The Javascript-based compiler is also slow, taking about 0.05 seconds plus 1 second per kilobyte of source (this is purely due to the slow runtime, as dzaima+reference achieves 3ms/kB with the same compiler once warmed up).
+
+All versions have automated tests in the [test](test/) directory, with the self-hosted version ([test/tj.js](test/tj.js)) and WebAssembly backend  ([test/t.js](test/t.js)) tested with Javascript using Node and the dzaima/BQN backend tested with BQN itself ([test/bt](test/bt)).
 
 ### dzaima/BQN
 
@@ -16,7 +18,7 @@ For automated testing I run BQN2NGN using the `bqn` executable, which is just a 
 
 ### dzaima+reference BQN
 
-This repository contains a dzaima/BQN script `dzref` that fills in the gaps in primitive support using BQN implementations of primitives which are not yet up to spec ([reference implementations](spec/reference.bqn) of all primitives starting from a small set of pre-existing functions are part of BQN's specification). These alternate implementations can be slow.
+This repository contains a dzaima/BQN script `dzref` that fills in the gaps in primitive support using BQN implementations of primitives that are not yet up to spec ([reference implementations](spec/reference.bqn) of all primitives starting from a small set of pre-existing functions are part of BQN's specification).
 
 You can run `dzref` from ordinary dzaima/BQN using the `•EX` command; see for example [cshim.bqn](cshim.bqn). For testing, it is run as a Unix script, in which case it depends on an executable `dbqn` that runs dzaima/BQN on a file argument. I use the following script, using the path to a clone of dzaima/BQN for the jar file.
 
@@ -26,8 +28,6 @@ You can run `dzref` from ordinary dzaima/BQN using the `•EX` command; see for 
 
 The left argument for `•EX` or the shell arguments can contain up to two arguments for the script. The first is a file to run, and the second is BQN code to be run after it.
 
-### BQN
+### BQN2NGN
 
-This repository contains the beginnings of a self-hosted compiler for BQN, which is not yet complete enough to do any real programming with. There are currently several versions of the compiler: [nc.bqn](nc.bqn) is run with BQN2NGN, while [c.bqn](c.bqn) is run with dzaima+reference. Both compilers have a simple backend targetting [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly), and c.bqn additionally has a backend that targets dzaima/BQN's own bytecode, so that the compiler uses only BQN, but the runtime uses the Java implementations of BQN primitives from dzaima/BQN. The bytecode compiler has almost complete expression support and also supports blocks, but not headers or multiple bodies.
-
-All versions have automated tests in the [test](test/) directory, with the WebAssembly versions tested with Javascript using Node ([test/nt.js](test/nt.js) and [test/t.js](test/t.js) for BQN2NGN and dzaima/BQN respectively) and the dzaima/BQN backend tested with BQN itself ([test/bt](test/bt)).
+[BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript build to experiment with the langauge, which is now abandoned. It can be used online [here](https://mlochbaum.github.io/BQN2NGN/web/index.html). Major differences are that it has no Fold and Insert is spelled `´` even though current BQN uses `˝`, that it has a different version of [Group](doc/group.md) (`⊔`), and that it is missing Choose (`◶`). There are also some spelling differences, with Deduplicate (`⍷`) spelled with `∪` and Valences (`⊘`) spelled with `⍠`. It is missing value blocks and function headers.
