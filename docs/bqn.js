@@ -38,22 +38,22 @@ let genjs = (B, p) => { // Bytecode -> Javascript compiler
   loop: while(true) { r+="\n";
     if (p>B.length) err();
     switch(B[p++]) {
-      case 0:          { r+= rP("O["+num()+"]");                                                                                               break; }
-      case 3: case  4: { let n=num(); rD-= n; r+= rP("list(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])");                      break; }
-      case 5: case 16: { let [  f,x]=[     rG(),rG()]; r+=rP("call("+f+","+x      +")");                                                       break; }
-      case 6: case 17: { let [w,f,x]=[rG(),rG(),rG()]; r+=rP("call("+f+","+x+","+w+")");                                                       break; }
-      case 7:          { let [f,m  ]=[rG(),rG()     ]; r+="if("+m+".m!==1)err();"+rP(m+"("+f      +")");                                         break; }
-      case 8:          { let [f,m,g]=[rG(),rG(),rG()]; r+="if("+m+".m!==2)err();"+rP(m+"("+f+","+g+")");                                         break; }
-      case 9:          { let [  g,h]=[     rG(),rG()]; r+=rP("((  g,h)=>(x,w)=>call(g,call(h,x,w))"+                  ")("      +g+","+h+")"); break; }
-      case 10:case 19: { let [f,g,h]=[rG(),rG(),rG()]; r+=rP("((f,g,h)=>(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f))("+f+","+g+","+h+")"); break; }
-      case 11:         { let [i,  v]=[rG(),     rG()]; r+=rP("set(1,"+i+","+v                       +")");                                     break; }
-      case 12:         { let [i,  v]=[rG(),     rG()]; r+=rP("set(0,"+i+","+v                       +")");                                     break; }
-      case 13:         { let [i,f,x]=[rG(),rG(),rG()]; r+=rP("set(0,"+i+",call("+f+","+x+",get("+i+")))");                                     break; }
-      case 14:         { rD--;                                                                                                                 break; }
-      case 15:         { r+= rP("D["+num()+"](e)");                                                                                            break; }
-      case 21:         { r+= rP(ge(num())+"["+num()+"]")+"if("+rV(rD-1)+"===null)err();";                                                      break; }
-      case 22:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                                              break; }
-      case 25:         { if(rD!==1)err(); r+= "return v0;";                                                                                    break loop; }
+      case 0:          { r+= rP("O["+num()+"]");                                                                                           break; }
+      case 3: case  4: { let n=num(); rD-= n;      r+=rP("list(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])");              break; }
+      case 5: case 16: { let        f=rG(),x=rG(); r+=rP("call("+f+","+x      +")");                                                       break; }
+      case 6: case 17: { let w=rG(),f=rG(),x=rG(); r+=rP("call("+f+","+x+","+w+")");                                                       break; }
+      case 7:          { let f=rG(),m=rG();        r+="if("+m+".m!==1)err();"+rP(m+"("+f      +")");                                       break; }
+      case 8:          { let f=rG(),m=rG(),g=rG(); r+="if("+m+".m!==2)err();"+rP(m+"("+f+","+g+")");                                       break; }
+      case 9:          { let        g=rG(),h=rG(); r+=rP("((  g,h)=>(x,w)=>call(g,call(h,x,w))"+                  ")("      +g+","+h+")"); break; }
+      case 10:case 19: { let f=rG(),g=rG(),h=rG(); r+=rP("((f,g,h)=>(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f))("+f+","+g+","+h+")"); break; }
+      case 11:         { let i=rG(),       v=rG(); r+=rP("set(1,"+i+","+v                       +")");                                     break; }
+      case 12:         { let i=rG(),       v=rG(); r+=rP("set(0,"+i+","+v                       +")");                                     break; }
+      case 13:         { let i=rG(),f=rG(),x=rG(); r+=rP("set(0,"+i+",call("+f+","+x+",get("+i+")))");                                     break; }
+      case 14:         { rD--;                                                                                                             break; }
+      case 15:         { r+= rP("D["+num()+"](e)");                                                                                        break; }
+      case 21:         { r+= rP(ge(num())+"["+num()+"]")+"if("+rV(rD-1)+"===null)err();";                                                  break; }
+      case 22:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                                          break; }
+      case 25:         { if(rD!==1)err(); r+= "return v0;";                                                                                break loop; }
     }
   }
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r;
