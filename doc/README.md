@@ -21,3 +21,6 @@ Primitives:
 
 References:
 - [BQN-Dyalog dictionary](fromDyalog.md)
+
+Speculation:
+- [Possible language extensions](extensions.md)

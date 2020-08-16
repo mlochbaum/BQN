@@ -457,7 +457,7 @@
 <p>The characters <code><span class='Separator'>⋄</span></code> and <code><span class='Separator'>,</span></code> and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.</p>
 <h3 id="list-notation">List notation</h3>
 <p>Lists (1-dimensional arrays) are enclosed in angle brackets <code><span class='Bracket'>⟨⟩</span></code>, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character <code><span class='Ligature'>‿</span></code>. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.</p>
-<p>If added, <a href="#sets-and-dictionaries">sets and dictionaries</a> would also use a list-like notation.</p>
+<p>If added, <a href="doc/extensions.html#sets-and-dictionaries">sets and dictionaries</a> would also use a list-like notation.</p>
 <h3 id="blocks">Blocks</h3>
 <p>Blocks are written with curly braces <code><span class='Brace'>{}</span></code> and can be used to group expressions or define functions and modifiers. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned in order to evaluate the block. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return subjects and modifiers return functions. Blocks have lexical scope.</p>
 <p>The special names <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code>, which stand for arguments, and <code><span class='Value'>𝕗</span></code> and <code><span class='Value'>𝕘</span></code>, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate subjects and the uppercase forms <code><span class='Function'>𝕎𝕏𝔽𝔾</span></code> indicate functions. The type and syntactic role of the block is determined by its contents: a 2-modifier contains <code><span class='Value'>𝕘</span></code>, a 1-modifier contains <code><span class='Value'>𝕗</span></code> but not <code><span class='Value'>𝕘</span></code>, and a function contains neither but does have one of <code><span class='Value'>𝕨𝕩𝕤</span><span class='Function'>𝕎𝕏𝕊</span></code>. If no special names are present the block is an <em>immediate block</em> and is evaluated as soon as it appears, with the result having a subject role.</p>
@@ -473,34 +473,4 @@
 <li>2-Modifier</li>
 </ul>
 <p>All of these types are immutable, and immutable types should be the default for BQN. The only mutable type likely to be added is the namespace or scope.</p>
-<h2 id="bqn-extensions">BQN extensions</h2>
-<p>The above text describes the initial implementation target. The language will probably be extended after this target is reached. This section describes features which are not fully defined but could be added to the language.</p>
-<h3 id="sets-and-dictionaries">Sets and dictionaries</h3>
-<p>Sets are unordered collections of distinct values. Dictionaries have a set of keys and associate each key with a corresponding value. These types are a natural fit for the data in some cases; while they can be represented using arrays of keys and values, using the right type can lead to cleaner and faster algorithms.</p>
-<p>The following glyphs are added for the dictionary and set literal notation.</p>
-<table>
-<thead>
-<tr>
-<th>Glyph(s)</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code><span class='Value'>:</span></code></td>
-<td>Key/value separator for dictionaries</td>
-</tr>
-<tr>
-<td><code><span class='Value'>⦃⦄</span></code></td>
-<td>Set</td>
-</tr>
-</tbody>
-</table>
-<p>Set notation matches the bracketed list notation with the angle brackets changed to double-struck curly brackets <code><span class='Value'>⦃⦄</span></code>, but there is no ligature notation for sets.</p>
-<p>Dictionaries use angle brackets <code><span class='Bracket'>⟨⟩</span></code> like lists, but instead of expressions there are pairs of expressions separated by <code><span class='Value'>:</span></code>. The first expression evaluates to the key and the second to the corresponding value. The empty dictionary is written <code><span class='Bracket'>⟨</span><span class='Value'>:</span><span class='Bracket'>⟩</span></code>.</p>
-<p>Dictionaries and sets should be supported their own set of primitive operations like arrays are. The glyphs <code><span class='Value'>∪⊂⊃⊆⊇</span></code> from mathematics are unused for this reason: they could be wanted for set operations.</p>
-<h3 id="namespaces-and-symbols">Namespaces and symbols</h3>
-<p>Sometimes it is useful to have a mutable type, particularly if a part of the program should maintain its own state over the course of execution. The <a href="https://en.wikipedia.org/wiki/Closure_(computer_programming)">closures</a> required as part of a complete lexical scoping implementation actually allow something like this. If a function defines and returns an explicit function, then that function can read and change variables in its environment. As the environment includes the scope created to execute the outer function, calling the outer function creates a mutable environment that can be indirectly accessed through the returned function.</p>
-<p>A namespace would allow such an environment to be directly accessed and manipulated. While it's possible there would be facilities to create a namespace, a simpler mechanism is simply to add a primitive that returns the current scope as a variable. This scope would then behave the same way as a returned function's environment, and would allow member access by a dot-like syntax.</p>
-<p>A symbol is a variable representing a name in the program. Symbols would make it easier to interact with namespaces dynamically.</p>
 
