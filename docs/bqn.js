@@ -5,7 +5,7 @@ let has = x => x!==undefined;
 let call = (f,x,w) => {
   if (x===undefined) return x;
   if (typeof f !== "function") return f;
-  assert(!f.m1&&!f.m2);
+  assert(!f.m);
   return f(x, w);
 }
 
@@ -42,8 +42,8 @@ let genjs = (B, p) => { // Bytecode -> Javascript compiler
       case 3: case  4: { let n=num(); rD-= n; r+= rP("list(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])");                      break; }
       case 5: case 16: { let [  f,x]=[     rG(),rG()]; r+=rP("call("+f+","+x      +")");                                                       break; }
       case 6: case 17: { let [w,f,x]=[rG(),rG(),rG()]; r+=rP("call("+f+","+x+","+w+")");                                                       break; }
-      case 7:          { let [f,m  ]=[rG(),rG()     ]; r+="if(!"+m+".m1)err();"+rP(m+"("+f      +")");                                         break; }
-      case 8:          { let [f,m,g]=[rG(),rG(),rG()]; r+="if(!"+m+".m2)err();"+rP(m+"("+f+","+g+")");                                         break; }
+      case 7:          { let [f,m  ]=[rG(),rG()     ]; r+="if("+m+".m!==1)err();"+rP(m+"("+f      +")");                                         break; }
+      case 8:          { let [f,m,g]=[rG(),rG(),rG()]; r+="if("+m+".m!==2)err();"+rP(m+"("+f+","+g+")");                                         break; }
       case 9:          { let [  g,h]=[     rG(),rG()]; r+=rP("((  g,h)=>(x,w)=>call(g,call(h,x,w))"+                  ")("      +g+","+h+")"); break; }
       case 10:case 19: { let [f,g,h]=[rG(),rG(),rG()]; r+=rP("((f,g,h)=>(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f))("+f+","+g+","+h+")"); break; }
       case 11:         { let [i,  v]=[rG(),     rG()]; r+=rP("set(1,"+i+","+v                       +")");                                     break; }
@@ -67,8 +67,8 @@ let run = (B,O,S) => { // Bytecode, Objects, Sections/blocks
     else c = "const fn=(x, w)=>{const e=[...e2];e.p=oe;e[0]=fn;e[1]=x;e[2]=w;"+c+"};return fn;";
     
     if (type===0) c = "let e2=def;"+c;
-    if (type===1) c = "const mod=(f  ) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;"                +c+"}; mod.m1=1;return mod;";
-    if (type===2) c = "const mod=(f,g) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;e2["+(I+2)+"]=g;"+c+"}; mod.m2=1;return mod;";
+    if (type===1) c = "const mod=(f  ) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;"                +c+"}; mod.m=1;return mod;";
+    if (type===2) c = "const mod=(f,g) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;e2["+(I+2)+"]=g;"+c+"}; mod.m=2;return mod;";
     return Function("'use strict'; return (err,has,call,get,set,list,O,def) => D => oe => {"+c+"};")()
                                           (err,has,call,get,set,list,O,def);
   });
@@ -81,8 +81,8 @@ let arr = (r,sh) => {r.sh=sh;return r;}
 let list = l => arr(l,[l.length]);
 let str = s => list(Array.from(s));
 let unstr = a => has(a)?a.join(""):a;
-let m1 = m => {m.m1=1;return m;}
-let m2 = m => {m.m2=1;return m;}
+let m1 = m => {m.m=1;return m;}
+let m2 = m => {m.m=2;return m;}
 let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
   return +(s!==t ? s<=t : w<=x);
