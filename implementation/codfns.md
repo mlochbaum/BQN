@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/implementation/codfns.html).*
+
 # Co-dfns versus BQN's implementation
 
 The BQN self-hosted compiler is directly inspired by the [Co-dfns](https://github.com/Co-dfns/Co-dfns) project, a compiler for a subset of [Dyalog APL](../doc/fromDyalog.md). I'm very grateful to Aaron for showing that array-oriented compilation is even possible! In addition to the obvious difference of target language, BQN differs from Co-dfns both in goals and methods.
