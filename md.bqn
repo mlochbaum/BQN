@@ -420,20 +420,27 @@ TestSections ← {
 
 ################################
 # Syntax highlighting
+
+# Characters in identifiers. These are also used in ProcCode to detect
+# if a statement is an assignment.
 idChars ← ⟨
   •d∾"¯.π∞"
   ' '+⌾•UCS•a
   •a
   "_"
 ⟩
+
+# Return BQN highlights for an string 𝕩, as an ⟨add,pos⟩ list for Modify
+# (include will be all 1s).
 GetHighlights ← {
-  classes‿chars ← <˘ ⍉ 2⊸(÷˜⟜≠∾⊣)⊸⥊⟨
-    0             , " "∾•UCS 9‿10
-    "Value"       , ¯1⊏˘5‿2⥊"𝕨𝕩𝕗𝕘𝕤"
+  # Characters used by BQN, and the HTML class they are associated with.
+  classes‿chars ← <˘ ⍉ ⟨⟩‿2⥊⟨
+    0             , " "∾•UCS 9‿10  # Should never be highlighted
+    "Value"       , ¯1⊏˘5‿2⥊"𝕨𝕩𝕗𝕘𝕤"# Hack around UTF-16
     "Function"    , "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"∾¯1⊏˘5‿2⥊"𝕎𝕏𝔽𝔾𝕊"
     "Modifier"    , "˜˘¨⌜⁼´˝`"
     "Modifier2"   , "∘○⊸⟜⌾⊘◶⎉⚇⍟"
-    "Number"      , ∾idChars
+    "Number"      , ∾idChars       # Will be classified among ↑↑ later
     "Gets"        , "←↩→"
     "Paren"       , "()"
     "Bracket"     , "⟨⟩"
@@ -444,23 +451,55 @@ GetHighlights ← {
     "Comment"     , "#"
     "String"      , "'"""
   ⟩
-  classTag ← ""‿""∾>{⟨"<span class='"∾𝕩∾"'>","</span>"⟩}¨1↓classes
+  # Turn non-whitespace classes into ⟨open,close⟩ html tags.
+  classTag ← ""‿"" ∾ > {⟨"<span class='"∾𝕩∾"'>","</span>"⟩}¨ 1↓classes
 
-  r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧𝕩='''⋄d←/𝕩='"'
-  b←⟨s⋄¯1↓d⋄/r⟩ Trace○∾ ⟨2+s⋄1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
-  sc←+´(1‿2-˜≠classes)×(≠`∨⊢)∘((≠𝕩)↑/⁼∘∾)¨2↑((⊏˘b)⊏r)⊔○(∾⟜2)<˘b
-  col←sc⌈14|chars FindGroup 𝕩
+  # Find each character's group, sending quotes to 0 and unknowns to 1.
+  col ← (1-˜≠chars) | chars FindGroup 𝕩
 
-  w←(≠↑0∾⊢)⊸<id←col=5
-  idc←1+5|1-˜(idChars FindGroup w/𝕩)+'_'=((1↓∾⟜0)⊸<id)/𝕩
-  col↩((id/+`w)⊏0∾idc)⌾(id⊸/)col
+  # Locate comments and strings.
+  c ← 𝕩='#'
+  le← /(𝕩=lf)∾1
+  # Line endings (le) end every comment (/c) on the line, so take a copy
+  # for each # before that line but not the previous.
+  ce← le /˜ -⟜(0⊸Shl) c/⊸⍋le
+  # A single quote can only be used if there's another two places down.
+  s ← /0‿0⊸Shr⊸∧𝕩='''
+  d ← /𝕩='"'
+  css ← ⟨ s   ⋄ ¯1↓d ⋄ /c ⟩ # Comment or string start
+  cse ← ⟨ 2+s ⋄  1↓d ⋄ ce ⟩ # Corresponding end indices
+  # Now b is a table of (start,end) pairs
+  b ← css Trace○∾ cse
+  # Given a list of pairs, get a mask indicating included regions
+  ToMask ← (≠`∨⊢) (≠𝕩)↑/⁼∘∾
+  # Split rows and group into text‿comments
+  tc ← ((⊏˘b)⊏c) 2{𝕗↑⊔○(∾⟜𝕗)} <˘b
+  # Color with "String" and "Comment"
+  col ⌈↩ +´ (1‿2-˜≠classes) × ToMask¨ tc
 
-  col↩(1⌽col)⊣⌾((𝕩=⊑"𝕩")⊸/)col
+  # Color numeric literals and identifiers
+  id ← col=5                 # ←→ 𝕩∊idChars
+  w  ← 0⊸Shl⊸< id            # Word (identifier or number) beginning mask
+  wt ← idChars FindGroup w/𝕩 # Type based on first character
+  wt+↩ '_' = (0⊸Shr⊸<id)/𝕩   # Modifier1 to Modifier2 based on word end
+  wt+↩ 5×0=wt                # Shift 0 to Number
+  wi ← 1-˜+`id/w             # Index of word containing each of /id
+  col↩(wi⊏wt)⌾(id⊸/) col
 
-  bd←(≠↑¯1∾⊢)⊸≠col
-  bc←bd/col
-  (⥊(0<bc)⊸/)¨⟨bc⊏classTag,2↕1-˜/bd∾1⟩
+  # UTF-16 hack: first half of a special name needs to match the second
+  col↩ (1⌽col) ⊣⌾((𝕩=⊑"𝕩")⊸/) col
+
+  # Tags are placed at boundaries between different colors
+  boundary ← ¯1⊸Shl⊸≠ col
+  bcol ← boundary / col
+  # Windows gives us rows of start,end where the end position of one
+  # color is the start of the next
+  # Subtract one to place before the starting character
+  pos ← 2 ↕ 1-˜/boundary∾1
+  # Remove class 0 regions, as these don't use tags
+  (⥊ (0<bcol)⊸/)¨ ⟨bcol⊏classTag, pos⟩
 }
+
 # Return highlights for areas in 𝕩 where 𝕨 is true.
 GetMultiHighlights ← {
   start ← 0⊸Shl⊸< 𝕨
