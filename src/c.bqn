@@ -21,7 +21,14 @@ charGroups←⟨
   " "∾tab               # Whitespace
 # #'" eliminated during tokenization
 ⟩
-CharCode←(∾charGroups){g←⍋𝕗⋄g⊏˜1-˜(g⊏𝕗)⍋⊢}
+ErrUnknownChars←{
+  "Unclosed quote"!¬∨´⟨''','"'⟩∊𝕩
+  ⟨"Unknown character","s"/˜1<≠𝕩,": ",𝕩⟩∾⊸!0
+}
+CharCode←(∾charGroups){
+  Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
+  g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
+}
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
 bA_e←4+⊑bA
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
@@ -40,7 +47,7 @@ Tokenize←{
   lu←⍷lit←𝕩⊔˜1-˜(+`ToI⊑˘cb)×≠`ToI cb
   cl←f/ToI⊑∘⌽˘cb
 
-  c←CharCode f/𝕩
+  c←CharCode⌾((¬cl)⊸/) f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
   i←(1-˜l×+`w)⊔c
   na←≠alph⋄us←¯1++´bA
