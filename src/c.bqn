@@ -51,12 +51,13 @@ Tokenize←{
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
   i←(1-˜l×+`w)⊔c
   na←≠alph⋄us←¯1++´bA
+  ti←na⌊∘÷˜(⊑bA)-˜w/c
   in←na(⊢-⊣×+⟜(⊑bA)⊸≤)us⊸≠⊸/¨i
-  id←⍷(bA M˜w/c)⍒⊸⊏in⋄nv←+´bA M˜⊑¨id
+  iu←∊in⋄nv←+´iv←0≤iu/ti⋄id←iv⍒⊸⊏iu/in
+  ti↩(us=c/˜(1↓0∾˜⊢)⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
 
   c↩(w∨¬l∨c M bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
   c/˜↩¬(≠↑1∾(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5+⊑bB)∧c M bS
-  ti←(us=¯1⊸⊑¨i)(⊢+∧⟜(2⊸=))0⌈na⌊∘÷˜(⊑bA)-˜⊑¨i
   ic←(0⊸≤∧<⟜(≠id))c-vi⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
   ⟨c,t,nv,(nv↓id)∾lu⟩
