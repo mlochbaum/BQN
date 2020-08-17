@@ -102,7 +102,7 @@ Functions that have significant differences from APL functions are marked with a
 | `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
 | `<`   | [Enclose](https://aplwiki.com/wiki/Enclose)         | [Less Than](https://aplwiki.com/wiki/Less_than)
-| `>`   | [Merge](https://aplwiki.com/wiki/Mix)               | [Greater Than](https://aplwiki.com/wiki/Greater_than)
+| `>`   | [Merge](doc/couple.md)*                             | [Greater Than](https://aplwiki.com/wiki/Greater_than)
 | `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
 | `=`   | Rank                                                | [Equals](https://aplwiki.com/wiki/Equal_to)
 | `≠`   | [Length](https://aplwiki.com/wiki/Tally)            | [Not Equals](https://aplwiki.com/wiki/Not_Equal_to)
@@ -112,7 +112,7 @@ Functions that have significant differences from APL functions are marked with a
 | `⊢`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Right](https://aplwiki.com/wiki/Identity)
 | `⥊`   | [Deshape](https://aplwiki.com/wiki/Ravel)           | [Reshape](https://aplwiki.com/wiki/Reshape)
 | `∾`   | [Join](doc/join.md)*                                | [Join to](https://aplwiki.com/wiki/Catenate)
-| `≍`   | Solo*                                               | Couple*
+| `≍`   | [Solo](doc/couple.md)*                              | [Couple](doc/couple.md)*
 | `↑`   | [Prefixes](doc/prefixes.md)*                        | [Take](https://aplwiki.com/wiki/Take)
 | `↓`   | [Suffixes](doc/prefixes.md)*                        | [Drop](https://aplwiki.com/wiki/Drop)
 | `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](doc/windows.md)*
