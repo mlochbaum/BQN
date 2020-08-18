@@ -49,18 +49,17 @@ Tokenize←{
 
   c←CharCode⌾((¬cl)⊸/) f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
-  i←(1-˜l×+`w)⊔c
-  na←≠alph⋄us←¯1++´bA
+  na←≠alph⋄us←c=¯1++´bA
+  id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
   ti←na⌊∘÷˜(⊑bA)-˜w/c
-  in←na(⊢-⊣×+⟜(⊑bA)⊸≤)us⊸≠⊸/¨i
-  iu←∊in⋄nv←+´iv←0≤iu/ti⋄id←iv⍒⊸⊏iu/in
-  ti↩(us=c/˜(1↓0∾˜⊢)⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
+  iu←(≠↑¯1∾⌈`)⊸<is←⍷⊸⊐id⋄ni←≠in←0>iu/ti
+  ti↩(us/˜(1↓0∾˜⊢)⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
 
-  c↩(w∨¬l∨c M bW)/(vi+id⊐in)⌾(w⊸/)(vi+(≠id)+lu⊐lit)⌾(cl⊸/)c
+  c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(vi+ni+lu⊐lit)⌾(cl⊸/)c
   c/˜↩¬(≠↑1∾(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5+⊑bB)∧c M bS
-  ic←(0⊸≤∧<⟜(≠id))c-vi⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
+  ic←(0⊸≤∧<⟜ni)c-vi⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
-  ⟨c,t,nv,(nv↓id)∾lu⟩
+  ⟨c,t,+´¬in,((in//iu)⊏id)∾lu⟩
 }
 
 ReadNum←{
