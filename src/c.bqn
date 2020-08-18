@@ -52,7 +52,7 @@ Tokenize←{
   na←≠alph⋄us←c=¯1++´bA
   id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
   ti←na⌊∘÷˜(⊑bA)-˜w/c
-  iu←(≠↑¯1∾⌈`)⊸<is←⍷⊸⊐id⋄ni←≠in←0>iu/ti
+  iu←(≠↑¯1∾⌈`)⊸<is←⊐id⋄ni←≠in←0>iu/ti
   ti↩(us/˜(1↓0∾˜⊢)⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
 
   c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(vi+ni+lu⊐lit)⌾(cl⊸/)c

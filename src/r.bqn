@@ -410,19 +410,20 @@ _search←{ # 0 for ∊˜, 1 for ⊐
     ⟩ ToArray𝕩
   }
 }
-UniqueMask←{
+_self←{
   "Unique mask argument must have rank at least 1" ! 1≤=𝕩
   g←⍋𝕩
-  (1¨⊸GroupOrd g)⊏0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
+  (1¨⊸GroupOrd g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
 }
+SelfClas ← (1¨⊸GroupOrd∘⍋∘/˜⊏˜1-˜+`∘⊢) _self
 Find←{
   r←=𝕨
   "Find left argument rank cannot exceed right argument rank" ! r≤=𝕩
   𝕨 ≡⎉r (≢𝕨) ↕⎉r 𝕩
 }
 
-⊐ ← ("No monadic form: ⊐"!0˜) ⊘ (1 _search)
-∊ ← UniqueMask     ⊘ (0 _search˜)
+⊐ ← SelfClas       ⊘ (1 _search)
+∊ ← ⊢_self         ⊘ (0 _search˜)
 ⍷ ← ∊⊸/            ⊘ Find
 
 ReorderAxes←{
