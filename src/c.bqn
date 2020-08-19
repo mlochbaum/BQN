@@ -89,9 +89,9 @@ ErrMismatchedBrackets←{
   0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
 }
 Parse ← {nv‿r←𝕨
-  g←⍋+`p←𝕩(M×¯1⋆2|-⟜⊑)bB⋄br←p×𝕩M 2≍˜2+⊑bB
+  g←⍋pd←+`p←𝕩(M×¯1⋆2|-⟜⊑)bB⋄br←p×𝕩M 2≍˜2+⊑bB
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
-  "Swapped open and closed brackets" ! (0≤⊑p)∧0=⊑g
+  "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
   sl←1⊸⌽⊸∨𝕩 M bL⋄sr←¯1⊸⌽⌾(g⊸⊏)sl⋄sa←sl∨sr
   g⊏˜↩⍋g⊏sl⋄r×↩¬sa⋄o←p>0
   r+↩(sa<𝕩=1+⊑bB)(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
