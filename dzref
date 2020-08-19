@@ -110,8 +110,8 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 "
 
-X←Raw←{≤4}
-{
+X←Raw←{F:≤4}
+{v:
   chrs←⟨
     "!∾↕⌽⍉⊐⊒∊⍷"
     ""
@@ -163,4 +163,4 @@ X←Raw←{≤4}
   X↩Raw∘E_proc
   ⍎ ∾ ∾⟜lf¨ pre
   ≠◶X‿{ExecFile ⊑𝕩}‿{ExecFile ⊑𝕩 ⋄ X 1⊑𝕩} •args
-}0
+}
