@@ -9,6 +9,7 @@
     li { margin:0.7em 0; }
     #code { width:100%; outline:none; }
     #run, #perm { float:right; }
+    #perm { font-size:0.7em; margin:-0.2em 1.6em 0 0; }
     .cont { margin:1.3em 0; }
     #rslt { border:none; background:none; min-height:8em; }
     #rslt.err { color:#d11; }
@@ -24,11 +25,11 @@
 </head>
 <body>
   <a href="https://mlochbaum.github.io/BQN/" title='BQN homepage'>BQN</a>
-  <a id="perm" href="#" title='Permalink'>#</a>
   <div class="cont">
     <div id="kb" class="bqn"></div>
     <textarea id="code" class="bqn" rows="8" autofocus></textarea>
     <input id="run" type="submit" value="Run (or shift-enter)">
+    <a id="perm" href="#" title="Link with the code above embedded">permalink</a>
   </div>
   <pre id="rslt"></pre>
   <p>
