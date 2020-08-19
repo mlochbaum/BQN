@@ -6,10 +6,11 @@
   <link href="style.css" rel="stylesheet"/>
   <style>
     * { box-sizing: border-box; }
+    li { margin:0.7em 0; }
     #code { width:100%; outline:none; }
     #run, #perm { float:right; }
     .cont { margin:1.3em 0; }
-    #rslt { border:none; background:none; }
+    #rslt { border:none; background:none; min-height:8em; }
     #rslt.err { color:#d11; }
     #kb { line-height:1.5; width:100%; padding:0.3em 0; background:inherit; }
     #kb span { cursor:default; padding:1px; }
@@ -30,6 +31,15 @@
     <input id="run" type="submit" value="Run (or shift-enter)">
   </div>
   <pre id="rslt"></pre>
+  <p>
+    Notes:
+    <ul>
+      <li>You can type special characters with a back<em>slash</em> prefix, as shown by hovering over the character bar above. Documentation links for primitives are found <a href="https://mlochbaum.github.io/BQN/index.html#built-in-operations">here</a>.</li>
+      <li>Any modifier with enter will execute (not just shift).</li>
+      <li>BQN uses <code class="Ligature">‿</code> (backslash-space) for stranding, and not juxtaposition. If you don't know what went wrong, check for this first!</li>
+      <li>This implementation is still WIP, and in particular I am improving error checking and messages now. Support for function headers and multiple bodies is missing, and Under (<code class="Modifier2">⌾</code>) only works for a small class of structural functions. Performance is bad.</li>
+    </ul>
+  </p>
 
 <script src="bqn.js"></script>
 <script>
