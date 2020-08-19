@@ -9,13 +9,11 @@ I've omitted problems that are obviously addressed by speculated extensions. Of 
 ### Empty arrays lose type information
 A pretty fundamental problem with dynamically-typed array languages. Prototypes are intended to solve it, but they don't really. It doesn't help that the notion of type is fluid: elements of an array in one moment can be axis lengths in the next; did the numeric value go from not being type information to being type information? Inferred type might help here, particularly the ability of one part of the program to ask another part for type information during compilation. But that needs to be specified if programmers are going to rely on it, which sounds difficult.
 
-### Control flow with function selection has awkward syntax
-At the moment BQN has no control structures, instead preferring function recursion, iteration, and selection. Selection is awkward because the result of selecting from a list of functions is a subject syntactically. It also often doesn't need an argument, since it can refer to values from the containing function because of lexical scoping. There should possibly be a function that takes a function argument and invokes it, possible with an empty list as a dummy left argument. Somewhat like the modifier `{𝔽}`.
-
-*Potentially solved by multiple headers, blocks, and block returns. Needs reevaluation later.*
-
 ### Incoherent monad-dyad builtin pairs
 BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason (that is, both function valences match the symbol but they don't match with each other). I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved.
+
+### Control flow substitutes have awkward syntax
+At the moment BQN has no control structures, instead preferring operators, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. Given that blocks without headers also end up with an unexpected type if you don't use the inputs, it's safe to say BQN isn't great for imperative programming overall. But that's a big loss, and it's very much worth fixing if it can be done with something like a single control structure that conditionally or repeatedly executes an immediate block.
 
 ### Glyphs are hard to type
 There's been a lot of work done on this. Still there, still a problem. On the other hand, glyphs are easy to read, and write by hand!
@@ -32,8 +30,14 @@ There are a lot of standard functions and I don't want to use separate primitive
 ### Right-to-left multi-line functions go upwards
 If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
 
+### Hard to search part of an array or in a different order
+This includes index-of-last, and searching starting at a particular index, when the desired result indices are to the array to be seached *before* it is modified. Given indices `i` into an array `𝕨` (for example `⌽↕≠𝕨` or `a+↕b`), this section can be searched with `(i∾≠𝕨)⊏˜(i⊏𝕨)⊐𝕩`. But this is clunky and difficult for the implementation to optimize.
+
 ### Subtraction, division, and span are backwards
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). Not really fixable; too much precedent.
+
+### Nothing (`·`) interacts strangely with Before and After
+Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`).
 
 ### Can't access array ordering directly
 Only `⍋⍒` use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not *that* difficult: `⥊⊸⍋⌾<` is TAO `≤`).
@@ -48,17 +52,26 @@ Definitely | Maybe      | Definitely not
 -----------|------------|---------------
 `=≠≤≥<>`   | `≡≢⊐⊒∊⍷\|` | `⍋⍒`
 
+### No access to fast high-precision sum
+Fold has a specific order of application, which must be used for `` +` ``. But other orders can be both faster and more precise (in typical cases) by enabling greater parallelism. Generally ties into the question of providing precision control for a program: it could be fixed by a flag that enables BQN to optimize as long as the results will be at least as precise (relative to the same program in infinite precision) as the spec.
+
 ### High-rank array notation
 The proposed Dyalog array notation `[]` for high-rank arrays: it's the same as BQN's lists `⟨⟩` except it mixes at the end. This works visually because the bottom level—rows—is written with stranding. It also looks okay with BQN strands but clashes with BQN lists. At that point it becomes apparent that specifying whether something is a high-rank array at the top axes is kind of strange: shouldn't it be the lower axes saying to combine with higher ones?
 
 ### Poor font support 
 Characters `⥊∾⟜⎉⚇˜` and double-struck letters are either missing from many fonts or drawn strangely.
 
+### Choose and Repeat have order swapped
+In Choose, the selector goes on the left; in Repeat, the count goes on the right. Could be a strength in some contexts, since you can change Repeat-as-If to Choose if you don't like the ordering, but maybe a language that forces the programmer to make semantic decisions for syntactic reasons is not providing the greatest of services.
+
 ### Index Of privileges the first match
 It could be more sound to look at all matches, but using just the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: `≠∘⊣-1+⌽⊸⊐`.
 
 ### Glyphs that aren't great
 Blanket issue for glyphs that need work. Currently I find `⥊⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
+
+### Group doesn't include trailing empty groups
+But there are workarounds, described in [its documentation](doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
 
 ### Axis ordering is big-endian
 The most natural ordering for polynomial coefficients and base representations is little-endian, because it aligns element `i` of the list with power `i` of the argument or base. It also allows a forward scan instead of a reverse one. Array axes go the other way. However, there are advantages to this ordering as well. For example, it's common to act only on the first few axes, so having them at the beginning of the array is good (`≠a ←→ ⊑∘≢a`).
@@ -69,19 +82,16 @@ If you have the normal mix of monads and dyads you'll need a lot of parentheses 
 ### Inverse is not fully specified
 So it seems a bit strange to rely on it for core language features like `/⁼`. On the other hand, this is a good fit for `⋆⁼` since we are taking an arbitrary branch of a complex function that has many of them. I'm pretty sure it's impossible to solve the issue as stated but it might be possible to move to less hazardous constructs. Structural Under is a start.
 
-### Monadic `⊑` versus `>`
-Both pull out elements and reduce the depth. But they face in opposite directions.
-
-The directions of `⊏⊐` and so on were mainly chosen to line up with `∊`: the argument that indices apply to (that is, the one that is searched or selected from) corresponds to the open side of the function. I'd probably prefer new glyphs that don't have this sort of directionality, however.
-
 ### Converting a function expression to a subject is tricky
 You can name it, you can write `⊑⟨Expr⟩`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from subject to function, isn't too bad: the modifier `{𝔽}` does it.
 
-### Monadic argument corresponds to left for `/` and `⊔`
-Called dyadically, both functions shuffle cells of the right argument around, which is consistent with other selection-type functions. But the monadic case applies to what would be the left argument in the dyadic case.
-
 ### Prefixes/Suffixes add depth and Windows doesn't
 It's an awkward inconsistency. Prefixes and Suffixes have to have a nested result, but Windows doesn't have to be flat; it's just that making it nested ignores the fact that it does have an array structure.
+
+### At which scope does a block function belong?
+As a general principle, a programmer should make choices in one part of a program that constrain other parts of the program most tightly. This is a weak principle, but often it doesn't conflict with any other preferences and can be followed for free. For example it's usually best to define a variable in the smallest possible scope, so the reader knows it isn't used outside that scope. The same principle applies to blocks, but there is another conflicting principle: placing the block in a broader scope guarantees it won't access the variables in narrower ones. There's no position that will tell the reader, for example, that a function only uses variables local to itself and that it's only used within one particular scope.
+
+This is an issue with any lexically-scoped language; it's unlikely BQN can solve it. On the other hand, I'm surprised I've never seen any discussion of such a universal issue.
 
 ### Rank/Depth negative zero
 A positive operand to Rank indicates the cell rank, so positive zero means to act on 0-cells. A negative operand indicates the frame length, so negative zero should act on the entire array. But it can't because it's equal to positive zero. Similar issue with Depth. Positive/negative is not really the right way to encode the frame/cell distinction, but it's convenient. Fortunately ∞ can be used in place of negative zero, but there can still be problems if the rank is computed.
@@ -89,8 +99,25 @@ A positive operand to Rank indicates the cell rank, so positive zero means to ac
 ### Must read the body to find explicit definition's type
 You have to scan for headers or double-struck names (and so does a compiler). A little inelegant, and difficult to describe in BNF.
 
+### Each block body has its own label
+In a block with multiple bodies, the label (the self-name part of the header) refers to the entire block. However, there's no way to give only one label to the entire block. If you want to consistently use the same internal name, then you may have to write it many times. It's also a weird mismatch, conceptually.
+
+### Monadic argument corresponds to left for `/` and `⊔`
+Called dyadically, both functions shuffle cells of the right argument around, which is consistent with other selection-type functions. But the monadic case applies to what would be the left argument in the dyadic case.
+
+### Hard to manipulate the result of a modifier
+Trains and compositions make it easy to work with the results of functions, in some sense. The same can't be said for modifiers: for example, in a non-immediate block modifier, the derived function is `𝕊`, but you can't apply `˜` to it. This seems to call for modifer trains but people who worked with early J are confident they're not worth it. Or were they just not designed right?
+
+### Monadic `⊑` versus `>`
+Both pull out elements and reduce the depth. But they face in opposite directions. However, neither should be thought of as the inverse to `<`: that's `<⁼`. And `>` can't reduce the depth to 0, so it's pretty different from `⊑` or `<⁼`.
+
+The directions of `⊏⊐` and so on were mainly chosen to line up with `∊`: the argument that indices apply to (that is, the one that is searched or selected from) corresponds to the open side of the function. I'd probably prefer new glyphs that don't have this sort of directionality, however.
+
 ### Can't take Prefixes or Suffixes on multiple axes
 This is a natural array operation to do, and results in an array with a joinable structure, but as Prefixes and Suffixes are monadic there's no way to specify the number of axes to use.
+
+### Modified assignment modifies the left (secondary) argument
+So you end up with `˜↩` a lot of the time. For ordinary assignment it's pretty reasonable to say the value is primary, but modified assignment flips this around.
 
 ### And/Or/Max/Min are all tangled up
 Boolean And (`∧`) and Or (`∨`) are identical to Min (`⌊`) and Max (`⌈`) when restricted to Boolean arguments, and this would fit nicely with their monadic role as sorting functions: for example `a∧b ←→ ⊑∧a‿b`. Furthermore the pairing of Min with Floor and Max with Ceiling is mnemonic only and not especially natural. The reason I have not used these glyphs for Min and Max, and have instead extended them to the somewhat superfluous [arithmetic logical functions](doc/logic.md) is that Min and Max have different [identity elements](https://aplwiki.com/wiki/Identity_element) of `∞` and `¯∞` rather than `1` and `0`. Having to code around empty arrays when using `∧´` would be a fairly big issue.
@@ -100,11 +127,14 @@ The other drawback of Min (`∧`) and Max (`∨`) is that the symbols are counte
 ### Acting on windows can be awkward
 When taking Windows along more than one axis, acting on the resulting array requires the Rank modifier, duplicating either the right argument rank or (negated) left argument length. A nested Windows would only require Each.
 
-### Group doesn't include trailing empty groups
-But there are workarounds, described in [its documentation](doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
+### Inputs to modifiers are called operands?
+"Operand" is derived from "operator". "Modificand" would be better if it weren't both made up and hideous.
 
 ### Scan ordering is weird
 Scan moves along the array so that it uses results as left arguments, which is opposite to the usual right-to-left order of evaluation. But I think this is still better than scanning the array in reverse. You can always use Swap on the operand, or recover the APL scan ordering by doing a Reduce-Each on Prefixes.
+
+### Only errors in functions can be caught
+The operator `⎊` allows errors in a function to be caught, but a more natural unit for this is the block (scope, really). However, catching errors shouldn't be common in typical code, in the sense that an application should have only a few instances of `⎊`. Ordinary testing and control flow should be preferred instead.
 
 ### Bins is inconsistent with Index of
 In Dyalog APL, Interval Index is identical to Index Of if the left argument has no duplicate cells and every right argument cell intolerantly matches a left argument cell. In BQN they're off by one—Bins is one larger. But all the caveats for the Dyalog relation indicate this might not be so fundamental.
@@ -117,6 +147,9 @@ Select chooses whether the left argument maps to right argument axes or selects 
 
 ### Unclear primitive names
 Blanket issue for names that I don't find informative: "Solo", "Bins", "Unique Mask", "Find", and "Group".
+
+### Strands go left to right
+This is the best ordering, since it's consistent with `⟨⋄⟩` lists. And code in a strand probably shouldn't have side effects anyway. Still, it's an odd little tack-on to say separators *and strands* go left to right, and it complicates the implementation a little.
 
 ### Should have a rounding function
 There is a standard way to round floats—to nearest integer, ties to even—but it's fairly hard to implement and would have to be specially recognized for performance. It would be nice to have a better way to access this.
