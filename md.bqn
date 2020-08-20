@@ -243,7 +243,17 @@ Markdown ← {filename𝕊𝕩:
   # HTML blocks
   # Lazy rule: if it starts with < and contains >, it's probably HTML
   IsHtmlBlock ← ⊑ ">"⊸∊
-  ProcHtmlBlock ← {
+  useRepl ← 0
+  loadRepl ← "<script src='bqn.js'></script><script src='repl.js'></script>"
+  ProcHtmlBlock ← ("<!--REPL-->"∾lf)⊸≢◶{𝕩⋄
+    useRepl ↩ 1
+"<div class='cont'>
+  <div class='kb'></div>
+  <textarea class='code' rows='1' autofocus><⟜'a'⊸/ ""Big Questions Notation""</textarea>
+  <pre class='rslt'>""B Q N""</pre>
+</div>
+"
+  }‿{
     codeMask ← "<code>" ¯6⊸⌽⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
   }⍟extensions⟜JoinLines
@@ -389,7 +399,8 @@ Markdown ← {filename𝕊𝕩:
 
   # To process a block, pick the appropriate function from procFns.
   ProcBlock ← {t‿l G b: f←t⊑procFns ⋄ l F ⊑b }
-  JoinLines (blockStart / lineType≍˘lineDat) <∘ProcBlock˘ blocks
+  b ← (blockStart / lineType≍˘lineDat) <∘ProcBlock˘ blocks
+  JoinLines b ∾ useRepl / ""‿loadRepl
 }
 
 

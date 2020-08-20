@@ -1,7 +1,13 @@
 <head><link href="style.css" rel="stylesheet"/></head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
 <h1 id="bqn-finally-an-apl-for-your-flying-saucer">BQN: finally, an APL for your flying saucer</h1>
-<p><em>Try it <a href="https://mlochbaum.github.io/BQN/try.html">here</a>! The online version is mainly good for small programs currently; see <a href="running.html">running.md</a> for more options.</em></p>
+<p><em>Try it online below or <a href="https://mlochbaum.github.io/BQN/try.html">here</a>, and see <a href="running.html">running.md</a> for more options.</em></p>
+<div class='cont'>
+  <div class='kb'></div>
+  <textarea class='code' rows='1' autofocus><⟜'a'⊸/ "Big Questions Notation"</textarea>
+  <pre class='rslt'>"B Q N"</pre>
+</div>
+
 <p><strong>BQN</strong> is a new programming language in the APL lineage, which aims to remove inconsistent and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. BQN is aimed at existing and aspiring APL-family programmers, and using it requires a solid understanding of functions and multidimensional arrays. However, because of its focus on providing simple, consistent, and powerful array operations, BQN should also be a good language for learning array programming and building stronger array intuition.</p>
 <p>BQN maintains many of the ideas that made APL\360 revolutionary in 1966:</p>
 <ul>
@@ -34,4 +40,6 @@
 <p>Read the <a href="doc/index.html">documentation</a>!</p>
 <p>BQN documentation is currently written primarily for array programmers and is not comprehensive, with aspects of the language that are shared with APL poorly documented. If you're not an array programmer, it would probably be better to start with another language, or wait a few weeks. But if you're a serious language enthusiast, the <a href="spec/index.html">specification</a> is fairly complete and might be enough to fill the gaps in the documentation.</p>
 <p>If you're an array programmer, then you're in much better shape. However, you should be aware of two key differences between BQN and existing array languages beyond just the changes of <a href="doc/primitive.html">primitives</a>—if these differences don't seem important to you then you don't understand them! BQN's based array model is different from both a flat array model like J and a nested one like APL2, Dyalog, or GNU APL in that it has true non-array values (plain numbers and characters) that are different from depth-0 scalars. BQN also uses <a href="context.html">syntactic roles</a> rather than dynamic type to determine how values interact, that is, what's an argument or operand and so on. This system, along with lexical closures, means BQN fully supports Lisp-style <a href="functional.html">functional programming</a>.</p>
+
+<script src='bqn.js'></script><script src='repl.js'></script>
 

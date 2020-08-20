@@ -12,7 +12,7 @@ let repl = ()=>{
     doc.rslt.textContent=e;
   }
 }
-doc.run.onclick = repl;
+if (doc.run) doc.run.onclick = repl;
 
 let keymode=0; // 1 for backslash
 doc.code.onkeydown = ev => {
@@ -61,7 +61,7 @@ doc.kb.onmousedown = ev => {
   }
 }
 
-doc.perm.onmouseover = doc.perm.onfocus = () => {
+if (doc.perm) doc.perm.onmouseover = doc.perm.onfocus = () => {
   doc.perm.href='#code='+escape(doc.code.value)
 }
 
