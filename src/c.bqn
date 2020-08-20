@@ -90,7 +90,7 @@ ErrMismatchedBrackets←{
   0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
 }
 ErrUndeclared←{
-  0 !˜ "Undeclared identifier"∾(1<≠𝕩)/"s"
+  0 !˜ "Undefined identifier"∾(1<≠𝕩)/"s"
 }
 Parse ← {nv‿r←𝕨
   g←⍋pd←+`p←𝕩(M×¯1⋆2|-⟜⊑)bB⋄br←p×𝕩M 2≍˜2+⊑bB
@@ -132,8 +132,10 @@ Parse ← {nv‿r←𝕨
   dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2+⊑bB
 
   d←id⊏dec←idm∧ad∧asn⋄lc←FC dec
-  ig←⍋(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
-  ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏(⍋⊏⟜(∾⟜(d⊸/)idx))⊸⊏ig
+  ixf←(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
+  ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
+  "Multiple definitions" ! 1∧´ixx∨○((≠↑0∾⊢)⊸≠((≠id)⊸≤⊸/ig)⊏⊢)ixf
+  ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
   d⊏˜↩ig⋄ErrUndeclared∘/˜⍟(0∨´⊢)⟜(d<(≠↑0∾⊢)⊸≠)ig⊏idx
   ui←(⌈`↕∘≠⊸×d)⊸⊏⌾(ig⊸⊏)id
   ii←(ui⊏(fi⊏fsc)-(⌈`c⊸×)⊸¬+`dec)∾((sp⊏fi)⊏3×2|ft)++⟜(0⊸≤)2+sp⊏xv
