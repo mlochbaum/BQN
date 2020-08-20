@@ -1,0 +1,149 @@
+<head><link href="../style.css" rel="stylesheet"/></head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="syntax-overview">Syntax overview</h1>
+<p>BQN syntax consists of expressions where computation is done with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control so the design tries to do as much as possible with them before introducing special syntax.</p>
+<h2 id="special-glyphs">Special glyphs</h2>
+<p>The following glyphs are used for BQN syntax. <a href="primitive.html">Primitives</a> (built-in functions and modifiers) are not listed in this table, and have their own page. Digits, characters, and the underscore <code><span class='Modifier2'>_</span></code> are used for numbers, and identifiers or variable names.</p>
+<table>
+<thead>
+<tr>
+<th>Glyph(s)</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Comment'>#</span></code></td>
+<td><a href="#comments">Comment</a></td>
+</tr>
+<tr>
+<td><code>'&quot;</code></td>
+<td><a href="#constants">Character or string literal</a></td>
+</tr>
+<tr>
+<td><code><span class='Number'>¯∞π</span></code></td>
+<td><a href="#constants">Used in numeric literals</a></td>
+</tr>
+<tr>
+<td><code><span class='Paren'>()</span></code></td>
+<td>Expression grouping</td>
+</tr>
+<tr>
+<td><code><span class='Gets'>←</span></code></td>
+<td><a href="#assignment">Define</a></td>
+</tr>
+<tr>
+<td><code><span class='Gets'>↩</span></code></td>
+<td><a href="#assignment">Change</a></td>
+</tr>
+<tr>
+<td><code><span class='Gets'>→</span></code></td>
+<td>Return</td>
+</tr>
+<tr>
+<td><code><span class='Separator'>⋄,</span></code> or newline</td>
+<td>Statement or element <a href="#separators">separator</a></td>
+</tr>
+<tr>
+<td><code><span class='Bracket'>⟨⟩</span></code></td>
+<td><a href="#list-notation">List</a> (rank-1 array)</td>
+</tr>
+<tr>
+<td><code><span class='Ligature'>‿</span></code></td>
+<td><a href="#list-notation">Strand</a> (lightweight list syntax)</td>
+</tr>
+<tr>
+<td><code><span class='Brace'>{}</span></code></td>
+<td><a href="#blocks">Block</a> such as a function definition</td>
+</tr>
+<tr>
+<td><code><span class='Value'>:</span></code></td>
+<td>Block header</td>
+</tr>
+<tr>
+<td><code><span class='Value'>;</span></code></td>
+<td>Block body separator</td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕨</span><span class='Function'>𝕎</span></code></td>
+<td><a href="#blocks">Left argument</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕩</span><span class='Function'>𝕏</span></code></td>
+<td><a href="#blocks">Right argument</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕤</span><span class='Function'>𝕊</span></code></td>
+<td><a href="#blocks">Function self-reference</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕗</span><span class='Function'>𝔽</span></code></td>
+<td><a href="#blocks">Left operand of a modifier</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕘</span><span class='Function'>𝔾</span></code></td>
+<td><a href="#blocks">Right operand of a 2-modifier</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕣</span></code></td>
+<td><a href="#blocks">Modifier self-reference</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="comments">Comments</h2>
+<p>A comment starts with <code><span class='Comment'>#</span></code> that is not part of a string and continues to the end of the line.</p>
+<h2 id="constants">Constants</h2>
+<p>BQN has single-token notation for numbers, strings, and characters.</p>
+<p>Numbers allow the typical decimal notation with <code><span class='Number'>¯</span></code> for the negative sign (because <code><span class='Function'>-</span></code> is a function) and <code><span class='Value'>e</span></code> for scientific notation (or <code><span class='Function'>E</span></code>, as numeric notation is case-insensitive). <code><span class='Number'>∞</span></code> and <code><span class='Number'>π</span></code> may be used as special numeric values. If complex numbers are supported, then they can be written with the components separated by <code><span class='Value'>i</span></code>. However, no BQN to date supports complex numbers.</p>
+<pre>    <span class='Bracket'>⟨</span> <span class='Number'>¯π</span> <span class='Separator'>⋄</span> <span class='Number'>0.5</span> <span class='Separator'>⋄</span> <span class='Number'>5e¯1</span> <span class='Separator'>⋄</span> <span class='Number'>1.5E3</span> <span class='Separator'>⋄</span> <span class='Number'>∞</span> <span class='Bracket'>⟩</span>   <span class='Comment'># A list of numbers
+</span>⟨ ¯3.14159265358979 0.5 0.5 1500 ∞ ⟩
+</pre>
+<p>Strings are written with double quotes <code><span class='String'>&quot;&quot;</span></code>, and characters with single quotes <code>''</code> with a single character in between. A double quote within a string can be escaped by writing it twice; if two string literals are next to each other, they must be separated by a space. In contrast, character literals do not use escapes, as the length is already known.</p>
+<pre>    <span class='Function'>≠</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span> <span class='String'>&quot;str&quot;</span> <span class='Separator'>⋄</span> <span class='String'>&quot;s't&quot;&quot;r&quot;</span> <span class='Separator'>⋄</span> <span class='String'>'c'</span> <span class='Separator'>⋄</span> <span class='String'>'''</span> <span class='Separator'>⋄</span> <span class='String'>'&quot;'</span> <span class='Bracket'>⟩</span>   <span class='Comment'># &quot;&quot; is an escape
+</span>⟨ 3 5 1 1 1 ⟩
+
+    <span class='Function'>≡</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span> <span class='String'>&quot;a&quot;</span> <span class='Separator'>⋄</span> <span class='String'>'a'</span> <span class='Bracket'>⟩</span>   <span class='Comment'># A string is an array but a character isn't
+</span>⟨ 1 0 ⟩
+</pre>
+<h2 id="expressions">Expressions</h2>
+<p><em><a href="context.html">More discussion</a></em></p>
+<p>Like APL, BQN uses four <em>syntactic roles</em> for values in expressions:</p>
+<ul>
+<li><strong>Subjects</strong>, like APL arrays or J nouns</li>
+<li><strong>Functions</strong>, or verbs in J</li>
+<li><strong>1-Modifiers</strong>, like APL monadic operators or J adverbs</li>
+<li><strong>2-Modifiers</strong>, like APL dyadic operators or J conjunctions.</li>
+</ul>
+<p>These roles work exactly like they do in APL, with functions applying to one or two subject arguments, 1-modifiers taking a single function or subject on the left, and 2-modifiers taking a function or subject on each side.</p>
+<p>Unlike APL, in BQN the syntactic role of an identifier is determined purely by the way it's spelled: a lowercase first letter (<code><span class='Value'>name</span></code>) makes it a subject, an uppercase first letter (<code><span class='Function'>Name</span></code>) makes it a function, and underscores are used for 1-modifiers (<code><span class='Modifier'>_name</span></code>) and 2-modifiers (<code><span class='Modifier2'>_name_</span></code>). Below, the function <code><span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> treats its left argument <code><span class='Function'>𝕎</span></code> as a function and its right argument <code><span class='Value'>𝕩</span></code> as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:</p>
+<pre>    <span class='Bracket'>⟨</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Separator'>,</span><span class='Function'>√</span><span class='Bracket'>⟩</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>⌜</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>9</span>
+┌─         
+╵ 1 16 81  
+  1  2  3  
+          ┘
+</pre>
+<p>BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (<code><span class='Modifier'>˜¨˘⁼⌜´`</span></code>) are all superscript characters, and 2-modifiers (<code><span class='Modifier2'>∘○⊸⟜⌾⊘◶⚇⎉⍟</span></code>) all have an unbroken circle (two functions <code><span class='Function'>⌽⍉</span></code> have broken circles with lines through them). Every other built-in constant is a function, although the special symbols <code><span class='Number'>¯</span></code>, <code><span class='Number'>∞</span></code>, and <code><span class='Number'>π</span></code> are used as part of numeric literal notation.</p>
+<h3 id="assignment">Assignment</h3>
+<p>Another element that can be included in expressions is assignment, which is written with <code><span class='Gets'>←</span></code> to <em>define</em> (also called &quot;declare&quot; in many other languages) a variable and <code><span class='Gets'>↩</span></code> to <em>change</em> its definition. A variable can only be defined once within a scope, and can only be changed if it has already been defined. However, it can be shadowed, meaning that it is defined again in an inner scope even though it has a definition in an outer scope already.</p>
+<pre>    <span class='Value'>x</span><span class='Gets'>←</span><span class='Number'>1</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span><span class='Value'>x</span><span class='Gets'>←</span><span class='Number'>2</span> <span class='Separator'>⋄</span> <span class='Value'>x</span><span class='Gets'>↩</span><span class='Number'>3</span> <span class='Separator'>⋄</span> <span class='Value'>x</span><span class='Brace'>}</span>
+3
+    <span class='Value'>x</span>
+1
+</pre>
+<p>Assignment can be used inline in an expression, and its result is always the value being assigned. The role of the identifier used must match the value being assigned.</p>
+<pre>    <span class='Number'>2</span><span class='Function'>×</span><span class='Value'>a</span><span class='Gets'>←</span><span class='Paren'>(</span><span class='Function'>Neg</span><span class='Gets'>←</span><span class='Function'>-</span><span class='Paren'>)</span><span class='Number'>3</span>
+¯6
+    <span class='Value'>a</span>
+¯3
+</pre>
+<h2 id="lists-and-blocks">Lists and blocks</h2>
+<h3 id="separators">Separators</h3>
+<p>The characters <code><span class='Separator'>⋄</span></code> and <code><span class='Separator'>,</span></code> and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.</p>
+<h3 id="list-notation">List notation</h3>
+<p>Lists (1-dimensional arrays) are enclosed in angle brackets <code><span class='Bracket'>⟨⟩</span></code>, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character <code><span class='Ligature'>‿</span></code>. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.</p>
+<p>If added, <a href="extensions.html#sets-and-dictionaries">sets and dictionaries</a> would also use a list-like notation.</p>
+<h3 id="blocks">Blocks</h3>
+<p>Blocks are written with curly braces <code><span class='Brace'>{}</span></code> and can be used to group expressions or define functions and modifiers. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned in order to evaluate the block. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return subjects and modifiers return functions. Blocks have lexical scope.</p>
+<p>The special names <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code>, which stand for arguments, and <code><span class='Value'>𝕗</span></code> and <code><span class='Value'>𝕘</span></code>, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate subjects and the uppercase forms <code><span class='Function'>𝕎𝕏𝔽𝔾</span></code> indicate functions. The type and syntactic role of the block is determined by its contents: a 2-modifier contains <code><span class='Value'>𝕘</span></code>, a 1-modifier contains <code><span class='Value'>𝕗</span></code> but not <code><span class='Value'>𝕘</span></code>, and a function contains neither but does have one of <code><span class='Value'>𝕨𝕩𝕤</span><span class='Function'>𝕎𝕏𝕊</span></code>. If no special names are present the block is an <em>immediate block</em> and is evaluated as soon as it appears, with the result having a subject role.</p>
+<p>A modifier can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code>, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.</p>
+

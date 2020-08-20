@@ -40,46 +40,6 @@ Most of BQN's functionality deals with the manipulation of multidimensional arra
 
 Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).
 
-## Syntax
-
-BQN syntax consists of expressions where computation is done with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control so the design tries to do as much as possible with them before introducing special syntax.
-
-### Expressions
-
-Like APL, BQN uses four *syntactic roles* for values in expressions:
-* **Subjects**, like APL arrays or J nouns
-* **Functions**, or verbs in J
-* **1-Modifiers**, like APL monadic operators or J adverbs
-* **2-Modifiers**, like APL dyadic operators or J conjunctions.
-
-These roles work exactly like they do in APL, with functions applying to one or two subject arguments, 1-modifiers taking a single function or subject on the left, and 2-modifiers taking a function or subject on each side.
-
-Unlike APL, in BQN the syntactic role of a value is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a subject, an uppercase first letter (`Name`) makes it a function, and underscores are used for 1-modifiers (`_name`) and 2-modifiers (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:
-
-        ⟨×˜,√⟩ {𝕎𝕩}⌜ 1‿4‿9
-
-BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and 2-modifiers (`∘○⊸⟜⌾⊘◶⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
-
-### Special syntax
-
-Most of these glyphs are explained further in the section on [literal notation](#literal-notation).
-
-Glyph(s)        | Meaning
-----------------|-----------
-`←`             | Define
-`↩`             | Change
-`→`             | Return
-`⋄,` or newline | Statement or element separator
-`()`            | Expression grouping
-`{}`            | Explicit function or modifier
-`⟨⟩`            | List (rank-1 array)
-`‿`             | Strand (lightweight list syntax)
-`𝕨𝕎`            | Left argument
-`𝕩𝕏`            | Right argument
-`𝕗𝔽`            | Left operand of a modifier
-`𝕘𝔾`            | Right operand of a 2-modifier
-`#`             | Comment
-
 ## Built-in operations
 
 ### Functions
@@ -157,34 +117,6 @@ Other modifiers control array traversal and iteration. In three cases a simpler 
 `´`        | Fold    |
 `˝`        | Insert  |
 `` ` ``    | Scan    |
-
-## Literal notation
-
-### Constant notation
-
-BQN has single-token notation for numbers, strings, and characters.
-
-Numbers allow the typical decimal notation with `¯` for the negative sign (because `-` is a function) and `e` for scientific notation (or `E`, as numeric notation is case-insensitive). `∞` and `π` may be used as special numeric values. Complex numbers are also allowed, with the components separated by `i`.
-
-Strings are written with double quotes `""`, and characters with single quotes `''` with a single character in between. A double quote within a string can be escaped by writing it twice; if two string literals are next to each other, they must be separated by a space. In contrast, character literals do not use escapes, as the length is already known.
-
-### Separators
-
-The characters `⋄` and `,` and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.
-
-### List notation
-
-Lists (1-dimensional arrays) are enclosed in angle brackets `⟨⟩`, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character `‿`. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.
-
-If added, [sets and dictionaries](doc/extensions.md#sets-and-dictionaries) would also use a list-like notation.
-
-### Blocks
-
-Blocks are written with curly braces `{}` and can be used to group expressions or define functions and modifiers. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned in order to evaluate the block. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return subjects and modifiers return functions. Blocks have lexical scope.
-
-The special names `𝕨` and `𝕩`, which stand for arguments, and `𝕗` and `𝕘`, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate subjects and the uppercase forms `𝕎𝕏𝔽𝔾` indicate functions. The type and syntactic role of the block is determined by its contents: a 2-modifier contains `𝕘`, a 1-modifier contains `𝕗` but not `𝕘`, and a function contains neither but does have one of `𝕨𝕩𝕤𝕎𝕏𝕊`. If no special names are present the block is an *immediate block* and is evaluated as soon as it appears, with the result having a subject role.
-
-A modifier can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains `𝕨` or `𝕩`, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.
 
 ## Types
 

@@ -33,89 +33,6 @@
 <h2 id="array-model">Array model</h2>
 <p>Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL <a href="https://aplwiki.com/wiki/Array_model">array models</a>. Unlike in APL, non-array data is possible, and common: numbers, characters, and functions are not arrays (see the full list of <a href="#types">types</a> below). This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no &quot;floating&quot; so a value is always different from a scalar array that contains it. This system has been <a href="https://dl.acm.org/doi/abs/10.1145/586656.586663">proposed</a> in APL's past under the name <strong>based array theory</strong>.</p>
 <p>Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).</p>
-<h2 id="syntax">Syntax</h2>
-<p>BQN syntax consists of expressions where computation is done with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control so the design tries to do as much as possible with them before introducing special syntax.</p>
-<h3 id="expressions">Expressions</h3>
-<p>Like APL, BQN uses four <em>syntactic roles</em> for values in expressions:</p>
-<ul>
-<li><strong>Subjects</strong>, like APL arrays or J nouns</li>
-<li><strong>Functions</strong>, or verbs in J</li>
-<li><strong>1-Modifiers</strong>, like APL monadic operators or J adverbs</li>
-<li><strong>2-Modifiers</strong>, like APL dyadic operators or J conjunctions.</li>
-</ul>
-<p>These roles work exactly like they do in APL, with functions applying to one or two subject arguments, 1-modifiers taking a single function or subject on the left, and 2-modifiers taking a function or subject on each side.</p>
-<p>Unlike APL, in BQN the syntactic role of a value is determined purely by the way it's spelled: a lowercase first letter (<code><span class='Value'>name</span></code>) makes it a subject, an uppercase first letter (<code><span class='Function'>Name</span></code>) makes it a function, and underscores are used for 1-modifiers (<code><span class='Modifier'>_name</span></code>) and 2-modifiers (<code><span class='Modifier2'>_name_</span></code>). Below, the function <code><span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> treats its left argument <code><span class='Function'>𝕎</span></code> as a function and its right argument <code><span class='Value'>𝕩</span></code> as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:</p>
-<pre>    <span class='Bracket'>⟨</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Separator'>,</span><span class='Function'>√</span><span class='Bracket'>⟩</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>⌜</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>9</span>
-┌─         
-╵ 1 16 81  
-  1  2  3  
-          ┘
-</pre>
-<p>BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (<code><span class='Modifier'>˜¨˘⁼⌜´`</span></code>) are all superscript characters, and 2-modifiers (<code><span class='Modifier2'>∘○⊸⟜⌾⊘◶⚇⎉⍟</span></code>) all have an unbroken circle (two functions <code><span class='Function'>⌽⍉</span></code> have broken circles with lines through them). Every other built-in constant is a function, although the special symbols <code><span class='Number'>¯</span></code>, <code><span class='Number'>∞</span></code>, and <code><span class='Number'>π</span></code> are used as part of numeric literal notation.</p>
-<h3 id="special-syntax">Special syntax</h3>
-<p>Most of these glyphs are explained further in the section on <a href="#literal-notation">literal notation</a>.</p>
-<table>
-<thead>
-<tr>
-<th>Glyph(s)</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code><span class='Gets'>←</span></code></td>
-<td>Define</td>
-</tr>
-<tr>
-<td><code><span class='Gets'>↩</span></code></td>
-<td>Change</td>
-</tr>
-<tr>
-<td><code><span class='Gets'>→</span></code></td>
-<td>Return</td>
-</tr>
-<tr>
-<td><code><span class='Separator'>⋄,</span></code> or newline</td>
-<td>Statement or element separator</td>
-</tr>
-<tr>
-<td><code><span class='Paren'>()</span></code></td>
-<td>Expression grouping</td>
-</tr>
-<tr>
-<td><code><span class='Brace'>{}</span></code></td>
-<td>Explicit function or modifier</td>
-</tr>
-<tr>
-<td><code><span class='Bracket'>⟨⟩</span></code></td>
-<td>List (rank-1 array)</td>
-</tr>
-<tr>
-<td><code><span class='Ligature'>‿</span></code></td>
-<td>Strand (lightweight list syntax)</td>
-</tr>
-<tr>
-<td><code><span class='Value'>𝕨</span><span class='Function'>𝕎</span></code></td>
-<td>Left argument</td>
-</tr>
-<tr>
-<td><code><span class='Value'>𝕩</span><span class='Function'>𝕏</span></code></td>
-<td>Right argument</td>
-</tr>
-<tr>
-<td><code><span class='Value'>𝕗</span><span class='Function'>𝔽</span></code></td>
-<td>Left operand of a modifier</td>
-</tr>
-<tr>
-<td><code><span class='Value'>𝕘</span><span class='Function'>𝔾</span></code></td>
-<td>Right operand of a 2-modifier</td>
-</tr>
-<tr>
-<td><code><span class='Comment'>#</span></code></td>
-<td>Comment</td>
-</tr>
-</tbody>
-</table>
 <h2 id="built-in-operations">Built-in operations</h2>
 <h3 id="functions">Functions</h3>
 <p>Functions that have significant differences from APL functions are marked with an asterisk. Links for these entries go to dedicated BQN documentation while other links go to the APL Wiki.</p>
@@ -448,20 +365,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="literal-notation">Literal notation</h2>
-<h3 id="constant-notation">Constant notation</h3>
-<p>BQN has single-token notation for numbers, strings, and characters.</p>
-<p>Numbers allow the typical decimal notation with <code><span class='Number'>¯</span></code> for the negative sign (because <code><span class='Function'>-</span></code> is a function) and <code><span class='Value'>e</span></code> for scientific notation (or <code><span class='Function'>E</span></code>, as numeric notation is case-insensitive). <code><span class='Number'>∞</span></code> and <code><span class='Number'>π</span></code> may be used as special numeric values. Complex numbers are also allowed, with the components separated by <code><span class='Value'>i</span></code>.</p>
-<p>Strings are written with double quotes <code><span class='String'>&quot;&quot;</span></code>, and characters with single quotes <code>''</code> with a single character in between. A double quote within a string can be escaped by writing it twice; if two string literals are next to each other, they must be separated by a space. In contrast, character literals do not use escapes, as the length is already known.</p>
-<h3 id="separators">Separators</h3>
-<p>The characters <code><span class='Separator'>⋄</span></code> and <code><span class='Separator'>,</span></code> and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.</p>
-<h3 id="list-notation">List notation</h3>
-<p>Lists (1-dimensional arrays) are enclosed in angle brackets <code><span class='Bracket'>⟨⟩</span></code>, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character <code><span class='Ligature'>‿</span></code>. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.</p>
-<p>If added, <a href="doc/extensions.html#sets-and-dictionaries">sets and dictionaries</a> would also use a list-like notation.</p>
-<h3 id="blocks">Blocks</h3>
-<p>Blocks are written with curly braces <code><span class='Brace'>{}</span></code> and can be used to group expressions or define functions and modifiers. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned in order to evaluate the block. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return subjects and modifiers return functions. Blocks have lexical scope.</p>
-<p>The special names <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code>, which stand for arguments, and <code><span class='Value'>𝕗</span></code> and <code><span class='Value'>𝕘</span></code>, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate subjects and the uppercase forms <code><span class='Function'>𝕎𝕏𝔽𝔾</span></code> indicate functions. The type and syntactic role of the block is determined by its contents: a 2-modifier contains <code><span class='Value'>𝕘</span></code>, a 1-modifier contains <code><span class='Value'>𝕗</span></code> but not <code><span class='Value'>𝕘</span></code>, and a function contains neither but does have one of <code><span class='Value'>𝕨𝕩𝕤</span><span class='Function'>𝕎𝕏𝕊</span></code>. If no special names are present the block is an <em>immediate block</em> and is evaluated as soon as it appears, with the result having a subject role.</p>
-<p>A modifier can be evaluated twice: once when passed operands and again when the resulting function is passed arguments. If it contains <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code>, the first evaluation simply remembers the operands, and the contents will be executed only on the second evaluation, when the arguments are available. If it doesn't contain these, then the contents are executed on the first evaluation and the result is treated as a function.</p>
 <h2 id="types">Types</h2>
 <p>BQN will initially support the following fundamental types:</p>
 <ul>

@@ -4,6 +4,9 @@
 
 Here is the documentation for BQN, describing what features BQN has, how to use them (with examples), and why they were chosen. As it is considerably more in-depth than the [specification](../spec/README.md), the documentation is much less complete. The following pages are present now:
 
+Overview:
+- [Syntax](syntax.md)
+
 Concepts:
 - [Context-free grammar](context.md)
 - [Functional programming](functional.md)
