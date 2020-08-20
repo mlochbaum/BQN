@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body, input {
   color: #0a0a0a;
 }
@@ -29,9 +33,11 @@ table th {
   border-bottom-color: #5a5f5d;
 }
 
-pre, code, .bqn {
+pre, code, textarea {
   background-color: #e3e7e7;
   color: #292929;
+}
+pre, code, textarea, .kb {
   border: 1px solid #bdcac4;
   letter-spacing: 0.2;
 }
@@ -40,14 +46,25 @@ code {
   white-space: nowrap;
   border-width: 0.3px;
 }
-pre, .bqn {
+pre, textarea, .kb {
   font-family: monospace;
   font-size: 1.16em;
   line-height: 1.2;
 }
-pre {
-  margin: 1.6em 0.4em;
-  padding: 0.8em;
+pre { margin: 1.6em 0.4em; }
+pre, textarea { padding: 0.8em; }
+textarea { width:100%; outline:none; }
+.cont { margin:1.3em 0; }
+.rslt { background:none; border-top:none; margin:0; }
+.rslt.err { color:#d11; }
+.kb {
+  line-height:1.5;
+  width:100%;
+  padding:0.3em 0;
+}
+.kb span {
+  cursor:default;
+  padding:1px;
 }
 
 .Value        { color: #1f2020; }
@@ -68,13 +85,19 @@ pre {
 a:link        { color: #0b39dc; text-decoration-color:#0b39dc91; }
 a:visited     { color: #3d155f; }
 
+.kb span:hover{ background-color:#bce; }
+.kb.backslash { background-color:#cee; }
+
 @media (prefers-color-scheme: dark) {
   body, input { color: #d6d7d9; background-color: #141515; }
   input       { border-color: #0c0d0e; }
-  pre, code, .bqn { color: #969698; background-color: #0c0d0e; border-color: #040509; }
-  code            { border-color: #0c0d0e; background-color: #0f1011; }
+  textarea, pre, code      { color: #969698; background-color: #0c0d0e; }
+  textarea, pre, code, .kb { border-color: #040509; }
+  code        { border-color: #0c0d0e; background-color: #0f1011; }
   table td, th{ border-color: #636967; }
   table th    { border-color: #88918c; background-color: #292a2b; }
+  .kb span:hover { background-color:#237; }
+  .kb.backslash  { background-color:#1e2430; }
 
   .Value      { color: #b2b9bb; }
   .Function   { color: #3aa548; }
