@@ -6,6 +6,8 @@ Here is the documentation for BQN, describing what features BQN has, how to use 
 
 Overview:
 - [Syntax](syntax.md)
+- [Types](types.md)
+- [Primitives](primitive.md)
 
 Concepts:
 - [Context-free grammar](context.md)

@@ -1,0 +1,336 @@
+<head><link href="../style.css" rel="stylesheet"/></head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="bqn-primitives">BQN primitives</h1>
+<p><em>Primitives</em> are functions and modifiers that are built into the language.</p>
+<h2 id="functions">Functions</h2>
+<p>Functions that have significant differences from APL functions are marked with an asterisk. Links for these entries go to dedicated BQN documentation while other links go to the APL Wiki.</p>
+<table>
+<thead>
+<tr>
+<th>Glyph</th>
+<th>Monadic</th>
+<th>Dyadic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>+</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Conjugate">Conjugate</a></td>
+<td><a href="https://aplwiki.com/wiki/Add">Add</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>-</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Negate">Negate</a></td>
+<td><a href="https://aplwiki.com/wiki/Subtract">Subtract</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>×</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Signum">Sign</a></td>
+<td><a href="https://aplwiki.com/wiki/Times">Multiply</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>÷</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Reciprocal">Reciprocal</a></td>
+<td><a href="https://aplwiki.com/wiki/Divide">Divide</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⋆</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Exponential">Exponential</a></td>
+<td><a href="https://aplwiki.com/wiki/Power_(function)">Power</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>√</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Square_Root">Square Root</a></td>
+<td><a href="https://aplwiki.com/wiki/Root">Root</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⌊</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Floor">Floor</a></td>
+<td><a href="https://aplwiki.com/wiki/Minimum">Minimum</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⌈</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Ceiling">Ceiling</a></td>
+<td><a href="https://aplwiki.com/wiki/Maximum">Maximum</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>∧</span></code></td>
+<td>Sort Up</td>
+<td><a href="logic.html">And</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>∨</span></code></td>
+<td>Sort Down</td>
+<td><a href="logic.html">Or</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>¬</span></code></td>
+<td><a href="logic.html">Not</a>*</td>
+<td><a href="logic.html">Span</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>|</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Magnitude">Absolute Value</a></td>
+<td><a href="https://aplwiki.com/wiki/Residue">Modulus</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≤</span></code></td>
+<td></td>
+<td><a href="https://aplwiki.com/wiki/Less_than_or_Equal_to">Less Than or Equal to</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>&lt;</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Enclose">Enclose</a></td>
+<td><a href="https://aplwiki.com/wiki/Less_than">Less Than</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>&gt;</span></code></td>
+<td><a href="couple.html">Merge</a>*</td>
+<td><a href="https://aplwiki.com/wiki/Greater_than">Greater Than</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≥</span></code></td>
+<td></td>
+<td><a href="https://aplwiki.com/wiki/Greater_than_or_Equal_to">Greater Than or Equal to</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>=</span></code></td>
+<td>Rank</td>
+<td><a href="https://aplwiki.com/wiki/Equal_to">Equals</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≠</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Tally">Length</a></td>
+<td><a href="https://aplwiki.com/wiki/Not_Equal_to">Not Equals</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≡</span></code></td>
+<td><a href="depth.html">Depth</a>*</td>
+<td><a href="https://aplwiki.com/wiki/Match">Match</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≢</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Shape">Shape</a></td>
+<td><a href="https://aplwiki.com/wiki/Not_Match">Not Match</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊣</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Identity">Identity</a></td>
+<td><a href="https://aplwiki.com/wiki/Identity">Left</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊢</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Identity">Identity</a></td>
+<td><a href="https://aplwiki.com/wiki/Identity">Right</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⥊</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Ravel">Deshape</a></td>
+<td><a href="https://aplwiki.com/wiki/Reshape">Reshape</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>∾</span></code></td>
+<td><a href="join.html">Join</a>*</td>
+<td><a href="https://aplwiki.com/wiki/Catenate">Join to</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≍</span></code></td>
+<td><a href="couple.html">Solo</a>*</td>
+<td><a href="couple.html">Couple</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>↑</span></code></td>
+<td><a href="prefixes.html">Prefixes</a>*</td>
+<td><a href="https://aplwiki.com/wiki/Take">Take</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>↓</span></code></td>
+<td><a href="prefixes.html">Suffixes</a>*</td>
+<td><a href="https://aplwiki.com/wiki/Drop">Drop</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>↕</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Index_Generator">Range</a></td>
+<td><a href="windows.html">Windows</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>⌽</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Reverse">Reverse</a></td>
+<td><a href="https://aplwiki.com/wiki/Rotate">Rotate</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍉</span></code></td>
+<td><a href="transpose.html">Transpose</a>*</td>
+<td><a href="transpose.html">Reorder axes</a>*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>/</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Indices">Indices</a></td>
+<td><a href="https://aplwiki.com/wiki/Replicate">Replicate</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍋</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Grade">Grade Up</a></td>
+<td><a href="https://aplwiki.com/wiki/Interval_Index">Bins Up</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍒</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Grade">Grade Down</a></td>
+<td><a href="https://aplwiki.com/wiki/Interval_Index">Bins Down</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊏</span></code></td>
+<td>First Cell*</td>
+<td>Select*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊑</span></code></td>
+<td><a href="https://aplwiki.com/wiki/First">First</a></td>
+<td>Pick*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊐</span></code></td>
+<td></td>
+<td><a href="https://aplwiki.com/wiki/Index_Of">Index of</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊒</span></code></td>
+<td>Occurrence Count*</td>
+<td>Progressive Index of*</td>
+</tr>
+<tr>
+<td><code><span class='Function'>∊</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Nub_Sieve">Unique Mask</a></td>
+<td><a href="https://aplwiki.com/wiki/Membership">Member of</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍷</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Unique">Deduplicate</a></td>
+<td><a href="https://aplwiki.com/wiki/Find">Find</a></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊔</span></code></td>
+<td><a href="group.html">Group Indices</a>*</td>
+<td><a href="group.html">Group</a>*</td>
+</tr>
+</tbody>
+</table>
+<h2 id="modifiers">Modifiers</h2>
+<p><em>Combinators</em> only control the application of functions. Because a non-function operand applies as a constant function, some combinators have extra meanings when passed a constant. For example, <code><span class='Number'>0</span><span class='Modifier'>˜</span></code> is the constant function that always returns 0 and <code><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span></code> is the function that tests whether its right argument is greater than 0.</p>
+<table>
+<thead>
+<tr>
+<th>Glyph</th>
+<th>Name(s)</th>
+<th>Definition</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Modifier'>˜</span></code></td>
+<td>Self/Swap</td>
+<td><code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>𝔽</span><span class='Value'>𝕨</span><span class='Function'>⊣</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Duplicate one argument or exchange two</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>∘</span></code></td>
+<td>Atop</td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Value'>𝕨</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔾</span></code> to both arguments and <code><span class='Function'>𝔽</span></code> to the result</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>○</span></code></td>
+<td>Over</td>
+<td><code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝔾</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>𝔽𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔾</span></code> to each argument and <code><span class='Function'>𝔽</span></code> to the results</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⊸</span></code></td>
+<td>Before/Bind</td>
+<td><code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝔽</span><span class='Value'>𝕨</span><span class='Function'>⊣</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td><code><span class='Function'>𝔾</span></code>'s left argument comes from <code><span class='Function'>𝔽</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⟜</span></code></td>
+<td>After/Bind</td>
+<td><code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>⊣</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>𝔽𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td><code><span class='Function'>𝔽</span></code>'s right argument comes from <code><span class='Function'>𝔾</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⌾</span></code></td>
+<td>Under</td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝔾</span><span class='Modifier'>⁼</span><span class='Modifier2'>∘</span><span class='Function'>𝔽</span><span class='Modifier2'>○</span><span class='Function'>𝔾</span><span class='Brace'>}</span></code> OR <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Gets'>↩</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Modifier2'>○</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔽</span></code> over <code><span class='Function'>𝔾</span></code>, then undo <code><span class='Function'>𝔾</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⊘</span></code></td>
+<td>Valences</td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Value'>𝕩;𝕨</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔽</span></code> if there's one argument but <code><span class='Function'>𝔾</span></code> if there are two</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>◶</span></code></td>
+<td>Choose</td>
+<td><code><span class='Brace'>{</span><span class='Value'>f</span><span class='Gets'>←</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>⊑</span><span class='Value'>𝕘</span> <span class='Separator'>⋄</span> <span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Select one of the functions in list <code><span class='Value'>𝕘</span></code> based on <code><span class='Function'>𝔽</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Choose isn't really a combinator since it calls the function <code><span class='Function'>⊑</span></code>, and Under is not a true combinator since it has an &quot;undo&quot; step at the end. This step might be implemented using the left operand's inverse (<em>computational</em> Under) or its structural properties (<em>structural</em> Under).</p>
+<p>Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: in each case the 1-modifier happens to be the same as the 2-modifier with a right operand of <code><span class='Number'>¯1</span></code>.</p>
+<table>
+<thead>
+<tr>
+<th>1-Modifier</th>
+<th>Name</th>
+<th>2-Modifier</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Modifier'>˘</span></code></td>
+<td>Cells</td>
+<td><code><span class='Modifier2'>⎉</span></code></td>
+<td>Rank</td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>¨</span></code></td>
+<td>Each</td>
+<td><code><span class='Modifier2'>⚇</span></code></td>
+<td>Depth</td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>⌜</span></code></td>
+<td>Table</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>⁼</span></code></td>
+<td>Undo</td>
+<td><code><span class='Modifier2'>⍟</span></code></td>
+<td>Repeat</td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>´</span></code></td>
+<td>Fold</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>˝</span></code></td>
+<td>Insert</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>`</span></code></td>
+<td>Scan</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+

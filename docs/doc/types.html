@@ -1,0 +1,17 @@
+<head><link href="../style.css" rel="stylesheet"/></head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="types">Types</h1>
+<p>BQN supports the following fundamental types:</p>
+<ul>
+<li>Number (complex with 64-bit float precision)</li>
+<li>Character (Unicode code point)</li>
+<li>Array</li>
+<li>Function</li>
+<li>1-Modifier</li>
+<li>2-Modifier</li>
+</ul>
+<p>All of these types are immutable, and immutable types should be the default for BQN. The only mutable type likely to be added is the namespace or scope.</p>
+<h2 id="array-model">Array model</h2>
+<p>Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL <a href="https://aplwiki.com/wiki/Array_model">array models</a>. Unlike in APL, non-array data is possible, and common: numbers, characters, and functions are not arrays. This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no &quot;floating&quot; so a value is always different from a scalar array that contains it. This system has been <a href="https://dl.acm.org/doi/abs/10.1145/586656.586663">proposed</a> in APL's past under the name <strong>based array theory</strong>.</p>
+<p>Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).</p>
+
