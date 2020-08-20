@@ -89,6 +89,9 @@ ErrMismatchedBrackets←{
   Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
   0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
 }
+ErrUndeclared←{
+  0 !˜ "Undeclared identifier"∾(1<≠𝕩)/"s"
+}
 Parse ← {nv‿r←𝕨
   g←⍋pd←+`p←𝕩(M×¯1⋆2|-⟜⊑)bB⋄br←p×𝕩M 2≍˜2+⊑bB
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
@@ -131,7 +134,8 @@ Parse ← {nv‿r←𝕨
   d←id⊏dec←idm∧ad∧asn⋄lc←FC dec
   ig←⍋(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
   ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏(⍋⊏⟜(∾⟜(d⊸/)idx))⊸⊏ig
-  ui←d(⌈`↕∘≠⊸×)⊸⊏⌾(ig⊸⊏)id
+  d⊏˜↩ig⋄ErrUndeclared∘/˜⍟(0∨´⊢)⟜(d<(≠↑0∾⊢)⊸≠)ig⊏idx
+  ui←(⌈`↕∘≠⊸×d)⊸⊏⌾(ig⊸⊏)id
   ii←(ui⊏(fi⊏fsc)-(⌈`c⊸×)⊸¬+`dec)∾((sp⊏fi)⊏3×2|ft)++⟜(0⊸≤)2+sp⊏xv
   idor←∾3⥊<is←id∾sp
   idbc←⟨21+is⊏asn,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
