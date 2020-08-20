@@ -558,7 +558,9 @@ Fmt ← {
     ((≠(0⊸<+≤)+´)⥊num)◶{
       # All characters
       k ← -≠ c ← ¯1↓≢𝕩
-      (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (c↑'"') ∾⎉k 𝕩 ∾⎉k ⌽⌾⥊c↑'"'
+      q ← '"'
+      𝕩 ↩ (1+q=⊢)⊸/⍟(k=0) 𝕩
+      (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (c↑q) ∾⎉k 𝕩 ∾⎉k ⌽⌾⥊c↑q
     }‿{
       # Not homogeneous, or empty
       (∨´0=≢)◶FmtMixed‿FmtEmpty 𝕩
