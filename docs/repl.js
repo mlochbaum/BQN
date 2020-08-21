@@ -2,15 +2,18 @@ let body = document.body;
 let doc={}; // html elements with a class
 body.querySelectorAll('[class]').forEach(e=>doc[e.classList[0]]=e);
 let repl = ()=>{
-  try {
-    let s=doc.code.value;
-    doc.rslt.classList.remove('err');
-    doc.rslt.textContent=fmt(bqn(s));
-  } catch(e) {
-  //if (console&&console.error) console.error(e.stack);
-    doc.rslt.classList.add('err');
-    doc.rslt.textContent=e;
-  }
+  let s=doc.code.value;
+  doc.rslt.classList.remove('err');
+  doc.rslt.textContent=' ';
+  setTimeout(() => {
+    try {
+      doc.rslt.textContent=fmt(bqn(s));
+    } catch(e) {
+    //if (console&&console.error) console.error(e.stack);
+      doc.rslt.classList.add('err');
+      doc.rslt.textContent=e;
+    }
+  }, 0);
 }
 if (doc.run) doc.run.onclick = repl;
 
@@ -82,7 +85,7 @@ if (doc.demo) doc.demo.onclick = () => {
    ,'⌈˝ (≠ ↕ 0‿0⊸∾) 1‿2‿5‿4‿0‿2‿1'
   ];
   ++demo; if (demo===demos.length) demo=0;
-  doc.code.value = demos[demo]; setTimeout(repl, 0);
+  doc.code.value = demos[demo]; repl();
 }
 
 if (location.hash) {
