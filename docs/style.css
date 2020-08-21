@@ -53,18 +53,25 @@ pre, textarea, .kb {
 }
 pre { margin: 1.6em 0.4em; }
 pre, textarea { padding: 0.8em; }
-textarea { width:100%; outline:none; resize:vertical; }
-.cont { margin:1.3em 0; }
-.rslt { background:none; border-top:none; margin:0; }
-.rslt.err { color:#d11; }
+textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
+.cont { margin: 1.3em 0; }
+.rslt { background: none; border-top: none; margin: 0; }
+.rslt.err { color: #d11; }
 .kb {
-  line-height:1.5;
-  width:100%;
-  padding:0.3em 0;
+  line-height: 1.5;
+  width: 100%;
+  padding: 0.3em 0;
 }
 .kb span {
-  cursor:default;
-  padding:1px;
+  cursor: default;
+  padding: 1px;
+}
+.rel { position: relative; }
+.demo {
+  position: absolute; top: 0.2em; right: 0.4em;
+  height: 2.2em;
+  fill: #272e30;
+  cursor: pointer;
 }
 
 .Value        { color: #1f2020; }
@@ -82,11 +89,11 @@ textarea { width:100%; outline:none; resize:vertical; }
 .Comment      { color: #32328b; }
 .String       { color: #2d7583; }
 
-a:link        { color: #0b39dc; text-decoration-color:#0b39dc91; }
+a:link        { color: #0b39dc; text-decoration-color: #0b39dc91; }
 a:visited     { color: #3d155f; }
 
-.kb span:hover{ background-color:#bce; }
-.kb.backslash { background-color:#cee; }
+.kb span:hover{ background-color: #bce; }
+.kb.backslash { background-color: #cee; }
 
 @media (prefers-color-scheme: dark) {
   body, input { color: #d6d7d9; background-color: #141515; }
@@ -96,8 +103,8 @@ a:visited     { color: #3d155f; }
   code        { border-color: #0c0d0e; background-color: #0f1011; }
   table td, th{ border-color: #636967; }
   table th    { border-color: #88918c; background-color: #292a2b; }
-  .kb span:hover { background-color:#237; }
-  .kb.backslash  { background-color:#1e2430; }
+  .kb span:hover { background-color: #237; }
+  .kb.backslash  { background-color: #1e2430; }
 
   .Value      { color: #b2b9bb; }
   .Function   { color: #3aa548; }
@@ -114,6 +121,6 @@ a:visited     { color: #3d155f; }
   .Comment    { color: #3f3daa; }
   .String     { color: #3e99ab; }
 
-  a:link      { color: #5592d9; text-decoration-color:#508dd978; }
+  a:link      { color: #5592d9; text-decoration-color: #508dd978; }
   a:visited   { color: #8781c1; }
 }

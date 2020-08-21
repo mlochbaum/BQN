@@ -249,10 +249,12 @@ Markdown ← {filename𝕊𝕩:
     useRepl ↩ 1
 "<div class='cont'>
   <div class='kb'></div>
-  <textarea class='code' rows='1' autofocus><⟜'a'⊸/ ""Big Questions Notation""</textarea>
+  <div class='rel'>
+    <textarea class='code' rows='1' autofocus><⟜'a'⊸/ ""Big Questions Notation""</textarea>
+    <svg class='demo' viewBox='0 -6 4 12'><path d='M1 -6H0L1 0L0 6H1L4 0z'/></svg>
+  </div>
   <pre class='rslt'>""B Q N""</pre>
-</div>
-"
+</div>"
   }‿{
     codeMask ← "<code>" ¯6⊸⌽⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩

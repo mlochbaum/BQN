@@ -65,6 +65,26 @@ if (doc.perm) doc.perm.onmouseover = doc.perm.onfocus = () => {
   doc.perm.href='#code='+escape(doc.code.value)
 }
 
+let demo = 0;
+if (doc.demo) doc.demo.onclick = () => {
+  const demos = [
+    '<⟜\'a\'⊸/ "Big Questions Notation"'
+   ,'≠⌜˜ 8 ⥊ 0‿1'
+   ,'+´ 1 + ↕100'
+   ,'(+´ ÷ ≠) 2‿5‿7‿4'
+   ,'+`-˝ "()" =⌜ "(2×(4-1)÷(√9))"'
+   ,'0‿1‿10‿100⊸⍋⊸⊔ ⟨6,11,9,20,105,1,¯1,4⟩'
+   ,'{(+`𝕩<\'a\') ⊔ 𝕩} "camelCaseWord"'
+   ,'3‿4‿2⌾(0‿0⊸⍉) 3‿3⥊¯1'
+   ,'∾ (<˘ ≍¨¨ 1↓↓) "abcd"'
+   ,'Life←{∨´1‿𝕩∧3‿4=+˝⥊⌽⟜𝕩¨∾⌜˜¯1‿0‿1}\nLife⍟(↕4) 6‿6↑(1⊸=∨5⊸≤)3‿3⥊↕9'
+   ,'⥊ 1‿0‿1 ∧⌜⍟3 1'
+   ,'⌈˝ (≠ ↕ 0‿0⊸∾) 1‿2‿5‿4‿0‿2‿1'
+  ];
+  ++demo; if (demo===demos.length) demo=0;
+  doc.code.value = demos[demo]; setTimeout(repl, 0);
+}
+
 if (location.hash) {
   let hp={};
   location.hash.substring(1).split(',').map(s=>{
