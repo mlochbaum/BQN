@@ -26,7 +26,7 @@ doc.code.onkeydown = ev => {
     doc.kb.classList.remove('backslash');
     let c = keys[ev.key];
     if (c) return typeChar(ev.target, c, ev);
-  } else if (k===220) { // \
+  } else if (ev.key=='\\') {
     keymode = 1;
     doc.kb.classList.add('backslash');
     ev.preventDefault();
