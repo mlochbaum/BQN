@@ -53,7 +53,7 @@ pre, textarea, .kb {
 }
 pre { margin: 1.6em 0.4em; }
 pre, textarea { padding: 0.8em; }
-textarea { width:100%; outline:none; }
+textarea { width:100%; outline:none; resize:vertical; }
 .cont { margin:1.3em 0; }
 .rslt { background:none; border-top:none; margin:0; }
 .rslt.err { color:#d11; }
