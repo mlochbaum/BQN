@@ -609,12 +609,18 @@ Fmt ← {
 
 ################################
 # Creating HTML files
-RplcQuote ← {'"'¨⌾(('''=𝕩)⊸/)𝕩}
-Head ← {
-  p ← (+´'/'=𝕩) ⥊∘/⟜≍ "../"
-  L ← {∾⟨"<link href='",p,𝕩,"' rel='",𝕨,"'/>"⟩}
-  links ← ⟨"shortcut icon' type='image/x-icon"L"favicon.ico","stylesheet"L"style.css"⟩
-  "head"Html lf∾JoinLines "  "⊸∾¨links
+ConvertFile ← {
+  md ← •LNS •path∾𝕩
+  out ← 𝕩 Markdown md
+  root ← (+´'/'=𝕩) ⥊∘/⟜≍ "../"
+  RQ ← {'"'¨⌾(('''=𝕩)⊸/)𝕩}
+  Link ← RQ {∾⟨"<link href='",root,𝕩,"' rel='",𝕨,"'/>"⟩}
+  head ← "head" Html lf∾JoinLines "  "⊸∾¨⟨
+    "shortcut icon' type='image/x-icon" Link "favicon.ico"
+    "stylesheet" Link "style.css"
+    "title" Html "BQN: " ∾⍟(¬·∨´"BQN"⍷⊢) 2↓⊑(2≤≠)◶0‿("# "≡2⊸↑)¨⊸/md
+  ⟩
+  nav ← RQ "div class='nav'"Html"a href='https://github.com/mlochbaum/BQN'"Html"BQN"
+  front ← head ∾○(∾⟜lf) nav
+  front ∾ out
 }
-nav  ← "div class=""nav"""Html"a href=""https://github.com/mlochbaum/BQN"""Html"BQN"
-ConvertFile ← (RplcQuote Head ∾○(∾⟜lf) nav˜) ∾ Markdown⟜(•LNS •path∾⊢)
