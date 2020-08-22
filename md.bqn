@@ -609,6 +609,12 @@ Fmt ← {
 
 ################################
 # Creating HTML files
-Head ← "<head><link href="""∾("../"/˜"/"⊑∘∊⊢)∾"style.css"" rel=""stylesheet""/></head>"∾lf˜
-nav  ← "<div class=""nav""><a href=""https://github.com/mlochbaum/BQN"">BQN</a></div>"∾lf
-ConvertFile ← Head ∾ nav ∾ Markdown⟜(•LNS •path∾⊢)
+RplcQuote ← {'"'¨⌾(('''=𝕩)⊸/)𝕩}
+Head ← {
+  p ← (+´'/'=𝕩) ⥊∘/⟜≍ "../"
+  L ← {∾⟨"<link href='",p,𝕩,"' rel='",𝕨,"'/>"⟩}
+  links ← ⟨"shortcut icon' type='image/x-icon"L"favicon.ico","stylesheet"L"style.css"⟩
+  "head"Html lf∾JoinLines "  "⊸∾¨links
+}
+nav  ← "div class=""nav"""Html"a href=""https://github.com/mlochbaum/BQN"""Html"BQN"
+ConvertFile ← (RplcQuote Head ∾○(∾⟜lf) nav˜) ∾ Markdown⟜(•LNS •path∾⊢)
