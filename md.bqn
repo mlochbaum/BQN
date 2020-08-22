@@ -111,6 +111,22 @@ Modify ← { ⟨include,add,pos⟩𝕊𝕩:
   ((/include)∾(≠¨add)/pos) ⍋⊸⊏ (include/𝕩)∾∾add
 }
 
+# URL encoding for links to the REPL
+UTF32 ← {
+  p ← 2⋆10
+  s ← p×52+2+↕3  # Surrogate character boundaries
+  h ← 1 = c ← (≠s)|s⍋𝕩
+  h ¬⊸/ (¯1⌽h×p×(2⋆6)+⊢)⊸+ 𝕩 - c⊏0∾s
+}⍟(2=≠"𝕩")∘•UCS
+UTF8 ← ∾ (2⋆7) (⊣+(2⋆6){𝕨 ≤◶⟨⥊⊢-2×-⟜𝕗 ⋄ 𝕗(|∾˜(2÷˜⌊⟜𝕨)𝕊⌊∘÷˜)⊢⟩ 𝕩}¨) UTF32
+Base64 ← {
+  b64←"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+  b←3|↕l←≠u←UTF8 𝕩
+  M←((0<↕4)⥊˜≠)⊸× (1+0=b)⊸/
+  v←(4⋆1+b) ((⌊∘÷˜) 1⊸⌽⊸+○M (64÷⊣)×|) u
+  (v⊏b64)∾(3|-l)⥊'='
+}
+
 
 ################################
 Markdown ← {filename𝕊𝕩:
@@ -170,8 +186,13 @@ Markdown ← {filename𝕊𝕩:
         1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
     } 𝕩
 
+    Link ← {
+      try←"https://mlochbaum.github.io/BQN/try.html#code="
+      c ← try ∾ "&run" ∾˜ Base64 ¯1 ↓ JoinLines 4↓¨𝕩
+      ("a class=""replLink"" title=""Open in the REPL"" target=""_blank"" href="∾""""(∾∾⊣)c) Html "↗️"
+    }
     mod ← ⟨em,e∾c∾r,ei∾ci∾ri⟩ Modify code
-    "pre" Html "code" Html⍟(¬extensions) mod
+    𝕩 Link⊸∾⍟addRslt "pre" Html "code" Html⍟(¬extensions) mod
   }
   CodeExec ← X  # dzaima+reference exec. Should be {⍎}
 

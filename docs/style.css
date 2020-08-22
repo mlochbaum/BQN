@@ -74,6 +74,15 @@ textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
   cursor: pointer;
 }
 
+.replLink {
+  float: right;
+  position: relative;
+  right: 1em;
+  top: 0.8em;
+  font-size: 0.84em;
+  opacity: 0.7;
+}
+
 .Value        { color: #1f2020; }
 .Function     { color: #1f7229; }
 .Modifier     { color: #7b3b60; }
