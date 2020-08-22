@@ -65,7 +65,8 @@ doc.kb.onmousedown = ev => {
 }
 
 if (doc.perm) doc.perm.onmouseover = doc.perm.onfocus = () => {
-  doc.perm.href='#code='+escape(doc.code.value)
+  let b=(new TextEncoder()).encode(doc.code.value);
+  doc.perm.href='#code='+btoa(String.fromCharCode(...b));
 }
 
 let demo = 0;
@@ -89,11 +90,14 @@ if (doc.demo) doc.demo.onclick = () => {
 }
 
 if (location.hash) {
-  let hp={};
-  location.hash.substring(1).split(',').map(s=>{
-    let[k,v]=s.split('=');hp[k]=unescape(v)
+  let code='', run=0;
+  location.hash.slice(1).split('&').map(s => {
+    if (s.slice(0,5)==='code=') code=s.slice(5);
+    if (s.slice(0,3)==='run') run=1;
   });
-  doc.code.value = hp.code||'';
-  if (hp.run) repl();
+  let b=atob(code);
+  b=new Uint8Array([...b].map(c=>c.charCodeAt(0)));
+  doc.code.value = (new TextDecoder()).decode(b);
+  if (run) repl();
 }
 doc.code.focus();
