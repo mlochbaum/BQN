@@ -1,4 +1,7 @@
-<head><link href="../style.css" rel="stylesheet"/></head>
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+</head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
 <h1 id="specification-bqn-variable-scoping">Specification: BQN variable scoping</h1>
 <p>BQN uses lexical scoping for variables, where scopes correspond roughly to blocks, or pairs of curly braces separated by semicolons. At the top level in a scope, new variables are visible only after they are defined, but in the scopes it contains, all variables defined in that scope are visible. This system is specified more precisely below.</p>

@@ -1,4 +1,7 @@
-<head><link href="../style.css" rel="stylesheet"/></head>
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+</head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
 <h1 id="the-leading-axis-convention">The leading axis convention</h1>
 <p>Several primitive functions manipulate the right argument, or sometimes both arguments, along one or more axes. According to the <a href="https://aplwiki.com/wiki/Leading_axis_theory">leading axis model</a>, it's best to make the primitives operate on initial axes, because the Rank modifier then allows it to apply to later axes as well. Here we'll see how this pattern works in BQN.</p>
