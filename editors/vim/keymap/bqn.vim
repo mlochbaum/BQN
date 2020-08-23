@@ -14,9 +14,11 @@ let b.='⌽𝕨∊↑∧y⊔⊏⊐π←→  ↙𝕎⍷𝕣⍋YU⊑⊒⍳⊣⊢ '
 let b.='⍉𝕤↕𝕗𝕘⊸∘○⟜⋄↩\  ↖𝕊D𝔽𝔾HJ⌾L·˙| '
 let b.='⥊𝕩↓∨⌊n≡∾≍≠    Z𝕏C⍒⌈N≢≤≥?   '
 
-let[A,B]=map([a,b],"split(v:val,'\\zs *')")
-for i in range(len(A))|exe escape('lno<buffer>'.p.A[i].' '.B[i],'|')|endfor
-for i in range(len(A))|exe escape('cno<buffer>'.p.A[i].' '.B[i],'|')|endfor
-lno<buffer>\<space> ‿
-cno<buffer>\<space> ‿
-unl a b A B i p
+let[a,b]=map([a,b],{i,x->split(x,'\zs *')})
+let a+=['<space>']|let b+=['‿']
+for l in ['l','c']
+ for i in range(len(a))
+  exe escape(l.'no<buffer>'.p.a[i].' '.b[i],'|')
+ endfor
+endfor
+unl p a b l i
