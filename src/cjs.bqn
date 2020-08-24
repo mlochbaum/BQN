@@ -15,5 +15,5 @@ Long ← ∾ (1‿2/⟨"  new Uint8Array("∾∾⟜")"⋄((•UCS 10)∾" ,")⊸
   {𝕩⋄Long Frun {𝕩⊸↓⌾(1⊸⊑)Comp𝕨}´ •EX •path∾"pr.bqn"}
   {𝕩⋄Long Fout Comp J •LNS •path∾"c.bqn"}
   {𝕩⋄Long Fout Comp J •LNS •path∾"fmt.bqn"}
-  J L∘Fout∘Comp¨
+  ¯1 ↓ · J L∘Fout∘Comp¨
 ⟩ •args
