@@ -159,7 +159,7 @@ let bqn = src => run.apply(null,compile(str(src),runtime));
 // Formatter
 let fmt0 = x =>
   typeof x === "number" ?
-    (x==Infinity?"∞":x==-Infinity?"¯∞":(""+x).replace("-","¯"))
+    (x==Infinity?"∞":x==-Infinity?"¯∞":(""+x).replace(/-/g,"¯"))
   : typeof x === "function" ?
     (x.glyph||(x.m?"*"+x.m+"-modifier*":"*function*"))
   : ""+x;
