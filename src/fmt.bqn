@@ -1,14 +1,21 @@
-lf←'
-'
+# Format an array to a character matrix
 {
-  F0←𝔽
+  F0←𝔽  # Function to format a scalar
+  lf←'
+'
+  # Vertical padding for arrays of rank greater than 2
   PadV ← {
+    # Leading shape
     ls ← ¯1↓≢𝕩
+    # Empty lines after each row: 1 if it's at the end of a 2-cell, plus
+    # 1 if it's at the end of a 2-cell and a 3-cell, and so on
     p ← ⥊ +⎉¯1‿∞´ ×⌜˜`⌾⌽ (-1⌈ls)↑¨1
+    # But none at the very end
     p ↩ 0⌾(¯1⊸⊑) p
     Pad ← {i←/1+𝕨 ⋄ (¯1¨⌾((¬∊i)⊸/)i) ⊏ 𝕩∾(¯1⊑≢𝕩)⥊" "}
     p (⊑0∊ls)◶⟨Pad,+´⊸↑⟩ ((×´ls)∾¯1⊑≢𝕩) ⥊ 𝕩
   }⍟(2 < =)
+  # Horizontal padding: just some spaces on either side
   PadH ← {
     (𝕨/" ") (∾⎉1∾⎉1⊣) 𝕩
   }
