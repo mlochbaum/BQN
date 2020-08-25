@@ -459,7 +459,7 @@ TestSections ← {
 # if a statement is an assignment.
 idChars ← ⟨
   •d∾"¯.π∞"
-  ' '+⌾•UCS•a
+  "𝕣"∾˜' '+⌾•UCS•a
   •a
   "_"
 ⟩
@@ -511,6 +511,9 @@ GetHighlights ← {
   # Color with "String" and "Comment"
   col ⌈↩ +´ (1‿2-˜≠classes) × ToMask¨ tc
 
+  # UTF-16 hack: first half of a special name needs to match the second
+  col↩ (1⌽col) ⊣⌾((𝕩=⊑"𝕩")⊸/) col
+
   # Color numeric literals and identifiers
   id ← col=5                 # ←→ 𝕩∊idChars
   w  ← 0⊸Shl⊸< id            # Word (identifier or number) beginning mask
@@ -519,9 +522,6 @@ GetHighlights ← {
   wt+↩ 5×0=wt                # Shift 0 to Number
   wi ← 1-˜+`id/w             # Index of word containing each of /id
   col↩(wi⊏wt)⌾(id⊸/) col
-
-  # UTF-16 hack: first half of a special name needs to match the second
-  col↩ (1⌽col) ⊣⌾((𝕩=⊑"𝕩")⊸/) col
 
   # Tags are placed at boundaries between different colors
   boundary ← ¯1⊸Shl⊸≠ col
