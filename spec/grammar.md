@@ -85,9 +85,9 @@ A braced block contains bodies, which are lists of statements, separated by semi
     FCase    = ⋄? FuncHead ":" BODY
     _mCase   = ⋄? _m1Head  ":" BODY
     _cCase_  = ⋄? _m2Head_ ":" BODY
-    FMain    = ( ⋄?    F             ":" )? BODY
-    _mMain   = ( ⋄? ( _m  | Mod1H1 ) ":" )? BODY
-    _cMain_  = ( ⋄? ( _c_ | Mod2H1 ) ":" )? BODY
+    FMain    = ( ⋄? (  F  |  "𝕊"           ) ":" )? BODY
+    _mMain   = ( ⋄? ( _m  | "_𝕣"  | Mod1H1 ) ":" )? BODY
+    _cMain_  = ( ⋄? ( _c_ | "_𝕣_" | Mod2H1 ) ":" )? BODY
     brSub    = "{" ( ⋄? s ":" )? BODY "}"
     BrFunc   = "{" (  FCase  ";" )* (  FCase  |  FMain ( ";"  FMain )? ) "}"
     _brMod1  = "{" ( _mCase  ";" )* ( _mCase  | _mMain ( ";" _mMain )? ) "}"
