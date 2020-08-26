@@ -2,7 +2,7 @@
 
 # Indices
 
-One-dimensional arrays such as K lists or Python arrays have only one kind of index, a single number that refers to an element. For multidimensional arrays using the leading axis theory, there are several types of indexing that can be useful. Historically, nested APL designs have equivocated between these, which I believe can lead to subtle errors when programming. BQN focuses on single-number (depth 0) indices, which can refer to list elements or array major cells (or more generally indexing along any particular axis). When using this kind of element index, indexed arrays are required to be lists. Only two functions allow the use of list element indices: Range (`↕`), which can accept a list argument, and Pick (`⊑`), which uses the depth-1 arrays in its left argument as index scalars or lists. Others use single-number indices to refer to cells.
+One-dimensional arrays such as K lists or Python arrays have only one kind of index, a single number that refers to an element. For multidimensional arrays using the [leading axis theory](leading.md), there are several types of indexing that can be useful. Historically, nested APL designs have equivocated between these, which I believe can lead to subtle errors when programming. BQN focuses on single-number (depth 0 or atomic) indices, which can refer to list elements or array major cells (or more generally indexing along any particular axis). When using atomic indices to select elements, the indexed array has to be a list. In contrast, elements of any array can be indicated by list indices, whose length is equal to the array's rank. Only two BQN primitives use these list indices: Range (`↕`), which returns an array of them if given a list argument, and Pick (`⊑`), where the depth-1 components of an array left argument are list indices.
 
 The following functions take or return indices. Except where marked, the indices are in the result; this is by far the most common type of index use. `⊔` is given two rows as it falls into both cases. Note that in the result case, there is usually no possibility for the programmer to select the format of indices. Instead, the language should be carefully designed to make sure that the kind of index returned is as useful as possible.
 
@@ -11,7 +11,7 @@ The following functions take or return indices. Except where marked, the indices
 |  `↕`  |      |         | Element scalar or list
 |  `/`  |      |         | Element scalar
 |  `⊔`  |      |         | Element scalar
-|  `⊔`  | `⊔`  | `𝕨`/`𝕩` | Along-axis scalar
+|  `⊔`  | `⊔`  | `𝕩`/`𝕨` | Along-axis scalar
 |       | `⊑`  | `𝕨`     | Element list
 |  `⍋`  | `⍋`  |         | Major cell scalar
 |  `⍒`  | `⍒`  |         | Major cell scalar
