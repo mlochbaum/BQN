@@ -10,6 +10,7 @@ Overview:
 - [Primitives](primitive.md)
 
 Concepts:
+- [Based array theory](based.md)
 - [Context-free grammar](context.md)
 - [Functional programming](functional.md)
 - [Array indices](indices.md)
