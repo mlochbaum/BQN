@@ -16,10 +16,10 @@ syn match bqnfun "[𝔽𝔾𝕎𝕏𝕊+\-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥�
 syn match bqnsub "[𝕗𝕘𝕨𝕩𝕤]"
 syn match bqnnot "·"
 syn match bqnnum "\v\c¯?((\d+\.)?\d+(e¯?\d+)?|π|∞)(i¯?((\d+\.)?\d+(e¯?\d+)?|π|∞))?"
-syn match bqnsid "\(•\|•\?[a-z][A-Z_a-z0-9]*\|𝕣\)"
-syn match bqnfid "•\?[A-Z][A-Z_a-z0-9]*"
-syn match bqn1id "\(•\?_[A-Za-z][A-Z_a-z0-9]*\|_𝕣\)"
-syn match bqn2id "\(•\?_[A-Za-z][A-Z_a-z0-9]*_\|_𝕣_\)"
+syn match bqnsid "\(•\|•\?[a-z][A-Z_a-z0-9π∞¯]*\|𝕣\)"
+syn match bqnfid "•\?[A-Z][A-Z_a-z0-9π∞¯]*"
+syn match bqn1id "\(•\?_[A-Za-z][A-Z_a-z0-9π∞¯]*\|_𝕣\)"
+syn match bqn2id "\(•\?_[A-Za-z][A-Z_a-z0-9π∞¯]*_\|_𝕣_\)"
 syn match bqncom "#.*$"
 syn match bqnquo /""/ contained
 syn region bqnstr matchgroup=bqnstr start=/"/ end=/"/ contains=bqnquo
