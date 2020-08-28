@@ -7,15 +7,20 @@
 <h1 id="types">Types</h1>
 <p>BQN supports the following fundamental types:</p>
 <ul>
-<li>Number (complex with 64-bit float precision)</li>
-<li>Character (Unicode code point)</li>
-<li>Array</li>
+<li><a href="#numbers">Number</a></li>
+<li><a href="#characters">Character</a> (Unicode code point)</li>
+<li><a href="#arrays">Array</a></li>
 <li>Function</li>
 <li>1-Modifier</li>
 <li>2-Modifier</li>
 </ul>
-<p>All of these types are immutable, and immutable types should be the default for BQN. The only mutable type likely to be added is the namespace or scope.</p>
-<h2 id="array-model">Array model</h2>
-<p>Most of BQN's functionality deals with the manipulation of multidimensional arrays. However, it discards many of the complications of traditional APL <a href="https://aplwiki.com/wiki/Array_model">array models</a>. Unlike in APL, non-array data is possible, and common: numbers, characters, and functions are not arrays. This avoids some difficulties that show up when trying to treat scalar arrays as the fundamental unit; in particular, there is no &quot;floating&quot; so a value is always different from a scalar array that contains it. This system has been <a href="https://dl.acm.org/doi/abs/10.1145/586656.586663">proposed</a> in APL's past under the name <strong>based array theory</strong>.</p>
+<p>The first three types are called <em>data types</em>, and the rest are <em>operation types</em>. The array is the only <em>compound type</em>; the other types are <em>atomic types</em> and values of these types are called <em>atoms</em>. The fact that an array is only one type of many is common in modern programming languages but a novelty in the APL family. This decision is discussed in the page on <a href="based.html">based array theory</a>.</p>
+<p>All of these types are immutable, meaning that a particular copy of a value will never change (to go further, with immutable types it doesn't really make sense to talk about a &quot;copy&quot; of a value: values just exist and nothing you do will affect them). The only form of mutability BQN has is the ability to change the value of a particular variable, that is, make that variable name refer to a different value. However, it is likely that in the future <a href="extensions.html#namespaces-and-symbols">namespaces</a>, or references to enclosed scopes, will be added as a mutable data type.</p>
+<h2 id="numbers">Numbers</h2>
+<p>The BQN spec allows for different numeric models to be used, but requires there to be only one numeric type from the programmer's perspective: while programs can often be executed faster by using limited-range integer types, there is no need to expose these details to the programmer. Existing BQN implementations are based on <a href="https://en.wikipedia.org/wiki/IEEE-754">double-precision floats</a>, like Javascript or Lua.</p>
+<h2 id="characters">Characters</h2>
+<p>A character in BQN is always a <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a> code point. BQN does not use encodings such as UTF-8 or UTF-16 for characters, although it would be possible to store arrays of integers or characters that correspond to data in these encodings. Because every code point corresponds to a single unit in UTF-32, BQN characters can be thought of as UTF-32 encoded.</p>
+<h2 id="arrays">Arrays</h2>
+<p>A BQN array is a multidimensional arrangement of data.</p>
 <p>Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).</p>
 
