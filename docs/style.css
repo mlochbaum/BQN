@@ -33,11 +33,17 @@ table th {
   border-bottom-color: #5a5f5d;
 }
 
+@font-face{
+  font-family: BQN;
+  src: url(DejaVuBQNSansMono.ttf) format('truetype');
+}
 pre, code, textarea {
   background-color: #e3e7e7;
   color: #292929;
 }
 pre, code, textarea, .kb {
+  font-family: BQN, monospace;
+  font-size: 0.94em;
   border: 1px solid #bdcac4;
   letter-spacing: 0.2;
 }
@@ -47,8 +53,6 @@ code {
   border-width: 0.3px;
 }
 pre, textarea, .kb {
-  font-family: monospace;
-  font-size: 1.16em;
   line-height: 1.2;
 }
 pre { margin: 1.6em 0.4em; }
