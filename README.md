@@ -35,6 +35,12 @@ Rather strange, most likely:
 
 For longer samples, you can [gaze into the abyss](src/c.bqn) that is the self-hosted compiler, or the [shallower but wider abyss](src/r.bqn) of the runtime, or take a look at the friendlier [markdown processor](md.bqn) used to format and highlight documentation files. There are also [some translations](examples/fifty.bqn) from ["A History of APL in 50 Functions"](https://www.jsoftware.com/papers/50/) here.
 
+## How do I work with the character set?
+
+I enter the special characters using a backslash prefix, so that, for example, `\z` is translated to `⥊` (the backslash character itself is not used by BQN). The online REPL supports this method out of the box, and this repository also has [scripts](https://github.com/mlochbaum/BQN/tree/master/editors) to support it, along with the standard syntax highlighting and indentation, in Vim and [Kakoune](https://kakoune.org/). When starting out, it may be easier to use the bar above the REPL: hover over a character to see a short description, and click to insert it into the editor. Finally, on Linux [this configuration file](https://github.com/mlochbaum/BQN/blob/master/editors/bqn) for [XKB](https://en.wikipedia.org/wiki/X_keyboard_extension) can be used to allow typing glyphs with a modifier key system-wide.
+
+Few existing monospace fonts support all the BQN characters (double-struck letters like `𝕩` are a particular sticking point), which can cause these characters to be rendered with a fallback font and have the wrong width or look inconsistent. Two fonts modified to support BQN are available currently. This site uses a [modified DejaVu Sans Mono](https://github.com/mlochbaum/BQN/blob/master/docs/DejaVuBQNSansMono.ttf), and another, more playful option is [BQN386](https://github.com/dzaima/BQN386), based on [APL386](https://abrudz.github.io/APL386/).
+
 ## How do I get started?
 
 Read the [documentation](doc/README.md)!
