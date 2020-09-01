@@ -106,6 +106,10 @@ Transpose←{
   l←≠𝕩 ⋄ m←1×´c←1 Cell 𝕩
   (c⥊↕m)(+⟜(m⊸×)⊑(⥊𝕩)˜)⌜↕l
 }⍟(0<=)
+TransposeInv←{
+  r←1-˜=𝕩 ⋄ s←≢𝕩 ⋄ l←r⊑s ⋄ c←⊑⟜s⌜↕r
+  (↕l)(+⟜(l⊸×)⊑(⥊𝕩)˜)⌜c⥊↕1×´c
+}⍟(0<=)
 
 SelSub←{
   "Right argument to Select must be an array" ! IsArray 𝕨
@@ -410,12 +414,13 @@ _search←{ # 0 for ∊˜, 1 for ⊐
     ⟩ ToArray𝕩
   }
 }
+PermInv ← 1¨⊸GroupOrd
 _self←{
   "Unique mask argument must have rank at least 1" ! 1≤=𝕩
   g←⍋𝕩
-  (1¨⊸GroupOrd g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
+  (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
 }
-SelfClas ← (1¨⊸GroupOrd∘⍋∘/˜⊏˜1-˜+`∘⊢) _self
+SelfClas ← (PermInv∘⍋∘/˜⊏˜1-˜+`∘⊢) _self
 Find←{
   r←=𝕨
   "Find left argument rank cannot exceed right argument rank" ! r≤=𝕩
@@ -426,16 +431,27 @@ Find←{
 ∊ ← ⊢_self         ⊘ (0 _search˜)
 ⍷ ← ∊⊸/            ⊘ Find
 
-ReorderAxes←{
-  𝕩↩<⍟(0=≡)𝕩
+ReorderChk←{
   "Left argument to Reorder Axes must have rank at most 1" ! 1≥=𝕨
-  𝕨↩⥊𝕨
   "Reorder Axes left argument length must not exceed right argument rank" ! 𝕨≤○≠≢𝕩
   "Reorder Axes left argument must consist of natural numbers" ! ∧´Nat⌜⥊𝕨
+}
+ReorderAxesSub←{
+  (𝕨⊸⊏Pick𝕩˜)⌜↕⌊´⌜𝕨⊔≢𝕩
+}
+ReorderAxes←{
+  𝕨 ReorderChk 𝕩
+  𝕨↩⥊𝕨
   r←(=𝕩)-+´¬∊𝕨
   "No such axis in Reorder Axes" ! ∧´𝕨<r
-  𝕨↩𝕨∾𝕨(¬∘∊˜/⊢)↕r
-  (𝕨⊸⊏Pick𝕩˜)⌜↕⌊´⌜𝕨⊔≢𝕩
+  (𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
+}
+ReorderAxesInv←{
+  𝕨 ReorderChk 𝕩
+  𝕨↩⥊𝕨
+  r←=𝕩
+  IA ∧´(∊∧<⟜r)𝕨
+  (PermInv 𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
 }
 ⍉ ← Transpose      ⊘ ReorderAxes
 
@@ -457,6 +473,7 @@ inverse ← {(⊑(0⊏𝕩)⊐<) ⊑ ((1⊏𝕩)∾⟨"Inverse not found"!0˜⟩
   ∧, ⊢⊘(÷˜)
   ∨, ⊢⊘(-˜÷1-⊢)
   <, {IA IsArray𝕩⋄IA 0==𝕩⋄⊑𝕩}⊘(IA∘0)
+  ⍉, TransposeInv ⊘ ReorderAxesInv
   /, {IA 1==𝕩⋄IA∧´Nat⌜𝕩⋄IA(∧´¯1⊸↓≤1⊸↓)𝕩⋄GroupLen𝕩}⊘(IA∘0)
 ⟩
 ⁼ ← {Inverse 𝕗}
