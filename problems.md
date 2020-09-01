@@ -96,8 +96,8 @@ This is an issue with any lexically-scoped language; it's unlikely BQN can solve
 ### Rank/Depth negative zero
 A positive operand to Rank indicates the cell rank, so positive zero means to act on 0-cells. A negative operand indicates the frame length, so negative zero should act on the entire array. But it can't because it's equal to positive zero. Similar issue with Depth. Positive/negative is not really the right way to encode the frame/cell distinction, but it's convenient. Fortunately ∞ can be used in place of negative zero, but there can still be problems if the rank is computed.
 
-### Must read the body to find explicit definition's type
-You have to scan for headers or double-struck names (and so does a compiler). A little inelegant, and difficult to describe in BNF.
+### Must read the body to find headerless block's type
+You have to scan for headers or double-struck names (and so does a compiler). A little inelegant, and difficult to describe in BNF. This can usually be fixed by adding a block header, except in the case of immediate modifiers: even an immediate modifier with a header can be made into a deferred modifier by adding a special name like `𝕨`.
 
 ### Each block body has its own label
 In a block with multiple bodies, the label (the self-name part of the header) refers to the entire block. However, there's no way to give only one label to the entire block. If you want to consistently use the same internal name, then you may have to write it many times. It's also a weird mismatch, conceptually.
