@@ -80,21 +80,16 @@ Like any function, this one can be given a name and then called. A quirk of this
 
         gauss ← {𝕎∘𝕏}´ ⋆‿-‿(×˜)
         Gauss 2
-    0.0183156388887342
 
 Another, and probably more common, use of arrays of functions is to apply several different functions to one or more arguments. Here we apply three different functions to the number 9:
 
         ⟨√, 2⊸∾, ⊢-⋆⟩ {𝕎𝕩}¨ 9
-    [ 3 [ 2 9 ] ¯8094.083927575384 ]
 
 The 2-modifier Choose (`◶`) relies on arrays of functions to… function. It's very closely related to Pick `⊑`, and in fact when the left operand and the elements of the right operand are all data there's no real difference: Choose returns the constant function `𝕗⊑𝕘`.
 
-        2◶"abcdef"‿"arg"
-    c
+        2◶"abcdef" "arg"
 
 When the operands contain functions, however, the potential of Choose as a ternary-or-more operator opens up. Here's a function for a step in the Collatz sequence, which halves an even input but multiplies an odd input by 3 and adds 1. To get the sequence for a number, we can apply the same function many times. It's an open problem whether the sequence always ends with the repetition 4, 2, 1, but it can take a surprisingly long time to get there—try 27 as an argument.
 
         (2⊸|)◶⟨÷⟜2,1+3×⊢⟩¨ 6‿7
-    [ 3 22 ]
         (2⊸|)◶⟨÷⟜2,1+3×⊢⟩⍟(↕10) 6
-    [ 6 3 10 5 16 8 4 2 1 4 ]
