@@ -16,13 +16,13 @@ Glyph(s)        | Meaning
 `()`            | Expression grouping
 `←`             | [Define](#assignment)
 `↩`             | [Change](#assignment)
-`→`             | Return
+`→`             | [Return](block.md#returns)
 `⋄,` or newline | Statement or element [separator](#separators)
 `⟨⟩`            | [List](#list-notation) (rank-1 array)
 `‿`             | [Strand](#list-notation) (lightweight list syntax)
 `{}`            | [Block](#blocks) such as a function definition
-`:`             | Block header
-`;`             | Block body separator
+`:`             | [Block header](block.md#block-headers)
+`;`             | [Block body separator](block.md#multiple-bodies)
 `𝕨𝕎`            | [Left argument](#blocks)
 `𝕩𝕏`            | [Right argument](#blocks)
 `𝕤𝕊`            | [Function self-reference](#blocks)
@@ -91,6 +91,8 @@ Lists (1-dimensional arrays) are enclosed in angle brackets `⟨⟩`, with the r
 If added, [sets and dictionaries](extensions.md#sets-and-dictionaries) would also use a list-like notation.
 
 ### Blocks
+
+*[Full documentation](block.md)*
 
 Blocks are written with curly braces `{}` and can be used to group expressions or define functions and modifiers. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned in order to evaluate the block. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return subjects and modifiers return functions. Blocks have lexical scope.
 

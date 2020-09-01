@@ -15,7 +15,7 @@ BQN maintains many of the ideas that made APL\360 revolutionary in 1966:
 It incorporates concepts developed over years of APL practice:
 * The [**leading axis model**](doc/leading.md), which allows for simpler built-in functions.
 * Trains and combinators for **tacit programming**.
-* Lightweight **anonymous functions** (like [dfns](https://aplwiki.com/wiki/Dfn)).
+* Lightweight [**anonymous functions**](doc/block.md) (like [dfns](https://aplwiki.com/wiki/Dfn)).
 
 But BQN is redesigned from the ground up, with brand new ideas to make these paradigms easier to use and less likely to fail.
 * The [**based array model**](doc/based.md) makes non-arrays a fundamental part of the language, and removes the surprise of floating arrays and the hassle of explicit boxes. New **array notation** eliminates the gotchas of [stranding](https://aplwiki.com/wiki/Strand_notation).

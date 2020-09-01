@@ -1,0 +1,214 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Blocks</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="blocks">Blocks</h1>
+<p>In BQN, a <em>block</em> is any piece of code surrounded with curly braces <code><span class='Brace'>{}</span></code>. Blocks can be used simply to group statements, or can define functions or modifiers. They are the sole large-scale structure used to organize programs.</p>
+<p>Blocks are most commonly used to define functions by including one of the special names for arguments, <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code>. With the operands <code><span class='Function'>𝔽</span></code> or <code><span class='Function'>𝔾</span></code>, they can also define 1-modifiers or 2-modifiers.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=e/CdlakrMX0gMwrDl3vwnZWp8J2UvfCdlal9IDQ=&run">↗️</a><pre>    <span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>+</span><span class='Number'>1</span><span class='Brace'>}</span> <span class='Number'>3</span>
+4
+    <span class='Function'>×</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>𝔽</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>4</span>
+16
+</pre>
+<p>Because they use <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping">lexical scoping</a>, blocks can also be used to encapsulate code. If a block uses only variables that it initializes, then it has no dependence on its environment and would work the same way if defined anywhere. But it can also use external variables, defined in a containing block.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YeKGkGLihpAib3V0ZXIiCnsgYeKGkCJpbm5lciIg4ouEIGHigL9iIH0=&run">↗️</a><pre>    <span class='Value'>a</span><span class='Gets'>←</span><span class='Value'>b</span><span class='Gets'>←</span><span class='String'>&quot;outer&quot;</span>
+    <span class='Brace'>{</span> <span class='Value'>a</span><span class='Gets'>←</span><span class='String'>&quot;inner&quot;</span> <span class='Separator'>⋄</span> <span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span> <span class='Brace'>}</span>
+⟨ "inner" "outer" ⟩
+</pre>
+<h2 id="headerless-blocks">Headerless blocks</h2>
+<p>In the simplest case a block is just a list of statements, which are executed to <em>evaluate</em> the block. A block with no special names like <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code> is called an <em>immediate block</em>, and is evaluated as soon as it is reached. The only think such a block does is group some statements, and create a scope for them so that definitions made there are discarded when the block finishes. Even this small amount of functionality could be useful; as an example the following program can build up an array from named components without polluting the rest of the program with those names.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dXBkb3duIOKGkCB7IHVw4oaQ4oaVNSDii4QgZG93buKGkOKMvXVwIOKLhCB1cOKIvmRvd24gfQp1cGRvd24=&run">↗️</a><pre>    <span class='Value'>updown</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>up</span><span class='Gets'>←</span><span class='Function'>↕</span><span class='Number'>5</span> <span class='Separator'>⋄</span> <span class='Value'>down</span><span class='Gets'>←</span><span class='Function'>⌽</span><span class='Value'>up</span> <span class='Separator'>⋄</span> <span class='Value'>up</span><span class='Function'>∾</span><span class='Value'>down</span> <span class='Brace'>}</span>
+    <span class='Value'>updown</span>
+⟨ 0 1 2 3 4 4 3 2 1 0 ⟩
+</pre>
+<p>An immediate block is only ever evaluated once, and can't be used for control flow in a program. Including special names in a headerless block lets us define functions and modifiers, which have a broader range of uses. All special names are listed below:</p>
+<table>
+<thead>
+<tr>
+<th>Lowercase</th>
+<th>Uppercase</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Value'>𝕩</span></code></td>
+<td><code><span class='Function'>𝕏</span></code></td>
+<td>Right <a href="#arguments">argument</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕨</span></code></td>
+<td><code><span class='Function'>𝕎</span></code></td>
+<td>Left <a href="#arguments">argument</a>, or Nothing (<code><span class='Nothing'>·</span></code>)</td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕤</span></code></td>
+<td><code><span class='Function'>𝕊</span></code></td>
+<td>Function <a href="#self-reference">self-reference</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕗</span></code></td>
+<td><code><span class='Function'>𝔽</span></code></td>
+<td>Left <a href="#operands">operand</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕘</span></code></td>
+<td><code><span class='Function'>𝔾</span></code></td>
+<td>Right <a href="#operands">operand</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>𝕣</span></code></td>
+<td>none</td>
+<td>Modifier <a href="#self-reference">self-reference</a></td>
+</tr>
+</tbody>
+</table>
+<p>Of these, <code><span class='Value'>𝕣</span></code> is sort of a &quot;more special&quot; character, as we'll discuss below. Except for <code><span class='Value'>𝕣</span></code>, every special name is a single character and can't have underscores added to spell it as a modifier, allowing a modifier to be applied to a special name with no spacing as in <code><span class='Value'>𝕗</span><span class='Modifier'>_m</span></code>, something that can't be done with ordinary names.</p>
+<h3 id="arguments">Arguments</h3>
+<p>The names <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code>, and their uppercase spellings, represent function arguments. As the argument to a function is typically data, it's more common to use the lowercase forms for these. Either of these names will turn an immediate block into a function (or an immediate modifier into a deferred one; see the next section). Instead of being evaluated as soon as it appears in the source, a function is evaluated when it's called, with the special names set to appropriate values. Unlike in Dyalog APL's dfns, their values can be changed like ordinary variables.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eydjJz3wnZWpfSAiYWJjZCIKeyDwnZWpK+KGqTIg4ouEIDDiiL7wnZWpIH0gMwo0IHsg4p+o8J2VqeKLhC3wnZWo4p+pIH0gNQ==&run">↗️</a><pre>    <span class='Brace'>{</span><span class='String'>'c'</span><span class='Function'>=</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='String'>&quot;abcd&quot;</span>
+⟨ 0 0 1 0 ⟩
+    <span class='Brace'>{</span> <span class='Value'>𝕩</span><span class='Function'>+</span><span class='Gets'>↩</span><span class='Number'>2</span> <span class='Separator'>⋄</span> <span class='Number'>0</span><span class='Function'>∾</span><span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='Number'>3</span>
+⟨ 0 5 ⟩
+    <span class='Number'>4</span> <span class='Brace'>{</span> <span class='Bracket'>⟨</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Function'>-</span><span class='Value'>𝕨</span><span class='Bracket'>⟩</span> <span class='Brace'>}</span> <span class='Number'>5</span>
+⟨ 5 ¯4 ⟩
+</pre>
+<p>A function with <code><span class='Value'>𝕨</span></code> in its definition doesn't have to be called with two arguments. If it has only one, then <code><span class='Value'>𝕨</span></code> is given the special value Nothing <code><span class='Nothing'>·</span></code>. This is the only time a variable can ever be Nothing, as an assignment such as <code><span class='Value'>v</span><span class='Gets'>←</span><span class='Nothing'>·</span></code> is not allowed.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyB7ICgyw5fwnZWoKS3wnZWpIH0gMQogIHsgKDLDl/CdlagpLfCdlakgfSAx&run">↗️</a><pre>    <span class='Number'>3</span> <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>×</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='Number'>1</span>
+5
+      <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>×</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='Number'>1</span>
+¯1
+</pre>
+<p>In the second function, <code><span class='Value'>𝕨</span></code> behaves just like <code><span class='Nothing'>·</span></code>, so that the function <code><span class='Number'>2</span><span class='Function'>×</span><span class='Value'>𝕨</span></code> is not evaluated and <code><span class='Function'>-</span></code> doesn't have a left argument. It has a similar effect when used as the left argument to a function in a train.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiYyIgeyAo8J2VqOKJjeKMvSkg8J2VqSB9ICJkZWYiCiAgICAgIHsgKPCdlajiiY3ijL0pIPCdlakgfSAiZGVmIg==&run">↗️</a><pre>    <span class='String'>&quot;abc&quot;</span> <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>≍⌽</span><span class='Paren'>)</span> <span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='String'>&quot;def&quot;</span>
+┌─     
+╵"abc  
+  fed" 
+      ┘
+          <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>≍⌽</span><span class='Paren'>)</span> <span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='String'>&quot;def&quot;</span>
+┌─     
+╵"fed" 
+      ┘
+</pre>
+<p>However, <code><span class='Nothing'>·</span></code> can only be used as an argument, and not a list element or operand. Don't use <code><span class='Value'>𝕨</span></code> in these ways in a function that could be called monadically. Another potential issue is that <code><span class='Modifier2'>⊸</span></code> and <code><span class='Modifier2'>⟜</span></code> don't work the way you might expect.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyDwnZWoIOKLhuKKuC0g8J2VqSB9IDU=&run">↗️</a><pre>    <span class='Brace'>{</span> <span class='Value'>𝕨</span> <span class='Function'>⋆</span><span class='Modifier2'>⊸</span><span class='Function'>-</span> <span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='Number'>5</span>
+143.413159102577
+</pre>
+<p>Called dyadically, this function will expand to <code><span class='Paren'>(</span><span class='Function'>⋆</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕩</span></code>, so we might expect the monadic result to be <code><span class='Function'>-</span><span class='Value'>𝕩</span></code>. This sort of expansion isn't right with <code><span class='Nothing'>·</span></code> on the left. <code><span class='Function'>⋆</span><span class='Modifier2'>⊸</span><span class='Function'>-</span></code> taken as a whole is a function, so <code><span class='Nothing'>·</span> <span class='Function'>⋆</span><span class='Modifier2'>⊸</span><span class='Function'>-</span> <span class='Value'>𝕩</span></code> is just <code><span class='Function'>⋆</span><span class='Modifier2'>⊸</span><span class='Function'>-</span> <span class='Value'>𝕩</span></code>, or <code><span class='Paren'>(</span><span class='Function'>⋆</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕩</span></code>, giving the large result seen above.</p>
+<h3 id="operands">Operands</h3>
+<p>The special names <code><span class='Function'>𝔽</span></code> and <code><span class='Function'>𝔾</span></code>, and their lowercase forms, represent operands. Since operands are more often functions, they're typically shown with the uppercase spelling. If <code><span class='Function'>𝔽</span></code> is present in a block then it defines a 1-modifier or 2-modifier depending on whether <code><span class='Function'>𝔾</span></code> is present; if <code><span class='Function'>𝔾</span></code> is there it's always a 2-modifier.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NCB7w5fLnPCdlZd9CjIge/CdlZcr8J2VmH0gMw==&run">↗️</a><pre>    <span class='Number'>4</span> <span class='Brace'>{</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Value'>𝕗</span><span class='Brace'>}</span>
+16
+    <span class='Number'>2</span> <span class='Brace'>{</span><span class='Value'>𝕗</span><span class='Function'>+</span><span class='Value'>𝕘</span><span class='Brace'>}</span> <span class='Number'>3</span>
+5
+</pre>
+<p>As shown above, modifiers without <code><span class='Value'>𝕨</span></code>, <code><span class='Value'>𝕩</span></code>, or <code><span class='Value'>𝕤</span></code> behave essentially like functions with a higher precedence. These <em>immediate modifiers</em> take operands and return a result of any type. The result is given a function role, so it's most common to return a function, rather than a number as shown above.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=X2RvdF8g4oaQIHvwnZS9wrTiiJjwnZS+fQox4oC/MuKAvzMgK19kb3Rfw5cgMeKAvzDigL8x&run">↗️</a><pre>    <span class='Modifier2'>_dot_</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>𝔾</span><span class='Brace'>}</span>
+    <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>+</span><span class='Modifier2'>_dot_</span><span class='Function'>×</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+4
+</pre>
+<p>However, if one of these names is included, then a <em>deferred modifier</em> is created instead: rather than evaluate the contents when the modifier is called, the operands are bound to it to create a derived function. When this function is called, the statements in the block are evaluated.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K3vwnZWp8J2UvfCdlal9IDYKMiDipYp74p+o8J2UvfCdlags8J2UvvCdlanin6l9LSA1&run">↗️</a><pre>    <span class='Function'>+</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>𝔽</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>6</span>
+12
+    <span class='Number'>2</span> <span class='Function'>⥊</span><span class='Brace'>{</span><span class='Bracket'>⟨</span><span class='Function'>𝔽</span><span class='Value'>𝕨</span><span class='Separator'>,</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span><span class='Brace'>}</span><span class='Function'>-</span> <span class='Number'>5</span>
+⟨ ⟨ 2 ⟩ ¯5 ⟩
+</pre>
+<p>The distinction between an immediate and deferred modifier only matters inside the braces. Once defined, the object is simply a modifier that can be called on operands to return a result. For a deferred modifier this result will always be a function; for an immediate modifier it could be anything.</p>
+<h3 id="self-reference">Self-reference</h3>
+<p>If a block is assigned a name after it is created, this name can be used for recursion:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RmFjdCDihpAgeyDwnZWpIMOXICgw4oq4PCnil7Yx4oC/RmFjdCDwnZWpLTEgfQpGYWN0IDcKKMOXwrQxK+KGlSkgNyAgIyBUaGVyZSdzIG9mdGVuIGEgc2ltcGxlciBzb2x1dGlvbiB0aGFuIHJlY3Vyc2lvbg==&run">↗️</a><pre>    <span class='Function'>Fact</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>𝕩</span> <span class='Function'>×</span> <span class='Paren'>(</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span><span class='Paren'>)</span><span class='Modifier2'>◶</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Function'>Fact</span> <span class='Value'>𝕩</span><span class='Function'>-</span><span class='Number'>1</span> <span class='Brace'>}</span>
+    <span class='Function'>Fact</span> <span class='Number'>7</span>
+5040
+    <span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>´</span><span class='Number'>1</span><span class='Function'>+↕</span><span class='Paren'>)</span> <span class='Number'>7</span>  <span class='Comment'># There's often a simpler solution than recursion
+</span>5040
+</pre>
+<p>This is somewhat unsatisfying because it is external to the function being defined, even though it doesn't depend on outside information. Instead, the special name <code><span class='Function'>𝕊</span></code> can be used to refer to the function it appears in. This allows anonymous recursive functions to be defined.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyDwnZWpIMOXICgw4oq4PCnil7Yx4oC/RmFjdCDwnZWpLTEgfSA3&run">↗️</a><pre>    <span class='Brace'>{</span> <span class='Value'>𝕩</span> <span class='Function'>×</span> <span class='Paren'>(</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span><span class='Paren'>)</span><span class='Modifier2'>◶</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Function'>Fact</span> <span class='Value'>𝕩</span><span class='Function'>-</span><span class='Number'>1</span> <span class='Brace'>}</span> <span class='Number'>7</span>
+5040
+</pre>
+<p>For modifiers, <code><span class='Value'>𝕣</span></code> refers to the containing modifier. <code><span class='Function'>𝕊</span></code> makes the modifier a deferred modifier like <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code> do, and refers to the derived function. For example, this tail-recursive factorial function uses the operand to accumulate a result, a task that is usually done with a second <code><span class='Value'>factorial_helper</span></code> function in elementary Scheme.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RmFjdF9tb2Qg4oaQIDEgeyAoMOKKuDwp4pe24p+oMSwgKPCdlajDl/CdlakpX/CdlaPin6kg8J2VqS0xIH0KRmFjdF9tb2QgNw==&run">↗️</a><pre>    <span class='Function'>Fact_mod</span> <span class='Gets'>←</span> <span class='Number'>1</span> <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span><span class='Paren'>)</span><span class='Modifier2'>◶</span><span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>×</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Modifier'>_𝕣</span><span class='Bracket'>⟩</span> <span class='Value'>𝕩</span><span class='Function'>-</span><span class='Number'>1</span> <span class='Brace'>}</span>
+    <span class='Function'>Fact_mod</span> <span class='Number'>7</span>
+1
+</pre>
+<p>Because <code><span class='Value'>𝕣</span></code> only ever refers to a 1-modifier or 2-modifer, it can never make sense to refer to it as a function, and the uppercase letter <code><span class='Value'>ℝ</span></code> is not recognized by BQN. In order to allow <code><span class='Value'>𝕣</span></code> to be spelled as a 1-modifier <code><span class='Modifier'>_𝕣</span></code> or 2-modifier <code><span class='Modifier2'>_𝕣_</span></code>, it is treated as an ordinary identifier character, so it must be separated from letters or numbers by spaces.</p>
+<h2 id="block-headers">Block headers</h2>
+<p>As a program becomes larger, it often becomes necessary to name inputs to blocks rather than just using special names. It can also become difficult to identify what kind of block is being defined, as it requires scanning through the block for special names. A <em>block header</em>, which is separated from the body of a block by a colon <code><span class='Value'>:</span></code>, specifies the kind of block and can declare names for the block and its inputs. Its syntax mirrors an application of the block. As suggested by the positioning, the names given in a header apply only inside the block.</p>
+<pre><span class='Comment'># A dyadic function called Func
+</span><span class='Brace'>{</span> <span class='Value'>l</span> <span class='Function'>Func</span> <span class='Value'>r:</span>
+  <span class='Value'>…</span>
+
+<span class='Comment'># A deferred 1-modifier with a list argument
+</span><span class='Brace'>{</span> <span class='Function'>Fn</span> <span class='Modifier'>_apply</span> <span class='Bracket'>⟨</span><span class='Value'>a</span><span class='Separator'>,</span><span class='Value'>b</span><span class='Bracket'>⟩</span><span class='Value'>:</span>
+  <span class='Value'>…</span>
+
+<span class='Comment'># A monadic function with no names given
+</span><span class='Brace'>{</span> <span class='Function'>𝕊</span><span class='Value'>𝕩:</span>
+  <span class='Value'>…</span>
+
+<span class='Comment'># An immediate or deferred 2-modifier
+</span><span class='Brace'>{</span> <span class='Function'>F</span> <span class='Modifier2'>_op_</span> <span class='Value'>val:</span>
+  <span class='Value'>…</span>
+</pre>
+<p>In all cases special names are defined just as with a headerless function. In this respect the effect of the header is the same as a series of assignments at the beginning of a function, such as the following translation of the second header above:</p>
+<pre><span class='Brace'>{</span> <span class='Comment'># Fn _apply ⟨a,b⟩:
+</span>  <span class='Function'>Fn</span> <span class='Gets'>←</span> <span class='Function'>𝔽</span>
+  <span class='Modifier'>_apply</span> <span class='Gets'>←</span> <span class='Modifier'>_𝕣</span>
+  <span class='Bracket'>⟨</span><span class='Value'>a</span><span class='Separator'>,</span><span class='Value'>b</span><span class='Bracket'>⟩</span> <span class='Gets'>←</span> <span class='Value'>𝕩</span>
+  <span class='Value'>…</span>
+</pre>
+<p>Unlike these assignments, the header also constrains what inputs the block can take: a monadic 1-modifier like the one above can't take a right operand or left argument, and consequently its body can't contain <code><span class='Function'>𝔾</span></code> or <code><span class='Value'>𝕨</span></code>. Calling it with a left argument, or a right argument that isn't a two-element list, will result in an error.</p>
+<h3 id="destructuring">Destructuring</h3>
+<p>Arguments, but not operands, allow destructuring like assignment does. While assignment only tolerates lists of variables, header destructuring also allows constants. The argument must match the given structure, including the constants where they appear, or an error results.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RGVzdHJ1Y3Qg4oaQIHsg8J2ViiBh4oC/MeKAv+KfqGIsMuKfqTogYeKJjWIgfQpEZXN0cnVjdCAgICAgICA14oC/MeKAv+KfqDcsMuKfqQ==&run">↗️</a><pre>    <span class='Function'>Destruct</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Function'>𝕊</span> <span class='Value'>a</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Bracket'>⟨</span><span class='Value'>b</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩</span><span class='Value'>:</span> <span class='Value'>a</span><span class='Function'>≍</span><span class='Value'>b</span> <span class='Brace'>}</span>
+    <span class='Function'>Destruct</span>       <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Bracket'>⟨</span><span class='Number'>7</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩</span>
+⟨ 5 7 ⟩
+</pre>
+<h3 id="special-names-in-headers">Special names in headers</h3>
+<p>Any element of a function or modifier header can be left nameless by using the corresponding special name in that position, instead of an identifier. For example, the header <code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier2'>_𝕣_</span><span class='Function'>𝔾</span> <span class='Value'>𝕩:</span></code> incorporates as much vagueness as possible. It indicates a deferred 2-modifier, but provides no other information.</p>
+<p>The name <code><span class='Value'>𝕨</span></code> in this context can refer to either a left argument or no left argument, allowing a header with arguments to be used even for an ambiguous function. Recall that <code><span class='Value'>𝕨</span></code> is the only token other than <code><span class='Nothing'>·</span></code> that can have no value. If an identifier or list is given as the left argument, then the function must be called with a left argument.</p>
+<h3 id="short-headers">Short headers</h3>
+<p>A header does not need to include all inputs, as shown by the <code><span class='Function'>F</span> <span class='Modifier2'>_op_</span> <span class='Value'>val:</span></code> header above. The simplest case, when no inputs are given, is called a <em>label</em>. While it doesn't restrict the inputs, a label specifies the type of the block and gives an internal name that can be used to refer to it.</p>
+<pre><span class='Brace'>{</span> <span class='Value'>b:</span>   <span class='Comment'># Block
+</span><span class='Brace'>{</span> <span class='Function'>𝕊</span><span class='Value'>:</span>   <span class='Comment'># Function
+</span><span class='Brace'>{</span> <span class='Modifier'>_𝕣</span><span class='Value'>:</span>  <span class='Comment'># 1-Modifier
+</span><span class='Brace'>{</span> <span class='Modifier2'>_𝕣_</span><span class='Value'>:</span> <span class='Comment'># 2-Modifier
+</span></pre>
+<p>For immediate blocks, this is the only type of header possible, and it must use an identifier as there is no applicable special name. However, this name can't be used, except for <a href="#returns">returns</a>: it doesn't make sense to refer to a value while it is still being computed!</p>
+<h2 id="multiple-bodies">Multiple bodies</h2>
+<p>Blocks that define functions and deferred modifiers can include more than one body, separated by semicolons <code><span class='Value'>;</span></code>. The body used for a particular evaluation is chosen based on the arguments the the block. One special case applies when there are exactly two bodies either without headers or with labels only: in this case, the first applies when there is one argument and the second when there are two.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QW1iaXYg4oaQIHsg4p+oMSzwnZWp4p+pIDsg4p+oMizwnZWoLPCdlanin6kgfQpBbWJpdiAnYScKJ2EnIEFtYml2ICdiJw==&run">↗️</a><pre>    <span class='Function'>Ambiv</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span> <span class='Value'>;</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Value'>𝕨</span><span class='Separator'>,</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span> <span class='Brace'>}</span>
+    <span class='Function'>Ambiv</span> <span class='String'>'a'</span>
+⟨ 1 'a' ⟩
+    <span class='String'>'a'</span> <span class='Function'>Ambiv</span> <span class='String'>'b'</span>
+⟨ 2 'a' 'b' ⟩
+</pre>
+<p>Bodies before the last two must have headers that include arguments. When a block that includes this type of header is called, its headers are checked in order for compatibility with the arguments. The first body with a compatible header is used.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Q2FzZUFkZCDihpAgeyAy8J2VijM6MOKAvzUgOyAy8J2VivCdlak64p+oMSwyK/Cdlanin6kgOyDwnZWK8J2VqToy4oC/8J2VqSB9CjIgQ2FzZUFkZCAzCjIgQ2FzZUFkZCA0CiAgQ2FzZUFkZCA0&run">↗️</a><pre>    <span class='Function'>CaseAdd</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Number'>2</span><span class='Function'>𝕊</span><span class='Number'>3</span><span class='Value'>:</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Value'>;</span> <span class='Number'>2</span><span class='Function'>𝕊</span><span class='Value'>𝕩:</span><span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Function'>+</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span> <span class='Value'>;</span> <span class='Function'>𝕊</span><span class='Value'>𝕩:</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Value'>𝕩</span> <span class='Brace'>}</span>
+    <span class='Number'>2</span> <span class='Function'>CaseAdd</span> <span class='Number'>3</span>
+⟨ 0 5 ⟩
+    <span class='Number'>2</span> <span class='Function'>CaseAdd</span> <span class='Number'>4</span>
+⟨ 1 6 ⟩
+      <span class='Function'>CaseAdd</span> <span class='Number'>4</span>
+⟨ 2 4 ⟩
+</pre>
+<p>If no header is compatible, the call results in an error.</p>
+<pre>    <span class='Number'>3</span> <span class='Function'>CaseAdd</span> <span class='Number'>3</span>
+<span class='Function'>ERROR</span>
+</pre>
+<h3 id="case-headers">Case headers</h3>
+<p>A special rule allows for convenient case-matching syntax for one-argument functions. In any function header with one argument, the function name can be omitted as long as the argument is <em>not</em> a plain identifier—it must be <code><span class='Value'>𝕩</span></code> or a compound value like a list to distinguish it from an immediate block label.</p>
+<pre><span class='Function'>Test</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+  <span class='String'>&quot;abc&quot;</span><span class='Value'>:</span> <span class='String'>&quot;string&quot;</span>
+  <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Value'>b</span><span class='Bracket'>⟩</span><span class='Value'>:</span> <span class='Function'>⌽</span><span class='Value'>𝕩</span>
+  <span class='Number'>5</span><span class='Value'>:</span>     <span class='String'>&quot;number&quot;</span>
+  <span class='Value'>𝕩:</span>     <span class='String'>&quot;default&quot;</span>
+<span class='Brace'>}</span>
+</pre>
+<p>These case-style headers function exactly the same as if they were preceded by <code><span class='Function'>𝕊</span></code>, and can be mixed with other kinds of headers.</p>
+<h2 id="returns">Returns</h2>
+<p><em>This feature is not yet included in any BQN implementation.</em></p>
+<p>The glyph <code><span class='Gets'>→</span></code> indicates an early return from a block. It must be preceded either by one of the self-reference special names <code><span class='Function'>𝕊</span></code> or <code><span class='Value'>𝕣</span></code> or by an internal name for a containing block. The combination of name and return token—like <code><span class='Function'>F</span><span class='Gets'>→</span></code>, let's say—is a function that returns from the current instance of the indicated block. If that instance has already returned, then it instead results in an error.</p>
+
