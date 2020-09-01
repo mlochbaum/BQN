@@ -15,7 +15,8 @@ Int←IsArray◶⟨⌊⊸=,0⟩
 Nat←IsArray◶⟨0⊸≤×⌊⊸=,0⟩
 
 # LIMITED to numeric arguments for scalar cases
-< ← {⟨⟩⥊⟨𝕩⟩} ⊘ (1-≤˜)
+≥ ←            ≤˜
+< ← {⟨⟩⥊⟨𝕩⟩} ⊘ (1-≥)
 > ←            (1-≤)
 ⌊ ↩ ⌊        ⊘ (>⊑{𝕨‿𝕩})
 ⌈ ← -∘⌊∘-    ⊘ (<⊑{𝕨‿𝕩})
@@ -56,7 +57,7 @@ _perv←{ # Pervasion
   +○IsArray◶⟨𝔽⋄R⌜⊘(>○IsArray◶{𝕨{𝕗R𝕩}⌜𝕩}‿{𝕩{𝕩R𝕗}⌜𝕨})⋄R _eachd⟩
 }
 
-Cmp0 ← ≤˜-≤
+Cmp0 ← ≥-≤
 Cmp1 ← (0<1×´≢∘⊢)◶⟨1, IsArray∘⊢◶(1-2×≤)‿{𝕨Cmp1𝕩}⟜(0⊑⥊)⟩
 Cmp ← +○IsArray◶⟨
   Cmp0
@@ -158,11 +159,30 @@ Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 ≡ ← Depth          ⊘ Match
 ≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
 
+˘ ← {𝔽 _rankOp_ ¯1}
+_onAxes_←{
+  F←𝔽
+  (𝔾<≡)∘⊣◶{ # One axis
+    "First-axis function right argument must have rank at least 1" ! 1≤=𝕩
+    𝕨F𝕩
+  }‿{ # Multiple axes
+    "Left argument must have rank at most 1" ! 1≥=𝕨
+    "Left argument length must be at most right argument rank" ! 𝕨≤○≠≢𝕩
+    l←≠𝕨 ⋄ W←⊑⟜(⥊𝕨)
+    0{(W𝕨)F(1+𝕨)⊸𝕊˘⍟(𝕨<l-1)𝕩}⍟(0<l)𝕩
+  }
+}
+
+Select←ToArray⊸(SelSub _onAxes_ 1)
+⊏ ← 0⊸Select       ⊘ Select
+
 Merge←{
   c←≢0⊑⥊𝕩
   "Elements in Merge argument must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
   𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
 }⍟(0<≠∘⥊)⍟IsArray
+
+_sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ Select}
 
 ÷ ↩ ÷ _perv
 ⋆ ↩ ⋆ _perv
@@ -170,14 +190,14 @@ Merge←{
 | ← (0⊸≤◶-‿⊢ ⊘ {𝕩-𝕨×⌊𝕩÷𝕨}) _perv
 ⌊ ↩ (⌊       ⊘ {(𝕨>𝕩)⊑𝕨‿𝕩}) _perv
 ⌈ ↩ (-∘⌊∘-   ⊘ {(𝕨<𝕩)⊑𝕨‿𝕩}) _perv
-∧ ←            × _perv
-∨ ←            (+-×) _perv
+∧ ← 0 _sort  ⊘ (× _perv)
+∨ ← 1 _sort  ⊘ ((+-×) _perv)
 × ↩ (0⊸(<->) ⊘ ×) _perv
-< ↩ {⟨⟩⥊⟨𝕩⟩} ⊘ ((1-≤˜) _perv)
+< ↩ {⟨⟩⥊⟨𝕩⟩} ⊘ ((1-≥) _perv)
 > ↩ Merge    ⊘ ((1-≤) _perv)
 ≠ ↩ ≠        ⊘ ((1-=) _perv)
 = ↩ =        ⊘ (= _perv)
-≥ ← ("No monadic form: ≥"!0˜) ⊘ (≤˜_perv)
+≥ ← ("No monadic form: ≥"!0˜) ⊘ (≥ _perv)
 ≤ ↩ ("No monadic form: ≤"!0˜) ⊘ (≤ _perv)
 + ↩ + _perv
 - ↩ - _perv
@@ -228,29 +248,12 @@ _rankOp_←{
   > ((0⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
 }
 ⎉ ← _rankOp_
-˘ ← {𝔽⎉¯1}
 _insert←{
   "Insert argument must have rank at least 1" ! 1≤=𝕩
   𝕨 𝔽´ <˘𝕩
 }
 ˝ ← _insert
 
-
-_onAxes_←{
-  F←𝔽
-  (𝔾<≡)∘⊣◶{ # One axis
-    "First-axis function right argument must have rank at least 1" ! 1≤=𝕩
-    𝕨F𝕩
-  }‿{ # Multiple axes
-    "Left argument must have rank at most 1" ! 1≥=𝕨
-    "Left argument length must be at most right argument rank" ! 𝕨≤○≠≢𝕩
-    l←≠𝕨 ⋄ W←⊑⟜(⥊𝕨)
-    0{(W𝕨)F(1+𝕨)⊸𝕊˘⍟(𝕨<l-1)𝕩}⍟(0<l)𝕩
-  }
-}
-
-Select←ToArray⊸(SelSub _onAxes_ 1)
-⊏ ← 0⊸Select       ⊘ Select
 
 JoinTo←∨○(1<=)◶(∾○⥊)‿{
   s←𝕨Pair○≢𝕩
@@ -517,6 +520,4 @@ _repeat_←{
 
 ⥊ ↩ Deshape        ⊘ Reshape
 ⌜ ↩ {𝔽⌜○ToArray}
-∧ ↩ ⍋⊸⊏            ⊘ ∧
-∨ ↩ ⍒⊸⊏            ⊘ ∨
 ⌾ ← _under_
