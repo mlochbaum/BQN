@@ -87,7 +87,7 @@ If a block is assigned a name after it is created, this name can be used for rec
 
 This is somewhat unsatisfying because it is external to the function being defined, even though it doesn't depend on outside information. Instead, the special name `𝕊` can be used to refer to the function it appears in. This allows anonymous recursive functions to be defined.
 
-        { 𝕩 × (0⊸<)◶1‿Fact 𝕩-1 } 7
+        { 𝕩 × (0⊸<)◶1‿𝕊 𝕩-1 } 7
 
 For modifiers, `𝕣` refers to the containing modifier. `𝕊` makes the modifier a deferred modifier like `𝕨` and `𝕩` do, and refers to the derived function. For example, this tail-recursive factorial function uses the operand to accumulate a result, a task that is usually done with a second `factorial_helper` function in elementary Scheme.
 
