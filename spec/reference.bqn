@@ -324,7 +324,7 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 ∾ ↩ Join           ⊘ JoinTo
 ⊔ ← ⊔⟜(↕≠⚇1)       ⊘ Group
 ⍉ ← Transpose      ⊘ ReorderAxes
-⊐ ← !∘0            ⊘ IndexOf
+⊐ ← ⍷⊸⊐            ⊘ IndexOf
 ∊ ← UniqueMask     ⊘ (⊐˜<≠∘⊢)
 ⍷ ← ∊⊸/            ⊘ Find
 ⍋ ←   Cmp _grade   ⊘ (  Cmp _bins)
