@@ -45,7 +45,7 @@ Functions that have significant differences from APL functions are marked with a
 | `⍒`   | [Grade Down](https://aplwiki.com/wiki/Grade)        | [Bins Down](https://aplwiki.com/wiki/Interval_Index)
 | `⊏`   | First Cell*                                         | Select*
 | `⊑`   | [First](https://aplwiki.com/wiki/First)             | Pick*
-| `⊐`   |                                                     | [Index of](https://aplwiki.com/wiki/Index_Of)
+| `⊐`   | Classify* (`⍷⊸⊐`)                                   | [Index of](https://aplwiki.com/wiki/Index_Of)
 | `⊒`   | Occurrence Count*                                   | Progressive Index of*
 | `∊`   | [Unique Mask](https://aplwiki.com/wiki/Nub_Sieve)   | [Member of](https://aplwiki.com/wiki/Membership)
 | `⍷`   | [Deduplicate](https://aplwiki.com/wiki/Unique)      | [Find](https://aplwiki.com/wiki/Find)
