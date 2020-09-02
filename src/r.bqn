@@ -207,14 +207,25 @@ identity ← (0⊑⟨"Identity not found"!0˜⟩) {(0⊑𝕨){𝕗=𝕩}◶𝕩�
 Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Reshape←{
   "Shape argument to Reshape must have rank at most 1" ! 1≥=𝕨
-  𝕨↩Deshape 𝕨
-  "Shape in Reshape must consist of natural numbers" ! ∧´Nat⌜𝕨
-  l←×´𝕨
-  n←×´≢𝕩
-  𝕨⥊{
-    𝕩(0<n)◶⟨Type⊸(⊣⌜)⋄⥊⊸{⊑⟜𝕨⌜n|𝕩}⟩↕l
-  }⍟(l≠n)𝕩
-}⟜ToArray
+  s←Deshape 𝕨
+  sp←+´p←¬Nat⌜s
+  "Shape in Reshape must consist of natural numbers" ! 1≥sp
+  n←≠d←Deshape 𝕩
+  l←sp◶(×´)‿{
+    lp←×´p⊣◶⊢‿1¨𝕩
+    "Can't compute axis length in Reshape when rest of shape is empty" ! 0<lp
+    i←+´p×↕≠p
+    t←ReshapeT i⊑s
+    "Shape in Reshape must be a natural number or ∘ ⌊ ⌽ ↑" ! t<4
+    Chk ← ⊢ ⊣ "Shape must be exact when reshaping with ∘" ! ⌊⊸=
+    a←(2⌊t)◶⟨Chk,⌊,⌈⟩n÷lp
+    s↩p⊣◶⊢‿a¨s
+    {d∾↩(Type d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
+  } s
+  s⥊{
+    𝕩(0<n)◶⟨Type⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
+  }⍟(l≠n)d
+}
 ⥊ ↩ Deshape        ⊘ ⥊
 
 Range←{
@@ -518,6 +529,7 @@ _repeat_←{
 }
 ⍟ ↩ _repeat_
 
+ReshapeT ← ⟨∘,⌊,⌽,↑⟩⊑∘⊐<
 ⥊ ↩ Deshape        ⊘ Reshape
 ⌜ ↩ {𝔽⌜○ToArray}
 ⌾ ← _under_
