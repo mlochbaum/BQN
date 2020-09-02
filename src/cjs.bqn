@@ -3,8 +3,9 @@
 compile ← ⟨•path∾"../c.bqn"⋄"DGenFn"⟩ •EX •path∾"../dzref"
 Comp ← ((<"runtime["∾⍕∾"]"˜)¨↕59)⊸Compile
 FP ← ∞⊸=◶⟨⍕,"Infinity"⟩
-Str ← "str("""∾∾⟜""")"
-Char ← "'"(∾∾⊣)(⟨"\t","\n","\'"⟩∾<)⊑˜("'"∾˜•UCS 9‿10)⊑∘⊐⊢
+Esc ← (⟨"\t","\n","\r","\'"⟩∾<∘⥊)⊑˜("'"∾˜•UCS 9‿10‿13)⊑∘⊐⊢
+Str ← "str("""∾(∾Esc¨)∾""")"˜
+Char ← "'"(∾∾⊣)Esc
 Fconst ← ≡◶⟨(⊑⍋)∘(∾⟜∞)◶⟨0⊸≤◶⟨"-"∾FP∘|,FP⟩,Char⟩⋄Str⋄⊑⟩
 L ← "["∾"]"∾˜1↓·∾","⊸∾⟜⍕¨
 J ← ∾∾⟜(•UCS 10)¨
