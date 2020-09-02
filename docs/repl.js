@@ -1,10 +1,15 @@
 let body = document.body;
 let doc={}; // html elements with a class
 body.querySelectorAll('[class]').forEach(e=>doc[e.classList[0]]=e);
+let setcount = !doc.count ? (s=>s) : (s=>{
+  let l = s.length;
+  doc.count.textContent = l+" char"+(l!=1?"s":"");
+});
 let repl = ()=>{
   let s=doc.code.value;
   doc.rslt.classList.remove('err');
   doc.rslt.textContent=' ';
+  setcount(s);
   setTimeout(() => {
     try {
       doc.rslt.textContent=fmt(bqn(s));
@@ -97,7 +102,8 @@ if (location.hash) {
   });
   let b=atob(code);
   b=new Uint8Array([...b].map(c=>c.charCodeAt(0)));
-  doc.code.value = (new TextDecoder()).decode(b);
+  setcount(doc.code.value = (new TextDecoder()).decode(b));
+  if (doc.count) doc.count.textContent=(l=>l+" char"+(l!=1?"s":""))(s.length);
   if (run) repl();
 }
 doc.code.focus();
