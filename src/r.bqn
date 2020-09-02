@@ -294,7 +294,7 @@ Windows←{
 }
 
 Rep ← Indices⊸⊏
-Replicate ← {0<=𝕨}◶{𝕨⌜⊸Rep𝕩}‿{"Replicate argument lengths must match"!𝕨=○≠𝕩⋄𝕨Rep𝕩} _onAxes_ (1-0=≠)
+Replicate ← {0<=𝕨}◶{𝕨˘⊸Rep𝕩}‿{"Replicate argument lengths must match"!𝕨=○≠𝕩⋄𝕨Rep𝕩} _onAxes_ (1-0=≠)
 
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
