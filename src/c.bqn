@@ -48,7 +48,7 @@ Tokenize←{
   lu←⍷lit←𝕩⊔˜1-˜(+`qe-˜ToI⊑˘cb)×≠`ToI cb
   cl←f/ToI⊑∘⌽˘cb
 
-  c←CharCode⌾((¬cl)⊸/) f/𝕩
+  c←cl-˜CharCode(⊑charSet)¨⌾(cl⊸/)f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
   na←≠alph⋄us←c=¯1++´bA
   id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
