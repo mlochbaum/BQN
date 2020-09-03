@@ -70,7 +70,7 @@ add-highlighter shared/bqn/code/ regex "[𝕗𝕘𝕨𝕩𝕤]" 0:normal
 add-highlighter shared/bqn/code/ regex "•|•?\b[a-z][A-Z_a-z0-9π∞¯]*|𝕣" 0:normal
 add-highlighter shared/bqn/code/ regex "[𝔽𝔾𝕎𝕏𝕊+\-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!⍕⍎]" 0:green
 add-highlighter shared/bqn/code/ regex "•?\b[A-Z][A-Z_a-z0-9π∞¯]*" 0:green
-add-highlighter shared/bqn/code/ regex "[˜˘¨⌜⁼´˝`]" 0:magenta
+add-highlighter shared/bqn/code/ regex "[˙˜˘¨⌜⁼´˝`]" 0:magenta
 add-highlighter shared/bqn/code/ regex "•?\b_[A-Za-z][A-Z_a-z0-9π∞¯]*|_𝕣" 0:magenta
 add-highlighter shared/bqn/code/ regex "[∘○⊸⟜⌾⊘◶⎉⚇⍟⎊]" 0:yellow
 add-highlighter shared/bqn/code/ regex "•?\b_[A-Za-z][A-Z_a-z0-9π∞¯]*_|_𝕣_" 0:yellow

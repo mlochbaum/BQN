@@ -43,7 +43,7 @@ Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in 
 Only `⍋⍒` use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not *that* difficult: `⥊⊸⍋⌾<` is TAO `≤`).
 
 ### Syntactic type erasure
-A programmer can call a modifier on either a syntactic function or subject, but there's no way to know within the modifier which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The subject syntax suggests it should be Constant.
+A programmer can call a modifier on either a syntactic function or subject, but there's no way to know within the modifier which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The subject syntax suggests it should be Constant. Instead the Constant modifier `˙` has been added partially to mitigate this.
 
 ### Comparison tolerance
 Kind of necessary for practical programming, but how should it be invoked or controlled? A system variable like `⎕CT`? Per-primitive control? Both? Which primitives should use it?
@@ -81,9 +81,6 @@ If you have the normal mix of monads and dyads you'll need a lot of parentheses 
 
 ### Inverse is not fully specified
 So it seems a bit strange to rely on it for core language features like `/⁼`. On the other hand, this is a good fit for `⋆⁼` since we are taking an arbitrary branch of a complex function that has many of them. I'm pretty sure it's impossible to solve the issue as stated but it might be possible to move to less hazardous constructs. Structural Under is a start.
-
-### Converting a function expression to a subject is tricky
-You can name it, you can write `⊑⟨Expr⟩`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from subject to function, isn't too bad: the modifier `{𝔽}` does it.
 
 ### Prefixes/Suffixes add depth and Windows doesn't
 It's an awkward inconsistency. Prefixes and Suffixes have to have a nested result, but Windows doesn't have to be flat; it's just that making it nested ignores the fact that it does have an array structure.
@@ -129,6 +126,9 @@ When taking Windows along more than one axis, acting on the resulting array requ
 
 ### Inputs to modifiers are called operands?
 "Operand" is derived from "operator". "Modificand" would be better if it weren't both made up and hideous.
+
+### Converting a function expression to a subject is tricky
+You can name it, you can write `⊑⟨Expr⟩` or `(Expr)˙0`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from subject to function, isn't too bad: the modifier `{𝔽}` does it.
 
 ### Scan ordering is weird
 Scan moves along the array so that it uses results as left arguments, which is opposite to the usual right-to-left order of evaluation. But I think this is still better than scanning the array in reverse. You can always use Swap on the operand, or recover the APL scan ordering by doing a Reduce-Each on Prefixes.
