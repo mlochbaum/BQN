@@ -23,6 +23,12 @@
 <p>The BQN spec allows for different numeric models to be used, but requires there to be only one numeric type from the programmer's perspective: while programs can often be executed faster by using limited-range integer types, there is no need to expose these details to the programmer. Existing BQN implementations are based on <a href="https://en.wikipedia.org/wiki/IEEE-754">double-precision floats</a>, like Javascript or Lua.</p>
 <h3 id="characters">Characters</h3>
 <p>A character in BQN is always a <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a> code point. BQN does not use encodings such as UTF-8 or UTF-16 for characters, although it would be possible to store arrays of integers or characters that correspond to data in these encodings. Because every code point corresponds to a single unit in UTF-32, BQN characters can be thought of as UTF-32 encoded.</p>
+<p>Addition and subtraction treat characters as an <a href="http://videocortex.io/2018/Affine-Space-Types/">affine space</a> relative to the linear space of numbers. This means that:</p>
+<ul>
+<li>A number can be added to or subtracted from a character.</li>
+<li>Two characters can be subtracted to get the distance between them—a number.</li>
+</ul>
+<p>Other linear combinations such as adding two characters or negating a character are not allowed. You can check whether an application of <code><span class='Function'>+</span></code> or <code><span class='Function'>-</span></code> on numbers and characters is allowed by applying the same function to the &quot;characterness&quot; of each value: <code><span class='Number'>0</span></code> for a number and <code><span class='Number'>1</span></code> for a character. The result will be a number if this application gives <code><span class='Number'>0</span></code> and a character if this gives <code><span class='Number'>1</span></code>, and otherwise the operation is not allowed.</p>
 <h3 id="arrays">Arrays</h3>
 <p>A BQN array is a multidimensional arrangement of data.</p>
 <p>Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).</p>
