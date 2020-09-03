@@ -57,6 +57,7 @@ Functions that have significant differences from APL functions are marked with a
 
 Glyph | Name(s)     | Definition                     | Description
 ------|-------------|--------------------------------|---------------------------------------
+`˙`   | Constant    | `{𝕩⋄𝕗}`                        | Return a function that returns the operand
 `˜`   | Self/Swap   | `{𝕩𝔽𝕨⊣𝕩}`                      | Duplicate one argument or exchange two
 `∘`   | Atop        | `{𝔽𝕨𝔾𝕩}`                       | Apply `𝔾` to both arguments and `𝔽` to the result
 `○`   | Over        | `{(𝔾𝕨)𝔽𝔾𝕩}`                    | Apply `𝔾` to each argument and `𝔽` to the results

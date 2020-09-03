@@ -7,7 +7,7 @@ alph ← "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 alow ← "abcdefghijklmnopqrstuvwxyz"
 charSet←∾charGroups←⟨
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
-  "˜˘¨⌜⁼´˝`"            # Modifier
+  "˙˜˘¨⌜⁼´˝`"           # Modifier
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # Composition
   nl∾"⋄,"               # Separator
   "←↩→"                 # Gets
