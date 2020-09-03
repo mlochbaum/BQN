@@ -2,9 +2,6 @@
 
 tab←'	'⋄nl←'
 '
-dig ← "0123456789"
-alph ← "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-alow ← "abcdefghijklmnopqrstuvwxyz"
 charSet←∾charGroups←⟨
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
   "˙˜˘¨⌜⁼´˝`"           # Modifier
@@ -15,9 +12,9 @@ charSet←∾charGroups←⟨
   "‿"                   # Ligature
   "·"                   # nOthing
   "𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘"          # Input (𝕣 pending; ℝ not allowed)
-  dig                   # Digit
+  '0'+↕10               # Digit
   "¯.π∞"                # Numeric
-  alow∾alph∾"_"         # Alphabetic
+  "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
   " "∾tab               # Whitespace
 # #'" eliminated during tokenization
 ⟩
@@ -50,7 +47,7 @@ Tokenize←{
 
   c←cl-˜CharCode(⊑charSet)¨⌾(cl⊸/)f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
-  na←≠alph⋄us←c=¯1++´bA
+  us←c=¯1++´bA
   id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
   ti←na⌊∘÷˜(⊑bA)-˜w/c
   iu←(≠↑¯1∾⌈`)⊸<is←⊐id⋄ni←≠in←0>iu/ti
