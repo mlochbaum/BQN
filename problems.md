@@ -13,7 +13,7 @@ A pretty fundamental problem with dynamically-typed array languages. Prototypes 
 BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason (that is, both function valences match the symbol but they don't match with each other). I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved.
 
 ### Control flow substitutes have awkward syntax
-At the moment BQN has no control structures, instead preferring operators, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. Given that blocks without headers also end up with an unexpected type if you don't use the inputs, it's safe to say BQN isn't great for imperative programming overall. But that's a big loss, and it's very much worth fixing if it can be done with something like a single control structure that conditionally or repeatedly executes an immediate block.
+At the moment BQN has no control structures, instead preferring modifiers, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. Given that blocks without headers also end up with an unexpected type if you don't use the inputs, it's safe to say BQN isn't great for imperative programming overall. But that's a big loss, and it's very much worth fixing if it can be done with something like a single control structure that conditionally or repeatedly executes an immediate block.
 
 ### Glyphs are hard to type
 There's been a lot of work done on this. Still there, still a problem. On the other hand, glyphs are easy to read, and write by hand!
@@ -37,7 +37,7 @@ This includes index-of-last, and searching starting at a particular index, when 
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). The commonly-paired `⌊∘÷` and `|` have opposite orders for this reason. Not really fixable; too much precedent.
 
 ### Nothing (`·`) interacts strangely with Before and After
-Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`).
+Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`). It's also a little strange that `v F˜·` is `·`, while `·F v` is `F v`.
 
 ### Can't access array ordering directly
 Only `⍋⍒` use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not *that* difficult: `⥊⊸⍋⌾<` is TAO `≤`).
@@ -99,6 +99,11 @@ You have to scan for headers or double-struck names (and so does a compiler). A 
 ### Each block body has its own label
 In a block with multiple bodies, the label (the self-name part of the header) refers to the entire block. However, there's no way to give only one label to the entire block. If you want to consistently use the same internal name, then you may have to write it many times. It's also a weird mismatch, conceptually.
 
+### Have to be careful about intermediate results with affine characters
+A computation like `(a+b)÷2` (midpoint between characters `a` and `b`, of the distance between them is even) or `5>v-n` (equivalent to `v<5+n`) is conceptually okay, but the first will always fail because `a+b` is invalid while the second will (even worse!) fail only if `v` is a character with code point smaller than `n`. Arithmetic manipulations that would be valid for numbers aren't for the number-character system.
+
+Numbers and characters are subsets of a linear space with components "characterness" (0 for numbers and 1 for characters) and value (code point for characters). Numbers are a linear subspace, and characters a subset of an affine one. Their union isn't closed under addition and subtraction in either component. Usually this is good, as failing when the user creates a nonexistent character or double-character can catch a lot of errors. But not always.
+
 ### Monadic argument corresponds to left for `/` and `⊔`
 Called dyadically, both functions shuffle cells of the right argument around, which is consistent with other selection-type functions. But the monadic case applies to what would be the left argument in the dyadic case.
 
@@ -134,7 +139,7 @@ You can name it, you can write `⊑⟨Expr⟩` or `(Expr)˙0`, and if it doesn't
 Scan moves along the array so that it uses results as left arguments, which is opposite to the usual right-to-left order of evaluation. But I think this is still better than scanning the array in reverse. You can always use Swap on the operand, or recover the APL scan ordering by doing a Reduce-Each on Prefixes.
 
 ### Only errors in functions can be caught
-The operator `⎊` allows errors in a function to be caught, but a more natural unit for this is the block (scope, really). However, catching errors shouldn't be common in typical code, in the sense that an application should have only a few instances of `⎊`. Ordinary testing and control flow should be preferred instead.
+The modifier `⎊` allows errors in a function to be caught, but a more natural unit for this is the block (scope, really). However, catching errors shouldn't be common in typical code, in the sense that an application should have only a few instances of `⎊`. Ordinary testing and control flow should be preferred instead.
 
 ### Bins is inconsistent with Index of
 In Dyalog APL, Interval Index is identical to Index Of if the left argument has no duplicate cells and every right argument cell intolerantly matches a left argument cell. In BQN they're off by one—Bins is one larger. But all the caveats for the Dyalog relation indicate this might not be so fundamental.
