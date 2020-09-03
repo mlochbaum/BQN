@@ -29,6 +29,11 @@ The BQN spec allows for different numeric models to be used, but requires there 
 
 A character in BQN is always a [Unicode](https://en.wikipedia.org/wiki/Unicode) code point. BQN does not use encodings such as UTF-8 or UTF-16 for characters, although it would be possible to store arrays of integers or characters that correspond to data in these encodings. Because every code point corresponds to a single unit in UTF-32, BQN characters can be thought of as UTF-32 encoded.
 
+Addition and subtraction treat characters as an [affine space](http://videocortex.io/2018/Affine-Space-Types/) relative to the linear space of numbers. This means that:
+* A number can be added to or subtracted from a character.
+* Two characters can be subtracted to get the distance between them—a number.
+Other linear combinations such as adding two characters or negating a character are not allowed. You can check whether an application of `+` or `-` on numbers and characters is allowed by applying the same function to the "characterness" of each value: `0` for a number and `1` for a character. The result will be a number if this application gives `0` and a character if this gives `1`, and otherwise the operation is not allowed.
+
 ### Arrays
 
 A BQN array is a multidimensional arrangement of data.
