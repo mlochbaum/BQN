@@ -482,14 +482,14 @@ GetHighlights ← {
     "Ligature"    , "‿"
     "Nothing"     , "·"
     "Separator"   , "⋄,"
-    "Comment"     , "#"
     "String"      , "'"""
+    "Comment"     , "#"
   ⟩
   # Turn non-whitespace classes into ⟨open,close⟩ html tags.
   classTag ← ""‿"" ∾ > {⟨"<span class='"∾𝕩∾"'>","</span>"⟩}¨ 1↓classes
 
-  # Find each character's group, sending quotes to 0 and unknowns to 1.
-  col ← (1-˜≠chars) | chars FindGroup 𝕩
+  # Find each character's group, sending unknowns to 1.
+  col ← (≠chars) (⊢--⟜1×=) chars FindGroup 𝕩
 
   # Locate comments and strings.
   c ← 𝕩='#'
@@ -509,7 +509,7 @@ GetHighlights ← {
   # Split rows and group into text‿comments
   tc ← ((⊏˘b)⊏c) 2{𝕗↑⊔○(∾⟜𝕗)} <˘b
   # Color with "String" and "Comment"
-  col ⌈↩ +´ (1‿2-˜≠classes) × ToMask¨ tc
+  col ⌈↩ +´ (2‿1-˜≠classes) × ToMask¨ tc
 
   # UTF-16 hack: first half of a special name needs to match the second
   col↩ (1⌽col) ⊣⌾((𝕩=⊑"𝕩")⊸/) col
