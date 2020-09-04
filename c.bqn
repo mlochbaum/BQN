@@ -11,6 +11,7 @@ charSet←∾charGroups←⟨
   "‿"                   # Ligature
   "·"                   # nOthing
   ¯1⊏˘10‿2⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘" # Input (𝕣 pending; ℝ not allowed)
+  "@"                   # nUll character
   •d # +⟜(↕10)⌾•UCS'0'  # Digit
   "¯.π∞"                # Numeric
   "_"∾˜' '(+∾⊢)⌾•UCS•a  # Alphabetic
@@ -18,7 +19,7 @@ charSet←∾charGroups←⟨
   " "∾tab               # Whitespace
 # #'" eliminated during tokenization
 ⟩
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bP‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bP‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
 bA_e←4+⊑bA
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
 vi←+´≠¨9↑charGroups
@@ -40,6 +41,7 @@ Tokenize←{
 
   c←charSet⊐f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
+  u←c=⊑bU⋄l+↩u⋄w+↩u
   i←(1-˜l×+`w)⊔c
   na←≠•a⋄us←¯1++´bA
   in←na(⊢-⊣×+⟜(⊑bA)⊸≤)us⊸≠⊸/¨i
@@ -79,7 +81,7 @@ ReadNum←{
   m←(n=⊑)◶⟨Pos,-·Pos 1⊸↓⟩e↑𝕩
   𝕩×⟜(10⋆·Int(e+1)↓⊣)˜⍟(e<≠𝕩)m
 }
-LitVal←(⊑"'"""⊐⊏)◶⟨1⊸⊑,1⊸↓,ReadNum⟩
+LitVal←(⊑((⊑bU)∾"'""")⊐⊏)◶⟨•UCS 0,1⊸⊑,1⊸↓,ReadNum⟩
 GenF64←{
   0:8⥊0;
   l←2(⌊⋆⁼)𝕩
