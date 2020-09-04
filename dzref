@@ -109,12 +109,12 @@ X←Raw←{F:≤4}
 
   init ← " "⊸∾¨(/⟜"_"¨nc/0‿1‿1)∾¨(nc/"FMD")∾¨(nc+´⊸↑⥊"AB"∾⌜•a)
   post ← ∾⟜" "¨/⟜"_"¨nc/0‿0‿1
-  names ← init∾¨(•UCS 48)∾¨post
+  names ← init∾¨'0'∾¨post
 
   Inc ← {
     i←⊑chr⊐𝕩
     n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr
-    names↩((i⊑init)∾(•UCS 48+n)∾i⊑post)⌾(i⊑⊢)names
+    names↩((i⊑init)∾('0'+n)∾i⊑post)⌾(i⊑⊢)names
   }
 
   # built-in assumptions
@@ -141,7 +141,7 @@ X←Raw←{F:≤4}
     (E_proc 1↑𝕩) ∾ "←" ∾ tail
   }
 
-  lf ← •UCS 10
+  lf ← @+10
   pre ← E_isdef◶E_proc‿E_redef¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
   Raw↩⍎
   ExecFile←{Raw ∾ ∾⟜lf¨ E_proc¨ •LNS 𝕩}

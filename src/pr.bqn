@@ -15,12 +15,12 @@ itr ← 0⥊˜≠chr
 
 init ← " "⊸∾¨(/⟜"_"¨nc/0‿1‿1)∾¨(nc/"FMD")∾¨(nc+´⊸↑⥊"ABC"∾⌜•a)
 post ← ∾⟜" "¨/⟜"_"¨nc/0‿0‿1
-names ← init∾¨(•UCS 48)∾¨post
+names ← init∾¨'0'∾¨post
 
 Inc ← {
   i←⊑chr⊐𝕩
   n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr
-  names↩((i⊑init)∾(•UCS 48+n)∾i⊑post)⌾(i⊑⊢)names
+  names↩((i⊑init)∾('0'+n)∾i⊑post)⌾(i⊑⊢)names
 }
 
 # Required functionality passed in as an argument
@@ -43,5 +43,5 @@ E_redef ← { # handles [fmd] [←↩]
   (E_proc 1↑𝕩) ∾ "←" ∾ tail
 }
 
-ref ← ∾∾⟜(•UCS 10)¨ E_isdef◶E_proc‿E_redef¨ impl∾<"⟨"∾"⟩"∾˜1↓⥊","⊸∾˘chr
+ref ← ∾∾⟜(@+10)¨ E_isdef◶E_proc‿E_redef¨ impl∾<"⟨"∾"⟩"∾˜1↓⥊","⊸∾˘chr
 ⟨ref, def+○≠keep⟩

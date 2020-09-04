@@ -17,12 +17,12 @@ itr ← 0⥊˜≠chr
 
 init ← " "⊸∾¨(/⟜"_"¨nc/0‿1‿1)∾¨(nc/"FMD")∾¨(nc+´⊸↑⥊"ABC"∾⌜•a)
 post ← ∾⟜" "¨/⟜"_"¨nc/0‿0‿1
-names ← init∾¨(•UCS 48)∾¨post
+names ← init∾¨'0'∾¨post
 
 Inc ← {
   i←⊑chr⊐𝕩
   n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr
-  names↩((i⊑init)∾(•UCS 48+n)∾i⊑post)⌾(i⊑⊢)names
+  names↩((i⊑init)∾('0'+n)∾i⊑post)⌾(i⊑⊢)names
 }
 
 # built-in assumptions
@@ -56,5 +56,5 @@ E_redef ← { # handles [fmd] [←↩]
 
 pre ∾↩ E_isdef◶E_proc‿E_redef¨ impl
 t ← (¬∘⊑':'∊⊢)¨⊸/ 3⊸↓⌾(3⊸⊑) •LNS •path∾"testref.bqn"
-res ← DRun ∾ ∾⟜(•UCS 10)¨ pre ∾ E_proc¨ t
+res ← DRun ∾ ∾⟜(@+10)¨ pre ∾ E_proc¨ t
 • ← ("All "∾(⍕≠res)∾" passed!")⍟(0=≠) /res
