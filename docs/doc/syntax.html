@@ -25,6 +25,10 @@
 <td><a href="#constants">Character or string literal</a></td>
 </tr>
 <tr>
+<td><code><span class='String'>@</span></code></td>
+<td><a href="#constants">Null character</a></td>
+</tr>
+<tr>
 <td><code><span class='Number'>¯∞π</span></code></td>
 <td><a href="#constants">Used in numeric literals</a></td>
 </tr>
@@ -109,6 +113,7 @@
     <span class='Function'>≡</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span> <span class='String'>&quot;a&quot;</span> <span class='Separator'>⋄</span> <span class='String'>'a'</span> <span class='Bracket'>⟩</span>   <span class='Comment'># A string is an array but a character isn't
 </span>⟨ 1 0 ⟩
 </pre>
+<p>The null character (code point 0) has a dedicated literal representation <code><span class='String'>@</span></code>. This character can be used to directly convert between characters and numeric code points, which among many other uses allows tricky characters to be entered by code point: for example, a non-breaking space is <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>160</span></code>. The character can also be entered as a character literal, but this will display differently in various editors and some tools may have trouble with a file directly containing a null, so it is best to use <code><span class='String'>@</span></code> instead.</p>
 <h2 id="expressions">Expressions</h2>
 <p><em><a href="context.html">More discussion</a></em></p>
 <p>Like APL, BQN uses four <em>syntactic roles</em> for values in expressions:</p>
