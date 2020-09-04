@@ -1,6 +1,6 @@
 #! ./dzref
 
-nl‿tab←•UCS 10‿9
+nl←@+10
 charSet←∾charGroups←⟨
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
   "˙˜˘¨⌜⁼´˝`"           # Modifier
@@ -12,11 +12,11 @@ charSet←∾charGroups←⟨
   "·"                   # nOthing
   ¯1⊏˘10‿2⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘" # Input (𝕣 pending; ℝ not allowed)
   "@"                   # nUll character
-  •d # +⟜(↕10)⌾•UCS'0'  # Digit
+  '0'+↕10               # Digit
   "¯.π∞"                # Numeric
-  "_"∾˜' '(+∾⊢)⌾•UCS•a  # Alphabetic
+  "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
   1↑"𝕨"                 # Prefix for input (hack around UTF-16)
-  " "∾tab               # Whitespace
+  " "∾@+9               # Whitespace
 # #'" eliminated during tokenization
 ⟩
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bP‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups

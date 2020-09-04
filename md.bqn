@@ -117,7 +117,7 @@ UTF32 ← {
   s ← p×52+2+↕3  # Surrogate character boundaries
   h ← 1 = c ← (≠s)|s⍋𝕩
   h ¬⊸/ (¯1⌽h×p×(2⋆6)+⊢)⊸+ 𝕩 - c⊏0∾s
-}⍟(2=≠"𝕩")∘•UCS
+}⍟(2=≠"𝕩")∘-⟜@
 UTF8 ← ∾ (2⋆7) (⊣+(2⋆6){𝕨 ≤◶⟨⥊⊢-2×-⟜𝕗 ⋄ 𝕗(|∾˜(2÷˜⌊⟜𝕨)𝕊⌊∘÷˜)⊢⟩ 𝕩}¨) UTF32
 Base64 ← {
   b64←"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -205,7 +205,7 @@ Markdown ← {filename𝕊𝕩:
     n × l ∧ s
   }
   ProcHeading ← {
-    tag ← "h" ∾ 𝕨⊏•d        # h3 for 3 hashes, etc.
+    tag ← "h" ∾ '0'+𝕨       # h3 for 3 hashes, etc.
     𝕩 ↓˜↩ 𝕨+1
     trsp ← ∧`⌾⌽ 𝕩=' '
     tail ← ∧`⌾⌽ trsp∨𝕩='#'  # Mask of trailing hashes
@@ -214,10 +214,10 @@ Markdown ← {filename𝕊𝕩:
     # Add an id, containing only a-z, digits, and hyphens
     Slugify ← {
       𝕩 ↩ '-'¨⌾((𝕩=' ')⊸/) 𝕩  # Replace spaces with dashes
-      bounds ← ⥊ +⌜⟜0‿26⌾•UCS "Aa"  # Of the upper and lowercase alphabet
+      bounds ← ⥊ "Aa"+⌜0‿26   # Of the upper and lowercase alphabet
       # Lowercase alphabetic characters and remove special characters
       b ← bounds ⍋ 𝕩
-      ((2|b)∨∊⟜("-"∾•d))⊸/ +⟜(32×1=b)⌾•UCS 𝕩
+      ((2|b)∨∊⟜("-"∾'0'+↕10))⊸/ 𝕩+32×1=b
     }
     extensions { tag ∾↩ " id="∾""""(∾∾⊣) Slugify 𝕩 }⍟⊣ 𝕩
     tag Html ProcInline Trim 𝕩
@@ -229,7 +229,7 @@ Markdown ← {filename𝕊𝕩:
     "ul" Html lf ∾ JoinLines ("li" Html ProcInline)¨ 𝕨 ↓¨ 𝕩
   }
   LenListNum ← { # Not used yet
-    n ← Lead 𝕩∊•d
+    n ← Lead 1="0:"⍋𝕩
     l ← (1≤n) ∧ (9≥n)
     ' ' = n ↓ 𝕩
     t ← n↓(n+2)↑𝕩
@@ -337,7 +337,7 @@ Markdown ← {filename𝕊𝕩:
     # Find matched-depth [] and () pairs, then join adjacent ones
     brak ← (unused ∧ 𝕩⊸=)¨ 2‿2⥊"[]()"
     depth ← (+`-0⌊⊢)∘(-´)˘ brak
-    FindPairs ← ⟨⟩‿2 ⥊ 1⊸⊏ /˜ 2⊸⊏ ≠ (¯∞⊸Shl⊸=(∧+⊢)∞⊸Shr⊸=)∘⊏
+    FindPairs ← ∘‿2 ⥊ 1⊸⊏ /˜ 2⊸⊏ ≠ (¯∞⊸Shl⊸=(∧+⊢)∞⊸Shr⊸=)∘⊏
     pairs ← depth <∘(FindPairs⍟(0<≠))∘⍉∘(∧(⊏˜≍˘⊢)⟜∾∾˘·/≠¨∘⊢)˘ /¨brak
     JoinPairs ← {
       e←1+1⊏˘𝕨 ⋄ b←⊏˘𝕩 ⋄ m←(≠b)>i←b⊐e
@@ -436,13 +436,13 @@ TestSections ← {
   tests ↩ ((⊑2+⊐⟜':')¨∘⊏ ((-','=¯1⊑⊢)↓↓)¨⎉1 ⊢) tests
   testSection ← (1↓¯1↓⊢)¨ 5⊏˘tests
   UnEscape ← {
-    EscapeChar ← { ("\""tn"⊐𝕩) ⊏ "\"""∾•UCS 9‿10 }
+    EscapeChar ← { ("\""tn"⊐𝕩) ⊏ "\"""∾@+9‿10 }
     esc ← IsEscaped 𝕩
     (¬1⌽esc) / EscapeChar⌾(esc⊸/) 𝕩
   }
   RunTest ← {
     in‿exp ← UnEscape∘(1↓¯1↓⊢)¨2↑𝕩
-    out ← 0 Markdown (•UCS 10) ((⊢-˜¬×+`)∘=⊔⊢) in
+    out ← 0 Markdown (@+10) ((⊢-˜¬×+`)∘=⊔⊢) in
     ⟨exp≡out,in,exp,out,2⊑𝕩⟩
   }
 
@@ -458,9 +458,9 @@ TestSections ← {
 # Characters in identifiers. These are also used in ProcCode to detect
 # if a statement is an assignment.
 idChars ← ⟨
-  •d∾"¯.π∞"
-  "𝕣"∾˜' '+⌾•UCS•a
-  •a
+  ('0'+↕10)∾"¯.π∞"
+  "𝕣"∾˜'a'+↕26
+  'A'+↕26
   "_"
 ⟩
 
@@ -468,8 +468,8 @@ idChars ← ⟨
 # (include will be all 1s).
 GetHighlights ← {
   # Characters used by BQN, and the HTML class they are associated with.
-  classes‿chars ← <˘ ⍉ ⟨⟩‿2⥊⟨
-    0             , " "∾•UCS 9‿10  # Should never be highlighted
+  classes‿chars ← <˘ ⍉ ∘‿2⥊⟨
+    0             , " "∾@+9‿10  # Should never be highlighted
     "Value"       , ¯1⊏˘5‿2⥊"𝕨𝕩𝕗𝕘𝕤"# Hack around UTF-16
     "Function"    , "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"∾¯1⊏˘5‿2⥊"𝕎𝕏𝔽𝔾𝕊"
     "Modifier"    , "˙˜˘¨⌜⁼´˝`"
