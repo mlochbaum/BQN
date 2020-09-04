@@ -21,7 +21,7 @@
 <td><a href="#comments">Comment</a></td>
 </tr>
 <tr>
-<td><code>'&quot;</code></td>
+<td><code><span class='String'>'&quot;</span></code></td>
 <td><a href="#constants">Character or string literal</a></td>
 </tr>
 <tr>
@@ -102,7 +102,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oIMKvz4Ag4ouEIDAuNSDii4QgNWXCrzEg4ouEIDEuNUUzIOKLhCDiiJ4g4p+pICAgIyBBIGxpc3Qgb2YgbnVtYmVycw==&run">↗️</a><pre>    <span class='Bracket'>⟨</span> <span class='Number'>¯π</span> <span class='Separator'>⋄</span> <span class='Number'>0.5</span> <span class='Separator'>⋄</span> <span class='Number'>5e¯1</span> <span class='Separator'>⋄</span> <span class='Number'>1.5E3</span> <span class='Separator'>⋄</span> <span class='Number'>∞</span> <span class='Bracket'>⟩</span>   <span class='Comment'># A list of numbers
 </span>⟨ ¯3.14159265358979 0.5 0.5 1500 ∞ ⟩
 </pre>
-<p>Strings are written with double quotes <code><span class='String'>&quot;&quot;</span></code>, and characters with single quotes <code>''</code> with a single character in between. A double quote within a string can be escaped by writing it twice; if two string literals are next to each other, they must be separated by a space. In contrast, character literals do not use escapes, as the length is already known.</p>
+<p>Strings are written with double quotes <code><span class='String'>&quot;&quot;</span></code>, and characters with single quotes <code><span class='String'>''</span></code> with a single character in between. A double quote within a string can be escaped by writing it twice; if two string literals are next to each other, they must be separated by a space. In contrast, character literals do not use escapes, as the length is already known.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omgwqgg4p+oICJzdHIiIOKLhCAicyd0IiJyIiDii4QgJ2MnIOKLhCAnJycg4ouEICciJyDin6kgICAjICIiIGlzIGFuIGVzY2FwZQoK4omhwqgg4p+oICJhIiDii4QgJ2EnIOKfqSAgICMgQSBzdHJpbmcgaXMgYW4gYXJyYXkgYnV0IGEgY2hhcmFjdGVyIGlzbid0&run">↗️</a><pre>    <span class='Function'>≠</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span> <span class='String'>&quot;str&quot;</span> <span class='Separator'>⋄</span> <span class='String'>&quot;s't&quot;&quot;r&quot;</span> <span class='Separator'>⋄</span> <span class='String'>'c'</span> <span class='Separator'>⋄</span> <span class='String'>'''</span> <span class='Separator'>⋄</span> <span class='String'>'&quot;'</span> <span class='Bracket'>⟩</span>   <span class='Comment'># &quot;&quot; is an escape
 </span>⟨ 3 5 1 1 1 ⟩
 
