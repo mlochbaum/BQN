@@ -15,6 +15,7 @@ syn match bqn2md "[∘○⊸⟜⌾⊘◶⎉⚇⍟⎊]"
 syn match bqnfun "[𝔽𝔾𝕎𝕏𝕊+\-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!⍕⍎]"
 syn match bqnsub "[𝕗𝕘𝕨𝕩𝕤]"
 syn match bqnnot "·"
+syn match bqnnul "@"
 syn match bqnnum "\v\c¯?((\d+\.)?\d+(e¯?\d+)?|π|∞)(i¯?((\d+\.)?\d+(e¯?\d+)?|π|∞))?"
 syn match bqnsid "\(•\|•\?[a-z][A-Z_a-z0-9π∞¯]*\|𝕣\)"
 syn match bqnfid "•\?[A-Z][A-Z_a-z0-9π∞¯]*"
@@ -34,6 +35,7 @@ hi link bqnlst preproc
 hi link bqnsep preproc
 hi link bqnarw normal
 hi link bqnchr string
+hi link bqnnul string
 hi link bqnstr string
 hi link bqnquo specialchar
 hi link bqnnum number
