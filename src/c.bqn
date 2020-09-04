@@ -1,7 +1,6 @@
 #! ./dzref
 
-nul←' '-32  # @
-nl←nul+10
+nl←@+10
 charSet←∾charGroups←⟨
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
   "˙˜˘¨⌜⁼´˝`"           # Modifier
@@ -16,7 +15,7 @@ charSet←∾charGroups←⟨
   '0'+↕10               # Digit
   "¯.π∞"                # Numeric
   "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
-  " "∾nul+9             # Whitespace
+  " "∾@+9               # Whitespace
 # #'" eliminated during tokenization
 ⟩
 ErrUnknownChars←{
@@ -72,7 +71,7 @@ ReadNum←{
   m←(n=⊑)◶⟨Pos,-·Pos 1⊸↓⟩e↑𝕩
   𝕩×⟜(10⋆·Int(e+1)↓⊣)˜⍟(e<≠𝕩)m
 }
-LitVal←(⊑⟨⊑bU,''','"'⟩⊐⊏)◶⟨nul,1⊸⊑,1⊸↓,ReadNum⟩
+LitVal←(⊑⟨⊑bU,''','"'⟩⊐⊏)◶⟨@,1⊸⊑,1⊸↓,ReadNum⟩
 
 
 LEBv ← {
