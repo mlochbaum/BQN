@@ -96,7 +96,7 @@ Parse ← {nv‿r←𝕨
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
   sl←1⊸⌽⊸∨𝕩 M bL⋄sr←¯1⊸⌽⌾(g⊸⊏)sl⋄sa←sl∨sr
   g⊏˜↩⍋g⊏sl⋄r×↩¬sa⋄o←p>0
-  r+↩(sa<𝕩=1+⊑bB)(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
+  pt←sa<𝕩=1+⊑bB
   rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨sl∨𝕩 M bS
 
   gf←⍋fd←+`rev⊏br
@@ -107,13 +107,14 @@ Parse ← {nv‿r←𝕨
   H←0<1↓FC∘=
   ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
   fsc←ft⊏spc
-  r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾(b⊸⊏)rev⊏r
+  r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
+  r+↩pt(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
   ad←(⌈`↕∘≠⊸×𝕩 M bG)⊏𝕩=⊑bG
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
-  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩g⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
+  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩gr⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
   gi←⍋g⋄l⊏↩⍋gs
   s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩 M 2≍˜⊑bG
   r-↩ps∨a⋄op←r≥2⋄fe←(r≥1)∨1⌽r=3
