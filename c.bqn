@@ -81,7 +81,7 @@ ReadNum←{
   m←(n=⊑)◶⟨Pos,-·Pos 1⊸↓⟩e↑𝕩
   𝕩×⟜(10⋆·Int(e+1)↓⊣)˜⍟(e<≠𝕩)m
 }
-LitVal←(⊑((⊑bU)∾"'""")⊐⊏)◶⟨•UCS 0,1⊸⊑,1⊸↓,ReadNum⟩
+LitVal←(⊑((⊑bU)∾"'""")⊐⊏)◶⟨@,1⊸⊑,1⊸↓,ReadNum⟩
 GenF64←{
   0:8⥊0;
   l←2(⌊⋆⁼)𝕩
@@ -123,10 +123,10 @@ Gen←{
   C←LEB∘≠⊸∾
   S←∾⟜C
   V←≠∾∾
-  I←C∘•UCS
+  I←C-⟜@
   t‿n‿b←𝕩
   ∾⟨
-   0∾(•UCS"asm")∾4↑1
+   0∾("asm"-@)∾4↑1
    1 S V (96∾⟜∾C¨)¨t
    3 S V ⥊¨↕≠b
    7 S V ⥊<"fn"I⊸(⊣∾0∾⊢)n
