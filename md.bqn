@@ -482,7 +482,7 @@ GetHighlights ← {
     "Ligature"    , "‿"
     "Nothing"     , "·"
     "Separator"   , "⋄,"
-    "String"      , "'"""
+    "String"      , "'""@"
     "Comment"     , "#"
   ⟩
   # Turn non-whitespace classes into ⟨open,close⟩ html tags.

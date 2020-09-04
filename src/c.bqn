@@ -1,7 +1,7 @@
 #! ./dzref
 
-tab←'	'⋄nl←'
-'
+nul←' '-32  # @
+nl←nul+10
 charSet←∾charGroups←⟨
   chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
   "˙˜˘¨⌜⁼´˝`"           # Modifier
@@ -12,10 +12,11 @@ charSet←∾charGroups←⟨
   "‿"                   # Ligature
   "·"                   # nOthing
   "𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘"          # Input (𝕣 pending; ℝ not allowed)
+  "@"                   # nUll character
   '0'+↕10               # Digit
   "¯.π∞"                # Numeric
   "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
-  " "∾tab               # Whitespace
+  " "∾nul+9             # Whitespace
 # #'" eliminated during tokenization
 ⟩
 ErrUnknownChars←{
@@ -26,7 +27,7 @@ CharCode←charSet{
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
 bA_e←4+⊑bA
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
 vi←+´≠¨9↑charGroups
@@ -47,6 +48,7 @@ Tokenize←{
 
   c←cl-˜CharCode(⊑charSet)¨⌾(cl⊸/)f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
+  u←c=⊑bU⋄l+↩u⋄w+↩u
   us←c=¯1++´bA
   id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
   ti←na⌊∘÷˜(⊑bA)-˜w/c
@@ -70,7 +72,7 @@ ReadNum←{
   m←(n=⊑)◶⟨Pos,-·Pos 1⊸↓⟩e↑𝕩
   𝕩×⟜(10⋆·Int(e+1)↓⊣)˜⍟(e<≠𝕩)m
 }
-LitVal←(⊑("'"∾'"')⊐⊏)◶⟨1⊸⊑,1⊸↓,ReadNum⟩
+LitVal←(⊑⟨⊑bU,''','"'⟩⊐⊏)◶⟨nul,1⊸⊑,1⊸↓,ReadNum⟩
 
 
 LEBv ← {

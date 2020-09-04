@@ -12,6 +12,7 @@ Glyph(s)        | Meaning
 ----------------|-----------
 `#`             | [Comment](#comments)
 `'"`            | [Character or string literal](#constants)
+`@`             | [Null character](#constants)
 `¯∞π`           | [Used in numeric literals](#constants)
 `()`            | Expression grouping
 `←`             | [Define](#assignment)
@@ -47,6 +48,8 @@ Strings are written with double quotes `""`, and characters with single quotes `
         ≠¨ ⟨ "str" ⋄ "s't""r" ⋄ 'c' ⋄ ''' ⋄ '"' ⟩   # "" is an escape
 
         ≡¨ ⟨ "a" ⋄ 'a' ⟩   # A string is an array but a character isn't
+
+The null character (code point 0) has a dedicated literal representation `@`. This character can be used to directly convert between characters and numeric code points, which among many other uses allows tricky characters to be entered by code point: for example, a non-breaking space is `@+160`. The character can also be entered as a character literal, but this will display differently in various editors and some tools may have trouble with a file directly containing a null, so it is best to use `@` instead.
 
 ## Expressions
 

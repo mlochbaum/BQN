@@ -13,6 +13,7 @@
 ⟩ End list
 ‿ Strand
 · Nothing
+@ Null character
 ' Character
 " String (list of characters)
 • System

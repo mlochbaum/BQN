@@ -18,6 +18,7 @@ Otherwise, a single character forms a token. Only the specified set of character
 
 | Class                 | Characters
 |-----------------------|------------
+| Null literal          | `@`
 | Primitive Function    | `+-×÷⋆√⌊⌈\|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔`
 | Primitive 1-Modifier  | `` ˙˜˘¨⌜⁼´˝` ``
 | Primitive 1-Modifier  | `∘○⊸⟜⌾⊘◶⎉⚇⍟`
