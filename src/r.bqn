@@ -331,16 +331,15 @@ Join←(1≠=)◶⟨∨´1≠=⌜,1⟩◶{
 }⍟(0<≠∘⥊)
 
 _group←{
-  "Grouping argument must be a list" ! 1==𝕩
   "Grouping argument must consist of integers" ! ∧´Int⌜𝕩
   "Grouping argument values cannot be less than ¯1" ! ∧´¯1≤𝕩
   d←(l←GroupLen𝕩)GroupOrd𝕩
   i←0⋄(𝔽{𝕩⋄(i↩i+1)⊢i⊑d}⌜∘↕)⌜l
 }
 GroupInds←{
-  "Group Indices argument must be an array" ! IsArray 𝕩
+  "Group Indices argument must be a list" ! 1==𝕩
   G←⊢_group
-  (1<≡)◶G‿((<<⟨⟩)⥊⊸∾⌜⌜´G⌜)𝕩
+  (1<≡)◶⟨G , (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊↕≢𝕩)⌜ G⥊𝕩}⌜⟩ 𝕩
 }
 GroupGen←{
   "Group right argument must be an array" ! IsArray 𝕩
