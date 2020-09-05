@@ -344,13 +344,14 @@ GroupInds←{
 }
 GroupGen←{
   "Group right argument must be an array" ! IsArray 𝕩
-  m←1<≡𝕨
-  l←m◶≠‿{"Group left argument must consist of lists"!1==𝕩⋄≠⌜𝕩}𝕨
-  "Group left argument length must be at most right argument rank" ! l≤○≠≢𝕩
-  "Group argument lengths must be compatible" ! ∧´l=l≠⊸↑≢𝕩
-  𝕨m◶(⊏⟜𝕩_group⊣)‿{
-    ⊏⟜(𝕩⥊˜⟨×´l⟩∾(≠l)Cell𝕩)⌜ +⌜⌜´ (⌽×`⟨1⟩∾⌽1↓l) × ⊢_group⌜𝕨
-  }𝕩
+  𝕨↩Pair∘ToArray⍟(2>≡)𝕨
+  "Compound group left argument must be a list" ! 1==𝕨
+  n←+´=⌜𝕨
+  "Group left argument total rank must be at most right argument rank" ! n≤=𝕩
+  "Group argument lengths must be compatible" ! ∧´(Join≢⌜𝕨)=n↑≢𝕩
+  l←≠⌜𝕨↩⥊⌜𝕨
+  S←⊏⟜(𝕩⥊˜⟨×´l⟩∾n Cell 𝕩)
+  (1≠≠)◶(S _group 0⊸⊑)‿(S⌜ ·+⌜⌜´ (⌽×`⟨1⟩∾⌽1↓l) × ⊢_group⌜) 𝕨
 }
 
 ∾ ↩ Join           ⊘ JoinTo
