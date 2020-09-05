@@ -2,7 +2,7 @@
 
 # Depth
 
-The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching a non-array. The monadic function Depth (`≡`) returns the depth of its argument, while the 2-modifier Depth (`⚇`) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.
+The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (`≡`) returns the depth of its argument, while the 2-modifier Depth (`⚇`) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.
 
 ## The Depth function
 
@@ -22,7 +22,7 @@ Also unlike rank, Depth *does* care about the elements of its argument: in fact,
         ≡ ⟨2,<3,4,5⟩
         ≡ ⟨2,<3,4,<<<5⟩
 
-As the above expressions suggest, the depth of an array is the maximum of its elements' depths, plus one. The base case, a non-array (including a function or modifier), has depth 0.
+As the above expressions suggest, the depth of an array is the maximum of its elements' depths, plus one. The base case, an atom (including a function or modifier), has depth 0.
 
         ≡'c'
         F←+⋄≡f
@@ -56,7 +56,7 @@ In these cases the flexibility seems trivial because the left argument has depth
 
         ⟨3‿2,1‿4‿1⟩ ⊏ ↕6‿7
 
-This means the left argument is homogeneous of depth 2. What should an argument of depth 1, or an argument that contains non-arrays, do? One option is to continue to require the left argument to be a list, and convert any non-array argument into an array by enclosing it:
+This means the left argument is homogeneous of depth 2. What should an argument of depth 1, that is, an array of atoms, do? One option is to continue to require the left argument to be a list, and convert any atom argument into an array by enclosing it:
 
         ⟨3‿2,1⟩ <⍟(0=≡)¨⊸⊏ ↕6‿7
 
@@ -86,7 +86,7 @@ Depth `¯1` is equivalent to Each, and reverses the larger vectors, while depth 
         ⌽⚇¯1 n
         ⌽⚇¯2 n
 
-While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth `2` is equivalent to `¯1` and depth `1` is equivalent to `¯2`. A depth of `0` means to loop until non-arrays are reached, that is, apply [pervasively](https://aplwiki.com/wiki/Pervasion), like a scalar function.
+While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth `2` is equivalent to `¯1` and depth `1` is equivalent to `¯2`. A depth of `0` means to descend all the way to the level of atoms, that is, apply [pervasively](https://aplwiki.com/wiki/Pervasion), like a scalar function.
 
         ⟨'a',"bc"⟩ ≍⚇0 ⟨2‿3,4⟩
 

@@ -5,7 +5,7 @@
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
 <h1 id="depth">Depth</h1>
-<p>The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching a non-array. The monadic function Depth (<code><span class='Function'>≡</span></code>) returns the depth of its argument, while the 2-modifier Depth (<code><span class='Modifier2'>⚇</span></code>) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.</p>
+<p>The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (<code><span class='Function'>≡</span></code>) returns the depth of its argument, while the 2-modifier Depth (<code><span class='Modifier2'>⚇</span></code>) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.</p>
 <h2 id="the-depth-function">The Depth function</h2>
 <p>To find the depth of an array, use Depth (<code><span class='Function'>≡</span></code>). For example, the depth of a list of numbers or characters is 1:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhIDLigL8z4oC/NAriiaEgImEgc3RyaW5nIGlzIGEgbGlzdCBvZiBjaGFyYWN0ZXJzIg==&run">↗️</a><pre>    <span class='Function'>≡</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
@@ -27,7 +27,7 @@
     <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Function'>&lt;</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Function'>&lt;&lt;&lt;</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
 4
 </pre>
-<p>As the above expressions suggest, the depth of an array is the maximum of its elements' depths, plus one. The base case, a non-array (including a function or modifier), has depth 0.</p>
+<p>As the above expressions suggest, the depth of an array is the maximum of its elements' depths, plus one. The base case, an atom (including a function or modifier), has depth 0.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhJ2MnCkbihpAr4ouE4omhZgriiaHin6gnYycsZiwy4p+pCuKJoeKfqDUs4p+oJ2MnLGYsMuKfqeKfqQ==&run">↗️</a><pre>    <span class='Function'>≡</span><span class='String'>'c'</span>
 0
     <span class='Function'>F</span><span class='Gets'>←</span><span class='Function'>+</span><span class='Separator'>⋄</span><span class='Function'>≡</span><span class='Value'>f</span>
@@ -79,7 +79,7 @@
   ⟨ 2 1 ⟩ ⟨ 2 4 ⟩ ⟨ 2 1 ⟩  
                           ┘
 </pre>
-<p>This means the left argument is homogeneous of depth 2. What should an argument of depth 1, or an argument that contains non-arrays, do? One option is to continue to require the left argument to be a list, and convert any non-array argument into an array by enclosing it:</p>
+<p>This means the left argument is homogeneous of depth 2. What should an argument of depth 1, that is, an array of atoms, do? One option is to continue to require the left argument to be a list, and convert any atom argument into an array by enclosing it:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oM+KAvzIsMeKfqSA84o2fKDA94omhKcKo4oq44oqPIOKGlTbigL83&run">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>&lt;</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>=≡</span><span class='Paren'>)</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span> <span class='Function'>↕</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span>
 ⟨ ⟨ 3 1 ⟩ ⟨ 2 1 ⟩ ⟩
 </pre>
@@ -129,7 +129,7 @@
   ⟨ ⟨ 37 36 ⟩ ⟨ 39 38 ⟩ ⟩ ⟨ ⟨ 41 40 ⟩ ⟨ 43 42 ⟩ ⟩ ⟨ ⟨ 45 44 ⟩ ⟨ 47 46 ⟩ ⟩  
                                                                           ┘
 </pre>
-<p>While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth <code><span class='Number'>2</span></code> is equivalent to <code><span class='Number'>¯1</span></code> and depth <code><span class='Number'>1</span></code> is equivalent to <code><span class='Number'>¯2</span></code>. A depth of <code><span class='Number'>0</span></code> means to loop until non-arrays are reached, that is, apply <a href="https://aplwiki.com/wiki/Pervasion">pervasively</a>, like a scalar function.</p>
+<p>While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth <code><span class='Number'>2</span></code> is equivalent to <code><span class='Number'>¯1</span></code> and depth <code><span class='Number'>1</span></code> is equivalent to <code><span class='Number'>¯2</span></code>. A depth of <code><span class='Number'>0</span></code> means to descend all the way to the level of atoms, that is, apply <a href="https://aplwiki.com/wiki/Pervasion">pervasively</a>, like a scalar function.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oJ2EnLCJiYyLin6kg4omN4pqHMCDin6gy4oC/Myw04p+p&run">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='String'>'a'</span><span class='Separator'>,</span><span class='String'>&quot;bc&quot;</span><span class='Bracket'>⟩</span> <span class='Function'>≍</span><span class='Modifier2'>⚇</span><span class='Number'>0</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩</span>
 ┌─                                                 
 · ⟨ ⟨ 'a' 2 ⟩ ⟨ 'a' 3 ⟩ ⟩ ⟨ ⟨ 'b' 4 ⟩ ⟨ 'c' 4 ⟩ ⟩  
