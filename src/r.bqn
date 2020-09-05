@@ -24,7 +24,7 @@ Nat←IsArray◶⟨0⊸≤×⌊⊸=,0⟩
 ≠ ← (0<=)◶⟨1⋄0⊑≢⟩  # LIMITED to monadic case
 
 _fold←{
-  "Argument to fold must be a list" ! 1==𝕩
+  "´: 𝕩 must be a list" ! 1==𝕩
   l←≠v←𝕩 ⋄ F←𝔽
   r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
   {r↩(𝕩⊑v)F r}⌜(l-1)⊸-⌜↕l
@@ -40,12 +40,12 @@ Cell←{(𝕨⊸+⊑𝕩˜)⌜↕(≠𝕩)-𝕨}⟜≢
 _eachd←{
   _d←{ # Equal ranks
     p←≢𝕨
-    "Equal-rank argument shapes don't agree" ! 1(⊑⟜p=⊑⟜(≢𝕩))⊸×´↕=𝕨
+    "Mapping: Equal-rank argument shapes don't agree" ! 1(⊑⟜p=⊑⟜(≢𝕩))⊸×´↕=𝕨
     p⥊ (⊑⟜(⥊𝕨)𝔽⊑⟜(⥊𝕩))⌜↕1×´p
   }
   _e←{ # 𝕨 has smaller or equal rank
     p←≢𝕨 ⋄ k←=𝕨 ⋄ q←≢𝕩
-    "Argument shape prefixes don't agree" ! 1(⊑⟜p=⊑⟜q)⊸×´↕k
+    "Mapping: Argument shape prefixes don't agree" ! 1(⊑⟜p=⊑⟜q)⊸×´↕k
     l←1(q⊑˜k⊸+)⊸×´↕(=𝕩)-k
     a←⥊𝕨 ⋄ b←⥊𝕩
     q⥊⥊(≠a) (⊑⟜a𝔽l⊸×⊸+⊑b˜)⌜○↕ l
@@ -70,7 +70,7 @@ Cmp ← +○IsArray◶⟨
   }
 ⟩
 _grade_←{
-  "Grade argument must have rank at least 1" ! 1≤=𝕩
+  "⍋𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   l←≠𝕩
   m←1×´1 Cell 𝕩
   d←⥊𝕩
@@ -92,10 +92,10 @@ _grade_←{
 }
 
 Indices←{
-  "Replication argument in Indices or Replicate must have rank 1" ! 1==𝕩
+  "/: Replication argument must have rank 1" ! 1==𝕩
   l←≠𝕩
   {
-    "Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
+    "/: Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
     k←l-1
     N ← ((⊢+-×0=𝕩⊑˜⊢)`k⊸-⌜↕l)⊑˜k-⊢  # Next nonzero
     E ← ⊑⟜(+`𝕩)
@@ -114,10 +114,10 @@ TransposeInv←{
 }⍟(0<=)
 
 SelSub←{
-  "Right argument to Select must be an array" ! IsArray 𝕨
-  "Indices in Select must be integers" ! 1×´⥊Int⌜ 𝕨
+  "𝕨⊏𝕩: 𝕩 must be an array" ! IsArray 𝕨
+  "𝕨⊏𝕩: Indices in 𝕨 must be integers" ! 1×´⥊Int⌜ 𝕨
   l←≠𝕩
-  "Select indices out of range" ! 1×´⥊ ((-l)⊸≤×l⊸>)⌜ 𝕨
+  "𝕨⊏𝕩: Indices out of range" ! 1×´⥊ ((-l)⊸≤×l⊸>)⌜ 𝕨
   ((⊢+l×0>⊢)⌜𝕨)(1==𝕩)◶{
     c←1×´s←1 Cell 𝕩
     𝕨((⥊𝕩)⊑˜c⊸×⊸+)⌜s⥊↕c
@@ -127,12 +127,12 @@ SelSub←{
 }
 
 Reverse ← {
-  "Reverse argument must have rank at least 1" ! 1≤=𝕩
+  "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   l←≠𝕩
   ((l-1)⊸-⌜↕l) Select 𝕩
 }
 Rot ← {
-  "Amount to rotate must be an integer" ! Int𝕨
+  "𝕨⌽𝕩: 𝕨 must consist of integers" ! Int𝕨
   l←≠𝕩 ⋄ 𝕨-↩l×⌊𝕨÷l ⋄ ((𝕨+⊢-l×(l-𝕨)≤⊢)⌜↕l) Select 𝕩
 }
 
@@ -164,11 +164,11 @@ Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 _onAxes_←{
   F←𝔽
   (𝔾<≡)∘⊣◶{ # One axis
-    "First-axis function right argument must have rank at least 1" ! 1≤=𝕩
+    "First-axis primitive: 𝕩 must have rank at least 1" ! 1≤=𝕩
     𝕨F𝕩
   }‿{ # Multiple axes
-    "Left argument must have rank at most 1" ! 1≥=𝕨
-    "Left argument length must be at most right argument rank" ! 𝕨≤○≠≢𝕩
+    "Multi-axis primitive: 𝕨 must have rank at most 1" ! 1≥=𝕨
+    "Multi-axis primitive: length of 𝕨 must be at most rank of 𝕩" ! 𝕨≤○≠≢𝕩
     l←≠𝕨 ⋄ W←⊑⟜(⥊𝕨)
     0{(W𝕨)F(1+𝕨)⊸𝕊˘⍟(𝕨<l-1)𝕩}⍟(0<l)𝕩
   }
@@ -179,7 +179,7 @@ Select←ToArray⊸(SelSub _onAxes_ 1)
 
 Merge←{
   c←≢0⊑⥊𝕩
-  "Elements in Merge argument must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
+  ">𝕩: Elements of 𝕩 must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
   𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
 }⍟(0<≠∘⥊)⍟IsArray
 
@@ -198,27 +198,27 @@ _sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ Select}
 > ↩ Merge    ⊘ ((1-≤) _perv)
 ≠ ↩ ≠        ⊘ ((1-=) _perv)
 = ↩ =        ⊘ (= _perv)
-≥ ← ("No monadic form: ≥"!0˜) ⊘ (≥ _perv)
-≤ ↩ ("No monadic form: ≤"!0˜) ⊘ (≤ _perv)
+≥ ← ("≥: No monadic form"!0˜) ⊘ (≥ _perv)
+≤ ↩ ("≤: No monadic form"!0˜) ⊘ (≤ _perv)
 + ↩ + _perv
 - ↩ - _perv
 ¬ ← 1+-
-identity ← (0⊑⟨"Identity not found"!0˜⟩) {(0⊑𝕨){𝕗=𝕩}◶𝕩‿(1⊑𝕨)}´ ⟨+‿0,-‿0,×‿1,÷‿1,⋆‿1,√‿1,∧‿1,∨‿0,¬‿1,|‿0,⌊‿∞,⌈‿¯∞,<‿0,≤‿1,=‿1,≥‿1,>‿0,≠‿0⟩
+identity ← (0⊑⟨"´: Identity not found"!0˜⟩) {(0⊑𝕨){𝕗=𝕩}◶𝕩‿(1⊑𝕨)}´ ⟨+‿0,-‿0,×‿1,÷‿1,⋆‿1,√‿1,∧‿1,∨‿0,¬‿1,|‿0,⌊‿∞,⌈‿¯∞,<‿0,≤‿1,=‿1,≥‿1,>‿0,≠‿0⟩
 
 Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Reshape←{
-  "Shape argument to Reshape must have rank at most 1" ! 1≥=𝕨
+  "𝕨⥊𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   s←Deshape 𝕨
   sp←+´p←¬Nat⌜s
-  "Shape in Reshape must consist of natural numbers" ! 1≥sp
+  "𝕨⥊𝕩: 𝕨 must consist of natural numbers" ! 1≥sp
   n←≠d←Deshape 𝕩
   l←sp◶(×´)‿{
     lp←×´p⊣◶⊢‿1¨𝕩
-    "Can't compute axis length in Reshape when rest of shape is empty" ! 0<lp
+    "𝕨⥊𝕩: Can't compute axis length when rest of shape is empty" ! 0<lp
     i←+´p×↕≠p
     t←ReshapeT i⊑s
-    "Shape in Reshape must be a natural number or ∘ ⌊ ⌽ ↑" ! t<4
-    Chk ← ⊢ ⊣ "Shape must be exact when reshaping with ∘" ! ⌊⊸=
+    "𝕨⥊𝕩: 𝕨 must consist of natural numbers or ∘ ⌊ ⌽ ↑" ! t<4
+    Chk ← ⊢ ⊣ "𝕨⥊𝕩: Shape must be exact when reshaping with ∘" ! ⌊⊸=
     a←(2⌊t)◶⟨Chk,⌊,⌈⟩n÷lp
     s↩p⊣◶⊢‿a¨s
     {d∾↩(Type d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
@@ -230,8 +230,8 @@ Reshape←{
 ⥊ ↩ Deshape        ⊘ ⥊
 
 Range←{
-  I←{"Range argument must consist of natural numbers"!Nat𝕩⋄↕𝕩}
-  M←{"Range argument must be a number or list"!1==𝕩⋄(<⟨⟩)⥊⊸∾⌜´I⌜𝕩}
+  I←{"↕𝕩: 𝕩 must consist of natural numbers"!Nat𝕩⋄↕𝕩}
+  M←{"↕𝕩: 𝕩 must be a number or list"!1==𝕩⋄(<⟨⟩)⥊⊸∾⌜´I⌜𝕩}
   IsArray◶I‿M 𝕩
 }
 
@@ -261,7 +261,7 @@ _rankOp_←{
 }
 ⎉ ← _rankOp_
 _insert←{
-  "Insert argument must have rank at least 1" ! 1≤=𝕩
+  "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
   𝕨 𝔽´ <˘𝕩
 }
 ˝ ← _insert
@@ -270,43 +270,43 @@ _insert←{
 JoinTo←∨○(1<=)◶(∾○⥊)‿{
   s←𝕨Pair○≢𝕩
   a←1⌈´k←≠⌜s
-  "Rank of joined arguments must differ by at most 1" ! ∧´1≥a-k
+  "𝕨∾𝕩: Rank of 𝕨 and 𝕩 must differ by at most 1" ! ∧´1≥a-k
   c←(k¬a)+⟜(↕a-1)⊸⊏¨s
-  "Cell shapes of joined arguments must match" ! ≡´c
+  "𝕨∾𝕩: Cell shapes of 𝕨 and 𝕩 must match" ! ≡´c
   l←+´(a=k)⊣◶1‿(0⊑⊢)¨s
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
 }
 
 Take←{
   T←{
-    "Left argument to Take or Drop must be an integer" ! Int 𝕨
+    "↑ or ↓: 𝕨 must be an integer" ! Int 𝕨
     l←≠𝕩 ⋄ n←𝕨<0 ⋄ e←l⌊r←|𝕨 ⋄ s←⟨r⟩ ⋄ m←1
     i ← 𝕩{s∾↩c←1 Cell 𝕨⋄𝕩(×+⌜↕∘⊢)m↩×´c}⍟(1≠=𝕩) (l-e)+⍟n ↕e
     s⥊𝕩{(⥊𝕩)n◶⟨∾,∾˜⟩(0⊑⥊Type𝕗)⌜↕m×r-e}⍟(l<r) ⊑⟜(⥊𝕩)⌜i
   }
   𝕨 T _onAxes_ 0 ((1⌜∘↕0⌈𝕨-○≠⊢)⊸∾∘≢⥊⥊) 𝕩
 }
-Prefixes ← {"Prefixes argument must have rank at least 1"!1≤=𝕩 ⋄ Take⟜𝕩⌜↕1+≠𝕩}
+Prefixes ← {"↑𝕩: 𝕩 must have rank at least 1"!1≤=𝕩 ⋄ Take⟜𝕩⌜↕1+≠𝕩}
 ↑ ← Prefixes       ⊘ Take
 Drop←{
   s←(≠𝕨)(⊣↑⊢∾˜·1⌜∘↕0⌈-⟜≠)≢𝕩
   ((s×¯1⋆𝕨>0)+(-s)⌈s⌊𝕨)↑𝕩
 }
-Suffixes ← {"Suffixes argument must have rank at least 1"!1≤=𝕩 ⋄ Drop⟜𝕩⌜↕1+≠𝕩}
+Suffixes ← {"↓𝕩: 𝕩 must have rank at least 1"!1≤=𝕩 ⋄ Drop⟜𝕩⌜↕1+≠𝕩}
 ↓ ← Suffixes       ⊘ Drop
 
 Windows←{
-  "Windows right argument must be an array" ! IsArray 𝕩
-  "Windows left argument must have rank at most 1" ! 1≥=𝕨
-  "Windows left argument length must be at most right argument rank" ! 𝕨≤○≠≢𝕩
-  "Windows left argument must consist of natural numbers" ! ∧´Nat⌜⥊𝕨
+  "𝕨↕𝕩: 𝕩 must be an array" ! IsArray 𝕩
+  "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
+  "𝕨↕𝕩: length of 𝕨 must be at most rank of 𝕩" ! 𝕨≤○≠≢𝕩
+  "𝕨↕𝕩: 𝕨 must consist of natural numbers" ! ∧´Nat⌜⥊𝕨
   s←(≠𝕨)↑≢𝕩
-  "Window length must be at most axis length plus one" ! ∧´𝕨≤1+s
+  "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ∧´𝕨≤1+s
   𝕨{(∾⟜(𝕨≠⊸↓≢𝕩)∘≢⥊>)<⌜⊸⊏⟜𝕩¨s(¬+⌜○Range⊢)⥊𝕨}⍟(0<≠𝕨)𝕩
 }
 
 Rep ← Indices⊸⊏
-Replicate ← {0<=𝕨}◶{𝕨˘⊸Rep𝕩}‿{"Replicate argument lengths must match"!𝕨=○≠𝕩⋄𝕨Rep𝕩} _onAxes_ (1-0=≠)
+Replicate ← {0<=𝕨}◶{𝕨˘⊸Rep𝕩}‿{"𝕨/𝕩: lengths of components of 𝕨 must match 𝕩"!𝕨=○≠𝕩⋄𝕨Rep𝕩} _onAxes_ (1-0=≠)
 
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
@@ -319,35 +319,35 @@ Join←(1≠=)◶⟨∨´1≠=⌜,1⟩◶{
 }‿{
   # Multidimensional
   C←(<⟨⟩)⥊⊸∾⌜´⊢  # Cartesian array product
-  "Join argument must be an array" ! IsArray 𝕩
+  "∾𝕩: 𝕩 must be an array" ! IsArray 𝕩
   s←≢⌜𝕩
   d←≠0⊑⥊s
-  "Join argument elements must all have the same rank" ! ∧´⥊d=≠⌜s
-  "Join argument element rank must be at least argument rank" ! d≥=𝕩
+  "∾𝕩: elements of 𝕩 must all have the same rank" ! ∧´⥊d=≠⌜s
+  "∾𝕩: 𝕩 element rank must be at least argument rank" ! d≥=𝕩
   l←(≢𝕩){(𝕩⊑⟜≢a Pick1˜(j=𝕩)⊸×)⌜↕𝕨}¨j←↕r←=a←𝕩
-  "Join argument element shapes must be compatible" ! (r⊸↑⌜s)≡C l
+  "∾𝕩: 𝕩 element shapes must be compatible" ! (r⊸↑⌜s)≡C l
   i←C{p←+´⌜↑𝕩⋄(↕0⊑⌽p)-𝕩/¯1↓p}⌜l
   >i<⌜⊸⊏¨l/𝕩
 }⍟(0<≠∘⥊)
 
 _group←{
-  "Grouping argument must consist of integers" ! ∧´Int⌜𝕩
-  "Grouping argument values cannot be less than ¯1" ! ∧´¯1≤𝕩
+  "⊔: Grouping argument must consist of integers" ! ∧´Int⌜𝕩
+  "⊔: Grouping argument values cannot be less than ¯1" ! ∧´¯1≤𝕩
   d←(l←GroupLen𝕩)GroupOrd𝕩
   i←0⋄(𝔽{𝕩⋄(i↩i+1)⊢i⊑d}⌜∘↕)⌜l
 }
 GroupInds←{
-  "Group Indices argument must be a list" ! 1==𝕩
+  "⊔𝕩: 𝕩 must be a list" ! 1==𝕩
   G←⊢_group
   (1<≡)◶⟨G , (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊↕≢𝕩)⌜ G⥊𝕩}⌜⟩ 𝕩
 }
 GroupGen←{
-  "Group right argument must be an array" ! IsArray 𝕩
+  "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
   𝕨↩Pair∘ToArray⍟(2>≡)𝕨
-  "Compound group left argument must be a list" ! 1==𝕨
+  "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
   n←+´=⌜𝕨
-  "Group left argument total rank must be at most right argument rank" ! n≤=𝕩
-  "Group argument lengths must be compatible" ! ∧´(Join≢⌜𝕨)=n↑≢𝕩
+  "𝕨⊔𝕩: Total rank of 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
+  "𝕨⊔𝕩: Lengths of components of 𝕨 must be compatible with 𝕩" ! ∧´(Join≢⌜𝕨)=n↑≢𝕩
   l←≠⌜𝕨↩⥊⌜𝕨
   S←⊏⟜(𝕩⥊˜⟨×´l⟩∾n Cell 𝕩)
   (1≠≠)◶(S _group 0⊸⊑)‿(S⌜ ·+⌜⌜´ (⌽×`⟨1⟩∾⌽1↓l) × ⊢_group⌜) 𝕨
@@ -357,10 +357,10 @@ GroupGen←{
 ⊔ ← GroupInds      ⊘ GroupGen
 
 Pick1←{
-  "Indices in compound Pick must be lists" ! 1==𝕨
-  "Pick index length must match right argument rank" ! 𝕨=○≠s←≢𝕩
-  "Pick indices must consist of integers" ! ∧´Int⌜𝕨
-  "Pick index out of range" ! ∧´𝕨(≥⟜-∧<)s
+  "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
+  "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
+  "𝕨⊑𝕩: Indices in 𝕨 must consist of integers" ! ∧´Int⌜𝕨
+  "𝕨⊑𝕩: Index out of range" ! ∧´𝕨(≥⟜-∧<)s
   𝕨↩𝕨+s×𝕨<0
   (⥊𝕩)⊑˜0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨
 }
@@ -401,11 +401,11 @@ _binSearch ← {
 }
 _bins←{
   c←1-˜=𝕨
-  "Bins argument must have rank at least 1" ! 0≤c
-  "Bins right argument rank is too small" ! c≤=𝕩
+  "⍋ or ⍒: Rank of 𝕨 must be at least 1" ! 0≤c
+  "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
   lw←×´sw←1 Cell 𝕨
   cw←lw 𝔽○(⊑⟜(⥊𝕨)) _getCellCmp 0
-  "Bins left argument must be sorted" ! 0⊸<◶⟨1,∧´0≤˜·cw⟜(lw⊸+)⌜lw×↕∘-⟜1⟩≠𝕨
+  "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,∧´0≤˜·cw⟜(lw⊸+)⌜lw×↕∘-⟜1⟩≠𝕨
   cx←c-˜=𝕩
   sx←cx Cell 𝕩 ⋄ lc←sw CmpLen sx
   cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
@@ -422,7 +422,7 @@ _search←{ # 0 for ∊˜, 1 for ⊐
   red ← 𝕗⊑⟨¬∧˝,+˝∧`⟩
   {
     c←1-˜=𝕨
-    "Search principal argument must have rank at least 1" ! 0≤c
+    "p⊐𝕩 or 𝕨∊p: p must have rank at least 1" ! 0≤c
     𝕨 ∧○(8<≠∘⥊)◶⟨
       (0<≠𝕨)◶⟨0⎉c∘⊢, Red≢⌜○((0<c)◶⟨⊢,<⎉c⟩)⟩
       { g←⌽⍒𝕨 ⋄ i←g⊏˜0⌈1-˜(g⊏𝕨)⍋𝕩 ⋄ (≠𝕨)(⊣+i⊸-⊸×)⍟ind(i⊏𝕨)≡⎉c𝕩 }
@@ -431,14 +431,14 @@ _search←{ # 0 for ∊˜, 1 for ⊐
 }
 PermInv ← 1¨⊸GroupOrd
 _self←{
-  "Unique mask argument must have rank at least 1" ! 1≤=𝕩
+  "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   g←⍋𝕩
   (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
 }
 SelfClas ← (PermInv∘⍋∘/˜⊏˜1-˜+`∘⊢) _self
 Find←{
   r←=𝕨
-  "Find left argument rank cannot exceed right argument rank" ! r≤=𝕩
+  "⍷𝕩: Rank of 𝕨 cannot exceed rank of 𝕩" ! r≤=𝕩
   𝕨 ≡⎉r (≢𝕨) ↕⎉r 𝕩
 }
 
@@ -447,9 +447,9 @@ Find←{
 ⍷ ← ∊⊸/            ⊘ Find
 
 ReorderChk←{
-  "Left argument to Reorder Axes must have rank at most 1" ! 1≥=𝕨
-  "Reorder Axes left argument length must not exceed right argument rank" ! 𝕨≤○≠≢𝕩
-  "Reorder Axes left argument must consist of natural numbers" ! ∧´Nat⌜⥊𝕨
+  "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
+  "𝕨⍉𝕩: Length of 𝕨 must not exceed rank of 𝕩" ! 𝕨≤○≠≢𝕩
+  "𝕨⍉𝕩: 𝕨 must consist of natural numbers" ! ∧´Nat⌜⥊𝕨
 }
 ReorderAxesSub←{
   (𝕨⊸⊏Pick𝕩˜)⌜↕⌊´⌜𝕨⊔≢𝕩
@@ -458,7 +458,7 @@ ReorderAxes←{
   𝕨 ReorderChk 𝕩
   𝕨↩⥊𝕨
   r←(=𝕩)-+´¬∊𝕨
-  "No such axis in Reorder Axes" ! ∧´𝕨<r
+  "𝕨⍉𝕩: Skipped result axis" ! ∧´𝕨<r
   (𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
 }
 ReorderAxesInv←{
@@ -477,8 +477,8 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 ⊑ ↩ (0⊑⥊)          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 
-IA ← "Inverse failed"⊸!
-IX ← "Inverse does not exist"⊸!
+IA ← "⁼: Inverse failed"⊸!
+IX ← "⁼: Inverse does not exist"⊸!
 _invChk_ ← {i←𝕨𝔽𝕩⋄IX 𝕩≡𝕨𝔾i⋄i}
 GroupIndsInv ← {
   IA 1==𝕩
@@ -494,7 +494,7 @@ GroupInv ← {
   IA ∧´Nat⌜𝕨
   (⊔𝕨) ⍋⊸⊏○∾ 𝕩
 }
-inverse ← {(⊑(0⊏𝕩)⊐<) ⊑ ((1⊏𝕩)∾⟨"Inverse not found"!0˜⟩)˜} ⍉ (2∾˜2÷˜≠)⊸⥊ ⟨
+inverse ← {(⊑(0⊏𝕩)⊐<) ⊑ ((1⊏𝕩)∾⟨"⁼: Inverse not found"!0˜⟩)˜} ⍉ (2∾˜2÷˜≠)⊸⥊ ⟨
   +, +⊘(-˜)
   -, -
   ×, ⊢⊘(÷˜)
@@ -522,7 +522,7 @@ inverse ← {(⊑(0⊏𝕩)⊐<) ⊑ ((1⊏𝕩)∾⟨"Inverse not found"!0˜⟩
 _repeat_←{
   n←𝕨𝔾𝕩
   l←u←0
-  {"Repetition numbers must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
+  {"⍟: Repetition numbers in 𝕨 must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
   a←𝕩⋄_p←{𝔽∘⊣`⟨a⟩∾↕0+𝕩}
   pos←(𝕨𝔽 ⊢)_p u
   neg←(𝕨𝔽⁼⊢)_p-l
