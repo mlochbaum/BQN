@@ -53,7 +53,7 @@ Functions that have significant differences from APL functions are marked with a
 
 ## Modifiers
 
-*Combinators* only control the application of functions. Because a non-function operand applies as a constant function, some combinators have extra meanings when passed a constant. For example, `0˜` is the constant function that always returns 0 and `0⊸<` is the function that tests whether its right argument is greater than 0.
+*Combinators* only control the application of functions. Because a non-function operand applies as a constant function, some combinators have extra meanings when passed a constant. For example, `0˜` is identical to `0˙`—a constant function that always returns 0—and `0⊸<` is the function that tests whether its right argument is greater than 0.
 
 Glyph | Name(s)     | Definition                     | Description
 ------|-------------|--------------------------------|---------------------------------------
