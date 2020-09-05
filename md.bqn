@@ -313,7 +313,7 @@ Markdown ← {filename𝕊𝕩:
       filter ← notLast / (𝕩¬𝕨) ⊏ actual
       # For leading ticks, filter by not-last; for trailing ones, rotate
       # by ¯1 to filter by not-first.
-      (filter / ⌽⟜notLast / 𝕩˜)¨ 0‿¯1
+      (filter / ⌽⟜notLast / 𝕩˙)¨ 0‿¯1
     }
     tlen ← tend ⊏ tcount
     c ← Trace´ tlen MatchTicks○((⍋tlen)⊸⊏) tend
@@ -331,7 +331,7 @@ Markdown ← {filename𝕊𝕩:
 
     # Links
     ghPath ← "https://github.com/mlochbaum/BQN/blob/master/"∾path
-    ReplaceMDSub ← { ¯2 ("md"≡↑)◶(ghPath⊸∾)‿("README"•_r_"index"∘↓∾"html"˜)⍟(':'∧´∘≠⊢) 𝕩 }
+    ReplaceMDSub ← { ¯2 ("md"≡↑)◶(ghPath⊸∾)‿("README"•_r_"index"∘↓∾"html"˙)⍟(':'∧´∘≠⊢) 𝕩 }
     ReplaceMD ← { ReplaceMDSub⍟(0<≠)⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
     ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",ProcInline 𝕨,"</a>"⟩ }
     # Find matched-depth [] and () pairs, then join adjacent ones
@@ -538,7 +538,7 @@ GetHighlights ← {
 GetMultiHighlights ← {
   start ← 0⊸Shl⊸< 𝕨
   groups ← (1 -˜ 𝕨 × +` start) ⊔ 𝕩
-  <∘∾˘ ⍉ ((≠∾2˜) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
+  <∘∾˘ ⍉ ((≠∾2˙) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
 }
 
 

@@ -68,13 +68,13 @@ In particular, the case with only one argument specified is interesting. Here, t
 
         ≢ 2 ⍉ a23456  # Restrict Transpose to the first three axes
 
-Finally, it's worth noting that, as monadic Transpose moves the first axis to the end, it's equivalent to dyadic Transpose with a "default" left argument: `(=-1˜)⊸⍉`.
+Finally, it's worth noting that, as monadic Transpose moves the first axis to the end, it's equivalent to dyadic Transpose with a "default" left argument: `(=-1˙)⊸⍉`.
 
 ## Definitions
 
 Here we define the two valences of Transpose more precisely.
 
-Monadic transpose is identical to `(=-1˜)⊸⍉`, except that for scalar arguments (including atoms) it returns the array unchanged rather than giving an error.
+Monadic transpose is identical to `(=-1˙)⊸⍉`, except that for scalar arguments (including atoms) it returns the array unchanged rather than giving an error.
 
 An atom right argument to dyadic Transpose is always enclosed to get a scalar array before doing anything else.
 
