@@ -16,7 +16,7 @@ let repl = ()=>{
     } catch(e) {
     //if (console&&console.error) console.error(e.stack);
       doc.rslt.classList.add('err');
-      doc.rslt.textContent=e;
+      doc.rslt.textContent=e.message||'Error';
     }
   }, 0);
 }
