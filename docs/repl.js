@@ -2,7 +2,7 @@ let body = document.body;
 let doc={}; // html elements with a class
 body.querySelectorAll('[class]').forEach(e=>doc[e.classList[0]]=e);
 let setcount = !doc.count ? (s=>s) : (s=>{
-  let l = s.length;
+  let l = Array.from(s).length;
   doc.count.textContent = l+" char"+(l!=1?"s":"");
 });
 let repl = ()=>{
