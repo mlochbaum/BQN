@@ -1,12 +1,10 @@
 "use strict";
 // Virtual machine
-let err = () => { throw Error(); }
-let assert = x => { if (!x) throw Error(); }
 let has = x => x!==undefined;
 let call = (f,x,w) => {
   if (x===undefined) return x;
   if (typeof f !== "function") return f;
-  assert(!f.m);
+  if (f.m) throw Error("Runtime: Cannot call modifier as function");
   return f(x, w);
 }
 
@@ -14,13 +12,18 @@ let get = x => x.e ? x.e[x.p] : arr(x.map(c=>get(c)), x.sh);
 let set = (d, id, v) => {
   let eq = (a,b) => a.length===b.length && a.every((e,i)=>e===b[i]);
   if (id.e) {
-    if (!d) assert(id.e[id.p]!==null); id.e[id.p] = v;
+    if (!d && id.e[id.p]===null) throw Error("↩: Variable modified before definition");
+    id.e[id.p] = v;
   } else {
-    assert(v.sh && eq(id.sh,v.sh)); id.map((n,j)=>set(d,n,v[j]));
+    if (!v.sh) throw Error("← or ↩: Multiple targets but atomic value");
+    if (!eq(id.sh,v.sh)) throw Error("← or ↩: Target and value shapes don't match");
+    id.map((n,j)=>set(d,n,v[j]));
   }
   return v;
 }
 
+let chkM = (v,m) => { if (m.m!==v) throw Error("Runtime: Only a "+v+"-modifier can be called as a "+v+"-modifier"); }
+let chkR = v => { if (v===null) throw Error("Runtime: Variable referenced before definition"); }
 let genjs = (B, p) => { // Bytecode -> Javascript compiler
   let rD = 0;
   let r = "";
@@ -37,14 +40,14 @@ let genjs = (B, p) => { // Bytecode -> Javascript compiler
   }
   let ge = n => "e"+".p".repeat(n);
   loop: while(true) { r+="\n";
-    if (p>B.length) err();
+    if (p>B.length) throw Error("Internal compiler error: Unclosed function");
     switch(B[p++]) {
       case 0:          { r+= rP("O["+num()+"]");                                                                                           break; }
       case 3: case  4: { let n=num(); rD-= n;      r+=rP("list(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])");              break; }
       case 5: case 16: { let        f=rG(),x=rG(); r+=rP("call("+f+","+x      +")");                                                       break; }
       case 6: case 17: { let w=rG(),f=rG(),x=rG(); r+=rP("call("+f+","+x+","+w+")");                                                       break; }
-      case 7:          { let f=rG(),m=rG();        r+="if("+m+".m!==1)err();"+rP(m+"("+f      +")");                                       break; }
-      case 8:          { let f=rG(),m=rG(),g=rG(); r+="if("+m+".m!==2)err();"+rP(m+"("+f+","+g+")");                                       break; }
+      case 7:          { let f=rG(),m=rG();        r+="chkM(1,"+m+");"+rP(m+"("+f      +")");                                              break; }
+      case 8:          { let f=rG(),m=rG(),g=rG(); r+="chkM(2,"+m+");"+rP(m+"("+f+","+g+")");                                              break; }
       case 9:          { let        g=rG(),h=rG(); r+=rP("((  g,h)=>(x,w)=>call(g,call(h,x,w))"+                  ")("      +g+","+h+")"); break; }
       case 10:case 19: { let f=rG(),g=rG(),h=rG(); r+=rP("((f,g,h)=>(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f))("+f+","+g+","+h+")"); break; }
       case 11:         { let i=rG(),       v=rG(); r+=rP("set(1,"+i+","+v                       +")");                                     break; }
@@ -52,9 +55,9 @@ let genjs = (B, p) => { // Bytecode -> Javascript compiler
       case 13:         { let i=rG(),f=rG(),x=rG(); r+=rP("set(0,"+i+",call("+f+","+x+",get("+i+")))");                                     break; }
       case 14:         { rD--;                                                                                                             break; }
       case 15:         { r+= rP("D["+num()+"](e)");                                                                                        break; }
-      case 21:         { r+= rP(ge(num())+"["+num()+"]")+"if("+rV(rD-1)+"===null)err();";                                                  break; }
+      case 21:         { r+= rP(ge(num())+"["+num()+"]")+"chkR("+rV(rD-1)+");";                                                            break; }
       case 22:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                                          break; }
-      case 25:         { if(rD!==1)err(); r+= "return v0;";                                                                                break loop; }
+      case 25:         { if(rD!==1) throw Error("Internal compiler error: Wrong stack size"); r+= "return v0;";                            break loop; }
     }
   }
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r;
@@ -70,8 +73,8 @@ let run = (B,O,S) => { // Bytecode, Objects, Sections/blocks
     if (type===0) c = "let e2=def;"+c;
     if (type===1) c = "const mod=(f  ) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;"                +c+"}; mod.m=1;return mod;";
     if (type===2) c = "const mod=(f,g) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;e2["+(I+2)+"]=g;"+c+"}; mod.m=2;return mod;";
-    return Function("'use strict'; return (err,has,call,get,set,list,O,def) => D => oe => {"+c+"};")()
-                                          (err,has,call,get,set,list,O,def);
+    return Function("'use strict'; return (chkM,chkR,has,call,get,set,list,O,def) => D => oe => {"+c+"};")()
+                                          (chkM,chkR,has,call,get,set,list,O,def);
   });
   D.forEach((d,i) => {D[i]=d(D)});
   return D[0]([]);
@@ -116,7 +119,9 @@ let table = m1(f => (x,w) => !has(w)
   ? arr(x.map(e=>call(f,e)),x.sh)
   : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
 let scan = m1(f => (x,w) => {
-  let s=x.sh;assert(!has(w)&&s&&s.length>0);
+  if (has(w)) throw Error("`: No dyadic form");
+  let s=x.sh;
+  if (!s||s.length===0) throw Error("`: 𝕩 must have rank at least 1");
   let l=x.length,r=Array(l);
   if (l>0) {
     let c=1;for(let i=1;i<s.length;i++)c*=s[i];
