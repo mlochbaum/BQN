@@ -8,7 +8,7 @@ Several primitive functions manipulate the right argument, or sometimes both arg
 
 ### Manipulating cells
 
-Most non-scalar monadic functions work only on the first axis of the argument—that is, they treat it as a list of its major cells. The function Length (`≠`) counts these major cells, while Prefixes (`↑`), Suffixes (`↓`), Reverse (`⌽`), and First Cell (`⊏`) move them around. The Insert (`˝`) and Scan (`` ` ``) modifiers also yield functions that work along the first axis; in contrast, Reduce (`´`) requires its argument to be a list, as it works on elements.
+Most non-arithmetic monadic functions work only on the first axis of the argument—that is, they treat it as a list of its major cells. The function Length (`≠`) counts these major cells, while Prefixes (`↑`), Suffixes (`↓`), Reverse (`⌽`), and First Cell (`⊏`) move them around. The Insert (`˝`) and Scan (`` ` ``) modifiers also yield functions that work along the first axis; in contrast, Reduce (`´`) requires its argument to be a list, as it works on elements.
 
         ⊢ a ← 3‿2 ⥊ "abcdef"  # An array with three major cells
         ⊏ a                   # Get the first major cell

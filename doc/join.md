@@ -14,7 +14,7 @@ To join with a separator in between, we might prepend the separator to each stri
 
 Join requires each element of its argument to be an array, and their ranks to match exactly. No rank extension is performed.
 
-        ∾"abc"‿'d'‿"ef"  # Includes a non-array
+        ∾"abc"‿'d'‿"ef"  # Includes an atom
     RANK ERROR
         ∾"abc"‿(<'d')‿"ef"  # Includes a scalar
     RANK ERROR

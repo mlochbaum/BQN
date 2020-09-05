@@ -74,8 +74,8 @@ Finally, it's worth noting that, as monadic Transpose moves the first axis to th
 
 Here we define the two valences of Transpose more precisely.
 
-A non-array right argument to Transpose is always enclosed to get a scalar array before doing anything else.
+Monadic transpose is identical to `(=-1˜)⊸⍉`, except that for scalar arguments (including atoms) it returns the array unchanged rather than giving an error.
 
-Monadic transpose is identical to `(=-1˜)⊸⍉`, except that for scalar arguments it returns the array unchanged rather than giving an error.
+An atom right argument to dyadic Transpose is always enclosed to get a scalar array before doing anything else.
 
-In Dyadic transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
+In dyadic Transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.

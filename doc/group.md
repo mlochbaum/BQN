@@ -6,7 +6,7 @@ BQN replaces the [Key](https://aplwiki.com/wiki/Key) operator from J or Dyalog A
 
 ## Definition
 
-Group operates on a numeric list of indices and an array, treated as a list of its major cells or "values", to produce a list of groups, each of which is a selection from those cells. The two arrays have the same length, and each value cell is paired with the index at the same position. That index indicates the result group the cell should go into, with an "index" of ¯1 indicating that it should be dropped and not appear in the result.
+Group operates on a list of atomic-number indices and an array, treated as a list of its major cells or "values", to produce a list of groups, each of which is a selection from those cells. The two arrays have the same length, and each value cell is paired with the index at the same position. That index indicates the result group the cell should go into, with an "index" of ¯1 indicating that it should be dropped and not appear in the result.
 
         0‿1‿2‿0‿1 ≍ "abcde"  # Corresponding indices and values
         0‿1‿2‿0‿1 ⊔ "abcde"  # Values grouped by index
