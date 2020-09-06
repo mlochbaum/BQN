@@ -95,6 +95,13 @@ Trace ← {
 # Join lines with newline characters. Include a trailing newline.
 JoinLines ← ∾ ∾⟜lf¨
 
+# Given a list of begin-end pairs run together, return a list
+Ranges ← {
+  R ← {𝕨+↕𝕩¬𝕨}  # Single range
+  𝕩 ↩ ∘‿2 ⥊ 𝕩   # Reshape into pairs
+  ∾ R¨˝˘ 𝕩
+}
+
 # Create an html node from a tag name and interior text.
 Html ← {open 𝕊 contents:
   close ← (⊑open⊐" ") ↑ open
@@ -120,7 +127,7 @@ UTF32 ← {
 }⍟(2=≠"𝕩")∘-⟜@
 UTF8 ← ∾ (2⋆7) (⊣+(2⋆6){𝕨 ≤◶⟨⥊⊢-2×-⟜𝕗 ⋄ 𝕗(|∾˜(2÷˜⌊⟜𝕨)𝕊⌊∘÷˜)⊢⟩ 𝕩}¨) UTF32
 Base64 ← {
-  b64←"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+  b64 ← Ranges "AZaz09++//"
   b←3|↕l←≠u←UTF8 𝕩
   M←((0<↕4)⥊˜≠)⊸× (1+0=b)⊸/
   v←(4⋆1+b) ((⌊∘÷˜) 1⊸⌽⊸+○M (64÷⊣)×|) u
@@ -295,7 +302,7 @@ Markdown ← {filename𝕊𝕩:
   # Inline elements
   ProcInline ← {
     I2M ← (≠𝕩) ↑ /⁼  # Index to mask
-    punc ← 𝕩 ∊ "!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+    punc ← 𝕩 ∊ Ranges "!/:@[`{~"
     actual ← ¬ punc ∧ IsEscaped 𝕩  # backtick or *actual* backtick?
 
     # Code spans
