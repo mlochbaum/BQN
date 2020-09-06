@@ -8,13 +8,13 @@ charSet←∾charGroups←⟨
   "(){}⟨⟩"              # Bracket
   "‿"                   # Ligature
   "·"                   # nOthing
+  # Use last character in case of UTF-16 (like dzaima/BQN)
   ¯1⊏˘10‿∘⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘" # Input (𝕣 pending; ℝ not allowed)
   "@"                   # nUll character
   '0'+↕10               # Digit
   "¯.π∞"                # Numeric
   "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
-  ¯1↓"𝕨"                # Prefix for input (hack around UTF-16)
-  " "∾@+9               # Whitespace
+  (¯1↓"𝕨")∾" "∾@+9      # Whitespace (or special name prefix in UTF-16)
 # #'" eliminated during tokenization
 ⟩
 ErrUnknownChars←{
@@ -25,7 +25,7 @@ CharCode←charSet{
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bP‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
 bA_e←4+⊑bA
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
 vi←+´≠¨9↑charGroups
@@ -53,7 +53,7 @@ Tokenize←{
   iu←(≠↑¯1∾⌈`)⊸<is←⊐id⋄ni←≠in←0>iu/ti
   ti↩(us/˜(1↓0∾˜⊢)⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
 
-  c↩(w∨¬l∨c M (⊑bP)≍+´1⊑¨bP‿bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(vi+ni+lu⊐lit)⌾(cl⊸/)c
+  c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(vi+ni+lu⊐lit)⌾(cl⊸/)c
   c/˜↩¬(≠↑1∾(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5+⊑bB)∧c M bS
   ic←(0⊸≤∧<⟜ni)c-vi⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
