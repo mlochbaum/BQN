@@ -1,11 +1,6 @@
 # Format an array to a character matrix
 {
   F0←𝔽  # Function to format a scalar
-  # Substitute control codes for character arrays
-  CSub ← {
-    del ← @+127
-    𝕩 + (('␡'-del)×𝕩=del) + ('␀'-@)×𝕩<@+32
-  }
   # Vertical padding for arrays of rank greater than 2
   PadV ← {
     # Leading shape
@@ -52,6 +47,9 @@
       # All characters
       k ← ∞⍟(0⊸=) -≠ c ← ¯1↓≢𝕩
       q ← '"'
+      # Escape quotes in strings (rank 1) and substitute control chars
+      # with control pictures for other ranks.
+      CSub ← { 𝕩 + (𝕩(=×'␡'-⊢)@+127) + ('␀'-@)×𝕩<@+32 }
       𝕩 ↩ (1≠=)◶⟨(1+q=⊢)⊸/,Csub⟩ 𝕩
       (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (c↑q) ∾⎉k 𝕩 ∾⎉k ⌽⌾⥊c↑q
     }‿{
