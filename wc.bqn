@@ -2,12 +2,12 @@
 
 # WebAssembly backend (very incomplete)
 
-i←"⟨charGroups,Tokenize,ReadNum⟩"
-⟨charGroups,Tokenize,ReadNum⟩ ← ⟨•path∾"src/c.bqn",i⟩ •EX •path∾"dzref"
-chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
+i←"⟨cgl,charSet,Tokenize,ReadNum⟩"
+⟨cgl,charSet,Tokenize,ReadNum⟩ ← ⟨•path∾"src/c.bqn",i⟩ •EX •path∾"dzref"
+chF←(⊑cgl)↑charSet
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
-vi←+´≠¨9↑charGroups
+vi←⊑bU
 
 WParse←{
   a←𝕩M(2≍˜⊑bG)⋄at←1⌽a⋄𝕩/˜↩¬a⋄a/˜↩¬at
