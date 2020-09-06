@@ -1,6 +1,6 @@
 #! /usr/bin/env dbqn
 
-compile ← ⟨•path∾"../c.bqn"⋄"Compile"⟩ •EX •path∾"../dzref"
+compile ← ⟨•path∾"../dc.bqn"⋄"Compile"⟩ •EX •path∾"../dzref"
 Comp ← ((<"runtime["∾⍕∾"]"˙)¨↕60)⊸Compile
 FP ← ∞⊸=◶⟨⍕,"Infinity"⟩
 Esc ← (⟨"\t","\n","\r","\'"⟩∾<∘⥊)⊑˜("'"∾˜@+9‿10‿13)⊑∘⊐⊢

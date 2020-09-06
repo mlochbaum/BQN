@@ -4,7 +4,7 @@
 
 impl ← •LNS •path∾"../src/r.bqn"
 
-drun ← ((<•path∾"../c.bqn")∾<"DRun") •EX •path∾"../dzref"
+drun ← ((<•path∾"../dc.bqn")∾<"DRun") •EX •path∾"../dzref"
 
 chrs←⟨
   "!+-×÷⋆√⌊⌈∧∨¬|=≠≤<>≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔"
