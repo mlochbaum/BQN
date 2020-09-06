@@ -5,7 +5,7 @@
 i←"⟨charGroups,Tokenize,ReadNum⟩"
 ⟨charGroups,Tokenize,ReadNum⟩ ← ⟨•path∾"src/c.bqn",i⟩ •EX •path∾"dzref"
 chF←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bP‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)≠¨charGroups
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
 vi←+´≠¨9↑charGroups
 
