@@ -10,7 +10,7 @@ const t=load('cases.bqn').split('\n').filter(x=>x).map(x=>x.split(' % '))
     , expt=t.map(e=>+e[0])
 
 var compiler = execFile(
-  __dirname+'/../cshim.bqn',
+  __dirname+'/../wcshim.bqn',
   [ '{•←WCompile𝕩}¨⟨'+test+'⟩' ],
   function (error, stdout, stderr) {
     const rslt=stdout.split('\n').filter(a=>a.length)
