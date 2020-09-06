@@ -11,7 +11,7 @@ const t=load('cases.bqn').split('\n').filter(x=>x).map(x=>x.split(' % '))
 
 var compiler = execFile(
   __dirname+'/../cshim.bqn',
-  [ '{•←Compile𝕩}¨⟨'+test+'⟩' ],
+  [ '{•←WCompile𝕩}¨⟨'+test+'⟩' ],
   function (error, stdout, stderr) {
     const rslt=stdout.split('\n').filter(a=>a.length)
               .map(a=>runWasm(a.split("‿").map(n=>+n)))
