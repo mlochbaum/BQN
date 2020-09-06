@@ -101,6 +101,11 @@ Ranges ← {
   𝕩 ↩ ∘‿2 ⥊ 𝕩   # Reshape into pairs
   ∾ R¨˝˘ 𝕩
 }
+# ∊⟜Ranges assuming 𝕨 is sorted
+InRanges ← {
+  𝕩 +↩ 2|↕≠𝕩  # Since ⍋ works with half-open intervals
+  2 | 𝕩 ⍋ 𝕨
+}
 
 # Create an html node from a tag name and interior text.
 Html ← {open 𝕊 contents:
@@ -302,7 +307,7 @@ Markdown ← {filename𝕊𝕩:
   # Inline elements
   ProcInline ← {
     I2M ← (≠𝕩) ↑ /⁼  # Index to mask
-    punc ← 𝕩 ∊ Ranges "!/:@[`{~"
+    punc ← 𝕩 InRanges "!/:@[`{~"
     actual ← ¬ punc ∧ IsEscaped 𝕩  # backtick or *actual* backtick?
 
     # Code spans
