@@ -22,7 +22,7 @@ All versions have automated tests in the [test](test/) directory, with the self-
 
 This repository contains a dzaima/BQN script `dzref` that fills in the gaps in primitive support using BQN implementations of primitives that are not yet up to spec ([reference implementations](spec/reference.bqn) of all primitives starting from a small set of pre-existing functions are part of BQN's specification).
 
-You can run `dzref` from ordinary dzaima/BQN using the `•EX` command; see for example [cshim.bqn](cshim.bqn). For testing, it is run as a Unix script, in which case it depends on an executable `dbqn` that runs dzaima/BQN on a file argument. I use the following script, using the path to a clone of dzaima/BQN for the jar file.
+You can run `dzref` from ordinary dzaima/BQN using the `•EX` command; see for example [wcshim.bqn](wcshim.bqn). For testing, it is run as a Unix script, in which case it depends on an executable `dbqn` that runs dzaima/BQN on a file argument. I use the following script, using the path to a clone of dzaima/BQN for the jar file.
 
     #! /bin/bash
     

@@ -1,4 +1,4 @@
-#! ./dzref
+#! /usr/bin/env dbqn
 
 # dzaima/BQN block headers are a little different from the version used
 # in the Javascript implementation:
@@ -6,13 +6,13 @@
 # - dzaima/BQN uses variable names instead of counts (but we make the
 #   names up anyway, except for special names).
 
-compile ← ⟨•path∾"src/c.bqn","Compile"⟩ •EX •path∾"dzref"
-
-prims←⟨
+p←"⟨
   +,-,×,÷,⋆,√,⌊,⌈,|,¬,∧,∨,<,>,≠,=,≤,≥,≡,≢,⊣,⊢,⥊,∾,≍,↑,↓,↕,⌽,⍉,/,⍋,⍒,⊏,⊑,⊐,⊒,∊,⍷,⊔,!
   ˙,˜,˘,¨,⌜,⁼,´,˝,`
   ∘,○,⊸,⟜,⌾,⊘,◶,⎉,⚇,⍟
-⟩
+⟩"
+⟨Compile,prims⟩ ← ⟨•path∾"src/c.bqn","⟨Compile,"∾p∾"⟩"⟩ •EX •path∾"dzref"
+
 special←<˘∘‿2⥊"𝕤𝕩𝕨𝕣𝕗𝕘"
 DRun←{
   ⟨bc,o,blk⟩ ← prims Compile 𝕩
