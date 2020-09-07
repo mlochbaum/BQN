@@ -22,7 +22,7 @@ For arithmetic functions the implementations below may in some cases not give th
 | `-` | `-`   | `-`
 | `×` |       | `÷˜`
 | `÷` | `÷`   | `÷`
-| `√` | `⋆⟜2` | `⋆˜`
+| `√` | `×˜`  | `⋆˜`
 | `∧` |       | `÷˜`
 | `¬` | `¬`   | `¬`
 
