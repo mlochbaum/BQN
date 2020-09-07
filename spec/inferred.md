@@ -66,25 +66,24 @@ Several primitives are easily undone, but doing so is not important for BQN prog
 
 ### Required modifiers
 
-The following cases of Self/Swap must be supported. In the table below, a number (n) in parentheses indicates that the function in question is equivalent to the constant function `n˙`, and should be inverted accordingly (check that the argument matches `n`, then return it).
+The following cases of Self/Swap must be supported.
 
 | Fn   | 1     | 2
 |------|-------|-------
 | `+˜` | `÷⟜2` | `+⁼`
-| `-˜` | (0)   | `+`
+| `-˜` |       | `+`
 | `×˜` | `√`   | `×⁼`
-| `÷˜` | (1)   | `×`
+| `÷˜` |       | `×`
 | `⋆˜` |       | `√`
 | `√˜` |       | `÷⋆⁼`
 | `∧˜` | `√`   | `∧⁼`
 | `∨˜` | `√⌾¬` | `∨⁼`
-| `¬˜` | (1)   | `+-1˙`
+| `¬˜` |       | `+-1˙`
 
 Inverses of other modifiers and derived functions or modifiers obtained from them are given below. Here the "inverse" of a modifier is another modifier that, if applied to the same operands as the original operator, gives its inverse function. A constant is either a data value or `𝔽˙` for an arbitrary value `𝔽`.
 
 | Mod     | Inverse              | Requirements
 |---------|----------------------|--------------
-| `˙`     | `{𝕗⊢⁼𝕩}`             |
 | `¨`     | `{!0<≡𝕩⋄𝕨𝔽⁼¨𝕩}`      |
 | `⌜`     | `{!0<≡𝕩⋄ 𝔽⁼⌜𝕩;}`     | Monadic case only
 | `˘`     | `{!0<=𝕩⋄𝕨𝔽⁼˘𝕩}`      |
