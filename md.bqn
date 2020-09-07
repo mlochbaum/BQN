@@ -22,6 +22,9 @@
 ################################
 # Utilities
 
+# Linefeed
+lf ← @+10
+
 # Shift cells 𝕨 into array 𝕩, maintaining its total length
 Shl ←   ≠∘⊢ ↑ ∾   # From the left
 Shr ← -∘≠∘⊢ ↑ ∾˜  # From the right
