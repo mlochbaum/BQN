@@ -12,3 +12,4 @@ The following aspects define BQN and are or will be specified:
 - [Variable scoping](scope.md)
 - [Evaluation semantics](evaluate.md)
 - Primitives ([reference implementations](reference.bqn))
+- [Inferred properties](inferred.md) (type, Undo, and Under)
