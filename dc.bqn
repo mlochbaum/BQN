@@ -6,12 +6,12 @@
 # - dzaima/BQN uses variable names instead of counts (but we make the
 #   names up anyway, except for special names).
 
-p←"⟨
+compile ← •EX •path∾"src/c.bqn"
+prims ← (•EX •path∾"dzref"){𝔽} "⟨
   +,-,×,÷,⋆,√,⌊,⌈,|,¬,∧,∨,<,>,≠,=,≤,≥,≡,≢,⊣,⊢,⥊,∾,≍,↑,↓,↕,⌽,⍉,/,⍋,⍒,⊏,⊑,⊐,⊒,∊,⍷,⊔,!
   ˙,˜,˘,¨,⌜,⁼,´,˝,`
   ∘,○,⊸,⟜,⌾,⊘,◶,⎉,⚇,⍟
 ⟩"
-⟨Compile,prims⟩ ← ⟨•path∾"src/c.bqn","⟨Compile,"∾p∾"⟩"⟩ •EX •path∾"dzref"
 
 special←<˘∘‿2⥊"𝕤𝕩𝕨𝕣𝕗𝕘"
 DRun←{
