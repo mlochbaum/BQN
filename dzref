@@ -128,7 +128,11 @@ X←Raw←{F:≤4}
   lf ← @+10
   pre ← E_isdef◶E_proc‿E_redef¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
   Raw↩⍎
-  ExecFile←{Raw ∾ ∾⟜lf¨ E_proc¨ •LNS 𝕩}
+  ExecFile←{
+    path ← "dot_path←" ∾ '"' (⊣∾⊣∾˜(1+=)/⊢) (∨`⌾⌽'/'=𝕩)/𝕩
+    src ← "•path"•_r_"dot_path"∘E_proc¨ •LNS 𝕩
+    Raw ∾ ∾⟜lf¨ path <⊸∾ src
+  }
   X↩Raw∘E_proc
   ⍎ ∾ ∾⟜lf¨ pre
   ≠◶(X˙)‿{ExecFile ⊑𝕩}‿{ExecFile ⊑𝕩 ⋄ X 1⊑𝕩} •args
