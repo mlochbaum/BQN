@@ -1,10 +1,10 @@
 #!/usr/bin/env dbqn
 
-# Compile and run the primitive implementations, and testref.bqn
+# Compile and run the primitive implementations, and prim.bqn
 
 impl ← •LNS •path∾"../src/r.bqn"
 
-drun ← ((<•path∾"../dc.bqn")∾<"DRun") •EX •path∾"../dzref"
+drun ← •EX •path∾"../dc.bqn"
 
 chrs←⟨
   "!+-×÷⋆√⌊⌈∧∨¬|=≠≤<>≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔"
@@ -55,6 +55,6 @@ E_redef ← { # handles [fmd] [←↩]
 }
 
 pre ∾↩ E_isdef◶E_proc‿E_redef¨ impl
-t ← (¬∘⊑':'∊⊢)¨⊸/ 3⊸↓⌾(3⊸⊑) •LNS •path∾"testref.bqn"
+t ← (¬∘⊑':'∊⊢)¨⊸/ 3⊸↓⌾(3⊸⊑) •LNS •path∾"prim.bqn"
 res ← DRun ∾ ∾⟜(@+10)¨ pre ∾ E_proc¨ t
 • ← ("All "∾(⍕≠res)∾" passed!")⍟(0=≠) /res
