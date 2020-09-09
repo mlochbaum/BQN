@@ -314,20 +314,21 @@ Replicate ← {0<=𝕨}◶{𝕨˘⊸Rep𝕩}‿{"𝕨/𝕩: lengths of component
 
 Join←(1≠=)◶⟨∨´1≠=⌜,1⟩◶{
   # List of lists
-  i←j←¯1⋄e←⟨⟩⋄a←𝕩
+  i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
   {{e↩a⊑˜i↩𝕩⋄j↩¯1}⍟(i⊸≠)𝕩⋄(j↩j+1)⊑e}⌜/≠⌜𝕩
 }‿{
   # Multidimensional
-  C←(<⟨⟩)⥊⊸∾⌜´⊢  # Cartesian array product
   "∾𝕩: 𝕩 must be an array" ! IsArray 𝕩
-  s←≢⌜𝕩
-  d←≠0⊑⥊s
-  "∾𝕩: elements of 𝕩 must all have the same rank" ! ∧´⥊d=≠⌜s
+  n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ d←≠0⊑s
+  "∾𝕩: elements of 𝕩 must all have the same rank" ! ∧´d=≠⌜s
   "∾𝕩: 𝕩 element rank must be at least argument rank" ! d≥=𝕩
-  l←(≢𝕩){(𝕩⊑⟜≢a Pick1˜(j=𝕩)⊸×)⌜↕𝕨}¨j←↕r←=a←𝕩
-  "∾𝕩: 𝕩 element shapes must be compatible" ! (r⊸↑⌜s)≡C l
-  i←C{p←+´⌜↑𝕩⋄(↕0⊑⌽p)-𝕩/¯1↓p}⌜l
-  >i<⌜⊸⊏¨l/𝕩
+  scm←"∾𝕩: 𝕩 element shapes must be compatible"
+  q←1 ⋄ l←(≢𝕩){m←𝕩⊸⊑⌜s ⋄ r←⊑⟜m⌜q×↕𝕨 ⋄ scm!m≡n⥊r⊣⌜↕q ⋄ q×↩𝕨 ⋄ r}¨○⌽↕=𝕩
+  t←(=𝕩)↓0⊑s
+  "∾𝕩: 𝕩 element trailing shapes must match" ! ∧´(t≡(=𝕩)⊸↓)⌜s
+  i←<0 ⋄ q↩<1
+  {s←0⋄p←{o←s⋄s+↩𝕩⋄o}⌜𝕩 ⋄ j←↕s ⋄ i↩(j⊢⌜i)+(j-𝕩/p)×⌜q ⋄ q×⌜˜↩𝕩/𝕩}⌜l
+  i(0<≠t)◶⟨⊑⟜⥊¨,{ti←t⥊↕tp←×´t⋄((tp×𝕨)+⌜ti)⊑⟜⥊¨𝕩⊣⌜ti}⟩(⌽l)/𝕩
 }⍟(0<≠∘⥊)
 
 _group←{
