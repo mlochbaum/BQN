@@ -160,6 +160,40 @@ Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 ≡ ← Depth          ⊘ Match
 ≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
 
+Join←(1==)◶⟨1,1-1×´(1==)⌜⟩◶{
+  # List of lists
+  i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
+  {{e↩a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜Indices≠⌜𝕩
+}‿{
+  # Multidimensional
+  n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ d←≠0⊑s ⋄ r←=𝕩
+  "∾𝕩: elements of 𝕩 must all have the same rank" ! 1×´(d=≠)⌜s
+  "∾𝕩: 𝕩 element rank must be at least argument rank" ! d≥r
+  _s0←{s←𝕨⋄F←𝔽⋄{o←s⋄s F↩𝕩⋄o}⌜𝕩}
+  sh←≢𝕩 ⋄ p←1 ⋄ i←j←<0
+  Sel←{⊑⟜𝕩⌜𝕨}
+  Rev←((r-1)⊸-⌜↕r)⊸Sel
+  (Rev 1×_s0 Rev sh){
+    q←𝕨
+    a←𝕩⊑sh
+    m←𝕩⊸⊑⌜s
+    l←(q⊸×⊑m˙)⌜↕a
+    "∾𝕩: 𝕩 element shapes must be compatible" ! 1×´m=¨⥊(↕p)⊢⌜l⊣⌜↕q
+    k ← Indices l
+    c ← -⟜(⊑⟜(k Sel 0+_s0 l))⌜ ↕≠k
+    i ↩ (i ×⟜(⊑⟜l)⌜ k) +¨ i⊢⌜c
+    j ↩ j ×⟜a⊸+⌜ k
+    p×↩a
+  }¨↕r
+  G←(⥊⌜z){𝕨⊑𝕩⊑𝕗}¨
+  i (r<d)◶G‿{
+    Dr←((r⊸+)⌜↕d-r)⊸Sel
+    t←Dr 0⊑s
+    "∾𝕩: 𝕩 element trailing shapes must match" ! 1×´(×´t=¨Dr)⌜s
+    ti←t⥊↕tp←×´t⋄(𝕨tp⊸×⊸+⌜ti)G𝕩⊣⌜ti
+  } j
+}⍟{"∾𝕩: 𝕩 must be an array" ! IsArray 𝕩 ⋄ 0<≠⥊𝕩}
+
 ˘ ← {𝔽 _rankOp_ ¯1}
 _onAxes_←{
   F←𝔽
@@ -311,26 +345,6 @@ Replicate ← {0<=𝕨}◶{𝕨˘⊸Rep𝕩}‿{"𝕨/𝕩: lengths of component
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
-
-Join←(1≠=)◶⟨∨´1≠=⌜,1⟩◶{
-  # List of lists
-  i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
-  {{e↩a⊑˜i↩𝕩⋄j↩¯1}⍟(i⊸≠)𝕩⋄(j↩j+1)⊑e}⌜/≠⌜𝕩
-}‿{
-  # Multidimensional
-  "∾𝕩: 𝕩 must be an array" ! IsArray 𝕩
-  n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ d←≠0⊑s
-  "∾𝕩: elements of 𝕩 must all have the same rank" ! ∧´d=≠⌜s
-  "∾𝕩: 𝕩 element rank must be at least argument rank" ! d≥=𝕩
-  scm←"∾𝕩: 𝕩 element shapes must be compatible"
-  q←1 ⋄ l←(≢𝕩){m←𝕩⊸⊑⌜s ⋄ r←⊑⟜m⌜q×↕𝕨 ⋄ scm!m≡n⥊r⊣⌜↕q ⋄ q×↩𝕨 ⋄ r}¨○⌽↕=𝕩
-  t←(=𝕩)↓0⊑s
-  "∾𝕩: 𝕩 element trailing shapes must match" ! ∧´(t≡(=𝕩)⊸↓)⌜s
-  i←(<0) {s←0⋄p←{o←s⋄s+↩𝕩⋄o}⌜𝕨 ⋄ (𝕩×⌜𝕨/𝕨)+𝕩⊢⌜(↕s)-𝕨/p}´ l
-  j←(<0) (≠⊸× +⌜ /∘⊣)´ l
-  G←(⥊⌜z){𝕨⊑𝕩⊑𝕗}¨
-  i (0<≠t)◶G‿{ti←t⥊↕tp←×´t⋄((tp×𝕨)+⌜ti)G𝕩⊣⌜ti} j
-}⍟(0<≠∘⥊)
 
 _group←{
   "⊔: Grouping argument must consist of integers" ! ∧´Int⌜𝕩
