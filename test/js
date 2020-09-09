@@ -3,15 +3,15 @@
 let bqn = require(__dirname+'/../docs/bqn.js');
 let load = f=>require('fs').readFileSync(__dirname+'/'+f,'utf8');
 let args = process.argv.slice(2);
-let ref = args[0]==="-ref";
+let prim = args[0]==="-prim";
 
-if (ref || args.length==0) {
+if (prim || args.length==0) {
   let t = (load('cases.bqn')+load('bcases.bqn'))
           .split('\n').filter(x=>x).map(x=>x.split(' % '));
   let test = t.map(e=>e[1]);
   let expt = t.map(e=>+e[0]);
-  if (ref) {
-    let r = load('testref.bqn').split('\n')
+  if (prim) {
+    let r = load('prim.bqn').split('\n')
             .filter(x=>x.charAt(0)===' '
                      &&x.charAt(1)===' '
                      &&x.charAt(2)!=='#'
