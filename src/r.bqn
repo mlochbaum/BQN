@@ -21,6 +21,7 @@ Nat←IsArray◶⟨0⊸≤×⌊⊸=,0⟩
 > ←            (1-≤)
 ⌊ ↩ ⌊        ⊘ (>⊑{𝕨‿𝕩})
 ⌈ ← -∘⌊∘-    ⊘ (<⊑{𝕨‿𝕩})
+| ← 0⊸≤◶-‿⊢
 ≠ ← (0<=)◶⟨1⋄0⊑≢⟩  # LIMITED to monadic case
 
 _fold←{
@@ -213,6 +214,33 @@ Join←(1==)◶⟨1,1-1×´(1==)⌜⟩◶{
   } j
 }⍟{"∾𝕩: 𝕩 must be an array" ! IsArray 𝕩 ⋄ 0<≠⥊𝕩}
 
+_takeDrop←{
+  ⟨gl,Noop,_inds⟩←𝕗
+  pre ← "𝕨"∾gl∾"𝕩: 𝕨 must "
+  ernk ← "have rank at most 1"
+  eint ← "consist of integers"
+  {
+    ernk ! 1≥=𝕨
+    𝕨 ↩ Deshape 𝕨
+    eint ! 1×´Int⌜𝕨
+    r ← ≠𝕨
+    s ← r {(1⌜∘↕𝕨-≠𝕩)∾𝕩}⍟(>⟜≠) ≢𝕩
+    _c ← { (×⟜𝕗⌜𝕨) +⌜ 𝕩 }
+    i←<0 ⋄ k←1 ⋄ UIk←{ i (k×𝕨)_c↩ k ↕⊸(𝕨_c)⍟(1-=⟜1) 𝕩 ⋄ k↩1 ⋄ ≠𝕩 }
+    fill←0
+    sh ← (⊑⟜s Noop◶({k×↩𝕨⋄𝕨})‿(⊣ UIk {fill↩1}_inds) ⊑⟜𝕨)⌜ ↕r
+    (0<=i)◶(s⊸⥊)‿{
+      sh ∾↩ t ← (s⊑˜r⊸+)⌜↕(≠s)-r
+      {i 𝕩_c↩ ↕𝕩}⍟(1-1⊸=) k×´t
+      Sel ← ⊑⟜(⥊𝕩)
+      {Sel↩0⊸≤◶⟨(Type𝕩)˙,Sel⟩}⍟⊢fill
+      Sel⌜ sh ⥊ i
+    } ToArray 𝕩
+  }
+}
+Take ← ⟨"↑" ⋄ 1-=⟜| ⋄ { 𝔽⍟(𝕨⊸<)a←|𝕩 ⋄ (0<𝕩)◶⟨¯∞⍟(<⟜0)⌜+⟜(𝕨+𝕩)⌜, ¯∞⍟(𝕨⊸≤)⌜⟩↕a }⟩_takeDrop
+Drop ← ⟨"↓" ⋄ 1-0⊸= ⋄ { 𝔽 ⋄ 0⊸<◶⟨↕0⌈+,<∘⊢+⌜·↕0⌈-⟩ }⟩_takeDrop
+
 ˘ ← {𝔽 _rankOp_ ¯1}
 _onAxes_←{
   F←𝔽
@@ -230,7 +258,7 @@ _onAxes_←{
 ÷ ↩ ÷ _perv
 ⋆ ↩ ⋆ _perv
 √ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)
-| ← (0⊸≤◶-‿⊢ ⊘ {𝕩-𝕨×⌊𝕩÷𝕨}) _perv
+| ← (|       ⊘ {𝕩-𝕨×⌊𝕩÷𝕨}) _perv
 ⌊ ↩ (⌊       ⊘ {(𝕨>𝕩)⊑𝕨‿𝕩}) _perv
 ⌈ ↩ (-∘⌊∘-   ⊘ {(𝕨<𝕩)⊑𝕨‿𝕩}) _perv
 ∧ ← 0 _sort  ⊘ (× _perv)
@@ -319,20 +347,7 @@ JoinTo←∨○(1<=)◶(∾○⥊)‿{
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
 }
 
-Take←{
-  T←{
-    "↑ or ↓: 𝕨 must be an integer" ! Int 𝕨
-    l←≠𝕩 ⋄ n←𝕨<0 ⋄ e←l⌊r←|𝕨 ⋄ s←⟨r⟩ ⋄ m←1
-    i ← 𝕩{s∾↩c←1 Cell 𝕨⋄𝕩(×+⌜↕∘⊢)m↩×´c}⍟(1≠=𝕩) (l-e)+⍟n ↕e
-    s⥊𝕩{(⥊𝕩)n◶⟨∾,∾˜⟩(0⊑⥊Type𝕗)⌜↕m×r-e}⍟(l<r) i⊏⥊𝕩
-  }
-  𝕨 T _onAxes_ 0 ((1⌜∘↕0⌈𝕨-○≠⊢)⊸∾∘≢⥊⥊) 𝕩
-}
 ↑ ← Prefixes       ⊘ Take
-Drop←{
-  s←(≠𝕨)(⊣↑⊢∾˜·1⌜∘↕0⌈-⟜≠)≢𝕩
-  ((s×¯1⋆𝕨>0)+(-s)⌈s⌊𝕨)↑𝕩
-}
 ↓ ← Suffixes       ⊘ Drop
 
 Rep ← Indices⊸⊏
