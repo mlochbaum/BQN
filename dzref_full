@@ -33,7 +33,7 @@ X←Raw←{F:≤4}
 
   ⍎¨ ⟨
     "IsArray ← 0≠≡"
-    "Type    ← ⟨⟩⥊0⊸⥊"
+    "Type    ← ⊑⟨⟩⥊0⊸⥊"
     "Log     ← ⋆⁼"
     "GroupLen← ≠¨⊔"
     "GroupOrd← ∾⊔∘⊢"
