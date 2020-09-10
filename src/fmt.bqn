@@ -1,6 +1,8 @@
-# Format an array to a character matrix
+# Format an array to a string including newlines
 {
   F0←𝔽  # Function to format a scalar
+  FmtAtom ← (≍ ≤⟜∞◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,F0⟩)
+
   # Vertical padding for arrays of rank greater than 2
   PadV ← {
     # Leading shape
@@ -13,52 +15,64 @@
     Pad ← {i←/1+𝕨 ⋄ (¯1¨⌾((¬∊i)⊸/)i) ⊏ 𝕩∾(¯1⊑≢𝕩)⥊" "}
     p (⊑0∊ls)◶⟨Pad,+´⊸↑⟩ ((×´ls)∾¯1⊑≢𝕩) ⥊ 𝕩
   }⍟(2 < =)
+
   # Horizontal padding: just some spaces on either side
-  PadH ← {
-    (𝕨/" ") (∾⎉1∾⎉1⊣) 𝕩
-  }
+  PadH ← { s←⟨≠𝕩,𝕨⟩⥊' ' ⋄ ∾≍⟨s,𝕩,s⟩ }
+
   Pad ← PadH⟜PadV
-  Enf0 ← { ≍"⟨"∾(¯1↓1↓⊏𝕩)∾"⟩" }
-  Enframe ← {(1≠𝕨)∨(1≠≠𝕩)∨⊑2∊+`-˝"⟨⟩"=⌜⊏𝕩}◶Enf0‿{
+
+  # Add a frame to padded data
+  Enframe ← ∨○(1⊸≠)⟜≠◶{∨´2=+`-˝"⟨⟩"=⌜⊏𝕩}‿1◶{
+    # One-line version
+    ≍"⟨"∾(¯1↓1↓⊏𝕩)∾"⟩"
+  }‿{
+    # General case
     l ← ¯1 ⊑ ≢𝕩
-    ∾ ⟨ # "┼╒╛╪"
-      1‿l↑∾⟨"┌",(5⊸<)◶⟨⥊"·─"⊏˜1⌊⊢,F0⟩𝕨⟩
+    ∾ ⟨
+      ≍l↑∾⟨"┌",(5⊸<)◶⟨⥊"·─"⊏˜1⌊⊢,F0⟩𝕨⟩
       ((4⌊0⌈𝕨-1)⊑"·╵╎┆┊")⌾⊑ 𝕩
-      (1∾-l)↑"┘"
+      ≍l-⊸↑"┘"
     ⟩
   }
+
   FmtEmpty ← (0‿0≢≢)◶("┌┐"≍"└┘")‿(((2≠=)∨0=≠)◶{
     '┐'⌾(0‿¯1⊸⊑) 2 Enframe 1 PadH " "¨𝕩
   }‿{
     ≍"⟨⟩"∾˜(1<≠)◶⟨"",'⥊'⌾(¯1⊸⊑)·∾·∾⟜"‿"¨F0¨⟩≢𝕩
   })
+
   PaddingJoin ← {1 PaddingJoin 𝕩}⊘{
     s ← ≢¨ 𝕩
     w ← (0<=)◶⟨⥊,⌈˝⍟(=-1˙)⟩1⊑¨s
     h ← ⌈˝⎉1⍟(0<=) ⊑¨s
     ∾⎉2 ≍⍟(0⌈2-=) (h ∾⌜ 𝕨×w¬(-𝕨×≠w)↑1) ↑¨ 𝕩
   }
+
   FmtMixed ← {
-    (=𝕩) Enframe 2 Pad 𝕨 PaddingJoin F¨𝕩
+    (=𝕩) Enframe 2 Pad 𝕨 PaddingJoin Fmt¨𝕩
   }
-  F ← (2⌊≡)◶(≍≤⟜∞◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,F0⟩)‿{
-    num ← 𝕩≤∞ ⋄ r ← =𝕩
-    ((≠(0⊸<+≤)+´)⥊num)◶{
-      # All characters
-      k ← ∞⍟(0⊸=) -≠ c ← ¯1↓≢𝕩
-      q ← '"'
-      # Escape quotes in strings (rank 1) and substitute control chars
-      # with control pictures for other ranks.
-      CSub ← { 𝕩 + (𝕩(=×'␡'-⊢)@+127) + ('␀'-@)×𝕩<@+32 }
-      𝕩 ↩ (1≠=)◶⟨(1+q=⊢)⊸/,Csub⟩ 𝕩
-      (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (c↑q) ∾⎉k 𝕩 ∾⎉k ⌽⌾⥊c↑q
-    }‿{
-      # Not homogeneous, or empty
-      (∨´0=≢)◶FmtMixed‿FmtEmpty 𝕩
-    }‿{
-      # All numbers
-      ¯1 FmtMixed 𝕩
-    } 𝕩
-  }‿FmtMixed
-  ¯1↓⥊ ∾⟜(@+10)˘ F 𝕩
+
+  FmtSimple ← (≠(0⊸<+≤)+´)∘(⥊≤∞˙)◶{ # Depth 1
+    # All characters
+    k ← ∞⍟(0⊸=) -≠ c ← ¯1↓≢𝕩
+    q ← '"'
+    # Escape quotes in strings (rank 1) and substitute control chars
+    # with control pictures for other ranks.
+    CSub ← { 𝕩 + (𝕩(=×'␡'-⊢)@+127) + ('␀'-@)×𝕩<@+32 }
+    𝕩 ↩ (1≠=)◶⟨(1+q=⊢)⊸/,Csub⟩ 𝕩
+    r ← =𝕩
+    (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (c↑q) ∾⎉k 𝕩 ∾⎉k c-⊸↑q
+  }‿{
+    # Not homogeneous, or empty
+    (∨´0=≢)◶FmtMixed‿FmtEmpty 𝕩
+  }‿{
+    # All numbers
+    ¯1 FmtMixed 𝕩
+  }
+
+  # Format to character matrix
+  Fmt ← (2⌊≡)◶FmtAtom‿FmtSimple‿FmtMixed
+
+  # Convert to string
+  ¯1↓·⥊ ∾⟜(@+10)˘∘Fmt
 }
