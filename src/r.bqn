@@ -113,27 +113,42 @@ TransposeInv←{
   (↕l)(+⟜(l⊸×)⊑(⥊𝕩)˙)⌜c⥊↕1×´c
 }⍟(0<=)
 
+GetCells←(1==∘⊢)◶{
+  c←1×´s←1 Cell 𝕩
+  𝕨((⥊𝕩)⊑˜c⊸×⊸+)⌜s⥊↕c
+}‿{
+  ⊑⟜𝕩⌜𝕨
+}
+⊏ ← GetCells  # LIMITED to depth-1 natural number left argument
+
+Reverse←{
+  "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  l←≠𝕩
+  ((l-1)⊸-⌜↕l) ⊏ 𝕩
+}
+Rot←{
+  "𝕨⌽𝕩: 𝕨 must consist of integers" ! Int𝕨
+  l←≠𝕩 ⋄ 𝕨-↩l×⌊𝕨÷l ⋄ ((𝕨+⊢-l×(l-𝕨)≤⊢)⌜↕l) ⊏ 𝕩
+}
+
+Prefixes←{
+  "↑𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  ↕⊸⊏⟜𝕩⌜↕1+≠𝕩
+}
+Suffixes←{
+  "↓𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  l←≠𝕩
+  {𝕩⊸+⌜↕l-𝕩}⊸⊏⟜𝕩⌜↕1+l
+}
+
+_sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ ⊏}
+
 SelSub←{
   "𝕨⊏𝕩: 𝕩 must be an array" ! IsArray 𝕨
   "𝕨⊏𝕩: Indices in 𝕨 must be integers" ! 1×´⥊Int⌜ 𝕨
   l←≠𝕩
   "𝕨⊏𝕩: Indices out of range" ! 1×´⥊ ((-l)⊸≤×l⊸>)⌜ 𝕨
-  ((⊢+l×0>⊢)⌜𝕨)(1==𝕩)◶{
-    c←1×´s←1 Cell 𝕩
-    𝕨((⥊𝕩)⊑˜c⊸×⊸+)⌜s⥊↕c
-  }‿{
-    ⊑⟜𝕩⌜𝕨
-  }𝕩
-}
-
-Reverse ← {
-  "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  l←≠𝕩
-  ((l-1)⊸-⌜↕l) Select 𝕩
-}
-Rot ← {
-  "𝕨⌽𝕩: 𝕨 must consist of integers" ! Int𝕨
-  l←≠𝕩 ⋄ 𝕨-↩l×⌊𝕨÷l ⋄ ((𝕨+⊢-l×(l-𝕨)≤⊢)⌜↕l) Select 𝕩
+  𝕨 (⊢+l×0>⊢)⌜⊸⊏ 𝕩
 }
 
 _under_←{
@@ -160,6 +175,12 @@ Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 ≡ ← Depth          ⊘ Match
 ≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
 
+Merge←{
+  c←≢0⊑⥊𝕩
+  ">𝕩: Elements of 𝕩 must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
+  𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
+}⍟(0<≠∘⥊)⍟IsArray
+
 Join←(1==)◶⟨1,1-1×´(1==)⌜⟩◶{
   # List of lists
   i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
@@ -171,23 +192,21 @@ Join←(1==)◶⟨1,1-1×´(1==)⌜⟩◶{
   "∾𝕩: 𝕩 element rank must be at least argument rank" ! d≥r
   _s0←{s←𝕨⋄F←𝔽⋄{o←s⋄s F↩𝕩⋄o}⌜𝕩}
   sh←≢𝕩 ⋄ p←1 ⋄ i←j←<0
-  Sel←{⊑⟜𝕩⌜𝕨}
-  Rev←((r-1)⊸-⌜↕r)⊸Sel
-  (Rev 1×_s0 Rev sh){
+  (Reverse 1×_s0 Reverse sh){
     q←𝕨
     a←𝕩⊑sh
     m←𝕩⊸⊑⌜s
     l←(q⊸×⊑m˙)⌜↕a
     "∾𝕩: 𝕩 element shapes must be compatible" ! 1×´m=¨⥊(↕p)⊢⌜l⊣⌜↕q
     k ← Indices l
-    c ← -⟜(⊑⟜(k Sel 0+_s0 l))⌜ ↕≠k
+    c ← -⟜(⊑⟜(k ⊏ 0+_s0 l))⌜ ↕≠k
     i ↩ (i ×⟜(⊑⟜l)⌜ k) +¨ i⊢⌜c
     j ↩ j ×⟜a⊸+⌜ k
     p×↩a
   }¨↕r
   G←(⥊⌜z){𝕨⊑𝕩⊑𝕗}¨
   i (r<d)◶G‿{
-    Dr←((r⊸+)⌜↕d-r)⊸Sel
+    Dr←((r⊸+)⌜↕d-r)⊸⊏
     t←Dr 0⊑s
     "∾𝕩: 𝕩 element trailing shapes must match" ! 1×´(×´t=¨Dr)⌜s
     ti←t⥊↕tp←×´t⋄(𝕨tp⊸×⊸+⌜ti)G𝕩⊣⌜ti
@@ -207,17 +226,6 @@ _onAxes_←{
     0{(W𝕨)F(1+𝕨)⊸𝕊˘⍟(𝕨<l-1)𝕩}⍟(0<l)𝕩
   }
 }
-
-Select←ToArray⊸(SelSub _onAxes_ 1)
-⊏ ← 0⊸Select       ⊘ Select
-
-Merge←{
-  c←≢0⊑⥊𝕩
-  ">𝕩: Elements of 𝕩 must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
-  𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
-}⍟(0<≠∘⥊)⍟IsArray
-
-_sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ Select}
 
 ÷ ↩ ÷ _perv
 ⋆ ↩ ⋆ _perv
@@ -286,7 +294,7 @@ _depthOp_←{
 _rankOp_←{
   k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
   Enc←{
-    f←⊑⟜(≢𝕩)⌜↕𝕨
+    f←(↕𝕨)⊏≢𝕩
     c←×´s←𝕨Cell𝕩
     f⥊⊑⟜(⥊𝕩)⌜∘((s⥊↕c)+c×⊢)⌜↕×´f
   }
@@ -316,18 +324,28 @@ Take←{
     "↑ or ↓: 𝕨 must be an integer" ! Int 𝕨
     l←≠𝕩 ⋄ n←𝕨<0 ⋄ e←l⌊r←|𝕨 ⋄ s←⟨r⟩ ⋄ m←1
     i ← 𝕩{s∾↩c←1 Cell 𝕨⋄𝕩(×+⌜↕∘⊢)m↩×´c}⍟(1≠=𝕩) (l-e)+⍟n ↕e
-    s⥊𝕩{(⥊𝕩)n◶⟨∾,∾˜⟩(0⊑⥊Type𝕗)⌜↕m×r-e}⍟(l<r) ⊑⟜(⥊𝕩)⌜i
+    s⥊𝕩{(⥊𝕩)n◶⟨∾,∾˜⟩(0⊑⥊Type𝕗)⌜↕m×r-e}⍟(l<r) i⊏⥊𝕩
   }
   𝕨 T _onAxes_ 0 ((1⌜∘↕0⌈𝕨-○≠⊢)⊸∾∘≢⥊⥊) 𝕩
 }
-Prefixes ← {"↑𝕩: 𝕩 must have rank at least 1"!1≤=𝕩 ⋄ Take⟜𝕩⌜↕1+≠𝕩}
 ↑ ← Prefixes       ⊘ Take
 Drop←{
   s←(≠𝕨)(⊣↑⊢∾˜·1⌜∘↕0⌈-⟜≠)≢𝕩
   ((s×¯1⋆𝕨>0)+(-s)⌈s⌊𝕨)↑𝕩
 }
-Suffixes ← {"↓𝕩: 𝕩 must have rank at least 1"!1≤=𝕩 ⋄ Drop⟜𝕩⌜↕1+≠𝕩}
 ↓ ← Suffixes       ⊘ Drop
+
+Rep ← Indices⊸⊏
+Replicate ← IsArray∘⊣◶{
+  "/: Amounts to replicate must be natural numbers" ! Nat 𝕨
+  e←r←𝕨
+  ({e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×≠𝕩) ⊏ 𝕩
+}‿{
+  "𝕨/𝕩: lengths of components of 𝕨 must match 𝕩" ! 𝕨=○≠𝕩
+  𝕨 Rep 𝕩
+} _onAxes_ (1-0=≠)
+
+⊏ ← (<0)⊸GetCells  ⊘ (ToArray⊸(SelSub _onAxes_ 1))
 
 Windows←{
   "𝕨↕𝕩: 𝕩 must be an array" ! IsArray 𝕩
@@ -338,9 +356,6 @@ Windows←{
   "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ∧´𝕨≤1+s
   𝕨{(∾⟜(𝕨≠⊸↓≢𝕩)∘≢⥊>)<⌜⊸⊏⟜𝕩¨s(¬+⌜○Range⊢)⥊𝕨}⍟(0<≠𝕨)𝕩
 }
-
-Rep ← Indices⊸⊏
-Replicate ← {0<=𝕨}◶{𝕨˘⊸Rep𝕩}‿{"𝕨/𝕩: lengths of components of 𝕨 must match 𝕩"!𝕨=○≠𝕩⋄𝕨Rep𝕩} _onAxes_ (1-0=≠)
 
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
