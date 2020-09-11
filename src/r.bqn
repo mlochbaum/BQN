@@ -14,10 +14,14 @@
 
 Int←IsArray◶⟨⌊⊸=,0⟩
 Nat←IsArray◶⟨0⊸≤×⌊⊸=,0⟩
+Deshape←IsArray◶{⟨𝕩⟩}‿⥊
+Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
+Box ← {⟨⟩⥊⟨𝕩⟩}
+ToArray ← Box⍟(1-IsArray)
 
 # LIMITED to numeric arguments for scalar cases
 ≥ ←            ≤˜
-< ← {⟨⟩⥊⟨𝕩⟩} ⊘ (1-≥)
+< ← Box      ⊘ (1-≥)
 > ←            (1-≤)
 ⌊ ↩ ⌊        ⊘ (>⊑{𝕨‿𝕩})
 ⌈ ← -∘⌊∘-    ⊘ (<⊑{𝕨‿𝕩})
@@ -33,10 +37,17 @@ _fold←{
 }
 ´ ← _fold
 
-ToArray ← <⍟(1-IsArray)
 Cell←{(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}⟜≢
 
 ∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩⌜↕k+≠𝕩}  # LIMITED to two vector arguments
+
+GetCells←(1==∘⊢)◶{
+  c←1×´s←1 Cell 𝕩
+  𝕨((⥊𝕩)⊑˜c⊸×⊸+)⌜s⥊↕c
+}‿{
+  ⊑⟜𝕩⌜𝕨
+}
+⊏ ← GetCells  # LIMITED to depth-1 natural number left argument
 
 _eachd←{
   _d←{ # Equal ranks
@@ -113,14 +124,6 @@ TransposeInv←{
   r←1-˜=𝕩 ⋄ s←≢𝕩 ⋄ l←r⊑s ⋄ c←⊑⟜s⌜↕r
   (↕l)(+⟜(l⊸×)⊑(⥊𝕩)˙)⌜c⥊↕1×´c
 }⍟(0<=)
-
-GetCells←(1==∘⊢)◶{
-  c←1×´s←1 Cell 𝕩
-  𝕨((⥊𝕩)⊑˜c⊸×⊸+)⌜s⥊↕c
-}‿{
-  ⊑⟜𝕩⌜𝕨
-}
-⊏ ← GetCells  # LIMITED to depth-1 natural number left argument
 
 Reverse←{
   "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
@@ -280,7 +283,7 @@ _onAxes_←{
 ∧ ← 0 _sort  ⊘ (× _perv)
 ∨ ← 1 _sort  ⊘ ((+-×) _perv)
 × ↩ (0⊸(<->) ⊘ ×) _perv
-< ↩ {⟨⟩⥊⟨𝕩⟩} ⊘ ((1-≥) _perv)
+< ↩ Box      ⊘ ((1-≥) _perv)
 > ↩ Merge    ⊘ ((1-≤) _perv)
 ≠ ↩ ≠        ⊘ ((1-=) _perv)
 = ↩ =        ⊘ (= _perv)
@@ -291,7 +294,6 @@ _onAxes_←{
 ¬ ← 1+-
 identity ← (0⊑⟨"´: Identity not found"!0˜⟩) {(0⊑𝕨){𝕗=𝕩}◶𝕩‿(1⊑𝕨)}´ ⟨+‿0,-‿0,×‿1,÷‿1,⋆‿1,√‿1,∧‿1,∨‿0,¬‿1,|‿0,⌊‿∞,⌈‿¯∞,<‿0,≤‿1,=‿1,≥‿1,>‿0,≠‿0⟩
 
-Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Reshape←{
   "𝕨⥊𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   s←Deshape 𝕨
@@ -321,10 +323,6 @@ Range←{
   IsArray◶I‿M 𝕩
 }
 
-
-Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
-
-≍ ← >∘Pair
 _ranks ← {⟨2⟩⊘⟨1,0⟩((⊣-1+|)˜⟜≠⊑¨<∘⊢)⥊∘𝔽}
 _depthOp_←{
   neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
@@ -334,7 +332,6 @@ _depthOp_←{
   }
   𝕨 n _d 𝕩
 }
-⚇ ← _depthOp_
 _rankOp_←{
   k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
   Enc←{
@@ -345,7 +342,6 @@ _rankOp_←{
   Enc↩(>⟜0×1+≥⟜=)◶⟨<⊢,Enc,<⌜⊢⟩
   > ((0⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
 }
-⎉ ← _rankOp_
 _insert←{
   "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
   𝕨 𝔽´ <˘𝕩
@@ -363,9 +359,6 @@ JoinTo←∨○(1<=)◶(∾○⥊)‿{
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
 }
 
-↑ ← Prefixes       ⊘ Take
-↓ ← Suffixes       ⊘ Drop
-
 Rep ← Indices⊸⊏
 Replicate ← IsArray∘⊣◶{
   "/: Amounts to replicate must be natural numbers" ! Nat 𝕨
@@ -376,8 +369,8 @@ Replicate ← IsArray∘⊣◶{
   𝕨 Rep 𝕩
 } _onAxes_ (1-0=≠)
 
-⊏ ← (<0)⊸GetCells  ⊘ (ToArray⊸(SelSub _onAxes_ 1))
-
+↑ ← Prefixes       ⊘ Take
+↓ ← Suffixes       ⊘ Drop
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
@@ -404,9 +397,6 @@ GroupGen←{
   S←⊏⟜(𝕩⥊˜⟨×´l⟩∾n Cell 𝕩)
   (1≠≠)◶(S _group 0⊸⊑)‿(S⌜ ·+⌜⌜´ (⌽×`⟨1⟩∾⌽1↓l) × ⊢_group⌜) 𝕨
 }
-
-∾ ↩ Join           ⊘ JoinTo
-⊔ ← GroupInds      ⊘ GroupGen
 
 Pick1←{
   "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
@@ -465,6 +455,8 @@ _bins←{
   (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)⌜↕cx
 }
 
+⚇ ← _depthOp_
+⎉ ← _rankOp_
 ⍋ ← Cmp  _grade_ 0 ⊘ (Cmp  _bins)
 ⍒ ← Cmp˜ _grade_ 1 ⊘ (Cmp˜ _bins)
 
@@ -494,9 +486,11 @@ Find←{
   𝕨 ≡⎉r (≢𝕨) ↕⎉r 𝕩
 }
 
+≍ ← >∘Pair
+∾ ↩ Join           ⊘ JoinTo
+⊔ ← GroupInds      ⊘ GroupGen
 ⊐ ← SelfClas       ⊘ (1 _search)
 ∊ ← ⊢_self         ⊘ (0 _search˜)
-⍷ ← ∊⊸/            ⊘ Find
 
 ReorderChk←{
   "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
@@ -524,8 +518,8 @@ ReorderAxesInv←{
 
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
 ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
-⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 
+⊏ ← (<0)⊸GetCells  ⊘ (ToArray⊸(SelSub _onAxes_ 1))
 ⊑ ↩ (0⊑⥊)          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 
@@ -580,9 +574,12 @@ _repeat_←{
   neg←(𝕨𝔽⁼⊢)_p-l
   (|⊑<⟜0⊑pos‿neg˙)⚇0 n
 }
-⍟ ↩ _repeat_
 
 ReshapeT ← ⟨∘,⌊,⌽,↑⟩⊑∘⊐<
+
+⍟ ↩ _repeat_
 ⥊ ↩ Deshape        ⊘ Reshape
 ⌜ ↩ {𝔽⌜○ToArray}
 ⌾ ← _under_
+⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
+⍷ ← ∊⊸/            ⊘ Find
