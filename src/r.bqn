@@ -241,6 +241,22 @@ _takeDrop←{
 Take ← ⟨"↑" ⋄ 1-=⟜| ⋄ { 𝔽⍟(𝕨⊸<)a←|𝕩 ⋄ (0<𝕩)◶⟨¯∞⍟(<⟜0)⌜+⟜(𝕨+𝕩)⌜, ¯∞⍟(𝕨⊸≤)⌜⟩↕a }⟩_takeDrop
 Drop ← ⟨"↓" ⋄ 1-0⊸= ⋄ { 𝔽 ⋄ 0⊸<◶⟨↕0⌈+,<∘⊢+⌜·↕0⌈-⟩ }⟩_takeDrop
 
+Windows←{
+  "𝕨↕𝕩: 𝕩 must be an array" ! IsArray 𝕩
+  "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
+  r←≠𝕨↩Deshape 𝕨
+  𝕨{
+    "𝕨↕𝕩: length of 𝕨 must be at most rank of 𝕩" ! r≤=𝕩
+    "𝕨↕𝕩: 𝕨 must consist of natural numbers" ! ×´Nat⌜𝕨
+    s←≢𝕩
+    l←(1+⊑⟜s-⊑⟜𝕨)⌜↕r
+    "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ×´0⊸≤⌜l
+    k←1×´t←(r⊸+⌜↕s≠⊸-r)⊏s
+    str ← Reverse ×`⟨k⟩∾{(s⊑˜𝕩⊸-)⌜↕𝕩}r-1
+    ⊑⟜(⥊𝕩)⌜ k +⌜⟜(t⥊↕)˜⍟(1-=⟜1) l +⌜○(+⌜´str{𝕨⊸×⌜↕𝕩}¨⊢) 𝕨
+  }⍟(0<r)𝕩
+}
+
 ˘ ← {𝔽 _rankOp_ ¯1}
 _onAxes_←{
   F←𝔽
@@ -361,16 +377,6 @@ Replicate ← IsArray∘⊣◶{
 } _onAxes_ (1-0=≠)
 
 ⊏ ← (<0)⊸GetCells  ⊘ (ToArray⊸(SelSub _onAxes_ 1))
-
-Windows←{
-  "𝕨↕𝕩: 𝕩 must be an array" ! IsArray 𝕩
-  "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
-  "𝕨↕𝕩: length of 𝕨 must be at most rank of 𝕩" ! 𝕨≤○≠≢𝕩
-  "𝕨↕𝕩: 𝕨 must consist of natural numbers" ! ∧´Nat⌜⥊𝕨
-  s←(≠𝕨)↑≢𝕩
-  "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ∧´𝕨≤1+s
-  𝕨{(∾⟜(𝕨≠⊸↓≢𝕩)∘≢⥊>)<⌜⊸⊏⟜𝕩¨s(¬+⌜○Range⊢)⥊𝕨}⍟(0<≠𝕨)𝕩
-}
 
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
