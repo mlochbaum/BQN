@@ -40,7 +40,9 @@ Tokenize←{
   ToI←¯1↓·/⁼(≠𝕩)∾˜⥊
   f←¬≠`bm←ToI b⋄f∧↩¬qe←f∧bm∧(1↓0∾˜⊢)⊸∧dm
   cb←(¬(st/q)⊏r)/b
-  lu←⍷lit←𝕩⊔˜1-˜(+`qe-˜ToI⊑˘cb)×≠`ToI cb
+  lit←𝕩⊔˜1-˜(+`qe-˜ToI⊑˘cb)×≠`ToI cb
+  UM←(≠↑¯1∾⌈`)⊸<
+  lu←lit/˜UM ls←⊐lit
   cl←f/ToI⊑∘⌽˘cb
 
   c←cl-˜CharCode(⊑charSet)¨⌾(cl⊸/)f/𝕩
@@ -49,14 +51,14 @@ Tokenize←{
   us←c=¯1++´bA
   id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
   ti←na⌊∘÷˜(⊑bA)-˜w/c
-  iu←(≠↑¯1∾⌈`)⊸<is←⊐id⋄ni←≠in←0>iu/ti
+  iu←/UM is←⊐id⋄ie←vi+≠in←0>iu⊏ti
   ti↩(us/˜(1↓0∾˜⊢)⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
 
-  c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(vi+ni+lu⊐lit)⌾(cl⊸/)c
+  c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(ie+ls)⌾(cl⊸/)c
   c/˜↩¬(≠↑1∾(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5+⊑bB)∧c M bS
-  ic←(0⊸≤∧<⟜ni)c-vi⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
+  ic←(vi⊸≤∧<⟜ie)c⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
-  ⟨c,t,+´¬in,((in//iu)⊏id)∾lu⟩
+  ⟨c,t,+´¬in,((in/iu)⊏id)∾lu⟩
 }
 
 ReadNum←{
