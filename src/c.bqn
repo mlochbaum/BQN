@@ -35,15 +35,14 @@ Tokenize←{
   r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧𝕩='''⋄d←/dm←𝕩='"'
   g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q
   e← g⊏∾⟨2+s⋄ 1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
-  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=⊑⌽𝕩}
+  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=¯1⊑𝕩}
   st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⍋e⋄b←st/q∾˘e
-  ToI←¯1↓·/⁼(≠𝕩)∾˜⥊
-  f←¬≠`bm←ToI b⋄f∧↩¬qe←f∧bm∧(1↓0∾˜⊢)⊸∧dm
+  n←≠𝕩⋄f←¬≠`bm←n↑/⁼⥊b⋄f∧↩¬qe←f∧bm∧(1↓0∾˜⊢)⊸∧dm
   cb←(¬(st/q)⊏r)/b
-  lit←𝕩⊔˜1-˜(+`qe-˜ToI⊑˘cb)×≠`ToI cb
+  lit←𝕩⊔˜1-˜(+`qe-˜n↑/⁼⊏˘cb)×≠`n↑/⁼⥊cb
   UM←(≠↑¯1∾⌈`)⊸<
   lu←lit/˜UM ls←⊐lit
-  cl←f/ToI⊑∘⌽˘cb
+  cl←f/n↑/⁼¯1⊏˘cb
 
   c←cl-˜CharCode(⊑charSet)¨⌾(cl⊸/)f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
