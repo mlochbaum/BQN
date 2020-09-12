@@ -47,7 +47,7 @@ fntab←⍉(0¨tab1)∾tab1≍tab2
 f64←127-3
 
 GenFn←{
-  ⟨t,r,nVar,lits⟩←Tokenize𝕩
+  ⟨t,r,nVar,lits,strs⟩←Tokenize𝕩
   nLoc←nVar-𝕨⊢0
   t⊏˜↩⍋+`-˝(2‿3+⊑bB)=⌜t
   nd←+´c←t=3+⊑bB

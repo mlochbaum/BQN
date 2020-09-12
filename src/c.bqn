@@ -58,7 +58,7 @@ Tokenize←{
   c/˜↩¬(≠↑1∾(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5+⊑bB)∧c M bS
   ic←(vi⊸≤∧<⟜ie)c⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
-  ⟨c,t,+´¬in,((in/iu)⊏id)∾lu⟩
+  ⟨c,t,+´¬in,(in/iu)⊏id,lu⟩
 }
 
 ReadNum←{
@@ -71,7 +71,8 @@ ReadNum←{
   m←(n=⊑)◶⟨Pos,-·Pos 1⊸↓⟩e↑𝕩
   𝕩×⟜(10⋆·Int(e+1)↓⊣)˜⍟(e<≠𝕩)m
 }
-LitVal←(⊑⟨⊑bU,''','"'⟩⊐⊏)◶⟨@,1⊸⊑,1⊸↓,ReadNum⟩
+LitVal←((⊑bU)=⊑)◶⟨ReadNum,@⟩
+StrVal←('"'=⊑)◶⟨1⊸⊑,1⊸↓⟩
 
 
 LEBv ← {
@@ -150,8 +151,8 @@ Parse ← {nv‿r←𝕨
 }
 
 Compile←{
-  ⟨t,r,nVar,lits⟩←Tokenize𝕩
+  ⟨t,r,nVar,lits,strs⟩←Tokenize𝕩
   ⟨bc,u,blk⟩←nVar‿r Parse t
-  o←(u-(vi+nVar-≠𝕨)×u≥vi)⊏𝕨∾LitVal¨lits
+  o←(u-(vi+nVar-≠𝕨)×u≥vi)⊏∾⟨𝕨,LitVal¨lits,StrVal¨strs⟩
   ⟨bc,o,blk⟩
 }
