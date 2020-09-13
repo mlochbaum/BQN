@@ -1,6 +1,6 @@
 lf←@+10
 charSet‿cgl←(∾ ≍○< ≠¨)⟨
-  "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
+  "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
   "˙˜˘¨⌜⁼´˝`"           # Modifier
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # Composition
   lf∾"⋄,"               # Separator
@@ -23,40 +23,40 @@ CharCode←charSet{
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`≠↑0∾⊢)cgl
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
 vi←⊑bD
 charRole←((⊑bI)↑/0∾3↑cgl)∾(5/⌽↕2)∾0
 spc←⥊3‿5‿6-⌜3‿0
 
 Tokenize←{
-  r←𝕩='#'⋄s←/(≠↑2⊸↓)⊸∧sm←𝕩='''⋄d←/dm←𝕩='"'
+  r←𝕩='#'⋄s←/0‿0⊸«⊸∧sm←𝕩='''⋄d←/dm←𝕩='"'
   g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q
-  e← g⊏∾⟨2+s⋄ 1↓d⋄(⊢-¯1↓0∾⊢)∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
+  e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=¯1⊑𝕩}
   st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⍋e⋄q/˜↩st⋄e/˜↩st
   n←≠𝕩⋄a←n↑/⁼q⋄b←n↑/⁼e
-  f←¬(≠`a∨b)∨1⌽qe←a∧(≠↑0∾⊢)⊸∧dm
+  f←¬(≠`a∨b)∨1⌽qe←a∧»⊸∧dm
   "Unclosed quote"!¬∨´(sm∨dm)∧b<f
 
   u←f∧𝕩='@'⋄ci←/u∨¯1⌽a∧sm
   chr←(ci⊏𝕩)-(ci⊏u)×'@'-@
   str←1↓¨𝕩⊔˜1-˜(+`si←dm∧a>qe)×≠`dm∧a∨b
   lv←chr(⊣∾(1+¯1⌈´⊣)+⊢)○⊐str
-  UM←(≠↑¯1∾⌈`)⊸<
+  UM←(¯1»⌈`)⊸<
   lit←lv UM⊸/chr∾str
-  li←(ci∾/si)⊏+`(≠↑0∾⊢)f
+  li←(ci∾/si)⊏+`»f
 
   c←CharCode f/𝕩
-  w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
+  w←»⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
   us←c=¯1++´bA
   id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
   ti←na⌊∘÷˜(⊑bA)-˜w/c
   iu←/UM is←⊐id⋄ie←vi+≠in←0>iu⊏ti
-  ti↩(us/˜(1↓0∾˜⊢)⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
+  ti↩(us/˜«⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
 
   c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(ie+lv)⌾(li⊸⊏)c
-  c/˜↩¬(≠↑1∾(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5+⊑bB)∧c M bS
+  c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1«c∊3‿5+⊑bB)∧c M bS
   ic←(vi⊸≤∧<⟜ie)c⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
   ⟨c,t,+´¬in,(in/iu)⊏id,lit⟩
@@ -77,12 +77,12 @@ ReadNum←{
 LEBv ← {
   b←128
   l←⌊b⋆⁼1⌈𝕩
-  o←⍋⍋((↕¯1⊑⊢)-/⟜(≠↑0∾⊢))⟜(+`)1+l
+  o←⍋⍋((↕¯1⊑⊢)-/⟜»)⟜(+`)1+l
   o⊏l{f←×𝕨⋄(𝕨-1)(b⊸(×⟜f+|)∾𝕊⟜(⌊÷⟜b)○(f⊸/))⍟(∨´f)𝕩}𝕩
 }
 
 ErrMismatchedBrackets←{
-  Lcs ← ¯1 ⊑ 0˘∘⊢ {𝕩⌈⌈`𝕨+0∾˜1↓𝕩}˝ =⌜
+  Lcs ← ¯1 ⊑ 0˘∘⊢ {𝕩⌈⌈`𝕨+«𝕩}˝ =⌜
   _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
   Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
   0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
@@ -103,7 +103,7 @@ Parse ← {nv‿r←𝕨
   rev⊏˜↩gf⋄fd⊏˜↩gf
   𝕩⊏˜↩rev⋄bv←rev⊏br⋄b←/bv<0⋄fi←+`c←bv>0
 
-  FC←-⟜(≠↑0∾⊢)(c∾1)/·+`∾⟜0
+  FC←-⟜»(c∾1)/·+`∾⟜0
   H←0<1↓FC∘=
   ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
   fsc←ft⊏spc
@@ -121,11 +121,11 @@ Parse ← {nv‿r←𝕨
   tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏fe
   ma←tr<(𝕩=1+⊑bG)∧1⌽fe
   ro←op∨a<1⌽r=3⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨ma⋄at←(⊢+1+⊏⟜os)/a
-  aa←g⊏asn←¯1⌽+`gi⊏-⟜(≠↑0∾⊢)¯1↓/⁼(≠𝕩)∾˜at-1⋄r↩¯1¨⌾(aa⊸/)r
+  aa←g⊏asn←¯1⌽+`gi⊏-⟜»¯1↓/⁼(≠𝕩)∾˜at-1⋄r↩¯1¨⌾(aa⊸/)r
   tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧(⊢∧2(|<≤)ps(⊢-⌈`∘×)+`)¬ro
-  opa←op>1↓0∾˜ps∨a
+  opa←op>«ps∨a
   oa←⌽/opa⋄fa←/(1⌽aa)<(tf∨¬tr)∧(ro∧1⌽opa)<(r=1)∨op<¯1⌽opa
-  dy←fa⊏1↓0∾˜(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
+  dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
   n←𝕩≥vi+nv⋄cn←/n∨𝕩≤¯1++´bC⋄u←∧⍷ob←cn⊏𝕩
   lo←(o/𝕩)=4+⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
   dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2+⊑bB
@@ -133,9 +133,9 @@ Parse ← {nv‿r←𝕨
   d←id⊏dec←idm∧ad∧asn⋄lc←FC dec
   ixf←(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
-  "Multiple definitions" ! 1∧´ixx∨○((≠↑0∾⊢)⊸≠((≠id)⊸≤⊸/ig)⊏⊢)ixf
+  "Multiple definitions" ! 1∧´ixx∨○(»⊸≠((≠id)⊸≤⊸/ig)⊏⊢)ixf
   ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
-  d⊏˜↩ig⋄ErrUndeclared∘/˜⍟(0∨´⊢)⟜(d<(≠↑0∾⊢)⊸≠)ig⊏idx
+  d⊏˜↩ig⋄ErrUndeclared∘/˜⍟(0∨´⊢)⟜(d<»⊸≠)ig⊏idx
   ui←(⌈`↕∘≠⊸×d)⊸⊏⌾(ig⊸⊏)id
   ii←(ui⊏(fi⊏fsc)-(⌈`c⊸×)⊸¬+`dec)∾((sp⊏fi)⊏3×2|ft)++⟜(0⊸≤)2+sp⊏xv
   idor←∾3⥊<is←id∾sp

@@ -1,7 +1,7 @@
 #! /usr/bin/env dbqn
 
-compile ← •EX •path∾"c.bqn"
-Comp ← ((<"runtime["∾⍕∾"]"˙)¨↕60)⊸Compile
+compile ← ⟨•path∾"c.bqn"⟩ •EX •path∾"../dzref"
+Comp ← ((<"runtime["∾⍕∾"]"˙)¨↕62)⊸Compile
 FP ← ∞⊸=◶⟨⍕,"Infinity"⟩
 Esc ← (⟨"\t","\n","\r","\'","\"""⟩∾<∘⥊)⊑˜("'"""∾˜@+9‿10‿13)⊑∘⊐⊢
 Str ← "str("""∾(∾Esc¨)∾""")"˜
