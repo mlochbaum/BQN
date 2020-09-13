@@ -25,10 +25,6 @@
 # Linefeed
 lf ← @+10
 
-# Shift cells 𝕨 into array 𝕩, maintaining its total length
-Shl ←   ≠∘⊢ ↑ ∾   # From the left
-Shr ← -∘≠∘⊢ ↑ ∾˜  # From the right
-
 # Index of first zero, or number of leading 1s in a boolean list
 Lead ← ⊑ ⊐⟜0
 
@@ -49,7 +45,7 @@ CountRuns ← { (1+↕≠𝕩) (⊣ - ⌈`∘×) ¬𝕩 }
 # is, preceded by an odd number of backslashes (since a backslash can
 # escape another backslash).
 IsEscaped ← {
-  0 Shl 2 | CountRuns 𝕩 = '\'
+  0 » 2 | CountRuns 𝕩 = '\'
 }
 
 # Remove leading (∧`) and trailing (∧`⌾⌽) spaces
@@ -224,7 +220,7 @@ Markdown ← {filename𝕊𝕩:
     𝕩 ↓˜↩ 𝕨+1
     trsp ← ∧`⌾⌽ 𝕩=' '
     tail ← ∧`⌾⌽ trsp∨𝕩='#'  # Mask of trailing hashes
-    f ← tail < 0 Shr tail   # Character before trailing hashes
+    f ← tail < 0 « tail   # Character before trailing hashes
     𝕩 /˜↩ ¬ f (⊑⟨"\"," ",""⟩⊐<f/𝕩)◶⟨⊣,⊢,⊢,0¨⊢⟩ tail
     # Add an id, containing only a-z, digits, and hyphens
     Slugify ← {
@@ -255,7 +251,7 @@ Markdown ← {filename𝕊𝕩:
   CutTableRow ← {
     b ← '|' = 𝕩            # Mask of bars
     o ← (¬b) ≠○Lead ' '=𝕩  # Leading | omitted
-    r ← b > 0 Shl '\' = 𝕩  # Non-escaped bars
+    r ← b > 0 » '\' = 𝕩  # Non-escaped bars
     1 -˜ (¬r∨1⌽b>r) × o + +` r
   }
   ProcTable ← {
@@ -315,12 +311,12 @@ Markdown ← {filename𝕊𝕩:
 
     # Code spans
     tick ← 𝕩 = '`'
-    tend ← / (⊢ > 0⊸Shr) tick
+    tend ← / (⊢ > 0⊸«) tick
     tcount ← CountRuns tick
     # 𝕨 are tick lengths and 𝕩 are positions, both sorted by length
     MatchTicks ← {
       # Tick runs other than the last of each length
-      notLast ← (⊢=0⊸Shr) 𝕨
+      notLast ← (⊢=0⊸«) 𝕨
       # Ticks preceded by backslashes can't start code blocks, but can
       # end them. This approach is wrong for multiple ticks with a
       # leading backslash in front, which are excluded but should just
@@ -352,7 +348,7 @@ Markdown ← {filename𝕊𝕩:
     # Find matched-depth [] and () pairs, then join adjacent ones
     brak ← (unused ∧ 𝕩⊸=)¨ 2‿2⥊"[]()"
     depth ← (+`-0⌊⊢)∘(-´)˘ brak
-    FindPairs ← ∘‿2 ⥊ 1⊸⊏ /˜ 2⊸⊏ ≠ (¯∞⊸Shl⊸=(∧+⊢)∞⊸Shr⊸=)∘⊏
+    FindPairs ← ∘‿2 ⥊ 1⊸⊏ /˜ 2⊸⊏ ≠ (¯∞⊸»⊸=(∧+⊢)∞⊸«⊸=)∘⊏
     pairs ← depth <∘(FindPairs⍟(0<≠))∘⍉∘(∧(⊏˜≍˘⊢)⟜∾∾˘·/≠¨∘⊢)˘ /¨brak
     JoinPairs ← {
       e←1+1⊏˘𝕨 ⋄ b←⊏˘𝕩 ⋄ m←(≠b)>i←b⊐e
@@ -367,7 +363,7 @@ Markdown ← {filename𝕊𝕩:
 
     # Emphasis (still rudimentary)
     eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
-    eMasks ↩ 0⊸Shr⊸∧¨⊸(⊣∾˜0⊸Shl⊸∨⊸<¨) eMasks
+    eMasks ↩ 0⊸«⊸∧¨⊸(⊣∾˜0⊸»⊸∨⊸<¨) eMasks
     eInds ← (⊢-2|⊢)∘≠⊸↑∘/¨ eMasks
     include ∧↩ ¬ I2M ∧ ∾ eInds∾1+2↓eInds
     eInds ∾↩ ⟨codeBounds⟩
@@ -429,7 +425,7 @@ Markdown ← {filename𝕊𝕩:
   # Lines continue blocks if they are part of the same multi-line
   # type as the previous line, and otherwise start new ones.
   # Headers (type 1) always start new blocks.
-  blockStart ← nonEmptyMask ∧ (1 = lineType) ∨ ¯1⊸Shl⊸≠ lineType
+  blockStart ← nonEmptyMask ∧ (1 = lineType) ∨ ¯1⊸»⊸≠ lineType
   # Headers and paragraphs ignore leading blanks.
   drop ← blanks × lineType < 2
   # Group blocks based on blockStart, with type ¯1 lines excluded.
@@ -511,9 +507,9 @@ GetHighlights ← {
   le← /(𝕩=lf)∾1
   # Line endings (le) end every comment (/c) on the line, so take a copy
   # for each # before that line but not the previous.
-  ce← le /˜ -⟜(0⊸Shl) c/⊸⍋le
+  ce← le /˜ -⟜(0⊸») c/⊸⍋le
   # A single quote can only be used if there's another two places down.
-  s ← /0‿0⊸Shr⊸∧𝕩='''
+  s ← /0‿0⊸«⊸∧𝕩='''
   d ← /𝕩='"'
   css ← ⟨ s   ⋄ ¯1↓d ⋄ /c ⟩ # Comment or string start
   cse ← ⟨ 2+s ⋄  1↓d ⋄ ce ⟩ # Corresponding end indices
@@ -531,15 +527,15 @@ GetHighlights ← {
 
   # Color numeric literals and identifiers
   id ← col=5                 # ←→ 𝕩∊idChars
-  w  ← 0⊸Shl⊸< id            # Word (identifier or number) beginning mask
+  w  ← 0⊸»⊸< id            # Word (identifier or number) beginning mask
   wt ← idChars FindGroup w/𝕩 # Type based on first character
-  wt+↩ '_' = (0⊸Shr⊸<id)/𝕩   # Modifier1 to Modifier2 based on word end
+  wt+↩ '_' = (0⊸«⊸<id)/𝕩   # Modifier1 to Modifier2 based on word end
   wt+↩ 5×0=wt                # Shift 0 to Number
   wi ← 1-˜+`id/w             # Index of word containing each of /id
   col↩(wi⊏wt)⌾(id⊸/) col
 
   # Tags are placed at boundaries between different colors
-  boundary ← ¯1⊸Shl⊸≠ col
+  boundary ← ¯1⊸»⊸≠ col
   bcol ← boundary / col
   # Windows gives us rows of start,end where the end position of one
   # color is the start of the next
@@ -551,7 +547,7 @@ GetHighlights ← {
 
 # Return highlights for areas in 𝕩 where 𝕨 is true.
 GetMultiHighlights ← {
-  start ← 0⊸Shl⊸< 𝕨
+  start ← 0⊸»⊸< 𝕨
   groups ← (1 -˜ 𝕨 × +` start) ⊔ 𝕩
   <∘∾˘ ⍉ ((≠∾2˙) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
 }
