@@ -10,12 +10,11 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "·"                   # nOthing
   # Use last character in case of UTF-16 (like dzaima/BQN)
   ¯1⊏˘10‿∘⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘" # Input (𝕣 pending; ℝ not allowed)
-  "@"                   # nUll character
   '0'+↕10               # Digit
   "¯.π∞"                # Numeric
   "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
   (¯1↓"𝕨")∾" "∾@+9      # Whitespace (or special name prefix in UTF-16)
-# #'" eliminated during tokenization
+  "#'""@"               # Preprocessed characters
 ⟩
 ErrUnknownChars←{
   ⟨"Unknown character","s"/˜1<≠𝕩,": ",𝕩⟩∾⊸!0
@@ -24,9 +23,9 @@ CharCode←charSet{
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)cgl
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`≠↑0∾⊢)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
-vi←⊑bU
+vi←⊑bD
 charRole←((⊑bI)↑/0∾3↑cgl)∾(5/⌽↕2)∾0
 spc←⥊3‿5‿6-⌜3‿0
 
@@ -38,27 +37,29 @@ Tokenize←{
   st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⍋e⋄q/˜↩st⋄e/˜↩st
   n←≠𝕩⋄a←n↑/⁼q⋄b←n↑/⁼e
   f←¬(≠`a∨b)∨1⌽qe←a∧(≠↑0∾⊢)⊸∧dm
-  qm←sm∨dm⋄a∧↩qm⋄b∧↩qm
-  "Unclosed quote"!¬∨´qm∧b<f
-  str←𝕩⊔˜1-˜(+`a>qe)×≠`a∨b
-  UM←(≠↑¯1∾⌈`)⊸<
-  str/˜↩UM ls←⊐str
-  cl←f/b
+  "Unclosed quote"!¬∨´(sm∨dm)∧b<f
 
-  c←cl-˜CharCode(⊑charSet)¨⌾(cl⊸/)f/𝕩
+  u←f∧𝕩='@'⋄ci←/u∨¯1⌽a∧sm
+  chr←(ci⊏𝕩)-(ci⊏u)×'@'-@
+  str←1↓¨𝕩⊔˜1-˜(+`si←dm∧a>qe)×≠`dm∧a∨b
+  lv←chr(⊣∾(1+¯1⌈´⊣)+⊢)○⊐str
+  UM←(≠↑¯1∾⌈`)⊸<
+  lit←lv UM⊸/chr∾str
+  li←(ci∾/si)⊏+`(≠↑0∾⊢)f
+
+  c←CharCode f/𝕩
   w←(≠↑0∾⊢)⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
-  u←c=⊑bU⋄l+↩u⋄w+↩u
   us←c=¯1++´bA
   id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
   ti←na⌊∘÷˜(⊑bA)-˜w/c
   iu←/UM is←⊐id⋄ie←vi+≠in←0>iu⊏ti
   ti↩(us/˜(1↓0∾˜⊢)⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
 
-  c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(ie+ls)⌾(cl⊸/)c
+  c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(ie+lv)⌾(li⊸⊏)c
   c/˜↩¬(≠↑1∾(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1↓1∾˜c∊3‿5+⊑bB)∧c M bS
   ic←(vi⊸≤∧<⟜ie)c⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
-  ⟨c,t,+´¬in,(in/iu)⊏id,str⟩
+  ⟨c,t,+´¬in,(in/iu)⊏id,lit⟩
 }
 
 ReadNum←{
@@ -71,8 +72,6 @@ ReadNum←{
   m←(n=⊑)◶⟨Pos,-·Pos 1⊸↓⟩e↑𝕩
   𝕩×⟜(10⋆·Int(e+1)↓⊣)˜⍟(e<≠𝕩)m
 }
-LitVal←((⊑bU)=⊑)◶⟨ReadNum,@⟩
-StrVal←('"'=⊑)◶⟨1⊸⊑,1⊸↓⟩
 
 
 LEBv ← {
@@ -151,8 +150,8 @@ Parse ← {nv‿r←𝕨
 }
 
 Compile←{
-  ⟨t,r,nVar,lits,strs⟩←Tokenize𝕩
+  ⟨t,r,nVar,nums,strs⟩←Tokenize𝕩
   ⟨bc,u,blk⟩←nVar‿r Parse t
-  o←(u-(vi+nVar-≠𝕨)×u≥vi)⊏∾⟨𝕨,LitVal¨lits,StrVal¨strs⟩
+  o←(u-(vi+nVar-≠𝕨)×u≥vi)⊏∾⟨𝕨,ReadNum¨nums,strs⟩
   ⟨bc,o,blk⟩
 }
