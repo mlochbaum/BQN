@@ -57,6 +57,8 @@
 ↑ Prefixes ; Take
 ↓ Suffixes ; Drop
 ↕ Range ; Windows
+« Shift Before
+» Shift After
 ⌽ Reverse ; Rotate
 ⍉ Transpose ; Reorder axes
 / Indices ; Replicate
