@@ -63,11 +63,11 @@ Group can even be implemented with the same techniques as a bucket sort, which c
 
 ## Applications
 
-The obvious application of Group is to group some values according to a known or computed property. If this property isn't an integer, it can be turned into one using Unique and Index Of (the combination `⍷⊸⊐` has been called "self-classify").
+The obvious application of Group is to group some values according to a known or computed property. If this property isn't an integer, it can be turned into one using Classify (monadic `⊐`, identical to `⍷⊸⊐`). Classify numbers the unique values in its argument by first occurrence.
 
         ln ← "Phelps"‿"Latynina"‿"Bjørgen"‿"Andrianov"‿"Bjørndalen"
         co ← "US"    ‿"SU"      ‿"NO"     ‿"SU"       ‿"NO"
-        ⥊˘ co ⍷⊸⊐⊸⊔ ln
+        ⥊˘ co ⊐⊸⊔ ln
 
 If we would like a particular index to key correspondence, we can use a fixed left argument to Index Of.
 
@@ -95,8 +95,10 @@ In other cases, we might want to split on spaces, so that words are separated by
 
         ' '((⊢-˜¬×+`)∘=⊔⊢)"  string with  spaces   "
 
-However, trailing spaces are ignored because Group never produces trailing empty groups (to get them back we would use a dummy final character in the string). To avoid empty words, we should increase the word index only once per group of spaces. We can do this by taking the prefix sum of a list that is 1 only for a space with no space before it. To make such a list, we can use the [Windows](windows.md) function. We will extend our list with an initial 1 so that leading spaces will be ignored. Then we take windows of the same length as the original list: the first includes the dummy argument followed by a shifted copy of the list, and the second is the original list. These represent whether the previous and current characters are spaces; we want positions where the previous wasn't a space and the current is.
+However, trailing spaces are ignored because Group never produces trailing empty groups (to get them back we would use a dummy final character in the string). To avoid empty words, we should increase the word index only once per group of spaces. We can do this by taking the prefix sum of a list that is 1 only for a space with no space before it. To make such a list, we can use the [Shift Before](shift.md) function, giving a list of previous elements. To treat the first element as if it's before a space (so that leading spaces have no effect rather than creating an initial empty group), we shift in a 1.
 
-        ≍⟜(<˝≠↕1∾⊢) ' '="  string with  spaces   "  # All, then filtered, spaces
-        ≍⟜(⊢-˜¬×+`∘(<˝≠↕1∾⊢))' '="  string with  spaces   "  # More processing
-        ' '((⊢-˜¬×+`∘(<˝≠↕1∾⊢))∘=⊔⊢)"  string with  spaces   "  # Final result
+        (⊢≍1⊸»<⊢) ' '="  string with  spaces   "  # All, then filtered, spaces
+        ≍⟜(⊢-˜¬×·+`1⊸»<⊢)' '="  string with  spaces   "  # More processing
+        ' '((⊢-˜¬×·+`1⊸»<⊢)∘=⊔⊢)"  string with  spaces   "  # Final result
+
+        ' '((¬-˜⊢×·+`»⊸>)∘≠⊔⊢)"  string with  spaces   "  # Slightly shorter
