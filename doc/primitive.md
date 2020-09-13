@@ -38,6 +38,8 @@ Functions that have significant differences from APL functions are marked with a
 | `↑`   | [Prefixes](prefixes.md)*                            | [Take](https://aplwiki.com/wiki/Take)
 | `↓`   | [Suffixes](prefixes.md)*                            | [Drop](https://aplwiki.com/wiki/Drop)
 | `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](windows.md)*
+| `»`   | Nudge*                                              | Shift Before*
+| `«`   | Nudge Back*                                         | Shift After*
 | `⌽`   | [Reverse](https://aplwiki.com/wiki/Reverse)         | [Rotate](https://aplwiki.com/wiki/Rotate)
 | `⍉`   | [Transpose](transpose.md)*                          | [Reorder axes](transpose.md)*
 | `/`   | [Indices](https://aplwiki.com/wiki/Indices)         | [Replicate](https://aplwiki.com/wiki/Replicate)

@@ -255,6 +255,8 @@ _repeat_←{
 ↑ ← Prefixes       ⊘ Take
 ↓ ← Suffixes       ⊘ Drop
 ↕ ↩ ↕              ⊘ Windows
+» ← Nudge          ⊘ ShiftBefore
+« ← NudgeBack      ⊘ ShiftAfter
 ⌽ ← Reverse        ⊘ Rotate
 / ← Indices        ⊘ Replicate
 
@@ -306,6 +308,11 @@ Drop←{
 }
 Prefixes ← {!1≤=𝕩 ⋄ (↕1+≠𝕩)Take¨<𝕩}
 Suffixes ← {!1≤=𝕩 ⋄ (↕1+≠𝕩)Drop¨<𝕩}
+
+ShiftBefore ← {!𝕨1⊸⌊⊸≤○=𝕩 ⋄ ( ≠𝕩)↑𝕨∾𝕩}
+ShiftAfter  ← {!𝕨1⊸⌊⊸≤○=𝕩 ⋄ (-≠𝕩)↑𝕩∾𝕨}
+Nudge     ← (1↑0↑⊢)⊸ShiftBefore
+NudgeBack ← (1↑0↑⊢)⊸ShiftAfter
 
 Windows←{
   ! IsArray 𝕩
