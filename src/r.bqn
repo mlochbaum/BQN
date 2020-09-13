@@ -492,6 +492,13 @@ Find←{
 ⊐ ← SelfClas       ⊘ (1 _search)
 ∊ ← ⊢_self         ⊘ (0 _search˜)
 
+ShiftBefore ← {!𝕨1⊸⌊⊸≤○=𝕩 ⋄ ( ≠𝕩)↑𝕨∾𝕩}
+ShiftAfter  ← {!𝕨1⊸⌊⊸≤○=𝕩 ⋄ (-≠𝕩)↑𝕩∾𝕨}
+Nudge     ← (1↑0↑⊢)⊸ShiftBefore
+NudgeBack ← (1↑0↑⊢)⊸ShiftAfter
+» ← Nudge          ⊘ ShiftBefore
+« ← NudgeBack      ⊘ ShiftAfter
+
 ReorderChk←{
   "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   "𝕨⍉𝕩: Length of 𝕨 must not exceed rank of 𝕩" ! 𝕨≤○≠≢𝕩
