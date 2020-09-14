@@ -127,14 +127,14 @@ UTF32 ← {
   p ← 2⋆10
   s ← p×52+2+↕3  # Surrogate character boundaries
   h ← 1 = c ← (≠s)|s⍋𝕩
-  h ¬⊸/ (¯1⌽h×p×(2⋆6)+⊢)⊸+ 𝕩 - c⊏0∾s
+  h ¬⊸/ (»h×p×(2⋆6)+⊢)⊸+ 𝕩 - c⊏0∾s
 }⍟(2=≠"𝕩")∘-⟜@
 UTF8 ← ∾ (2⋆7) (⊣+(2⋆6){𝕨 ≤◶⟨⥊⊢-2×-⟜𝕗 ⋄ 𝕗(|∾˜(2÷˜⌊⟜𝕨)𝕊⌊∘÷˜)⊢⟩ 𝕩}¨) UTF32
 Base64 ← {
   b64 ← Ranges "AZaz09++//"
   b←3|↕l←≠u←UTF8 𝕩
   M←((0<↕4)⥊˜≠)⊸× (1+0=b)⊸/
-  v←(4⋆1+b) ((⌊∘÷˜) 1⊸⌽⊸+○M (64÷⊣)×|) u
+  v←(4⋆1+b) ((⌊∘÷˜) «⊸+○M (64÷⊣)×|) u
   (v⊏b64)∾(3|-l)⥊'='
 }
 
@@ -252,7 +252,7 @@ Markdown ← {filename𝕊𝕩:
     b ← '|' = 𝕩            # Mask of bars
     o ← (¬b) ≠○Lead ' '=𝕩  # Leading | omitted
     r ← b > » '\' = 𝕩      # Non-escaped bars
-    1 -˜ (¬r∨1⌽b>r) × o + +` r
+    1 -˜ (¬r∨«b>r) × o + +` r
   }
   ProcTable ← {
     rows ← (Trim¨ CutTableRow⊸⊔)¨ 𝕩
@@ -288,7 +288,7 @@ Markdown ← {filename𝕊𝕩:
   <pre class='rslt'>""B Q N""</pre>
 </div>"
   }‿{
-    codeMask ← "<code>" ¯6⊸⌽⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
+    codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
   }⍟extensions⟜JoinLines
 
@@ -371,7 +371,7 @@ Markdown ← {filename𝕊𝕩:
     eInds ↩ ∾ eInds
 
     # Remove backslashes used for escaping
-    include ∧↩ codeMask ∨ 1 ⌽ actual
+    include ∧↩ codeMask ∨ 1 « actual
 
     em‿ent‿ei ← include CharEntities 𝕩
     include ∧↩ em
@@ -412,7 +412,7 @@ Markdown ← {filename𝕊𝕩:
   tableMask ← (0⌾⊑ nonEmptyMask) ∧ paragraphMask ∧¬ codeMask
   tableDelimMask ← { 𝕩 IsTD¨∘⊣⌾(𝕨⊸/) 𝕨 }⟜𝕩 tableMask
   delimValid ← (⊢ =○(≠∘⊔∘CutTableRow¨ ⊏⟜𝕩) -⟜1) / tableDelimMask
-  headerMask ← 1 ⌽ delimValid⌾(tableDelimMask⊸/) 0¨𝕩
+  headerMask ← « delimValid⌾(tableDelimMask⊸/) 0¨𝕩
   tableMask ↩ headerMask (⊢ ∧ ⊣ ∨ ⊣ PrecedesGroup <) tableMask
   lineType ↩ 3¨⌾(tableMask⊸/) lineType
 
@@ -449,7 +449,7 @@ TestSections ← {
   UnEscape ← {
     EscapeChar ← { ("\""tn"⊐𝕩) ⊏ "\"""∾@+9‿10 }
     esc ← IsEscaped 𝕩
-    (¬1⌽esc) / EscapeChar⌾(esc⊸/) 𝕩
+    (¬«esc) / EscapeChar⌾(esc⊸/) 𝕩
   }
   RunTest ← {
     in‿exp ← UnEscape∘(1↓¯1↓⊢)¨2↑𝕩
@@ -523,7 +523,7 @@ GetHighlights ← {
   col ⌈↩ +´ (2‿1-˜≠classes) × ToMask¨ tc
 
   # UTF-16 hack: first half of a special name needs to match the second
-  col↩ (1⌽col) ⊣⌾((𝕩=⊑"𝕩")⊸/) col
+  col↩ («col) ⊣⌾((𝕩=⊑"𝕩")⊸/) col
 
   # Color numeric literals and identifiers
   id ← col=5                 # ←→ 𝕩∊idChars
