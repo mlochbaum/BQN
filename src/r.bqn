@@ -192,7 +192,7 @@ Join←(1==)◶⟨1,1-1×´(1==)⌜⟩◶{
 }‿{
   # Multidimensional
   n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ d←≠0⊑s ⋄ r←=𝕩
-  "∾𝕩: elements of 𝕩 must all have the same rank" ! 1×´(d=≠)⌜s
+  "∾𝕩: Elements of 𝕩 must all have the same rank" ! 1×´(d=≠)⌜s
   "∾𝕩: 𝕩 element rank must be at least argument rank" ! d≥r
   _s0←{s←𝕨⋄F←𝔽⋄{o←s⋄s F↩𝕩⋄o}⌜𝕩}
   sh←≢𝕩 ⋄ p←1 ⋄ i←j←<0
@@ -249,7 +249,7 @@ Windows←{
   "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   r←≠𝕨↩Deshape 𝕨
   𝕨{
-    "𝕨↕𝕩: length of 𝕨 must be at most rank of 𝕩" ! r≤=𝕩
+    "𝕨↕𝕩: Length of 𝕨 must be at most rank of 𝕩" ! r≤=𝕩
     "𝕨↕𝕩: 𝕨 must consist of natural numbers" ! ×´Nat⌜𝕨
     s←≢𝕩
     l←(1+⊑⟜s-⊑⟜𝕨)⌜↕r
@@ -268,7 +268,7 @@ _onAxes_←{
     𝕨F𝕩
   }‿{ # Multiple axes
     "Multi-axis primitive: 𝕨 must have rank at most 1" ! 1≥=𝕨
-    "Multi-axis primitive: length of 𝕨 must be at most rank of 𝕩" ! 𝕨≤○≠≢𝕩
+    "Multi-axis primitive: Length of 𝕨 must be at most rank of 𝕩" ! 𝕨≤○≠≢𝕩
     l←≠𝕨 ⋄ W←⊑⟜(⥊𝕨)
     0{(W𝕨)F(1+𝕨)⊸𝕊˘⍟(𝕨<l-1)𝕩}⍟(0<l)𝕩
   }
@@ -365,7 +365,7 @@ Replicate ← IsArray∘⊣◶{
   e←r←𝕨
   ({e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×≠𝕩) ⊏ 𝕩
 }‿{
-  "𝕨/𝕩: lengths of components of 𝕨 must match 𝕩" ! 𝕨=○≠𝕩
+  "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕨=○≠𝕩
   𝕨 Rep 𝕩
 } _onAxes_ (1-0=≠)
 
