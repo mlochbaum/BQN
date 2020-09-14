@@ -13,7 +13,7 @@ Test cases:
 - prim.bqn       -prim   -prim      *
 
 Contents of bin/dbqn follow (3 lines). Replace "/path/to/dzaima/" with
-your path. To work on dz_rt, add "-e •compstart↩¯1" before "-f".
+your path.
 
 #! /bin/bash
 
