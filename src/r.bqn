@@ -244,6 +244,32 @@ _takeDrop←{
 Take ← ⟨"↑" ⋄ 1-=⟜| ⋄ { 𝔽⍟(𝕨⊸<)a←|𝕩 ⋄ (0<𝕩)◶⟨¯∞⍟(<⟜0)⌜+⟜(𝕨+𝕩)⌜, ¯∞⍟(𝕨⊸≤)⌜⟩↕a }⟩_takeDrop
 Drop ← ⟨"↓" ⋄ 1-0⊸= ⋄ { 𝔽 ⋄ 0⊸<◶⟨↕0⌈+,<∘⊢+⌜·↕0⌈-⟩ }⟩_takeDrop
 
+ShiftCheck←{
+  "« or »: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  d←𝕩-○=𝕨
+  "« or »: 𝕨 must not have higher rank than 𝕩" ! 0≤d
+  "« or »: Rank of 𝕨 must be at least rank of 𝕩 minus 1" ! 1≥d
+  s←1 Cell 𝕩
+  "« or »: 𝕨 must share 𝕩's major cell shape" ! 1×´(⊑⟜s=+⟜(1-d)⊑(≢𝕨)˙)⌜↕≠s
+  1×´s
+}
+ShiftBefore←{
+  c←𝕨 ShiftCheck 𝕩
+  n←c×(𝕩≤○=⊢)◶1‿≠𝕨
+  (≢𝕩)⥊n⊸≤◶⟨⊑⟜(Deshape𝕨),-⟜n⊑(⥊𝕩)˙⟩⌜↕c×≠𝕩
+}
+ShiftAfter←{
+  c←𝕨 ShiftCheck 𝕩
+  l←c×≠𝕩
+  n←c×(𝕩≤○=⊢)◶1‿≠𝕨
+  m←l-n
+  (≢𝕩)⥊m⊸≤◶⟨+⟜n⊑(⥊𝕩)˙,-⟜m⊑(Deshape𝕨)˙⟩⌜↕l
+}
+FC←{ # Fill cell
+  "« or »: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  (Type 𝕩)⌜ ⥊⟜(↕1×´⊢) 1 Cell 𝕩
+}
+
 Windows←{
   "𝕨↕𝕩: 𝕩 must be an array" ! IsArray 𝕩
   "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
@@ -374,6 +400,8 @@ Replicate ← IsArray∘⊣◶{
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
+» ← FC⊸ShiftBefore ⊘ ShiftBefore
+« ← FC⊸ShiftAfter  ⊘ ShiftAfter
 
 _group←{
   "⊔: Grouping argument must consist of integers" ! ∧´Int⌜𝕩
@@ -491,13 +519,6 @@ Find←{
 ⊔ ← GroupInds      ⊘ GroupGen
 ⊐ ← SelfClas       ⊘ (1 _search)
 ∊ ← ⊢_self         ⊘ (0 _search˜)
-
-ShiftBefore ← {!𝕨1⊸⌊⊸≤○=𝕩 ⋄ ( ≠𝕩)↑𝕨∾𝕩}
-ShiftAfter  ← {!𝕨1⊸⌊⊸≤○=𝕩 ⋄ (-≠𝕩)↑𝕩∾𝕨}
-Nudge     ← (1↑0↑⊢)⊸ShiftBefore
-NudgeBack ← (1↑0↑⊢)⊸ShiftAfter
-» ← Nudge          ⊘ ShiftBefore
-« ← NudgeBack      ⊘ ShiftAfter
 
 ReorderChk←{
   "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
