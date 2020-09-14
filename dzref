@@ -40,27 +40,6 @@ Windows←{
 #⌜
 # LAYER 6: Everything else
 
-
-Join←(1≠=)◶⟨∨´1≠=⌜,1⟩◶{
-  # List of lists
-  i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
-  {{e↩a⊑˜i↩𝕩⋄j↩¯1}⍟(i⊸≠)𝕩⋄(j↩j+1)⊑e}⌜/≠⌜𝕩
-}‿{
-  # Multidimensional
-  ! IsArray 𝕩
-  n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ d←≠0⊑s
-  ! ∧´d=≠⌜s
-  ! d≥=𝕩
-  q←1 ⋄ l←(≢𝕩){m←𝕩⊸⊑⌜s ⋄ r←⊑⟜m⌜q×↕𝕨 ⋄ !m≡n⥊r⊣⌜↕q ⋄ q×↩𝕨 ⋄ r}¨○⌽↕=𝕩
-  t←(=𝕩)↓0⊑s
-  ! ∧´(t≡(=𝕩)⊸↓)⌜s
-  i←<0 ⋄ q↩<1
-  {s←0⋄p←{o←s⋄s+↩𝕩⋄o}⌜𝕩 ⋄ j←↕s ⋄ i↩(j⊢⌜i)+(j-𝕩/p)×⌜q ⋄ q×⌜˜↩𝕩/𝕩}⌜l
-  i(0<≠t)◶⟨⊑⟜⥊¨,{ti←t⥊↕tp←×´t⋄((tp×𝕨)+⌜ti)⊑⟜⥊¨𝕩⊣⌜ti}⟩(⌽l)/𝕩
-}⍟(0<≠∘⥊)
-
-∾ ↩ Join           ⊘ ∾
-
 # Searching
 IndexOf←(1<⌈○=)◶⊐‿{
   c←1-˜=𝕨
@@ -92,7 +71,7 @@ raw ← {⍎}
 X ← {F:≤4}
 {v:
   chrs←⟨
-    "»«∾↕⊐⊒∊⍷"
+    "»«↕⊐⊒∊⍷"
     ""
     "⚇"
   ⟩
@@ -115,7 +94,7 @@ X ← {F:≤4}
 
   Raw¨ ⟨
     "IsArray ← 0≠≡"
-  ⟩∾Mod⟜⥊¨ "↕∾⊐"
+  ⟩∾Mod⟜⥊¨ "↕⊐"
 
 
   # checks if line is a builtin redefinition
