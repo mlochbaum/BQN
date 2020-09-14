@@ -51,10 +51,10 @@ xkb_symbols "bqn" {
   key <AC03> { [ U02195         ] }; // D
   key <AC04> { [ U1D557, U1D53D ] }; // F𝕗𝔽
   key <AC05> { [ U1D558, U1D53E ] }; // G𝕘𝔾
-  key <AC06> { [ U022B8  U000AB ] }; // H⊸«
+  key <AC06> { [ U022B8, U000AB ] }; // H⊸«
   key <AC07> { [ U02218         ] }; // J∘
   key <AC08> { [ U025CB, U0233E ] }; // K○⌾
-  key <AC09> { [ U027DC  U000BB ] }; // L⟜»
+  key <AC09> { [ U027DC, U000BB ] }; // L⟜»
   key <AC10> { [ U022C4, U000B7 ] }; // ;⋄·
   key <AC11> { [ U021A9, U002D9 ] }; // '↩˙
   key <AC12> { [                ] }; // /
