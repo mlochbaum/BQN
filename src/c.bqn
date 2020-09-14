@@ -36,15 +36,14 @@ Tokenize←{
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=¯1⊑𝕩}
   st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⍋e⋄q/˜↩st⋄e/˜↩st
   n←≠𝕩⋄a←n↑/⁼q⋄b←n↑/⁼e
-  f←¬(≠`a∨b)∨1⌽qe←a∧»⊸∧dm
+  f←¬(≠`a∨b)∨«qe←a∧»⊸∧dm
   "Unclosed quote"!¬∨´(sm∨dm)∧b<f
 
-  u←f∧𝕩='@'⋄ci←/u∨¯1⌽a∧sm
+  u←f∧𝕩='@'⋄ci←/u∨»a∧sm
   chr←(ci⊏𝕩)-(ci⊏u)×'@'-@
   str←1↓¨𝕩⊔˜1-˜(+`si←dm∧a>qe)×≠`dm∧a∨b
   lv←chr(⊣∾(1+¯1⌈´⊣)+⊢)○⊐str
-  UM←(¯1»⌈`)⊸<
-  lit←lv UM⊸/chr∾str
+  lit←lv(⊢>¯1»⌈`)⊸/chr∾str
   li←(ci∾/si)⊏+`»f
 
   c←CharCode f/𝕩
@@ -52,7 +51,7 @@ Tokenize←{
   us←c=¯1++´bA
   id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
   ti←na⌊∘÷˜(⊑bA)-˜w/c
-  iu←/UM is←⊐id⋄ie←vi+≠in←0>iu⊏ti
+  iu←/(⊢>¯1»⌈`)is←⊐id⋄ie←vi+≠in←0>iu⊏ti
   ti↩(us/˜«⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
 
   c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(ie+lv)⌾(li⊸⊏)c
@@ -94,7 +93,7 @@ Parse ← {nv‿r←𝕨
   g←⍋pd←+`p←𝕩(M×¯1⋆2|-⟜⊑)bB⋄br←p×𝕩M 2≍˜2+⊑bB
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
-  sl←1⊸⌽⊸∨𝕩 M bL⋄sr←¯1⊸⌽⌾(g⊸⊏)sl⋄sa←sl∨sr
+  sl←«⊸∨𝕩 M bL⋄sr←»⌾(g⊸⊏)sl⋄sa←sl∨sr
   g⊏˜↩⍋g⊏sl⋄r×↩¬sa⋄o←p>0
   pt←sa<𝕩=1+⊑bB
   rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨sl∨𝕩 M bS
@@ -108,7 +107,7 @@ Parse ← {nv‿r←𝕨
   ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
   fsc←ft⊏spc
   r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
-  r+↩pt(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(¯1⊸⌽⌾(g⊸⊏)3=r)∨1≤r
+  r+↩pt(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(»⌾(g⊸⊏)3=r)∨1≤r
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
   ad←(⌈`↕∘≠⊸×𝕩 M bG)⊏𝕩=⊑bG
@@ -117,14 +116,14 @@ Parse ← {nv‿r←𝕨
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩gr⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
   gi←⍋g⋄l⊏↩⍋gs
   s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩 M 2≍˜⊑bG
-  r-↩ps∨a⋄op←r≥2⋄fe←(r≥1)∨1⌽r=3
-  tr←(⌈`↕∘≠⊸×¯1⌽ps)⊏fe
-  ma←tr<(𝕩=1+⊑bG)∧1⌽fe
-  ro←op∨a<1⌽r=3⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨ma⋄at←(⊢+1+⊏⟜os)/a
-  aa←g⊏asn←¯1⌽+`gi⊏-⟜»¯1↓/⁼(≠𝕩)∾˜at-1⋄r↩¯1¨⌾(aa⊸/)r
+  r-↩ps∨a⋄op←r≥2⋄fe←(r≥1)∨«r=3
+  tr←(⌈`↕∘≠⊸×»ps)⊏fe
+  ma←tr<(𝕩=1+⊑bG)∧«fe
+  ro←op∨a<«r=3⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨ma⋄at←(⊢+1+⊏⟜os)/a
+  aa←g⊏asn←»+`gi⊏-⟜»(≠𝕩)↑/⁼at-1⋄r↩¯1¨⌾(aa⊸/)r
   tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧(⊢∧2(|<≤)ps(⊢-⌈`∘×)+`)¬ro
   opa←op>«ps∨a
-  oa←⌽/opa⋄fa←/(1⌽aa)<(tf∨¬tr)∧(ro∧1⌽opa)<(r=1)∨op<¯1⌽opa
+  oa←⌽/opa⋄fa←/(«aa)<(tf∨¬tr)∧(ro∧«opa)<(r=1)∨op<»opa
   dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
   n←𝕩≥vi+nv⋄cn←/n∨𝕩≤¯1++´bC⋄u←∧⍷ob←cn⊏𝕩
   lo←(o/𝕩)=4+⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
