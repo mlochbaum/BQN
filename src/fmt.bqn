@@ -1,7 +1,7 @@
 # Format an array to a string including newlines
 {
   F0←𝔽  # Function to format a scalar
-  FmtAtom ← (≍ ≤⟜∞◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,F0⟩)
+  FmtAtom ← (≍ <⟜@◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,F0⟩)
 
   # Vertical padding for arrays of rank greater than 2
   PadV ← {
@@ -52,7 +52,7 @@
     (=𝕩) Enframe 2 Pad 𝕨 PaddingJoin Fmt¨𝕩
   }
 
-  FmtSimple ← (≠(0⊸<+≤)+´)∘(⥊≤∞˙)◶{ # Depth 1
+  FmtSimple ← (≠(0⊸<+≤)+´)∘(⥊<@˙)◶{ # Depth 1
     # All characters
     k ← ∞⍟(0⊸=) -≠ c ← ¯1↓≢𝕩
     q ← '"'
