@@ -2,8 +2,8 @@
 
 # WebAssembly backend (very incomplete)
 
-i←"⟨cgl,charSet,Tokenize,ReadNum⟩"
-⟨cgl,charSet,Tokenize,ReadNum⟩ ← ⟨•path∾"src/c.bqn",i⟩ •EX •path∾"dzref"
+i←"⟨cgl,charSet,Tokenize⟩"
+⟨cgl,charSet,Tokenize⟩ ← ⟨•path∾"src/c.bqn",i⟩ •EX •path∾"dzref"
 chF←(⊑cgl)↑charSet
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
@@ -47,7 +47,7 @@ fntab←⍉(0¨tab1)∾tab1≍tab2
 f64←127-3
 
 GenFn←{
-  ⟨t,r,nVar,lits,strs⟩←Tokenize𝕩
+  ⟨t,r,nVar,lits⟩←Tokenize𝕩
   nLoc←nVar-𝕨⊢0
   t⊏˜↩⍋+`-˝(2‿3+⊑bB)=⌜t
   nd←+´c←t=3+⊑bB
@@ -56,7 +56,7 @@ GenFn←{
   ops←⥊∾⟨
     ∾⟜(0⥊˜3∾˜vi-≠)fntab
     ⍉(Hex¨"20"‿"22"‿"21")∾⌜↕nVar
-    ⊣⌜⟜(↕3)(GenF64∘ReadNum¨lits)∾(Hex"10")∾¨3+↕nd
+    ⊣⌜⟜(↕3)(GenF64¨lits)∾(Hex"10")∾¨3+↕nd
   ⟩
   (((≠∾∾)⟨nLoc∾f64⟩)∾(Hex"0B")∾˜∾)¨((⊢-˜¬×+`)a=2+⊑bB)⊔(na+3×a)⊏ops
 }

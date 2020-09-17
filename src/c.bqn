@@ -42,23 +42,23 @@ Tokenize←{
   u←f∧𝕩='@'⋄ci←/u∨»a∧sm
   chr←(ci⊏𝕩)-(ci⊏u)×'@'-@
   str←1↓¨𝕩⊔˜1-˜(+`si←dm∧a>qe)×≠`dm∧a∨b
-  lv←chr(⊣∾(1+¯1⌈´⊣)+⊢)○⊐str
-  lit←lv(⊢>¯1»⌈`)⊸/chr∾str
-  li←(ci∾/si)⊏+`»f
 
   c←CharCode f/𝕩
-  w←»⊸<l←c M (⊑bD)≍+´1⊑¨bD‿bN‿bA
-  us←c=¯1++´bA
-  id←(1-˜(us<l)×+`w)⊔na(⊢-⊣×+⟜(⊑bA)⊸≤)c
-  ti←na⌊∘÷˜(⊑bA)-˜w/c
-  iu←/(⊢>¯1»⌈`)is←⊐id⋄ie←vi+≠in←0>iu⊏ti
-  ti↩(us/˜«⊸<l)(⊢+∧⟜(2⊸=))0⌈ti
+  w←»⊸<l←c M bD(⊣≍-˜)○⊑bW⋄us←c=¯1++´bA
+  tw←na⌊∘÷˜(⊑bA)-˜w/c
+  c-↩na×l∧c≥na+⊑bA
+  li←l>in←l∧(+`w)⊏0∾tw<0
+  num←ReadNum¨¬⊸(+`⊸×-⊣)∘×⊸⊔ in∨⟜»⊸/c×l
+  ti←(us/˜«⊸<li)(⊢+∧⟜(2⊸=))0⊸≤⊸/tw
+  id←(1-˜(li>us)×+`w>in)⊔c
+  ki←((⍋⊏⟜in)⊸⊏/w)∾(ci∾/si)⊏+`»f
 
-  c↩(w∨¬l∨c M bW)/(vi+is⊏⍋⍋in)⌾(w⊸/)(ie+lv)⌾(li⊸⊏)c
+  k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k
+  c↩(w∨¬l∨c M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)c
   c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1«c∊3‿5+⊑bB)∧c M bS
-  ic←(vi⊸≤∧<⟜ie)c⋄t←ti⌾(ic⊸/)(vi⌊c)⊏charRole
+  t←ti⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
-  ⟨c,t,+´¬in,(in/iu)⊏id,lit⟩
+  ⟨c,t,≠⊑k,∾1↓k⟩
 }
 
 ReadNum←{
@@ -149,8 +149,8 @@ Parse ← {nv‿r←𝕨
 }
 
 Compile←{
-  ⟨t,r,nVar,nums,strs⟩←Tokenize𝕩
+  ⟨t,r,nVar,const⟩←Tokenize𝕩
   ⟨bc,u,blk⟩←nVar‿r Parse t
-  o←(u-(vi+nVar-≠𝕨)×u≥vi)⊏∾⟨𝕨,ReadNum¨nums,strs⟩
+  o←(u-(vi+nVar-≠𝕨)×u≥vi)⊏𝕨∾const
   ⟨bc,o,blk⟩
 }
