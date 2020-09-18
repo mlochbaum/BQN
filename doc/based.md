@@ -10,7 +10,7 @@ If you're an array programmer then I have bad news for you. My thesis here is th
 
 ## Starting from atoms
 
-APL tends to define its data by starting with the array and then looking downwards in depth at what it contains. The based array model, as the name suggests, starts with at the foundations, which in BQN are called "atoms". There are five types of atom, which together with the array type give the six types a value can have in BQN. Based means being yourself, and an atom's *not* an array.
+APL tends to define its data by starting with the array and then looking downwards in depth at what it contains. The based array model, as the name suggests, starts at the foundations, which in BQN are called "atoms". There are five types of atom, which together with the array type give the six types a value can have in BQN. Based means being yourself, and an atom's *not* an array.
 
 An atom has [depth](depth.md) 0, and doesn't inherently have a shape. However, primitives that expect an array promote atoms by enclosing them to get a scalar containing the atom. Rank and shape both do this, so an atom can be considered to have the same dimensions as a scalar: rank 0 and shape `⟨⟩`.
 
@@ -40,7 +40,7 @@ Arrays in BQN, like nearly all data structures in modern programming languages, 
 
 ## Versus the nested array model
 
-The [nested array model](https://aplwiki.com/wiki/Array_model#Nested_array_theory) of NARS, APL2, Dyalog, and GNU APL can be constructed from the based model by adding a rule: a scalar array containing an atom is equivalent to that atom. The equivalents of atoms in nested array theory are thus called "simple scalars", and they are considered arrays but share the same characteristics of BQN atoms. Nested arrays don't form an inductive type, because simple scalars contain themselves.
+The [nested array model](https://aplwiki.com/wiki/Array_model#Nested_array_theory) of NARS, APL2, Dyalog, and GNU APL can be constructed from the based model by adding a rule: a scalar array containing an atom is equivalent to that atom. The equivalents of atoms in nested array theory are thus called "simple scalars", and they are considered arrays but share the characteristics of BQN atoms. Nested arrays don't form an inductive type, because simple scalars contain themselves.
 
 Nested array theory can seem simpler to use, because the programmer never has to worry about simple scalars being enclosed the wrong number of times: all these encloses have been identified with each other. For example, `'abcd'[2]` returns a character while BQN's `2⊏"abcd"` returns a scalar containing a character. However, these issues usually still appear with more complex arrays: `'ab' 1 'ef'[2]` (here spaces are used for stranding) is not a string but an enclosed string!
 
