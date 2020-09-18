@@ -11,7 +11,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   # Use last character in case of UTF-16 (like dzaima/BQN)
   ¯1⊏˘10‿∘⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘" # Input (𝕣 pending; ℝ not allowed)
   '0'+↕10               # Digit
-  "¯.π∞"                # Numeric
+  "π∞¯."                # Numeric
   "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
   (¯1↓"𝕨")∾" "∾@+9      # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
@@ -48,7 +48,7 @@ Tokenize←{
   tw←na⌊∘÷˜(⊑bA)-˜w/c
   c-↩na×l∧c≥na+⊑bA
   li←l>in←l∧(+`w)⊏0∾tw<0
-  num←ReadNums in∨⟜»⊸/○(∾⟜0)c×l
+  num←ReadNums in∨⟜«⊸/○(0⊸∾)c×l
   ti←(us/˜«⊸<li)(⊢+∧⟜(2⊸=))0⊸≤⊸/tw
   id←(1-˜(li>us)×+`w>in)⊔c
   ki←((⍋⊏⟜in)⊸⊏/w)∾(ci∾/si)⊏+`»f
@@ -65,24 +65,20 @@ ErrNumericChars←{
   ⟨"Letter","s"/˜1<≠𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩∾⊸!0
 }
 ReadNums←{
-  e‿n‿d‿p‿i←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN  # e¯.π∞
+  e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN  # eπ∞¯.
   ErrNumericChars∘(/⟜𝕩)⍟(∨´) ¬e∨𝕩<⊑bA
-  st←𝕩/˜s←d∨c←e∨z←0=𝕩
-  "Negative sign in the middle of a number" ! ∧´n≤1»c
-  "Portion of a number is empty" ! ¬∨´(1»s∨n)∧s
-  "Ill-formed decimal or exponent use" ! ∧´(0⊸=∨»⊸<)st
+  m←¬n∨s←d∨c←e∨z←0=𝕩
+  "Negative sign in the middle of a number" ! ∧´n≤»c
+  "Portion of a number is empty" ! ¬∨´(»¬m)∧s
+  "Ill-formed decimal or exponent use" ! ∧´(0⊸=∨»⊸<)s/𝕩
   "π and ∞ must occur alone" ! ∧´(p∨i)≤1(»∧(p∧«e)∨«)z∨n
-  ReadNum¨(¬⊸(+`⊸×-⊣)×𝕩)⊔𝕩-⊑bD
-}
-ReadNum←{
-  n‿d‿p‿i←10+↕4  # ¯.π∞
-  Nat←+⟜(10⊸×)´∘⌽
-  Int←(n=⊑)◶⟨Nat,-·Nat 1⊸↓⟩
-  Dec←⊐⟜(<d)⊸(Nat∘↑ + ·(0<≠)◶⟨0,Nat÷10⋆≠⟩+⟜1⊸↓)
-  Pos←(⊑p‿i⊐⊏)◶⟨π,∞,Dec⟩
-  e←⊑𝕩⊐(-´"ea")+bA-○⊑bD
-  m←(n=⊑)◶⟨Pos,-·Pos 1⊸↓⟩e↑𝕩
-  𝕩×⟜(10⋆·Int(e+1)↓⊣)˜⍟(e<≠𝕩)m
+  l←(π‿∞∾˜↕10)⊏˜m/𝕩-⊑bD⋄b←(m/»c)∨nl←m/»n
+  v←(1‿¯1⊏˜b/nl)×+⟜(10⊸×)´∘⌽¨(1-˜+`b)⊔l
+  vm←c/z
+  ld←(⌈`⊢×1+↕∘≠)d∾0
+  dp←vm/(»⊸<×-)⟜(⊏⟜ld)(≠«/)c
+  t←10⋆|ee←dp-˜(0⊸∾/0∾˜0⍟⊣¨⟜v)vm
+  t÷˜⌾((0>ee)⊸/)t×⌾((0<ee)⊸/)vm/v
 }
 
 
