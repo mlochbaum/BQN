@@ -104,7 +104,6 @@ if (location.hash) {
   let b=atob(code);
   b=new Uint8Array([...b].map(c=>c.charCodeAt(0)));
   setcount(doc.code.value = (new TextDecoder()).decode(b));
-  if (doc.count) doc.count.textContent=(l=>l+" char"+(l!=1?"s":""))(s.length);
   if (run) repl();
 }
 doc.code.focus();
