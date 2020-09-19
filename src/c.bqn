@@ -111,8 +111,7 @@ Parse ← {nv‿r←𝕨
   rev⊏˜↩gf⋄fd⊏˜↩gf
   𝕩⊏˜↩rev⋄bv←rev⊏br⋄b←/bv<0⋄fi←+`c←bv>0
 
-  FC←-⟜»(c∾1)/·+`∾⟜0
-  H←0<1↓FC∘=
+  H←¬·1⊸«⊸/c(∨/⊣)=
   ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
   fsc←ft⊏spc
   r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
@@ -138,7 +137,7 @@ Parse ← {nv‿r←𝕨
   lo←(o/𝕩)=4+⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
   dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2+⊑bB
 
-  d←id⊏dec←idm∧ad∧asn⋄lc←FC dec
+  d←id⊏dec←idm∧ad∧asn⋄lc←-⟜»(c∾1)/+`dec∾0
   ixf←(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
   "Multiple definitions" ! 1∧´ixx∨○(»⊸≠((≠id)⊸≤⊸/ig)⊏⊢)ixf
