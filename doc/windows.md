@@ -37,7 +37,7 @@ If the left argument has length `0`, then the argument is not sliced along any d
 
 ### More formally
 
-`𝕩` is an array. `𝕨` is a number or numeric list or scalar with `𝕨≤○≠≢𝕩`. The result `z` has shape `𝕨∾¬⟜𝕨⌾((≠𝕨)⊸↑)≢𝕩`, and element `i⊑z` is `𝕩⊑˜(≠𝕨)(↑+⌾((≠𝕨)⊸↑)↓)i`.
+`𝕩` is an array. `𝕨` is a number, or numeric list or unit, with `𝕨≤○≠≢𝕩`. The result `z` has shape `𝕨∾¬⟜𝕨⌾((≠𝕨)⊸↑)≢𝕩`, and element `i⊑z` is `𝕩⊑˜(≠𝕨)(↑+⌾((≠𝕨)⊸↑)↓)i`.
 
 Using [Group](group.md) we could also write `i⊑z` ←→ `𝕩⊑˜(𝕨∾○(↕∘≠)≢𝕩) +´¨∘⊔ i`.
 

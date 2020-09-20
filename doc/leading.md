@@ -55,7 +55,7 @@ Not all functions work on the first axis in a straightforward manner. [Transpose
 
 The other two monadic functions that work on high-rank arguments are Deshape (`⥊`) and First (`⊑`). These treat the argument as one long list, ordered by its element indices. This ordering privileges leading axes (in fact, it is the reason for the choice of leading axes in the leading axis convention), but these functions can't really be said to work on leading axes: they apply to all axes.
 
-The Each (`¨`) and Table (`⌜`) modifiers return functions which are the same in the monadic case. These functions simply go through all elements of the argument array without regard for its multi-dimensional structure (the operand is applied to elements in index order, matching Deshape; this matters if it has side effects). Similarly, monadic scalar functions do not have any sort of leading axis dependence.
+The Each (`¨`) and Table (`⌜`) modifiers return functions which are the same in the monadic case. These functions simply go through all elements of the argument array without regard for its multi-dimensional structure (the operand is applied to elements in index order, matching Deshape; this matters if it has side effects). Similarly, monadic arithmetic functions do not have any sort of leading axis dependence.
 
 ## Dyadic functions
 
@@ -82,7 +82,7 @@ Functions with single-axis depth 1 tend to be more complicated; see for example 
 
 ### Leading axis agreement
 
-Scalar functions, and the Each (`¨`) and Depth (`⚇`) modifiers, use leading axis agreement to match their arguments together. All axes of the lower-rank argument are matched with the leading axes of the higher-rank one, and axes matched together must have the same length. After pairing axes in this way, a single element of the lower-rank argument might correspond to any number of elements of the higher-rank one. It's reused for each of those corresponding elements.
+Arithmetic functions, and the Each (`¨`) and Depth (`⚇`) modifiers, use leading axis agreement to match their arguments together. All axes of the lower-rank argument are matched with the leading axes of the higher-rank one, and axes matched together must have the same length. After pairing axes in this way, a single element of the lower-rank argument might correspond to any number of elements of the higher-rank one. It's reused for each of those corresponding elements.
 
         ⊢ x ← 3‿2‿4 ⥊ ↕60     # A rank-3 array
         100‿0‿200 + x         # 0-cells paired with 2-cells
@@ -90,7 +90,7 @@ Scalar functions, and the Each (`¨`) and Depth (`⚇`) modifiers, use leading a
         c + x                 # 0-cells paired with 1-cells
         x + x                 # Pairwise addition
 
-If one argument is a scalar, that is, it has no axes, then leading axis agreement reduces to "scalar extension", where a single scalar is matched with an entire array by repeating it at every application. A scalar always agrees with any other array under leading axis agreement because it has no axes whose lengths would need to be checked.
+If one argument is a unit, that is, it has no axes, then leading axis agreement reduces to APL's "scalar extension" (where "scalar" is equivalent to BQN's "unit"), where a single unit is matched with an entire array by repeating it at every application. A unit always agrees with any other array under leading axis agreement because it has no axes whose lengths would need to be checked.
 
 With leading axis agreement, there are `k+1` shapes for arrays that can be added (or any other function with Each) to a given array `x` without changing its rank. These are precisely the prefixes of `≢x`, with ranks from `0` to `k` inclusive. Arrays with larger rank can also be used as the other argument, but then the result shape will match that argument and not `x`.
 
