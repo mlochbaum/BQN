@@ -4,6 +4,34 @@
 
 A few tables to help users of Dyalog APL (or similar) get started quickly on BQN. Here we assume `⎕ML` is 1 for Dyalog.
 
+## Terminology
+
+### Array model
+
+BQN uses the [based array model](based.md), so that a Dyalog's simple scalar corresponds to many BQN values: an atom, its enclose, and so on.
+
+| Dyalog        | BQN   |
+|---------------|-------|
+| Simple scalar | Atom  |
+| Scalar        | Unit  |
+| Vector        | List  |
+| Matrix        | Table |
+
+BQN shares the terms "cell" and "major cell" with Dyalog, and uses
+"element" (which may mean different things to different Dyalog users) *not* for a 0-cell but for the value it contains.
+
+### Roles
+
+Dyalog uses value types (array, function, and so on) to determine syntax while BQN uses a separate concept called syntactic roles. See [context-free grammer](context.md).
+
+| Dyalog type      | BQN role   |
+|------------------|------------|
+| Array            | Subject    |
+| Function         | Function   |
+| Monadic operator | 1-modifier |
+| Dyadic operator  | 2-modifier |
+| Niladic function | *go away*  |
+
 ## For reading
 
 Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs as APL. Correspondence can be approximate, and `⌽` is just used as a decorator to mean "reverse some things".
