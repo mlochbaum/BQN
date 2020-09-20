@@ -6,10 +6,10 @@ BQN's grammar is given below. Terms are defined in a [BNF](https://en.wikipedia.
 
 The symbols `s`, `F`, `_m`, and `_c_` are identifier tokens with subject, function, 1-modifier, and 2-modifier classes respectively. Similarly, `sl`, `Fl`, `_ml`, and `_cl_` refer to literals and primitives of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic classes are no longer used after parsing and cannot be inspected in a running program.
 
-A program is a list of statements. Almost all statements are expressions. However, explicit definitions and valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions.
+A program is a list of statements. Almost all statements are expressions. Only valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions.
 
     PROGRAM  = ⋄? ( ( STMT ⋄ )* STMT ⋄? )?
-    STMT     = EXPR | DEF | nothing
+    STMT     = EXPR | nothing
     ⋄        = ( "⋄" | "," | \n )+
     EXPR     = subExpr | FuncExpr | _m1Expr | _m2Expr_
 
