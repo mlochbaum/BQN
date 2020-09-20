@@ -19,7 +19,7 @@ Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 Box ← {⟨⟩⥊⟨𝕩⟩}
 ToArray ← Box⍟(1-IsArray)
 
-# LIMITED to numeric arguments for scalar cases
+# LIMITED to numeric arguments for arithmetic cases
 ≥ ←            ≤˜
 < ← Box      ⊘ (1-≥)
 > ←            (1-≤)

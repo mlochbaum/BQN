@@ -1,6 +1,6 @@
 # Format an array to a string including newlines
 {
-  F0←𝔽  # Function to format a scalar
+  F0←𝔽  # Function to format an atom
   FmtAtom ← (≍ <⟜@◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,F0⟩)
 
   # Vertical padding for arrays of rank greater than 2

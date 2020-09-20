@@ -36,7 +36,7 @@ _amend     # {(𝕗⊑𝕩)↩𝕨⋄𝕩}
 ↕          # LIMITED to number 𝕩
 Identity   # Left or right identity of function 𝕏
 ⁼          # Inverse of function 𝔽
-Type       # Scalar (enclosed) prototype of 𝕩
+Type       # Unit (enclosed) prototype of 𝕩
 
 
 #⌜
@@ -54,7 +54,7 @@ Type       # Scalar (enclosed) prototype of 𝕩
 ⊸ ← {(𝔽𝕨⊣𝕩)𝔾𝕩}
 ⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
 
-# LIMITED to numeric arguments for scalar cases
+# LIMITED to numeric arguments for arithmetic cases
 √ ← 2⊸√      ⊘ (⋆⟜÷˜)
 ∧ ←            ×
 ∨ ←            (+-×)
@@ -89,7 +89,7 @@ Length ← (0<=)◶⟨1⋄0⊑≢⟩
 
 #⌜
 # LAYER 2: Pervasion
-# After defining _perv, we apply it to all scalar functions,
+# After defining _perv, we apply it to all arithmetic functions,
 # making them pervasive. I'm not going to write that out.
 
 ToArray ← IsArray◶<‿⊢

@@ -12,9 +12,9 @@ If you're an array programmer then I have bad news for you. My thesis here is th
 
 APL tends to define its data by starting with the array and then looking downwards in depth at what it contains. The based array model, as the name suggests, starts at the foundations, which in BQN are called "atoms". There are five types of atom, which together with the array type give the six types a value can have in BQN. Based means being yourself, and an atom's *not* an array.
 
-An atom has [depth](depth.md) 0, and doesn't inherently have a shape. However, primitives that expect an array promote atoms by enclosing them to get a scalar containing the atom. Rank and shape both do this, so an atom can be considered to have the same dimensions as a scalar: rank 0 and shape `⟨⟩`.
+An atom has [depth](depth.md) 0, and doesn't inherently have a shape. However, primitives that expect an array promote atoms by enclosing them to get a rank-0, or *unit*, array that contains the atom (any value can be enclosed in this way, giving a unit array with higher depth, but it only happens automatically for atoms). Rank and shape both do this, so an atom can be considered to have the same dimensions as a unit array: rank 0 and shape `⟨⟩`. An atom is also considered a kind of unit, but it's not a unit array.
 
-Atoms are displayed as plain values, while boxed atoms (that is, depth-1 scalar arrays) are shown with an array display.
+Atoms are displayed as plain values, while enclosed atoms, that is, depth-1 unit arrays, are shown with an array display.
 
         3    # Atom
         <3   # Array
@@ -40,9 +40,9 @@ Arrays in BQN, like nearly all data structures in modern programming languages, 
 
 ## Versus the nested array model
 
-The [nested array model](https://aplwiki.com/wiki/Array_model#Nested_array_theory) of NARS, APL2, Dyalog, and GNU APL can be constructed from the based model by adding a rule: a scalar array containing an atom is equivalent to that atom. The equivalents of atoms in nested array theory are thus called "simple scalars", and they are considered arrays but share the characteristics of BQN atoms. Nested arrays don't form an inductive type, because simple scalars contain themselves.
+The [nested array model](https://aplwiki.com/wiki/Array_model#Nested_array_theory) of NARS, APL2, Dyalog, and GNU APL can be constructed from the based model by adding a rule: a unit (or "scalar" in APL) array containing an atom is equivalent to that atom. The equivalents of atoms in nested array theory are thus called "simple scalars", and they are considered arrays but share the characteristics of BQN atoms. Nested arrays don't form an inductive type, because simple scalars contain themselves.
 
-Nested array theory can seem simpler to use, because the programmer never has to worry about simple scalars being enclosed the wrong number of times: all these encloses have been identified with each other. For example, `'abcd'[2]` returns a character while BQN's `2⊏"abcd"` returns a scalar containing a character. However, these issues usually still appear with more complex arrays: `'ab' 1 'ef'[2]` (here spaces are used for stranding) is not a string but an enclosed string!
+Nested array theory can seem simpler to use, because the programmer never has to worry about simple scalars being enclosed the wrong number of times: all these encloses have been identified with each other. For example, `'abcd'[2]` returns a character while BQN's `2⊏"abcd"` returns an array containing a character. However, these issues usually still appear with more complex arrays: `'ab' 1 'ef'[2]` (here spaces are used for stranding) is not a string but an enclosed string!
 
 A property that might warn about dangerous issues like this is that nested array theory tends to create *inversions* where the depth of a particular array depends on its rank (reversing the normal hierarchy of depth→rank→shape). A 1-character string has depth 1, but when its rank is reduced to 0, its depth is reduced as well.
 
@@ -50,8 +50,8 @@ In some cases nested array theory can remove a depth issue entirely, and not jus
 
 ## Versus the boxed array model
 
-The [boxed array model](https://aplwiki.com/wiki/Array_model#Boxes) of SHARP APL, A+, and J is an inductive system like BQN's. But this model uses arrays as the base case: numeric and character arrays are the simplest kind of data allowed, and "a number" means a scalar numeric array. The inductive step is the array of boxes; as with numbers "a box" is simply a scalar array of boxes.
+The [boxed array model](https://aplwiki.com/wiki/Array_model#Boxes) of SHARP APL, A+, and J is an inductive system like BQN's. But this model uses arrays as the base case: numeric and character arrays are the simplest kind of data allowed, and "a number" means a rank-0 numeric array. The inductive step is the array of boxes; as with numbers "a box" is simply a rank-0 array of boxes.
 
-Numeric and character arrays in this system have depth 0. In general these correspond to arrays of depth 1 in BQN, but because there's no lower depth they are also used where BQN atoms would appear. For example, both Shape (`$`) and Length (`#`) return depth-0 results in J. For a non-scalar array `a`, the length `#a` is exactly `[/ $ a`, while the identical BQN code `⊣˝ ≢ a` returns not `≠ a` but `< ≠ a`. Like the nested model, the boxed model can hide depth issues that occur at lower depths but generally reveals them at higher depths.
+Numeric and character arrays in this system have depth 0. In general these correspond to arrays of depth 1 in BQN, but because there's no lower depth they are also used where BQN atoms would appear. For example, both Shape (`$`) and Length (`#`) return depth-0 results in J. For an array `a` with rank at least 1, the length `#a` is exactly `[/ $ a`, while the identical BQN code `⊣˝ ≢ a` returns not `≠ a` but `< ≠ a`. Like the nested model, the boxed model can hide depth issues that occur at lower depths but generally reveals them at higher depths.
 
 The boundary at depth 0 will tend to cause inconsistencies and confusion in any array language, and boxed array languages push this boundary up a level. This leads to the programmer spending more effort managing boxes: for example, to reverse each list in a list of lists, the programmer can use reverse under open, `|. &. >`. But to find the lengths of each of these lists, `# &. >` would yield a boxed list, which is usually not wanted, so `# @ >` is needed instead. BQN shows that a system that doesn't require these distinctions is possible, as a BQN programmer would use `⌽¨` and `≠¨`.

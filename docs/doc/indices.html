@@ -21,25 +21,25 @@
 <td><code><span class='Function'>↕</span></code></td>
 <td></td>
 <td></td>
-<td>Element scalar or list</td>
+<td>Element number or list</td>
 </tr>
 <tr>
 <td><code><span class='Function'>/</span></code></td>
 <td></td>
 <td></td>
-<td>Element scalar</td>
+<td>Element number</td>
 </tr>
 <tr>
 <td><code><span class='Function'>⊔</span></code></td>
 <td></td>
 <td></td>
-<td>Element scalar</td>
+<td>Element number</td>
 </tr>
 <tr>
 <td><code><span class='Function'>⊔</span></code></td>
 <td><code><span class='Function'>⊔</span></code></td>
 <td><code><span class='Value'>𝕩</span></code>/<code><span class='Value'>𝕨</span></code></td>
-<td>Along-axis scalar</td>
+<td>Along-axis number</td>
 </tr>
 <tr>
 <td></td>
@@ -51,45 +51,45 @@
 <td><code><span class='Function'>⍋</span></code></td>
 <td><code><span class='Function'>⍋</span></code></td>
 <td></td>
-<td>Major cell scalar</td>
+<td>Major cell number</td>
 </tr>
 <tr>
 <td><code><span class='Function'>⍒</span></code></td>
 <td><code><span class='Function'>⍒</span></code></td>
 <td></td>
-<td>Major cell scalar</td>
+<td>Major cell number</td>
 </tr>
 <tr>
 <td></td>
 <td><code><span class='Function'>⊐</span></code></td>
 <td></td>
-<td>Major cell scalar</td>
+<td>Major cell number</td>
 </tr>
 <tr>
 <td></td>
 <td><code><span class='Function'>⊒</span></code></td>
 <td></td>
-<td>Major cell scalar</td>
+<td>Major cell number</td>
 </tr>
 <tr>
 <td></td>
 <td><code><span class='Function'>⊏</span></code></td>
 <td><code><span class='Value'>𝕨</span></code></td>
-<td>Major cell or along-axis scalar</td>
+<td>Major cell or along-axis number</td>
 </tr>
 <tr>
 <td><code><span class='Function'>⍉</span></code></td>
 <td></td>
 <td></td>
-<td>Axis scalar</td>
+<td>Axis number</td>
 </tr>
 </tbody>
 </table>
 <p>Dyadic Transpose (<code><span class='Function'>⍉</span></code>) uses indices into the right argument axes in its left argument, but since array shape is 1-dimensional, there is only one sensible choice for this, a single number.</p>
 <h1 id="element-indices">Element indices</h1>
 <p>In general, the index of an element of an array is a list whose length matches the array rank. It is also possible to use a number for an index into a list, as the list index is a singleton, but this must be kept consistent with the rest of the language. NARS-family APLs make the Index Generator (<code><span class='Function'>↕</span></code> in BQN) return a numeric list when the argument has length 1 but a nested array otherwise. This means that the depth of the result depends on the shape of the argument, inverting the typical hierarchy. BQN shouldn't have such an inconsistency.</p>
-<p>Functions <code><span class='Function'>↕</span></code>, <code><span class='Function'>/</span></code>, <code><span class='Function'>⊔</span></code>, and <code><span class='Function'>⊑</span></code> naturally deal with element indices. Each of these can be defined to use list indices. However, this usually rules out the possibility of using scalar indices, which makes these functions harder to use both with generic array manipulation and with the major cell indices discussed in the next section. For this reason BQN restricts <code><span class='Function'>⊔</span></code> and monadic <code><span class='Function'>/</span></code> to use atomic indices, which comes with the requirement that the arguments to monadic <code><span class='Function'>/</span></code> and <code><span class='Function'>⊔</span></code>, and the result of monadic <code><span class='Function'>⊔</span></code>, must be lists. For dyadic <code><span class='Function'>⊔</span></code> the depth-1 elements of the left argument are lists of indices along axes of the result; see <a href="group.html#multidimensional-grouping">the documentation</a>. The restriction that comes from using single-number indices is that all axes must be treated independently, so that for example it isn't possible to group elements along diagonals without preprocessing. However, this restriction also keeps Group from having to use an ordering on list indices.</p>
-<p>Unlike <code><span class='Function'>/</span></code> and <code><span class='Function'>⊔</span></code>, <code><span class='Function'>↕</span></code> and <code><span class='Function'>⊑</span></code> do use list element indices. For <code><span class='Function'>↕</span></code> this is because the output format can be controlled by the argument format: if passed a single number, the result uses atomic indices (so it's a numeric list); if passed a list, it uses list indices and the result has depth 2 (the result depth is always one greater than the argument depth). For <code><span class='Function'>⊑</span></code>, list indices are chosen because <code><span class='Function'>⊏</span></code> handles scalar indices well already. When selecting multiple elements from a list, they would typically have to be placed in an array, which is equivalent to <code><span class='Function'>⊏</span></code> with a numeric list left argument. An atomic left argument to <code><span class='Function'>⊑</span></code> is converted to a list, so it can be used to select a single element if only one is wanted. To select multiple elements, <code><span class='Function'>⊑</span></code> uses each depth-1 array in the left argument as an index and replaces it with that element from the right argument. Because this uses elements as elements (not cells), it is impossible to have conformability errors where elements do not fit together. Ill-formed index errors are of course still possible, and the requirements on indices are quite strict. They must exactly match the structure of the right argument's shape, with no scalars or higher-rank arrays allowed. Atoms also cannot be used in this context, as it would create ambiguity: is a one-element list an index, or does it contain an index?</p>
+<p>Functions <code><span class='Function'>↕</span></code>, <code><span class='Function'>/</span></code>, <code><span class='Function'>⊔</span></code>, and <code><span class='Function'>⊑</span></code> naturally deal with element indices. Each of these can be defined to use list indices. However, this usually rules out the possibility of using atomic indices, which makes these functions harder to use both with generic array manipulation and with the major cell indices discussed in the next section. For this reason BQN restricts <code><span class='Function'>⊔</span></code> and monadic <code><span class='Function'>/</span></code> to use atomic indices, which comes with the requirement that the arguments to monadic <code><span class='Function'>/</span></code> and <code><span class='Function'>⊔</span></code>, and the result of monadic <code><span class='Function'>⊔</span></code>, must be lists. For dyadic <code><span class='Function'>⊔</span></code> the depth-1 elements of the left argument are lists of indices along axes of the result; see <a href="group.html#multidimensional-grouping">the documentation</a>. The restriction that comes from using single-number indices is that all axes must be treated independently, so that for example it isn't possible to group elements along diagonals without preprocessing. However, this restriction also keeps Group from having to use an ordering on list indices.</p>
+<p>Unlike <code><span class='Function'>/</span></code> and <code><span class='Function'>⊔</span></code>, <code><span class='Function'>↕</span></code> and <code><span class='Function'>⊑</span></code> do use list element indices. For <code><span class='Function'>↕</span></code> this is because the output format can be controlled by the argument format: if passed a single number, the result uses atomic indices (so it's a numeric list); if passed a list, it uses list indices and the result has depth 2 (the result depth is always one greater than the argument depth). For <code><span class='Function'>⊑</span></code>, list indices are chosen because <code><span class='Function'>⊏</span></code> handles atomic indices well already. When selecting multiple elements from a list, they would typically have to be placed in an array, which is equivalent to <code><span class='Function'>⊏</span></code> with a numeric list left argument. An atomic left argument to <code><span class='Function'>⊑</span></code> is converted to a list, so it can be used to select a single element if only one is wanted. To select multiple elements, <code><span class='Function'>⊑</span></code> uses each depth-1 array in the left argument as an index and replaces it with that element from the right argument. Because this uses elements as elements (not cells), it is impossible to have conformability errors where elements do not fit together. Ill-formed index errors are of course still possible, and the requirements on indices are quite strict. They must exactly match the structure of the right argument's shape, with no units or higher-rank arrays allowed. Atoms also cannot be used in this context, as it would create ambiguity: is a one-element list an index, or does it contain an index?</p>
 <h1 id="major-cell-indices">Major cell indices</h1>
 <p>One of the successes of the <a href="https://aplwiki.com/wiki/Leading_axis_theory">leading axis model</a> is to introduce a kind of index for multidimensional arrays that is easier to work with than list indices. The model introduces <a href="https://aplwiki.com/wiki/Cell">cells</a>, where a cell index is a list of any length up to the containing array's rank. General cell indices are discussed in the next section; first we introduce a special case, indices into major cells or ¯1-cells. These cells naturally form a list, so the index of a major cell is a single number. These indices can also be considered indices along the first axis, since an index along any axis is a single number.</p>
 <p>Ordering-based functions <code><span class='Function'>⍋</span></code>, <code><span class='Function'>⍒</span></code>, <code><span class='Function'>⊐</span></code>, and <code><span class='Function'>⊒</span></code> only really make sense with major cell indices: while it's possible to order other indices as ravel indices, this probably isn't useful from a programming standpoint. Note that <code><span class='Function'>⊐</span></code> only uses the ordering in an incidental way, because it's defined to return the <em>first</em> index where a right argument cell is found. A mathematician would be more interested in a &quot;pre-image&quot; function that returns the set of all indices where a particular value appears. However, programming usefulness and consistency with the other search functions makes searching for the first index a reasonable choice.</p>

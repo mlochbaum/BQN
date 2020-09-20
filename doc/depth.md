@@ -86,7 +86,7 @@ Depth `¯1` is equivalent to Each, and reverses the larger vectors, while depth 
         ⌽⚇¯1 n
         ⌽⚇¯2 n
 
-While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth `2` is equivalent to `¯1` and depth `1` is equivalent to `¯2`. A depth of `0` means to descend all the way to the level of atoms, that is, apply [pervasively](https://aplwiki.com/wiki/Pervasion), like a scalar function.
+While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth `2` is equivalent to `¯1` and depth `1` is equivalent to `¯2`. A depth of `0` means to descend all the way to the level of atoms, that is, apply [pervasively](https://aplwiki.com/wiki/Pervasion), like an arithmetic function.
 
         ⟨'a',"bc"⟩ ≍⚇0 ⟨2‿3,4⟩
 

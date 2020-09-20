@@ -8,17 +8,17 @@ The following functions take or return indices. Except where marked, the indices
 
 | Monad | Dyad | Where   | How
 |-------|------|---------|--------------------------
-|  `↕`  |      |         | Element scalar or list
-|  `/`  |      |         | Element scalar
-|  `⊔`  |      |         | Element scalar
-|  `⊔`  | `⊔`  | `𝕩`/`𝕨` | Along-axis scalar
+|  `↕`  |      |         | Element number or list
+|  `/`  |      |         | Element number
+|  `⊔`  |      |         | Element number
+|  `⊔`  | `⊔`  | `𝕩`/`𝕨` | Along-axis number
 |       | `⊑`  | `𝕨`     | Element list
-|  `⍋`  | `⍋`  |         | Major cell scalar
-|  `⍒`  | `⍒`  |         | Major cell scalar
-|       | `⊐`  |         | Major cell scalar
-|       | `⊒`  |         | Major cell scalar
-|       | `⊏`  | `𝕨`     | Major cell or along-axis scalar
-|  `⍉`  |      |         | Axis scalar
+|  `⍋`  | `⍋`  |         | Major cell number
+|  `⍒`  | `⍒`  |         | Major cell number
+|       | `⊐`  |         | Major cell number
+|       | `⊒`  |         | Major cell number
+|       | `⊏`  | `𝕨`     | Major cell or along-axis number
+|  `⍉`  |      |         | Axis number
 
 Dyadic Transpose (`⍉`) uses indices into the right argument axes in its left argument, but since array shape is 1-dimensional, there is only one sensible choice for this, a single number.
 
@@ -26,9 +26,9 @@ Dyadic Transpose (`⍉`) uses indices into the right argument axes in its left a
 
 In general, the index of an element of an array is a list whose length matches the array rank. It is also possible to use a number for an index into a list, as the list index is a singleton, but this must be kept consistent with the rest of the language. NARS-family APLs make the Index Generator (`↕` in BQN) return a numeric list when the argument has length 1 but a nested array otherwise. This means that the depth of the result depends on the shape of the argument, inverting the typical hierarchy. BQN shouldn't have such an inconsistency.
 
-Functions `↕`, `/`, `⊔`, and `⊑` naturally deal with element indices. Each of these can be defined to use list indices. However, this usually rules out the possibility of using scalar indices, which makes these functions harder to use both with generic array manipulation and with the major cell indices discussed in the next section. For this reason BQN restricts `⊔` and monadic `/` to use atomic indices, which comes with the requirement that the arguments to monadic `/` and `⊔`, and the result of monadic `⊔`, must be lists. For dyadic `⊔` the depth-1 elements of the left argument are lists of indices along axes of the result; see [the documentation](group.md#multidimensional-grouping). The restriction that comes from using single-number indices is that all axes must be treated independently, so that for example it isn't possible to group elements along diagonals without preprocessing. However, this restriction also keeps Group from having to use an ordering on list indices.
+Functions `↕`, `/`, `⊔`, and `⊑` naturally deal with element indices. Each of these can be defined to use list indices. However, this usually rules out the possibility of using atomic indices, which makes these functions harder to use both with generic array manipulation and with the major cell indices discussed in the next section. For this reason BQN restricts `⊔` and monadic `/` to use atomic indices, which comes with the requirement that the arguments to monadic `/` and `⊔`, and the result of monadic `⊔`, must be lists. For dyadic `⊔` the depth-1 elements of the left argument are lists of indices along axes of the result; see [the documentation](group.md#multidimensional-grouping). The restriction that comes from using single-number indices is that all axes must be treated independently, so that for example it isn't possible to group elements along diagonals without preprocessing. However, this restriction also keeps Group from having to use an ordering on list indices.
 
-Unlike `/` and `⊔`, `↕` and `⊑` do use list element indices. For `↕` this is because the output format can be controlled by the argument format: if passed a single number, the result uses atomic indices (so it's a numeric list); if passed a list, it uses list indices and the result has depth 2 (the result depth is always one greater than the argument depth). For `⊑`, list indices are chosen because `⊏` handles scalar indices well already. When selecting multiple elements from a list, they would typically have to be placed in an array, which is equivalent to `⊏` with a numeric list left argument. An atomic left argument to `⊑` is converted to a list, so it can be used to select a single element if only one is wanted. To select multiple elements, `⊑` uses each depth-1 array in the left argument as an index and replaces it with that element from the right argument. Because this uses elements as elements (not cells), it is impossible to have conformability errors where elements do not fit together. Ill-formed index errors are of course still possible, and the requirements on indices are quite strict. They must exactly match the structure of the right argument's shape, with no scalars or higher-rank arrays allowed. Atoms also cannot be used in this context, as it would create ambiguity: is a one-element list an index, or does it contain an index?
+Unlike `/` and `⊔`, `↕` and `⊑` do use list element indices. For `↕` this is because the output format can be controlled by the argument format: if passed a single number, the result uses atomic indices (so it's a numeric list); if passed a list, it uses list indices and the result has depth 2 (the result depth is always one greater than the argument depth). For `⊑`, list indices are chosen because `⊏` handles atomic indices well already. When selecting multiple elements from a list, they would typically have to be placed in an array, which is equivalent to `⊏` with a numeric list left argument. An atomic left argument to `⊑` is converted to a list, so it can be used to select a single element if only one is wanted. To select multiple elements, `⊑` uses each depth-1 array in the left argument as an index and replaces it with that element from the right argument. Because this uses elements as elements (not cells), it is impossible to have conformability errors where elements do not fit together. Ill-formed index errors are of course still possible, and the requirements on indices are quite strict. They must exactly match the structure of the right argument's shape, with no units or higher-rank arrays allowed. Atoms also cannot be used in this context, as it would create ambiguity: is a one-element list an index, or does it contain an index?
 
 # Major cell indices
 
