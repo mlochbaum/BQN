@@ -6,6 +6,69 @@
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
 <h1 id="bqndyalog-apl-dictionary">BQN–Dyalog APL dictionary</h1>
 <p>A few tables to help users of Dyalog APL (or similar) get started quickly on BQN. Here we assume <code><span class='Value'>⎕</span><span class='Function'>ML</span></code> is 1 for Dyalog.</p>
+<h2 id="terminology">Terminology</h2>
+<h3 id="array-model">Array model</h3>
+<p>BQN uses the <a href="based.html">based array model</a>, so that a Dyalog's simple scalar corresponds to many BQN values: an atom, its enclose, and so on.</p>
+<table>
+<thead>
+<tr>
+<th>Dyalog</th>
+<th>BQN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple scalar</td>
+<td>Atom</td>
+</tr>
+<tr>
+<td>Scalar</td>
+<td>Unit</td>
+</tr>
+<tr>
+<td>Vector</td>
+<td>List</td>
+</tr>
+<tr>
+<td>Matrix</td>
+<td>Table</td>
+</tr>
+</tbody>
+</table>
+<p>BQN shares the terms &quot;cell&quot; and &quot;major cell&quot; with Dyalog, and uses
+&quot;element&quot; (which may mean different things to different Dyalog users) <em>not</em> for a 0-cell but for the value it contains.</p>
+<h3 id="roles">Roles</h3>
+<p>Dyalog uses value types (array, function, and so on) to determine syntax while BQN uses a separate concept called syntactic roles. See <a href="context.html">context-free grammer</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Dyalog type</th>
+<th>BQN role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Array</td>
+<td>Subject</td>
+</tr>
+<tr>
+<td>Function</td>
+<td>Function</td>
+</tr>
+<tr>
+<td>Monadic operator</td>
+<td>1-modifier</td>
+</tr>
+<tr>
+<td>Dyadic operator</td>
+<td>2-modifier</td>
+</tr>
+<tr>
+<td>Niladic function</td>
+<td><em>go away</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="for-reading">For reading</h2>
 <p>Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs as APL. Correspondence can be approximate, and <code><span class='Function'>⌽</span></code> is just used as a decorator to mean &quot;reverse some things&quot;.</p>
 <table>
