@@ -153,3 +153,65 @@ Another 1-modifier, which at the moment is tremendously useless, is Constant `˙
 Well, I guess it's not pedagogically useless, as it does demonstrate that a modifier can be applied to subjects as well as functions. Even though `3` is a subject, `3˙` is a function, and can be applied to and ignore the two arguments `2` and `4`.
 
 With three examples you may have noticed that 1-modifiers tend to cluster at the top of the screen. In fact, every primitive 1-modifer is a superscript character: we've covered `˜⁼˙`, and the remaining array-based modifiers `` ˘¨⌜´˝` `` will show up later.
+
+## 2-modifiers
+
+Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop `∘`, which works a lot like mathematical composition except that it uses one or two arguments. These arguments are passed to the function on the right, and the result is passed to the function on the left. So the function on the left is only ever called with one argument.
+
+        3 ×˜∘+ 4  # Square of 3 plus 4
+        -∘(×˜) 5  # Negative square of 5
+
+It's past time we covered how the syntax for modifiers works. Remember how I told you you hated learning the order of operations? No? Good. Modifiers bind more tightly than functions, so they are called on their operands before their operands can be used. As the parentheses above suggest, modifiers also associate from left to right, the opposite order as functions. For example, the first expression above is evaluated in the order shown below. First we construct the square function `×˜`, then compose it with `+`, and finally apply the result to some arguments.
+
+     =    ×˜
+            ∘+
+        3      4
+
+This ordering is more consistent with the fact that the operand of a 1-modifier goes to its left. If we tried going from right to left we'd end up with `×(˜∘+)`, which uses `˜` as an operand to `∘`. But a modifier can't be used as an operand. To make it work we'd essentially have to give 1-modifiers a higher precedence than 2-modifiers.
+
+In fact, the rules for modifiers are exactly the same as those for functions, but reversed. So why is there a distinction between 1- and 2-modifiers, when for functions we can look to the left to see whether there is a left argument? The reason is that it's natural to follow a 1-modifier by a subject or function that isn't supposed to be its operand. Using an example from the last section, `+˜ 3` has a subject to the right of the 1-modifier `˜`. Even worse, `+˜ ÷ 3` looks the same syntactically as `+∘ ÷ 3`, but it's two functions `+˜` and `÷` applied to `3` while the version with Atop is a single function `+∘÷` applied to `3`. So the two-layer system of functions and modifiers forces modifiers to have a fixed number of operands even every function (including those derived by applying modifiers) can be called with one or two arguments.
+
+Remember that 1-modifiers are all superscripts? The characters for 2-modifiers use a different rule: each contains an *unbroken* circle (that is, lines might touch it but not go through it). The 2-modifiers in BQN are the combinators `∘○⊸⟜⌾`, the sort-of-combinators  `⊘◶⍟`, and the not-at-all-combinators `⎉⚇⎊`. And the functions that make that unbroken circle rule necessary are written `⌽⍉`. Since every primitive is a function, 1-modifier, or 2-modifier, you can always tell what type (and role) it has: a superscript is a 1-modifier, an unbroken circle makes it a 2-modifier, and otherwise it's a function.
+
+## Summary
+
+The objects we've seen so far are:
+
+| Type        | Example  | Meaning
+|-------------|----------|---------
+| Numbers     | `1.2e3`, `π`
+| Characters  | `'c'`, `@`
+| Functions   | `+`      | Plus
+|             | `-`      | Minus, Negate
+|             | `×`      | Times
+|             | `÷`      | Divide, Reciprocal
+|             | `⋆`      | Power
+|             | `√`      | (Square) Root
+|             | `⋆⁼`     | Logarithm
+| 1-modifiers | `˜`      | Swap, Self
+|             | `⁼`      | Undo
+|             | `˙`      | Constant
+| 2-modifiers | `∘`      | Atop
+
+Except for `⋆⁼`, which is just a particular case of a modifier applied to a function, everything we've seen is either a *literal* (characters and numbers) or a *primitive* (functions and modifiers), and has a fixed value. Primitive 1-modifiers have superscript characters and 2-modifiers contain unbroken circles. Other primitives are always functions.
+
+It's legal to add a number to a character or subtract one character from another, but not to add two characters, negate a character, or subtract it from a number.
+
+BQN's expression grammar is governed by syntactic roles. For literals and primitives, type and syntactic role always match up:
+
+Role       | Types
+-----------|--------------
+Subject    | Number, Character
+Function   | Function
+1-modifier | 1-modifier
+2-modifier | 2-modifier
+
+So that's a really dumb table but if you put things in a table they suddenly become more important somehow. On another note, here's our precedence table so far:
+
+Precedence | Role     | Input roles       | Output role | Associativity
+-----------|----------|-------------------|-------------|--------------
+0          | `()`     | Whatever          | Same thing  | (none)
+1          | Modifier | Function, subject | Function    | Left-to-right
+2          | Function | Subject           | Subject     | Right-to-left
+
+Maybe BQN grammar's not all that bad.
