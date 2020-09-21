@@ -28,6 +28,7 @@ Primitives:
 - [Windows](windows.md) (`↕`)
 
 References:
+- [Glossary](glossary.md)
 - [BQN-Dyalog dictionary](fromDyalog.md)
 
 Speculation:

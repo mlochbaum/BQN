@@ -1,0 +1,145 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN glossary</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="bqn-glossary">BQN glossary</h1>
+<p>Below are short, and sometimes vague, definitions of terms used to describe BQN code.</p>
+<h2 id="types">Types</h2>
+<ul>
+<li><strong>Value</strong>: Something that can be stored in variables and manipulated by a BQN programmer.</li>
+<li><a href="types.html"><strong>Type</strong></a>: One of six possible kinds of value.</li>
+</ul>
+<p>The possible types are:</p>
+<ul>
+<li><a href="types.html#numbers"><strong>Number</strong></a>: Like some caveman was counting but then forty thousand years of math happened to it.</li>
+<li><a href="types.html#characters"><strong>Character</strong></a>: A Unicode code point.</li>
+<li><a href="types.html#arrays"><strong>Array</strong></a>: A multidimensional collection of values.</li>
+<li><a href="types.html#functions"><strong>Function</strong></a>: An operation that is called on one or two arguments.</li>
+<li><a href="types.html#modifiers"><strong>1-modifier</strong></a>: An operation that is called on one operand.</li>
+<li><a href="types.html#modifiers"><strong>2-modifier</strong></a>: An operation that is called on two operands.</li>
+</ul>
+<p>A few terms refer to multiple types collectively:</p>
+<ul>
+<li><strong>Atom</strong>: A value that's not an array.</li>
+<li><strong>Modifier</strong>: A 1-modifier or 2-modifier.</li>
+<li><strong>Data type</strong>: Number, character, or array.</li>
+<li><strong>Operation type</strong>: Function, 1-modifier, or 2-modifier.</li>
+</ul>
+<p>BQN uses standard terminology for particular sets of numbers, with natural numbers starting at 0.</p>
+<ul>
+<li><strong>Boolean</strong>: 0 or 1.</li>
+<li><strong>Natural number</strong>: 0, or 1 plus a natural number; alternatively, a non-negative integer.</li>
+<li><strong>Integer</strong>: A natural number or its negation (use &quot;whole number&quot; instead whenever you can get away with it).</li>
+<li><strong>Real number</strong> (more accurately, approximate doubly-extended real number): A number with no complex part.</li>
+<li><strong>Complex number</strong>: A real number plus <em>i</em> (one of the square roots of -1) times another real number.</li>
+</ul>
+<h2 id="roles">Roles</h2>
+<ul>
+<li><a href="context.html"><strong>Syntactic role</strong></a>: One of four possible types for an expression, which are determined by the expression itself and not outside context and describe how it interacts with other parts of the syntax.</li>
+</ul>
+<p>The possible roles are:</p>
+<ul>
+<li><strong>Subject</strong>: Can be passed to a function or modifier.</li>
+<li><strong>Function</strong>: Can be called on subjects or passed to a modifier.</li>
+<li><strong>1-modifier</strong>: Can be called on one subject or function.</li>
+<li><strong>2-modifier</strong>: Can be called on two subjects or functions.</li>
+</ul>
+<h2 id="arrays">Arrays</h2>
+<ul>
+<li><strong>Array</strong>: A multidimensional collection of values.</li>
+<li><strong>Element</strong>: One of the values contained in an array.</li>
+<li><strong>Axis</strong>: One dimension or direction in an array.</li>
+<li><strong>Rank</strong>: The number of dimensions an array has.</li>
+<li><strong>Shape</strong>: The number of elements an array has along each dimension.</li>
+<li><strong>Length</strong>: The number of elements an array has along the first dimension, or 1 if it has rank 0.</li>
+<li><a href="depth.html"><strong>Depth</strong></a>: The greatest number of times an element can be selected from a value before reaching an atom.</li>
+<li><strong>Fill</strong>: A &quot;prototypical&quot; array element used in certain operations; it's an inferred property of an array.</li>
+</ul>
+<ul>
+<li><strong>Empty</strong>: Having no elements. An array is empty if its shape contains 0.</li>
+<li><strong>Cell</strong>: An array containing all elements of the original array whose indices share a particular prefix.</li>
+<li><strong>k-Cell</strong>: A cell of rank <em>k</em>.</li>
+<li><strong>Major cell</strong>: A cell with rank one less than the original array.</li>
+<li><strong>Agreement</strong>: The way elements are paired when a function maps over two arrays.</li>
+<li><strong>Frame</strong>: A prefix of an array's shape, used for agreement with the Rank modifier.</li>
+</ul>
+<ul>
+<li><strong>Unit</strong>: An array of rank 0, or an atom.</li>
+<li><strong>Unit array</strong>: An array of rank 0 other than an atom.</li>
+<li><strong>List</strong>: An array of rank 1.</li>
+<li><strong>String</strong>: A list of characters.</li>
+<li><strong>Table</strong>: An array of rank 2.</li>
+</ul>
+<ul>
+<li><a href="indices.html"><strong>Index</strong></a>: One of a variety of ways to select an element, cell, axis, or position along an axis of an array.</li>
+</ul>
+<h2 id="operations">Operations</h2>
+<ul>
+<li><strong>Operation</strong>: A value that is called on inputs to perform computation and return a result or cause an error.</li>
+<li><strong>Call</strong>: Submit inputs to an operation and receive any result.</li>
+<li><strong>Input</strong>: A value given (<em>passed</em>) to an operation when it's called.</li>
+<li><strong>Result</strong>: A value returned from an operation when called.</li>
+<li><strong>Argument</strong>: An input to a function.</li>
+<li><strong>Operand</strong>: An input to a modifier.</li>
+<li><strong>Valence</strong>: The number of arguments that can be or are passed to a function.</li>
+<li><strong>Ambivalent</strong>: A function that can be called with one or two arguments without causing an error.</li>
+<li><strong>Monadic</strong>: Called with one argument, either always (a monadic function) or in a particular instance (a monadic call).</li>
+<li><strong>Dyadic</strong>: Called with two arguments, always or in a particular instance.</li>
+</ul>
+<ul>
+<li><strong>Derived function</strong>: A function produced by binding operands to a deferred modifier; doing so does not cause any computation.</li>
+<li><strong>Train</strong>: A function composed of two or more functions.</li>
+<li><strong>Identity element</strong>: An inferred property of a function: the result of a reduction with this function on an empty array.</li>
+</ul>
+<ul>
+<li><strong>Error</strong>: A condition that stops compilation or execution.</li>
+<li><strong>Inferred property</strong>: A property of a value that is derived by BQN based on constraints. If it cannot be derived then the value will not have the property.</li>
+</ul>
+<h2 id="tokens">Tokens</h2>
+<ul>
+<li><strong>Token formation</strong> or tokenization: Splitting source code into a sequence of tokens.</li>
+<li><strong>Token</strong>: A name, literal, primitive, or other syntactic element.</li>
+<li><strong>Literal</strong>: A token that indicates a fixed value of a data type.</li>
+<li><strong>Primitive</strong>: One of several fixed operations defined by the language, denoted by a single-character token.</li>
+<li><strong>Word</strong>: A sequence of alphabetic or numeric characters.</li>
+<li><strong>Name</strong>: A word that starts with an alphabetic character. Names are compared case-insensitively and ignoring underscores <code><span class='Modifier2'>_</span></code>.</li>
+<li><strong>Numeric literal</strong>: A word that starts with a numeric character, indicating a number.</li>
+<li><strong>String literal</strong>: A literal written with double quotes <code><span class='String'>&quot;&quot;</span></code>, indicating a string.</li>
+<li><strong>Character literal</strong>: A literal written with single quotes <code><span class='String'>''</span></code>, indicating a string.</li>
+<li><strong>Null literal</strong>: The literal <code><span class='String'>@</span></code>, indicating the null character (code point 0).</li>
+</ul>
+<h2 id="parsing">Parsing</h2>
+<ul>
+<li><strong>Parsing</strong>: Analysis of the tokens of a program, which determines which actions will be taken to evaluate it.</li>
+<li><a href="syntax.html#expressions"><strong>Expression</strong></a>: A piece of code that defines a (not necessarily constant) variable.</li>
+<li><strong>Nothing</strong>: A special value-like entity that comes from <code><span class='Nothing'>·</span></code>, <code><span class='Value'>𝕨</span></code> in a function with no left argument, or a function called on nothing.</li>
+<li><strong>Statement</strong>: An expression, or nothing (<code><span class='Nothing'>·</span></code>).</li>
+<li><strong>Ligature</strong>: The character <code><span class='Ligature'>‿</span></code>.</li>
+<li><a href="syntax.html#list-notation"><strong>List notation</strong></a>: The angle brackets <code><span class='Bracket'>⟨⟩</span></code> or ligatures used to indicate a list.</li>
+</ul>
+<h2 id="assignment-and-scoping">Assignment and scoping</h2>
+<ul>
+<li><a href="syntax.html#assignment"><strong>Assignment</strong></a>: An operation that sets a variable's value. Definition (<code><span class='Gets'>←</span></code>) or a change of definition (<code><span class='Gets'>↩</span></code>).</li>
+<li><strong>Assignment arrow</strong>: <code><span class='Gets'>←</span></code> or <code><span class='Gets'>↩</span></code>, used to denote assignment.</li>
+<li><strong>Definition</strong>: The first assignment of a variable, which must be performed with <code><span class='Gets'>←</span></code>.</li>
+</ul>
+<ul>
+<li><strong>Scope</strong>: An environment where variables are defined and manipulated, which is created before evaluating a body.</li>
+<li><strong>Identifier</strong>: An instance of a name in a program, with two identifiers considered the same if they correspond to the same definition.</li>
+</ul>
+<h2 id="blocks">Blocks</h2>
+<ul>
+<li><a href="block.html"><strong>Block</strong></a>: A syntactic element surrounded in curly braces <code><span class='Brace'>{}</span></code>, which encapsulates code.</li>
+<li><strong>Immediate block</strong>: A block that is evaluated and returns a value immediately; it has a subject role.</li>
+<li><strong>Block function</strong>: A block defining a function.</li>
+<li><strong>Block modifier</strong>: A block defining a 1- or 2-modifier.</li>
+<li><strong>Immediate modifier</strong>: A modifier that's evaluated as soon as it receives its operands.</li>
+<li><strong>Deferred modifier</strong>: The opposite of an immediate modifier, one that's only evaluated when called with operands and arguments.</li>
+<li><a href="block.html#block-headers"><strong>Header</strong></a>: A preface to a body in a block function or modifier indicating possible inputs, which is followed by a colon <code><span class='Value'>:</span></code>.</li>
+<li><a href="block.html#short-headers"><strong>Label</strong></a>: A header consisting of a single name.</li>
+<li><strong>Body</strong>: One sequence of statements in a block. Bodies, possibly preceded by headers, are separated by semicolons <code><span class='Value'>;</span></code>.</li>
+<li><strong>Tacit</strong>: Code that defines functions or modifiers without using blocks.</li>
+</ul>
+
