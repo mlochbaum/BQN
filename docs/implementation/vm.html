@@ -1,0 +1,382 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>The BQN virtual machine and runtime</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="the-bqn-virtual-machine-and-runtime">The BQN virtual machine and runtime</h1>
+<p>BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. For example, the <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../docs/bqn.js">Javascript environment</a> requires about 200 lines of Javascript code even though it compiles BQN bytecode to Javascript, a more complex strategy than interpreting it directly. This makes it fairly easy to port BQN to new platforms, allowing BQN to run &quot;natively&quot; within other programming languages and interact with arrays in those languages.</p>
+<h2 id="bytecode">Bytecode</h2>
+<p>The BQN implementation here and dzaima/BQN share a stack-based bytecode format used to represent compiled code. dzaima/BQN can interpret this bytecode or convert it to <a href="https://en.wikipedia.org/wiki/Java_virtual_machine">JVM</a> bytecode, while the Javascript VM previously interpreted bytecode but now always compiles it.</p>
+<p>Since interpretation is a simpler strategy, it may be helpful to use the <a href="https://github.com/mlochbaum/BQN/blob/f74d9223ef880f2914030c2375f680dcc7e8c92b/bqn.js#L36">old Javascript bytecode interpreter</a> as a reference when implementing a BQN virtual machine.</p>
+<h3 id="components">Components</h3>
+<p>The complete bytecode for a program consists of the following:</p>
+<ul>
+<li>A bytecode sequence <code><span class='Value'>bytes</span></code></li>
+<li>A list <code><span class='Value'>consts</span></code> of constants that can be loaded</li>
+<li><em>(dzaima/BQN only) A list of identifier names</em></li>
+<li>A list <code><span class='Value'>blocks</span></code> of block information, described in the next section.</li>
+</ul>
+<h3 id="blocks">Blocks</h3>
+<p>Each block in <code><span class='Value'>blocks</span></code> is a list of the following properties:</p>
+<ul>
+<li>Block type: (0) function/immediate, (1) 1-modifier, (2) 2-modifier</li>
+<li>Block immediateness: (1) immediate or (0) deferred</li>
+<li><em>(dzaima/BQN only) List of local identifier names</em></li>
+<li>Block starting index in <code><span class='Value'>bytes</span></code></li>
+</ul>
+<p>Compilation separates blocks so that they are not nested in bytecode. All compiled code is contained in some block. The self-hosted compiler compiles the entire program into an immediate block, and the program is run by evaluating this block. Blocks are terminated with the RETN instruction.</p>
+<p>In dzaima/BQN, the block type is one of <code><span class='String'>'f'</span></code> <code><span class='String'>'m'</span></code> <code><span class='String'>'d'</span></code> rather than 0, 1, or 2.</p>
+<p>The starting index refers to the position where execution starts in order to evaluate the block. When the block is evaluated depends on its type and immediateness. An immediate block (0,1) is evaluated as soon as it is pushed; a function (0,0) is evaluated when called on arguments, an immediate modifier (1 or 2, 1) is evaluated when called on operands, and a deferred modifier (1 or 2, 0) creates a derived function when called on operands and is evaluated when this derived function is called on arguments.</p>
+<h3 id="instructions">Instructions</h3>
+<p>The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the &quot;used&quot; column.</p>
+<table>
+<thead>
+<tr>
+<th>B</th>
+<th>Name</th>
+<th>Used</th>
+<th>Like</th>
+<th>Args</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>PUSH</td>
+<td>X</td>
+<td></td>
+<td><code><span class='Function'>I</span></code></td>
+<td>Push object <code><span class='Function'>I</span></code></td>
+</tr>
+<tr>
+<td>1</td>
+<td>VARO</td>
+<td></td>
+<td></td>
+<td><code><span class='Function'>I</span></code></td>
+<td>Push named variable <code><span class='Function'>I</span></code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>VARM</td>
+<td></td>
+<td></td>
+<td><code><span class='Function'>I</span></code></td>
+<td>Push named variable <code><span class='Function'>I</span></code> reference</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ARRO</td>
+<td>X</td>
+<td></td>
+<td><code><span class='Function'>N</span></code></td>
+<td>Create length-<code><span class='Function'>N</span></code> list</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ARRM</td>
+<td>X</td>
+<td>3</td>
+<td><code><span class='Function'>N</span></code></td>
+<td>Create length-<code><span class='Function'>N</span></code> reference list</td>
+</tr>
+<tr>
+<td>5</td>
+<td>FN1C</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Monadic function call</td>
+</tr>
+<tr>
+<td>6</td>
+<td>FN2C</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Dyadic function call</td>
+</tr>
+<tr>
+<td>7</td>
+<td>OP1D</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>1-modifier call</td>
+</tr>
+<tr>
+<td>8</td>
+<td>OP2D</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>2-modifier call</td>
+</tr>
+<tr>
+<td>9</td>
+<td>TR2D</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>Create 2-train</td>
+</tr>
+<tr>
+<td>10</td>
+<td>TR3D</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Create 3-train</td>
+</tr>
+<tr>
+<td>11</td>
+<td>SETN</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>Define variable</td>
+</tr>
+<tr>
+<td>12</td>
+<td>SETU</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>Change variable</td>
+</tr>
+<tr>
+<td>13</td>
+<td>SETM</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>Modify variable</td>
+</tr>
+<tr>
+<td>14</td>
+<td>POPS</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>Pop and discard top of stack</td>
+</tr>
+<tr>
+<td>15</td>
+<td>DFND</td>
+<td>X</td>
+<td></td>
+<td><code><span class='Function'>I</span></code></td>
+<td>Localize and push block <code><span class='Function'>I</span></code></td>
+</tr>
+<tr>
+<td>16</td>
+<td>FN1O</td>
+<td>X</td>
+<td>5</td>
+<td></td>
+<td>Monadic call, checking for <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td>17</td>
+<td>FN2O</td>
+<td>X</td>
+<td>6</td>
+<td></td>
+<td>Dyadic call, checking for <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td>18</td>
+<td>CHKV</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Error if top of stack is <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td>19</td>
+<td>TR3O</td>
+<td>X</td>
+<td>10</td>
+<td></td>
+<td>Create 3-train, checking for <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td>20</td>
+<td>OP2H</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Bind right operand to 2-modifier</td>
+</tr>
+<tr>
+<td>21</td>
+<td>LOCO</td>
+<td>X</td>
+<td></td>
+<td><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
+<td>Push local variable <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
+</tr>
+<tr>
+<td>22</td>
+<td>LOCM</td>
+<td>X</td>
+<td></td>
+<td><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
+<td>Push local variable reference <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
+</tr>
+<tr>
+<td>23</td>
+<td>VFYM</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Convert to matcher (for header tests)</td>
+</tr>
+<tr>
+<td>24</td>
+<td>SETH</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Test header</td>
+</tr>
+<tr>
+<td>25</td>
+<td>RETN</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>Returns top of stack</td>
+</tr>
+</tbody>
+</table>
+<p>Stack effects for most instructions are given below. Instructions 16, 17, and 19 are identical to 5, 6, and 10 except that the indicated values in the higher-numbered instructions may be <code><span class='Nothing'>·</span></code>. The lower-numbered instructions are not yet emitted by the self-hosted compiler and can be implemented simply by making them identical to the higher-numbered ones; however, it may be possible to make them faster by not checking for Nothing.</p>
+<table>
+<thead>
+<tr>
+<th>B</th>
+<th>Name</th>
+<th>Stack effect</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>PUSH</td>
+<td><code><span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>consts</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>ARRO</td>
+<td><code><span class='Value'>x0</span> <span class='Value'>…</span> <span class='Value'>xm</span> <span class='Gets'>→</span> <span class='Bracket'>⟨</span><span class='Value'>x0</span> <span class='Value'>…</span> <span class='Value'>xm</span><span class='Bracket'>⟩</span></code></td>
+<td><code><span class='Function'>N</span></code> total variables (<code><span class='Value'>m</span><span class='Function'>=</span><span class='Value'>n</span><span class='Function'>-</span><span class='Number'>1</span></code>)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>FN1C</td>
+<td><code><span class='Value'>𝕩</span> <span class='Value'>𝕤</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝕊</span> <span class='Value'>𝕩</span><span class='Paren'>)</span></code></td>
+<td>16: <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>FN2C</td>
+<td><code><span class='Value'>𝕩</span> <span class='Value'>𝕤</span> <span class='Value'>𝕨</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>𝕨</span> <span class='Function'>𝕊</span> <span class='Value'>𝕩</span><span class='Paren'>)</span></code></td>
+<td>17: <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>OP1D</td>
+<td><code><span class='Value'>𝕣</span> <span class='Value'>𝕗</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Modifier'>_𝕣</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>OP2D</td>
+<td><code><span class='Value'>𝕘</span> <span class='Value'>𝕣</span> <span class='Value'>𝕗</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Modifier2'>_𝕣_</span> <span class='Function'>𝔾</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>TR2D</td>
+<td><code><span class='Value'>g</span> <span class='Value'>f</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>F</span> <span class='Function'>G</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>TR3D</td>
+<td><code><span class='Value'>h</span> <span class='Value'>g</span> <span class='Value'>f</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>F</span> <span class='Function'>G</span> <span class='Function'>H</span><span class='Paren'>)</span></code></td>
+<td>19: <code><span class='Function'>F</span></code> may be <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>SETN</td>
+<td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>←</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Value'>r</span></code> is a reference</td>
+</tr>
+<tr>
+<td>12</td>
+<td>SETU</td>
+<td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>↩</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Value'>r</span></code> is a reference</td>
+</tr>
+<tr>
+<td>13</td>
+<td>SETM</td>
+<td><code><span class='Value'>x</span> <span class='Value'>f</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span> <span class='Function'>F</span><span class='Gets'>↩</span> <span class='Value'>x</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Value'>r</span></code> is a reference</td>
+</tr>
+<tr>
+<td>14</td>
+<td>POPS</td>
+<td><code><span class='Value'>x</span> <span class='Gets'>→</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>DFND</td>
+<td><code><span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>blocks</span><span class='Paren'>)</span></code></td>
+<td>Also sets block's parent scope</td>
+</tr>
+<tr>
+<td>20</td>
+<td>OP2H</td>
+<td><code><span class='Value'>𝕘</span> <span class='Value'>𝕣</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Modifier2'>_𝕣_</span> <span class='Value'>𝕘</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>21</td>
+<td>LOCO</td>
+<td><code><span class='Gets'>→</span> <span class='Value'>x</span></code></td>
+<td>Local variable value</td>
+</tr>
+<tr>
+<td>22</td>
+<td>LOCM</td>
+<td><code><span class='Gets'>→</span> <span class='Value'>r</span></code></td>
+<td>Local variable reference</td>
+</tr>
+<tr>
+<td>25</td>
+<td>RETN</td>
+<td><code><span class='Value'>x</span> <span class='Gets'>→</span> <span class='Value'>x</span></code></td>
+<td>Returns from current block</td>
+</tr>
+</tbody>
+</table>
+<p>Many instructions just call functions or modifiers or otherwise have fairly obvious implementations. Instructions to handle variables and blocks are more complicated (although very typical of bytecode representations for lexically-scoped languages) and are described in more detail below.</p>
+<h3 id="local-variables-dfnd-loco-locm-retn">Local variables: DFND LOCO LOCM RETN</h3>
+<p>The bytecode representation is designed with the assumption that variables will be stored in frames, one for each instance of a block. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see <a href="#blocks">#blocks</a>) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.</p>
+<p>A frame is a mutable list of <em>slots</em> for variable values. It has slots for any special names that are available during the blocks execution followed by the local variables it defines. Special names use the ordering <code><span class='Value'>𝕤𝕩𝕨𝕣𝕗𝕘</span></code>; the first three of these are available in non-immediate blocks while <code><span class='Value'>𝕣</span></code> and <code><span class='Value'>𝕗</span></code> are available in modifiers and <code><span class='Value'>𝕘</span></code> in 2-modifiers specifically.</p>
+<p>When a block is pushed with <strong>DFND</strong>, an instance of the block is created, with its <em>parent frame</em> set to be the frame of the currently-executing block. Setting the parent frame when the block is first seen, instead of when it's evaluated, is what distinguishes lexical from dynamic scoping. If it's an immediate block, it's evaluated immediately, and otherwise it's pushed onto the stack. When the block is evaluated, its frame is initialized using any arguments passed to it, the next instruction's index is pushed onto the return stack, and execution moves to the first instruction in the block. When the RETN instruction is encountered, an index is popped from the return stack and execution returns to this location. As an alternative to maintaining an explicit return stack, a block can be implemented as a native function that creates a new execution stack and returns the value in it when the <strong>RETN</strong> instruction is reached. This approach uses the implementation language's call stack for the return stack.</p>
+<p>Local variables are manipulated with the <strong>LOCO</strong> and <strong>LOCM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
+<p>Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with LOCO or modified with SETU or SETM only if it <em>has</em> been defined.</p>
+<h3 id="variable-references-arrm-locm-setn-setu-setm">Variable references: ARRM LOCM SETN SETU SETM</h3>
+<p>A <em>variable reference</em> indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. <strong>LOCM</strong> pushes a variable reference to the stack.</p>
+<p>A <em>reference list</em> is a list of variable references or reference lists. It's created with the <strong>ARRM</strong> instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.</p>
+<p>The <strong>SETN</strong>, <strong>SETU</strong>, and <strong>SETM</strong> instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.</p>
+<p><strong>SETM</strong> additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.</p>
+
