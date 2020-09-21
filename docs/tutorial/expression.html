@@ -158,4 +158,162 @@
 </pre>
 <p>Well, I guess it's not pedagogically useless, as it does demonstrate that a modifier can be applied to subjects as well as functions. Even though <code><span class='Number'>3</span></code> is a subject, <code><span class='Number'>3</span><span class='Modifier'>˙</span></code> is a function, and can be applied to and ignore the two arguments <code><span class='Number'>2</span></code> and <code><span class='Number'>4</span></code>.</p>
 <p>With three examples you may have noticed that 1-modifiers tend to cluster at the top of the screen. In fact, every primitive 1-modifer is a superscript character: we've covered <code><span class='Modifier'>˜⁼˙</span></code>, and the remaining array-based modifiers <code><span class='Modifier'>˘¨⌜´˝`</span></code> will show up later.</p>
+<h2 id="2-modifiers">2-modifiers</h2>
+<p>Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop <code><span class='Modifier2'>∘</span></code>, which works a lot like mathematical composition except that it uses one or two arguments. These arguments are passed to the function on the right, and the result is passed to the function on the left. So the function on the left is only ever called with one argument.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDDl8uc4oiYKyA0ICAjIFNxdWFyZSBvZiAzIHBsdXMgNAot4oiYKMOXy5wpIDUgICMgTmVnYXRpdmUgc3F1YXJlIG9mIDU=&run">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>×</span><span class='Modifier'>˜</span><span class='Modifier2'>∘</span><span class='Function'>+</span> <span class='Number'>4</span>  <span class='Comment'># Square of 3 plus 4
+</span>49
+    <span class='Function'>-</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Paren'>)</span> <span class='Number'>5</span>  <span class='Comment'># Negative square of 5
+</span>¯25
+</pre>
+<p>It's past time we covered how the syntax for modifiers works. Remember how I told you you hated learning the order of operations? No? Good. Modifiers bind more tightly than functions, so they are called on their operands before their operands can be used. As the parentheses above suggest, modifiers also associate from left to right, the opposite order as functions. For example, the first expression above is evaluated in the order shown below. First we construct the square function <code><span class='Function'>×</span><span class='Modifier'>˜</span></code>, then compose it with <code><span class='Function'>+</span></code>, and finally apply the result to some arguments.</p>
+<pre> <span class='Function'>=</span>    <span class='Function'>×</span><span class='Modifier'>˜</span>
+        <span class='Modifier2'>∘</span><span class='Function'>+</span>
+    <span class='Number'>3</span>      <span class='Number'>4</span>
+</pre>
+<p>This ordering is more consistent with the fact that the operand of a 1-modifier goes to its left. If we tried going from right to left we'd end up with <code><span class='Function'>×</span><span class='Paren'>(</span><span class='Modifier'>˜</span><span class='Modifier2'>∘</span><span class='Function'>+</span><span class='Paren'>)</span></code>, which uses <code><span class='Modifier'>˜</span></code> as an operand to <code><span class='Modifier2'>∘</span></code>. But a modifier can't be used as an operand. To make it work we'd essentially have to give 1-modifiers a higher precedence than 2-modifiers.</p>
+<p>In fact, the rules for modifiers are exactly the same as those for functions, but reversed. So why is there a distinction between 1- and 2-modifiers, when for functions we can look to the left to see whether there is a left argument? The reason is that it's natural to follow a 1-modifier by a subject or function that isn't supposed to be its operand. Using an example from the last section, <code><span class='Function'>+</span><span class='Modifier'>˜</span> <span class='Number'>3</span></code> has a subject to the right of the 1-modifier <code><span class='Modifier'>˜</span></code>. Even worse, <code><span class='Function'>+</span><span class='Modifier'>˜</span> <span class='Function'>÷</span> <span class='Number'>3</span></code> looks the same syntactically as <code><span class='Function'>+</span><span class='Modifier2'>∘</span> <span class='Function'>÷</span> <span class='Number'>3</span></code>, but it's two functions <code><span class='Function'>+</span><span class='Modifier'>˜</span></code> and <code><span class='Function'>÷</span></code> applied to <code><span class='Number'>3</span></code> while the version with Atop is a single function <code><span class='Function'>+</span><span class='Modifier2'>∘</span><span class='Function'>÷</span></code> applied to <code><span class='Number'>3</span></code>. So the two-layer system of functions and modifiers forces modifiers to have a fixed number of operands even every function (including those derived by applying modifiers) can be called with one or two arguments.</p>
+<p>Remember that 1-modifiers are all superscripts? The characters for 2-modifiers use a different rule: each contains an <em>unbroken</em> circle (that is, lines might touch it but not go through it). The 2-modifiers in BQN are the combinators <code><span class='Modifier2'>∘○⊸⟜⌾</span></code>, the sort-of-combinators  <code><span class='Modifier2'>⊘◶⍟</span></code>, and the not-at-all-combinators <code><span class='Modifier2'>⎉⚇⎊</span></code>. And the functions that make that unbroken circle rule necessary are written <code><span class='Function'>⌽⍉</span></code>. Since every primitive is a function, 1-modifier, or 2-modifier, you can always tell what type (and role) it has: a superscript is a 1-modifier, an unbroken circle makes it a 2-modifier, and otherwise it's a function.</p>
+<h2 id="summary">Summary</h2>
+<p>The objects we've seen so far are:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Numbers</td>
+<td><code><span class='Number'>1.2e3</span></code>, <code><span class='Number'>π</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>Characters</td>
+<td><code><span class='String'>'c'</span></code>, <code><span class='String'>@</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>Functions</td>
+<td><code><span class='Function'>+</span></code></td>
+<td>Plus</td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Function'>-</span></code></td>
+<td>Minus, Negate</td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Function'>×</span></code></td>
+<td>Times</td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Function'>÷</span></code></td>
+<td>Divide, Reciprocal</td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Function'>⋆</span></code></td>
+<td>Power</td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Function'>√</span></code></td>
+<td>(Square) Root</td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code></td>
+<td>Logarithm</td>
+</tr>
+<tr>
+<td>1-modifiers</td>
+<td><code><span class='Modifier'>˜</span></code></td>
+<td>Swap, Self</td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Modifier'>⁼</span></code></td>
+<td>Undo</td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Modifier'>˙</span></code></td>
+<td>Constant</td>
+</tr>
+<tr>
+<td>2-modifiers</td>
+<td><code><span class='Modifier2'>∘</span></code></td>
+<td>Atop</td>
+</tr>
+</tbody>
+</table>
+<p>Except for <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>, which is just a particular case of a modifier applied to a function, everything we've seen is either a <em>literal</em> (characters and numbers) or a <em>primitive</em> (functions and modifiers), and has a fixed value. Primitive 1-modifiers have superscript characters and 2-modifiers contain unbroken circles. Other primitives are always functions.</p>
+<p>It's legal to add a number to a character or subtract one character from another, but not to add two characters, negate a character, or subtract it from a number.</p>
+<p>BQN's expression grammar is governed by syntactic roles. For literals and primitives, type and syntactic role always match up:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Subject</td>
+<td>Number, Character</td>
+</tr>
+<tr>
+<td>Function</td>
+<td>Function</td>
+</tr>
+<tr>
+<td>1-modifier</td>
+<td>1-modifier</td>
+</tr>
+<tr>
+<td>2-modifier</td>
+<td>2-modifier</td>
+</tr>
+</tbody>
+</table>
+<p>So that's a really dumb table but if you put things in a table they suddenly become more important somehow. On another note, here's our precedence table so far:</p>
+<table>
+<thead>
+<tr>
+<th>Precedence</th>
+<th>Role</th>
+<th>Input roles</th>
+<th>Output role</th>
+<th>Associativity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code><span class='Paren'>()</span></code></td>
+<td>Whatever</td>
+<td>Same thing</td>
+<td>(none)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Modifier</td>
+<td>Function, subject</td>
+<td>Function</td>
+<td>Left-to-right</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Function</td>
+<td>Subject</td>
+<td>Subject</td>
+<td>Right-to-left</td>
+</tr>
+</tbody>
+</table>
+<p>Maybe BQN grammar's not all that bad.</p>
 
