@@ -24,7 +24,7 @@
     <span class='Function'>÷</span> <span class='Number'>∞</span>
 0
 </pre>
-<p>Okay, now BQN looks like normal (grade-school) mathematics, which is sort of like looking normal. Pi (<code><span class='Number'>π</span></code>) represents <a href="https://en.wikipedia.org/wiki/Pi">that real famous number</a> and Infinity (<code><span class='Number'>∞</span></code>) is part of the number system (the BQN spec allows an implementation to choose its number system, and all existing implementations use double-precision floats, like Javascript or Lua). In analogy with the one-argument form of Minus (<code><span class='Function'>-</span></code>) giving the negation of a number, Divide (<code><span class='Function'>÷</span></code>) with only one argument gives its reciprocal.</p>
+<p>Okay, now BQN looks like normal (grade-school) mathematics, which is sort of like looking normal. Pi (<code><span class='Number'>π</span></code>) represents <a href="https://en.wikipedia.org/wiki/Pi">that real famous number</a> and Infinity (<code><span class='Number'>∞</span></code>) is also part of the number system (the BQN spec allows an implementation to choose its number system, and all existing implementations use double-precision floats, like Javascript or Lua). In analogy with the one-argument form of Minus (<code><span class='Function'>-</span></code>) giving the negation of a number, Divide (<code><span class='Function'>÷</span></code>) with only one argument gives its reciprocal.</p>
 <p>A number can be raised to the power of another with Power, written <code><span class='Function'>⋆</span></code>. That's a star rather than an asterisk; BQN doesn't use the asterisk symbol. If it's called without a left argument, then <code><span class='Function'>⋆</span></code> uses a base of <a href="https://en.wikipedia.org/wiki/E_(mathematical_constant)">Euler's number</a> <em>e</em> and is called Exponential.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDii4YgMwozIOKLhiAyCuKLhiAxICAgIyBUaGVyZSdzIG5vIGNvbnN0YW50IGZvciBlIGJ1dCB5b3UgY2FuIGdldCBpdCB0aGlzIHdheQrii4YgMi4z&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⋆</span> <span class='Number'>3</span>
 8
@@ -99,7 +99,8 @@
 </pre>
 <p>But as I blurted earlier, you can't add two characters (and <strong>no</strong> you can never concatenate things by adding them). It's also an error to negate a character or subtract it from a number. Characters reside in an [intimidating word for simple concept warning] <a href="http://videocortex.io/2018/Affine-Space-Types/">affine space</a> [no relation to those fancy Rust things called linear and affine types], meaning that the following operations are allowed:</p>
 <ul>
-<li>Adding a number to a character gives a character</li>
+<li>Adding a number to a character gives a character.</li>
+<li>So does subtracting a number from a character.</li>
 <li>Subtracting two characters gives a number.</li>
 </ul>
 <p>Other examples of affine spaces are</p>
@@ -109,8 +110,8 @@
 <li>Pointers in a computer's memory. I'll let you verify for yourself that the rules are the same.</li>
 </ul>
 <p>Want to shift an uppercase character to lowercase? Affine characters to the rescue:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J0snICsgJ0EnLSdhJw==&run">↗️</a><pre>    <span class='String'>'K'</span> <span class='Function'>+</span> <span class='String'>'A'</span><span class='Function'>-</span><span class='String'>'a'</span>
-'+'
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J0snICsgJ2EnLSdBJw==&run">↗️</a><pre>    <span class='String'>'K'</span> <span class='Function'>+</span> <span class='String'>'a'</span><span class='Function'>-</span><span class='String'>'A'</span>
+'k'
 </pre>
 <p>Convert a character to a digit? Here you go:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=JzQnIC0gJzAn&run">↗️</a><pre>    <span class='String'>'4'</span> <span class='Function'>-</span> <span class='String'>'0'</span>
@@ -123,7 +124,7 @@
 'a'
 </pre>
 <p>It's a convenient way to write non-printing characters without having to include them in your source code: for example <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>10</span></code> is the newline character.</p>
-<p>Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of &quot;characterness&quot; (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not be valid, because one of the values produced in the middle isn't legal.</p>
+<p>Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of &quot;characterness&quot; (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not be valid, if one of the values produced in the middle isn't legal.</p>
 <h2 id="modifiers">Modifiers</h2>
 <p>Functions are nice and all, but to really bring us into the space age BQN has a second level of function called <em>modifiers</em> (the space age in this case is when operators were introduced to APL in the early 60s—hey, did you know the <a href="https://aplwiki.com/wiki/APL_conference#1970">second APL conference</a> was held at Goddard Space Flight Center?). While functions apply to subjects, modifiers can apply to functions <em>or</em> subjects, and return functions. For example, the 1-modifier <code><span class='Modifier'>˜</span></code> modifies one function by swapping the arguments before calling it (Swap), or copying the right argument to the left if there's only one (Self).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiAty5wgJ2QnICAjIFN1YnRyYWN0IGZyb20KK8ucIDMgICMgQWRkIHRvIGl0c2VsZg==&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>-</span><span class='Modifier'>˜</span> <span class='String'>'d'</span>  <span class='Comment'># Subtract from

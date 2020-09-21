@@ -20,7 +20,7 @@ The number of spaces between *primitive functions* like `+` and `-` and their *a
         9 ÷ 2
         ÷ ∞
 
-Okay, now BQN looks like normal (grade-school) mathematics, which is sort of like looking normal. Pi (`π`) represents [that real famous number](https://en.wikipedia.org/wiki/Pi) and Infinity (`∞`) is part of the number system (the BQN spec allows an implementation to choose its number system, and all existing implementations use double-precision floats, like Javascript or Lua). In analogy with the one-argument form of Minus (`-`) giving the negation of a number, Divide (`÷`) with only one argument gives its reciprocal.
+Okay, now BQN looks like normal (grade-school) mathematics, which is sort of like looking normal. Pi (`π`) represents [that real famous number](https://en.wikipedia.org/wiki/Pi) and Infinity (`∞`) is also part of the number system (the BQN spec allows an implementation to choose its number system, and all existing implementations use double-precision floats, like Javascript or Lua). In analogy with the one-argument form of Minus (`-`) giving the negation of a number, Divide (`÷`) with only one argument gives its reciprocal.
 
 A number can be raised to the power of another with Power, written `⋆`. That's a star rather than an asterisk; BQN doesn't use the asterisk symbol. If it's called without a left argument, then `⋆` uses a base of [Euler's number](https://en.wikipedia.org/wiki/E_(mathematical_constant)) *e* and is called Exponential.
 
@@ -97,7 +97,8 @@ A character is written with single quotes. As in the C language, it's not the sa
         'h' - 'a'
 
 But as I blurted earlier, you can't add two characters (and **no** you can never concatenate things by adding them). It's also an error to negate a character or subtract it from a number. Characters reside in an \[intimidating word for simple concept warning\] [affine space](http://videocortex.io/2018/Affine-Space-Types/) \[no relation to those fancy Rust things called linear and affine types\], meaning that the following operations are allowed:
-* Adding a number to a character gives a character
+* Adding a number to a character gives a character.
+* So does subtracting a number from a character.
 * Subtracting two characters gives a number.
 Other examples of affine spaces are
 * Points on a line (with no origin). You can move a point by a distance or find the distance between two points, but can't add points.
@@ -106,7 +107,7 @@ Other examples of affine spaces are
 
 Want to shift an uppercase character to lowercase? Affine characters to the rescue:
 
-        'K' + 'A'-'a'
+        'K' + 'a'-'A'
 
 Convert a character to a digit? Here you go:
 
@@ -119,7 +120,7 @@ The one thing affine characters won't let you do is find some special "starting 
 
 It's a convenient way to write non-printing characters without having to include them in your source code: for example `@+10` is the newline character.
 
-Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of "characterness" (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not be valid, because one of the values produced in the middle isn't legal.
+Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of "characterness" (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not be valid, if one of the values produced in the middle isn't legal.
 
 ## Modifiers
 
