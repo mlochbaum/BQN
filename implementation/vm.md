@@ -110,3 +110,81 @@ A *reference list* is a list of variable references or reference lists. It's cre
 The **SETN**, **SETU**, and **SETM** instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.
 
 **SETM** additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.
+
+## Runtime
+
+Primitive functions and modifiers used in a program are stored in its `consts` array. The compiler needs to be passed a *runtime* with the value of every primitive so that these functions and modifiers are available.
+
+While it's perfectly possible to implement the runtime from scratch, the pseudo-BQN file [r.bqn](../src/r.bqn) implements the full runtime in terms of a *core runtime* consisting of a smaller number of much simpler functions. [pr.bqn](../src/pr.bqn) converts this file so that it can be compiled. It changes values in the core runtime to primitives and primitives to generated identifiers, so that the first 21 values in the output's `consts` array are exactly the core runtime, and no other primitives are required.
+
+The contents of a core runtime are given below. The names given are those used in r.bqn; the environment only provides a list of values and therefore doesn't need to use the same names. For named functions a description is given. For primitives, the implementation should match the BQN specification for that primitive on the specified domain, or the entire domain if left empty. They won't be called outside that domain except if there are bugs in r.bqn.
+
+| Ind | Name       | Description / restrictions
+|-----|------------|---------------------------
+|   0 | `IsArray`  | 1 if the right argument is an array, 0 otherwise
+|   1 | `Type`     | The fill value for array `𝕩`
+|   2 | `Log`      | `⋆⁼` (natural or base-`𝕨` logarithm) for atomic arguments
+|   3 | `GroupLen` | `≠¨⊔𝕩` for a valid list `𝕩`
+|   4 | `GroupOrd` | `∾⊔𝕩` provided `𝕨` is `GroupLen 𝕩`
+|   5 | `!`        |
+|   6 | `+`        | On two atoms
+|   7 | `-`        | On one or two atoms
+|   8 | `×`        | On two atoms
+|   9 | `÷`        | On one or two atoms
+|  10 | `⋆`        | On one or two atoms
+|  11 | `⌊`        | On one atom
+|  12 | `=`        | On one value or two atoms
+|  13 | `≤`        | On two atoms
+|  14 | `≢`        | For array `𝕩`
+|  15 | `⥊`        | For array `𝕩` with no `𝕨` or `𝕨=○(×´)≢𝕩`
+|  16 | `⊑`        | For atom `𝕨` and list `𝕩`
+|  17 | `↕`        | For natural number `𝕩`
+|  18 | `⌜`        | On arrays
+|  19 | `` ` ``    |
+|  20 | `⊘`        |
+
+Remember that `+` and `-` can also work on characters in some circumstances, under the rules of affine characters. Other arithmetic functions should only accept numbers. `=` must work on numbers, characters, and primitives, and should give `0` without causing an error if the arguments have different types or one is a primitive and the other isn't. `≤` must work on numbers and characters.
+
+### GroupLen and GroupOrd
+
+GroupLen and GroupOrd, short for Group length and Group order, are used to implement [Group](../doc/group.md) (`⊔`) and also to grade small-range lists and invert permutations (the inverse of a permutation `p` is `1¨⊸GroupOrd p`). Each of these only needs to work on lists of integers. Shown below are efficient implementations using BQN extended with the notation `(i⊑l) Fn↩ x` meaning `l ↩ Fn⟜x⌾(i⊸⊑) l`, where `Fn` is `⊢` if omitted. Since these special assignments only change one element of `l`, each can be a fast constant-time operation.
+
+    GroupLen ← {
+      l ← ¯1 ⌈´ 𝕩
+      r ← (l+1) ⥊ 0
+      { (𝕩⊑r) +↩ 1 }⍟(0⊸≤)¨ 𝕩
+      r
+    }
+
+    GroupOrd ← {
+      # 𝕨 ≡ GroupLen 𝕩
+      s ← 0 ∾ +` 𝕨
+      r ← (¯1⊑s) ⥊ @   # Every element will be overwritten
+      (↕≠𝕩) { ((𝕩⊑s)⊑r)↩𝕨 ⋄ (𝕩⊑s)+↩1 }⍟(0⊸≤)¨ 𝕩
+      r
+    }
+
+## Assembly
+
+The full BQN implementation is made up of the two components above—virtual machine and core runtime—and the compiled runtime, compiler, and formatter. Since the compiler unlikely to work right away, I suggest initially testing the virtual machine on smaller pieces of code compiled by an existing, working, BQN implementation.
+
+BQN sources are compiled with [cjs.bqn](../src/cjs.bqn), which runs under [dzaima/BQN](https://github.com/dzaima/BQN/) as a Unix-style script. It has two modes. If given a command-line argument `r`, `c`, or `fmt`, it compiles one of the source files. With any other command-line arguments, it will compile each one, and format it as a single line of output. The output is in a format designed for Javascript, but it can be adjusted to work in other languages either by text replacement on the output or changes to the formatting functions in cjs.bqn.
+
+### Structure
+
+The following steps give a working BQN system, assuming a working VM and core runtime:
+* Evaluate the bytecode `$ src/cjs.bqn r`, passing the core runtime `provide` in the constants array. The result is the full runtime.
+* Evaluate the bytecode `$ src/cjs.bqn c`, which uses primitives from the runtime in its constants array. This is the compiler.
+* Evaluate the bytecode `$ src/cjs.bqn fmt`. This returns a 1-modifier. Call it on an operand function that formats atoms to obtain the formatter.
+
+The compiler takes the runtime as `𝕨` and source code as `𝕩`. To evaluate BQN source code, convert it into a BQN string (rank-1 array of characters), pass this string and runtime to the compiler, and evaluate the result as bytecode. Results can be formatted with the formatter for use in a REPL, or used from the implementation language.
+
+### Testing
+
+I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next.
+
+* Test core runtime functions directly by calling them within the implementation language.
+* Test the virtual machine with small snippets of handwritten bytecode, or with the output of `src/cjs.bqn` on test expressions such as those in [test/bcases.bqn](../test/bcases.bqn).
+* Now test the self-hosted compiler by running it directly on small expressions.
+* For a larger test, use [test/prim.bqn](../test/prim.bqn). The result should be an empty list `⟨⟩` indicating no failed tests.
+* If test/prim.bqn passes you can almost certainly compile the compiler.

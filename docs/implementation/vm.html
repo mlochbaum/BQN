@@ -379,4 +379,162 @@
 <p>A <em>reference list</em> is a list of variable references or reference lists. It's created with the <strong>ARRM</strong> instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.</p>
 <p>The <strong>SETN</strong>, <strong>SETU</strong>, and <strong>SETM</strong> instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.</p>
 <p><strong>SETM</strong> additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.</p>
+<h2 id="runtime">Runtime</h2>
+<p>Primitive functions and modifiers used in a program are stored in its <code><span class='Value'>consts</span></code> array. The compiler needs to be passed a <em>runtime</em> with the value of every primitive so that these functions and modifiers are available.</p>
+<p>While it's perfectly possible to implement the runtime from scratch, the pseudo-BQN file <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r.bqn">r.bqn</a> implements the full runtime in terms of a <em>core runtime</em> consisting of a smaller number of much simpler functions. <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/pr.bqn">pr.bqn</a> converts this file so that it can be compiled. It changes values in the core runtime to primitives and primitives to generated identifiers, so that the first 21 values in the output's <code><span class='Value'>consts</span></code> array are exactly the core runtime, and no other primitives are required.</p>
+<p>The contents of a core runtime are given below. The names given are those used in r.bqn; the environment only provides a list of values and therefore doesn't need to use the same names. For named functions a description is given. For primitives, the implementation should match the BQN specification for that primitive on the specified domain, or the entire domain if left empty. They won't be called outside that domain except if there are bugs in r.bqn.</p>
+<table>
+<thead>
+<tr>
+<th>Ind</th>
+<th>Name</th>
+<th>Description / restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code><span class='Function'>IsArray</span></code></td>
+<td>1 if the right argument is an array, 0 otherwise</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code><span class='Function'>Type</span></code></td>
+<td>The fill value for array <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code><span class='Function'>Log</span></code></td>
+<td><code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code> (natural or base-<code><span class='Value'>𝕨</span></code> logarithm) for atomic arguments</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code><span class='Function'>GroupLen</span></code></td>
+<td><code><span class='Function'>≠</span><span class='Modifier'>¨</span><span class='Function'>⊔</span><span class='Value'>𝕩</span></code> for a valid list <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code><span class='Function'>GroupOrd</span></code></td>
+<td><code><span class='Function'>∾⊔</span><span class='Value'>𝕩</span></code> provided <code><span class='Value'>𝕨</span></code> is <code><span class='Function'>GroupLen</span> <span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code><span class='Function'>!</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code><span class='Function'>+</span></code></td>
+<td>On two atoms</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code><span class='Function'>-</span></code></td>
+<td>On one or two atoms</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code><span class='Function'>×</span></code></td>
+<td>On two atoms</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code><span class='Function'>÷</span></code></td>
+<td>On one or two atoms</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code><span class='Function'>⋆</span></code></td>
+<td>On one or two atoms</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code><span class='Function'>⌊</span></code></td>
+<td>On one atom</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code><span class='Function'>=</span></code></td>
+<td>On one value or two atoms</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code><span class='Function'>≤</span></code></td>
+<td>On two atoms</td>
+</tr>
+<tr>
+<td>14</td>
+<td><code><span class='Function'>≢</span></code></td>
+<td>For array <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>15</td>
+<td><code><span class='Function'>⥊</span></code></td>
+<td>For array <code><span class='Value'>𝕩</span></code> with no <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕨</span><span class='Function'>=</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>´</span><span class='Paren'>)</span><span class='Function'>≢</span><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>16</td>
+<td><code><span class='Function'>⊑</span></code></td>
+<td>For atom <code><span class='Value'>𝕨</span></code> and list <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>17</td>
+<td><code><span class='Function'>↕</span></code></td>
+<td>For natural number <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>18</td>
+<td><code><span class='Modifier'>⌜</span></code></td>
+<td>On arrays</td>
+</tr>
+<tr>
+<td>19</td>
+<td><code><span class='Modifier'>`</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>20</td>
+<td><code><span class='Modifier2'>⊘</span></code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Remember that <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> can also work on characters in some circumstances, under the rules of affine characters. Other arithmetic functions should only accept numbers. <code><span class='Function'>=</span></code> must work on numbers, characters, and primitives, and should give <code><span class='Number'>0</span></code> without causing an error if the arguments have different types or one is a primitive and the other isn't. <code><span class='Function'>≤</span></code> must work on numbers and characters.</p>
+<h3 id="grouplen-and-groupord">GroupLen and GroupOrd</h3>
+<p>GroupLen and GroupOrd, short for Group length and Group order, are used to implement <a href="../doc/group.html">Group</a> (<code><span class='Function'>⊔</span></code>) and also to grade small-range lists and invert permutations (the inverse of a permutation <code><span class='Value'>p</span></code> is <code><span class='Number'>1</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>GroupOrd</span> <span class='Value'>p</span></code>). Each of these only needs to work on lists of integers. Shown below are efficient implementations using BQN extended with the notation <code><span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>l</span><span class='Paren'>)</span> <span class='Function'>Fn</span><span class='Gets'>↩</span> <span class='Value'>x</span></code> meaning <code><span class='Value'>l</span> <span class='Gets'>↩</span> <span class='Function'>Fn</span><span class='Modifier2'>⟜</span><span class='Value'>x</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Value'>i</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span><span class='Paren'>)</span> <span class='Value'>l</span></code>, where <code><span class='Function'>Fn</span></code> is <code><span class='Function'>⊢</span></code> if omitted. Since these special assignments only change one element of <code><span class='Value'>l</span></code>, each can be a fast constant-time operation.</p>
+<pre><span class='Function'>GroupLen</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+  <span class='Value'>l</span> <span class='Gets'>←</span> <span class='Number'>¯1</span> <span class='Function'>⌈</span><span class='Modifier'>´</span> <span class='Value'>𝕩</span>
+  <span class='Value'>r</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Value'>l</span><span class='Function'>+</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>⥊</span> <span class='Number'>0</span>
+  <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Value'>𝕩</span><span class='Function'>⊑</span><span class='Value'>r</span><span class='Paren'>)</span> <span class='Function'>+</span><span class='Gets'>↩</span> <span class='Number'>1</span> <span class='Brace'>}</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>≤</span><span class='Paren'>)</span><span class='Modifier'>¨</span> <span class='Value'>𝕩</span>
+  <span class='Value'>r</span>
+<span class='Brace'>}</span>
+
+<span class='Function'>GroupOrd</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+  <span class='Comment'># 𝕨 ≡ GroupLen 𝕩
+</span>  <span class='Value'>s</span> <span class='Gets'>←</span> <span class='Number'>0</span> <span class='Function'>∾</span> <span class='Function'>+</span><span class='Modifier'>`</span> <span class='Value'>𝕨</span>
+  <span class='Value'>r</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Number'>¯1</span><span class='Function'>⊑</span><span class='Value'>s</span><span class='Paren'>)</span> <span class='Function'>⥊</span> <span class='String'>@</span>   <span class='Comment'># Every element will be overwritten
+</span>  <span class='Paren'>(</span><span class='Function'>↕≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Brace'>{</span> <span class='Paren'>((</span><span class='Value'>𝕩</span><span class='Function'>⊑</span><span class='Value'>s</span><span class='Paren'>)</span><span class='Function'>⊑</span><span class='Value'>r</span><span class='Paren'>)</span><span class='Gets'>↩</span><span class='Value'>𝕨</span> <span class='Separator'>⋄</span> <span class='Paren'>(</span><span class='Value'>𝕩</span><span class='Function'>⊑</span><span class='Value'>s</span><span class='Paren'>)</span><span class='Function'>+</span><span class='Gets'>↩</span><span class='Number'>1</span> <span class='Brace'>}</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>≤</span><span class='Paren'>)</span><span class='Modifier'>¨</span> <span class='Value'>𝕩</span>
+  <span class='Value'>r</span>
+<span class='Brace'>}</span>
+</pre>
+<h2 id="assembly">Assembly</h2>
+<p>The full BQN implementation is made up of the two components above—virtual machine and core runtime—and the compiled runtime, compiler, and formatter. Since the compiler unlikely to work right away, I suggest initially testing the virtual machine on smaller pieces of code compiled by an existing, working, BQN implementation.</p>
+<p>BQN sources are compiled with <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/cjs.bqn">cjs.bqn</a>, which runs under <a href="https://github.com/dzaima/BQN/">dzaima/BQN</a> as a Unix-style script. It has two modes. If given a command-line argument <code><span class='Value'>r</span></code>, <code><span class='Value'>c</span></code>, or <code><span class='Value'>fmt</span></code>, it compiles one of the source files. With any other command-line arguments, it will compile each one, and format it as a single line of output. The output is in a format designed for Javascript, but it can be adjusted to work in other languages either by text replacement on the output or changes to the formatting functions in cjs.bqn.</p>
+<h3 id="structure">Structure</h3>
+<p>The following steps give a working BQN system, assuming a working VM and core runtime:</p>
+<ul>
+<li>Evaluate the bytecode <code><span class='Value'>$</span> <span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span> <span class='Value'>r</span></code>, passing the core runtime <code><span class='Value'>provide</span></code> in the constants array. The result is the full runtime.</li>
+<li>Evaluate the bytecode <code><span class='Value'>$</span> <span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span> <span class='Value'>c</span></code>, which uses primitives from the runtime in its constants array. This is the compiler.</li>
+<li>Evaluate the bytecode <code><span class='Value'>$</span> <span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span> <span class='Value'>fmt</span></code>. This returns a 1-modifier. Call it on an operand function that formats atoms to obtain the formatter.</li>
+</ul>
+<p>The compiler takes the runtime as <code><span class='Value'>𝕨</span></code> and source code as <code><span class='Value'>𝕩</span></code>. To evaluate BQN source code, convert it into a BQN string (rank-1 array of characters), pass this string and runtime to the compiler, and evaluate the result as bytecode. Results can be formatted with the formatter for use in a REPL, or used from the implementation language.</p>
+<h3 id="testing">Testing</h3>
+<p>I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next.</p>
+<ul>
+<li>Test core runtime functions directly by calling them within the implementation language.</li>
+<li>Test the virtual machine with small snippets of handwritten bytecode, or with the output of <code><span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span></code> on test expressions such as those in <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/bcases.bqn">test/bcases.bqn</a>.</li>
+<li>Now test the self-hosted compiler by running it directly on small expressions.</li>
+<li>For a larger test, use <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/prim.bqn">test/prim.bqn</a>. The result should be an empty list <code><span class='Bracket'>⟨⟩</span></code> indicating no failed tests.</li>
+<li>If test/prim.bqn passes you can almost certainly compile the compiler.</li>
+</ul>
 
