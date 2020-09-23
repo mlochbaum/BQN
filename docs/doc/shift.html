@@ -1,0 +1,130 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Shift functions</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<h1 id="shift-functions">Shift functions</h1>
+<p>The shift functions <code><span class='Function'>«</span></code> and <code><span class='Function'>»</span></code> are two new primitives added to BQN based on a pattern used heavily in the compiler and a reasonable amount everywhere else. Shifts resemble but are more general than the bit-based shift operations used in low-level languages. They replace the APL pattern of a 2-wise reduction after appending or prepending an element (APL's <code><span class='Number'>2</span><span class='Function'>≠/</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Value'>v</span></code> translates to <code><span class='Function'>»</span><span class='Modifier2'>⊸</span><span class='Function'>≠</span><span class='Value'>v</span></code>), one of the more common uses of 2-wise reduction.</p>
+<p>The result of a shift function always has the same shape as its right argument. The function adds major cells to the beginning (<code><span class='Function'>»</span></code>) or end (<code><span class='Function'>«</span></code>) of <code><span class='Value'>𝕩</span></code>, moving the cells already in <code><span class='Value'>𝕩</span></code> to accomodate them. Some cells on the opposite side from those added will &quot;fall off&quot; and not be included in the result.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MOKAvzAgwrsgM+KAvzLigL8xICAgICAgICAgICAgICMgU2hpZnQgQmVmb3JlCiJlbmQiIMKrICJhZGQgdG8gdGhlICIgICAjIFNoaWZ0IEFmdGVy&run">↗️</a><pre>    <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span> <span class='Function'>»</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span>             <span class='Comment'># Shift Before
+</span>⟨ 0 0 3 ⟩
+    <span class='String'>&quot;end&quot;</span> <span class='Function'>«</span> <span class='String'>&quot;add to the &quot;</span>   <span class='Comment'># Shift After
+</span>" to the end"
+</pre>
+<p>The cells to add come from <code><span class='Value'>𝕨</span></code> if it's present, as shown above. Otherwise, a single cell of fill values for <code><span class='Value'>𝕩</span></code> is used. This kind of shift, which moves cells in <code><span class='Value'>𝕩</span></code> over by just one, is called a &quot;nudge&quot;.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wrsgImFiY2QiICAgIyBOdWRnZQrCqyAx4oC/MuKAvzMgICAgIyBOdWRnZSBCYWNr&run">↗️</a><pre>    <span class='Function'>»</span> <span class='String'>&quot;abcd&quot;</span>   <span class='Comment'># Nudge
+</span>" abc"
+    <span class='Function'>«</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>    <span class='Comment'># Nudge Back
+</span>⟨ 2 3 0 ⟩
+</pre>
+<p>If <code><span class='Value'>𝕨</span></code> is longer than <code><span class='Value'>𝕩</span></code>, some cells from <code><span class='Value'>𝕨</span></code> will be discarded, as well as all of <code><span class='Value'>𝕩</span></code>. In this case <code><span class='Value'>𝕨</span><span class='Function'>»</span><span class='Value'>𝕩</span></code> is <code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>↑</span><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕨</span><span class='Function'>«</span><span class='Value'>𝕩</span></code> is <code><span class='Paren'>(</span><span class='Function'>-≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>↑</span><span class='Value'>𝕨</span></code>. For similar reasons, nudging an array of length 0 returns it unchanged.</p>
+<h2 id="sequence-processing-with-shifts">Sequence processing with shifts</h2>
+<p>When working with a sequence of data such as text, daily measurements, or audio data, shift functions are generally the best way to handle the concept of &quot;next&quot; or &quot;previous&quot; in the data. In the following example <code><span class='Value'>s</span></code> is shown alongside the shifted-right data <code><span class='Function'>»</span><span class='Value'>s</span></code>, and each element is compared to the previous with <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span></code>, which we see is the inverse of <code><span class='Function'>+</span><span class='Modifier'>`</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgMeKAvzLigL8y4oC/NOKAvzPigL814oC/NgpzIOKJjSDCu3MKLeKfnMK7IHMKCitgIC3in5zCuyBz&run">↗️</a><pre>    <span class='Value'>s</span> <span class='Gets'>←</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span>
+    <span class='Value'>s</span> <span class='Function'>≍</span> <span class='Function'>»</span><span class='Value'>s</span>
+┌─               
+╵ 1 2 2 4 3 5 6  
+  0 1 2 2 4 3 5  
+                ┘
+    <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span> <span class='Value'>s</span>
+⟨ 1 1 0 2 ¯1 2 1 ⟩
+
+    <span class='Function'>+</span><span class='Modifier'>`</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span> <span class='Value'>s</span>
+⟨ 1 2 2 4 3 5 6 ⟩
+</pre>
+<p>In this way <code><span class='Function'>»</span></code> refers to a sequence containing the previous element at each position. By default the array's fill is used for the element before the first, and a right argument can be given to provide a different one.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oieIMK7IHMK4oqP4oq4wrsgcw==&run">↗️</a><pre>    <span class='Number'>∞</span> <span class='Function'>»</span> <span class='Value'>s</span>
+⟨ ∞ 1 2 2 4 3 5 ⟩
+    <span class='Function'>⊏</span><span class='Modifier2'>⊸</span><span class='Function'>»</span> <span class='Value'>s</span>
+⟨ 1 1 2 2 4 3 5 ⟩
+</pre>
+<p>It may appear backwards that <code><span class='Function'>»</span></code>, which typically means &quot;go to the next item&quot;, is used to represent the previous item. In fact there is no conflict: the symbol <code><span class='Function'>»</span></code> describes what position each cell of <code><span class='Value'>𝕩</span></code> will have in the result, but in this context we are interested in knowing what argument value occurs in a particular result position. By moving all numbers into the future we ensure that a number in the present comes from the past. To keep your intuition functioning in these situations, it may help to think of the arrow point as fixed at some position in the result while the tail stretches back to land on the argument position where it comes from.</p>
+<p>Switching the direction of the arrow, we get an operation that pulls the next value into each position:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDiiY0gwqtzCsKr4oq4LSBz&run">↗️</a><pre>    <span class='Value'>s</span> <span class='Function'>≍</span> <span class='Function'>«</span><span class='Value'>s</span>
+┌─               
+╵ 1 2 2 4 3 5 6  
+  2 2 4 3 5 6 0  
+                ┘
+    <span class='Function'>«</span><span class='Modifier2'>⊸</span><span class='Function'>-</span> <span class='Value'>s</span>
+⟨ 1 0 2 ¯1 2 1 ¯6 ⟩
+</pre>
+<p>The differences here are the same as <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span> <span class='Value'>s</span></code>, except that they are shifted over by one, and it is the <em>last</em> value in the sequence that is compared with a fill value, not the first. These techniques adapt easily to more complicated operations. A symmetric difference is found by subtracting the previous element from the next, and dividing by two:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MsO3y5wgKMK7LcKrKSBzCgoyw7fLnCAo4oqjy53iirjCuyAtIOKKosud4oq4wqspIHMgICMgUmVwZWF0IGF0IHRoZSBlbmRzIGluc3RlYWQgb2YgdXNpbmcgZmlsbHM=&run">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>÷</span><span class='Modifier'>˜</span> <span class='Paren'>(</span><span class='Function'>»-«</span><span class='Paren'>)</span> <span class='Value'>s</span>
+⟨ ¯1 ¯0.5 ¯1 ¯0.5 ¯0.5 ¯1.5 2.5 ⟩
+
+    <span class='Number'>2</span><span class='Function'>÷</span><span class='Modifier'>˜</span> <span class='Paren'>(</span><span class='Function'>⊣</span><span class='Modifier'>˝</span><span class='Modifier2'>⊸</span><span class='Function'>»</span> <span class='Function'>-</span> <span class='Function'>⊢</span><span class='Modifier'>˝</span><span class='Modifier2'>⊸</span><span class='Function'>«</span><span class='Paren'>)</span> <span class='Value'>s</span>  <span class='Comment'># Repeat at the ends instead of using fills
+</span>⟨ ¯0.5 ¯0.5 ¯1 ¯0.5 ¯0.5 ¯1.5 ¯0.5 ⟩
+</pre>
+<p>A feature these examples all share is that they maintain the length of <code><span class='Value'>s</span></code>. This is a common condition in sequence processing, particularly when the processed sequence needs to be combined or compared with the original in some way. However, it's not always the case. In some instances, for example when searching <code><span class='Value'>s</span></code> to see if there is any value less than the previous, the list should get shorter during processing. In these cases, <a href="windows.html">Windows</a> (<code><span class='Function'>↕</span></code>) is usually a better choice.</p>
+<h2 id="arithmetic-and-logical-shifts">Arithmetic and logical shifts</h2>
+<p>The glyphs <code><span class='Function'>«</span></code> and <code><span class='Function'>»</span></code>, suggesting movement, were chosen for the same reasons as the digraphs <code><span class='Function'>&lt;&lt;</span></code> and <code><span class='Function'>&gt;&gt;</span></code>, and can be used to implement the same operations on boolean lists.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGkg4oaQICIxMDAxMTAxMSItJzAnCgrCq+KNnzMgaSAgICAgICAgIyBRdWljayBhbmQgZGlydHkgbGVmdCBzaGlmdAoKMyDipYrin5ww4oq4wqsgaSAgICAjIEFsdGVybmF0ZSBsZWZ0IHNoaWZ0&run">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>i</span> <span class='Gets'>←</span> <span class='String'>&quot;10011011&quot;</span><span class='Function'>-</span><span class='String'>'0'</span>
+⟨ 1 0 0 1 1 0 1 1 ⟩
+
+    <span class='Function'>«</span><span class='Modifier2'>⍟</span><span class='Number'>3</span> <span class='Value'>i</span>        <span class='Comment'># Quick and dirty left shift
+</span>⟨ 1 1 0 1 1 0 0 0 ⟩
+
+    <span class='Number'>3</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>«</span> <span class='Value'>i</span>    <span class='Comment'># Alternate left shift
+</span>⟨ 1 1 0 1 1 0 0 0 ⟩
+</pre>
+<p>With a number in big-endian format, a right shift might be logical, shifting in zeros, or arithmetic, shifting in copies of the highest-order bit (for little-endian numbers, this applies to left shift rather than right ones). The two kinds of shift can be performed with similar code, using <code><span class='Number'>0</span></code> or <code><span class='Function'>⊏</span><span class='Value'>𝕩</span></code> for the inserted cell.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDipYrin5ww4oq4wrsgaSAgICAjIExvZ2ljYWwgcmlnaHQgc2hpZnQKCjMgKOKliuKfnOKKj8K74oqiKSBpICAjIEFyaXRobWV0aWMgcmlnaHQgc2hpZnQ=&run">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>»</span> <span class='Value'>i</span>    <span class='Comment'># Logical right shift
+</span>⟨ 0 0 0 1 0 0 1 1 ⟩
+
+    <span class='Number'>3</span> <span class='Paren'>(</span><span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Function'>⊏»⊢</span><span class='Paren'>)</span> <span class='Value'>i</span>  <span class='Comment'># Arithmetic right shift
+</span>⟨ 1 1 1 1 0 0 1 1 ⟩
+</pre>
+<h2 id="other-examples">Other examples</h2>
+<p>In Take (<code><span class='Function'>↑</span></code>), there's no way to specify the fill element when the result is longer than the argument. To take along the first axis with a specified, constant fill value, you can use Shift Before instead, where the right argument is an array of fills with the desired final shape.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiYyIgwrsgNeKliidGJw==&run">↗️</a><pre>    <span class='String'>&quot;abc&quot;</span> <span class='Function'>»</span> <span class='Number'>5</span><span class='Function'>⥊</span><span class='String'>'F'</span>
+"abcFF"
+</pre>
+<p>When using Scan (<code><span class='Modifier'>`</span></code>), the result at a particular index is obtained from values up to and including the one at that index. But it's common to want to use the values up to but not including that one instead. This can be done either by joining or shifting in that value before scanning. The difference is that with Join the result is longer than the argument. Either form might be wanted depending on how it will be used.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K2AgMeKAvzHigL8x4oC/MQoyICtg4oiY4oi+IDHigL8x4oC/MeKAvzEKMiArYOKImMK7IDHigL8x4oC/MeKAvzE=&run">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>`</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 1 2 3 4 ⟩
+    <span class='Number'>2</span> <span class='Function'>+</span><span class='Modifier'>`</span><span class='Modifier2'>∘</span><span class='Function'>∾</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 2 3 4 5 6 ⟩
+    <span class='Number'>2</span> <span class='Function'>+</span><span class='Modifier'>`</span><span class='Modifier2'>∘</span><span class='Function'>»</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 2 3 4 5 ⟩
+</pre>
+<p>The <em>strides</em> of an array are the distances between one element and the next along any given axis. It's the product of all axis lengths below that axis, since these are all the axes that have to be &quot;skipped&quot; to jump along the axis. The strides of an array <code><span class='Value'>𝕩</span></code> are <code><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>`</span><span class='Number'>1</span><span class='Function'>»⊢</span><span class='Paren'>)</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span><span class='Modifier2'>∘</span><span class='Function'>≢</span><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KMOXYDHCu+KKoinijL7ijL0gNeKAvzLigL804oC/Mw==&run">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>`</span><span class='Number'>1</span><span class='Function'>»⊢</span><span class='Paren'>)</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+⟨ 24 12 3 1 ⟩
+</pre>
+<h2 id="higher-rank">Higher rank</h2>
+<p>Shifting always works on the first axis of <code><span class='Value'>𝕩</span></code> (which must have rank 1 or more), and shifts in major cells. A left argument can have rank equal to <code><span class='Value'>𝕩</span></code>, or one less than it, in which case it becomes a single cell of the result. With no left argument, a cell of fills <code><span class='Number'>1</span><span class='Function'>↑</span><span class='Number'>0</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code> is nudged in.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQIOKliuKfnCjihpXDl8K0KSA04oC/MwrCuyBhICAgICAgICAgICAgICAgICMgTnVkZ2UgYWRkcyBhIGNlbGwgb2YgZmlsbHMKIm9uZSIgwqsgYSAgICAgICAgICAjIFNoaWZ0IGluIGEgY2VsbAooInR3byLiiY0iY2VsIikgwqsgYSAgIyBTaGlmdCBpbiBtdWx0aXBsZSBjZWxscw==&run">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>↕×</span><span class='Modifier'>´</span><span class='Paren'>)</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+┌─         
+╵ 0  1  2  
+  3  4  5  
+  6  7  8  
+  9 10 11  
+          ┘
+    <span class='Function'>»</span> <span class='Value'>a</span>                <span class='Comment'># Nudge adds a cell of fills
+</span>┌─       
+╵ 0 0 0  
+  0 1 2  
+  3 4 5  
+  6 7 8  
+        ┘
+    <span class='String'>&quot;one&quot;</span> <span class='Function'>«</span> <span class='Value'>a</span>          <span class='Comment'># Shift in a cell
+</span>┌─             
+╵ 3   4   5    
+  6   7   8    
+  9   10  11   
+  'o' 'n' 'e'  
+              ┘
+    <span class='Paren'>(</span><span class='String'>&quot;two&quot;</span><span class='Function'>≍</span><span class='String'>&quot;cel&quot;</span><span class='Paren'>)</span> <span class='Function'>«</span> <span class='Value'>a</span>  <span class='Comment'># Shift in multiple cells
+</span>┌─             
+╵ 6   7   8    
+  9   10  11   
+  't' 'w' 'o'  
+  'c' 'e' 'l'  
+              ┘
+</pre>
+<h2 id="definition">Definition</h2>
+<p>In any instance of <code><span class='Function'>»</span></code> or <code><span class='Function'>«</span></code>, <code><span class='Value'>𝕩</span></code> must have rank at least 1.</p>
+<p>For a dyadic shift function, <code><span class='Value'>𝕨</span></code> must be Join-compatible with <code><span class='Value'>𝕩</span></code> (that is, <code><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='Value'>𝕩</span></code> completes without error) and cannot have greater rank than <code><span class='Value'>𝕩</span></code>. Then Shift Before (<code><span class='Function'>»</span></code>) is <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>↑</span><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> and Shift After (<code><span class='Function'>«</span></code>) is <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>-≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>↑</span><span class='Value'>𝕩</span><span class='Function'>∾</span><span class='Value'>𝕨</span><span class='Brace'>}</span></code></p>
+<p>When called monadically, the default argument is a cell of fills <code><span class='Number'>1</span><span class='Function'>↑</span><span class='Number'>0</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code>. That is, Nudge (<code><span class='Function'>»</span></code>) is <code><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>↑</span><span class='Number'>0</span><span class='Function'>↑⊢</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>»</span></code> and Nudge Back (<code><span class='Function'>«</span></code>) is <code><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>↑</span><span class='Number'>0</span><span class='Function'>↑⊢</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>«</span></code>. This default argument always satisfies the compatibility requirement above and so the only conditions for nudge are that <code><span class='Value'>𝕩</span></code> has rank at least 1 and has a fill element.</p>
+

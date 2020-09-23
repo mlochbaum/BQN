@@ -23,6 +23,7 @@ Primitives:
 - [Join](join.md) (`∾`)
 - [Logical functions](logic.md) (`∧∨¬`)
 - [Prefixes and Suffixes](prefixes.md) (`↑↓`)
+- [Shift functions](shift.md) (`»«`)
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
 - [Transpose](transpose.md) (`⍉`)
 - [Windows](windows.md) (`↕`)
