@@ -254,14 +254,17 @@ Markdown ← {filename𝕊𝕩:
     r ← b > » '\' = 𝕩      # Non-escaped bars
     1 -˜ (¬r∨«b>r) × o + +` r
   }
+  alignments ← (" align="""∾∾⟜"""")⍟(0<≠)¨ ""‿"right"‿"left"‿"center"
   ProcTable ← {
     rows ← (Trim¨ CutTableRow⊸⊔)¨ 𝕩
-    inc ← ¬ rule ← ∧´∘∾¨'-'=rows
-    rows ↩ ProcInline¨¨⌾(inc⊸/) rows
+    incl ← ¬ rule ← (∧´∾∊"-:"˙)¨ rows
+    align ← alignments ⊏˜ (+˜⊸+´0‿¯1⊏⊢)¨ ':' = ⊑ rule / rows
+    rows ↩ ProcInline¨¨⌾(incl⊸/) rows
     rows ↩ (⊏rows) (⊢ ∾ ⟨""⟩ /˜ 0⌈-○≠)¨ rows
-    rowType ← inc / +` rule  # Head or body
-    DoRow ← { lf ∾ JoinLines 𝕨⊸Html¨ 𝕩 }
-    rows ↩ (rowType ⊏ "th"‿"td") DoRow¨ inc/rows
+    rowType ← incl / +` rule  # Head or body
+    tags ← rowType ⊏ "th"‿"td"
+    DoRow ← { lf ∾ JoinLines 𝕨 Html¨ 𝕩 }
+    rows ↩ (<˘ tags ∾⌜ align) DoRow¨ incl/rows
     rowGroups ← ¯1 ↓ rowType ⊔○(∾⟜2) "tr"⊸Html¨ rows
     sections ← "thead"‿"tbody" Html⟜(lf ∾ JoinLines)¨ rowGroups
     "table" Html lf ∾ JoinLines (0 < ≠¨rowGroups) / sections

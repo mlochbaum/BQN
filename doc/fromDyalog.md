@@ -37,19 +37,19 @@ Dyalog uses value types (array, function, and so on) to determine syntax while B
 Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs as APL. Correspondence can be approximate, and `⌽` is just used as a decorator to mean "reverse some things".
 
 | BQN   | `⋆` | `√`      | `∧`   | `∨`   | `¬`   | `≠` | `<` | `>` | `≢` | `⥊` | `∾`   | `≍`    |
-|-------|-----|----------|-------|-------|-------|-----|-----|-----|-----|-----|-------|--------|
+|:-----:|:---:|:--------:|:-----:|:-----:|:-----:|:---:|:---:|:---:|:---:|:---:|:-----:|:------:|
 | Monad | `*` | `*∘(÷2)` | `[⍋]` | `[⍒]` | `~`   | `≢` | `⊂` | `↑` | `⍴` | `,` | `⊃,⌿` | `↑,⍥⊂` |
 | Dyad  | `*` | `*∘÷⍨`   | `∧`   | `∨`   | `1+-` | `≠` | `<` | `>` | `≢` | `⍴` | `⍪`   | `↑,⍥⊂` |
 
 | BQN   | `↑`  | `↓`     | `↕`  | `/` | `⍋` | `⍒`   | `⊏`  | `⊑` | `⊐` | `⊒` | `∊` | `⍷` | `⊔`        |
-|-------|------|---------|------|-----|-----|-------|------|-----|-----|-----|-----|-----|------------|
+|:-----:|:----:|:-------:|:----:|:---:|:---:|:-----:|:----:|:---:|:---:|:---:|:---:|:---:|:----------:|
 | Monad | `,⍀` | `⌽,⌽⍀⌽` | `⍳`  | `⍸` | `⍋` | `⍒`   | `⊣⌿` | `⊃` |     | `…` | `≠` | `∪` | `⌸`        |
 | Dyad  | `↑`  | `↓`     | `,⌿` | `⌿` | `⍸` | `⌽⍸⌽` | `⌷`  | `⊃` | `⍳` | `…` | `∊` | `⍷` | `⌸` or `⊆` |
 
 Modifiers are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
 | BQN    | `¨` | `⌜`  | `˝` | `⎉` | `⍟` | `˜` | `∘` | `○` | `⟜` |
-|--------|-----|------|-----|-----|-----|-----|-----|-----|-----|
+|:------:|:---:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | Dyalog | `¨` | `∘.` | `⌿` | `⍤` | `⍣` | `⍨` | `⍤` | `⍥` | `∘` |
 
 In BQN `⎉` is Rank and `∘` is Atop. Dyalog's Atop (`⍤`) and Over (`⍥`) were added in version 18.0.
