@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Shift functions</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
 <h1 id="shift-functions">Shift functions</h1>
 <p>The shift functions <code><span class='Function'>«</span></code> and <code><span class='Function'>»</span></code> are two new primitives added to BQN based on a pattern used heavily in the compiler and a reasonable amount everywhere else. Shifts resemble but are more general than the bit-based shift operations used in low-level languages. They replace the APL pattern of a 2-wise reduction after appending or prepending an element (APL's <code><span class='Number'>2</span><span class='Function'>≠/</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Value'>v</span></code> translates to <code><span class='Function'>»</span><span class='Modifier2'>⊸</span><span class='Function'>≠</span><span class='Value'>v</span></code>), one of the more common uses of 2-wise reduction.</p>
 <p>The result of a shift function always has the same shape as its right argument. The function adds major cells to the beginning (<code><span class='Function'>»</span></code>) or end (<code><span class='Function'>«</span></code>) of <code><span class='Value'>𝕩</span></code>, moving the cells already in <code><span class='Value'>𝕩</span></code> to accomodate them. Some cells on the opposite side from those added will &quot;fall off&quot; and not be included in the result.</p>
