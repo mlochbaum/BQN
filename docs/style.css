@@ -58,7 +58,10 @@ code {
 pre, textarea, .kb {
   line-height: 1.2;
 }
-pre { margin: 1.6em 0.4em; }
+pre {
+  margin: 1.6em 0.4em;
+  overflow-x: auto;
+}
 pre, textarea { padding: 0.8em; }
 textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
 .cont { margin: 1.3em 0; }
