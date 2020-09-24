@@ -53,7 +53,7 @@ A ligature is a kind of notation and doesn't do something specific like a functi
 Now that all six BQN types have been introduced, let's make a table:
 
 Data      | Operation
-----------|-----------
+:--------:|:---------:
 Number    | Function
 Character | 1-modifier
 Array     | 2-modifier

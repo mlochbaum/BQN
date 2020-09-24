@@ -43,7 +43,7 @@ Because most encoded numbers will be less than 128, for higher performance it's 
 The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the "used" column.
 
 |  B | Name | Used | Like | Args     | Description
-|----|------|------|------|----------|------------
+|---:|------|:----:|-----:|:---------|------------
 |  0 | PUSH |  X   |      | `I`      | Push object `I`
 |  1 | VARO |      |      | `I`      | Push named variable `I`
 |  2 | VARM |      |      | `I`      | Push named variable `I` reference
@@ -74,7 +74,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 Stack effects for most instructions are given below. Instructions 16, 17, and 19 are identical to 5, 6, and 10 except that the indicated values in the higher-numbered instructions may be `·`. The lower-numbered instructions are not yet emitted by the self-hosted compiler and can be implemented simply by making them identical to the higher-numbered ones; however, it may be possible to make them faster by not checking for Nothing.
 
 |  B | Name | Stack effect          | Comments
-|----|------|-----------------------|--------
+|---:|------|-----------------------|--------
 |  0 | PUSH | `→ (i⊑consts)`        |
 |  3 | ARRO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-1`)
 |  5 | FN1C | `𝕩 𝕤 → (𝕊 𝕩)`         | 16: `𝕩` may be `·`
@@ -126,7 +126,7 @@ While it's perfectly possible to implement the runtime from scratch, the pseudo-
 The contents of a core runtime are given below. The names given are those used in r.bqn; the environment only provides a list of values and therefore doesn't need to use the same names. For named functions a description is given. For primitives, the implementation should match the BQN specification for that primitive on the specified domain, or the entire domain if left empty. They won't be called outside that domain except if there are bugs in r.bqn.
 
 | Ind | Name       | Description / restrictions
-|-----|------------|---------------------------
+|----:|------------|---------------------------
 |   0 | `IsArray`  | 1 if the right argument is an array, 0 otherwise
 |   1 | `Type`     | The fill value for array `𝕩`
 |   2 | `Log`      | `⋆⁼` (natural or base-`𝕨` logarithm) for atomic arguments
