@@ -58,7 +58,7 @@ PrecedesGroup ← {
   # false value, and normal indices are increased by 1.
   𝕨 ∾˜↩ 0
   inds ← 1 + ↕≠𝕩
-  # Zero out indices where x was true, and find the greatest index so
+  # Zero out indices where 𝕩 was true, and find the greatest index so
   # far at each position.
   last ← ⌈` inds × ¬𝕩
   last ⊏ 𝕨
@@ -193,7 +193,7 @@ Markdown ← {filename𝕊𝕩:
       (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
     }
     r‿ri ← addRslt◶(2⥊<⟨⟩)‿{
-      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⍟(0<≠)¨ 𝕩
+      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⎊"ERROR"⍟(0<≠)¨ 𝕩
         1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
     } 𝕩
 
