@@ -2,6 +2,12 @@
 
 # BQN: finally, an APL for your flying saucer
 
+<center>
+
+[documentation](doc/README.md) • [specification](spec/README.md) • [tutorials](tutorial/README.md) • [implementation](implementation/README.md)
+
+</center>
+
 *Try it online below or [here](https://mlochbaum.github.io/BQN/try.html), and see [running.md](running.md) for more options.*
 <!--REPL-->
 
