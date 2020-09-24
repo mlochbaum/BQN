@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>Co-dfns versus BQN's implementation</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">implementation</a></div>
 <h1 id="co-dfns-versus-bqns-implementation">Co-dfns versus BQN's implementation</h1>
 <p>The BQN self-hosted compiler is directly inspired by the <a href="https://github.com/Co-dfns/Co-dfns">Co-dfns</a> project, a compiler for a subset of <a href="../doc/fromDyalog.html">Dyalog APL</a>. I'm very grateful to Aaron for showing that array-oriented compilation is even possible! In addition to the obvious difference of target language, BQN differs from Co-dfns both in goals and methods.</p>
 <p>The shared goals of BQN and Co-dfns are to implement a compiler for an array language with whole-array operations. This provides the theoretical benefit of a short <em>critical path</em>, which in practice means that both compilers can make good use of a GPU or a CPU's vector instructions simply by providing an appropriate runtime (however, only Co-dfns has such a runtime—an ArrayFire program on the GPU and Dyalog APL on the CPU). The two implementations also share a preference for working &quot;close to the metal&quot; by passing around arrays of numbers rather than creating abstract types to work with data. Objects are right out. These choices lead to a compact source code implementation, and may have some benefits in terms of how easy it is to write and understand the compiler.</p>

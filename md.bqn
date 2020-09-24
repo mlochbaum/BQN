@@ -565,7 +565,9 @@ Fmt ← ⍕ _fmtm
 ConvertFile ← {
   md ← •LNS •path∾𝕩
   out ← 𝕩 Markdown md
-  root ← (+´'/'=𝕩) ⥊∘/⟜≍ "../"
+  parts ← (1-˜·(¬×1++`)'/'⊸=)⊸⊔ (⊑⊐⟜".")⊸↑ 𝕩
+  root ← ⊑ up ← ⥊∘/⟜≍⟜"../"¨ ⌽↕≠parts
+  isInd ← "README" ≡ ¯1⊑parts
   RQ ← {'"'¨⌾(('''=𝕩)⊸/)𝕩}
   Link ← RQ {∾⟨"<link href='",root,𝕩,"' rel='",𝕨,"'/>"⟩}
   head ← "head" Html lf∾JoinLines "  "⊸∾¨⟨
@@ -573,7 +575,9 @@ ConvertFile ← {
     "stylesheet" Link "style.css"
     "title" Html "BQN: " ∾⍟(¬·∨´"BQN"⍷⊢) 2↓⊑(2≤≠)◶0‿("# "≡2⊸↑)¨⊸/md
   ⟩
-  nav ← RQ "div class='nav'"Html"a href='https://github.com/mlochbaum/BQN'"Html"BQN"
+  gh ← "a href='https://github.com/mlochbaum/BQN'"Html"BQN"
+  crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"main")»parts
+  nav ← RQ "div class='nav'" Html 3↓∾ " / "⊸∾¨ gh <⊸∾ crumbs
   front ← head ∾○(∾⟜lf) nav
   front ∾ out
 }

@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>The BQN virtual machine and runtime</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">implementation</a></div>
 <h1 id="the-bqn-virtual-machine-and-runtime">The BQN virtual machine and runtime</h1>
 <p>BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. For example, the <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../docs/bqn.js">Javascript environment</a> requires about 200 lines of Javascript code even though it compiles BQN bytecode to Javascript, a more complex strategy than interpreting it directly. This makes it fairly easy to port BQN to new platforms, allowing BQN to run &quot;natively&quot; within other programming languages and interact with arrays in those languages.</p>
 <h2 id="bytecode">Bytecode</h2>

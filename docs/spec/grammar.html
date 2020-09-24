@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>Specification: BQN grammar</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a></div>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">spec</a></div>
 <h1 id="specification-bqn-grammar">Specification: BQN grammar</h1>
 <p>BQN's grammar is given below. Terms are defined in a <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> variant. However, handling special names properly is possible but difficult in BNF, so they are explained in text along with the braced block grammar.</p>
 <p>The symbols <code><span class='Value'>s</span></code>, <code><span class='Function'>F</span></code>, <code><span class='Modifier'>_m</span></code>, and <code><span class='Modifier2'>_c_</span></code> are identifier tokens with subject, function, 1-modifier, and 2-modifier classes respectively. Similarly, <code><span class='Value'>sl</span></code>, <code><span class='Function'>Fl</span></code>, <code><span class='Modifier'>_ml</span></code>, and <code><span class='Modifier2'>_cl_</span></code> refer to literals and primitives of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic classes are no longer used after parsing and cannot be inspected in a running program.</p>
