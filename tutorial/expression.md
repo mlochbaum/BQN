@@ -127,7 +127,7 @@ Addition and subtraction with affine characters have all the same algebraic prop
 Functions are nice and all, but to really bring us into the space age BQN has a second level of function called *modifiers* (the space age in this case is when operators were introduced to APL in the early 60s—hey, did you know the [second APL conference](https://aplwiki.com/wiki/APL_conference#1970) was held at Goddard Space Flight Center?). While functions apply to subjects, modifiers can apply to functions *or* subjects, and return functions. For example, the 1-modifier `˜` modifies one function by swapping the arguments before calling it (Swap), or copying the right argument to the left if there's only one (Self).
 
         2 -˜ 'd'  # Subtract from
-        +˜ 3  # Add to itself
+        +˜ 3      # Add to itself
 
 This gives us two nice ways to square a value:
 
