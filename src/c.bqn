@@ -83,11 +83,12 @@ ReadNums←{
 }
 
 
-LEBv ← {
+LEB←{
   b←128
-  l←⌊b⋆⁼1⌈𝕩
-  o←⍋⍋((↕¯1⊑⊢)-/⟜»)⟜(+`)1+l
-  o⊏l{f←×𝕨⋄(𝕨-1)(b⊸(×⟜f+|)∾𝕊⟜(⌊÷⟜b)○(f⊸/))⍟(∨´f)𝕩}𝕩
+  s←+`»i←1+l←⌊b⋆⁼1⌈𝕩
+  o←⍋⍋↕∘≠⊸-i/s
+  v←o⊏l{f←×𝕨⋄(𝕨-1)(b⊸(×⟜f+|)∾𝕊⟜(⌊÷⟜b)○(f⊸/))⍟(∨´f)𝕩}𝕩
+  v‿s
 }
 
 ErrMismatchedBrackets←{
@@ -152,9 +153,10 @@ Parse ← {nv‿r←𝕨
   b⊏↩gi
   or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,rt,dr,l,l,si,si,at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy⟩
   bc0←∾idbc∾⟨0¨cn,u⊐ob,15¨b,1+↕≠b⟩
-  bc←or⊏bc0∾∾⟨25¨rt,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll,(11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏tr⟩
-  fs←(ft⊏⥊3≍⌜⟜⌽○↕2)∾¨((+`0∾1+⌊128⋆⁼1⌈bc)⊏˜/1∾or M bc0≍○≠rt)≍○<¨lc+fsc
-  ⟨LEBv bc∾25,u,fs⟩
+  bc←or⊏∾⟨bc0,25¨rt,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll,(11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏tr⟩
+  bcl‿el←LEB bc∾25
+  fs←(ft⊏⥊3≍⌜⟜⌽○↕2)∾¨(el/˜1∾or M bc0≍○≠rt)≍¨lc+fsc
+  ⟨bcl,u,fs⟩
 }
 
 Compile←{
