@@ -34,14 +34,14 @@ Tokenize←{
   g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q
   e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=¯1⊑𝕩}
-  st←¯1↓Se⟜(1↑˜≠)∾⟜≠q⍋e⋄q/˜↩st⋄e/˜↩st
-  n←≠𝕩⋄a←n↑/⁼q⋄b←n↑/⁼e
-  f←¬(≠`a∨b)∨«qe←a∧»⊸∧dm
+  St←(≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/
+  a←St q⋄b←St e⋄f←¬≠`ab←a∨b
   "Unclosed quote"!¬∨´(sm∨dm)∧b<f
 
   u←f∧𝕩='@'⋄ci←/u∨»a∧sm
-  chr←(ci⊏𝕩)-(ci⊏u)×'@'-@
-  str←1↓¨𝕩⊔˜1-˜(+`si←dm∧a>qe)×≠`dm∧a∨b
+  chr←(⊏⟜𝕩-('@'-@)×⊏⟜u)ci
+  f>↩qe←dm∧«a∧↩dm
+  str←1↓¨𝕩⊔˜1-˜(+`si←a>»qe)×≠`dm∧ab
 
   c←CharCode f/𝕩
   w←»⊸<l←c M bD(⊣≍-˜)○⊑bW⋄us←c=¯1++´bA
