@@ -10,7 +10,7 @@ This repository contains a BQN implementation written mainly in BQN: the bytecod
 
 The bytecode is also the same as dzaima/BQN's format, and [an extension](dc.bqn) to the compiler adjusts the slightly different block declarations to target dzaima+reference BQN. There is also [an earlier experiment](wc.bqn) targetting [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly) that works only on a very small subset of BQN.
 
-This version is not yet suitable for serious programming. The runtime has full error checking but the compiler does not, so syntax errors can go unreported. It does not yet support function headers or multiple bodies. The Javascript-based compiler is also slow, taking about 0.05 seconds plus 1 second per kilobyte of source (this is purely due to the slow runtime, as dzaima+reference achieves 3ms/kB with the same compiler once warmed up).
+This version is not yet suitable for serious programming. The runtime has full error checking but the compiler does not, so syntax errors can go unreported. It does not yet support function headers or multiple bodies. The Javascript-based compiler is also slow, taking about 0.05 seconds plus 1 second per kilobyte of source (this is purely due to the slow runtime, as dzaima+reference achieves 1ms/kB with the same compiler once warmed up).
 
 All versions have automated tests in the [test](test/) directory, with the self-hosted version ([test/tj.js](test/tj.js)) and WebAssembly backend  ([test/t.js](test/t.js)) tested with Javascript using Node and the dzaima/BQN backend tested with BQN itself ([test/bt](test/bt)).
 
