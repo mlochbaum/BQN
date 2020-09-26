@@ -93,14 +93,6 @@ ReadNums←{
 }
 
 
-LEB←{
-  b←128
-  s←+`»i←1+l←⌊b⋆⁼1⌈𝕩
-  o←⍋⍋↕∘≠⊸-i/s
-  v←o⊏l{f←×𝕨⋄(𝕨-1)(b⊸(×⟜f+|)∾𝕊⟜(⌊÷⟜b)○(f⊸/))⍟(∨´f)𝕩}𝕩
-  v‿s
-}
-
 ErrMismatchedBrackets←{
   Lcs ← ¯1 ⊑ 0˘∘⊢ {𝕩⌈⌈`𝕨+«𝕩}˝ =⌜
   _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
@@ -110,7 +102,7 @@ ErrMismatchedBrackets←{
 ErrUndeclared←{
   0 !˜ "Undefined identifier"∾(1<≠𝕩)/"s"
 }
-Parse ← {nv‿r←𝕨
+Parse ← {r‿nv←𝕨
   g←⍋pd←+`p←𝕩(M×¯1⋆2|-⟜⊑)bB⋄br←p×𝕩M 2≍˜2+⊑bB
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
@@ -169,9 +161,17 @@ Parse ← {nv‿r←𝕨
   ⟨bcl,u,fs⟩
 }
 
+LEB←{
+  b←128
+  s←+`»i←1+l←⌊b⋆⁼1⌈𝕩
+  o←⍋⍋↕∘≠⊸-i/s
+  v←o⊏l{f←×𝕨⋄(𝕨-1)(b⊸(×⟜f+|)∾𝕊⟜(⌊÷⟜b)○(f⊸/))⍟(∨´f)𝕩}𝕩
+  v‿s
+}
+
 Compile←{
   ⟨t,r,nVar,const⟩←Tokenize𝕩
-  ⟨bc,u,blk⟩←nVar‿r Parse t
+  ⟨bc,u,blk⟩←r‿nVar Parse t
   o←(u-(vi+nVar-≠𝕨)×u≥vi)⊏𝕨∾const
   ⟨bc,o,blk⟩
 }
