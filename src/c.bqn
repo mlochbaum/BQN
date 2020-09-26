@@ -27,6 +27,7 @@ bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
 vi←⊑bD
 charRole←((⊑bI)↑/0∾3↑cgl)∾(5/⌽↕2)∾0
+T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 spc←⥊3‿5‿6-⌜3‿0
 
 Tokenize←{
@@ -56,9 +57,9 @@ Tokenize←{
   k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k
   c↩(w∨¬l∨c M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)c
   c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1«c∊3‿5+⊑bB)∧c M bS
-  t←ti⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole
+  tt←ti⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole
   c+↩5×c M 5≍˜⊑bI
-  ⟨c,t,≠⊑k,∾1↓k⟩
+  ⟨c,tt,≠⊑k,∾1↓k⟩
 }
 
 ErrNumericChars←{
@@ -76,8 +77,7 @@ ReadNums←{
   v←(>⟜«0≤l)/(0⊸≤××⟜10⊸+)`»«l
   v×↩1‿¯1⊏˜(r←>⟜»d∨m)/»n
   vm←c/z
-  ld←(⌈`⊢×1+↕∘≠)d∾0
-  dp←vm/(»⊸<×-)⟜(⊏⟜ld)(≠«/)c
+  dp←vm/(»⊸<×-)⟜(⊏⟜(I1T d∾0))(≠«/)c
   t←10⋆|ee←dp-˜vm/«v×¬vm
   t÷˜⌾((0>ee)⊸/)t×⌾((0<ee)⊸/)vm/v×(r/i)⊏1‿∞
 }
@@ -117,25 +117,25 @@ Parse ← {nv‿r←𝕨
   ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
   fsc←ft⊏spc
   r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
-  r+↩pt(⊣∧¬⊸∨=○(⌈`(1+↕∘≠)⊸×)⊢)(»⌾(g⊸⊏)3=r)∨1≤r
+  r+↩pt(⊣∧¬⊸∨=○I1T⊢)(»⌾(g⊸⊏)3=r)∨1≤r
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
-  ad←(⌈`↕∘≠⊸×𝕩 M bG)⊏𝕩=⊑bG
+  ad←(𝕩 M bG)IT⊸⊏𝕩=⊑bG
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩gr⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
   gi←⍋g⋄l⊏↩⍋gs
   s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩 M 2≍˜⊑bG
   r-↩ps∨a⋄op←r≥2⋄fe←(r≥1)∨«r=3
-  tr←(⌈`↕∘≠⊸×»ps)⊏fe
+  tr←(IT»ps)⊏fe
   ma←tr<(𝕩=1+⊑bG)∧«fe
-  ro←op∨a<«r=3⋄os←⌽↕∘≠⊸(⊣-⌈`∘×)⌽¬ro∨ma⋄at←(⊢+1+⊏⟜os)/a
+  ro←op∨a<«r=3⋄os←⌽↕∘≠⊸(⊣-T)⌽¬ro∨ma⋄at←(⊢+1+⊏⟜os)/a
   aa←g⊏asn←»+`gi⊏-⟜»(≠𝕩)↑/⁼at-1⋄r↩¯1¨⌾(aa⊸/)r
-  tf←(a≤○(⌈`(1+↕∘≠)⊸×)ps)∧(⊢∧2(|<≤)ps(⊢-⌈`∘×)+`)¬ro
+  tf←(a≤○I1T ps)∧(⊢∧2(|<≤)ps(⊢-T)+`)¬ro
   opa←op>«ps∨a
   oa←⌽/opa⋄fa←/(«aa)<(tf∨¬tr)∧(ro∧«opa)<(r=1)∨op<»opa
   dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
-  n←𝕩≥vi+nv⋄cn←/n∨𝕩≤¯1++´bC⋄u←∧⍷ob←cn⊏𝕩
+  n←𝕩≥vi+nv⋄cn←/n∨𝕩<⊑bS⋄u←∧⍷ob←cn⊏𝕩
   lo←(o/𝕩)=4+⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
   dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2+⊑bB
 
@@ -145,8 +145,8 @@ Parse ← {nv‿r←𝕨
   "Multiple definitions" ! 1∧´ixx∨○(»⊸≠((≠id)⊸≤⊸/ig)⊏⊢)ixf
   ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
   d⊏˜↩ig⋄ErrUndeclared∘/˜⍟(0∨´⊢)⟜(d<»⊸≠)ig⊏idx
-  ui←(⌈`↕∘≠⊸×d)⊸⊏⌾(ig⊸⊏)id
-  ii←(ui⊏(fi⊏fsc)-(⌈`c⊸×)⊸¬+`dec)∾((sp⊏fi)⊏3×2|ft)++⟜(0⊸≤)2+sp⊏xv
+  ui←(IT d)⊸⊏⌾(ig⊸⊏)id
+  ii←(ui⊏(fi⊏fsc)-c⊸T⊸¬+`dec)∾((sp⊏fi)⊏3×2|ft)++⟜(0⊸≤)2+sp⊏xv
   idor←∾3⥊<is←id∾sp
   idbc←⟨21+is⊏asn,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
 
