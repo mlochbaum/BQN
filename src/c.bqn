@@ -16,6 +16,9 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   (¯1↓"𝕨")∾" "∾@+9      # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
+bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
+M←1⊸⊑(0⊸≤∧>)-⟜⊑  # ∊ for an init,length pair 𝕩 as above
+# CharCode converts characters to numbers, mostly the same as tokens
 ErrUnknownChars←{
   ⟨"Unknown character","s"/˜1<≠𝕩,": ",𝕩⟩∾⊸!0
 }
@@ -23,43 +26,48 @@ CharCode←charSet{
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
-M←1⊸⊑(0⊸≤∧>)-⟜⊑
-vi←⊑bD
-charRole←((⊑bI)↑/0∾3↑cgl)∾(5/⌽↕2)∾0
-T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
-spc←⥊3‿5‿6-⌜3‿0
 
+vi←⊑bD                               # Start of identifier numbering
+charRole←((⊑bI)↑/0∾3↑cgl)∾(5/⌽↕2)∾0  # Role or 0 for each character number
+T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
+
+# Source to ⟨tokens, roles, number of identifiers, literals⟩
+# Identifiers then literal tokens are numbered starting at vi
 Tokenize←{
+  # Resolve comments and strings
   r←𝕩='#'⋄s←/0‿0⊸«⊸∧sm←𝕩='''⋄d←/dm←𝕩='"'
-  g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q
-  e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩
-  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟{0=¯1⊑𝕩}
-  St←(≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/
-  a←St q⋄b←St e⋄f←¬≠`ab←a∨b
+  g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q                # Open indices
+  e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩ # Matching close indices
+  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
+  St←(≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/          # All indices → reached mask
+  a←St q⋄b←St e⋄f←¬≠`ab←a∨b                 # Open/close masks; filter
   "Unclosed quote"!¬∨´(sm∨dm)∧b<f
 
+  # Extract character and string literals
   u←f∧𝕩='@'⋄ci←/u∨»a∧sm
-  chr←(⊏⟜𝕩-('@'-@)×⊏⟜u)ci
-  f>↩qe←dm∧«a∧↩dm
-  str←1↓¨𝕩⊔˜1-˜(+`si←a>»qe)×≠`dm∧ab
+  chr←(⊏⟜𝕩-('@'-@)×⊏⟜u)ci                   # Characters (indices ci)
+  f>↩qe←dm∧«a∧↩dm                           # Quote Escape ""
+  str←1↓¨𝕩⊔˜1-˜(+`si←a>»qe)×≠`dm∧ab         # Strings (indices /si)
 
+  # Extract words: identifiers and numbers
   c←CharCode f/𝕩
-  w←»⊸<l←c M bD(⊣≍-˜)○⊑bW⋄us←c=¯1++´bA
-  tw←na⌊∘÷˜(⊑bA)-˜w/c
-  c-↩na×l∧c≥na+⊑bA
-  li←l>in←l∧(+`w)⊏0∾tw<0
-  num←ReadNums in∨⟜«⊸/○(0⊸∾)c×l
-  ti←(us/˜«⊸<li)(⊢+∧⟜(2⊸=))0⊸≤⊸/tw
-  id←(1-˜(li>us)×+`w>in)⊔c
-  ki←((⍋⊏⟜in)⊸⊏/w)∾(ci∾/si)⊏+`»f
+  w←»⊸<l←c M bD(⊣≍-˜)○⊑bW⋄us←c=¯1++´bA      # Word chars l, start w
+  tw←na⌊∘÷˜(⊑bA)-˜w/c                       # Type of word from first char
+  c-↩na×l∧c≥na+⊑bA                          # Case-insensitive
+  i←l>n←l∧(+`w)⊏0∾tw<0                      # Identifier/Number masks
+  num←ReadNums n∨⟜«⊸/○(0⊸∾)c×l              # Numbers
+  ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))0⊸≤⊸/tw           # Identifier role
+  id←(1-˜(i>us)×+`w>n)⊔c                    # Identifiers
 
-  k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k
-  c↩(w∨¬l∨c M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)c
-  c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS⋄c/˜↩¬(1«c∊3‿5+⊑bB)∧c M bS
-  tt←ti⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole
-  c+↩5×c M 5≍˜⊑bI
-  ⟨c,tt,≠⊑k,∾1↓k⟩
+  # Deduplicate literals and identifiers; other cleanup
+  ki←((⍋⊏⟜n)⊸⊏/w)∾(ci∾/si)⊏+`»f             # Indices in c
+  k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
+  c↩(w∨¬l∨c M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)c     # Add IDs; remove words/whitespace
+  c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS            # Remove repeated and leading separators
+  c/˜↩¬(1«c∊3‿5+⊑bB)∧c M bS                 # ...and trailing ones. In sequence for repeated trailing.
+  cr←ir⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole     # Role
+  c+↩5×c M 5≍˜⊑bI                           # Case-insensitive special names
+  ⟨c,cr,≠⊑k,∾1↓k⟩
 }
 
 ErrNumericChars←{
@@ -115,7 +123,7 @@ Parse ← {nv‿r←𝕨
 
   H←¬·1⊸«⊸/c(∨/⊣)=
   ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
-  fsc←ft⊏spc
+  fsc←ft⊏⥊3‿5‿6-⌜3‿0
   r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
   r+↩pt(⊣∧¬⊸∨=○I1T⊢)(»⌾(g⊸⊏)3=r)∨1≤r
 
