@@ -70,24 +70,26 @@ Tokenize←{
   ⟨c,cr,≠⊑k,∾1↓k⟩
 }
 
+# 𝕩 is a list of tokens that contains the numeric literals, each
+# preceded by 0. Return the numbers.
 ErrNumericChars←{
   ⟨"Letter","s"/˜1<≠𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩∾⊸!0
 }
 ReadNums←{
-  e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN  # eπ∞¯.
+  e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for eπ∞¯.
   ErrNumericChars∘(/⟜𝕩)⍟(∨´) ¬e∨𝕩<⊑bA
   m←¬n∨s←d∨c←e∨z←0=𝕩
   "Negative sign in the middle of a number" ! ∧´n≤»c
   "Portion of a number is empty" ! ¬∨´(»¬m)∧s
   "Ill-formed decimal or exponent use" ! ∧´(0⊸=∨»⊸<)s/𝕩
   "π and ∞ must occur alone" ! ∧´(p∨i)≤1(»∧(p∧«e)∨«)z∨n
-  l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/m×𝕩-1-˜⊑bD
-  v←(>⟜«0≤l)/(0⊸≤××⟜10⊸+)`»«l
-  v×↩1‿¯1⊏˜(r←>⟜»d∨m)/»n
-  vm←c/z
-  dp←vm/(»⊸<×-)⟜(⊏⟜(I1T d∾0))(≠«/)c
-  t←10⋆|ee←dp-˜vm/«v×¬vm
-  t÷˜⌾((0>ee)⊸/)t×⌾((0<ee)⊸/)vm/v×(r/i)⊏1‿∞
+  l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/m×𝕩-1-˜⊑bD          # Digit lookup, with ∞ as 1 to avoid ∞×0
+  v←(>⟜«0≤l)/(0⊸≤××⟜10⊸+)`»«l               # Numeric values—mantissas and exponents
+  v×↩1‿¯1⊏˜(r←>⟜»d∨m)/»n                    # Negate if ¯
+  vm←c/z                                    # Mask of mantissas in l
+  dp←vm/(»⊸<×-)⟜(⊏⟜(I1T d∾0))(≠«/)c         # Decimal position
+  t←10⋆|ee←dp-˜vm/«v×¬vm                    # Power of 10
+  t÷˜⌾((0>ee)⊸/)t×⌾((0<ee)⊸/)vm/v×(r/i)⊏1‿∞ # Correct ∞ then ×10⋆ee
 }
 
 
