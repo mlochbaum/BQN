@@ -151,11 +151,11 @@ Parse ← {nv‿r←𝕨
   idbc←⟨21+is⊏asn,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
 
   b⊏↩gi
-  or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,rt,dr,l,l,si,si,at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy⟩
-  bc0←∾idbc∾⟨0¨cn,u⊐ob,15¨b,1+↕≠b⟩
-  bc←or⊏∾⟨bc0,25¨rt,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll,(11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏tr⟩
+  or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,dr,l,l,si,si,at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
+  bc←or⊏∾idbc∾⟨0¨cn,u⊐ob,15¨b,1+↕≠b,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
+               (11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏tr,25¨rt⟩
   bcl‿el←LEB bc∾25
-  fs←(ft⊏⥊3≍⌜⟜⌽○↕2)∾¨(el/˜1∾or M bc0≍○≠rt)≍¨lc+fsc
+  fs←(ft⊏⥊3≍⌜⟜⌽○↕2)∾¨(el/˜1∾or≥bc-○≠rt)≍¨lc+fsc
   ⟨bcl,u,fs⟩
 }
 
