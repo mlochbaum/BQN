@@ -109,7 +109,7 @@ Parse ← {r‿nv←𝕨
   sl←«⊸∨𝕩 M bL⋄sr←»⌾(g⊸⊏)sl⋄sa←sl∨sr
   o←p>0⋄ps←o∨sl∨𝕩 M bS⋄pt←sa<𝕩=1+⊑bB
   g⊏˜↩⍋g⊏sl
-  rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)ps
+  rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏ps
 
   gf←⍋fd←+`rev⊏br
   rev⊏˜↩gf⋄fd⊏˜↩gf
