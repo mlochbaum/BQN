@@ -18,6 +18,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
 ⟩
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑  # ∊ for an init,length pair 𝕩 as above
+sep←⊑bS
 # CharCode converts characters to numbers, mostly the same as tokens
 ErrUnknownChars←{
   ⟨"Unknown character","s"/˜1<≠𝕩,": ",𝕩⟩∾⊸!0
@@ -63,8 +64,9 @@ Tokenize←{
   ki←((⍋⊏⟜n)⊸⊏/w)∾(ci∾/si)⊏+`»f             # Indices in c
   k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
   c↩(w∨¬l∨c M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)c     # Add IDs; remove words/whitespace
-  c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS            # Remove repeated and leading separators
-  c/˜↩¬(1«c∊3‿5+⊑bB)∧c M bS                 # ...and trailing ones. In sequence for repeated trailing.
+  c-↩c(M×-⟜⊑)bS                             # Separators are equivalent
+  c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c=sep             # Remove repeated and leading separators
+  c/˜↩¬(1«c∊3‿5+⊑bB)∧c=sep                  # ...and trailing ones. In sequence for repeated trailing.
   cr←ir⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole∾0   # Role
   c+↩5×c M⟨⊑bI,5⟩                           # Case-insensitive special names
   ⟨c,cr,≠⊑k,∾1↓k⟩
@@ -107,7 +109,7 @@ Parse ← {r‿nv←𝕨
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
   sl←«⊸∨𝕩 M bL⋄sr←»⌾(g⊸⊏)sl⋄cp←𝕩=1+⊑bB
-  ps←(𝕩 M bS)∨sl∨p>0
+  ps←(𝕩=sep)∨sl∨p>0
   g⊏˜↩⍋g⊏sl
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏ps
 
@@ -128,7 +130,7 @@ Parse ← {r‿nv←𝕨
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ps⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
-  s←𝕩 M bS⋄a←𝕩M⟨⊑bG,2⟩
+  s←𝕩=sep⋄a←𝕩M⟨⊑bG,2⟩
   op←r≥2⋄fe←(r≥1)∨«r=3
   tr←(IT»ps)⊏fe
   ma←tr<(𝕩=1+⊑bG)∧«fe
@@ -138,7 +140,7 @@ Parse ← {r‿nv←𝕨
   opa←op>«ps∨a
   oa←⌽/opa⋄fa←/(«aa)<(tf∨¬tr)∧(ro∧«opa)<(r=1)∨op<»opa
   dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
-  n←𝕩≥vi+nv⋄cn←/n∨𝕩<⊑bS⋄u←∧⍷ob←cn⊏𝕩
+  n←𝕩≥vi+nv⋄cn←/n∨𝕩<sep⋄u←∧⍷ob←cn⊏𝕩
   fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
   ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
   dr←/ls<s⋄rt←/fo
