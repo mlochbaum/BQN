@@ -107,9 +107,9 @@ Parse ← {r‿nv←𝕨
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
   sl←«⊸∨𝕩 M bL⋄sr←»⌾(g⊸⊏)sl⋄sa←sl∨sr
-  g⊏˜↩⍋g⊏sl⋄o←p>0
-  pt←sa<𝕩=1+⊑bB
-  rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨sl∨𝕩 M bS
+  o←p>0⋄ps←o∨sl∨𝕩 M bS⋄pt←sa<𝕩=1+⊑bB
+  g⊏˜↩⍋g⊏sl
+  rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)ps
 
   gf←⍋fd←+`rev⊏br
   rev⊏˜↩gf⋄fd⊏˜↩gf
@@ -125,9 +125,9 @@ Parse ← {r‿nv←𝕨
   ad←(𝕩 M bG)IT⊸⊏𝕩=⊑bG
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
-  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩gr⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
-  gi←⍋g⋄l⊏↩⍋gs
-  s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩M⟨⊑bG,2⟩
+  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
+  𝕩⊏˜↩g⋄r⊏˜↩gr⋄o⊏˜↩gr⋄ps⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
+  s←𝕩 M bS⋄a←𝕩M⟨⊑bG,2⟩
   op←r≥2⋄fe←(r≥1)∨«r=3
   tr←(IT»ps)⊏fe
   ma←tr<(𝕩=1+⊑bG)∧«fe
