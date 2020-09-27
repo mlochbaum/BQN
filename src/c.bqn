@@ -27,8 +27,8 @@ CharCode←charSet{
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
 
-vi←⊑bD                               # Start of identifier numbering
-charRole←((⊑bI)↑/0∾3↑cgl)∾(5/⌽↕2)∾0  # Role or 0 for each character number
+vi←⊑bD  # Start of identifier numbering
+charRole←∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯1,¯1‿0,¯1,0,5/⌽↕2⟩ # For first vi chars
 T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
@@ -65,7 +65,7 @@ Tokenize←{
   c↩(w∨¬l∨c M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)c     # Add IDs; remove words/whitespace
   c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS            # Remove repeated and leading separators
   c/˜↩¬(1«c∊3‿5+⊑bB)∧c M bS                 # ...and trailing ones. In sequence for repeated trailing.
-  cr←ir⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole     # Role
+  cr←ir⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole∾0   # Role
   c+↩5×c M 5≍˜⊑bI                           # Case-insensitive special names
   ⟨c,cr,≠⊑k,∾1↓k⟩
 }
@@ -107,7 +107,7 @@ Parse ← {r‿nv←𝕨
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
   sl←«⊸∨𝕩 M bL⋄sr←»⌾(g⊸⊏)sl⋄sa←sl∨sr
-  g⊏˜↩⍋g⊏sl⋄r×↩¬sa⋄o←p>0
+  g⊏˜↩⍋g⊏sl⋄o←p>0
   pt←sa<𝕩=1+⊑bB
   rev←⍋+`1+¯1↓g((¯1∾⊣)(⊣⍋⊸⊏⊏˜-⊏˜⟜⍋)⟜⍋1(+`∘∾-∾˜)⊏)o∨sl∨𝕩 M bS
 
@@ -118,8 +118,8 @@ Parse ← {r‿nv←𝕨
   H←¬·1⊸«⊸/c(∨/⊣)=
   ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
   fsc←ft⊏⥊3‿5‿6-⌜3‿0
-  r↩((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
-  r+↩pt(⊣∧¬⊸∨=○I1T⊢)(»⌾(g⊸⊏)3=r)∨1≤r
+  r↩sl-˜sa¬⊸×((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
+  r+↩pt(⊣∧≤=○I1T⊢)(»⌾(g⊸⊏)3=r)∨1≤r
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
   ad←(𝕩 M bG)IT⊸⊏𝕩=⊑bG
@@ -128,7 +128,7 @@ Parse ← {r‿nv←𝕨
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩gr⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
   gi←⍋g⋄l⊏↩⍋gs
   s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩 M 2≍˜⊑bG
-  r-↩ps∨a⋄op←r≥2⋄fe←(r≥1)∨«r=3
+  op←r≥2⋄fe←(r≥1)∨«r=3
   tr←(IT»ps)⊏fe
   ma←tr<(𝕩=1+⊑bG)∧«fe
   ro←op∨a<«r=3⋄os←⌽↕∘≠⊸(⊣-T)⌽¬ro∨ma⋄at←(⊢+1+⊏⟜os)/a
