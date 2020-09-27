@@ -66,7 +66,7 @@ Tokenize←{
   c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c M bS            # Remove repeated and leading separators
   c/˜↩¬(1«c∊3‿5+⊑bB)∧c M bS                 # ...and trailing ones. In sequence for repeated trailing.
   cr←ir⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole∾0   # Role
-  c+↩5×c M 5≍˜⊑bI                           # Case-insensitive special names
+  c+↩5×c M⟨⊑bI,5⟩                           # Case-insensitive special names
   ⟨c,cr,≠⊑k,∾1↓k⟩
 }
 
@@ -103,7 +103,7 @@ ErrUndeclared←{
   0 !˜ "Undefined identifier"∾(1<≠𝕩)/"s"
 }
 Parse ← {r‿nv←𝕨
-  g←⍋pd←+`p←𝕩(M×¯1⋆2|-⟜⊑)bB⋄br←p×𝕩M 2≍˜2+⊑bB
+  g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄br←p×𝕩M⟨2+⊑bB,2⟩
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
   sl←«⊸∨𝕩 M bL⋄sr←»⌾(g⊸⊏)sl⋄sa←sl∨sr
@@ -127,7 +127,7 @@ Parse ← {r‿nv←𝕨
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄𝕩⊏˜↩g⋄r⊏˜↩gr⋄o⊏˜↩gr⋄si←/gr⊏sr>sl
   gi←⍋g⋄l⊏↩⍋gs
-  s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩 M 2≍˜⊑bG
+  s←𝕩 M bS⋄ps←s∨o∨gr⊏sl⋄a←𝕩M⟨⊑bG,2⟩
   op←r≥2⋄fe←(r≥1)∨«r=3
   tr←(IT»ps)⊏fe
   ma←tr<(𝕩=1+⊑bG)∧«fe
