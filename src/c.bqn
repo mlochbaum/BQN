@@ -106,8 +106,8 @@ Parse ← {r‿nv←𝕨
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄br←p×𝕩M⟨2+⊑bB,2⟩
   p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
-  sl←«⊸∨𝕩 M bL⋄sr←»⌾(g⊸⊏)sl⋄sa←sl∨sr
-  o←p>0⋄ps←o∨sl∨𝕩 M bS⋄pt←sa<𝕩=1+⊑bB
+  sl←«⊸∨𝕩 M bL⋄sr←»⌾(g⊸⊏)sl⋄cp←𝕩=1+⊑bB
+  ps←(𝕩 M bS)∨sl∨p>0
   g⊏˜↩⍋g⊏sl
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏ps
 
@@ -118,7 +118,8 @@ Parse ← {r‿nv←𝕨
   H←¬·1⊸«⊸/c(∨/⊣)=
   ft←(0∾1⊸H+2×2⊸H⌈2×3⊸H)(0‿3‿4‿5+5+⊑bI)⍋𝕩
   fsc←ft⊏⥊3‿5‿6-⌜3‿0
-  r↩sl-˜sa¬⊸×((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
+  pt←cp∧sn←¬sl∨sr
+  r↩sl-˜sn×((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
   r+↩pt(⊣∧≤=○I1T⊢)(»⌾(g⊸⊏)3=r)∨1≤r
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
@@ -126,7 +127,7 @@ Parse ← {r‿nv←𝕨
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
-  𝕩⊏˜↩g⋄r⊏˜↩gr⋄o⊏˜↩gr⋄ps⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
+  𝕩⊏˜↩g⋄r⊏˜↩gr⋄ps⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
   s←𝕩 M bS⋄a←𝕩M⟨⊑bG,2⟩
   op←r≥2⋄fe←(r≥1)∨«r=3
   tr←(IT»ps)⊏fe
@@ -138,8 +139,9 @@ Parse ← {r‿nv←𝕨
   oa←⌽/opa⋄fa←/(«aa)<(tf∨¬tr)∧(ro∧«opa)<(r=1)∨op<»opa
   dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
   n←𝕩≥vi+nv⋄cn←/n∨𝕩<⊑bS⋄u←∧⍷ob←cn⊏𝕩
-  lo←(o/𝕩)=4+⊑bB⋄ll←1+lo/1(↓--⊸↓)(o∾1)/+`(s∾0)-(1∾o)∧ps∾1
-  dr←/s>o+`⊸⊏0∾lo⋄rt←/𝕩=2+⊑bB
+  fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
+  ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
+  dr←/ls<s⋄rt←/fo
 
   d←id⊏dec←idm∧ad∧asn⋄lc←-⟜»(c∾1)/+`dec∾0
   ixf←(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
