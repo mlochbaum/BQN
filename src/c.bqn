@@ -4,7 +4,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "˙˜˘¨⌜⁼´˝`"           # Modifier
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # Composition
   lf∾"⋄,"               # Separator
-  "←↩→"                 # Gets
+  "←↩"                  # Gets
   "(){}⟨⟩"              # Bracket
   "‿"                   # Ligature
   "·"                   # nOthing
@@ -125,12 +125,12 @@ Parse ← {r‿nv←𝕨
   r+↩pt(⊣∧≤=○I1T⊢)(»⌾(g⊸⊏)3=r)∨1≤r
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
-  ad←(𝕩 M bG)IT⊸⊏𝕩=⊑bG
+  ad←𝕩(=>○IT⊣=1+⊢)⊑bG
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ps⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
-  s←𝕩=sep⋄a←𝕩M⟨⊑bG,2⟩
+  s←𝕩=sep⋄a←𝕩 M bG
   op←r≥2⋄fe←(r≥1)∨«r=3
   tr←(IT»ps)⊏fe
   ma←tr<(𝕩=1+⊑bG)∧«fe
