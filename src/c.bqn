@@ -138,7 +138,8 @@ Parse ← {r‿nv←𝕨
   oa←⌽/op←(«r≥0)∧r≥2
   fa←/(ta∨(ro∧«op)∨«aa)<(r=1)∨<⟜»op
   dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
-  n←𝕩≥vi+nv⋄cn←/n∨𝕩<sep⋄u←∧⍷ob←cn⊏𝕩
+  ob←pr⊐˜u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
+  cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
   ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
   dr←/ls<s⋄rt←/fo
@@ -156,7 +157,7 @@ Parse ← {r‿nv←𝕨
 
   b⊏↩gi
   or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,dr,l,l,si,si,at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
-  bc←or⊏∾idbc∾⟨0¨cn,u⊐ob,15¨b,1+↕≠b,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
+  bc←or⊏∾idbc∾⟨0¨cn,ob,15¨b,1+↕≠b,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
                (11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏tr,25¨rt⟩
   bcl‿el←LEB bc∾25
   fs←(ft⊏⥊3≍⌜⟜⌽○↕2)∾¨(el/˜1∾or≥bc-○≠rt)≍¨lc+fsc
@@ -173,7 +174,6 @@ LEB←{
 
 Compile←{
   ⟨t,r,nVar,const⟩←Tokenize𝕩
-  ⟨bc,u,blk⟩←r‿nVar Parse t
-  o←(u-(vi+nVar-≠𝕨)×u≥vi)⊏𝕨∾const
-  ⟨bc,o,blk⟩
+  ⟨bc,pr,blk⟩←r‿nVar Parse t
+  ⟨bc,(pr⊏𝕨)∾const,blk⟩
 }
