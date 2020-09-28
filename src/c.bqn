@@ -80,16 +80,17 @@ ErrNumericChars←{
 ReadNums←{
   e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for eπ∞¯.
   ErrNumericChars∘(/⟜𝕩)⍟(∨´) ¬e∨𝕩<⊑bA
-  m←¬n∨s←d∨c←e∨z←0=𝕩
+  s←d∨c←e∨z←0=𝕩⋄m←¬n∨c
   "Negative sign in the middle of a number" ! ∧´n≤»c
-  "Portion of a number is empty" ! ¬∨´(»¬m)∧s
+  "Portion of a number is empty" ! ¬∨´s∧»n∨s
   "Ill-formed decimal or exponent use" ! ∧´(0⊸=∨»⊸<)s/𝕩
   "π and ∞ must occur alone" ! ∧´(p∨i)≤1(»∧(p∧«e)∨«)z∨n
-  l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/m×𝕩-1-˜⊑bD          # Digit lookup, with ∞ as 1 to avoid ∞×0
+  f←(17≥¬(⊢-T)+`)⊸∧(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m   # No leading 0s; max 17 digits
+  l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/f×𝕩-1-˜⊑bD          # Digit lookup, with ∞ as 1 to avoid ∞×0
   v←(>⟜«0≤l)/(0⊸≤××⟜10⊸+)`»«l               # Numeric values—mantissas and exponents
-  v×↩1‿¯1⊏˜(r←>⟜»d∨m)/»n                    # Negate if ¯
+  v×↩1‿¯1⊏˜(r←>⟜»m)/»n                      # Negate if ¯
   vm←c/z                                    # Mask of mantissas in l
-  dp←vm/(»⊸<×-)⟜(⊏⟜(I1T d∾0))(≠«/)c         # Decimal position
+  dp←vm/(»⊸<×-)⟜(⊏⟜(I1T d∾0))1+/>⟜«f        # Decimal position
   t←10⋆|ee←dp-˜vm/«v×¬vm                    # Power of 10
   t÷˜⌾((0>ee)⊸/)t×⌾((0<ee)⊸/)vm/v×(r/i)⊏1‿∞ # Correct ∞ then ×10⋆ee
 }
