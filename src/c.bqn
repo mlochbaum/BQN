@@ -138,7 +138,7 @@ Parse ← {r‿nv←𝕨
   oa←⌽/op←(«r≥0)∧r≥2
   fa←/(ta∨(ro∧«op)∨«aa)<(r=1)∨<⟜»op
   dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
-  ob←pr⊐˜u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
+  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
   cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
   ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
