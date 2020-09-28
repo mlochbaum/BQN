@@ -130,18 +130,16 @@ Parse ← {r‿nv←𝕨
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ps⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
-  s←𝕩=sep⋄a←𝕩 M bG
-  op←r≥2⋄fe←(r≥1)∨«r=3
-  tr←(IT»ps)⊏fe
-  ma←tr<(𝕩=1+⊑bG)∧«fe
-  ro←op∨a<«r=3⋄os←⌽↕∘≠⊸(⊣-T)⌽¬ro∨ma⋄at←(⊢+1+⊏⟜os)/a
-  aa←g⊏asn←»+`gi⊏-⟜»(≠𝕩)↑/⁼at-1⋄r↩¯1¨⌾(aa⊸/)r
-  tf←(a≤○I1T ps)∧(⊢∧2(|<≤)ps(⊢-T)+`)¬ro
-  opa←op>«ps∨a
-  oa←⌽/opa⋄fa←/(«aa)<(tf∨¬tr)∧(ro∧«opa)<(r=1)∨op<»opa
+  a←𝕩 M bG⋄ro←(r≥2)∨a<«r=3
+  tr←(IT»ps)⊏fe←ro∨r=1⋄ma←tr<(𝕩=1+⊑bG)∧«fe
+  os←⌽↕∘≠⊸(⊣-T)⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
+  r(×⟜¬-⊢)↩aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
+  ta←tr>(a≤○I1T ps)∧(⊢∧2(|<≤)ps(⊢-T)+`)¬ro
+  oa←⌽/op←(«r≥0)∧r≥2
+  fa←/(ta∨(ro∧«op)∨«aa)<(r=1)∨<⟜»op
   dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
   n←𝕩≥vi+nv⋄cn←/n∨𝕩<sep⋄u←∧⍷ob←cn⊏𝕩
-  fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
+  s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
   ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
   dr←/ls<s⋄rt←/fo
 
