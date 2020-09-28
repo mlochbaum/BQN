@@ -82,7 +82,7 @@ ReadNums←{
   ErrNumericChars∘(/⟜𝕩)⍟(∨´) ¬e∨𝕩<⊑bA
   s←d∨c←e∨z←0=𝕩⋄m←¬n∨c
   "Negative sign in the middle of a number" ! ∧´n≤»c
-  "Portion of a number is empty" ! ¬∨´s∧»n∨s
+  "Portion of a number is empty" ! ¬∨´(1«s)∧n∨s
   "Ill-formed decimal or exponent use" ! ∧´(0⊸=∨»⊸<)s/𝕩
   "π and ∞ must occur alone" ! ∧´(p∨i)≤1(»∧(p∧«e)∨«)z∨n
   f←(17≥¬(⊢-T)+`)⊸∧(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m   # No leading 0s; max 17 digits
