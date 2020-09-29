@@ -12,7 +12,7 @@ The bytecode is also the same as dzaima/BQN's format, and [an extension](dc.bqn)
 
 This version is not yet suitable for serious programming. The runtime has full error checking but the compiler does not, so syntax errors can go unreported. It does not yet support function headers or multiple bodies. The Javascript-based compiler is also slow, taking about 0.05 seconds plus 1 second per kilobyte of source (this is purely due to the slow runtime, as dzaima+reference achieves 1ms/kB with the same compiler once warmed up).
 
-All versions have automated tests in the [test](test/) directory, with the self-hosted version ([test/tj.js](test/tj.js)) and WebAssembly backend  ([test/t.js](test/t.js)) tested with Javascript using Node and the dzaima/BQN backend tested with BQN itself ([test/bt](test/bt)).
+All versions have automated tests in the [test](test/) directory, with the self-hosted version ([test/js](test/js)) and WebAssembly backend  ([test/dz_wasm.js](test/dz_wasm.js)) tested with Javascript using Node and the dzaima/BQN backend tested with BQN itself ([test/dz_comp](test/dz_comp)).
 
 ### dzaima/BQN
 
