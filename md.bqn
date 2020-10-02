@@ -359,25 +359,53 @@ Markdown ← {filename𝕊𝕩:
     unused ← actual ∧ include ∧ ¬ codeMask
 
     # Links
-    ghPath ← "https://github.com/mlochbaum/BQN/blob/master/"∾path
-    ReplaceMDSub ← { ¯2 ("md"≡↑)◶(ghPath⊸∾)‿("README"•_r_"index"∘↓∾"html"˙)⍟(':'∧´∘≠⊢) 𝕩 }
-    ReplaceMD ← extensions◶⥊‿{ ReplaceMDSub⍟(0<≠)⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
-    ProcLink ← { ∾⟨"<a href=""",ReplaceMD 𝕩,""">",ProcInline 𝕨,"</a>"⟩ }
-    # Find matched-depth [] and () pairs, then join adjacent ones
-    brak ← (unused ∧ 𝕩⊸=)¨ 2‿2⥊"[]()"
-    depth ← (+`-0⌊⊢)∘(-´)˘ brak
-    FindPairs ← ∘‿2 ⥊ 1⊸⊏ /˜ 2⊸⊏ (<∨∧⟜») ·∞⊸«⊸=⊏
-    pairs ← depth <∘(FindPairs⍟(0<≠))∘⍉∘(∧(⊏˜≍˘⊢)⟜∾∾˘·/≠¨∘⊢)˘ /¨brak
-    JoinPairs ← {
-      e←1+1⊏˘𝕨 ⋄ b←⊏˘𝕩 ⋄ m←(≠b)>i←b⊐e
-      (m/𝕨) (0<≠∘⊢)◶(0‿4⥊0)‿(∾˘) (m/i)⊏𝕩
+    ProcLink ← {text 𝕊 target:
+      ∾⟨"<a href=""",AdjustTarget ⥊target,""">",ProcInline text,"</a>"⟩
     }
-    lInds ← ∧○(0<≠)◶(0‿4⥊0)‿JoinPairs´ pairs
+    ghPath ← "https://github.com/mlochbaum/BQN/blob/master/"∾path
+    AdjustTarget ← {
+      # Adjust relative *.md links, and make other relative links
+      # absolute (pointing to github.com instead of github.io).
+      _replaceEnd ← {old‿new‿sub‿default _r:
+        (-≠old) (old≡↑)◶⟨default,sub∘↓∾new˙⟩ ⊢
+      }
+      RI ← "README."‿"index."‿⊢‿⊢ _replaceEnd
+      R ← "md"‿"html"‿RI‿(ghPath⊸∾) _replaceEnd
+      # Exclude absolute links by testing for :
+      # Don't do anything to fragments (trailing #sub-heading)
+      R⍟(¬𝕩∨´∘=':')⍟(0<≠)⌾((⊑𝕩⊐"#")⊸↑) 𝕩
+    }⍟extensions
+    # Find matched-depth [] and () pairs, then join adjacent ones
+    brak ← (unused ∧ 𝕩⊸=)¨ "[]"≍"()"
+    FindPairs ← { # 𝕩 is open‿close masks
+      # Open and close should have the same depth, so shift close right
+      depth ← +`∘-⟜»´ 𝕩
+      # Get indices from masks
+      ind ← ∾ inds ← /¨ 𝕩
+      # Depth, index, and type for each bracket.
+      # Sort by those attributes in the given order.
+      # At a given depth, open and closed brackets have to alternate, so
+      # now we just have to filter out the unmatched ones, that is,
+      # leading close brackets and trailing open brackets at each depth.
+      d‿i‿t ← <˘ ∧⌾⍉ > ⟨ind⊏depth, ind, /≠¨inds⟩
+      # Preceded/followed by same-depth bracket
+      p ← » f ← ∞⊸«⊸= d
+      # Open brackets (0) must be followed, closed ones (1) preceded
+      hasPair ← (f∧0=t) ∨ (p∧1=t)
+      ∘‿2 ⥊ hasPair / i
+    }
+    JoinPairs ← {
+      e←1+1⊏˘𝕨 ⋄ b←⊏˘𝕩  # Match end of 𝕨 (plus one) with beginning of 𝕩
+      m←(≠b)>i←b⊐e      # i⊏𝕩 matches e where m is 1
+      (m/𝕨) ∾˘ (m/i)⊏𝕩
+    }
+    # The four bracket indices for each link
+    lInds ← 0‿4⊸⥊⍟(0=≠) JoinPairs○FindPairs˝ brak
     linkPos ← ⊏˘ lInds
     lInds +⎉1↩ 1‿0‿1‿0
     unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
     linkGroup ← 1 -˜ (1‿0⥊˜≢)⊸(/ (⊣×>)○(+`I2M) ¬⊸/) ⥊lInds
-    links ← <∘ProcLink´˘ (lInds≠⊸∾2) (⊣⥊×´⊸↑) linkGroup ⊔ 𝕩
+    links ← ProcLink¨˝˘ (lInds≠⊸∾2) (⊣⥊×´⊸↑) linkGroup ⊔ 𝕩
 
     # Emphasis (still rudimentary)
     eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
