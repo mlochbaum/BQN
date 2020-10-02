@@ -1,19 +1,34 @@
 # The Markdown function is a markdown to html converter for a "good
 # enough" subset of Github-flavored markdown, as specified at
 # https://github.github.com/gfm/ .
-#
-# Additionally, it highlights code sections as BQN, and executes
-# sections that are doubly indented (eight spaces), placing their
-# results below them.
 
-# Not supported:
+# Extensions are used whenever a source filename is given (mainly just
+# so testing won't use them). They:
+# - Add id= slugs to headers that match Githubs, for linking
+# - Adjust relative links to account for filename changes
+# - Highlight inline and block code as BQN
+# - Place code blocks in <pre> tags only, not <pre><code>
+# - Insert results into doubly-indented (8 spaces) code blocks
+# - Add links to open and execute code in the REPL
+# - Put a demo REPL in place of <!--REPL-->, for the main README
+
+# Supports:
+# - ATX headings (start with hashes #)
+# - Paragraphs
+# - Indented code blocks
+# - Inline and raw HTML in a way that doesn't match the spec at all
+# - Tables
+# - Lists, unordered with single-line items only
+# - Inlines: code fully, links partially, and emphasis somewhat
+
+# Important missing features:
 # - Thematic breaks like *** or ---
 # - Setext headings (underlined with ==== or ----)
 # - Fenced code blocks (marked off with ``` or ~~~)
-# - HTML blocks
-# - Link reference definitions (who uses these?)
 # - Block quotes (start with >)
-# - Task lists
+# - Strikethrough (~~text~~)
+# - Images (like links)
+# - Hard line breaks (trailing spaces or backslash)
 
 # Here, a markdown file is represented as a list of its lines, which are
 # strings (they don't include any line ending character).
