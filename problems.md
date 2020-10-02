@@ -58,6 +58,12 @@ Fold has a specific order of application, which must be used for `` +` ``. But o
 ### High-rank array notation
 The proposed Dyalog array notation `[]` for high-rank arrays: it's the same as BQN's lists `⟨⟩` except it mixes at the end. This works visually because the bottom level—rows—is written with stranding. It also looks okay with BQN strands but clashes with BQN lists. At that point it becomes apparent that specifying whether something is a high-rank array at the top axes is kind of strange: shouldn't it be the lower axes saying to combine with higher ones?
 
+### List splicing is fiddly
+
+It's common when manipulating text to want to replace a slice with a different slice with an unrelated length. Structural Under works well for this if the new slice has the same length but doesn't otherwise (an implementation could choose to support it, but *only* if the slice is extracted using two Drops, not Take). So in general the programmer has to cut off initial and final segments and join them to the new slice. If the new slice is computed from the old one it's much worse, as there will be duplication between the code to extract that slice and the other segments. The duplication can be avoided with Group using `∾F⌾(1⊸⊑)(s‿e⍋↕∘≠)⊸⊔`, but this is a lot of work and will execute slowly without some special support. In fact, everything here is liable to run slowly, making too many copies of the unmodified part of the stream.
+
+Dyalog's solution here (and dzaima/BQN's) is Regex, which is a nice feature but also an entire second language to learn.
+
 ### Poor font support 
 Characters `⥊∾⟜⎉⚇˜` and double-struck letters are either missing from many fonts or drawn strangely.
 
@@ -72,6 +78,10 @@ Blanket issue for glyphs that need work. Currently I find `⥊⊏⊑⊐⊒⍷⁼
 
 ### Group doesn't include trailing empty groups
 But there are workarounds, described in [its documentation](doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
+
+### Under/bind combination is awkward
+
+It's most common to use Under with dyadic structural functions in the form `…⌾(i⊸F)`, for example where `F` is one of `/` or `↑`. This is frustrating for two reasons: it requires parentheses, and it doesn't allow `i` to be computed tacitly. If there's no left argument then the modifier `{𝔽⌾(𝕨⊸𝔾)𝕩}` can be more useful, but it doesn't cover some useful cases such as mask `a ⊣⌾(u⊸/) b`.
 
 ### Axis ordering is big-endian
 The most natural ordering for polynomial coefficients and base representations is little-endian, because it aligns element `i` of the list with power `i` of the argument or base. It also allows a forward scan instead of a reverse one. Array axes go the other way. However, there are advantages to this ordering as well. For example, it's common to act only on the first few axes, so having them at the beginning of the array is good (`≠a ←→ ⊑∘≢a`).
