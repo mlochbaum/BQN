@@ -259,7 +259,7 @@ Markdown ← {filename𝕊𝕩:
     rows ← (Trim¨ CutTableRow⊸⊔)¨ 𝕩
     incl ← ¬ rule ← (∧´∾∊"-:"˙)¨ rows
     align ← alignments ⊏˜ (+˜⊸+´0‿¯1⊏⊢)¨ ':' = ⊑ rule / rows
-    rows ↩ ProcInline¨¨⌾(incl⊸/) rows
+    rows ↩ (((≠align)⌊≠)⊸↑ ProcInline¨)¨⌾(incl⊸/) rows
     rows ↩ (⊏rows) (⊢ ∾ ⟨""⟩ /˜ 0⌈-○≠)¨ rows
     rowType ← incl / +` rule  # Head or body
     tags ← rowType ⊏ "th"‿"td"
