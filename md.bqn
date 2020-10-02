@@ -346,16 +346,16 @@ Markdown ← {filename𝕊𝕩:
     # Links
     ghPath ← "https://github.com/mlochbaum/BQN/blob/master/"∾path
     ReplaceMDSub ← { ¯2 ("md"≡↑)◶(ghPath⊸∾)‿("README"•_r_"index"∘↓∾"html"˙)⍟(':'∧´∘≠⊢) 𝕩 }
-    ReplaceMD ← { ReplaceMDSub⍟(0<≠)⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
-    ProcLink ← { ∾⟨"<a href=""",(ReplaceMD 𝕩),""">",ProcInline 𝕨,"</a>"⟩ }
+    ReplaceMD ← extensions◶⥊‿{ ReplaceMDSub⍟(0<≠)⌾((⊑𝕩⊐"#")⊸↑) 𝕩 }
+    ProcLink ← { ∾⟨"<a href=""",ReplaceMD 𝕩,""">",ProcInline 𝕨,"</a>"⟩ }
     # Find matched-depth [] and () pairs, then join adjacent ones
     brak ← (unused ∧ 𝕩⊸=)¨ 2‿2⥊"[]()"
     depth ← (+`-0⌊⊢)∘(-´)˘ brak
-    FindPairs ← ∘‿2 ⥊ 1⊸⊏ /˜ 2⊸⊏ ≠ (¯∞⊸»⊸=(∧+⊢)∞⊸«⊸=)∘⊏
+    FindPairs ← ∘‿2 ⥊ 1⊸⊏ /˜ 2⊸⊏ (≠∧0≤⊢) ((1-˜+˜+»)∞⊸«⊸=)∘⊏
     pairs ← depth <∘(FindPairs⍟(0<≠))∘⍉∘(∧(⊏˜≍˘⊢)⟜∾∾˘·/≠¨∘⊢)˘ /¨brak
     JoinPairs ← {
       e←1+1⊏˘𝕨 ⋄ b←⊏˘𝕩 ⋄ m←(≠b)>i←b⊐e
-      (m/𝕨) ∾˘ (m/i)⊏𝕩
+      (m/𝕨) (0<≠∘⊢)◶(0‿4⥊0)‿(∾˘) (m/i)⊏𝕩
     }
     lInds ← ∧○(0<≠)◶(0‿4⥊0)‿JoinPairs´ pairs
     linkPos ← ⊏˘ lInds
