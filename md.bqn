@@ -640,5 +640,5 @@ ConvertFile ← {
   crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"main")»parts
   nav ← RQ "div class='nav'" Html 3↓∾ " / "⊸∾¨ repo <⊸∾ crumbs
   front ← head ∾○(∾⟜lf) nav
-  front ∾ out
+  ("docs/"∾fileout) •LNS front ∾ out
 }

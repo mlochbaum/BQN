@@ -4,6 +4,5 @@
 # Argument gives specific files if present; otherwise convert everything
 for f in ${1-*.md */*.md} ${@:2:$#}
 do
-  g=${f/README/index}
-  ./dzref md.bqn "•←ConvertFile \"$f\"" > docs/${g%md}html
+  ./dzref md.bqn "ConvertFile \"$f\""
 done
