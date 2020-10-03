@@ -2,7 +2,4 @@
 
 # Generate HTML files from markdown ones
 # Argument gives specific files if present; otherwise convert everything
-for f in ${1-*.md */*.md} ${@:2:$#}
-do
-  ./dzref md.bqn "ConvertFile \"$f\""
-done
+./dzref md.bqn "ConvertFile¨ (¬×+\`)⊸-∘=⟜' '⊸⊔ \"$(echo ${1-*.md */*.md} ${@:2:$#})\""
