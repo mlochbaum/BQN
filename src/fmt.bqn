@@ -1,7 +1,7 @@
 # Format an array to a string including newlines
 {
-  F0←𝔽  # Function to format an atom
-  FmtAtom ← (≍ <⟜@◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,F0⟩)
+  F0←𝔽  # Format a number or operation to a string
+  FmtAtom ← ≍ <⟜@◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,F0⟩
 
   # Vertical padding for arrays of rank greater than 2
   PadV ← {
@@ -12,8 +12,10 @@
     p ← ⥊ +⎉¯1‿∞´ ×⌜˜`⌾⌽ (-1⌈ls)↑¨1
     # But none at the very end
     p ↩ 0⌾(¯1⊸⊑) p
-    Pad ← {i←/1+𝕨 ⋄ (¯1¨⌾((¬∊i)⊸/)i) ⊏ 𝕩∾(¯1⊑≢𝕩)⥊" "}
-    p (⊑0∊ls)◶⟨Pad,+´⊸↑⟩ ((×´ls)∾¯1⊑≢𝕩) ⥊ 𝕩
+    # If 𝕩 has cells, pad by selection; if it's empty, there are only
+    # pads but selection would try to get cells (1⌈ above), so overtake.
+    Pad ← {(»⊸<⊸×/0∾1+𝕨) ⊏ ' '¨∘⊏⊸∾𝕩}
+    p (0<≠∘⊢)◶⟨+´⊸↑,Pad⟩ ((×´ls)∾¯1↑≢𝕩) ⥊ 𝕩
   }⍟(2 < =)
 
   # Horizontal padding: just some spaces on either side
@@ -30,7 +32,7 @@
     l ← ¯1 ⊑ ≢𝕩
     ∾ ⟨
       ≍l↑∾⟨"┌",(5⊸<)◶⟨⥊"·─"⊏˜1⌊⊢,F0⟩𝕨⟩
-      ((4⌊0⌈𝕨-1)⊑"·╵╎┆┊")⌾⊑ 𝕩
+      ((0⌈4⌊𝕨-1)⊑"·╵╎┆┊")⌾⊑ 𝕩
       ≍l-⊸↑"┘"
     ⟩
   }
