@@ -1,3 +1,5 @@
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/spec/inferred.html).*
+
 # Specification: BQN inferred properties
 
 BQN includes some simple deductive capabilities: detecting the type of empty array elements, and the Undo (`⁼`) and Under (`⌾`) modifiers. These tasks are a kind of proof-based or constraint programming, and can never be solved completely (some instances will be undecidable) but can be solved in more instances by ever-more sophisticated algorithms. To allow implementers to develop more advanced implementations while offering some stability and portability to programmers, two kinds of specification are given here. First, constraints are given on the behavior of inferred properties. These are not exact and require some judgment on the part of the implementer. Second, behavior for common or useful cases is specified more precisely. Non-normative suggestions are also given as a reference for implementers.

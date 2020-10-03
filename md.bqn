@@ -153,6 +153,24 @@ Base64 ← {
   (v⊏b64)∾(3|-l)⥊'='
 }
 
+# HTML and JS for demo REPL used in main README
+repl ← 1↓"
+<div class='cont'>
+  <div class='kb'></div>
+  <div class='rel'>
+    <textarea class='code' rows='1' autofocus><⟜'a'⊸/ ""Big Questions Notation""</textarea>
+    <svg class='demo' viewBox='0 -6 4 12'><path d='M1 -6H0L1 0L0 6H1L4 0z'/></svg>
+  </div>
+  <pre class='rslt'>""B Q N""</pre>
+</div>"
+loadRepl ← "<script src='bqn.js'></script><script src='repl.js'></script>"
+
+# Various URLs
+siteURL ← "https://mlochbaum.github.io/BQN/"
+tryURL  ← siteURL∾"try.html#code="
+repoURL ← "https://github.com/mlochbaum/BQN"
+blobURL ← repoURL∾"/blob/master/"
+
 
 ################################
 Markdown ← {filename𝕊𝕩:
@@ -213,8 +231,7 @@ Markdown ← {filename𝕊𝕩:
     } 𝕩
 
     Link ← {
-      try←"https://mlochbaum.github.io/BQN/try.html#code="
-      c ← try ∾ "&run" ∾˜ Base64 ¯1 ↓ JoinLines 4↓¨𝕩
+      c ← tryURL ∾ "&run" ∾˜ Base64 ¯1 ↓ JoinLines 4↓¨𝕩
       ("a class=""replLink"" title=""Open in the REPL"" target=""_blank"" href="∾""""(∾∾⊣)c) Html "↗️"
     }
     mod ← ⟨em,e∾c∾r,ei∾ci∾ri⟩ Modify code
@@ -294,17 +311,8 @@ Markdown ← {filename𝕊𝕩:
   # Lazy rule: if it starts with < and contains >, it's probably HTML
   IsHtmlBlock ← ⊑ ">"⊸∊
   useRepl ← 0
-  loadRepl ← "<script src='bqn.js'></script><script src='repl.js'></script>"
   ProcHtmlBlock ← ("<!--REPL-->"∾lf)⊸≢◶{𝕩⋄
-    useRepl ↩ 1
-"<div class='cont'>
-  <div class='kb'></div>
-  <div class='rel'>
-    <textarea class='code' rows='1' autofocus><⟜'a'⊸/ ""Big Questions Notation""</textarea>
-    <svg class='demo' viewBox='0 -6 4 12'><path d='M1 -6H0L1 0L0 6H1L4 0z'/></svg>
-  </div>
-  <pre class='rslt'>""B Q N""</pre>
-</div>"
+    useRepl ↩ 1 ⋄ repl
   }‿{
     codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
@@ -362,7 +370,7 @@ Markdown ← {filename𝕊𝕩:
     ProcLink ← {text 𝕊 target:
       ∾⟨"<a href=""",AdjustTarget ⥊target,""">",ProcInline text,"</a>"⟩
     }
-    ghPath ← "https://github.com/mlochbaum/BQN/blob/master/"∾path
+    ghPath ← blobURL∾path
     AdjustTarget ← {
       # Adjust relative *.md links, and make other relative links
       # absolute (pointing to github.com instead of github.io).
@@ -429,9 +437,6 @@ Markdown ← {filename𝕊𝕩:
 
   ######
   # Create the block structure using line classifications.
-
-  # First remove the html link line: the output *is* the html file.
-  𝕩 ↩ 2⊸↓⍟("*View this file" (⊣ ≡ ⌊○≠↑⊢) ⊑) 𝕩
 
   lengths ← ≠¨ 𝕩                   # Length of each line
   blanks ← (Lead ' '⊸=)¨ 𝕩         # Number of leading blanks
@@ -609,8 +614,18 @@ Fmt ← ⍕ _fmtm
 ################################
 # Creating HTML files
 ConvertFile ← {
+  MatchStart‿MatchEnd ← { ≤○≠◶0‿(⊣ ≡ (𝕩×≠)⊸↑) }¨ 1‿¯1
+
+  # Input file 𝕩 should be markdown; output file is fileout
+  ! ".md" MatchEnd 𝕩
+  fileout ← ".html" ∾˜ (¯6⊸↓∾"index"˙)⍟("README"⊸MatchEnd) ¯3↓𝕩
+
+  # Contents of file to convert
   md ← •LNS •path∾𝕩
-  out ← 𝕩 Markdown md
+  # Verify and remove the html link line: the output *is* the html file.
+  ! ("*View this file"⊸MatchStart ∧ (siteURL∾fileout∾").*")⊸MatchEnd) ⊑md
+  out ← 𝕩 Markdown 2↓md
+
   parts ← (1-˜·(¬×1++`)'/'⊸=)⊸⊔ (⊑⊐⟜".")⊸↑ 𝕩
   root ← ⊑ up ← ⥊∘/⟜≍⟜"../"¨ ⌽↕≠parts
   isInd ← "README" ≡ ¯1⊑parts
@@ -621,9 +636,9 @@ ConvertFile ← {
     "stylesheet" Link "style.css"
     "title" Html "BQN: " ∾⍟(¬·∨´"BQN"⍷⊢) 2↓⊑(2≤≠)◶0‿("# "≡2⊸↑)¨⊸/md
   ⟩
-  gh ← "a href='https://github.com/mlochbaum/BQN'"Html"BQN"
+  repo ← "a href='"‿repoURL‿"'" ∾⊸Html "BQN"
   crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"main")»parts
-  nav ← RQ "div class='nav'" Html 3↓∾ " / "⊸∾¨ gh <⊸∾ crumbs
+  nav ← RQ "div class='nav'" Html 3↓∾ " / "⊸∾¨ repo <⊸∾ crumbs
   front ← head ∾○(∾⟜lf) nav
   front ∾ out
 }
