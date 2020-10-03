@@ -66,6 +66,7 @@ ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 
 raw ← {⍎}
 X ← {F:≤4}
+_withRef ← ˙
 {v:
   chrs←⟨
     "↕⊐⊒∊⍷"
@@ -118,6 +119,7 @@ X ← {F:≤4}
     Raw ∾ ∾⟜lf¨ path <⊸∾ src
   }
   X↩Raw∘E_proc
+  _withRef ↩ {𝕗∘E_proc}
   Raw ∾ ∾⟜lf¨ pre
   ≠◶(X˙)‿{ExecFile ⊑𝕩}‿{ExecFile ⊑𝕩 ⋄ X 1⊑𝕩} •args
 }
