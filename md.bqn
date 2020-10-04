@@ -171,11 +171,18 @@ tryURL  ← siteURL∾"try.html#code="
 repoURL ← "https://github.com/mlochbaum/BQN"
 blobURL ← repoURL∾"/blob/master/"
 
+# Environments
+_getCodeExec ← {𝕗⋄⍎}
+_getSvgExec ← {𝕗⋄⟨•path∾"svg.bqn","⍎"⟩ •EX •path∾"dzref"}
+
 
 ################################
 Markdown ← {filename𝕊𝕩:
   extensions ← filename ≢ 0
   path ← extensions◶""‿(⊢/˜·∨`⌾⌽'/'⊸=) filename
+
+  CodeExec ← @_getCodeExec
+  SvgExec ← @_getSvgExec
 
   ######
   # First we classify each line based on the type of block it can start.
@@ -237,7 +244,6 @@ Markdown ← {filename𝕊𝕩:
     mod ← ⟨em,e∾c∾r,ei∾ci∾ri⟩ Modify code
     𝕩 Link⊸∾⍟addRslt "pre" Html "code" Html⍟(¬extensions) mod
   }
-  codeExec ← {⍎}
 
   # Headings start with #, and require 1-6 #s followed by a space.
   # Any trailing #s are ignored.
@@ -311,11 +317,15 @@ Markdown ← {filename𝕊𝕩:
   # Lazy rule: if it starts with < and contains >, it's probably HTML
   IsHtmlBlock ← ("<!--"≡4↑⊢)◶('>'∨´∘=⊢)‿2
   useRepl←0 ⋄ GetRepl ← {𝕩⋄ useRepl↩1 ⋄ repl}
-  ProcComment ← ("<!--REPL-->"∾lf)⊸≢◶GetRepl‿⊢
-  ProcHtmlBlock ← <⟜2◶ProcComment‿{
+  ProcComment ← ⟨"<!--REPL-->"⟩⊸≢◶⟨
+    GetRepl
+    ("<!--SVG"≡⊑∘⊢)◶JoinLines‿(SvgExec∘JoinLines 1↓¯1↓⊢)
+  ⟩
+  ProcHtml ← {
     codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
-  }⍟extensions⟜JoinLines
+  }⟜JoinLines
+  ProcHtmlBlock ← extensions◶JoinLines‿(<⟜2◶ProcComment‿ProcHtml)
 
   lineChars‿lineClas‿procFns ← <˘⍉>⟨
     ""    ‿ (!∘0)       ‿ ProcParagraph
