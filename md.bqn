@@ -237,7 +237,7 @@ Markdown ← {filename𝕊𝕩:
     mod ← ⟨em,e∾c∾r,ei∾ci∾ri⟩ Modify code
     𝕩 Link⊸∾⍟addRslt "pre" Html "code" Html⍟(¬extensions) mod
   }
-  CodeExec ← {⍎}_withRef  # dzaima+reference exec. Should be {⍎}
+  codeExec ← {⍎}
 
   # Headings start with #, and require 1-6 #s followed by a space.
   # Any trailing #s are ignored.

@@ -93,6 +93,7 @@ _withRef ← ˙
   Raw¨ ⟨
     "IsArray ← 0≠≡"
   ⟩∾Mod⟜⥊¨ "↕⊐"
+  chr∾↩"⍎" ⋄ names∾↩⟨"⍎_withRef "⟩
 
 
   # checks if line is a builtin redefinition
