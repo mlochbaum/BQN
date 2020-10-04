@@ -309,11 +309,10 @@ Markdown ← {filename𝕊𝕩:
 
   # HTML blocks
   # Lazy rule: if it starts with < and contains >, it's probably HTML
-  IsHtmlBlock ← ⊑ ">"⊸∊
-  useRepl ← 0
-  ProcHtmlBlock ← ("<!--REPL-->"∾lf)⊸≢◶{𝕩⋄
-    useRepl ↩ 1 ⋄ repl
-  }‿{
+  IsHtmlBlock ← ("<!--"≡4↑⊢)◶('>'∨´∘=⊢)‿2
+  useRepl←0 ⋄ GetRepl ← {𝕩⋄ useRepl↩1 ⋄ repl}
+  ProcComment ← ("<!--REPL-->"∾lf)⊸≢◶GetRepl‿⊢
+  ProcHtmlBlock ← <⟜2◶ProcComment‿{
     codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
   }⍟extensions⟜JoinLines
@@ -448,6 +447,18 @@ Markdown ← {filename𝕊𝕩:
   # Empty lines have type ¯1.
   lineType ↩ ¯1¨⌾((¬nonEmptyMask)⊸/) lineType
 
+  # Chase HTML comments
+  commentStart ← /(lineType=5)∧lineDat=2
+  EndsComment ← (3≤≠)◶0‿(∨´"-->"⍷⊢)∘(⊑⟜𝕩)
+  lastCommentEnd ← ¯1
+  comInd ← ∾ comments ← {
+    lastCommentEnd ↩ end ← {𝕊⍟(¬EndsComment)1+𝕩}⍟(lastCommentEnd⊸<) 𝕩-1
+    𝕩 + ↕end¬𝕩  # A list of indices
+  }¨ commentStart
+  newBlock ← (≠𝕩)↑/⁼ ⊑¨ (0<≠¨)⊸/ comments
+  lineType ↩ 5¨⌾(comInd⊸⊏) lineType
+  lineDat  ↩ 2¨⌾(comInd⊸⊏) lineDat
+
   # Lines that could be included in code blocks (will be refined)
   codeMask ← nonEmptyMask ∧ blanks ≥ 4
   paragraphMask ← 0 = lineType
@@ -476,7 +487,8 @@ Markdown ← {filename𝕊𝕩:
   # Lines continue blocks if they are part of the same multi-line
   # type as the previous line, and otherwise start new ones.
   # Headers (type 1) always start new blocks.
-  blockStart ← nonEmptyMask ∧ (1 = lineType) ∨ ¯1⊸»⊸≠ lineType
+  newBlock ∨↩ 1 = lineType
+  blockStart ← nonEmptyMask ∧ newBlock ∨ ¯1⊸»⊸≠ lineType
   # Headers and paragraphs ignore leading blanks.
   drop ← blanks × lineType < 2
   # Group blocks based on blockStart, with type ¯1 lines excluded.
