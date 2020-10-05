@@ -13,6 +13,36 @@ BQN supports the following fundamental types:
 
 The first three types are called *data types*, and the rest are *operation types*. The array is the only *compound type*; the other types are *atomic types* and values of these types are called *atoms*. The fact that an array is only one type of many is common in modern programming languages but a novelty in the APL family. This decision is discussed in the page on [based array theory](based.md).
 
+<!--SVG
+types ← ⍉"Number"‿"Character"‿"Array"≍"Function"‿"1-modifier"‿"2-modifier"
+sh ← ≢ types
+p ← 64‿38
+dim ← (2×p) + sh × d1 ← 128‿64
+rp ← 8÷d1
+Pos ↩ Pos d1⊸×
+Size ← "width"‿"height" ≍˘ ·FmtNum¨ d1×⊢
+cl ← {"class"‿𝕩}¨ "purple"‿"bluegreen"‿"yellow"
+
+TP ← "text" Attr "dy"‿"0.32em"∾˜Pos⊘(∾⟜Pos)
+t ← (≍⌜´0.5+↕¨sh) TP⊸Enc¨ types
+l ← (cl TP¨ (0.75≍¨1(-≍+)1.2)∾<2.2‿2.3) Enc¨ "Data"‿"Operation"‿"Atom"
+RD← (Size ⟨⊑sh,1⟩-2×rp)∾Pos
+r ← (2↑cl) {"rect" Elt 𝕩∾"rx"‿"10px"≍𝕨}⟜RD¨ 0(rp+≍)¨↕1⊑sh
+
+Round ← {
+  v ← (𝕨⊸×÷+´⌾(×˜))¨ ¯1⊸⌽⊸- 𝕩
+  or← 0< v +´∘×⟜(⌽-⌾⊑)¨ 1⌽v
+  "Z"∾˜ 'M'⌾⊑ ∾ ⥊ (('L'∾Fmt)¨ v+𝕩) ≍˘ or ('A'∾·Fmt(𝕨‿𝕨∾0‿0)∾∾)¨ (1⌽-v)+𝕩
+}
+a ← "path" Elt >⟨"d"‿(12 Round d1⊸×¨ ⥊ ((⊢≍˘1⊸⌽) 0‿2‿3) ≍¨ ↕3),¯1⊑cl⟩
+
+FS ← {𝕩 Enc˜ "g"Attr⟨"font-size",(Fmt𝕨)∾"px"⟩}
+((0‿2-p)∾dim) SVG ⟨
+  "g stroke-width='2'" Enc a‿r
+  "g text-anchor='middle' fill='currentColor'" Enc 18‿16 FS¨ t‿l
+⟩
+-->
+
 All of these types are immutable, meaning that a particular copy of a value will never change (to go further, with immutable types it doesn't really make sense to talk about a "copy" of a value: values just exist and nothing you do will affect them). The only form of mutability BQN has is the ability to change the value of a particular variable, that is, make the variable refer to a different value. Such a change can also change the behavior of a function or modifier that has the variable in its scope, and in this sense operation types are mutable—in fact it is possible to implement typical mutable data structures as functions that act on enclosed state.
 
 It is likely that in the future [namespaces](extensions.md#namespaces-and-symbols), or references to enclosed scopes, will be added as a more directly manipulable mutable data type.

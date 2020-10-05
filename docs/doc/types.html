@@ -15,6 +15,29 @@
 <li>2-<a href="#modifiers">Modifier</a></li>
 </ul>
 <p>The first three types are called <em>data types</em>, and the rest are <em>operation types</em>. The array is the only <em>compound type</em>; the other types are <em>atomic types</em> and values of these types are called <em>atoms</em>. The fact that an array is only one type of many is common in modern programming languages but a novelty in the APL family. This decision is discussed in the page on <a href="based.html">based array theory</a>.</p>
+<svg viewBox='-64 -36 512 204'>
+  <g stroke-width='2'>
+    <path d='M0 12A12 12 0 0 1 12 0L244 0A12 12 0 0 1 256 12L256 52A12 12 0 0 0 268 64L372 64A12 12 0 0 1 384 76L384 116A12 12 0 0 1 372 128L12 128A12 12 0 0 1 0 116Z' class='yellow'/>
+    <rect width='368' height='48' x='8' y='8' rx='10px' class='purple'/>
+    <rect width='368' height='48' x='8' y='72' rx='10px' class='bluegreen'/>
+  </g>
+  <g text-anchor='middle' fill='currentColor'>
+    <g font-size='18px'>
+      <text x='64' y='32' dy='0.32em'>Number</text>
+      <text x='64' y='96' dy='0.32em'>Function</text>
+      <text x='192' y='32' dy='0.32em'>Character</text>
+      <text x='192' y='96' dy='0.32em'>1-modifier</text>
+      <text x='320' y='32' dy='0.32em'>Array</text>
+      <text x='320' y='96' dy='0.32em'>2-modifier</text>
+    </g>
+    <g font-size='16px'>
+      <text class='purple' x='96' y='-12.8' dy='0.32em'>Data</text>
+      <text class='bluegreen' x='96' y='140.8' dy='0.32em'>Operation</text>
+      <text class='yellow' x='281.6' y='147.2' dy='0.32em'>Atom</text>
+    </g>
+  </g>
+</svg>
+
 <p>All of these types are immutable, meaning that a particular copy of a value will never change (to go further, with immutable types it doesn't really make sense to talk about a &quot;copy&quot; of a value: values just exist and nothing you do will affect them). The only form of mutability BQN has is the ability to change the value of a particular variable, that is, make the variable refer to a different value. Such a change can also change the behavior of a function or modifier that has the variable in its scope, and in this sense operation types are mutable—in fact it is possible to implement typical mutable data structures as functions that act on enclosed state.</p>
 <p>It is likely that in the future <a href="extensions.html#namespaces-and-symbols">namespaces</a>, or references to enclosed scopes, will be added as a more directly manipulable mutable data type.</p>
 <h2 id="data-types">Data types</h2>

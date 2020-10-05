@@ -143,3 +143,12 @@ a:visited     { color: #3d155f; }
   a:link      { color: #5592d9; text-decoration-color: #508dd978; }
   a:visited   { color: #8781c1; }
 }
+
+.purple    { fill:#d6afe0; stroke:#3d1b46; } text.purple    { fill:#3b1346; stroke:none; }
+.bluegreen { fill:#55cbcb; stroke:#1c4e4e; } text.bluegreen { fill:#113939; stroke:none; }
+.yellow    { fill:#e2d17f; stroke:#a28237; } text.yellow    { fill:#7a5a0e; stroke:none; }
+@media (prefers-color-scheme: dark) {
+.purple    { fill:#241922; stroke:#612d86; } text.purple    { fill:#6e2ca0; stroke:none; }
+.bluegreen { fill:#0e2525; stroke:#297f7f; } text.bluegreen { fill:#578d8d; stroke:none; }
+.yellow    { fill:#5b4b25; stroke:#a27e2a; } text.yellow    { fill:#9d7925; stroke:none; }
+}
