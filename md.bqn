@@ -470,7 +470,7 @@ Markdown ← {filename𝕊𝕩:
   lineDat  ↩ 2¨⌾(comInd⊸⊏) lineDat
 
   # Lines that could be included in code blocks (will be refined)
-  codeMask ← nonEmptyMask ∧ blanks ≥ 4
+  codeMask ← nonEmptyMask ∧ (lineType ≠ 5) ∧ blanks ≥ 4
   paragraphMask ← 0 = lineType
   # A header can't have 4 spaces of indentation. If it doesn't become
   # part of a code block, it will be included in a paragraph.
