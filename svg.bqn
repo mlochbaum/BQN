@@ -1,5 +1,11 @@
 # Utilities for creating SVG diagrams as strings
 
+# Snag the code highlighter from md.bqn
+Highlight ← {
+  AddT ← (↑∾"t"∾↓)¨˜⟜(1‿2⥊˜≢)  # span to tspan
+  (1¨ <⊸∾ ·AddT⌾⊑GetHighlights)⊸Modify 𝕩
+}
+
 IsLines ← 1<≡
 DeNest ← {(3⌊≡)◶⟨!∘0,⥊<,⊢,∾𝕊¨⟩ ⥊𝕩}
 Indent ← "  "⊸∾¨ DeNest
