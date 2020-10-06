@@ -126,7 +126,10 @@ Parse ← {r‿nv←𝕨
   fsc←ft⊏⥊3‿5‿6-⌜3‿0
   pt←cp∧sn←¬sl∨sr
   r↩sl-˜sn×((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
-  r+↩pt(⊣∧≤=○I1T⊢)(»⌾(g⊸⊏)3=r)∨1≤r
+  pp←pt∧»no←»⌾(g⊸⊏)r<0
+  er←((»⌾(g⊸⊏)(1+no)×3=⊢)⌈⊢-no<2≤⊢)r+pp×(IT¬pp)⊏r
+  er⌈↩(IT¬pt∧er=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)er
+  r+↩pt×»er
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
   ad←𝕩(=>○IT⊣=1+⊢)⊑bG
