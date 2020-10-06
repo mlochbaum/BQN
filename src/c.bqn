@@ -137,8 +137,8 @@ Parse ← {r‿nv←𝕨
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ps⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
+  er⊏˜↩gr⋄ma←(𝕩=1+⊑bG)∧«er≥1⋄er⊏˜↩IT»ps⋄ma>↩tr←er≥1
   a←r=¯3⋄ro←(r≥2)∨a<«r=3
-  tr←(IT»ps)⊏fe←ro∨r=1⋄ma←tr<(𝕩=1+⊑bG)∧«fe
   os←⌽↕∘≠⊸(⊣-T)⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
   r(×⟜¬-⊢)↩aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
   ta←tr>(a≤○I1T ps)∧(⊢∧2(|<≤)ps(⊢-T)+`)¬ro
