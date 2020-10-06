@@ -112,8 +112,6 @@ Parse ← {r‿nv←𝕨
   "Parentheses can't contain separators" ! ¬∨´((⊑bB)⊸=/·«sep⊸=)gb/gx
   "Empty statement or expression" ! ∧´(4+⊑bB)=(1⊸«⊸∧1∾gb)/0∾gx
   "Invalid assignment or stranding use" ! ∧´(r≤¯2)/r»⊸∧⟜«○(0⊸≤)r+p
-  pp←gp×gx<2+⊑bB⋄rp←(¬(pp>0)(/{𝕨⌾((pp<0)⊸/)𝕩}∧)1‿0⊸«⊸∧)⌾(g⊸⊏)p>0
-  𝕩/˜↩rp⋄r/˜↩rp⋄g↩⍋+`p↩rp/p
   sr←»⌾(g⊸⊏)sl←«⊸∨r=¯2⋄cp←𝕩=1+⊑bB
   ps←sl∨r=¯1
   g⊏˜↩⍋g⊏sl
