@@ -29,7 +29,7 @@ CharCode←charSet{
 }
 
 vi←⊑bD  # Start of identifier numbering
-charRole←∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯2,¯1‿0,¯1,0,5/⌽↕2⟩ # For first vi chars
+charRole←∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯3,¯1‿0,¯2,0,5/⌽↕2⟩ # For first vi chars
 T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
@@ -106,12 +106,14 @@ ErrUndeclared←{
   0 !˜ "Undefined identifier"∾(1<≠𝕩)/"s"
 }
 Parse ← {r‿nv←𝕨
-  g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄pp←g⊏p×𝕩M⟨⊑bB,2⟩
-  p(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)○(g⊸⊏)𝕩
+  g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄pp←g⊏p×𝕩M⟨⊑bB,2⟩⋄gp←g⊏r=¯1
+  (g⊏p)(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)gx←g⊏𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
+  "Parentheses can't contain separators" ! ¬∨´((⊑bB)⊸=/·«sep⊸=)gp/gx
+  "Empty statement or expression" ! ∧´(4+⊑bB)=(1⊸«⊸∧1∾gp)/0∾gx
   rp←¬g⍋⊸⊏(pp>0)(/{𝕨⌾((pp<0)⊸/)𝕩}∧)(«⊢<1⊸«)⊸∧g⊏p>0
   𝕩/˜↩rp⋄r/˜↩rp⋄g↩⍋+`p↩rp/p
-  sr←»⌾(g⊸⊏)sl←«⊸∨𝕩 M bL⋄cp←𝕩=1+⊑bB
+  sr←»⌾(g⊸⊏)sl←«⊸∨r=¯2⋄cp←𝕩=1+⊑bB
   ps←sl∨r=¯1
   g⊏˜↩⍋g⊏sl
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏ps
@@ -133,7 +135,7 @@ Parse ← {r‿nv←𝕨
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ps⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
-  a←r=¯2⋄ro←(r≥2)∨a<«r=3
+  a←r=¯3⋄ro←(r≥2)∨a<«r=3
   tr←(IT»ps)⊏fe←ro∨r=1⋄ma←tr<(𝕩=1+⊑bG)∧«fe
   os←⌽↕∘≠⊸(⊣-T)⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
   r(×⟜¬-⊢)↩aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
