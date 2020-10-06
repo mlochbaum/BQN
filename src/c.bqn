@@ -106,13 +106,13 @@ ErrUndeclared←{
   0 !˜ "Undefined identifier"∾(1<≠𝕩)/"s"
 }
 Parse ← {r‿nv←𝕨
-  g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄pp←g⊏p×𝕩M⟨⊑bB,2⟩⋄gp←g⊏r=¯1
-  (g⊏p)(=⟜1⊸/ErrMismatchedBrackets⍟≢1-˜=⟜¯1⊸/)gx←g⊏𝕩
+  g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gp←g⊏p⋄gb←g⊏r=¯1⋄gx←g⊏𝕩
+  gp(>⟜0⊸/ErrMismatchedBrackets⍟≢1-˜<⟜0⊸/)gx
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
-  "Parentheses can't contain separators" ! ¬∨´((⊑bB)⊸=/·«sep⊸=)gp/gx
-  "Empty statement or expression" ! ∧´(4+⊑bB)=(1⊸«⊸∧1∾gp)/0∾gx
+  "Parentheses can't contain separators" ! ¬∨´((⊑bB)⊸=/·«sep⊸=)gb/gx
+  "Empty statement or expression" ! ∧´(4+⊑bB)=(1⊸«⊸∧1∾gb)/0∾gx
   "Invalid assignment or stranding use" ! ∧´(r≤¯2)/r»⊸∧⟜«○(0⊸≤)r+p
-  rp←¬g⍋⊸⊏(pp>0)(/{𝕨⌾((pp<0)⊸/)𝕩}∧)(«⊢<1⊸«)⊸∧g⊏p>0
+  pp←gp×gx<2+⊑bB⋄rp←(¬(pp>0)(/{𝕨⌾((pp<0)⊸/)𝕩}∧)1‿0⊸«⊸∧)⌾(g⊸⊏)p>0
   𝕩/˜↩rp⋄r/˜↩rp⋄g↩⍋+`p↩rp/p
   sr←»⌾(g⊸⊏)sl←«⊸∨r=¯2⋄cp←𝕩=1+⊑bB
   ps←sl∨r=¯1
