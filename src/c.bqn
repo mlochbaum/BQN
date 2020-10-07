@@ -140,6 +140,7 @@ Parse ← {r‿nv←𝕨
   er⊏˜↩gr⋄ma←(𝕩=1+⊑bG)∧«er≥1⋄er⊏˜↩IT»ps⋄ma>↩tr←er≥1
   a←r=¯3⋄ro←(r≥2)∨a<«r=3
   os←⌽↕∘≠⊸(⊣-T)⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
+  "Role of the two sides in assignment must match" ! (⊏⟜er≡⊏⟜r)at
   r(×⟜¬-⊢)↩aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
   ta←tr>(a≤○I1T ps)∧(⊢∧2(|<≤)ps(⊢-T)+`)¬ro
   oa←⌽/op←(«r≥0)∧r≥2
