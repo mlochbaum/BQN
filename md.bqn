@@ -317,10 +317,11 @@ Markdown ← {filename𝕊𝕩:
   # Lazy rule: if it starts with < and contains >, it's probably HTML
   IsHtmlBlock ← ("<!--"≡4↑⊢)◶('>'∨´∘=⊢)‿2
   useRepl←0 ⋄ GetRepl ← {𝕩⋄ useRepl↩1 ⋄ repl}
-  ProcComment ← ⟨"<!--REPL-->"⟩⊸≢◶⟨
-    GetRepl
-    ("<!--SVG"≡⊑∘⊢)◶JoinLines‿(SvgExec∘JoinLines 1↓¯1↓⊢)
-  ⟩
+  ProcComment ← ⟨"<!--REPL-->"⟩⊸≢◶GetRepl‿{
+    n←≠s←"<!--SVG" ⋄ l←¯3↓⍟(1=≠𝕩)⊑𝕩 ⋄ a←s≡n↑l
+    Source ← {((0<≠)◶<‿(•LNS •path∾path∾⊢) Trim n↓l) ∾ 1↓¯1↓𝕩}
+    SvgExec⍟a JoinLines Source⍟a 𝕩
+  }
   ProcHtml ← {
     codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
