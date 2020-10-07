@@ -126,24 +126,24 @@ Parse ← {r‿nv←𝕨
   pt←cp∧sn←¬sl∨sr
   r↩sl-˜sn×((1↓ft)⊏(1+2⊸≤)⊸/↕4)⌾((b⊏rev)⊸⊏)r
   pp←pt∧»no←»⌾(g⊸⊏)r<0
-  er←((»⌾(g⊸⊏)(1+no)×3=⊢)⌈⊢-no<2≤⊢)r+pp×(IT¬pp)⊏r
-  er⌈↩(IT¬pt∧er=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)er
-  r+↩pt×»er
+  ir←((»⌾(g⊸⊏)(1+no)×3=⊢)⌈⊢-no<2≤⊢)r+pp×(IT¬pp)⊏r
+  ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir
+  r+↩pt×»ir
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
   ad←𝕩(=>○IT⊣=1+⊢)⊑bG
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
-  𝕩⊏˜↩g⋄r⊏˜↩gr⋄er⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
-  a←r=¯3⋄ps←a<r<0⋄ro←(r≥2)∨a<«r=3⋄ma←(𝕩=1+⊑bG)∧«er≥1
-  er⊏˜↩IT»ps⋄ma>↩tr←er≥1
-  os←⌽↕∘≠⊸(⊣-T)⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
+  𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
+  a←r=¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps
+  oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧r=3
+  ma←tr<(𝕩=1+⊑bG)∧«ir≥1
+  os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
   "Role of the two sides in assignment must match" ! (⊏⟜er≡⊏⟜r)at
   r(×⟜¬-⊢)↩aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
   ta←tr>(⊢∧2(|<≤)ps(⊢-T)+`)¬ro
-  oa←⌽/op←(«r≥0)∧r≥2
-  fa←/(ta∨(ro∧«op)∨«aa)<(r=1)∨<⟜»op
+  fa←/(ta∨ro∨«aa)<(r=1)∨»op
   dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
   cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
@@ -165,7 +165,7 @@ Parse ← {r‿nv←𝕨
   b⊏↩gi
   or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,dr,l,l,si,si,at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨b,1+↕≠b,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
-               (11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏tr,25¨rt⟩
+               (11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
   bcl‿el←LEB bc∾25
   fs←(ft⊏⥊3≍⌜⟜⌽○↕2)∾¨(el/˜1∾or≥bc-○≠rt)≍¨lc+fsc
   ⟨bcl,u,fs⟩
