@@ -142,9 +142,9 @@ Parse ← {r‿nv←𝕨
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
   "Role of the two sides in assignment must match" ! (⊏⟜er≡⊏⟜r)at
   r(×⟜¬-⊢)↩aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
-  ta←tr>(⊢∧2(|<≤)ps(⊢-T)+`)¬ro
+  ta←tr∧2(>∨|)ps(⊢-T)+`¬ro
   fa←/(ta∨ro∨«aa)<(r=1)∨»op
-  dy←fa⊏«(𝕩≠⊑bO)∧(tr∧r≥0)∨ro<r=0
+  dy←fa⊏«(𝕩=⊑bO)<(tr∧r≥0)∨ro<r=0
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
   cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
