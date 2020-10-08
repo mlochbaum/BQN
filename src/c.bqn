@@ -140,7 +140,8 @@ Parse ← {r‿nv←𝕨
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧r=3
   ma←tr<(𝕩=1+⊑bG)∧«ir≥1
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
-  "Role of the two sides in assignment must match" ! (⊏⟜er≡⊏⟜r)at
+  "Role of the two sides in assignment must match" ! (at⊏er)≡ar←at⊏r
+  "Function or modifier assignment to a non-name" ! ∧´(ar=0)∨(at⊏g)⊏idm
   aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro
   fa←/(ta∨ro∨«⊸∨aa)<(r=1)∨»op
