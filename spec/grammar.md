@@ -6,10 +6,10 @@ BQN's grammar is given below. Terms are defined in a [BNF](https://en.wikipedia.
 
 The symbols `s`, `F`, `_m`, and `_c_` are identifier tokens with subject, function, 1-modifier, and 2-modifier classes respectively. Similarly, `sl`, `Fl`, `_ml`, and `_cl_` refer to literals and primitives of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic classes are no longer used after parsing and cannot be inspected in a running program.
 
-A program is a list of statements. Almost all statements are expressions. Only valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions.
+A program is a list of statements. Almost all statements are expressions. Valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions. "Namespace statements", which import multiple values from a namespace block (immediate block containing `⇐`), also cannot be expressions. An extension to BQN to allow first-class namespaces would extend ordinary expressions so that `NS_STMT` would no longer be needed, as it would be a subset of `EXPR`.
 
-    PROGRAM  = ⋄? ( ( STMT ⋄ )* STMT ⋄? )?
-    STMT     = EXPR | nothing
+    PROGRAM  = ⋄? ( ( STMT | EXPORT ⋄ )* STMT ⋄? )?
+    STMT     = EXPR | nothing | NS_STMT
     ⋄        = ( "⋄" | "," | \n )+
     EXPR     = subExpr | FuncExpr | _m1Expr | _m2Expr_
 
@@ -23,9 +23,9 @@ Here we define the "atomic" forms of functions and modifiers, which are either s
     list     = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
     subject  = atom | ANY ( "‿" ANY )+
 
-Starting at the highest-order objects, modifiers have fairly simple syntax. In most cases the syntax for `←` and `↩` is the same, but only `↩` can be used for modified assignment.
+Starting at the highest-order objects, modifiers have fairly simple syntax. In most cases the syntax for `←` and `↩` is the same, but only `↩` can be used for modified assignment. The export arrow `⇐` can only be used in namespace blocks `brNS`, and the top-level `PROGRAM`. There it can be used in the same ways as `←`, but it can also be used in a `brNS` header, or with no expression on the right in an `EXPORT` statement.
 
-    ASGN     = "←" | "↩"
+    ASGN     = "←" | "⇐" | "↩"
     _m2Expr_ = _mod2_
              | _c_ ASGN _m2Expr_
     _m1Expr  = _mod1
@@ -54,13 +54,13 @@ Subject expressions are complicated by the possibility of list assignment. We al
              | ( subject | nothing )? Derv arg
     nothing  = "·"
              | ( subject | nothing )? Derv nothing
-    LHS_ANY  = lhsSub | F | _m | _c_
+    LHS_NAME = s | F | _m | _c_
+    LHS_ANY  = LHS_NAME
+             | "⟨" ⋄? ( ( LHS_ELT ⋄ )* LHS_ELT ⋄? )? "⟩"
     LHS_ATOM = LHS_ANY | "(" lhsStr ")"
     LHS_ELT  = LHS_ANY | lhsStr
-    lhsSub   = s
-             | "⟨" ⋄? ( ( LHS_ELT ⋄ )* LHS_ELT ⋄? )? "⟩"
     lhsStr   = LHS_ATOM ( "‿" LHS_ATOM )+
-    lhs      = lhsSub | lhsStr
+    lhs      = s | lhsSub | lhsStr
     subExpr  = arg
              | lhs ASGN subExpr
              | lhs Derv "↩" subExpr       # Modified assignment
@@ -93,12 +93,23 @@ A braced block contains bodies, which are lists of statements, separated by semi
     _brMod1  = "{" ( _mCase  ";" )* ( _mCase  | _mMain ( ";" _mMain )? ) "}"
     _brMod2_ = "{" ( _cCase_ ";" )* ( _cCase_ | _cMan_ ( ";" _cMan_ )? ) "}"
 
-Two additional rules apply to blocks, based on the special name associations in the table below. First, each block allows the special names in its column to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each column is cumulative and a given entry also includes all the entries above it. Second, for `BrFunc`, `_brMod1`, and `_brMod2_` terms, if no header is given, then at least one `BODY` term in it *must* contain one of the names on, and not above, the corresponding row. Otherwise the syntax would be ambiguous, since for example a simple `"{" BODY "}"` sequence could have any type.
+A namespace block is very similar in grammar to an ordinary immediate block, but allows export declarations with `⇐`, either in place of the ordinary definition `←` or in the special `EXPORT` statement. The arrow `⇐` can also be placed in the header to mark a namespace block.
+
+    NS_STMT  = nsLHS ASGN brNS
+    NS_VAR   = LHS_NAME ( ":" lhs )?
+    nsLHS    = LHS_NAME ( "‿" LHS_NAME )+
+             | "⟨" ⋄? ( ( NS_VAR ⋄ )* NS_VAR ⋄? )? "⟩"
+    EXPORT   = ( LHS_NAME | lhsSub | lhsStr ) "⇐"
+    NS_BODY  = ⋄? ( ( STMT | EXPORT ) ⋄ )* EXPR ⋄?
+    brNS     = "{" ( ⋄? "⇐"? s ":" )? NS_BODY "}"
+
+Two additional rules apply to blocks, based on the special name associations in the table below. First, each block allows the special names in its column to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each column is cumulative and a given entry also includes all the entries above it up to the next "None". Second, for `BrFunc`, `_brMod1`, `_brMod2_`, and `brNS` terms, if no header is given (or, for `brNS`, if the header does not contain `"⇐"`), then at least one `BODY` term in it *must* contain one of the tokens on, and not above, the corresponding row. Otherwise the syntax would be ambiguous, since for example a simple `"{" BODY "}"` sequence could have any type.
 
 | Term               | `s`    | `F`    | `_m`    | `_c_`    | other
 |--------------------|--------|--------|---------|----------|-------
-| `brSub`, `PROGRAM` | None   | None   | None    | None     |
-| `BrFunc`           | `𝕨𝕩𝕤`  | `𝕎𝕏𝕊`  |         |          | `";"`
+| `brNS`, `PROGRAM`  | None   | None   | None    | None     | `⇐`
+| `brSub`            | None   | None   | None    | None     | None
+| `BrFunc`           | `𝕨𝕩𝕤`  | `𝕎𝕏𝕊`  |         |          | `;`
 | `_brMod1`          | `𝕗𝕣`   | `𝔽`    | `_𝕣`    |          |
 | `_brMod2_`         | `𝕘`    | `𝔾`    | None    | `_𝕣_`    |
 
