@@ -560,7 +560,7 @@ GetHighlights ← {
     "Modifier"    , "˙˜˘¨⌜⁼´˝`"
     "Modifier2"   , "∘○⊸⟜⌾⊘◶⎉⚇⍟⎊"
     "Number"      , ∾idChars       # Will be classified among ↑↑ later
-    "Gets"        , "←↩→"
+    "Gets"        , "←⇐↩→"
     "Paren"       , "()"
     "Bracket"     , "⟨⟩"
     "Brace"       , "{}"
