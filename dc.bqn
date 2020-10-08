@@ -14,12 +14,13 @@ prims ← (•EX •path∾"dzref"){𝔽} "⟨
 ⟩"
 
 special←<˘∘‿2⥊"𝕤𝕩𝕨𝕣𝕗𝕘"
-DRun←{
+DCompile←{
   ⟨bc,o,blk⟩ ← prims Compile 𝕩
   blk ↩ {
     ⟨t,i,l,n⟩←𝕩
     s←(3×i)↓(t⊑3‿5‿6)↑special
     ⟨t,i,l,s∾⥊¨'a'+↕n-≠s⟩
   }¨blk
-  •COMP ⟨bc,o,⟨⟩,blk⟩
+  ⟨bc,o,⟨⟩,blk⟩
 }
+DRun←•COMP∘DCompile
