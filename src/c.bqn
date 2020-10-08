@@ -169,8 +169,7 @@ Parse ← {r‿nv←𝕨
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨b,1+↕≠b,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
                (11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
   bcl‿el←LEB bc∾25
-  fs←(ft≍¨¬fx)∾¨(el/˜1∾or≥bc-○≠rt)≍¨lc+fsc
-  ⟨bcl,u,fs⟩
+  ⟨bcl,u,⟨ft,¬fx,el/˜1∾or≥bc-○≠rt,lc+fsc⟩⟩
 }
 
 LEB←{
@@ -184,5 +183,5 @@ LEB←{
 Compile←{
   ⟨t,r,nVar,const⟩←Tokenize𝕩
   ⟨bc,pr,blk⟩←r‿nVar Parse t
-  ⟨bc,(pr⊏𝕨)∾const,blk⟩
+  ⟨bc,(pr⊏𝕨)∾const,<˘⍉>blk⟩
 }
