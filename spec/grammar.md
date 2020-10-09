@@ -8,8 +8,9 @@ The symbols `s`, `F`, `_m`, and `_c_` are identifier tokens with subject, functi
 
 A program is a list of statements. Almost all statements are expressions. Valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions. "Namespace statements", which import multiple values from a namespace block (immediate block containing `⇐`), also cannot be expressions. An extension to BQN to allow first-class namespaces would extend ordinary expressions so that `NS_STMT` would no longer be needed, as it would be a subset of `EXPR`.
 
-    PROGRAM  = ⋄? ( ( STMT | EXPORT ⋄ )* STMT ⋄? )?
-    STMT     = EXPR | nothing | NS_STMT
+    PROGRAM  = ⋄? ( ( STMT ⋄ )* STMT ⋄? )?
+    STMT     = BSTMT | EXPORT
+    BSTMT    = EXPR | nothing | NS_STMT
     ⋄        = ( "⋄" | "," | \n )+
     EXPR     = subExpr | FuncExpr | _m1Expr | _m2Expr_
 
@@ -81,7 +82,7 @@ A header looks like a name for the thing being headed, or its application to inp
 
 A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. For an immediate block there are no inputs, so there can only be one possible case and one body. Functions and modifiers allow any number of "matched" bodies, with headers that have arguments, followed by at most two "main" bodies with either no headers or headers without arguments. If there is one main body, it is ambivalent, but two main bodies refer to the monadic and dyadic cases.
 
-    BODY     = ⋄? ( STMT ⋄ )* EXPR ⋄?
+    BODY     = ⋄? ( BSTMT ⋄ )* EXPR ⋄?
     FCase    = ⋄? FuncHead ":" BODY
     _mCase   = ⋄? _m1Head  ":" BODY
     _cCase_  = ⋄? _m2Head_ ":" BODY
@@ -93,14 +94,14 @@ A braced block contains bodies, which are lists of statements, separated by semi
     _brMod1  = "{" ( _mCase  ";" )* ( _mCase  | _mMain ( ";" _mMain )? ) "}"
     _brMod2_ = "{" ( _cCase_ ";" )* ( _cCase_ | _cMan_ ( ";" _cMan_ )? ) "}"
 
-A namespace block is very similar in grammar to an ordinary immediate block, but allows export declarations with `⇐`, either in place of the ordinary definition `←` or in the special `EXPORT` statement. The arrow `⇐` can also be placed in the header to mark a namespace block.
+A namespace block is very similar in grammar to an ordinary immediate block, but allows export declarations with `⇐`, either in place of the ordinary definition `←` or in the special `EXPORT` statement. The arrow `⇐` can also be placed in the header to mark a namespace block. Since the block returns all exported values and not the result of the last line, the last line does not need to be an expression.
 
     NS_STMT  = nsLHS ASGN brNS
     NS_VAR   = LHS_NAME ( ":" lhs )?
     nsLHS    = LHS_NAME ( "‿" LHS_NAME )+
              | "⟨" ⋄? ( ( NS_VAR ⋄ )* NS_VAR ⋄? )? "⟩"
     EXPORT   = ( LHS_NAME | lhsSub | lhsStr ) "⇐"
-    NS_BODY  = ⋄? ( ( STMT | EXPORT ) ⋄ )* EXPR ⋄?
+    NS_BODY  = ⋄? ( STMT ⋄ )* STMT ⋄?
     brNS     = "{" ( ⋄? "⇐"? s ":" )? NS_BODY "}"
 
 Two additional rules apply to blocks, based on the special name associations in the table below. First, each block allows the special names in its column to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each column is cumulative and a given entry also includes all the entries above it up to the next "None". Second, for `BrFunc`, `_brMod1`, `_brMod2_`, and `brNS` terms, if no header is given (or, for `brNS`, if the header does not contain `"⇐"`), then at least one `BODY` term in it *must* contain one of the tokens on, and not above, the corresponding row. Otherwise the syntax would be ambiguous, since for example a simple `"{" BODY "}"` sequence could have any type.
