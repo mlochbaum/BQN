@@ -4,7 +4,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "˙˜˘¨⌜⁼´˝`"           # Modifier
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # Composition
   lf∾"⋄,"               # Separator
-  "←↩"                  # Gets
+  "⇐←↩"                 # Gets
   "(){}⟨⟩"              # Bracket
   "‿"                   # Ligature
   "·"                   # nOthing
@@ -111,7 +111,8 @@ Parse ← {r‿nv←𝕨
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
   "Parentheses can't contain separators" ! ¬∨´((⊑bB)⊸=/·«sep⊸=)gb/gx
   "Empty statement or expression" ! ∧´(4+⊑bB)=(1⊸«⊸∧1∾gb)/0∾gx
-  "Invalid assignment or stranding use" ! ∧´(r≤¯2)/r»⊸∧⟜«○(0⊸≤)r+p
+  r-↩(𝕩=⊑bG)>ec←«0≤r+p
+  "Invalid assignment or stranding use" ! ∧´((¯4⊸<∧≤⟜¯2)r)/ec∧»0≤r
   sr←»⌾(g⊸⊏)sl←«⊸∨r=¯2⋄cp←𝕩=1+⊑bB
   g⊏˜↩⍋g⊏sl
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sl∨r=¯1
@@ -123,6 +124,8 @@ Parse ← {r‿nv←𝕨
   H←¬1(∾/∾˜)c(∨/⊣)=
   sn←(0‿3‿4‿5+5+⊑bI)⍋𝕩⋄fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn
   "Special name outside of any block" ! 0=⊑fr
+  nf←(⊑bG)H𝕩
+  "Can't export from a non-immediate block" ! ∧´nf≤fr=0
   fsc←(ft⊏0‿2‿3)+3×fx
   pt←cp∧ns←¬sl∨sr
   r↩sl-˜ns×(1↓fr)⌾((b⊏rev)⊸⊏)r
@@ -132,15 +135,15 @@ Parse ← {r‿nv←𝕨
   r+↩pt×»ir
 
   id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
-  ad←𝕩(=>○IT⊣=1+⊢)⊑bG
+  ac←𝕩(IT∘M⊏-⟜⊑-(rev⊏¯4=r)˙)bG
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
-  a←r=¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps
+  a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧r=3
-  ma←tr<(𝕩=1+⊑bG)∧«ir≥1
-  os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+/a
+  ma←tr<(𝕩=2+⊑bG)∧«ir≥1
+  os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r
   "Role of the two sides in assignment must match" ! (at⊏er)≡ar←at⊏r
   "Function or modifier assignment to a non-name" ! ∧´(ar=0)∨(at⊏g)⊏idm
   aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
@@ -153,21 +156,22 @@ Parse ← {r‿nv←𝕨
   ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
   dr←/ls<s⋄rt←/fo
 
-  d←id⊏dec←idm∧ad∧asn⋄lc←-⟜»(c∾1)/+`dec∾0
-  ixf←(⊏⟜(¯1∾c/gf)∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
+  d←id⊏dec←idm∧asn∧(ac<2)>ax←ac<0⋄ix←id⊏ax
+  ixf←((ix+⊏⟜(¯1∾c/gf))∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
   "Multiple definitions" ! 1∧´ixx∨○(»⊸≠((≠id)⊸≤⊸/ig)⊏⊢)ixf
   ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
   d⊏˜↩ig⋄ErrUndeclared∘/˜⍟(0∨´⊢)⟜(d<»⊸≠)ig⊏idx
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id
-  ii←(ui⊏(fi⊏fsc)-c⊸T⊸¬+`dec)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv
+  lc←(1«c)/dn←c(⊢-T)+`dec
+  ii←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv
   idor←∾3⥊<is←id∾sp
   idbc←⟨21+is⊏asn,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
 
   b⊏↩gi
-  or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,dr,l,l,si,si,at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
+  or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,dr,l,l,si,si,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨b,1+↕≠b,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
-               (11-⊑bG)+a/ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
+               11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
   bcl‿el←LEB bc∾25
   ⟨bcl,u,⟨ft,¬fx,el/˜1∾or≥bc-○≠rt,lc+fsc⟩⟩
 }
