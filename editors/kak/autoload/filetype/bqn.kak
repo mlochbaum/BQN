@@ -27,7 +27,7 @@ hook global WinSetOption filetype=bqn %¹
         b='˜˘¨⁼⌜´˝7∞¯•×' ;b+='¬⎉⚇⍟◶⊘⎊⍎⍕⟨⟩√⋆'
         b+='⌽𝕨∊↑∧y⊔⊏⊐π←→';b+='↙𝕎⍷𝕣⍋YU⊑⊒⍳⊣⊢'
         b+='⍉𝕤↕𝕗𝕘⊸∘○⟜⋄\' ;b+='↖𝕊D𝔽𝔾«J⌾»·˙|'
-        b+='⥊𝕩↓∨⌊n≡∾≍≠'  ;b+='Z𝕏C⍒⌈N≢≤≥?'
+        b+='⥊𝕩↓∨⌊n≡∾≍≠'  ;b+='Z𝕏C⍒⌈N≢≤≥⇐'
 
         for (( i=0; i<${#a}; i++ )); do
             o=${b:$i:1}
@@ -63,7 +63,7 @@ add-highlighter shared/bqn/code/ regex "[⋄,]" 0:meta
 add-highlighter shared/bqn/code/ regex "[⟨⟩\[\]‿]" 0:magenta
 add-highlighter shared/bqn/code/ regex "[()]" 0:bright-black
 add-highlighter shared/bqn/code/ regex "[:;]" 0:bright-black
-add-highlighter shared/bqn/code/ regex "[←↩→]" 0:normal
+add-highlighter shared/bqn/code/ regex "[←⇐↩→]" 0:normal
 add-highlighter shared/bqn/code/ regex "·" 0:value
 add-highlighter shared/bqn/code/ regex "@" 0:string
 add-highlighter shared/bqn/code/ regex "(?<![A-Z_a-z0-9π∞¯])¯?((\d+\.)?\d+(e¯?\d+)?|π|∞)(i¯?((\d+\.)?\d+(e¯?\d+)?|π|∞))?" 0:value
