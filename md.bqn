@@ -396,21 +396,23 @@ Markdown ← {filename𝕊𝕩:
     # Find matched-depth [] and () pairs, then join adjacent ones
     brak ← (unused ∧ 𝕩⊸=)¨ "[]"≍"()"
     FindPairs ← { # 𝕩 is open‿close masks
-      # Open and close should have the same depth, so shift close right
-      depth ← +`∘-⟜»´ 𝕩
-      # Get indices from masks
-      ind ← ∾ inds ← /¨ 𝕩
-      # Depth, index, and type for each bracket.
-      # Sort by those attributes in the given order.
-      # At a given depth, open and closed brackets have to alternate, so
-      # now we just have to filter out the unmatched ones, that is,
-      # leading close brackets and trailing open brackets at each depth.
-      d‿i‿t ← <˘ ∧⌾⍉ > ⟨ind⊏depth, ind, /≠¨inds⟩
-      # Preceded/followed by same-depth bracket
-      p ← » f ← ∞⊸«⊸= d
-      # Open brackets (0) must be followed, closed ones (1) preceded
-      hasPair ← (f∧0=t) ∨ (p∧1=t)
-      ∘‿2 ⥊ hasPair / i
+      ind ← / ∨´ 𝕩     # Indices of all brackets
+      open ← ind ⊏ ⊑𝕩  # Is a given bracket open?
+      # The natural bracketing depth is one higher for open brackets
+      # than closed ones. For ordering, adjust it to be the same by
+      # subtracting one from open brackets.
+      depth ← +` open-¬open
+      order ← ⍋ depth-open
+      # A balanced pair is an open bracket and the next closed bracket
+      # at the same depth. After ordering by ascending adjusted depth,
+      # the natural depth, which is equal to the adjusted depth plus one
+      # at each open bracket, can only decrease between two values if
+      # they have the same depth and the first is open but the second
+      # is closed: that is, if they form a balanced pair. ⊑⊸»⊸> gives a
+      # mask for the second part of each such pair and «⊸∨ extends it to
+      # the first as well.
+      hasPair ← «⊸∨ ⊑⊸»⊸> order⊏depth
+      ∘‿2 ⥊ hasPair / order⊏ind
     }
     JoinPairs ← {
       e←1+1⊏˘𝕨 ⋄ b←⊏˘𝕩  # Match end of 𝕨 (plus one) with beginning of 𝕩
