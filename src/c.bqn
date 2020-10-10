@@ -134,29 +134,23 @@ Parse ← {r‿nv←𝕨
   ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir
   r+↩pt×»ir
 
-  id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄idx←id⊏𝕩⋄sp←/𝕩 M bI
-  ac←𝕩(IT∘M⊏-⟜⊑-(rev⊏¯4=r)˙)bG
+  idx←𝕩⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄sp←/𝕩 M bI
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
+  ni←(1↓nf)/bk←b⊏gi
+  "Modules must be immediately assigned" ! (0<≠)◶1‿(r≠⊸>⟜(2+⌈´)◶0‿(∧´∘⥊¯3‿0‿¯1=∾⟜¯1⊏˜(1+↕3)+⌜⊢)⊢)ni
+  "Modules must be destructured" ! ¬∨´(⊏⟜idm>⊏⟜rev⊏sr˙)(ni+2)⊏g
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧r=3
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r
   "Role of the two sides in assignment must match" ! (at⊏er)≡ar←at⊏r
   "Function or modifier assignment to a non-name" ! ∧´(ar=0)∨(at⊏g)⊏idm
-  aa←g⊏asn←»+`gi⊏«⊸-(≠𝕩)↑/⁼at
-  ta←tr∧2(>∨|)ps(⊢-T)+`¬ro
-  fa←/(ta∨ro∨«⊸∨aa)<(r=1)∨»op
-  dy←fa⊏«(𝕩=⊑bO)<(tr∧r≥0)∨ro<r=0
-  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
-  cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
-  s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
-  ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
-  dr←/ls<s⋄rt←/fo
+  aa←×g⊏ac←»+`gi⊏«⊸-(1+af+(⊑bG)-˜ai⊏𝕩)⌾(at⊸⊏)0¨𝕩
 
-  d←id⊏dec←idm∧asn∧(ac<2)>ax←ac<0⋄ix←id⊏ax
+  d←id⊏dec←idm∧(1⊸<∧<⟜4)ac⋄ix←id⊏ax←ac=1
   ixf←((ix+⊏⟜(¯1∾c/gf))∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
   "Multiple definitions" ! 1∧´ixx∨○(»⊸≠((≠id)⊸≤⊸/ig)⊏⊢)ixf
@@ -166,11 +160,19 @@ Parse ← {r‿nv←𝕨
   lc←(1«c)/dn←c(⊢-T)+`dec
   ii←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv
   idor←∾3⥊<is←id∾sp
-  idbc←⟨21+is⊏asn,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
+  idbc←⟨21+0<is⊏ac,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
 
-  b⊏↩gi
-  or←⍋idor∾g⊏˜∾⟨cn,cn,b,b,dr,l,l,si,si,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
-  bc←or⊏∾idbc∾⟨0¨cn,ob,15¨b,1+↕≠b,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
+  ta←tr∧2(>∨|)ps(⊢-T)+`¬ro
+  fa←/(ta∨ro∨«⊸∨aa)<(r=1)∨»op
+  dy←fa⊏«(𝕩=⊑bO)<(tr∧r≥0)∨ro<r=0
+  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
+  cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
+  s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
+  ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
+  dr←/ls<s⋄rt←/fo
+
+  or←⍋idor∾g⊏˜∾⟨cn,cn,bk,bk,dr,l,l,si,si,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
+  bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
   bcl‿el←LEB bc∾25
   ⟨bcl,u,⟨ft,¬fx,el/˜1∾or≥bc-○≠rt,lc+fsc⟩⟩
