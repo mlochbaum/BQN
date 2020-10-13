@@ -20,6 +20,12 @@ The definition for an identifier is chosen from the potential definitions based 
 
 The definition of *program order* for identifier tokens follows the order of BQN [execution](evaluate.md). It corresponds to the order of a particular traversal of the abstract syntax tree for a program. To find the relative ordering of two identifiers in a program, we consider the highest-depth node that they both belong to; in this node they must occur in different components, or that component would be a higher-depth node containing both of them. In most nodes, the program order goes from right to left: components further to the left come earlier in program order. The exceptions are `PROGRAM`, `BODY`, `list`, `subject` (for stranding), and body case (`FCase`, `_mCase`, `_cCase_`, `FMain`, `_mMain`, `_cMain_`, `brSub`, `BrFunc`, `_brMod1`, and `_brMod2_`) nodes, in which program order goes in the opposite order, from left to right (some assignment target nodes also contain lists or strands, but their ordering is irrelevant because if two identifiers with the same name appear in such a list, then it can't be a definition).
 
+## Special names
+
+Special names such as `𝕩` or `𝕣` refer to variables, but have no definition and do not use scoping. Instead, they always refer to the immediately enclosing scope, and are defined automatically when the block is evaluated.
+
+The six special names are `𝕨𝕩𝕗𝕘𝕤𝕣`, and the tokens `𝕎𝕏𝔽𝔾𝕊`, `_𝕣`, and `_𝕣_` are alternate spellings of these names as described in the [tokenization rules](token.md). Special names may be modified with `↩` assignment but cannot appear as the target of other kinds of assignment. Two special names represent the same identifier if they are the same name and appear in the same body. The initial value these names have is defined by the [evaluation rules](evaluate.md); the grammar for blocks ensures that all special names used in a block will be defined (possibly as the special value `·` in the case of `𝕨`).
+
 ## Variables
 
 A *variable* is an entity that permits two operations: it can be *set* to a particular value, and its *value* can be obtained, resulting in the last value it was set to. When either operation is performed it is referred to as *accessing* the variable.
