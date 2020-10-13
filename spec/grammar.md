@@ -6,11 +6,11 @@ BQN's grammar is given below. Terms are defined in a [BNF](https://en.wikipedia.
 
 The symbols `s`, `F`, `_m`, and `_c_` are identifier tokens with subject, function, 1-modifier, and 2-modifier classes respectively. Similarly, `sl`, `Fl`, `_ml`, and `_cl_` refer to literals and primitives of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic classes are no longer used after parsing and cannot be inspected in a running program.
 
-A program is a list of statements. Almost all statements are expressions. Valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions. "Namespace statements", which import multiple values from a namespace block (immediate block containing `⇐`), also cannot be expressions. An extension to BQN to allow first-class namespaces would extend ordinary expressions so that `NS_STMT` would no longer be needed, as it would be a subset of `EXPR`.
+A program is a list of statements. Almost all statements are expressions. Valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions. "Namespace statements", which import multiple values from a namespace block (immediate block containing `⇐`), also cannot be expressions. An extension to BQN to allow first-class namespaces would extend ordinary expressions so that `IMPORT` would no longer be needed, as it would be a subset of `EXPR`.
 
     PROGRAM  = ⋄? ( ( STMT ⋄ )* STMT ⋄? )?
     STMT     = BSTMT | EXPORT
-    BSTMT    = EXPR | nothing | NS_STMT
+    BSTMT    = EXPR | nothing | IMPORT
     ⋄        = ( "⋄" | "," | \n )+
     EXPR     = subExpr | FuncExpr | _m1Expr | _m2Expr_
 
@@ -96,7 +96,7 @@ A braced block contains bodies, which are lists of statements, separated by semi
 
 A namespace block is very similar in grammar to an ordinary immediate block, but allows export declarations with `⇐`, either in place of the ordinary definition `←` or in the special `EXPORT` statement. The arrow `⇐` can also be placed in the header to mark a namespace block. Since the block returns all exported values and not the result of the last line, the last line does not need to be an expression.
 
-    NS_STMT  = nsLHS ASGN brNS
+    IMPORT   = nsLHS ASGN brNS
     NS_VAR   = ( lhs "⇐" )? LHS_NAME
     nsLHS    = LHS_NAME ( "‿" LHS_NAME )+
              | "⟨" ⋄? ( ( NS_VAR ⋄ )* NS_VAR ⋄? )? "⟩"
