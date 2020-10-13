@@ -97,7 +97,7 @@ A braced block contains bodies, which are lists of statements, separated by semi
 A namespace block is very similar in grammar to an ordinary immediate block, but allows export declarations with `⇐`, either in place of the ordinary definition `←` or in the special `EXPORT` statement. The arrow `⇐` can also be placed in the header to mark a namespace block. Since the block returns all exported values and not the result of the last line, the last line does not need to be an expression.
 
     NS_STMT  = nsLHS ASGN brNS
-    NS_VAR   = LHS_NAME ( ":" lhs )?
+    NS_VAR   = ( lhs "⇐" )? LHS_NAME
     nsLHS    = LHS_NAME ( "‿" LHS_NAME )+
              | "⟨" ⋄? ( ( NS_VAR ⋄ )* NS_VAR ⋄? )? "⟩"
     EXPORT   = ( LHS_NAME | lhsSub | lhsStr ) "⇐"
