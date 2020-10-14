@@ -138,7 +138,7 @@ Parse ← {r‿nv←𝕨
 
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
-  𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄si←/gr⊏sr>sl⋄l⊏↩⍋gs
+  𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
   ni←(1↓nf)/bk←b⊏gi
   "Modules must be immediately assigned" ! (0<≠)◶1‿(r≠⊸>⟜(2+⌈´)◶0‿(∧´∘⥊¯3‿0‿¯1=∾⟜¯1⊏˜(1+↕3)+⌜⊢)⊢)ni
   "Modules must be destructured" ! ¬∨´(⊏⟜idm>⊏⟜rev⊏sr˙)(ni+2)⊏g
@@ -168,11 +168,11 @@ Parse ← {r‿nv←𝕨
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
   cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
-  ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
+  ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
   dr←/ls<s⋄rt←/fo
 
-  or←⍋idor∾g⊏˜∾⟨cn,cn,bk,bk,dr,l,l,si,si,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
-  bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,14¨dr,3+l⊏aa,ll,3+si⊏aa,sll
+  or←⍋idor∾g⊏˜∾⟨cn,cn,bk,bk,dr,2/l,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
+  bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,14¨dr,⥊⍉(3+l⊏aa)≍ll
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
   bcl‿el←LEB bc∾25
   ⟨bcl,u,⟨ft,¬fx,el/˜1∾or≥bc-○≠rt,lc+fsc⟩⟩
