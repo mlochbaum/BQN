@@ -32,7 +32,7 @@ The starting index refers to the position where execution starts in order to eva
 
 ### LEB128
 
-Arguments for BQN bytecode are always natural numbers, encoded as a sequence of bytes using the unsigned [LEB128](https://en.wikipedia.org/wiki/LEB128) format. The environment only needs to decode this format and not encode it (encoding is done by `LEBv` in the compiler).
+Arguments for BQN bytecode are always natural numbers, encoded as a sequence of bytes using the unsigned [LEB128](https://en.wikipedia.org/wiki/LEB128) format. The environment only needs to decode this format and not encode it (encoding is done by `LEB` in the compiler).
 
 To read a number from the byte stream, read (unsigned) bytes from the stream in sequence, stopping when a byte less than 128 is found. Each byte contributes its lowest 7 bits to the number: the byte's value if it is less than 128, and its value minus 128 otherwise. Values are accumulated starting at the lowest-order bits. To accomplish this, begin with a multiplier of 1 (shift of 0). At each step, add the 7 bits read, times the multiplier, to a running total that starts at 0, then multiply the multiplier by 128 (or add 7 to the shift).
 
