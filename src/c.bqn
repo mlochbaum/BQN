@@ -139,28 +139,34 @@ Parse ← {r‿nv←𝕨
   g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
-  ni←(1↓nf)/bk←b⊏gi
-  "Modules must be immediately assigned" ! (0<≠)◶1‿(r≠⊸>⟜(2+⌈´)◶0‿(∧´∘⥊¯3‿0‿¯1=∾⟜¯1⊏˜(1+↕3)+⌜⊢)⊢)ni
-  "Modules must be destructured" ! ¬∨´(⊏⟜idm>⊏⟜rev⊏sr˙)(ni+2)⊏g
+  ni←1+(1↓nf)/bk←b⊏gi
+  "Modules must be immediately assigned" ! (0<≠)◶1‿(r≠⊸>⟜(1+⌈´)◶0‿(∧´∘⥊¯3‿0‿¯1=∾⟜¯1⊏˜(↕3)+⌜⊢)⊢)ni
+  "Modules must be destructured" ! ¬∨´(⊏⟜idm>⊏⟜rev⊏sr˙)(ni+1)⊏g
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧r=3
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r
   "Role of the two sides in assignment must match" ! (at⊏er)≡ar←at⊏r
   "Function or modifier assignment to a non-name" ! ∧´(ar=0)∨(at⊏g)⊏idm
-  aa←×g⊏ac←»+`gi⊏«⊸-(1+af+(⊑bG)-˜ai⊏𝕩)⌾(at⊸⊏)0¨𝕩
+  aa←×g⊏ac←»+`gi⊏«⊸-(1+af+(ai∊ni)+2×(⊑bG)-˜ai⊏𝕩)⌾(at⊸⊏)0¨𝕩
 
-  d←id⊏dec←idm∧(1⊸<∧<⟜4)ac⋄ix←id⊏ax←ac=1
-  ixf←((ix+⊏⟜(¯1∾c/gf))∾d⊸/⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
+  ip←id⊏ac⋄d←ip M 2‿4⋄zic←0¨ic←id/˜icf←2(<∧|)ip
+  il←ic⊏+`bv<0⋄ex←il⊏(/∾≠)c
+  ixf←(((1=ip)+⊏⟜(¯1∾c/gf))∾(il∾d⊸/)⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
+  d∾↩zic⋄idx∾↩icf/idx
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
-  "Multiple definitions" ! 1∧´ixx∨○(»⊸≠((≠id)⊸≤⊸/ig)⊏⊢)ixf
-  ig↩<⟜(≠id)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
-  d⊏˜↩ig⋄ErrUndeclared∘/˜⍟(0∨´⊢)⟜(d<»⊸≠)ig⊏idx
-  ui←(IT d)⊸⊏⌾(ig⊸⊏)id
-  lc←(1«c)/dn←c(⊢-T)+`dec
+  "Multiple definitions" ! ∧´ixx∨○(»⊸≠((≠d)⊸≤⊸/ig)⊸⊏)ixf
+  ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
+  d⊏˜↩ig⋄idx⊏˜↩ig
+  ErrUndeclared∘/⟜idx⍟(∨´)d<»⊸≠idx
+  "Imports must have been exported" ! ∧´2>-⟜»(d∨×)⊸/ig⊏(ip M 1‿3)∾2¨ic
+  ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex
+  lc←(1«c)/dn←c(⊢-T)+`idm∧ac M 2‿4
   ii←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv
-  idor←∾3⥊<is←id∾sp
-  idbc←⟨21+0<is⊏ac,(id-○(⊏⟜fd)ui)∾0¨sp,ii⟩
+  ib←⟨21+0<ip∾zic∾sp⊏ac,(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp,ii⟩
+  ed←/¯1⊸»⊸<ex
+  idor←∾¯1⌽1‿3/⟨3/id∾ex∾sp,ed⊏ex⟩
+  idbc←¯1⌽⟨⥊⍉>ib,3¨ed,ex≠⊸(«-⊢)ed,14¨ed⟩
 
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro
   fa←/(ta∨ro∨«⊸∨aa)<(r=1)∨»op
