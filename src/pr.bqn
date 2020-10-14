@@ -26,6 +26,7 @@ Inc ← {
 # Required functionality passed in as an argument
 def ← ⟨"IsArray","Type","Log","GroupLen","GroupOrd"⟩
 keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘"
+len ⇐ def+○≠keep
 ki ← chr⊐keep
 kt ← (+`nc)(∾((≠def)∾¯1↓⊣)+⊔⟜⊒∘⍋)ki
 names ↩ (⥊¨kt⊏chr)⌾(ki⊸⊏)names
@@ -43,5 +44,4 @@ E_redef ← { # handles [fmd] [←↩]
   (E_proc 1↑𝕩) ∾ "←" ∾ tail
 }
 
-ref ← ∾∾⟜(@+10)¨ E_isdef◶E_proc‿E_redef¨ impl∾<"⟨"∾"⟩"∾˜1↓⥊","⊸∾˘chr
-⟨ref, def+○≠keep⟩
+ref ⇐ ∾∾⟜(@+10)¨ E_isdef◶E_proc‿E_redef¨ impl∾<"⟨"∾"⟩"∾˜1↓⥊","⊸∾˘chr

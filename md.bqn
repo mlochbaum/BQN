@@ -173,7 +173,7 @@ blobURL ← repoURL∾"/blob/master/"
 
 # Environments
 _getCodeExec ← {𝕗⋄⍎}
-_getSvgExec ← {𝕗⋄⟨•path∾"svg.bqn","⍎"⟩ •EX •path∾"dzref"}
+_getSvgExec ← {𝕗⋄⟨•path∾"svg.bqn","⍎"⟩ •Import •path∾"dzref"}
 
 
 ################################
@@ -632,7 +632,7 @@ GetMultiHighlights ← {
 ################################
 # Format an array to a character matrix
 # Won't work on functions until we can catch errors
-fmtm ← ⟨•path∾"src/fmt.bqn"⟩ •EX •path∾"dzref"
+fmtm ← ⟨•path∾"src/fmt.bqn"⟩ •Import •path∾"dzref"
 Fmt ← ⍕ _fmtm
 
 

@@ -4,15 +4,15 @@
 # multiple bodies, and use variable names instead of counts.
 # Rearrange and make up some names so the bytecode can be run.
 
-compile ← •EX •path∾"src/c.bqn"
-prims ← (•EX •path∾"dzref"){𝔽} "⟨
+compile ← •Import •path∾"src/c.bqn"
+prims ← (•Import •path∾"dzref"){𝔽} "⟨
   +,-,×,÷,⋆,√,⌊,⌈,|,¬,∧,∨,<,>,≠,=,≤,≥,≡,≢,⊣,⊢,⥊,∾,≍,↑,↓,↕,«,»,⌽,⍉,/,⍋,⍒,⊏,⊑,⊐,⊒,∊,⍷,⊔,!
   ˙,˜,˘,¨,⌜,⁼,´,˝,`
   ∘,○,⊸,⟜,⌾,⊘,◶,⎉,⚇,⍟
 ⟩"
 
 special←<˘∘‿2⥊"𝕤𝕩𝕨𝕣𝕗𝕘"
-DCompile←{
+DCompile⇐{
   ⟨bc,o,fblk⟩ ← prims Compile 𝕩
   blk‿bdy ← <˘⍉>(↕≠fblk){
     ⟨t,i,l,n⟩←𝕩
@@ -21,4 +21,4 @@ DCompile←{
   }¨fblk
   ⟨bc,o,blk,bdy⟩
 }
-DRun←•COMP∘DCompile
+DRun⇐•COMP∘DCompile
