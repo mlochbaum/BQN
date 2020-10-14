@@ -1,3 +1,3 @@
 #! /usr/bin/env dbqn
 
-((<•path∾"wc.bqn")∾•args) •EX •path∾"dzref"
+((<•path∾"wc.bqn")∾•args) •Import •path∾"dzref"
