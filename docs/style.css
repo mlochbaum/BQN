@@ -50,9 +50,12 @@ pre, code, textarea, .kb {
   border: 1px solid #bdcac4;
   letter-spacing: 0.2;
 }
-.code {
+.code, .codeCover {
   fill: #e3e7e7;
   stroke: #bdcac4;
+}
+.codeCover {
+  stroke: #e3e7e7;
 }
 code {
   padding: 0.15em 0.1em 0.05em;
@@ -123,7 +126,8 @@ a:visited     { color: #3d155f; }
   input       { border-color: #0c0d0e; }
   textarea, pre, code      { color: #969698; background-color: #0c0d0e; }
   textarea, pre, code, .kb { border-color: #040509; }
-  .code       { fill: #0c0d0e; stroke: #040509; }
+  .code, .codeCover { fill: #0c0d0e; stroke: #040509; }
+  .codeCover  { stroke: #0c0d0e; }
   code        { border-color: #0c0d0e; background-color: #0f1011; }
   table td, th{ border-color: #636967; }
   table th    { border-color: #88918c; background-color: #292a2b; }

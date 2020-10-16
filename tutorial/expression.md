@@ -57,10 +57,9 @@ For a longer example, here's an expression for the [volume of a sphere](https://
 
 The evaluation order is shown below, with the function `⋆` on the first line evaluated first, then `×` on the next, and so on. The effect of the parentheses is that `÷` is evaluated before the leftmost `×`.
 
-     =              2⋆3
-                π ×
-         4÷3
-        (   ) ×
+<!--SVG evalexp.bqn
+DrawEval "(4÷3) × π × 2⋆3"
+-->
 
 The following rule might help you to internalize this system in addition to identifying when parentheses are needed: an expression never needs to end with a parenthesis, or contain two closing parentheses in a row. If it does, at least one set of parentheses can be removed.
 
