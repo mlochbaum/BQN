@@ -1,8 +1,8 @@
 lf←@+10
 charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
-  "˙˜˘¨⌜⁼´˝`"           # Modifier
-  "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # Composition
+  "˙˜˘¨⌜⁼´˝`"           # 1-modifier
+  "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # 2-modifier
   lf∾"⋄,"               # Separator
   "⇐←↩"                 # Gets
   "(){}⟨⟩"              # Bracket
@@ -16,7 +16,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   (¯1↓"𝕨")∾" "∾@+9      # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
-bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
+bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑  # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
 # CharCode converts characters to numbers, mostly the same as tokens
