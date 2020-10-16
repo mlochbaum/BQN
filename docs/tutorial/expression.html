@@ -112,6 +112,56 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKImjMgKyAyw5fiiJoyKSAtIDEr4oiaMg==&run">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>√</span><span class='Number'>3</span> <span class='Function'>+</span> <span class='Number'>2</span><span class='Function'>×√</span><span class='Number'>2</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Number'>1</span><span class='Function'>+√</span><span class='Number'>2</span>
 0
 </pre>
+<p>That's a fairly large expression, so here's another evaluation diagram to check your understanding.</p>
+<svg viewBox='-159.25 -34 512 210'>
+  <g font-family='BQN,monospace' font-size='18px'>
+    <rect class='code' stroke-width='1' rx='10' x='-21.5' y='-24' width='236.5' height='190'/>
+    <text><tspan class='Paren'>(</tspan><tspan class='Function'>√</tspan><tspan class='Number'>3</tspan> <tspan class='Function'>+</tspan> <tspan class='Number'>2</tspan><tspan class='Function'>×√</tspan><tspan class='Number'>2</tspan><tspan class='Paren'>)</tspan> <tspan class='Function'>-</tspan> <tspan class='Number'>1</tspan><tspan class='Function'>+√</tspan><tspan class='Number'>2</tspan></text>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M17.2 115.9v19h118.25'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M27.95 1.9v95h21.5'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M49.45 96.9v19h-32.25'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M70.95 1.9v76h10.75'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M81.7 77.9v19h-32.25'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M92.45 58.9v19h-10.75'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M103.2 1.9v57h-10.75'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M135.45 134.9v19h-142.437'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M156.95 1.9v38h10.75'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M167.7 39.9v95h-32.25'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M178.45 20.9v19h-10.75'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M189.2 1.9v19h-10.75'/>
+    <g text-anchor='middle'>
+      <g class='codeCover' stroke-width='6' stroke-linejoin='round'>
+        <text x='17.125' y='123'>√</text>
+        <text x='27.875' y='104'>3</text>
+        <text x='49.375' y='104'>+</text>
+        <text x='70.875' y='85'>2</text>
+        <text x='81.625' y='85'>×</text>
+        <text x='92.375' y='66'>√</text>
+        <text x='103.125' y='66'>2</text>
+        <text x='135.375' y='142'>-</text>
+        <text x='156.875' y='47'>1</text>
+        <text x='167.625' y='47'>+</text>
+        <text x='178.375' y='28'>√</text>
+        <text x='189.125' y='28'>2</text>
+      </g>
+      <g font-size='15px' opacity='0.9'>
+        <text x='17.125' y='121'><tspan class='Function'>√</tspan></text>
+        <text x='27.875' y='102'><tspan class='Number'>3</tspan></text>
+        <text x='49.375' y='102'><tspan class='Function'>+</tspan></text>
+        <text x='70.875' y='83'><tspan class='Number'>2</tspan></text>
+        <text x='81.625' y='83'><tspan class='Function'>×</tspan></text>
+        <text x='92.375' y='64'><tspan class='Function'>√</tspan></text>
+        <text x='103.125' y='64'><tspan class='Number'>2</tspan></text>
+        <text x='135.375' y='140'><tspan class='Function'>-</tspan></text>
+        <text x='156.875' y='45'><tspan class='Number'>1</tspan></text>
+        <text x='167.625' y='45'><tspan class='Function'>+</tspan></text>
+        <text x='178.375' y='26'><tspan class='Function'>√</tspan></text>
+        <text x='189.125' y='26'><tspan class='Number'>2</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
+
 <p>But wait: how do we know that <code><span class='Function'>√</span></code> in the expressions above uses the one-argument form? Remember that it can also take a left argument. For that matter, how do we know that <code><span class='Function'>-</span></code> takes two arguments and not just one? Maybe this looks trivial now that we are just doing arithmetic, and a good enough answer for right now is that a function is called with one argument if there is nothing to its left, or another function, and with two arguments otherwise. But it gets more complicated as we expand the syntax with expressions that can return functions and so on, so it's never to early to start looking at a more rigorous viewpoint. In BQN, the way expressions are evaluated—the sequence of function calls and other operations—is determined by the <em>syntactic role</em> of the things it contains. A few rules of roles make sense of what's seen so far:</p>
 <ul>
 <li><em>Numeric literals</em> such as <code><span class='Number'>1</span></code> and <code><span class='Number'>π</span></code> are <em>subjects</em>.</li>

@@ -74,6 +74,13 @@ They are the same, and now you can't say that BQN is the most complicated thing 
 
         (√3 + 2×√2) - 1+√2
 
+That's a fairly large expression, so here's another evaluation diagram to check your understanding.
+
+<!--SVG
+wh↩19⌾(¯1⊸⊑)wh
+DrawEval "(√3 + 2×√2) - 1+√2"
+-->
+
 But wait: how do we know that `√` in the expressions above uses the one-argument form? Remember that it can also take a left argument. For that matter, how do we know that `-` takes two arguments and not just one? Maybe this looks trivial now that we are just doing arithmetic, and a good enough answer for right now is that a function is called with one argument if there is nothing to its left, or another function, and with two arguments otherwise. But it gets more complicated as we expand the syntax with expressions that can return functions and so on, so it's never to early to start looking at a more rigorous viewpoint. In BQN, the way expressions are evaluated—the sequence of function calls and other operations—is determined by the *syntactic role* of the things it contains. A few rules of roles make sense of what's seen so far:
 
 * *Numeric literals* such as `1` and `π` are *subjects*.
