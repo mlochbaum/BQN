@@ -6,15 +6,15 @@ Pnt ← 32‿57×⌽
 comps ← "∘○˙⊸⟜˜"
 names ← (¬×+`)⊸-∘=⟜' '⊸⊔ "Atop Over Constant Before After Self/Swap"
 
-ps ← >⟨"class"‿"yellow","style"‿"fill:none","stroke-width"‿"2"⟩
-_trans ← {(𝕗∾" transform='translate(")∾(⊣∾","∾⊢)○FmtNum∾")'"˙}
-Groups ← "g font-size='20px' text-anchor='middle'"_trans˜⌜
+ps ← At "class=yellow|style=fill:none|stroke-width=2"
+_trans ← {𝕗 At "transform=translate("∾(⊣∾","∾⊢)○FmtNum∾")"˙}
+Groups ← ("g"At"font-size=20px|text-anchor=middle")_trans˜⌜
 
-rc ← >⟨"class"‿"code","stroke-width"‿"1","rx"‿"12"⟩
+rc ← At "class=code|stroke-width=1|rx=12"
 rc ∾↩ (Pos⟨¯0.43×w,1⟩)∾"width"‿"height"≍˘FmtNum¨⟨0.86×w,h-55⟩
-cc ← >⟨"r"‿"12","class"‿"code","stroke-width"‿"0"⟩
+cc ← At "r=12|class=code|stroke-width=0"
 n ← Text∘‿2⥊⟨"y",FmtNum h-37, "fill","currentColor"⟩
-case ← (¯1‿1×w÷4.6) "g font-size='21px' font-family='monospace'"_trans¨ 25
+case ← (¯1‿1×w÷4.6) ("g"At"font-size=21px|font-family=monospace")_trans¨ 25
 lt← Text∘‿2⥊⟨"y",FmtNum h-105, "font-size","19px"⟩
 
 FromPath ← ≠≍+´
