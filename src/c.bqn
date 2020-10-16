@@ -3,7 +3,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
   "˙˜˘¨⌜⁼´˝`"           # 1-modifier
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # 2-modifier
-  lf∾"⋄,"               # Separator
+  "⋄,"∾lf               # Separator
   "⇐←↩"                 # Gets
   "(){}⟨⟩"              # Bracket
   "‿"                   # Ligature
