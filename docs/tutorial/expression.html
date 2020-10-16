@@ -60,11 +60,46 @@
 33.5103216382911
 </pre>
 <p>The evaluation order is shown below, with the function <code><span class='Function'>⋆</span></code> on the first line evaluated first, then <code><span class='Function'>×</span></code> on the next, and so on. The effect of the parentheses is that <code><span class='Function'>÷</span></code> is evaluated before the leftmost <code><span class='Function'>×</span></code>.</p>
-<pre> <span class='Function'>=</span>              <span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>3</span>
-            <span class='Number'>π</span> <span class='Function'>×</span>
-     <span class='Number'>4</span><span class='Function'>÷</span><span class='Number'>3</span>
-    <span class='Paren'>(</span>   <span class='Paren'>)</span> <span class='Function'>×</span>
-</pre>
+<svg viewBox='-175.375 -34 512 188'>
+  <g font-family='BQN,monospace' font-size='18px'>
+    <rect class='code' stroke-width='1' rx='10' x='-21.5' y='-24' width='204.25' height='168'/>
+    <text><tspan class='Paren'>(</tspan><tspan class='Number'>4</tspan><tspan class='Function'>÷</tspan><tspan class='Number'>3</tspan><tspan class='Paren'>)</tspan> <tspan class='Function'>×</tspan> <tspan class='Number'>π</tspan> <tspan class='Function'>×</tspan> <tspan class='Number'>2</tspan><tspan class='Function'>⋆</tspan><tspan class='Number'>3</tspan></text>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M17.2 2.4v72h10.75'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M27.95 74.4v24h43'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M38.7 2.4v72h-10.75'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M70.95 98.4v24h-77.938'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M92.45 2.4v48h21.5'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M113.95 50.4v48h-43'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M135.45 2.4v24h10.75'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M146.2 26.4v24h-32.25'/>
+    <path class='Paren' stroke='currentColor' fill='none' stroke-width='1' d='M156.95 2.4v24h-10.75'/>
+    <g text-anchor='middle'>
+      <g class='codeCover' stroke-width='6' stroke-linejoin='round'>
+        <text x='17.125' y='81'>4</text>
+        <text x='27.875' y='81'>÷</text>
+        <text x='38.625' y='81'>3</text>
+        <text x='70.875' y='105'>×</text>
+        <text x='92.375' y='57'>π</text>
+        <text x='113.875' y='57'>×</text>
+        <text x='135.375' y='33'>2</text>
+        <text x='146.125' y='33'>⋆</text>
+        <text x='156.875' y='33'>3</text>
+      </g>
+      <g font-size='15px' opacity='0.9'>
+        <text x='17.125' y='79'><tspan class='Number'>4</tspan></text>
+        <text x='27.875' y='79'><tspan class='Function'>÷</tspan></text>
+        <text x='38.625' y='79'><tspan class='Number'>3</tspan></text>
+        <text x='70.875' y='103'><tspan class='Function'>×</tspan></text>
+        <text x='92.375' y='55'><tspan class='Number'>π</tspan></text>
+        <text x='113.875' y='55'><tspan class='Function'>×</tspan></text>
+        <text x='135.375' y='31'><tspan class='Number'>2</tspan></text>
+        <text x='146.125' y='31'><tspan class='Function'>⋆</tspan></text>
+        <text x='156.875' y='31'><tspan class='Number'>3</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
+
 <p>The following rule might help you to internalize this system in addition to identifying when parentheses are needed: an expression never needs to end with a parenthesis, or contain two closing parentheses in a row. If it does, at least one set of parentheses can be removed.</p>
 <h2 id="one-or-two-arguments">One or two arguments?</h2>
 <p>What about functions without a left argument? Let's find an equation with lots of square roots in it… <a href="https://en.wikipedia.org/wiki/Nested_radical#Denesting">looks good</a>.</p>
