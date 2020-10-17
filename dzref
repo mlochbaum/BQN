@@ -115,9 +115,12 @@ _withRef ← ˙
   lf ← @+10
   pre ← E_isdef◶E_proc‿E_redef¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
   ExecFile←{
-    path ← "dot_path←" ∾ '"' (⊣∾⊣∾˜(1+=)/⊢) (∨`⌾⌽'/'=𝕩)/𝕩
-    src ← "•path"•_r_"dot_path"∘E_proc¨ •LNS 𝕩
-    Raw ∾ ∾⟜lf¨ path <⊸∾ src
+#   path ← "dot_path←" ∾ '"' (⊣∾⊣∾˜(1+=)/⊢) (∨`⌾⌽'/'=𝕩)/𝕩
+#   src ← "•path"•_r_"dot_path"∘E_proc¨ •LNS 𝕩
+#   Raw ∾ ∾⟜lf¨ path <⊸∾ src
+    #path ← "dot_path←" ∾ '"' (⊣∾⊣∾˜(1+=)/⊢) (∨`⌾⌽'/'=𝕩)/𝕩
+    src ← E_proc¨ •LNS 𝕩 # "•path"•_r_"dot_path"∘
+    ⟨⟨⟩,"",(∨`⌾⌽'/'=𝕩)/𝕩⟩ Raw ∾ ∾⟜lf¨ src
   }
   X↩Raw∘E_proc
   _withRef ↩ {𝕗∘E_proc}
