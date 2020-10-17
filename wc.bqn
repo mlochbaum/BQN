@@ -3,7 +3,7 @@
 # WebAssembly backend (very incomplete)
 
 i←"⟨cgl,charSet,Tokenize⟩"
-⟨cgl,charSet,Tokenize⟩ ← ⟨•path∾"src/c.bqn",i⟩ •Import •path∾"dzref"
+⟨cgl,charSet,Tokenize⟩ ← ⟨•path∾"src/c.bqn",i⟩ •Import "dzref"
 chF←(⊑cgl)↑charSet
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
