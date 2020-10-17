@@ -173,7 +173,7 @@ blobURL ← repoURL∾"/blob/master/"
 
 # Environments
 _getCodeExec ← {𝕗⋄⍎}
-_getSvgExec ← {𝕗⋄⟨•path∾"svg.bqn","⍎"⟩ •Import •path∾"dzref"}
+_getSvgExec ← {𝕗⋄⟨"svg.bqn","⍎"⟩ •Import "dzref"}
 
 
 ################################
@@ -319,7 +319,7 @@ Markdown ← {filename𝕊𝕩:
   useRepl←0 ⋄ GetRepl ← {𝕩⋄ useRepl↩1 ⋄ repl}
   ProcComment ← ⟨"<!--REPL-->"⟩⊸≢◶GetRepl‿{
     n←≠s←"<!--SVG" ⋄ l←¯3↓⍟(1=≠𝕩)⊑𝕩 ⋄ a←s≡n↑l
-    Source ← {((0<≠)◶<‿(•LNS •path∾path∾⊢) Trim n↓l) ∾ 1↓¯1↓𝕩}
+    Source ← {((0<≠)◶<‿(•LNS path∾⊢) Trim n↓l) ∾ 1↓¯1↓𝕩}
     SvgExec⍟a JoinLines Source⍟a 𝕩
   }
   ProcHtml ← {
@@ -519,7 +519,7 @@ Markdown ← {filename𝕊𝕩:
 # Uses the test cases at https://spec.commonmark.org/0.29/spec.json
 # since Github doesn't seem to have published theirs
 TestSections ← {
-  tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊2↓•LNS •path∾"spec.json"
+  tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊ 2↓•LNS"spec.json"
   tests ↩ ((⊑2+⊐⟜':')¨∘⊏ ((-','=¯1⊑⊢)↓↓)¨⎉1 ⊢) tests
   testSection ← (1↓¯1↓⊢)¨ 5⊏˘tests
   UnEscape ← {
@@ -632,7 +632,7 @@ GetMultiHighlights ← {
 ################################
 # Format an array to a character matrix
 # Won't work on functions until we can catch errors
-fmtm ← ⟨•path∾"src/fmt.bqn"⟩ •Import •path∾"dzref"
+fmtm ← ⟨"src/fmt.bqn"⟩ •Import "dzref"
 Fmt ← ⍕ _fmtm
 
 
@@ -646,7 +646,7 @@ ConvertFile ← {
   fileout ← ".html" ∾˜ (¯6⊸↓∾"index"˙)⍟("README"⊸MatchEnd) ¯3↓𝕩
 
   # Contents of file to convert
-  md ← •LNS •path∾𝕩
+  md ← •LNS 𝕩
   # Verify and remove the html link line: the output *is* the html file.
   ! ("*View this file"⊸MatchStart ∧ (siteURL∾fileout∾").*")⊸MatchEnd) ⊑md
   out ← 𝕩 Markdown 2↓md

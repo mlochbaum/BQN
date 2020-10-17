@@ -2,9 +2,9 @@
 
 # Compile and run the primitive implementations, and prim.bqn
 
-impl ← •LNS •path∾"../src/r.bqn"
+impl ← •LNS "../src/r.bqn"
 
-⟨DRun⟩ ← •Import •path∾"../dc.bqn"
+⟨DRun⟩ ← •Import "../dc.bqn"
 
 chrs←⟨
   "!+-×÷⋆√⌊⌈∧∨¬|=≠≤<>≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔"
@@ -55,6 +55,6 @@ E_redef ← { # handles [fmd] [←↩]
 }
 
 pre ∾↩ E_isdef◶E_proc‿E_redef¨ impl
-t ← (¬∘⊑':'∊⊢)¨⊸/ 3⊸↓⌾(3⊸⊑) •LNS •path∾"prim.bqn"
+t ← (¬∘⊑':'∊⊢)¨⊸/ 3⊸↓⌾(3⊸⊑) •LNS "prim.bqn"
 res ← DRun ∾ ∾⟜(@+10)¨ pre ∾ E_proc¨ t
 • ← ("All "∾(⍕≠res)∾" passed!")⍟(0=≠) /res
