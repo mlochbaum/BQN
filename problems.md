@@ -12,9 +12,6 @@ A pretty fundamental problem with dynamically-typed array languages. Prototypes 
 ### Incoherent monad-dyad builtin pairs
 BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason (that is, both function valences match the symbol but they don't match with each other). I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved.
 
-### Control flow substitutes have awkward syntax
-At the moment BQN has no control structures, instead preferring modifiers, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. Given that blocks without headers also end up with an unexpected type if you don't use the inputs, it's safe to say BQN isn't great for imperative programming overall. But that's a big loss, and it's very much worth fixing if it can be done with something like a single control structure that conditionally or repeatedly executes an immediate block.
-
 ### Glyphs are hard to type
 There's been a lot of work done on this. Still there, still a problem. On the other hand, glyphs are easy to read, and write by hand!
 
@@ -29,6 +26,9 @@ There are a lot of standard functions and I don't want to use separate primitive
 
 ### Right-to-left multi-line functions go upwards
 If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
+
+### Control flow substitutes have awkward syntax
+At the moment BQN has no control structures, instead preferring modifiers, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. However, predefined functions acting on functions can cover a lot of ground for the imperative programmer; see [Control flow in BQN](doc/control.md).
 
 ### Hard to search part of an array or in a different order
 This includes index-of-last, and searching starting at a particular index, when the desired result indices are to the array to be seached *before* it is modified. Given indices `i` into an array `𝕨` (for example `⌽↕≠𝕨` or `a+↕b`), this section can be searched with `(i∾≠𝕨)⊏˜(i⊏𝕨)⊐𝕩`. But this is clunky and difficult for the implementation to optimize.
