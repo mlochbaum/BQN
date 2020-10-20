@@ -13,6 +13,7 @@ Concepts:
 - [Based array theory](based.md)
 - [Blocks](block.md) (including function and modifier definition)
 - [Context-free grammar](context.md)
+- [Control flow](control.md)
 - [Functional programming](functional.md)
 - [Array indices](indices.md)
 - [The leading axis model](leading.md)
