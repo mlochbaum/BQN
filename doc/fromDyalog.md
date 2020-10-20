@@ -8,7 +8,7 @@ A few tables to help users of Dyalog APL (or similar) get started quickly on BQN
 
 ### Array model
 
-BQN uses the [based array model](based.md), so that a Dyalog's simple scalar corresponds to many BQN values: an atom, its enclose, and so on.
+BQN uses the [based array model](based.md), so that a Dyalog simple scalar corresponds to many BQN values: an atom, its enclose, and so on.
 
 | Dyalog        | BQN   |
 |---------------|-------|
