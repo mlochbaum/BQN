@@ -8,7 +8,61 @@ First, let's be clear about what the terms we're using mean. A language has *fir
 
 Traditionally, APL has worked around its lack of first-class functions with operators, that is, second-order functions. Arrays in APL are first class while functions are second class and operators are third class, and each class can act on the ones before it. However, the three-tier system has some obvious limitations that we'll discuss, and BQN removes these by making every type first class.
 
-The term *functional programming* is more contentious, and has many meanings some of which can be vague. Here I use it for what might be called *first-class functional programming*, programming that makes significant use of first-class functions; in this usage, Scheme is probably the archetypal functional programming language. However, two other definitions are also worth mentioning. APL is often called a functional programming language on the grounds that functions can be assigned and manipulated, and called recursively, all characteristics it shares with Lisp. I prefer the term *function-level programming* for this usage. A newer usage, which I call *pure functional programming*, restricts the term "function" to mathematical functions, which have no side effects, so that functional programming is programming with no side effects, often using monads to accumulate effects as part of arguments and results instead. Finally, *typed functional programming* is closely associated with pure functional programming and refers to statically-typed functional languages such as Haskell, F#, and Idris (the last of which even supports *dependently-typed functional programming*, but I already said "finally" so we'll stop there). Of these, BQN supports first-class functional and function-level programming, allows but doesn't encourage pure functional programming, and does not support typed functional programming, as it is dynamically and not statically typed.
+<!--SVG
+pl ← <˘∘‿2⥊⟨
+  "APL",        25‿47
+  "Pascal",     45‿12
+  "C",          36‿10
+  "Java",       48‿17
+  "Java 8",     37‿16
+  "C#",         40‿20
+  "Python",     28‿13
+  "Javascript", 23‿17
+  "Julia",      16‿22
+  "Lisp",       15‿28
+  "Scheme",     15‿31
+  "BQN",        16‿38
+  "Joy",        28‿42
+  "Rust",       36‿25
+  "F#",         28‿23
+  "Haskell",    30‿36.5
+  "Idris",      26‿30
+  "Coq",        26‿32
+⟩
+cat ← ⟨
+  ⟨"First-class",    0, ¯2, "bluegreen", 240, 252, 220, 190,   0⟩
+  ⟨"Function-level", 1, ¯2, "red",       220, 320, 130, 180, ¯34⟩
+  ⟨"Pure",           1,  3, "purple",    310, 360, 120,  90,  12⟩
+  ⟨"Typed",          0, ¯1, "green",     310, 290, 110,  95, ¯23⟩
+  ⟨"Dependently",    0,  1, "yellow",    260, 300,  45,  45,   0⟩
+⟩
+
+gr ← "g" At "font-size=18px|text-anchor=middle|fill=currentColor"
+Circ ← {
+  el ← At"style=fill-opacity:0.2;stroke-opacity:0.8|stroke-width=3"
+  txt← "text"At"font-size=16|stroke-width=0.4|dy=0.33em"
+  (n‿o‿l)‿⟨c⟩‿p‿r‿t ← 3‿1‿2‿2‿1 /⊸⊔ 𝕩
+  id ← "cat"∾𝕨
+  Fn ← ⊣∾"("∾Fmt∘⊢∾")"˙
+  tr ← ("translate"Fn p) ∾ 0⊸≠◶⟨"","rotate"⊸Fn⟩t
+  tp ← "textPath"Attr∘‿2⥊⟨"href","#"∾id,"startOffset","%"∾˜FmtNum 25+6×l⟩
+  Ell  ← ∾"maa"∾⟜Fmt¨0⌾(¯1⊸⊑)⊸{⟨-𝕨⟩∾(𝕩∾0‿1∾¬o)⊸∾¨2‿¯2×<𝕨}
+  Path ← "path" Elt ∾⟜("d"≍○<Ell∘+⟜r)
+  ("g"Attr"transform"‿tr≍"class"‿c) Enc ⟨
+    el Path 0
+    (∘‿2⥊⟨"style","display:none","id",id⟩) Path 9
+    (txt Attr"class"‿c) Enc tp Enc n
+  ⟩
+}
+
+0‿0‿512‿512 SVG gr Enc ∾⟨
+  ⥊<("text"Attr"font-size"‿"24"∾Pos 256‿38) Enc """Functional programming"""
+  ('0'+↕∘≠)⊸(Circ¨) cat
+  Enc˜⟜("text" Attr ·Pos 10⊸×)´¨ pl
+⟩
+-->
+
+The term *functional programming* is more contentious, and has many meanings some of which can be vague. Here I use it for what might be called *first-class functional programming*, programming that makes significant use of first-class functions; in this usage, Scheme is probably the archetypal functional programming language. However, other definitions are also worth mentioning. APL is often called a functional programming language on the grounds that functions can be assigned and manipulated, and called recursively, all characteristics it shares with Lisp. I prefer the term *function-level programming* for this usage. A newer usage, which I call *pure functional programming*, restricts the term "function" to mathematical functions, which have no side effects, so that functional programming is programming with no side effects, often using monads to accumulate effects as part of arguments and results instead. Finally, *typed functional programming* is closely associated with pure functional programming and refers to statically-typed functional languages such as Haskell, F#, and Idris (the last of which even supports *dependently-typed functional programming*, but I already said "finally" so we'll stop there). Of these, BQN supports first-class functional and function-level programming, allows but doesn't encourage pure functional programming, and does not support typed functional programming, as it is dynamically and not statically typed.
 
 Another topic we are interested in is *lexical scoping* and *closures*. Lexical scoping means that the realm in which a variable exists is determined by its containing context (in BQN, the surrounding set of curly braces `{}`, if any) within the source code. A closure is really an implementation mechanism, but it's often used to refer to a property of lexical scoping that appears when functions defined in a particular block can be accessed after the block finishes execution. For example, they might be returned from a function or assigned to a variable outside of that function's scope. In this case the functions can still access variables in the original scope. I consider this property to be a requirement for a correct lexical scoping implementation, but it's traditionally not a part of APL: implementation might not have lexical scoping (for example, J and I believe A+ use static scoping where functions can't access variables in containing scopes) or might cut off the scope once execution ends, leading to value errors that one wouldn't predict from the rules of lexical scoping.
 

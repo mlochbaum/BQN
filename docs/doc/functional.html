@@ -8,7 +8,56 @@
 <p>BQN boasts of its functional capabilities, including first-class functions. What sort of functional support does it have, and how can a BQN programmer exercise these and out themself as a Schemer at heart?</p>
 <p>First, let's be clear about what the terms we're using mean. A language has <em>first-class functions</em> when functions (however they are defined) can be used in all the same ways as &quot;ordinary&quot; values like numbers and so on, such as being passed as an argument or placed in a list. Lisp and JavaScript have first-class functions, C has unsafe first-class functions via function pointers, and Java and APL don't have them as functions can't be placed in lists or used as arguments. This doesn't mean every operation is supported on functions: for instance, numbers can be added, compared, and sorted; while functions could perhaps be added to give a train, comparing or sorting them as functions (not representations) isn't computable, and BQN doesn't support any of the three operations when passing functions as arguments.</p>
 <p>Traditionally, APL has worked around its lack of first-class functions with operators, that is, second-order functions. Arrays in APL are first class while functions are second class and operators are third class, and each class can act on the ones before it. However, the three-tier system has some obvious limitations that we'll discuss, and BQN removes these by making every type first class.</p>
-<p>The term <em>functional programming</em> is more contentious, and has many meanings some of which can be vague. Here I use it for what might be called <em>first-class functional programming</em>, programming that makes significant use of first-class functions; in this usage, Scheme is probably the archetypal functional programming language. However, two other definitions are also worth mentioning. APL is often called a functional programming language on the grounds that functions can be assigned and manipulated, and called recursively, all characteristics it shares with Lisp. I prefer the term <em>function-level programming</em> for this usage. A newer usage, which I call <em>pure functional programming</em>, restricts the term &quot;function&quot; to mathematical functions, which have no side effects, so that functional programming is programming with no side effects, often using monads to accumulate effects as part of arguments and results instead. Finally, <em>typed functional programming</em> is closely associated with pure functional programming and refers to statically-typed functional languages such as Haskell, F#, and Idris (the last of which even supports <em>dependently-typed functional programming</em>, but I already said &quot;finally&quot; so we'll stop there). Of these, BQN supports first-class functional and function-level programming, allows but doesn't encourage pure functional programming, and does not support typed functional programming, as it is dynamically and not statically typed.</p>
+<svg viewBox='0 0 512 512'>
+  <g font-size='18px' text-anchor='middle' fill='currentColor'>
+    <text font-size='24' x='256' y='38'>"Functional programming"</text>
+    <g transform='translate(240 252)' class='bluegreen'>
+      <path style='fill-opacity:0.2;stroke-opacity:0.8' stroke-width='3' d='m-220 -0a220 190 0 1 1 440 0a220 190 0 1 1 -440 0'/>
+      <path style='display:none' id='cat0' d='m-229 -0a229 199 0 1 1 458 0a229 199 0 1 1 -458 0'/>
+      <text font-size='16' stroke-width='0.4' dy='0.33em' class='bluegreen'><textPath href='#cat0' startOffset='13%'>First-class</textPath></text>
+    </g>
+    <g transform='translate(220 320)rotate(-34)' class='red'>
+      <path style='fill-opacity:0.2;stroke-opacity:0.8' stroke-width='3' d='m-130 -0a130 180 0 1 0 260 0a130 180 0 1 0 -260 0'/>
+      <path style='display:none' id='cat1' d='m-139 -0a139 189 0 1 0 278 0a139 189 0 1 0 -278 0'/>
+      <text font-size='16' stroke-width='0.4' dy='0.33em' class='red'><textPath href='#cat1' startOffset='13%'>Function-level</textPath></text>
+    </g>
+    <g transform='translate(310 360)rotate(12)' class='purple'>
+      <path style='fill-opacity:0.2;stroke-opacity:0.8' stroke-width='3' d='m-120 -0a120 90 0 1 0 240 0a120 90 0 1 0 -240 0'/>
+      <path style='display:none' id='cat2' d='m-129 -0a129 99 0 1 0 258 0a129 99 0 1 0 -258 0'/>
+      <text font-size='16' stroke-width='0.4' dy='0.33em' class='purple'><textPath href='#cat2' startOffset='43%'>Pure</textPath></text>
+    </g>
+    <g transform='translate(310 290)rotate(-23)' class='green'>
+      <path style='fill-opacity:0.2;stroke-opacity:0.8' stroke-width='3' d='m-110 -0a110 95 0 1 1 220 0a110 95 0 1 1 -220 0'/>
+      <path style='display:none' id='cat3' d='m-119 -0a119 104 0 1 1 238 0a119 104 0 1 1 -238 0'/>
+      <text font-size='16' stroke-width='0.4' dy='0.33em' class='green'><textPath href='#cat3' startOffset='19%'>Typed</textPath></text>
+    </g>
+    <g transform='translate(260 300)' class='yellow'>
+      <path style='fill-opacity:0.2;stroke-opacity:0.8' stroke-width='3' d='m-45 -0a45 45 0 1 1 90 0a45 45 0 1 1 -90 0'/>
+      <path style='display:none' id='cat4' d='m-54 -0a54 54 0 1 1 108 0a54 54 0 1 1 -108 0'/>
+      <text font-size='16' stroke-width='0.4' dy='0.33em' class='yellow'><textPath href='#cat4' startOffset='31%'>Dependently</textPath></text>
+    </g>
+    <text x='250' y='470'>APL</text>
+    <text x='450' y='120'>Pascal</text>
+    <text x='360' y='100'>C</text>
+    <text x='480' y='170'>Java</text>
+    <text x='370' y='160'>Java 8</text>
+    <text x='400' y='200'>C#</text>
+    <text x='280' y='130'>Python</text>
+    <text x='230' y='170'>Javascript</text>
+    <text x='160' y='220'>Julia</text>
+    <text x='150' y='280'>Lisp</text>
+    <text x='150' y='310'>Scheme</text>
+    <text x='160' y='380'>BQN</text>
+    <text x='280' y='420'>Joy</text>
+    <text x='360' y='250'>Rust</text>
+    <text x='280' y='230'>F#</text>
+    <text x='300' y='365'>Haskell</text>
+    <text x='260' y='300'>Idris</text>
+    <text x='260' y='320'>Coq</text>
+  </g>
+</svg>
+
+<p>The term <em>functional programming</em> is more contentious, and has many meanings some of which can be vague. Here I use it for what might be called <em>first-class functional programming</em>, programming that makes significant use of first-class functions; in this usage, Scheme is probably the archetypal functional programming language. However, other definitions are also worth mentioning. APL is often called a functional programming language on the grounds that functions can be assigned and manipulated, and called recursively, all characteristics it shares with Lisp. I prefer the term <em>function-level programming</em> for this usage. A newer usage, which I call <em>pure functional programming</em>, restricts the term &quot;function&quot; to mathematical functions, which have no side effects, so that functional programming is programming with no side effects, often using monads to accumulate effects as part of arguments and results instead. Finally, <em>typed functional programming</em> is closely associated with pure functional programming and refers to statically-typed functional languages such as Haskell, F#, and Idris (the last of which even supports <em>dependently-typed functional programming</em>, but I already said &quot;finally&quot; so we'll stop there). Of these, BQN supports first-class functional and function-level programming, allows but doesn't encourage pure functional programming, and does not support typed functional programming, as it is dynamically and not statically typed.</p>
 <p>Another topic we are interested in is <em>lexical scoping</em> and <em>closures</em>. Lexical scoping means that the realm in which a variable exists is determined by its containing context (in BQN, the surrounding set of curly braces <code><span class='Brace'>{}</span></code>, if any) within the source code. A closure is really an implementation mechanism, but it's often used to refer to a property of lexical scoping that appears when functions defined in a particular block can be accessed after the block finishes execution. For example, they might be returned from a function or assigned to a variable outside of that function's scope. In this case the functions can still access variables in the original scope. I consider this property to be a requirement for a correct lexical scoping implementation, but it's traditionally not a part of APL: implementation might not have lexical scoping (for example, J and I believe A+ use static scoping where functions can't access variables in containing scopes) or might cut off the scope once execution ends, leading to value errors that one wouldn't predict from the rules of lexical scoping.</p>
 <h2 id="functions-in-apl">Functions in APL</h2>
 <p>This seems like a good place for a brief and entirely optional discussion of how APL handles functions and why it does it this way. As mentioned above, APL's functions are second class rather than first class. However, it's worth noting that the barriers to making functions first-class objects have been entirely syntactic and conceptual, not technical. In fact, the J language has for a long time had <a href="http://www.jsoftware.com/pipermail/programming/2013-January/031260.html">a bug</a> that allows an array containing a function to be created: by selecting from the array, the function itself can even be passed through tacit functions as an argument!</p>
