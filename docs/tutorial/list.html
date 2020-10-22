@@ -18,6 +18,34 @@
 <p>There are three kinds of list notation in BQN. Every one has a subject role, even though expressions used inside it might have other roles. First, a <em>string</em> is a list of characters, and is written by placing those characters in double quotes.</p>
 <pre><span class='String'>&quot;Text!&quot;</span>
 </pre>
+<table class='primitives'>
+  <tr>
+    <td><span class='String'>"</span></td>
+    <td></td>
+    <td colspan='2'>String</td>
+  </tr>
+  <tr>
+    <td><span class='Bracket'>⟨</span></td>
+    <td><kbd>\(</kbd></td>
+    <td colspan='2'>Start list</td>
+  </tr>
+  <tr>
+    <td><span class='Bracket'>⟩</span></td>
+    <td><kbd>\)</kbd></td>
+    <td colspan='2'>End list</td>
+  </tr>
+  <tr>
+    <td><span class='Separator'>⋄</span></td>
+    <td><kbd>\;</kbd></td>
+    <td colspan='2'>Separator</td>
+  </tr>
+  <tr>
+    <td><span class='Separator'>,</span></td>
+    <td></td>
+    <td colspan='2'>Separator</td>
+  </tr>
+</table>
+
 <p>Only one character needs to be escaped to place it in a string: the double quote, which is escaped by writing it twice. Any other character, including a newline, can be placed directly in a string.</p>
 <p>Second, <em>list notation</em> uses angle brackets <code><span class='Bracket'>⟨⟩</span></code>. The <em>elements</em> in the list are kept apart with one of the three <em>separator</em> characters: <code><span class='Separator'>,</span></code>, <code><span class='Separator'>⋄</span></code>, and newline. Anything can be used as an element, even a function, or a modifier like <code><span class='Modifier2'>∘</span></code>. Here's a list containing a number, a 2-modifier, a string, and a non-string list:</p>
 <pre><span class='Bracket'>⟨</span> <span class='Number'>π</span><span class='Separator'>,</span> <span class='Modifier2'>∘</span><span class='Separator'>,</span> <span class='String'>&quot;element&quot;</span> <span class='Separator'>⋄</span> <span class='Bracket'>⟨</span><span class='String'>'l'</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Separator'>,</span><span class='String'>'t'</span><span class='Bracket'>⟩</span> <span class='Bracket'>⟩</span>
@@ -32,6 +60,19 @@
 </span>  <span class='String'>&quot;lines&quot;</span>
 <span class='Bracket'>⟩</span>
 </pre>
+<table class='primitives'>
+  <tr>
+    <td><span class='Comment'>#</span></td>
+    <td></td>
+    <td colspan='2'>Comment</td>
+  </tr>
+  <tr>
+    <td><span class='Ligature'>‿</span></td>
+    <td><kbd>\ </kbd></td>
+    <td colspan='2'>Strand</td>
+  </tr>
+</table>
+
 <p>Finally, <em>strand notation</em> is a shortcut for simple lists like a few numbers. It's written with the <em>ligature</em> <code><span class='Ligature'>‿</span></code>, which has a higher precedence than either functions or operators. A sequence of values joined with ligatures becomes a list, so that for example the following two expressions are equivalent:</p>
 <pre><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Bracket'>⟩</span>
 <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>+</span><span class='Ligature'>‿</span><span class='Function'>-</span>
@@ -92,6 +133,27 @@
 ⟨ ⟨ 11 12 ⟩ ⟨ 23 33 ⟩ ⟩
 </pre>
 <h2 id="some-list-functions">Some list functions</h2>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'>≍</span></td>
+    <td><kbd>\.</kbd></td>
+    <td>Solo</td>
+    <td>Couple</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>∾</span></td>
+    <td><kbd>\,</kbd></td>
+    <td></td>
+    <td>Join To</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>⌽</span></td>
+    <td><kbd>\q</kbd></td>
+    <td>Reverse</td>
+    <td>Rotate</td>
+  </tr>
+</table>
+
 <p>Let's introduce a few primitives to work with lists.</p>
 <p>Make one or two atom arguments into a list with <code><span class='Function'>≍</span></code>, pronounced Solo in the one-argument case and Couple in the two-argument case. This might not seem to merit a symbol but there's more to come. Don't call it on lists and ponder the results, igniting a hunger for ever more dimensions.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omNIDQKCjIg4omNIDQ=&run">↗️</a><pre>    <span class='Function'>≍</span> <span class='Number'>4</span>
@@ -122,6 +184,25 @@
 "abcde"
 </pre>
 <h3 id="and-modifiers">…and modifiers</h3>
+<table class='primitives'>
+  <tr>
+    <td><span class='Modifier'>¨</span></td>
+    <td><kbd>\1</kbd></td>
+    <td colspan='2'>Each</td>
+  </tr>
+  <tr>
+    <td><span class='Modifier'>´</span></td>
+    <td><kbd>\5</kbd></td>
+    <td colspan='2'>Fold</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>∾</span></td>
+    <td><kbd>\,</kbd></td>
+    <td>Join</td>
+    <td>Join To</td>
+  </tr>
+</table>
+
 <p>The 1-modifier Each (<code><span class='Modifier'>¨</span></code>) applies its operand to every element of a list argument: it's the same as <code><span class='Value'>map</span></code> in a functional programming language. With two list arguments (which have to have the same length), Each pairs the corresponding elements from each, a bit like a <code><span class='Value'>zip</span></code> function. If one argument is a list and one's an atom, the atom is reused every time instead.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oy9wqggImFiY2Qi4oC/IkFCQ0RFRiLigL8iMDEiCgoic3RyaW5nIuKAvyJsaXN0IuKAvyJhcnJheSIg4oi+wqggJ3MnCgoiYWJjIiDiiY3CqCDijL0gImFiYyI=&run">↗️</a><pre>    <span class='Function'>⌽</span><span class='Modifier'>¨</span> <span class='String'>&quot;abcd&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;ABCDEF&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01&quot;</span>
 ⟨ "dcba" "FEDCBA" "10" ⟩
@@ -156,6 +237,21 @@
 </pre>
 <h2 id="example-base-decoding">Example: base decoding</h2>
 <p>Some people like to imagine that robots or other techno-beings speak entirely in binary-encoded ASCII, like for instance &quot;01001110 01100101 01110010 01100100 00100001&quot;. This is dumb for a lot of reasons, and the encoded text probably just says something inane, but you're a slave to curiosity and can't ignore it. Are one and a half tutorials of BQN enough to clear your conscience?</p>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'>↕</span></td>
+    <td><kbd>\d</kbd></td>
+    <td>Range</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span class='Modifier2'>⊸</span></td>
+    <td><kbd>\h</kbd></td>
+    <td>Bind?</td>
+    <td></td>
+  </tr>
+</table>
+
 <p>Almost. It's really close. There are just two things missing, so I'll cover those and can we agree one and three-quarters is pretty good? First is Range (<code><span class='Function'>↕</span></code>), which is called on a number to give all the natural numbers less than it:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVIDg=&run">↗️</a><pre>    <span class='Function'>↕</span> <span class='Number'>8</span>
 ⟨ 0 1 2 3 4 5 6 7 ⟩
@@ -273,6 +369,11 @@ ERROR</pre>
 <td><code><span class='Function'>⌽</span></code></td>
 <td>Reverse</td>
 <td>Rotate</td>
+</tr>
+<tr>
+<td><code><span class='Function'>↕</span></code></td>
+<td></td>
+<td>Range</td>
 </tr>
 <tr>
 <td><code><span class='Modifier'>¨</span></code></td>

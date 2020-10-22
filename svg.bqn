@@ -2,7 +2,7 @@
 
 # Snag the code highlighter from md.bqn
 Highlight ← {
-  AddT ← (↑∾"t"∾↓)¨˜⟜(1‿2⥊˜≢)  # span to tspan
+  AddT ← (↑∾"t"∾↓)¨˜⟜(1‿2⥊˜≢)⍟(𝕨⊣1)  # span to tspan
   (1¨ <⊸∾ ·AddT⌾⊑GetHighlights)⊸Modify 𝕩
 }
 
