@@ -14,7 +14,6 @@ pl ← <˘∘‿2⥊⟨
   "Pascal",     45‿12
   "C",          36‿10
   "Java",       48‿17
-  "Java 8",     37‿16
   "C#",         40‿20
   "Python",     28‿13
   "Javascript", 23‿17
@@ -28,6 +27,10 @@ pl ← <˘∘‿2⥊⟨
   "Haskell",    30‿36.5
   "Idris",      26‿30
   "Coq",        26‿32
+⟩
+arr ← ⟨
+  ⟨"Java 8", "Java", ¯11‿¯1, ¯3⟩
+  ⟨"",       "APL",  "BQN",   7⟩
 ⟩
 cat ← ⟨
   ⟨"First-class",    0, ¯2, "bluegreen", 240, 252, 220, 190,   0⟩
@@ -54,11 +57,26 @@ Circ ← {
     (txt Attr"class"‿c) Enc tp Enc n
   ⟩
 }
+To ← {
+  PlPos ← ((⊑¨pl)⊑∘⊐<)⊑(1⊑¨pl)˙
+  n‿f‿t‿c ← 𝕩
+  f ↩ PlPos f ⋄ t ↩ (@≤⊑)◶⟨f⊸+, PlPos⟩ t
+  w ← 1‿¯1×⌽ u ← v ÷ l ← +´⌾(×˜) v ← -˜´ p ← 10×f‿t
+  q ← ∾⟜⌽1=↕4 ⋄ m←l-50
+  a ← +˝w‿u× -⟜»˘ ((c×2¨˝⊸»)×⎉1·×⟜¬¯1⊸⊏÷m˙)⊸+ +`˘ ⍉>∾⟜(⌽1‿¯1⊸×¨)⟨¯5‿¯1,1.5‿m,¯4‿¯1,7.5‿14⟩
+  d ← ⟨"d", ∾("M"∾q⊏"lq")∾⟜Fmt¨⟨(⊑p)+0‿4-˜(c×w)+26×u⟩∾((c×w)+÷⟜2)⊸∾¨⌾(q⊸/)a⟩
+  lab ← (0<≠)◶⟨⟩‿{⟨
+    ("text"At"font-size=8|dy=-0.2em") Enc ("textPath"At"href=#arr|startOffset=80%") Enc 𝕩
+  ⟩} n
+  path ← "path" At "stroke=currentColor|fill=none|opacity=0.9|stroke-width="∾FmtNum 0.9+0.4×¬≠lab
+  ⟨path At⟜"id=arr"⍟(≠lab)⊸Elt d⟩ ∾ lab
+}
 
 0‿0‿512‿512 SVG gr Enc ∾⟨
   ⥊<("text"Attr"font-size"‿"24"∾Pos 256‿38) Enc """Functional programming"""
   ('0'+↕∘≠)⊸(Circ¨) cat
   Enc˜⟜("text" Attr ·Pos 10⊸×)´¨ pl
+  ∾To¨ arr
 ⟩
 -->
 
