@@ -1,5 +1,5 @@
 # BQN runtime. Requires:
-# IsArray Type Log  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+# IsArray Type Log GroupLen GroupOrd  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
 
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
 ⊢ ← {𝕩}
