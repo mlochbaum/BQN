@@ -18,6 +18,9 @@ There are three kinds of list notation in BQN. Every one has a subject role, eve
 
     "Text!"
 
+<!--SVG prim.bqn
+Primitives ⟨"""%%String", "⟨%(%Start list", "⟩%)%End list", "⋄%;%Separator", ",%%Separator"⟩
+-->
 Only one character needs to be escaped to place it in a string: the double quote, which is escaped by writing it twice. Any other character, including a newline, can be placed directly in a string.
 
 Second, *list notation* uses angle brackets `⟨⟩`. The *elements* in the list are kept apart with one of the three *separator* characters: `,`, `⋄`, and newline. Anything can be used as an element, even a function, or a modifier like `∘`. Here's a list containing a number, a 2-modifier, a string, and a non-string list:
@@ -35,6 +38,9 @@ The two characters `,` and `⋄` are completely interchangeable, and newline is 
       "lines"
     ⟩
 
+<!--SVG
+Primitives ⟨"#%%Comment", "‿% %Strand"⟩
+-->
 Finally, *strand notation* is a shortcut for simple lists like a few numbers. It's written with the *ligature* `‿`, which has a higher precedence than either functions or operators. A sequence of values joined with ligatures becomes a list, so that for example the following two expressions are equivalent:
 
     ⟨2,+,-⟩
@@ -80,6 +86,9 @@ This list application works recursively, so that lists of lists (and so on) are 
 
 ## Some list functions
 
+<!--SVG
+Primitives ⟨"≍%.%Solo%Couple", "∾%,%%Join To", "⌽%q%Reverse%Rotate"⟩
+-->
 Let's introduce a few primitives to work with lists.
 
 Make one or two atom arguments into a list with `≍`, pronounced Solo in the one-argument case and Couple in the two-argument case. This might not seem to merit a symbol but there's more to come. Don't call it on lists and ponder the results, igniting a hunger for ever more dimensions.
@@ -109,6 +118,9 @@ With a left argument `⌽` means Rotate instead, and shifts values over by the s
 
 ### …and modifiers
 
+<!--SVG
+Primitives ⟨"¨%1%Each", "´%5%Fold", "∾%,%Join%Join To"⟩
+-->
 The 1-modifier Each (`¨`) applies its operand to every element of a list argument: it's the same as `map` in a functional programming language. With two list arguments (which have to have the same length), Each pairs the corresponding elements from each, a bit like a `zip` function. If one argument is a list and one's an atom, the atom is reused every time instead.
 
         ⌽¨ "abcd"‿"ABCDEF"‿"01"
@@ -143,6 +155,9 @@ But you shouldn't! Just `∾` will do the job for you—with no left argument it
 
 Some people like to imagine that robots or other techno-beings speak entirely in binary-encoded ASCII, like for instance "01001110 01100101 01110010 01100100 00100001". This is dumb for a lot of reasons, and the encoded text probably just says something inane, but you're a slave to curiosity and can't ignore it. Are one and a half tutorials of BQN enough to clear your conscience?
 
+<!--SVG
+Primitives ⟨"↕%d%Range%", "⊸%h%Bind?%"⟩
+-->
 Almost. It's really close. There are just two things missing, so I'll cover those and can we agree one and three-quarters is pretty good? First is Range (`↕`), which is called on a number to give all the natural numbers less than it:
 
         ↕ 8
@@ -220,6 +235,7 @@ Glyph | 1 arg                    | 2 args
 `∾`   | [Join](../doc/join.md)   | Join To
 `≍`   | [Solo](../doc/couple.md) | [Couple](../doc/couple.md)
 `⌽`   | Reverse                  | Rotate
+`↕`   |                          | Range
 `¨`   | Each                     | Each
 `´`   | Fold
 

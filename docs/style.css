@@ -40,7 +40,7 @@ table th {
   font-family: BQN;
   src: url(DejaVuBQNSansMono.ttf) format('truetype');
 }
-pre, code, textarea {
+pre, code, textarea, .primitives tr td:first-child {
   background-color: #e3e7e7;
   color: #292929;
 }
@@ -100,6 +100,26 @@ textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
   opacity: 0.7;
 }
 
+.primitives {
+  float: right;
+  margin: 0.4em 0.8em 0 1em;
+}
+.primitives tr td:first-child {
+  font-family: BQN, monospace;
+}
+.primitives tr td:nth-child(2) {
+  padding: 0.3em 0.5em 0.4em;
+  min-width: 2em;
+}
+kbd {
+  font-family: BQN, monospace;
+  border: 0.06em solid currentColor;
+  padding: 0.04em 0.3em;
+  border-radius: 0.4em;
+  box-shadow: -0.02em 0.05em 0 0 currentColor;
+  white-space: pre;
+}
+
 .Value        { color: #1f2020; }
 .Function     { color: #1f7229; }
 .Modifier     { color: #7b3b60; }
@@ -124,7 +144,7 @@ a:visited     { color: #3d155f; }
 @media (prefers-color-scheme: dark) {
   body, input { color: #d6d7d9; background-color: #141515; }
   input       { border-color: #0c0d0e; }
-  textarea, pre, code      { color: #969698; background-color: #0c0d0e; }
+  textarea, pre, code, .primitives tr td:first-child { color: #969698; background-color: #0c0d0e; }
   textarea, pre, code, .kb { border-color: #040509; }
   .code, .codeCover { fill: #0c0d0e; stroke: #040509; }
   .codeCover  { stroke: #0c0d0e; }

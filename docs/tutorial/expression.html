@@ -15,6 +15,21 @@
     <span class='Function'>-</span> <span class='Number'>1.5</span>
 ¯1.5
 </pre>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'>+</span></td>
+    <td></td>
+    <td></td>
+    <td>Add</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>-</span></td>
+    <td></td>
+    <td>Negate</td>
+    <td>Subtract</td>
+  </tr>
+</table>
+
 <p>Shown above are a few arithmetic operations. BQN manages to pass as a normal programming language for three lines so far. That's a big accomplishment for BQN! Earth's a confusing place!</p>
 <p>The number of spaces between <em>primitive functions</em> like <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> and their <em>arguments</em> doesn't matter: you can use as much or as little as you like. No spaces inside numbers, of course.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDDlyDPgAo5IMO3IDIKw7cg4oie&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>×</span> <span class='Number'>π</span>
@@ -24,6 +39,31 @@
     <span class='Function'>÷</span> <span class='Number'>∞</span>
 0
 </pre>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'>×</span></td>
+    <td><kbd>\=</kbd></td>
+    <td></td>
+    <td>Multiply</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>÷</span></td>
+    <td><kbd>\-</kbd></td>
+    <td>Reciprocal</td>
+    <td>Divide</td>
+  </tr>
+  <tr>
+    <td><span class='Number'>π</span></td>
+    <td><kbd>\p</kbd></td>
+    <td colspan='2'>Pi</td>
+  </tr>
+  <tr>
+    <td><span class='Number'>∞</span></td>
+    <td><kbd>\8</kbd></td>
+    <td colspan='2'>Infinity</td>
+  </tr>
+</table>
+
 <p>Okay, now BQN looks like normal (grade-school) mathematics, which is sort of like looking normal. Pi (<code><span class='Number'>π</span></code>) represents <a href="https://en.wikipedia.org/wiki/Pi">that real famous number</a> and Infinity (<code><span class='Number'>∞</span></code>) is also part of the number system (the BQN spec allows an implementation to choose its number system, and all existing implementations use double-precision floats, like Javascript or Lua). In analogy with the one-argument form of Minus (<code><span class='Function'>-</span></code>) giving the negation of a number, Divide (<code><span class='Function'>÷</span></code>) with only one argument gives its reciprocal.</p>
 <p>A number can be raised to the power of another with Power, written <code><span class='Function'>⋆</span></code>. That's a star rather than an asterisk; BQN doesn't use the asterisk symbol. If it's called without a left argument, then <code><span class='Function'>⋆</span></code> uses a base of <a href="https://en.wikipedia.org/wiki/E_(mathematical_constant)">Euler's number</a> <em>e</em> and is called Exponential.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDii4YgMwozIOKLhiAyCuKLhiAxICAgIyBUaGVyZSdzIG5vIGNvbnN0YW50IGZvciBlIGJ1dCB5b3UgY2FuIGdldCBpdCB0aGlzIHdheQrii4YgMi4z&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⋆</span> <span class='Number'>3</span>
@@ -35,6 +75,21 @@
     <span class='Function'>⋆</span> <span class='Number'>2.3</span>
 9.97418245481472
 </pre>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'>⋆</span></td>
+    <td><kbd>\+</kbd></td>
+    <td>Exponential</td>
+    <td>Power</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>√</span></td>
+    <td><kbd>\_</kbd></td>
+    <td>Square Root</td>
+    <td>Root</td>
+  </tr>
+</table>
+
 <p>You could use Power to take square roots and <em>n</em>-th roots, but BQN also provides the primitive <code><span class='Function'>√</span></code> for this purpose. If no left argument is provided, then it is the Square Root function; with a left argument it is called Root and raises the right argument to the power of one divided by the left argument.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDIKMyDiiJogMjc=&run">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>2</span>
 1.4142135623731
@@ -208,6 +263,19 @@
     <span class='String'>@</span> <span class='Function'>+</span> <span class='Number'>97</span>
 'a'
 </pre>
+<table class='primitives'>
+  <tr>
+    <td><span class='String'>'</span></td>
+    <td></td>
+    <td colspan='2'>Character</td>
+  </tr>
+  <tr>
+    <td><span class='String'>@</span></td>
+    <td></td>
+    <td colspan='2'>Null character</td>
+  </tr>
+</table>
+
 <p>It's a convenient way to write non-printing characters without having to include them in your source code: for example <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>10</span></code> is the newline character.</p>
 <p>Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of &quot;characterness&quot; (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not be valid, if one of the values produced in the middle isn't legal.</p>
 <h2 id="modifiers">Modifiers</h2>
@@ -224,6 +292,25 @@
 16
 </pre>
 <p>What's wrong with <code><span class='Number'>4</span><span class='Function'>⋆</span><span class='Number'>2</span></code>? Depends on the context. Because of the way evaluation flows from right to left, it's usually best if the right argument to a function is the one that's being manipulated directly while the left argument is sort of a &quot;control value&quot; that describes how to manipulate it. That way several manipulations can be done in a row without any parentheses required. <code><span class='Function'>⋆</span></code> can go either way, but if &quot;squaring&quot; is the operation being done then the <em>left</em> argument is one being squared, so it's the active value. The Swap modifier allows us to put it on the right instead.</p>
+<table class='primitives'>
+  <tr>
+    <td><span class='Modifier'>˜</span></td>
+    <td><kbd>\`</kbd></td>
+    <td>Swap</td>
+    <td>Self</td>
+  </tr>
+  <tr>
+    <td><span class='Modifier'>⁼</span></td>
+    <td><kbd>\3</kbd></td>
+    <td colspan='2'>Undo</td>
+  </tr>
+  <tr>
+    <td><span class='Modifier'>˙</span></td>
+    <td><kbd>\"</kbd></td>
+    <td colspan='2'>Constant</td>
+  </tr>
+</table>
+
 <p>Another 1-modifier is Undo (<code><span class='Modifier'>⁼</span></code>). BQN has just enough computer algebra facilities to look like a tool for Neanderthals next to a real computer algebra system, and among them is the ability to invert some primitives. In general you can't be sure when Undo will work (it might even be undecidable), but the examples I'll give here are guaranteed by <a href="../spec/inferred.html#undo">the spec</a> to always work in the same way. Starting with a <em>third</em> way to square a number:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oia4oG8IDQ=&run">↗️</a><pre>    <span class='Function'>√</span><span class='Modifier'>⁼</span> <span class='Number'>4</span>
 16
@@ -251,6 +338,14 @@
     <span class='Function'>-</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Paren'>)</span> <span class='Number'>5</span>  <span class='Comment'># Negative square of 5
 </span>¯25
 </pre>
+<table class='primitives'>
+  <tr>
+    <td><span class='Modifier2'>∘</span></td>
+    <td><kbd>\j</kbd></td>
+    <td colspan='2'>Atop</td>
+  </tr>
+</table>
+
 <p>It's past time we covered how the syntax for modifiers works. Remember how I told you you hated learning the order of operations? No? Good. Modifiers bind more tightly than functions, so they are called on their operands before their operands can be used. As the parentheses above suggest, modifiers also associate from left to right, the opposite order as functions. For example, the first expression above is evaluated in the order shown below. First we construct the square function <code><span class='Function'>×</span><span class='Modifier'>˜</span></code>, then compose it with <code><span class='Function'>+</span></code>, and finally apply the result to some arguments.</p>
 <pre> <span class='Function'>=</span>    <span class='Function'>×</span><span class='Modifier'>˜</span>
         <span class='Modifier2'>∘</span><span class='Function'>+</span>
