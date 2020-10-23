@@ -10,7 +10,6 @@
 # - Place code blocks in <pre> tags only, not <pre><code>
 # - Insert results into doubly-indented (8 spaces) code blocks
 # - Add links to open and execute code in the REPL
-# - Put a demo REPL in place of <!--REPL-->, for the main README
 
 # Supports:
 # - ATX headings (start with hashes #)
@@ -152,18 +151,6 @@ Base64 ← {
   v←(4⋆1+b) ((⌊∘÷˜) «⊸+○M (64÷⊣)×|) u
   (v⊏b64)∾(3|-l)⥊'='
 }
-
-# HTML and JS for demo REPL used in main README
-repl ← 1↓"
-<div class='cont'>
-  <div class='kb'></div>
-  <div class='rel'>
-    <textarea class='code' rows='1' autofocus><⟜'a'⊸/ ""Big Questions Notation""</textarea>
-    <svg class='demo' viewBox='0 -6 4 12'><path d='M1 -6H0L1 0L0 6H1L4 0z'/></svg>
-  </div>
-  <pre class='rslt'>""B Q N""</pre>
-</div>"
-loadRepl ← "<script src='bqn.js'></script><script src='repl.js'></script>"
 
 # Various URLs
 siteURL ← "https://mlochbaum.github.io/BQN/"
@@ -316,8 +303,7 @@ Markdown ← {filename𝕊𝕩:
   # HTML blocks
   # Lazy rule: if it starts with < and contains >, it's probably HTML
   IsHtmlBlock ← ("<!--"≡4↑⊢)◶('>'∨´∘=⊢)‿2
-  useRepl←0 ⋄ GetRepl ← {𝕩⋄ useRepl↩1 ⋄ repl}
-  ProcComment ← ⟨"<!--REPL-->"⟩⊸≢◶GetRepl‿{
+  ProcComment ← {
     n←≠s←"<!--GEN" ⋄ l←¯3↓⍟(1=≠𝕩)⊑𝕩 ⋄ a←s≡n↑l
     Source ← {((0<≠)◶<‿(•LNS path∾⊢) Trim n↓l) ∾ 1↓¯1↓𝕩}
     GenHtml⍟a JoinLines Source⍟a 𝕩
@@ -510,7 +496,7 @@ Markdown ← {filename𝕊𝕩:
   # To process a block, pick the appropriate function from procFns.
   ProcBlock ← {t‿l G b: f←t⊑procFns ⋄ l F ⊑b }
   b ← (blockStart / lineType≍˘lineDat) <∘ProcBlock˘ blocks
-  JoinLines b ∾ useRepl / ""‿loadRepl
+  JoinLines b
 }
 
 
