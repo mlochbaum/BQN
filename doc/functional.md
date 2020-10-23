@@ -8,7 +8,7 @@ First, let's be clear about what the terms we're using mean. A language has *fir
 
 Traditionally, APL has worked around its lack of first-class functions with operators, that is, second-order functions. Arrays in APL are first class while functions are second class and operators are third class, and each class can act on the ones before it. However, the three-tier system has some obvious limitations that we'll discuss, and BQN removes these by making every type first class.
 
-<!--SVG
+<!--GEN
 pl ← <˘∘‿2⥊⟨
   "APL",        25‿47
   "Pascal",     45‿12
