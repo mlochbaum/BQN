@@ -9,7 +9,19 @@
 </center>
 
 *Try it online below or [here](https://mlochbaum.github.io/BQN/try.html), and see [running.md](running.md) for more options.*
-<!--REPL-->
+<!--GEN
+E ← ⊐⟜":"⊸(↑At"class="∾1⊸+⊸↓)⊸Enc
+repl ← "div:cont" E ⟨
+  "div:kb" E ""
+  "div:rel" E ⟨
+    "textarea:code|rows=1|autofocus" E "<⟜'a'⊸/ ""Big Questions Notation"""
+    "svg:demo|viewBox=0 -6 4 12" E "path" Elt "d"‿"M1 -6H0L1 0L0 6H1L4 0z"
+  ⟩
+  "pre:rslt" E """B Q N"""
+⟩
+repl∾↩<∾(""Enc˜"script"Attr"src"≍○<∾⟜".js")¨"bqn"‿"repl"
+∾∾⟜(10+@)¨ repl
+-->
 
 **BQN** is a new programming language in the APL lineage, which aims to remove irregular and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. While its use demands a solid understanding of functions and multidimensional arrays, BQN's focus on providing simple, consistent, and powerful array operations (and documentation!) makes it a good language for learning array programming and building stronger array intuition.
 
