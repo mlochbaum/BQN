@@ -43,5 +43,5 @@ Pos ← ⟨"x","y"⟩ ≍˘ FmtNum¨
 Elt ← Void∘Attr
 
 SVG ← {
-  (∾∾⟜(10+@)¨)⍟IsLines ("svg" Attr ⟨"viewBox",Fmt 𝕨⟩) Enc 𝕩
+  ("svg" Attr ⟨"viewBox",Fmt 𝕨⟩) Enc 𝕩
 }

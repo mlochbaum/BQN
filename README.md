@@ -19,8 +19,7 @@ repl ← "div:cont" E ⟨
   ⟩
   "pre:rslt" E """B Q N"""
 ⟩
-repl∾↩<∾(""Enc˜"script"Attr"src"≍○<∾⟜".js")¨"bqn"‿"repl"
-∾∾⟜(10+@)¨ repl
+repl ∾< ∾(""Enc˜"script"Attr"src"≍○<∾⟜".js")¨"bqn"‿"repl"
 -->
 
 **BQN** is a new programming language in the APL lineage, which aims to remove irregular and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. While its use demands a solid understanding of functions and multidimensional arrays, BQN's focus on providing simple, consistent, and powerful array operations (and documentation!) makes it a good language for learning array programming and building stronger array intuition.
