@@ -12,7 +12,7 @@ In the code blocks shown here, input is highlighted and indented, while output i
         6-   5
         - 1.5
 
-<!--SVG prim.bqn
+<!--GEN prim.bqn
 Primitives ⟨"+%%%Add", "-%%Negate%Subtract"⟩
 -->
 Shown above are a few arithmetic operations. BQN manages to pass as a normal programming language for three lines so far. That's a big accomplishment for BQN! Earth's a confusing place!
@@ -23,7 +23,7 @@ The number of spaces between *primitive functions* like `+` and `-` and their *a
         9 ÷ 2
         ÷ ∞
 
-<!--SVG
+<!--GEN
 Primitives ⟨
   "×%=%%Multiply"
   "÷%-%Reciprocal%Divide"
@@ -40,7 +40,7 @@ A number can be raised to the power of another with Power, written `⋆`. That's
         ⋆ 1   # There's no constant for e but you can get it this way
         ⋆ 2.3
 
-<!--SVG
+<!--GEN
 Primitives ⟨"⋆%+%Exponential%Power", "√%_%Square Root%Root"⟩
 -->
 You could use Power to take square roots and *n*-th roots, but BQN also provides the primitive `√` for this purpose. If no left argument is provided, then it is the Square Root function; with a left argument it is called Root and raises the right argument to the power of one divided by the left argument.
@@ -71,7 +71,7 @@ For a longer example, here's an expression for the [volume of a sphere](https://
 
 The evaluation order is shown below, with the function `⋆` on the first line evaluated first, then `×` on the next, and so on. The effect of the parentheses is that `÷` is evaluated before the leftmost `×`.
 
-<!--SVG evalexp.bqn
+<!--GEN evalexp.bqn
 DrawEval "(4÷3) × π × 2⋆3"
 -->
 
@@ -90,7 +90,7 @@ They are the same, and now you can't say that BQN is the most complicated thing 
 
 That's a fairly large expression, so here's another evaluation diagram to check your understanding.
 
-<!--SVG
+<!--GEN
 wh↩19⌾(¯1⊸⊑)wh
 DrawEval "(√3 + 2×√2) - 1+√2"
 -->
@@ -138,7 +138,7 @@ The one thing affine characters won't let you do is find some special "starting 
         '*' - @
         @ + 97
 
-<!--SVG
+<!--GEN
 Primitives ⟨"'%%Character", "@%%Null character"⟩
 -->
 It's a convenient way to write non-printing characters without having to include them in your source code: for example `@+10` is the newline character.
@@ -159,7 +159,7 @@ This gives us two nice ways to square a value:
 
 What's wrong with `4⋆2`? Depends on the context. Because of the way evaluation flows from right to left, it's usually best if the right argument to a function is the one that's being manipulated directly while the left argument is sort of a "control value" that describes how to manipulate it. That way several manipulations can be done in a row without any parentheses required. `⋆` can go either way, but if "squaring" is the operation being done then the *left* argument is one being squared, so it's the active value. The Swap modifier allows us to put it on the right instead.
 
-<!--SVG
+<!--GEN
 Primitives ⟨"˜%`%Swap%Self", "⁼%3%Undo", "˙%""%Constant"⟩
 -->
 Another 1-modifier is Undo (`⁼`). BQN has just enough computer algebra facilities to look like a tool for Neanderthals next to a real computer algebra system, and among them is the ability to invert some primitives. In general you can't be sure when Undo will work (it might even be undecidable), but the examples I'll give here are guaranteed by [the spec](../spec/inferred.md#undo) to always work in the same way. Starting with a *third* way to square a number:
@@ -188,7 +188,7 @@ Made it to the last role, the 2-modifier (if you think something's been skipped,
         3 ×˜∘+ 4  # Square of 3 plus 4
         -∘(×˜) 5  # Negative square of 5
 
-<!--SVG
+<!--GEN
 Primitives ⟨"∘%j%Atop"⟩
 -->
 It's past time we covered how the syntax for modifiers works. Remember how I told you you hated learning the order of operations? No? Good. Modifiers bind more tightly than functions, so they are called on their operands before their operands can be used. As the parentheses above suggest, modifiers also associate from left to right, the opposite order as functions. For example, the first expression above is evaluated in the order shown below. First we construct the square function `×˜`, then compose it with `+`, and finally apply the result to some arguments.

@@ -18,7 +18,7 @@ There are three kinds of list notation in BQN. Every one has a subject role, eve
 
     "Text!"
 
-<!--SVG prim.bqn
+<!--GEN prim.bqn
 Primitives ⟨"""%%String", "⟨%(%Start list", "⟩%)%End list", "⋄%;%Separator", ",%%Separator"⟩
 -->
 Only one character needs to be escaped to place it in a string: the double quote, which is escaped by writing it twice. Any other character, including a newline, can be placed directly in a string.
@@ -38,7 +38,7 @@ The two characters `,` and `⋄` are completely interchangeable, and newline is 
       "lines"
     ⟩
 
-<!--SVG
+<!--GEN
 Primitives ⟨"#%%Comment", "‿% %Strand"⟩
 -->
 Finally, *strand notation* is a shortcut for simple lists like a few numbers. It's written with the *ligature* `‿`, which has a higher precedence than either functions or operators. A sequence of values joined with ligatures becomes a list, so that for example the following two expressions are equivalent:
@@ -86,7 +86,7 @@ This list application works recursively, so that lists of lists (and so on) are 
 
 ## Some list functions
 
-<!--SVG
+<!--GEN
 Primitives ⟨"≍%.%Solo%Couple", "∾%,%%Join To", "⌽%q%Reverse%Rotate"⟩
 -->
 Let's introduce a few primitives to work with lists.
@@ -118,7 +118,7 @@ With a left argument `⌽` means Rotate instead, and shifts values over by the s
 
 ### …and modifiers
 
-<!--SVG
+<!--GEN
 Primitives ⟨"¨%1%Each", "´%5%Fold", "∾%,%Join%Join To"⟩
 -->
 The 1-modifier Each (`¨`) applies its operand to every element of a list argument: it's the same as `map` in a functional programming language. With two list arguments (which have to have the same length), Each pairs the corresponding elements from each, a bit like a `zip` function. If one argument is a list and one's an atom, the atom is reused every time instead.
@@ -155,7 +155,7 @@ But you shouldn't! Just `∾` will do the job for you—with no left argument it
 
 Some people like to imagine that robots or other techno-beings speak entirely in binary-encoded ASCII, like for instance "01001110 01100101 01110010 01100100 00100001". This is dumb for a lot of reasons, and the encoded text probably just says something inane, but you're a slave to curiosity and can't ignore it. Are one and a half tutorials of BQN enough to clear your conscience?
 
-<!--SVG
+<!--GEN
 Primitives ⟨"↕%d%Range%", "⊸%h%Bind?%"⟩
 -->
 Almost. It's really close. There are just two things missing, so I'll cover those and can we agree one and three-quarters is pretty good? First is Range (`↕`), which is called on a number to give all the natural numbers less than it:

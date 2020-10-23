@@ -13,7 +13,7 @@ BQN supports the following fundamental types:
 
 The first three types are called *data types*, and the rest are *operation types*. The array is the only *compound type*; the other types are *atomic types* and values of these types are called *atoms*. The fact that an array is only one type of many is common in modern programming languages but a novelty in the APL family. This decision is discussed in the page on [based array theory](based.md).
 
-<!--SVG
+<!--GEN
 types ← ⍉"Number"‿"Character"‿"Array"≍"Function"‿"1-modifier"‿"2-modifier"
 sh ← ≢ types
 p ← 64‿38
