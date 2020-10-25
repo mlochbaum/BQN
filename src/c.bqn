@@ -36,9 +36,9 @@ T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 # Identifiers then literal tokens are numbered starting at vi
 Tokenize←{
   # Resolve comments and strings
-  r←𝕩='#'⋄s←/0‿0⊸«⊸∧sm←𝕩='''⋄d←/dm←𝕩='"'
-  g←⍋q←∾⟨  s⋄¯1↓d⋄/r⟩ ⋄q↩g⊏q                # Open indices
-  e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`r)⊸//(𝕩=lf)∾1⟩ # Matching close indices
+  c←𝕩='#'⋄s←/0‿0⊸«⊸∧sm←𝕩='''⋄d←/dm←𝕩='"'
+  g←⍋q←∾⟨  s⋄¯1↓d⋄/c⟩ ⋄q↩g⊏q                # Open indices
+  e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`c)⊸//(𝕩=lf)∾1⟩ # Matching close indices
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
   St←(≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/          # All indices → reached mask
   a←St q⋄b←St e⋄f←¬≠`ab←a∨b                 # Open/close masks; filter
@@ -51,25 +51,25 @@ Tokenize←{
   str←1↓¨𝕩⊔˜1-˜(+`si←a>»qe)×≠`dm∧ab         # Strings (indices /si)
 
   # Extract words: identifiers and numbers
-  c←CharCode f/𝕩
-  w←»⊸<l←c M bD(⊣≍-˜)○⊑bW⋄us←c=¯1++´bA      # Word chars l, start w
-  tw←na⌊∘÷˜(⊑bA)-˜w/c                       # Type of word from first char
-  c-↩na×l∧c≥na+⊑bA                          # Case-insensitive
-  i←l>n←l∧(+`w)⊏0∾tw<0                      # Identifier/Number masks
-  num←ReadNums n∨⟜«⊸/○(0⊸∾)c×l              # Numbers
-  ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))0⊸≤⊸/tw           # Identifier role
-  id←(1-˜(i>us)×+`w>n)⊔c                    # Identifiers
+  t←CharCode f/𝕩
+  w←»⊸<l←t M bD(⊣≍-˜)○⊑bW⋄us←t=¯1++´bA      # Word chars l, start w
+  wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
+  t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
+  i←l>n←l∧(+`w)⊏0∾wk<0                      # Identifier/Number masks
+  num←ReadNums n∨⟜«⊸/○(0⊸∾)t×l              # Numbers
+  ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))0⊸≤⊸/wk           # Identifier role
+  id←(1-˜(i>us)×+`w>n)⊔t                    # Identifiers
 
   # Deduplicate literals and identifiers; other cleanup
-  ki←((⍋⊏⟜n)⊸⊏/w)∾(ci∾/si)⊏+`»f             # Indices in c
+  ki←((⍋⊏⟜n)⊸⊏/w)∾(ci∾/si)⊏+`»f             # Indices in t
   k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
-  c↩(w∨¬l∨c M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)c     # Add IDs; remove words/whitespace
-  c-↩c(M×-⟜⊑)bS                             # Separators are equivalent
-  c/˜↩¬(1»(c∊2‿4+⊑bB)∨⊢)⊸∧c=sep             # Remove repeated and leading separators
-  c/˜↩¬(1«c∊3‿5+⊑bB)∧c=sep                  # ...and trailing ones. In sequence for repeated trailing.
-  cr←ir⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole∾0   # Role
-  c+↩5×c M⟨⊑bI,5⟩                           # Case-insensitive special names
-  ⟨c,cr,k⟩
+  t↩(w∨¬l∨t M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)t     # Add IDs; remove words/whitespace
+  t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
+  t/˜↩¬(1»(t∊2‿4+⊑bB)∨⊢)⊸∧t=sep             # Remove repeated and leading separators
+  t/˜↩¬(1«t∊3‿5+⊑bB)∧t=sep                  # ...and trailing ones. In sequence for repeated trailing.
+  r←ir⌾((t M vi∾≠⊑k)⊸/)(vi⌊t)⊏charRole∾0    # Role
+  t+↩5×t M⟨⊑bI,5⟩                           # Case-insensitive special names
+  ⟨t,r,k⟩
 }
 
 # 𝕩 is a list of tokens that contains the numeric literals, each
