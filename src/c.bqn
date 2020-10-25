@@ -19,11 +19,11 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
 bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑  # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
-# CharCode converts characters to numbers, mostly the same as tokens
-ErrUnknownChars←{
-  ⟨"Unknown character","s"/˜1<≠𝕩,": ",𝕩⟩∾⊸!0
-}
+# Convert characters to numbers, mostly the same as tokens
 CharCode←charSet{
+  ErrUnknownChars←{
+    ⟨"Unknown character","s"/˜1<≠𝕩,": ",𝕩⟩∾⊸!0
+  }
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
@@ -74,10 +74,10 @@ Tokenize←{
 
 # 𝕩 is a list of tokens that contains the numeric literals, each
 # preceded by 0. Return the numbers.
-ErrNumericChars←{
-  ⟨"Letter","s"/˜1<≠𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩∾⊸!0
-}
 ReadNums←{
+  ErrNumericChars←{
+    ⟨"Letter","s"/˜1<≠𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩∾⊸!0
+  }
   e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for eπ∞¯.
   ErrNumericChars∘(/⟜𝕩)⍟(∨´) ¬e∨𝕩<⊑bA
   s←d∨c←e∨z←0=𝕩⋄m←¬n∨c
@@ -96,16 +96,17 @@ ReadNums←{
 }
 
 
-ErrMismatchedBrackets←{
-  Lcs ← ¯1 ⊑ 0˘∘⊢ {𝕩⌈⌈`𝕨+«𝕩}˝ =⌜
-  _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
-  Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
-  0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
-}
-ErrUndeclared←{
-  0 !˜ "Undefined identifier"∾(1<≠𝕩)/"s"
-}
 Parse ← {r‿nv←𝕨
+  ErrMismatchedBrackets←{
+    Lcs ← ¯1 ⊑ 0˘∘⊢ {𝕩⌈⌈`𝕨+«𝕩}˝ =⌜
+    _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
+    Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
+    0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
+  }
+  ErrUndeclared←{
+    0 !˜ "Undefined identifier"∾(1<≠𝕩)/"s"
+  }
+
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gp←g⊏p⋄gb←g⊏r=¯1⋄gx←g⊏𝕩
   gp(>⟜0⊸/ErrMismatchedBrackets⍟≢1-˜<⟜0⊸/)gx
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
