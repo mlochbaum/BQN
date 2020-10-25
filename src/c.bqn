@@ -69,7 +69,7 @@ Tokenize←{
   c/˜↩¬(1«c∊3‿5+⊑bB)∧c=sep                  # ...and trailing ones. In sequence for repeated trailing.
   cr←ir⌾((c M vi∾≠⊑k)⊸/)(vi⌊c)⊏charRole∾0   # Role
   c+↩5×c M⟨⊑bI,5⟩                           # Case-insensitive special names
-  ⟨c,cr,≠⊑k,∾1↓k⟩
+  ⟨c,cr,k⟩
 }
 
 # 𝕩 is a list of tokens that contains the numeric literals, each
@@ -194,7 +194,7 @@ LEB←{
 }
 
 Compile←{
-  ⟨t,r,nVar,const⟩←Tokenize𝕩
-  ⟨bc,pr,blk⟩←r‿nVar Parse t
-  ⟨bc,(pr⊏𝕨)∾const,<˘⍉>blk⟩
+  ⟨tok,role,val⟩←Tokenize 𝕩
+  ⟨bc,prim,blk⟩←⟨role,≠⊑val⟩ Parse tok
+  ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk⟩
 }
