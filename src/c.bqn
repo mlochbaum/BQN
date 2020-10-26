@@ -19,10 +19,11 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
 bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑  # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
+Pl←∾⟜("s"/˜1<≠)  # Pluralize
 # Convert characters to numbers, mostly the same as tokens
 CharCode←charSet{
   ErrUnknownChars←{
-    ⟨"Unknown character","s"/˜1<≠𝕩,": ",𝕩⟩∾⊸!0
+    ⟨"Unknown character"Pl𝕩,": ",𝕩⟩∾⊸!0
   }
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
@@ -78,7 +79,7 @@ Tokenize←{
 ReadNums←{
   ind←𝕨 ⋄ _err_←{(0!˜/⟜𝔾⟜ind≍○<𝔽)⍟(∨´∘⊢)}
   ErrNumericChars←{
-    ∾⟨"Letter","s"/˜1<≠𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩
+    ∾⟨"Letter"Pl𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩
   }
   e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for eπ∞¯.
   ErrNumericChars∘(/⟜𝕩)_err_⊢ ¬e∨𝕩<⊑bA
@@ -106,7 +107,7 @@ Parse ← {r‿nv←𝕨
     0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
   }
   ErrUndeclared←{
-    0 !˜ "Undefined identifier"∾(1<≠𝕩)/"s"
+    0 !˜ "Undefined identifier"Pl𝕩
   }
 
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gp←g⊏p⋄gb←g⊏r=¯1⋄gx←g⊏𝕩
