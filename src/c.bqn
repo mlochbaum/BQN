@@ -17,14 +17,13 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "#'""@"               # Preprocessed characters
 ⟩
 bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
-M←1⊸⊑(0⊸≤∧>)-⟜⊑  # ∊ for an init,length pair 𝕩 as above
+M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
-Pl←∾⟜("s"/˜1<≠)  # Pluralize
+Pl←∾⟜("s"/˜1<≠)   # Pluralize
+_tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
 # Convert characters to numbers, mostly the same as tokens
 CharCode←charSet{
-  ErrUnknownChars←{
-    ⟨"Unknown character"Pl𝕩,": ",𝕩⟩∾⊸!0
-  }
+  ErrUnknownChars←0!˜⟨"Unknown character"⊸Pl,": ",⊢⟩_tmpl
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
@@ -78,11 +77,9 @@ Tokenize←{
 # preceded by 0. Return the numbers.
 ReadNums←{
   ind←𝕨 ⋄ _err_←{(0!˜/⟜𝔾⟜ind≍○<𝔽)⍟(∨´∘⊢)}
-  ErrNumericChars←{
-    ∾⟨"Letter"Pl𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩
-  }
+  EChars←⟨"Letter"⊸Pl," """,⊏⟜charSet,""" not allowed in numbers"⟩_tmpl
   e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for eπ∞¯.
-  ErrNumericChars∘(/⟜𝕩)_err_⊢ ¬e∨𝕩<⊑bA
+  EChars∘(/⟜𝕩)_err_⊢ ¬e∨𝕩<⊑bA
   s←d∨c←e∨z←0=𝕩⋄m←¬n∨c
   "Negative sign in the middle of a number"_err_⊢ n>»c
   "Portion of a number is empty"_err_⊢ (1«s)∧n∨s
