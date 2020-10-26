@@ -627,14 +627,14 @@ Fmt ← ⍕ _fmtm
 ConvertFile ← {
   MatchStart‿MatchEnd ← { ≤○≠◶0‿(⊣ ≡ (𝕩×≠)⊸↑) }¨ 1‿¯1
 
-  # Input file 𝕩 should be markdown; output file is fileout
-  ! ".md" MatchEnd 𝕩
+  ⟨"Input file ",𝕩," is not markdown (*.md)"⟩ ∾⊸! ".md" MatchEnd 𝕩
   fileout ← ".html" ∾˜ (¯6⊸↓∾"index"˙)⍟("README"⊸MatchEnd) ¯3↓𝕩
 
   # Contents of file to convert
   md ← •LNS 𝕩
   # Verify and remove the html link line: the output *is* the html file.
-  ! ("*View this file"⊸MatchStart ∧ (siteURL∾fileout∾").*")⊸MatchEnd) ⊑md
+  IsView ← "*View this file"⊸MatchStart ∧ (siteURL∾fileout∾").*")⊸MatchEnd
+  ⟨"File ",𝕩," has missing or incorrect view link"⟩ ∾⊸! IsView ⊑md
   out ← 𝕩 Markdown 2↓md
 
   parts ← (1-˜·(¬×1++`)'/'⊸=)⊸⊔ (⊑⊐⟜".")⊸↑ 𝕩
@@ -642,10 +642,12 @@ ConvertFile ← {
   isInd ← "README" ≡ ¯1⊑parts
   RQ ← {'"'¨⌾(('''=𝕩)⊸/)𝕩}
   Link ← RQ {∾⟨"<link href='",root,𝕩,"' rel='",𝕨,"'/>"⟩}
+  h1 ← (2≤≠)◶0‿("# "≡2⊸↑)¨⊸/md
+  "Wrong number of titles in "‿𝕩 ∾⊸! 1=≠h1
   head ← "head" Html lf∾JoinLines "  "⊸∾¨⟨
     "shortcut icon' type='image/x-icon" Link "favicon.ico"
     "stylesheet" Link "style.css"
-    "title" Html "BQN: " ∾⍟(¬·∨´"BQN"⍷⊢) 2↓⊑(2≤≠)◶0‿("# "≡2⊸↑)¨⊸/md
+    "title" Html "BQN: " ∾⍟(¬·∨´"BQN"⍷⊢) 2↓⊑h1
   ⟩
   repo ← "a href='"‿repoURL‿"'" ∾⊸Html "BQN"
   crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"main")»parts
