@@ -48,13 +48,13 @@
 </pre>
 <p>In these three cases above, the results are the same as you would get from transposing before and after (this has no effect on the result of <code><span class='Function'>⊏</span><span class='Modifier'>˘</span></code>, since it has rank 1). But in the following cases, the structure is quite different: <code><span class='Function'>↑</span><span class='Value'>a</span></code> is a list of matrices while <code><span class='Function'>↑</span><span class='Modifier'>˘</span><span class='Value'>a</span></code> is a matrix of lists. This is because the functions <code><span class='Function'>⊏</span></code>, <code><span class='Function'>⌽</span></code>, and <code><span class='Function'>⊣</span><span class='Modifier'>`</span></code> leave the trailing axis structure intact (<code><span class='Function'>⊏</span></code> removes one axis); taking into account that Rank or Cells always preserves the leading or frame axes, all axes are preserved (except the one removed by <code><span class='Function'>⊏</span></code>). In contrast, Prefixes or Suffixes pushes some axes down in depth, and the number of axes that are pushed down in this way changes with the rank of application. More precisely, these functions move axes after the first from the argument itself to result elements, and create two axes from the first axis, with one of them forming the sole result axis and the other joining the rest as an element axis.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaRIGEgICAgICAgICAgICAgICAgICAgIyBQcmVmaXhlcyBvZiBhOiAgICByYW5rcyAxfDIK4oaRy5ggYSAgICAgICAgICAgICAgICAgICMgUHJlZml4ZXMgb2Ygcm93czogcmFua3MgMnwxCuKIvsudIGEgICAgICAgICAgICAgICAgICAjIEpvaW4gdGhlIGNlbGxzCuKIvsudy5ggYSAgICAgICAgICAgICAgICAgIyBKb2luLWluc2VydCBpcyBhIG5vLW9wIG9uIGxpc3Rz&run">↗️</a><pre>    <span class='Function'>↑</span> <span class='Value'>a</span>                   <span class='Comment'># Prefixes of a:    ranks 1|2
-</span>┌─                             
-· 0‿2⥊⟨⟩ ┌─     ┌─     ┌─      
-         ╵"ab"  ╵"ab   ╵"ab    
-              ┘   cd"    cd    
-                     ┘   ef"   
-                            ┘  
-                              ┘
+</span>┌─                           
+· ↕0‿2 ┌─     ┌─     ┌─      
+       ╵"ab"  ╵"ab   ╵"ab    
+            ┘   cd"    cd    
+                   ┘   ef"   
+                          ┘  
+                            ┘
     <span class='Function'>↑</span><span class='Modifier'>˘</span> <span class='Value'>a</span>                  <span class='Comment'># Prefixes of rows: ranks 2|1
 </span>┌─             
 ╵ ⟨⟩ "a" "ab"  
