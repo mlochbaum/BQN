@@ -82,8 +82,7 @@ let run = (B,O,S) => { // Bytecode, Objects, Sections/blocks
 
 // Runtime
 let assertFn = pre => (x,w) => {
-  if (x!==1) throw Error(pre + (has(w)?(pre?": ":"")+w.join(""):""));
-  return x;
+  if (x!==1) throw {src:pre, message:w}; return x;
 }
 let arr = (r,sh) => {r.sh=sh;return r;}
 let list = l => arr(l,[l.length]);

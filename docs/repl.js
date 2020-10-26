@@ -14,9 +14,12 @@ let repl = ()=>{
     try {
       doc.rslt.textContent=fmt(bqn(s));
     } catch(e) {
-    //if (console&&console.error) console.error(e.stack);
+      let s=e.src, w=e.message, i=-1;
+      if (s==="Compiler"&&w.sh[0]===2) [i,w]=w;
+      if (s==="!") w=w?fmt(w).replace(/^/gm,'! '):'! Error';
+      else w=w.sh?w.join(""):w;
       doc.rslt.classList.add('err');
-      doc.rslt.textContent=e.message||'Error';
+      doc.rslt.textContent=w;
     }
   }, 0);
 }
