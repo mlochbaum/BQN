@@ -14,14 +14,19 @@ let repl = ()=>{
     try {
       doc.rslt.textContent=fmt(bqn(s));
     } catch(e) {
-      let r=e.src, w=e.message, i=-1;
-      if (r==='Compiler'&&w.sh[0]===2) [i,w]=w;
+      let r=e.src, w=e.message, is=null;
+      if (r==='Compiler'&&w.sh[0]===2) [is,w]=w;
       if (r==='!') w=w?fmt(w).replace(/^/gm,'! '):'! Error';
       else w=w.sh?w.join(''):w;
-      if (i>=0) {
+      if (is!==null) {
+        let n=is.sh?is.sh[0]:0, i=n?is[0]:is;
         let to=i=>Array.from(s).slice(0,i).join('').split('\n');
-        let ll=to(i), l=ll.length-1, j=ll[l].length;
-        w = [w,'',to()[l],' '.repeat(j)+'^'].join('\n');
+        let ll=to(i), l=ll.length-1, j=ll[l].length, m=to()[l];
+        let k=1,o=i-j,cl=j; while (k<n&&(cl=is[k]-o)<m.length) k++;
+        let c=Array(cl).fill(0); c[j]=1;
+        for (let h=1;h<k;h++) c[is[h]-o]=1;
+        w = [w,'',m,c.map(t=>t?'^':' ').join('')].join('\n');
+        if (k<n) w+='\n'+'(and other lines)';
       }
       doc.rslt.classList.add('err');
       doc.rslt.textContent=w;
