@@ -12,7 +12,7 @@
 <p>APL tends to define its data by starting with the array and then looking downwards in depth at what it contains. The based array model, as the name suggests, starts at the foundations, which in BQN are called &quot;atoms&quot;. There are five types of atom, which together with the array type give the six types a value can have in BQN. Based means being yourself, and an atom's <em>not</em> an array.</p>
 <p>An atom has <a href="depth.html">depth</a> 0, and doesn't inherently have a shape. However, primitives that expect an array promote atoms by enclosing them to get a rank-0, or <em>unit</em>, array that contains the atom (any value can be enclosed in this way, giving a unit array with higher depth, but it only happens automatically for atoms). Rank and shape both do this, so an atom can be considered to have the same dimensions as a unit array: rank 0 and shape <code><span class='Bracket'>⟨⟩</span></code>. An atom is also considered a kind of unit, but it's not a unit array.</p>
 <p>Atoms are displayed as plain values, while enclosed atoms, that is, depth-1 unit arrays, are shown with an array display.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyAgICAjIEF0b20KPDMgICAjIEFycmF5CiczJyAgIyBBdG9t&run">↗️</a><pre>    <span class='Number'>3</span>    <span class='Comment'># Atom
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyAgICAjIEF0b20KPDMgICAjIEFycmF5CiczJyAgIyBBdG9t">↗️</a><pre>    <span class='Number'>3</span>    <span class='Comment'># Atom
 </span>3
     <span class='Function'>&lt;</span><span class='Number'>3</span>   <span class='Comment'># Array
 </span>┌·   
@@ -22,18 +22,18 @@
 </span>'3'
 </pre>
 <p>In addition to numbers and characters, functions, 1-modifiers, and 2-modifiers are atoms. We can see this by converting one to a subject <a href="context.html">role</a> and checking its depth.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=UGx1cyDihpAgKwriiaEgcGx1cw==&run">↗️</a><pre>    <span class='Function'>Plus</span> <span class='Gets'>←</span> <span class='Function'>+</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=UGx1cyDihpAgKwriiaEgcGx1cw==">↗️</a><pre>    <span class='Function'>Plus</span> <span class='Gets'>←</span> <span class='Function'>+</span>
     <span class='Function'>≡</span> <span class='Value'>plus</span>
 0
 </pre>
 <p>The primitives that return a single number, like Rank (<code><span class='Function'>=</span></code>), Length (<code><span class='Function'>≠</span></code>), and Match (<code><span class='Function'>≡</span></code>), give it as an atom, not an array.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhICJhYmMiCuKJoSDiiaEgImFiYyIgICMgVGhlIHJlc3VsdCB3YXMgYW4gYXRvbQ==&run">↗️</a><pre>    <span class='Function'>≡</span> <span class='String'>&quot;abc&quot;</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhICJhYmMiCuKJoSDiiaEgImFiYyIgICMgVGhlIHJlc3VsdCB3YXMgYW4gYXRvbQ==">↗️</a><pre>    <span class='Function'>≡</span> <span class='String'>&quot;abc&quot;</span>
 1
     <span class='Function'>≡</span> <span class='Function'>≡</span> <span class='String'>&quot;abc&quot;</span>  <span class='Comment'># The result was an atom
 </span>0
 </pre>
 <p><a href="transpose.html">Transposing</a> no axes of an array wouldn't do anything. But because Transpose expects its right argument to be an array, it converts an atom to an array.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+o4p+pIOKNiSAz&run">↗️</a><pre>    <span class='Bracket'>⟨⟩</span> <span class='Function'>⍉</span> <span class='Number'>3</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+o4p+pIOKNiSAz">↗️</a><pre>    <span class='Bracket'>⟨⟩</span> <span class='Function'>⍉</span> <span class='Number'>3</span>
 ┌·   
 · 3  
     ┘
