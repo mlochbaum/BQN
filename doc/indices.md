@@ -22,7 +22,7 @@ The following functions take or return indices. Except where marked, the indices
 
 Dyadic Transpose (`⍉`) uses indices into the right argument axes in its left argument, but since array shape is 1-dimensional, there is only one sensible choice for this, a single number.
 
-# Element indices
+## Element indices
 
 In general, the index of an element of an array is a list whose length matches the array rank. It is also possible to use a number for an index into a list, as the list index is a singleton, but this must be kept consistent with the rest of the language. NARS-family APLs make the Index Generator (`↕` in BQN) return a numeric list when the argument has length 1 but a nested array otherwise. This means that the depth of the result depends on the shape of the argument, inverting the typical hierarchy. BQN shouldn't have such an inconsistency.
 
@@ -30,7 +30,7 @@ Functions `↕`, `/`, `⊔`, and `⊑` naturally deal with element indices. Each
 
 Unlike `/` and `⊔`, `↕` and `⊑` do use list element indices. For `↕` this is because the output format can be controlled by the argument format: if passed a single number, the result uses atomic indices (so it's a numeric list); if passed a list, it uses list indices and the result has depth 2 (the result depth is always one greater than the argument depth). For `⊑`, list indices are chosen because `⊏` handles atomic indices well already. When selecting multiple elements from a list, they would typically have to be placed in an array, which is equivalent to `⊏` with a numeric list left argument. An atomic left argument to `⊑` is converted to a list, so it can be used to select a single element if only one is wanted. To select multiple elements, `⊑` uses each depth-1 array in the left argument as an index and replaces it with that element from the right argument. Because this uses elements as elements (not cells), it is impossible to have conformability errors where elements do not fit together. Ill-formed index errors are of course still possible, and the requirements on indices are quite strict. They must exactly match the structure of the right argument's shape, with no units or higher-rank arrays allowed. Atoms also cannot be used in this context, as it would create ambiguity: is a one-element list an index, or does it contain an index?
 
-# Major cell indices
+## Major cell indices
 
 One of the successes of the [leading axis model](https://aplwiki.com/wiki/Leading_axis_theory) is to introduce a kind of index for multidimensional arrays that is easier to work with than list indices. The model introduces [cells](https://aplwiki.com/wiki/Cell), where a cell index is a list of any length up to the containing array's rank. General cell indices are discussed in the next section; first we introduce a special case, indices into major cells or ¯1-cells. These cells naturally form a list, so the index of a major cell is a single number. These indices can also be considered indices along the first axis, since an index along any axis is a single number.
 
@@ -38,7 +38,7 @@ Ordering-based functions `⍋`, `⍒`, `⊐`, and `⊒` only really make sense w
 
 Only one other function—but an important one!—deals with cells rather than elements: `⊏`, cell selection. Like dyadic `↑↓↕⌽⍉` (depth 0) and `/⊔` (depth 1), Select allows either a simple first-axis case where the left argument has depth 1 or less (a depth-0 argument is automatically enclosed), and a multi-axis case where it is a list of depth-1 elements. In each case the depth-1 arrays index along a single axis.
 
-# General cell indices
+## General cell indices
 
 BQN does not use general cell indices directly, but it is useful to consider how they might work, and how a programmer might implement functions that use them in BQN if needed. The functions `/`, `⊔`, and `⊏` are the ones that can work with indices for multidimensional arrays but don't already. Here we will examine how multidimensional versions would work.
 
