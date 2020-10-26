@@ -51,7 +51,7 @@ Tokenize←{
   str←1↓¨𝕩⊔˜1-˜(+`si←a>»qe)×≠`dm∧ab         # Strings (indices /si)
 
   # Extract words: identifiers and numbers
-  t←CharCode f/𝕩
+  t←CharCode (ind←/f)⊏𝕩⋄Fi←{ind/˜↩𝕨⋄𝕨/𝕩}    # Track source code indices
   w←»⊸<l←t M bD(⊣≍-˜)○⊑bW⋄us←t=¯1++´bA      # Word chars l, start w
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
@@ -63,14 +63,14 @@ Tokenize←{
   # Deduplicate literals and identifiers; other cleanup
   ki←((⍋⊏⟜n)⊸⊏/w)∾(ci∾/si)⊏+`»f             # Indices in t
   k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
-  t↩(w∨¬l∨t M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)t     # Add IDs; remove words/whitespace
+  t↩(w∨¬l∨t M bW)Fi(∾j++`vi»≠¨k)⌾(ki⊸⊏)t    # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
-  t/˜↩1¨⌾(sk⊸⊏)t≠sep                        # Remove the rest
+  t Fi˜↩1¨⌾(sk⊸⊏)t≠sep                      # Remove the rest
   r←ir⌾((t M vi∾≠⊑k)⊸/)(vi⌊t)⊏charRole∾0    # Role
   t+↩5×t M⟨⊑bI,5⟩                           # Case-insensitive special names
-  ⟨t,r,k⟩
+  ⟨t,r,k,ind⟩
 }
 
 # 𝕩 is a list of tokens that contains the numeric literals, each
@@ -195,7 +195,7 @@ LEB←{
 }
 
 Compile←{
-  ⟨tok,role,val⟩←Tokenize 𝕩
+  ⟨tok,role,val,ind⟩←Tokenize 𝕩
   ⟨bc,prim,blk⟩←⟨role,≠⊑val⟩ Parse tok
   ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk⟩
 }
