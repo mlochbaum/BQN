@@ -8,7 +8,7 @@
 <h2 id="arithmetic">Arithmetic</h2>
 <p>All right, let's get started! Since you can run BQN online from the <a href="https://mlochbaum.github.io/BQN/try.html">REPL</a> there aren't any real technical preliminaries, but if you'd like to look at non-web-based options head over to <a href="../running.html">running.md</a>.</p>
 <p>In the code blocks shown here, input is highlighted and indented, while output is not colored or indented. To experiment with the code, you can click the <code><span class='Value'>↗️</span></code> arrow in the top right corner to open it in the REPL.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiArIDMKNi0gICA1Ci0gMS41&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>+</span> <span class='Number'>3</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiArIDMKNi0gICA1Ci0gMS41">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>+</span> <span class='Number'>3</span>
 5
     <span class='Number'>6</span><span class='Function'>-</span>   <span class='Number'>5</span>
 1
@@ -32,7 +32,7 @@
 
 <p>Shown above are a few arithmetic operations. BQN manages to pass as a normal programming language for three lines so far. That's a big accomplishment for BQN! Earth's a confusing place!</p>
 <p>The number of spaces between <em>primitive functions</em> like <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> and their <em>arguments</em> doesn't matter: you can use as much or as little as you like. No spaces inside numbers, of course.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDDlyDPgAo5IMO3IDIKw7cg4oie&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>×</span> <span class='Number'>π</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDDlyDPgAo5IMO3IDIKw7cg4oie">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>×</span> <span class='Number'>π</span>
 6.28318530717959
     <span class='Number'>9</span> <span class='Function'>÷</span> <span class='Number'>2</span>
 4.5
@@ -66,7 +66,7 @@
 
 <p>Okay, now BQN looks like normal (grade-school) mathematics, which is sort of like looking normal. Pi (<code><span class='Number'>π</span></code>) represents <a href="https://en.wikipedia.org/wiki/Pi">that real famous number</a> and Infinity (<code><span class='Number'>∞</span></code>) is also part of the number system (the BQN spec allows an implementation to choose its number system, and all existing implementations use double-precision floats, like Javascript or Lua). In analogy with the one-argument form of Minus (<code><span class='Function'>-</span></code>) giving the negation of a number, Divide (<code><span class='Function'>÷</span></code>) with only one argument gives its reciprocal.</p>
 <p>A number can be raised to the power of another with Power, written <code><span class='Function'>⋆</span></code>. That's a star rather than an asterisk; BQN doesn't use the asterisk symbol. If it's called without a left argument, then <code><span class='Function'>⋆</span></code> uses a base of <a href="https://en.wikipedia.org/wiki/E_(mathematical_constant)">Euler's number</a> <em>e</em> and is called Exponential.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDii4YgMwozIOKLhiAyCuKLhiAxICAgIyBUaGVyZSdzIG5vIGNvbnN0YW50IGZvciBlIGJ1dCB5b3UgY2FuIGdldCBpdCB0aGlzIHdheQrii4YgMi4z&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⋆</span> <span class='Number'>3</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDii4YgMwozIOKLhiAyCuKLhiAxICAgIyBUaGVyZSdzIG5vIGNvbnN0YW50IGZvciBlIGJ1dCB5b3UgY2FuIGdldCBpdCB0aGlzIHdheQrii4YgMi4z">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⋆</span> <span class='Number'>3</span>
 8
     <span class='Number'>3</span> <span class='Function'>⋆</span> <span class='Number'>2</span>
 9
@@ -91,7 +91,7 @@
 </table>
 
 <p>You could use Power to take square roots and <em>n</em>-th roots, but BQN also provides the primitive <code><span class='Function'>√</span></code> for this purpose. If no left argument is provided, then it is the Square Root function; with a left argument it is called Root and raises the right argument to the power of one divided by the left argument.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDIKMyDiiJogMjc=&run">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>2</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDIKMyDiiJogMjc=">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>2</span>
 1.4142135623731
     <span class='Number'>3</span> <span class='Function'>√</span> <span class='Number'>27</span>
 3
@@ -104,14 +104,14 @@
 <p>In case you're wondering, Logarithm—the other inverse of Power—is written <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>. We'll get to it in the section on modifiers.</p>
 <h2 id="compound-expressions">Compound expressions</h2>
 <p>It's sometimes useful to write programs with more than one function in them. Here is where BQN and any sort of normality part ways.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MsOXMyAtIDUKKDLDlzMpIC0gNQ==&run">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>×</span><span class='Number'>3</span> <span class='Function'>-</span> <span class='Number'>5</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MsOXMyAtIDUKKDLDlzMpIC0gNQ==">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>×</span><span class='Number'>3</span> <span class='Function'>-</span> <span class='Number'>5</span>
 ¯4
     <span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>×</span><span class='Number'>3</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Number'>5</span>
 1
 </pre>
 <p>I bet if you try hard you'll remember how much you hated learning to do exponentiation before multiplication and division before addition and subtraction. Didn't I tell you Earth was a confusing place? BQN treats all functions—not just primitives but the ones you'll define as well—the same way. They are evaluated from right to left, and parentheses can be used to group subexpressions that have to be evaluated before being used as arguments.</p>
 <p>For a longer example, here's an expression for the <a href="https://en.wikipedia.org/wiki/Sphere#Enclosed_volume">volume of a sphere</a> with radius 2.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDTDtzMpIMOXIM+AIMOXIDLii4Yz&run">↗️</a><pre>    <span class='Paren'>(</span><span class='Number'>4</span><span class='Function'>÷</span><span class='Number'>3</span><span class='Paren'>)</span> <span class='Function'>×</span> <span class='Number'>π</span> <span class='Function'>×</span> <span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>3</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDTDtzMpIMOXIM+AIMOXIDLii4Yz">↗️</a><pre>    <span class='Paren'>(</span><span class='Number'>4</span><span class='Function'>÷</span><span class='Number'>3</span><span class='Paren'>)</span> <span class='Function'>×</span> <span class='Number'>π</span> <span class='Function'>×</span> <span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>3</span>
 33.5103216382911
 </pre>
 <p>The evaluation order is shown below, with the function <code><span class='Function'>⋆</span></code> on the first line evaluated first, then <code><span class='Function'>×</span></code> on the next, and so on. The effect of the parentheses is that <code><span class='Function'>÷</span></code> is evaluated before the leftmost <code><span class='Function'>×</span></code>.</p>
@@ -158,13 +158,13 @@
 <p>The following rule might help you to internalize this system in addition to identifying when parentheses are needed: an expression never needs to end with a parenthesis, or contain two closing parentheses in a row. If it does, at least one set of parentheses can be removed.</p>
 <h2 id="one-or-two-arguments">One or two arguments?</h2>
 <p>What about functions without a left argument? Let's find an equation with lots of square roots in it… <a href="https://en.wikipedia.org/wiki/Nested_radical#Denesting">looks good</a>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDMgKyAyIMOXIOKImjIKMSArIOKImjI=&run">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>3</span> <span class='Function'>+</span> <span class='Number'>2</span> <span class='Function'>×</span> <span class='Function'>√</span><span class='Number'>2</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDMgKyAyIMOXIOKImjIKMSArIOKImjI=">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>3</span> <span class='Function'>+</span> <span class='Number'>2</span> <span class='Function'>×</span> <span class='Function'>√</span><span class='Number'>2</span>
 2.4142135623731
     <span class='Number'>1</span> <span class='Function'>+</span> <span class='Function'>√</span><span class='Number'>2</span>
 2.4142135623731
 </pre>
 <p>They are the same, and now you can't say that BQN is the most complicated thing on this particular page! Just to make sure, we can find the difference by subtracting them, but we need to put the left argument in parentheses:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKImjMgKyAyw5fiiJoyKSAtIDEr4oiaMg==&run">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>√</span><span class='Number'>3</span> <span class='Function'>+</span> <span class='Number'>2</span><span class='Function'>×√</span><span class='Number'>2</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Number'>1</span><span class='Function'>+√</span><span class='Number'>2</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKImjMgKyAyw5fiiJoyKSAtIDEr4oiaMg==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>√</span><span class='Number'>3</span> <span class='Function'>+</span> <span class='Number'>2</span><span class='Function'>×√</span><span class='Number'>2</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Number'>1</span><span class='Function'>+√</span><span class='Number'>2</span>
 0
 </pre>
 <p>That's a fairly large expression, so here's another evaluation diagram to check your understanding.</p>
@@ -228,11 +228,11 @@
 <p>Perhaps more than you thought! To really get roles, it's important to understand that a role is properly a property of an expression, and not its value. In language implementation terms, roles are used only to parse expressions, giving a syntax tree, but don't dictate what values are possible when the tree is evaluated. So it's possible to have a function with a number role or a number with a function role. The reason this doesn't happen with the numeric literals and primitives we've introduced is that these tokens have a constant value. <code><span class='Function'>×</span></code> or <code><span class='Number'>∞</span></code> have the same value in any possible program, and so it makes sense that their types and roles should correspond. When we introduce identifiers, we'll see this correspondence break down—and why that's good!</p>
 <h2 id="character-arithmetic">Character arithmetic</h2>
 <p>Gosh, that's a lot of arithmetic up there. Maybe adding characters will mix things up a bit? Hang on, you can't add characters, only subtract them… let's back up.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2Mn&run">↗️</a><pre>    <span class='String'>'c'</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2Mn">↗️</a><pre>    <span class='String'>'c'</span>
 'c'
 </pre>
 <p>A character is written with single quotes. As in the C language, it's not the same as a string, which is written with double quotes. There are no escapes for characters: any source code character between single quotes becomes a character literal, even a newline. Characters permit some kinds of arithmetic:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2MnICsgMQonaCcgLSAnYSc=&run">↗️</a><pre>    <span class='String'>'c'</span> <span class='Function'>+</span> <span class='Number'>1</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2MnICsgMQonaCcgLSAnYSc=">↗️</a><pre>    <span class='String'>'c'</span> <span class='Function'>+</span> <span class='Number'>1</span>
 'd'
     <span class='String'>'h'</span> <span class='Function'>-</span> <span class='String'>'a'</span>
 7
@@ -250,15 +250,15 @@
 <li>Pointers in a computer's memory. I'll let you verify for yourself that the rules are the same.</li>
 </ul>
 <p>Want to shift an uppercase character to lowercase? Affine characters to the rescue:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J0snICsgJ2EnLSdBJw==&run">↗️</a><pre>    <span class='String'>'K'</span> <span class='Function'>+</span> <span class='String'>'a'</span><span class='Function'>-</span><span class='String'>'A'</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J0snICsgJ2EnLSdBJw==">↗️</a><pre>    <span class='String'>'K'</span> <span class='Function'>+</span> <span class='String'>'a'</span><span class='Function'>-</span><span class='String'>'A'</span>
 'k'
 </pre>
 <p>Convert a character to a digit? Here you go:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=JzQnIC0gJzAn&run">↗️</a><pre>    <span class='String'>'4'</span> <span class='Function'>-</span> <span class='String'>'0'</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=JzQnIC0gJzAn">↗️</a><pre>    <span class='String'>'4'</span> <span class='Function'>-</span> <span class='String'>'0'</span>
 4
 </pre>
 <p>The one thing affine characters won't let you do is find some special &quot;starting character&quot;: the main distinguishing factor between a linear and an affine space is that an affine space has no origin. However, for some kinds of programming finding a character's code point is important, so BQN also includes a special literal for the null character, written <code><span class='String'>@</span></code>:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=JyonIC0gQApAICsgOTc=&run">↗️</a><pre>    <span class='String'>'*'</span> <span class='Function'>-</span> <span class='String'>@</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=JyonIC0gQApAICsgOTc=">↗️</a><pre>    <span class='String'>'*'</span> <span class='Function'>-</span> <span class='String'>@</span>
 42
     <span class='String'>@</span> <span class='Function'>+</span> <span class='Number'>97</span>
 'a'
@@ -280,13 +280,13 @@
 <p>Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of &quot;characterness&quot; (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not be valid, if one of the values produced in the middle isn't legal.</p>
 <h2 id="modifiers">Modifiers</h2>
 <p>Functions are nice and all, but to really bring us into the space age BQN has a second level of function called <em>modifiers</em> (the space age in this case is when operators were introduced to APL in the early 60s—hey, did you know the <a href="https://aplwiki.com/wiki/APL_conference#1970">second APL conference</a> was held at Goddard Space Flight Center?). While functions apply to subjects, modifiers can apply to functions <em>or</em> subjects, and return functions. For example, the 1-modifier <code><span class='Modifier'>˜</span></code> modifies one function by swapping the arguments before calling it (Swap), or copying the right argument to the left if there's only one (Self).</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiAty5wgJ2QnICAjIFN1YnRyYWN0IGZyb20KK8ucIDMgICAgICAjIEFkZCB0byBpdHNlbGY=&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>-</span><span class='Modifier'>˜</span> <span class='String'>'d'</span>  <span class='Comment'># Subtract from
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiAty5wgJ2QnICAjIFN1YnRyYWN0IGZyb20KK8ucIDMgICAgICAjIEFkZCB0byBpdHNlbGY=">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>-</span><span class='Modifier'>˜</span> <span class='String'>'d'</span>  <span class='Comment'># Subtract from
 </span>'b'
     <span class='Function'>+</span><span class='Modifier'>˜</span> <span class='Number'>3</span>      <span class='Comment'># Add to itself
 </span>6
 </pre>
 <p>This gives us two nice ways to square a value:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w5fLnCA0CjIg4ouGy5wgNA==&run">↗️</a><pre>    <span class='Function'>×</span><span class='Modifier'>˜</span> <span class='Number'>4</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w5fLnCA0CjIg4ouGy5wgNA==">↗️</a><pre>    <span class='Function'>×</span><span class='Modifier'>˜</span> <span class='Number'>4</span>
 16
     <span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier'>˜</span> <span class='Number'>4</span>
 16
@@ -312,11 +312,11 @@
 </table>
 
 <p>Another 1-modifier is Undo (<code><span class='Modifier'>⁼</span></code>). BQN has just enough computer algebra facilities to look like a tool for Neanderthals next to a real computer algebra system, and among them is the ability to invert some primitives. In general you can't be sure when Undo will work (it might even be undecidable), but the examples I'll give here are guaranteed by <a href="../spec/inferred.html#undo">the spec</a> to always work in the same way. Starting with a <em>third</em> way to square a number:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oia4oG8IDQ=&run">↗️</a><pre>    <span class='Function'>√</span><span class='Modifier'>⁼</span> <span class='Number'>4</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oia4oG8IDQ=">↗️</a><pre>    <span class='Function'>√</span><span class='Modifier'>⁼</span> <span class='Number'>4</span>
 16
 </pre>
 <p>The most important use for Undo in arithmetic is the logarithm, written <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>. That's all a logarithm is: it undoes the Power function! With no left argument <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code> is the natural logarithm. If there's a left argument then Undo considers it part of the function to be undone. The result in this case is that <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code> with two arguments is the logarithm of the right argument with base given by the left one.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouG4oG8IDEwCjIg4ouG4oG8IDMyICAgICMgTG9nIGJhc2UgMgoyIOKLhiAyIOKLhuKBvCAzMgoxMCDii4bigbwgMWU0ICAjIExvZyBiYXNlIDEwIG9mIGEgbnVtYmVyIGluIHNjaWVudGlmaWMgbm90YXRpb24=&run">↗️</a><pre>    <span class='Function'>⋆</span><span class='Modifier'>⁼</span> <span class='Number'>10</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouG4oG8IDEwCjIg4ouG4oG8IDMyICAgICMgTG9nIGJhc2UgMgoyIOKLhiAyIOKLhuKBvCAzMgoxMCDii4bigbwgMWU0ICAjIExvZyBiYXNlIDEwIG9mIGEgbnVtYmVyIGluIHNjaWVudGlmaWMgbm90YXRpb24=">↗️</a><pre>    <span class='Function'>⋆</span><span class='Modifier'>⁼</span> <span class='Number'>10</span>
 2.30258509299405
     <span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier'>⁼</span> <span class='Number'>32</span>    <span class='Comment'># Log base 2
 </span>5
@@ -326,14 +326,14 @@
 </span>4
 </pre>
 <p>Another 1-modifier, which at the moment is tremendously useless, is Constant <code><span class='Modifier'>˙</span></code>. It turns its operand into a constant function that always returns the operand (inputs to modifiers are called <em>operands</em> because <em>modificands</em> is just too horrible).</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiAzy5kgNA==&run">↗️</a><pre>    <span class='Number'>2</span> <span class='Number'>3</span><span class='Modifier'>˙</span> <span class='Number'>4</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiAzy5kgNA==">↗️</a><pre>    <span class='Number'>2</span> <span class='Number'>3</span><span class='Modifier'>˙</span> <span class='Number'>4</span>
 3
 </pre>
 <p>Well, I guess it's not pedagogically useless, as it does demonstrate that a modifier can be applied to subjects as well as functions. Even though <code><span class='Number'>3</span></code> is a subject, <code><span class='Number'>3</span><span class='Modifier'>˙</span></code> is a function, and can be applied to and ignore the two arguments <code><span class='Number'>2</span></code> and <code><span class='Number'>4</span></code>.</p>
 <p>With three examples you may have noticed that 1-modifiers tend to cluster at the top of the screen. In fact, every primitive 1-modifer is a superscript character: we've covered <code><span class='Modifier'>˜⁼˙</span></code>, and the remaining array-based modifiers <code><span class='Modifier'>˘¨⌜´˝`</span></code> will show up later.</p>
 <h2 id="2-modifiers">2-modifiers</h2>
 <p>Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop <code><span class='Modifier2'>∘</span></code>, which works a lot like mathematical composition except that it uses one or two arguments. These arguments are passed to the function on the right, and the result is passed to the function on the left. So the function on the left is only ever called with one argument.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDDl8uc4oiYKyA0ICAjIFNxdWFyZSBvZiAzIHBsdXMgNAot4oiYKMOXy5wpIDUgICMgTmVnYXRpdmUgc3F1YXJlIG9mIDU=&run">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>×</span><span class='Modifier'>˜</span><span class='Modifier2'>∘</span><span class='Function'>+</span> <span class='Number'>4</span>  <span class='Comment'># Square of 3 plus 4
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDDl8uc4oiYKyA0ICAjIFNxdWFyZSBvZiAzIHBsdXMgNAot4oiYKMOXy5wpIDUgICMgTmVnYXRpdmUgc3F1YXJlIG9mIDU=">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>×</span><span class='Modifier'>˜</span><span class='Modifier2'>∘</span><span class='Function'>+</span> <span class='Number'>4</span>  <span class='Comment'># Square of 3 plus 4
 </span>49
     <span class='Function'>-</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Paren'>)</span> <span class='Number'>5</span>  <span class='Comment'># Negative square of 5
 </span>¯25

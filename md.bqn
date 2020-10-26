@@ -225,7 +225,7 @@ Markdown ← {filename𝕊𝕩:
     } 𝕩
 
     Link ← {
-      c ← tryURL ∾ "&run" ∾˜ Base64 ¯1 ↓ JoinLines 4↓¨𝕩
+      c ← tryURL ∾ Base64 ¯1 ↓ JoinLines 4↓¨𝕩
       ("a class=""replLink"" title=""Open in the REPL"" target=""_blank"" href="∾""""(∾∾⊣)c) Html "↗️"
     }
     mod ← ⟨em,e∾c∾r,ei∾ci∾ri⟩ Modify code
