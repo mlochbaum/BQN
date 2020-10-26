@@ -56,7 +56,7 @@ Tokenize←{
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
   i←l>n←l∧(+`w)⊏0∾wk<0                      # Identifier/Number masks
-  num←ReadNums n∨⟜«⊸/○(0⊸∾)t×l              # Numbers
+  num←ind ReadNums○((∨⟜«0∾n)/0⊸∾) t×l       # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))0⊸≤⊸/wk           # Identifier role
   id←(1-˜(i>us)×+`w>n)⊔t                    # Identifiers
 
@@ -76,16 +76,17 @@ Tokenize←{
 # 𝕩 is a list of tokens that contains the numeric literals, each
 # preceded by 0. Return the numbers.
 ReadNums←{
+  ind←𝕨 ⋄ _err_←{(0!˜/⟜𝔾⟜ind≍○<𝔽)⍟(∨´∘⊢)}
   ErrNumericChars←{
-    ⟨"Letter","s"/˜1<≠𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩∾⊸!0
+    ∾⟨"Letter","s"/˜1<≠𝕩," """,𝕩⊏charSet,""" not allowed in numbers"⟩
   }
   e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for eπ∞¯.
-  ErrNumericChars∘(/⟜𝕩)⍟(∨´) ¬e∨𝕩<⊑bA
+  ErrNumericChars∘(/⟜𝕩)_err_⊢ ¬e∨𝕩<⊑bA
   s←d∨c←e∨z←0=𝕩⋄m←¬n∨c
-  "Negative sign in the middle of a number" ! ∧´n≤»c
-  "Portion of a number is empty" ! ¬∨´(1«s)∧n∨s
-  "Ill-formed decimal or exponent use" ! ∧´(0⊸=∨»⊸<)s/𝕩
-  "π and ∞ must occur alone" ! ∧´(p∨i)≤1(»∧(p∧«e)∨«)z∨n
+  "Negative sign in the middle of a number"_err_⊢ n>»c
+  "Portion of a number is empty"_err_⊢ (1«s)∧n∨s
+  "Ill-formed decimal or exponent use"_err_(s⊸/) ¬(0⊸=∨»⊸<)s/𝕩
+  "π and ∞ must occur alone"_err_⊢ (p∨i)>1(»∧(p∧«e)∨«)z∨n
   f←(17≥¬(⊢-T)+`)⊸∧(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m   # No leading 0s; max 17 digits
   l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/f×𝕩-1-˜⊑bD          # Digit lookup, with ∞ as 1 to avoid ∞×0
   v←(>⟜«0≤l)/(0⊸≤××⟜10⊸+)`»«l               # Numeric values—mantissas and exponents
