@@ -14,10 +14,15 @@ let repl = ()=>{
     try {
       doc.rslt.textContent=fmt(bqn(s));
     } catch(e) {
-      let s=e.src, w=e.message, i=-1;
-      if (s==="Compiler"&&w.sh[0]===2) [i,w]=w;
-      if (s==="!") w=w?fmt(w).replace(/^/gm,'! '):'! Error';
-      else w=w.sh?w.join(""):w;
+      let r=e.src, w=e.message, i=-1;
+      if (r==='Compiler'&&w.sh[0]===2) [i,w]=w;
+      if (r==='!') w=w?fmt(w).replace(/^/gm,'! '):'! Error';
+      else w=w.sh?w.join(''):w;
+      if (i>=0) {
+        let to=i=>Array.from(s).slice(0,i).join('').split('\n');
+        let ll=to(i), l=ll.length-1, j=ll[l].length;
+        w = [w,'',to()[l],' '.repeat(j)+'^'].join('\n');
+      }
       doc.rslt.classList.add('err');
       doc.rslt.textContent=w;
     }
