@@ -104,10 +104,10 @@ if (doc.demo) doc.demo.onclick = () => {
 }
 
 if (location.hash) {
-  let code='', run=0;
+  let code='', run=1;
   location.hash.slice(1).split('&').map(s => {
     if (s.slice(0,5)==='code=') code=s.slice(5);
-    if (s.slice(0,3)==='run') run=1;
+    if (s.slice(0,3)==='norun') run=0;
   });
   let b=atob(code);
   b=new Uint8Array([...b].map(c=>c.charCodeAt(0)));
