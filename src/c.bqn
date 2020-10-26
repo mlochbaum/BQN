@@ -171,7 +171,7 @@ Parse ← {r‿nv←𝕨
   idbc←¯1⌽⟨⥊⍉>ib,3¨ed,ex≠⊸(«-⊢)ed,14¨ed⟩
 
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro
-  fa←/(ta∨ro∨«⊸∨aa)<(r=1)∨»op
+  fa←/(ta∨ro∨«⊸∨ps<aa)<(r=1)∨»op
   dy←fa⊏«(𝕩=⊑bO)<(tr∧r≥0)∨ro<r=0
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
   cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
