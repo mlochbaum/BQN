@@ -65,8 +65,9 @@ Tokenize←{
   k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
   t↩(w∨¬l∨t M bW)/(∾j++`vi»≠¨k)⌾(ki⊸⊏)t     # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
-  t/˜↩¬(1»(t∊2‿4+⊑bB)∨⊢)⊸∧t=sep             # Remove repeated and leading separators
-  t/˜↩¬(1«t∊3‿5+⊑bB)∧t=sep                  # ...and trailing ones. In sequence for repeated trailing.
+  p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
+  sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
+  t/˜↩1¨⌾(sk⊸⊏)t≠sep                        # Remove the rest
   r←ir⌾((t M vi∾≠⊑k)⊸/)(vi⌊t)⊏charRole∾0    # Role
   t+↩5×t M⟨⊑bI,5⟩                           # Case-insensitive special names
   ⟨t,r,k⟩
