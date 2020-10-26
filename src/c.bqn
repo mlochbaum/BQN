@@ -42,7 +42,7 @@ Tokenize←{
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
   St←(≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/          # All indices → reached mask
   a←St q⋄b←St e⋄f←¬≠`ab←a∨b                 # Open/close masks; filter
-  "Unclosed quote"!¬∨´(sm∨dm)∧b<f
+  {⟨⊑/𝕩,"Unclosed quote"⟩!0}⍟(∨´)(sm∨dm)∧b<f
 
   # Extract character and string literals
   u←f∧𝕩='@'⋄ci←/u∨»a∧sm
