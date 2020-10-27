@@ -121,13 +121,13 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
 
   gf←⍋fd←+`rev⊏br←p×𝕩M⟨2+⊑bB,2⟩
   rev⊏˜↩gf⋄fd⊏˜↩gf
-  𝕩⊏˜↩rev⋄bv←rev⊏br⋄b←/bv<0⋄fi←+`c←bv>0
+  𝕩⊏˜↩rev⋄ind⊏˜↩rev⋄bv←rev⊏br⋄b←/bv<0⋄fi←+`c←bv>0
 
   H←¬1(∾/∾˜)c(∨/⊣)=
   sn←(0‿3‿4‿5+5+⊑bI)⍋𝕩⋄fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn
-  "Special name outside of any block" ! 0=⊑fr
+  {⟨ind/˜(0=fi)∧𝕩 M bI,"Special name outside of any block"⟩!0}⍟(0<⊑fr) 𝕩
   nf←(⊑bG)H𝕩
-  "Can't export from a non-immediate block" ! ∧´nf≤fr=0
+  {⟨ind/˜(fi⊏0≠fr)∧𝕩=⊑bG,"Can't export from a non-immediate block"⟩!0}⍟(∨´nf>fr=0) 𝕩
   fsc←(ft⊏0‿2‿3)+3×fx
   pt←cp∧ns←¬sl∨sr
   r↩sl-˜ns×(1↓fr)⌾((b⊏rev)⊸⊏)r
