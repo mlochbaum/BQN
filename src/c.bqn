@@ -96,7 +96,7 @@ ReadNums←{
 }
 
 
-Parse ← {r‿nv←𝕨
+Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
   ErrMismatchedBrackets←{
     Lcs ← ¯1 ⊑ 0˘∘⊢ {𝕩⌈⌈`𝕨+«𝕩}˝ =⌜
     _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
@@ -109,11 +109,12 @@ Parse ← {r‿nv←𝕨
 
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gp←g⊏p⋄gb←g⊏r=¯1⋄gx←g⊏𝕩
   gp(>⟜0⊸/ErrMismatchedBrackets⍟≢1-˜<⟜0⊸/)gx
+  _err_←{(0!˜/⟜𝔾⟜ind≍○<𝔽)⍟(∨´∘⊢)}
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
-  "Parentheses can't contain separators" ! ¬∨´((⊑bB)⊸=/·«sep⊸=)gb/gx
-  "Empty statement or expression" ! ∧´(4+⊑bB)=(1⊸«⊸∧1∾gb)/0∾gx
+  "Parentheses can't contain separators"_err_(gb/g⊸⊏) ((⊑bB)⊸=»⊸∧sep⊸=)gb/gx
+  {"Empty statement or expression"_err_(𝕩/0∾g⊸⊏) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
   r-↩(𝕩=⊑bG)>ec←«0≤r+p
-  "Invalid assignment or stranding use" ! ∧´((¯4⊸<∧≤⟜¯2)r)/ec∧»0≤r
+  "Invalid assignment or stranding use"_err_⊢ ((¯4⊸<∧≤⟜¯2)r)>ec∧»0≤r
   sr←»⌾(g⊸⊏)sl←«⊸∨r=¯2⋄cp←𝕩=1+⊑bB
   g⊏˜↩⍋g⊏sl
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sl∨r=¯1
@@ -195,6 +196,6 @@ LEB←{
 
 Compile←{
   ⟨tok,role,val,ind⟩←Tokenize 𝕩
-  ⟨bc,prim,blk⟩←⟨role,≠⊑val⟩ Parse tok
+  ⟨bc,prim,blk⟩←⟨role,⊑val,ind⟩ Parse tok
   ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk⟩
 }
