@@ -6,7 +6,7 @@ The BQN self-hosted compiler is directly inspired by the [Co-dfns](https://githu
 
 The shared goals of BQN and Co-dfns are to implement a compiler for an array language with whole-array operations. This provides the theoretical benefit of a short *critical path*, which in practice means that both compilers can make good use of a GPU or a CPU's vector instructions simply by providing an appropriate runtime (however, only Co-dfns has such a runtime—an ArrayFire program on the GPU and Dyalog APL on the CPU). The two implementations also share a preference for working "close to the metal" by passing around arrays of numbers rather than creating abstract types to work with data. Objects are right out. These choices lead to a compact source code implementation, and may have some benefits in terms of how easy it is to write and understand the compiler.
 
-## Current differences
+## Compilation strategy
 
 Co-dfns development has primarily been focused on the core compiler, and not parsing, code generation, or the runtime. The associated Ph.D. thesis and famous 17 lines figure refer to this section, which transforms the abstract syntax tree (AST) of a program to a lower-level form, and resolves lexical scoping by linking variables to their definitions. While all of Co-dfns is written in APL, other sections aren't necessarily designed to be data-parallel and don't have the same performance guarantees. For example, the parser appears to be written with some sort of parser combinators. In contrast, BQN is entirely written in a data-parallel style. It does not maintain the same clean separation between compiler sections: [token formation](../spec/token.md) and literal evaluation is separated into its own function, but parsing, AST manipulation, and code generation overlap.
 
@@ -14,15 +14,15 @@ The core Co-dfns compiler is based on manipulating the syntax tree, which is mos
 
 A goal for BQN was to not only write the compiler in BQN but to use BQN for the runtime as much as possible, while Co-dfns uses a conventional runtime written in C with ArrayFire. This goal has largely been achieved, so that the current BQN runtime uses a very small number of basic array operations currently provided by Javascript. However, more basic operations may be added in the future for performance reasons.
 
-## Future differences
+## Code style
 
-BQN shares several design decisions with Co-dfns that are not intended to be permanent. This is primarily because I wanted to quickly have a working BQN implementation and reach parity with the Co-dfns compiler (not the runtime!). I think these goals have been achieved and will shift BQN's style to support other goals:
+Initially, the BQN compiler was written with a similar style to Co-dfns, primarily because I wanted to quickly have a working BQN implementation and reach parity with the Co-dfns compiler (not the runtime!). This style is now shifting to support several goals that Co-dfns doesn't have:
 - Better error reporting
 - Teaching
 - Multiple backends (bytecode, Wasm, machine code)
 - Optimization
 - Testing and debugging the compiler
 
-Aaron advocates the almost complete separation of code from comments (thesis) in addition to his very terse style as a general programming methodology. I think these choices are good for rapid development but not for maintainance and explaining the code to other developers. I will write separate long-form material on implementation, but will start expanding the source code and adding comments, mainly to explain the meaning of variables whose definitions are not instantly obvious.
+So far the most notable difference is the addition of per-line comments. Aaron advocates the almost complete separation of code from comments (thesis) in addition to his very terse style as a general programming methodology. I think these choices are good for rapid development but not for maintainance and explaining the code to other developers. So far I have commented the tokenizer fully, but I consider the rest of the compiler too unstable and messy for these kinds of comments. The comments are meant as a supplement to long-form material on implementation, which I plan to write.
 
-Co-dfns does not check for compilation errors. BQN should have complete error checking, and good error messages. Maybe it can even give better error diagnosis than sequential compilers in some cases by examining the input as a whole to find the most likely cause of the mistake. Particularly for web distribution it may still make sense to have a version of the compiler that doesn't check for errors; this should be possible simply by setting a configuration parameter when compiling the compiler.
+Co-dfns does not check for compilation errors. BQN should have complete error checking, and good error messages; the current error checking covers many cases but is still incomplete. I have found that such checking imposes a low cost on compilation speed (perhaps 25%), but a much greater cost on the compiler codebase size and legibility, and have yet to find a way to make these legibility costs manageable. The good news is that user-friendly error reporting has almost no performance cost for working programs, because error reporting code only needs to be run when compilation fails, and the only extra information that needs be stored to support it is source code locations of tokens. Maybe the array model can even give better error diagnosis than sequential compilers in some cases by examining the input as a whole to find the most likely cause of the mistake.
