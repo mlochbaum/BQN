@@ -1,7 +1,7 @@
 #! /usr/bin/env dbqn
 
 compile ← •Import "c.bqn"
-Comp ← ((<"runtime["∾⍕∾"]"˙)¨↕62)⊸Compile
+Comp ← ¯1 ↓ ((<"runtime["∾⍕∾"]"˙)¨↕62)⊸Compile
 FP ← ∞⊸=◶⟨⍕,"Infinity"⟩
 Esc ← (⟨"\t","\n","\r","\'","\"""⟩∾<∘⥊)⊑˜("'"""∾˜@+9‿10‿13)⊑∘⊐⊢
 Str ← "str("""∾(∾Esc¨)∾""")"˜
