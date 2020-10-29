@@ -14,22 +14,23 @@ let repl = ()=>{
     try {
       doc.rslt.textContent=fmt(bqn(s));
     } catch(e) {
-      let r=e.src, w=e.message, is=null;
-      if (r==='Compiler'&&w.sh[0]===2) [is,w]=w;
-      if (r==='!') w=w?fmt(w).replace(/^/gm,'! '):'! Error';
-      else w=w.sh?w.join(''):w;
-      if (is!==null) {
+      console.log(e);
+      let r=e.src, w=e.message, loc=[];
+      while (w.sh&&w.sh[0]===2) {
+        let is; [is,w]=w;
         let n=is.sh?is.sh[0]:0, i=n?is[0]:is;
         let to=i=>Array.from(s).slice(0,i).join('').split('\n');
         let ll=to(i), l=ll.length-1, j=ll[l].length, m=to()[l];
         let k=1,o=i-j,cl=j; while (k<n&&(cl=is[k]-o)<m.length) k++;
         let c=Array(cl).fill(0); c[j]=1;
         for (let h=1;h<k;h++) c[is[h]-o]=1;
-        w = [w,'',m,c.map(t=>t?'^':' ').join('')].join('\n');
-        if (k<n) w+='\n'+'(and other lines)';
+        let add = ['',m,c.map(t=>t?'^':' ').join('')];
+        loc = add.concat(k<n?['(and other lines)']:[], loc);
       }
+      if (r==='!') w=w?fmt(w).replace(/^/gm,'! '):'! Error';
+      else w=w.sh?w.join(''):w;
       doc.rslt.classList.add('err');
-      doc.rslt.textContent=w;
+      doc.rslt.textContent=[w].concat(loc).join('\n');
     }
   }, 0);
 }
