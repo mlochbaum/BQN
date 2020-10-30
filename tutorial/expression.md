@@ -197,6 +197,10 @@ It's past time we covered how the syntax for modifiers works. Remember how I tol
             ∘+
         3      4
 
+<!--GEN
+DrawEval "3 ×˜∘+ 4"
+-->
+
 This ordering is more consistent with the fact that the operand of a 1-modifier goes to its left. If we tried going from right to left we'd end up with `×(˜∘+)`, which uses `˜` as an operand to `∘`. But a modifier can't be used as an operand. To make it work we'd essentially have to give 1-modifiers a higher precedence than 2-modifiers.
 
 In fact, the rules for modifiers are exactly the same as those for functions, but reversed. So why is there a distinction between 1- and 2-modifiers, when for functions we can look to the left to see whether there is a left argument? The reason is that it's natural to follow a 1-modifier by a subject or function that isn't supposed to be its operand. Using an example from the last section, `+˜ 3` has a subject to the right of the 1-modifier `˜`. Even worse, `+˜ ÷ 3` looks the same syntactically as `+∘ ÷ 3`, but it's two functions `+˜` and `÷` applied to `3` while the version with Atop is a single function `+∘÷` applied to `3`. So the two-layer system of functions and modifiers forces modifiers to have a fixed number of operands even every function (including those derived by applying modifiers) can be called with one or two arguments.

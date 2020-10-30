@@ -15,25 +15,39 @@ Shadow ← {
 }
 
 DrawEval←{
-  ix←𝕩⊏˜i←/𝕩≠' '
-  f←0=b←(op←'('=ix)-')'=ix
-  l←op<<⟜«fn←ix∊"+-×÷⋆√"
-  g←⍋+`b
-  ei←¯1∾˜b{((𝕨<0)/𝕩)⌾((𝕨>0)⊸/)𝕩}○(g⊸⊏)»+`f
-  o←ei⊏˜f/↕∘≠⊸-⌾(g⊸⊏)(1+»l)(⊢+fn×-)1-2×l
-  g⊏˜↩⍋g⊏l
-  rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏l∨op
-  m←1+⌈´d←+`⊸×⌾(rev⊸⊏)fn
+  b‿const‿blk‿i ← Compile 𝕩
+  ba‿bc‿bo‿bp ← '0'-˜⟨ # For each instruction, number of:
+    "11111000000000010000022000"  # Arguments
+    "000//232323223102303200121"  # Stack values consumed
+    "11111111111111011101111111"  # Stack values output
+    "00000110101000001101000100"  # Position determiner
+  ⟩
+  m ← { # Mask of instruction starts
+    a ← ba(⊣⊏˜≠⊸>×⊢)b
+    na← ∾⟜≠ (≠-(1+↕∘≠)⊸(»·⌈`×)⌾⌽) <⟜128 b
+    n ← 1+{(𝕩=⌜a) +˝∘× >⊏⟜na⍟𝕩↕≠a}↕3
+    ! ∧´ ↕∘≠⊸< n
+    Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)
+    (≠↑∾⟜≠Se 1∾0¨) n
+  }
+  mb‿mi ← m⊸/¨ b‿i
+  mi↓˜↩¯1
 
-  pt ← f/⍉> wh×⟨i,d⟩
-  off← (o ⊏ ∾⟜(wh×¯1.25‿m))⊸- pt
-  pd ← pt (<(wh×0.6‿0.1)⊸+)⊸∾⟜⌽˘ off
-  dim← (wh×⟨≠𝕩,2+m⟩)+2‿0×pad
-  tp ← <˘pt+to+⎉1(0‿1×⌜˜f/¬fn)×off
+  r←+`(mb⊏bo)-na←mb⊏bc
+  ! 1=¯1⊑r
+  p←((¯1↓r)⍋⊸⊏○⍋(⊏⟜r+⊒))⊸⊏/na
+  j←¯1↓mi⊏˜⊏˜⍟≠{s←𝕩⊏˜g←⍋𝕩⋄(g/˜(⊒s)=s⊏mb⊏bp)⌾((⍷s)⊸⊏)↕≠mb}p
+  je←j∾¯1.25
+  d←+`⊸×f←0<na
+  f↑˜↩≠p
+  q←(/f∨j≠p⊏je) (⊏≍⊣) p
+
+  pd ← <⊸∾⟜⌽˘˜˝ q ⊏ ⍉wh×0.6‿0.1+je≍d
+  dim← (wh×⟨≠𝕩,2+⌈´d⟩)+2‿0×pad
   (512‿0⊸⌈⊸(⊣∾˜(t+pad)-˜-˜÷2˙)dim+2×t) SVG gr Enc ∾⥊¨⟨
     <"rect" Elt rc∾(Pos-pad)∾"width"‿"height"≍˘FmtNum¨dim
     <"text" Enc Highlight 𝕩
-    (<"path" Elt ps∾"d"≍○<·∾"Mvh"∾⟜Fmt¨⊢)˘ pd
-    <tp Shadow f/ix
+    (<"path" Elt ps∾"d"≍○<·∾"MVH"∾⟜Fmt¨⊢)˘ pd
+    mi ((to+wh×≍)¨Shadow⊏⟜𝕩)⟜(⊏⟜d)○((¬f)⊸/) p
   ⟩
 }
