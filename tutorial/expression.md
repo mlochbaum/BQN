@@ -193,10 +193,6 @@ Primitives ⟨"∘%j%Atop"⟩
 -->
 It's past time we covered how the syntax for modifiers works. Remember how I told you you hated learning the order of operations? No? Good. Modifiers bind more tightly than functions, so they are called on their operands before their operands can be used. As the parentheses above suggest, modifiers also associate from left to right, the opposite order as functions. For example, the first expression above is evaluated in the order shown below. First we construct the square function `×˜`, then compose it with `+`, and finally apply the result to some arguments.
 
-     =    ×˜
-            ∘+
-        3      4
-
 <!--GEN
 DrawEval "3 ×˜∘+ 4"
 -->
