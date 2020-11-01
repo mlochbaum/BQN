@@ -17,6 +17,6 @@ Long ← ∾ (≠↑1‿3/⟨"  new Uint8Array("∾∾⟜")"⋄((@+10)∾" ,")�
   {𝕩⋄ref‿len←•Import"pr.bqn"⋄Long Frun len⊸↓⌾(1⊸⊑)Comp ref}
   {𝕩⋄Long Fout Comp J •LNS "c.bqn"}
   {𝕩⋄Long Fout Comp J •LNS "fmt.bqn"}
-  {𝕩⋄Long Fout Comp J ∾ •LNS∘∾⟜".bqn"¨ "ea"‿"../svg"‿"e"}
+  {𝕩⋄Long Fout Comp J ⟨"Modify←GetHighlights←⊢"⟩∾∾ •LNS∘∾⟜".bqn"¨ "../svg"‿"e"}
   ¯1 ↓ · J L∘Fout∘Comp¨
 ⟩ args
