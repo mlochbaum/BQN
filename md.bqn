@@ -161,10 +161,7 @@ blobURL ← repoURL∾"/blob/master/"
 
 # Environments
 _getCodeExec ← {𝕗⋄⍎}
-_getSvgExec ← {𝕗
-  Compile ← (↕62)⊸(•Import "src/c.bqn")  # for tutorial/evalexp.bqn
-  JoinLines⍟(1<≡)∘(⟨"svg.bqn","⍎"⟩ •Import "dzref")
-}
+_getSvgExec ← {𝕗⋄JoinLines⍟(1<≡)∘(⟨"svg.bqn","⍎"⟩ •Import "dzref")}
 
 
 ################################
@@ -310,7 +307,7 @@ Markdown ← {filename𝕊𝕩:
   ProcComment ← {
     n←≠s←"<!--GEN" ⋄ l←¯3↓⍟(1=≠𝕩)⊑𝕩 ⋄ a←s≡n↑l
     Source ← {((0<≠)◶<‿(•LNS path∾⊢) Trim n↓l) ∾ 1↓¯1↓𝕩}
-    GenHtml⍟a JoinLines Source⍟a 𝕩
+    ⟨⟨⟩,"",path⟩ GenHtml⍟a JoinLines Source⍟a 𝕩
   }
   ProcHtml ← {
     codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
