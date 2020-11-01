@@ -54,9 +54,10 @@ Explain ← {
     Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)
     (≠↑∾⟜≠Se 1∾0¨) n
   }
-  mb‿mi ← m⊸/¨ b‿i
-  mi↓˜↩¯1
-  r←+`(mb⊏bo)-na←mb⊏bc
+  mb‿mi ← 0‿¯1 ↓¨ m⊸/¨ b‿i
+  la←¯1=na←mb⊏bc
+  na(b⊏˜1+⊣)⌾(la⊸/)˜↩/m
+  r←+`(mb⊏bo)-na
   ! 1=¯1⊑r
   d←+`⊸×f←0<na
   p←((¯1↓r)⍋⊸⊏○⍋(⊏⟜r+⊒))⊸⊏/na
@@ -76,7 +77,7 @@ Explain ← {
 
   j←¯1↓((1-˜+`¬f)⊏ii)⊏˜⊏˜⍟≠{s←𝕩⊏˜g←⍋𝕩⋄(g/˜(⊒s)=s⊏mb⊏bp)⌾((⍷s)⊸⊏)↕≠mb}p
   je←j∾¯1.25
-  q←(/f∨j≠p⊏je) (⊏≍⊣) p
+  q←(/f∨j≠p⊏je-la) (⊏≍⊣) p
 
   pd ← <⊸∾⟜⌽˘˜˝ q ⊏ ⍉wh×0.6‿0.1+je≍d
   dim← (wh×⟨≠𝕩,2+⌈´d⟩)+2‿0×pad
