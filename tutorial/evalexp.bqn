@@ -14,6 +14,7 @@ Shadow ← {
   gt Enc ⟨gb,gf⟩ Enc¨<˘ t
 }
 
+Compile ← (↕62)⊸(•Import "../src/c.bqn")
 DrawEval←{
   b‿const‿blk‿i ← Compile 𝕩
   ba‿bc‿bo‿bp ← '0'-˜⟨ # For each instruction, number of:
