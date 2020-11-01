@@ -18,7 +18,7 @@ Shadow ← {
 }
 
 Explain ← {
-  b‿const‿blk‿i ← 𝕨
+  b‿const‿blk‿i‿tok ← 𝕨
   ba‿bc‿bo‿bp ← '0'-˜⟨ # For each instruction, number of:
     "11111000000000010000022000"  # Arguments
     "000//232323223102303200121"  # Stack values consumed

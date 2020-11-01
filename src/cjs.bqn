@@ -2,7 +2,7 @@
 
 compile ← •Import "c.bqn"
 useInd ← "-i"≡⊑args←•args ⋄ args↓˜↩useInd
-Comp ← (-¬useInd) ↓ ((<"runtime["∾⍕∾"]"˙)¨↕62)⊸Compile
+Comp ← (3+useInd) ↑ ((<"runtime["∾⍕∾"]"˙)¨↕62)⊸Compile
 FP ← ∞⊸=◶⟨⍕,"Infinity"⟩
 Esc ← (⟨"\t","\n","\r","\'","\"""⟩∾<∘⥊)⊑˜("'"""∾˜@+9‿10‿13)⊑∘⊐⊢
 Str ← "str("""∾(∾Esc¨)∾""")"˜
