@@ -51,26 +51,28 @@ Tokenize←{
   str←1↓¨𝕩⊔˜1-˜(+`si←a>»qe)×≠`dm∧ab         # Strings (indices /si)
 
   # Extract words: identifiers and numbers
-  t←CharCode (ind←/f)⊏𝕩⋄Fi←{ind/˜↩𝕨⋄𝕨/𝕩}    # Track source code indices
+  is←/1»f⋄ie←/f⋄Fs←{is/˜↩𝕨⋄𝕨/𝕩}             # Token start and end
+  t←CharCode ie⊏𝕩
   w←»⊸<l←t M bD(⊣≍-˜)○⊑bW⋄us←t=¯1++´bA      # Word chars l, start w
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
   i←l>n←l∧(+`w)⊏0∾wk<0                      # Identifier/Number masks
-  num←ind ReadNums○((∨⟜«0∾n)/0⊸∾) t×l       # Numbers
+  num←is ReadNums○((∨⟜«0∾n)/0⊸∾) t×l        # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))0⊸≤⊸/wk           # Identifier role
   id←(1-˜(i>us)×+`w>n)⊔t                    # Identifiers
 
   # Deduplicate literals and identifiers; other cleanup
   ki←((⍋⊏⟜n)⊸⊏/w)∾(ci∾/si)⊏+`»f             # Indices in t
   k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
-  t↩(w∨¬l∨t M bW)Fi(∾j++`vi»≠¨k)⌾(ki⊸⊏)t    # Add IDs; remove words/whitespace
+  wf←¬l∨t M bW⋄ie/˜↩wf∨>⟜«l                 # Index management for...
+  t↩(w∨wf)Fs(∾j++`vi»≠¨k)⌾(ki⊸⊏)t           # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
-  t Fi˜↩1¨⌾(sk⊸⊏)t≠sep                      # Remove the rest
+  t{ie/˜↩𝕨⋄𝕨Fs𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep            # Remove the rest
   r←ir⌾((t M vi∾≠⊑k)⊸/)(vi⌊t)⊏charRole∾0    # Role
   t+↩5×t M⟨⊑bI,5⟩                           # Case-insensitive special names
-  ⟨t,r,k,ind⟩
+  ⟨t,r,k,is,ie⟩
 }
 
 # 𝕩 is a list of tokens that contains the numeric literals, each
@@ -195,7 +197,7 @@ LEB←{
 }
 
 Compile←{
-  ⟨tok,role,val,ind⟩←tx←Tokenize 𝕩
-  ⟨bc,prim,blk,indb⟩←⟨role,⊑val,ind⟩ Parse tok
+  ⟨tok,role,val,inds,inde⟩←tx←Tokenize 𝕩
+  ⟨bc,prim,blk,indb⟩←⟨role,⊑val,inds⟩ Parse tok
   ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk, indb, tx⟩
 }
