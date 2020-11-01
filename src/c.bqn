@@ -195,7 +195,7 @@ LEB←{
 }
 
 Compile←{
-  ⟨tok,role,val,ind⟩←Tokenize 𝕩
+  ⟨tok,role,val,ind⟩←tx←Tokenize 𝕩
   ⟨bc,prim,blk,indb⟩←⟨role,⊑val,ind⟩ Parse tok
-  ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk, indb⟩
+  ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk, indb, tx⟩
 }
