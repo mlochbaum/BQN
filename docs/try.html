@@ -8,8 +8,9 @@
   <style>
     li { margin:0.7em 0; }
     textarea { padding:0.2em; }
-    .perm, .count { font-size:0.7em; margin:-0.2em 1.6em 0 0; }
-    .run, .perm { float:right; }
+    .perm, .count { font-size:0.7em; margin:-0.2em 0.8em 0 0; }
+    .run, .doexplain, .perm { float:right; margin-left:0.4em; }
+    .doexplain.selected { background:#777; }
     .count { float:left; opacity:0.6; }
     .rslt { border:none; background:none; min-height:8em; }
   </style>
@@ -21,8 +22,10 @@
     <textarea class="code" rows="8" autofocus></textarea>
     <div class="count"></div>
     <input class="run" type="submit" value="Run (or shift-enter)"/>
+    <input class="doexplain" type="button" value="Explain"/>
     <a class="perm" href="#" title="Link with the code above embedded">permalink</a>
   </div>
+  <div class="explain"></div>
   <pre class="rslt"></pre>
   <p>
     Notes:
