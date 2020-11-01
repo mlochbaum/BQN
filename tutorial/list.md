@@ -182,6 +182,11 @@ Now we'd like to generate that list `8‿4‿2‿1` instead of writing it out, p
 
 Lot of functions up there. Notice how I need to use parentheses for the left argument of a function if it's compound, but never for the right argument, and consequently never with a one-argument function.
 
+<!--GEN evalexp.bqn
+wh↩19⌾(¯1⊸⊑)wh
+DrawEval "+´ (⌽2⋆↕4) × ""1001""-'0'"
+-->
+
 Representing our ASCII statement as a list of lists, we convert each digit to a number as before:
 
         '0' -˜ "01001110"‿"01100101"‿"01110010"‿"01100100"‿"00100001"
