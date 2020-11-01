@@ -1,3 +1,6 @@
+# Expression explainer: generates an svg diagram to show how a BQN
+# program is evaluated
+
 wh ← 10.75‿24
 pad← wh×2‿1
 to ← 1+wh÷2‿3
