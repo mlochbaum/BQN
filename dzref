@@ -118,8 +118,8 @@ _withRef ← ˙
     src ← E_proc¨ •LNS 𝕩
     ⟨⟨⟩,"",(∨`⌾⌽'/'=𝕩)/𝕩⟩ Raw ∾ ∾⟜lf¨ src
   }
-  X↩Raw∘E_proc
-  _withRef ↩ {𝕗∘E_proc}
+  _withRef ↩ {𝔽∘E_proc⊘(𝔽⟜E_proc)}
+  X↩Raw _withRef
   Raw ∾ ∾⟜lf¨ pre
   ≠◶(X˙)‿{ExecFile ⊑𝕩}‿{ExecFile ⊑𝕩 ⋄ X 1⊑𝕩} •args
 }
