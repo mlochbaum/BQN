@@ -9,9 +9,9 @@ t  ← 10
 ps ← At "class=Paren|stroke=currentColor|fill=none|stroke-width=1"
 rc ← At "class=code|stroke-width=1|rx=10"
 gr ← "g" At "font-family=BQN,monospace|font-size=18px"
-gt ← "g" At "text-anchor=middle"
-gb ← "g" At "class=codeCover|stroke-width=6|stroke-linejoin=round"
-gf ← "g" At "font-size=15px|opacity=0.9"
+gt ← "g" At "font-size=15px|text-anchor=middle"
+gb ← "g" At "class=codeCover|stroke-width=8|stroke-linejoin=round"
+gf ← "g" At "opacity=0.9"
 Shadow ← {
   t ← (⟨0,0‿¯2⟩+⌜𝕨) ("text" Attr Pos)⊸Enc¨ (1⊸⊑¨≍∾¨) 𝕩
   gt Enc ⟨gb,gf⟩ Enc¨<˘ t
