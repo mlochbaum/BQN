@@ -56,17 +56,13 @@ Explain ← {
   }
   mb‿mi ← m⊸/¨ b‿i
   mi↓˜↩¯1
-
   r←+`(mb⊏bo)-na←mb⊏bc
   ! 1=¯1⊑r
-  p←((¯1↓r)⍋⊸⊏○⍋(⊏⟜r+⊒))⊸⊏/na
-  j←¯1↓mi⊏˜⊏˜⍟≠{s←𝕩⊏˜g←⍋𝕩⋄(g/˜(⊒s)=s⊏mb⊏bp)⌾((⍷s)⊸⊏)↕≠mb}p
-  je←j∾¯1.25
   d←+`⊸×f←0<na
+  p←((¯1↓r)⍋⊸⊏○⍋(⊏⟜r+⊒))⊸⊏/na
   f↑˜↩≠p
-  q←(/f∨j≠p⊏je) (⊏≍⊣) p
 
-  src‿toks ← tok {
+  src‿toks‿ii ← tok {
     tok‿role‿val‿s‿e ← 𝕨
     n ← ≠hlch
     o ← hlTag ⊏˜ (n+3+role) (⊢+-×n⊸=) GetHlcl s⊏𝕩
@@ -74,8 +70,13 @@ Explain ← {
     t ← c∾o
     src ← ((↕≠𝕩)∾(≠¨t)/e∾s-1) ⍋⊸⊏ 𝕩∾∾t
     tt← <˘⍉> ⟨o, e(𝕩⊏˜⊢+↕∘¬)¨s, c⟩
-    ⟨src, (s⊐(¬f)/mi)⊏tt⟩
+    ti← s⊐(¬f)/mi
+    ⟨src, ti⊏tt, ti⊏(s+e)÷2⟩
   } 𝕩
+
+  j←¯1↓((1-˜+`¬f)⊏ii)⊏˜⊏˜⍟≠{s←𝕩⊏˜g←⍋𝕩⋄(g/˜(⊒s)=s⊏mb⊏bp)⌾((⍷s)⊸⊏)↕≠mb}p
+  je←j∾¯1.25
+  q←(/f∨j≠p⊏je) (⊏≍⊣) p
 
   pd ← <⊸∾⟜⌽˘˜˝ q ⊏ ⍉wh×0.6‿0.1+je≍d
   dim← (wh×⟨≠𝕩,2+⌈´d⟩)+2‿0×pad
@@ -83,6 +84,6 @@ Explain ← {
     <"rect" Elt rc∾(Pos-pad)∾"width"‿"height"≍˘FmtNum¨dim
     <"text" Enc src
     (<"path" Elt ps∾"d"≍○<·∾"MVH"∾⟜Fmt¨⊢)˘ pd
-    (mi (to+wh×≍)¨⟜(⊏⟜d)○((¬f)⊸/) p) Shadow toks
+    (ii (to+wh×≍)¨⟜(⊏⟜d) (¬f)/p) Shadow toks
   ⟩
 }
