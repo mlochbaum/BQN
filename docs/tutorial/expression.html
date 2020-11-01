@@ -33,7 +33,7 @@
 <p>Shown above are a few arithmetic operations. BQN manages to pass as a normal programming language for three lines so far. That's a big accomplishment for BQN! Earth's a confusing place!</p>
 <p>The number of spaces between <em>primitive functions</em> like <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> and their <em>arguments</em> doesn't matter: you can use as much or as little as you like. No spaces inside numbers, of course.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDDlyDPgAo5IMO3IDIKw7cg4oie">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>×</span> <span class='Number'>π</span>
-6.28318530717959
+6.283185307179586
     <span class='Number'>9</span> <span class='Function'>÷</span> <span class='Number'>2</span>
 4.5
     <span class='Function'>÷</span> <span class='Number'>∞</span>
@@ -71,9 +71,9 @@
     <span class='Number'>3</span> <span class='Function'>⋆</span> <span class='Number'>2</span>
 9
     <span class='Function'>⋆</span> <span class='Number'>1</span>   <span class='Comment'># There's no constant for e but you can get it this way
-</span>2.71828182845905
+</span>2.718281828459045
     <span class='Function'>⋆</span> <span class='Number'>2.3</span>
-9.97418245481472
+9.974182454814718
 </pre>
 <table class='primitives'>
   <tr>
@@ -92,7 +92,7 @@
 
 <p>You could use Power to take square roots and <em>n</em>-th roots, but BQN also provides the primitive <code><span class='Function'>√</span></code> for this purpose. If no left argument is provided, then it is the Square Root function; with a left argument it is called Root and raises the right argument to the power of one divided by the left argument.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDIKMyDiiJogMjc=">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>2</span>
-1.4142135623731
+1.4142135623730951
     <span class='Number'>3</span> <span class='Function'>√</span> <span class='Number'>27</span>
 3
 </pre>
@@ -112,7 +112,7 @@
 <p>I bet if you try hard you'll remember how much you hated learning to do exponentiation before multiplication and division before addition and subtraction. Didn't I tell you Earth was a confusing place? BQN treats all functions—not just primitives but the ones you'll define as well—the same way. They are evaluated from right to left, and parentheses can be used to group subexpressions that have to be evaluated before being used as arguments.</p>
 <p>For a longer example, here's an expression for the <a href="https://en.wikipedia.org/wiki/Sphere#Enclosed_volume">volume of a sphere</a> with radius 2.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDTDtzMpIMOXIM+AIMOXIDLii4Yz">↗️</a><pre>    <span class='Paren'>(</span><span class='Number'>4</span><span class='Function'>÷</span><span class='Number'>3</span><span class='Paren'>)</span> <span class='Function'>×</span> <span class='Number'>π</span> <span class='Function'>×</span> <span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>3</span>
-33.5103216382911
+33.510321638291124
 </pre>
 <p>The evaluation order is shown below, with the function <code><span class='Function'>⋆</span></code> on the first line evaluated first, then <code><span class='Function'>×</span></code> on the next, and so on. The effect of the parentheses is that <code><span class='Function'>÷</span></code> is evaluated before the leftmost <code><span class='Function'>×</span></code>.</p>
 <svg viewBox='-175.375 -34 512 188'>
@@ -159,9 +159,9 @@
 <h2 id="one-or-two-arguments">One or two arguments?</h2>
 <p>What about functions without a left argument? Let's find an equation with lots of square roots in it… <a href="https://en.wikipedia.org/wiki/Nested_radical#Denesting">looks good</a>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDMgKyAyIMOXIOKImjIKMSArIOKImjI=">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>3</span> <span class='Function'>+</span> <span class='Number'>2</span> <span class='Function'>×</span> <span class='Function'>√</span><span class='Number'>2</span>
-2.4142135623731
+2.414213562373095
     <span class='Number'>1</span> <span class='Function'>+</span> <span class='Function'>√</span><span class='Number'>2</span>
-2.4142135623731
+2.414213562373095
 </pre>
 <p>They are the same, and now you can't say that BQN is the most complicated thing on this particular page! Just to make sure, we can find the difference by subtracting them, but we need to put the left argument in parentheses:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKImjMgKyAyw5fiiJoyKSAtIDEr4oiaMg==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>√</span><span class='Number'>3</span> <span class='Function'>+</span> <span class='Number'>2</span><span class='Function'>×√</span><span class='Number'>2</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Number'>1</span><span class='Function'>+√</span><span class='Number'>2</span>
@@ -317,7 +317,7 @@
 </pre>
 <p>The most important use for Undo in arithmetic is the logarithm, written <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>. That's all a logarithm is: it undoes the Power function! With no left argument <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code> is the natural logarithm. If there's a left argument then Undo considers it part of the function to be undone. The result in this case is that <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code> with two arguments is the logarithm of the right argument with base given by the left one.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouG4oG8IDEwCjIg4ouG4oG8IDMyICAgICMgTG9nIGJhc2UgMgoyIOKLhiAyIOKLhuKBvCAzMgoxMCDii4bigbwgMWU0ICAjIExvZyBiYXNlIDEwIG9mIGEgbnVtYmVyIGluIHNjaWVudGlmaWMgbm90YXRpb24=">↗️</a><pre>    <span class='Function'>⋆</span><span class='Modifier'>⁼</span> <span class='Number'>10</span>
-2.30258509299405
+2.302585092994046
     <span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier'>⁼</span> <span class='Number'>32</span>    <span class='Comment'># Log base 2
 </span>5
     <span class='Number'>2</span> <span class='Function'>⋆</span> <span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier'>⁼</span> <span class='Number'>32</span>
