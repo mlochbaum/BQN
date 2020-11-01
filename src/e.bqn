@@ -13,9 +13,30 @@ gt ← "g" At "text-anchor=middle"
 gb ← "g" At "class=codeCover|stroke-width=6|stroke-linejoin=round"
 gf ← "g" At "font-size=15px|opacity=0.9"
 Shadow ← {
-  t ← (⟨0,0‿¯2⟩+⌜𝕨) ("text" Attr Pos)⊸Enc¨ (⊢≍Highlight¨) ⥊¨𝕩
+  t ← (⟨0,0‿¯2⟩+⌜𝕨) ("text" Attr Pos)⊸Enc¨ (1⊸⊑¨≍∾¨) 𝕩
   gt Enc ⟨gb,gf⟩ Enc¨<˘ t
 }
+
+hlcl‿hlch ← <˘ ⍉ ∘‿2⥊⟨
+  "Number"      , ('0'+↕10)∾"¯.π∞"
+  "Paren"       , "()"
+  "Bracket"     , "⟨⟩"
+  "Brace"       , "{}"
+  "Nothing"     , "·"
+  "String"      , "'"∾'"'∾"@"
+  "Comment"     , "#"
+⟩
+hlcl ∾↩ ⟨
+  "Gets"      # ¯3
+  "Ligature"  # ¯2
+  "Separator" # ¯1
+  "Value"     #  0
+  "Function"  #  1
+  "Modifier"  #  2
+  "Modifier2" #  3
+⟩
+GetHlcl←hlch{(+`≠¨𝕗)⍋(∾𝕗)⊸⊐}
+hlTag ← {"<tspan class='"∾𝕩∾"'>"}¨ hlcl
 
 Explain ← {
   b‿const‿blk‿i‿tok ← 𝕨
@@ -45,12 +66,23 @@ Explain ← {
   f↑˜↩≠p
   q←(/f∨j≠p⊏je) (⊏≍⊣) p
 
+  src‿toks ← tok {
+    tok‿role‿val‿s‿e ← 𝕨
+    n ← ≠hlch
+    o ← hlTag ⊏˜ (n+3+role) (⊢+-×n⊸=) GetHlcl s⊏𝕩
+    c ← "</tspan>"¨e
+    t ← c∾o
+    src ← ((↕≠𝕩)∾(≠¨t)/e∾s-1) ⍋⊸⊏ 𝕩∾∾t
+    tt← <˘⍉> ⟨o, e(𝕩⊏˜⊢+↕∘¬)¨s, c⟩
+    ⟨src, (s⊐(¬f)/mi)⊏tt⟩
+  } 𝕩
+
   pd ← <⊸∾⟜⌽˘˜˝ q ⊏ ⍉wh×0.6‿0.1+je≍d
   dim← (wh×⟨≠𝕩,2+⌈´d⟩)+2‿0×pad
   (512‿0⊸⌈⊸(⊣∾˜(t+pad)-˜-˜÷2˙)dim+2×t) SVG gr Enc ∾⥊¨⟨
     <"rect" Elt rc∾(Pos-pad)∾"width"‿"height"≍˘FmtNum¨dim
-    <"text" Enc Highlight 𝕩
+    <"text" Enc src
     (<"path" Elt ps∾"d"≍○<·∾"MVH"∾⟜Fmt¨⊢)˘ pd
-    mi ((to+wh×≍)¨Shadow⊏⟜𝕩)⟜(⊏⟜d)○((¬f)⊸/) p
+    (mi (to+wh×≍)¨⟜(⊏⟜d)○((¬f)⊸/) p) Shadow toks
   ⟩
 }
