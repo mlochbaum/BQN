@@ -20,7 +20,7 @@ DrawEval←{
     "11111000000000010000022000"  # Arguments
     "000//232323223102303200121"  # Stack values consumed
     "11111111111111011101111111"  # Stack values output
-    "00000110101000001101000100"  # Position determiner
+    "00000110111001001101000100"  # Position determiner
   ⟩
   m ← { # Mask of instruction starts
     a ← ba(⊣⊏˜≠⊸>×⊢)b
