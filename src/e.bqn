@@ -44,7 +44,7 @@ Explain ← {
   ba‿bc‿bo‿bp ← '0'-˜⟨ # For each instruction, number of:
     "11111000000000010000022000"  # Arguments
     "000//232323223102303200121"  # Stack values consumed
-    "11111111111111011101111111"  # Stack values output
+    "11111111111111011101111110"  # Stack values output
     "00000110111001001101000100"  # Position determiner
   ⟩
   m ← { # Mask of instruction starts
@@ -58,7 +58,7 @@ Explain ← {
   mb‿mi ← 0‿¯1 ↓¨ m⊸/¨ b‿i
   la←¯1=na←mb⊏bc
   na(b⊏˜1+⊣)⌾(la⊸/)˜↩/m
-  no←mb⊏bo
+  no←1⌾(¯1⊸⊑)mb⊏bo
   r←+`no-na
   ! 1=¯1⊑r
   d←(+`no⊸×)⊸×f←0<na
