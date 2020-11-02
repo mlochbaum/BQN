@@ -3,7 +3,7 @@
 
 wh ← 10.75‿24
 pad← wh×2‿1
-to ← 1+wh÷2‿3
+to ← 1‿¯1+wh÷2‿3
 t  ← 10
 
 ps ← At "stroke=currentColor|fill=none|stroke-width=1"
@@ -12,10 +12,6 @@ gr ← "g" At "font-family=BQN,monospace|font-size=18px|class=Paren|fill=current
 gt ← "g" At "font-size=15px|text-anchor=middle"
 gb ← "g" At "class=codeCover|stroke-width=8|stroke-linejoin=round"
 gf ← "g" At "opacity=0.9"
-Shadow ← {
-  p ← ("text" Attr ·Pos -⟜0‿2)¨ 𝕨
-  gt Enc ⟨gb,gf⟩ Enc¨ (1⊸⊑¨ ≍○<○(p Enc¨⊢) ∾¨) 𝕩
-}
 
 hlcl‿hlch ← <˘ ⍉ ∘‿2⥊⟨
   "Number"      , ('0'+↕10)∾"¯.π∞"
@@ -62,7 +58,7 @@ Explain ← {
   ! 1=¯1⊑r
   d←(+`no⊸×)⊸×f←0<na
   p←((¯1↓r)⍋⊸⊏○⍋(⊏⟜r+⊒))⊸⊏/na¬no
-  f↑˜↩≠p
+  k←p≠⊸↑¬f
 
   src‿toks‿ii ← tok {
     tok‿role‿val‿s‿e ← 𝕨
@@ -74,20 +70,21 @@ Explain ← {
     𝕩 ↩ ((ilf∊s)⊏" ⋄")⌾(ilf⊸⊏)𝕩
     src ← ((↕≠𝕩)∾(≠¨t)/e∾s-1) ⍋⊸⊏ 𝕩∾∾t
     tt← <˘⍉> ⟨o, e(𝕩⊏˜⊢+↕∘¬)¨s, c⟩
-    ti← s⊐(¬f)/mi
+    ti← s⊐k/mi
     ⟨src, ti⊏tt, ti⊏(s+e)÷2⟩
   } 𝕩
 
-  j←¯1↓((1-˜+`¬f)⊏ii)⊏˜⊏˜⍟≠{s←𝕩⊏˜g←⍋𝕩⋄(g/˜(⊒s)=s⊏mb⊏bp)⌾((⍷s)⊸⊏)↕≠mb}p
+  j←¯1↓((1-˜+`k)⊏ii)⊏˜⊏˜⍟≠{s←𝕩⊏˜g←⍋𝕩⋄(g/˜(⊒s)=s⊏mb⊏bp)⌾((⍷s)⊸⊏)↕≠mb}p
   je←j∾¯1.25
-  q←(/f∨j≠p⊏je-la) (⊏≍⊣) p
+  q←(/k≤j≠p⊏je-la) (⊏≍⊣) p
 
   pd ← <⊸∾⟜⌽˘˜˝ q ⊏ ⍉wh×0.6‿0.1+je≍d
+  tp ← ii ("text" Attr Pos)∘(to+wh×≍)¨ (k/p)⊏d
   dim← (wh×⟨≠𝕩,2+⌈´d⟩)+2‿0×pad
   (512‿0⊸⌈⊸(⊣∾˜(t+pad)-˜-˜÷2˙)dim+2×t) SVG gr Enc ∾⥊¨⟨
     <"rect" Elt rc∾(Pos-pad)∾"width"‿"height"≍˘FmtNum¨dim
     <"text" Enc src
     (<"path" Elt ps∾"d"≍○<·∾"MVH"∾⟜Fmt¨⊢)˘ pd
-    (ii (to+wh×≍)¨⟜(⊏⟜d) (¬f)/p) Shadow toks
+    gt Enc ⟨gb,gf⟩ Enc¨ (1⊸⊑¨ ≍○<○(tp Enc¨⊢) ∾¨) toks
   ⟩
 }
