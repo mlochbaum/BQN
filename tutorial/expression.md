@@ -37,13 +37,13 @@ A number can be raised to the power of another with Power, written `⋆`. That's
 
         2 ⋆ 3
         3 ⋆ 2
-        ⋆ 1   # There's no constant for e but you can get it this way
+        ⋆ 1   # e isn't built in but you can get it this way
         ⋆ 2.3
 
 <!--GEN
 Primitives ⟨"⋆%+%Exponential%Power", "√%_%Square Root%Root"⟩
 -->
-You could use Power to take square roots and *n*-th roots, but BQN also provides the primitive `√` for this purpose. If no left argument is provided, then it is the Square Root function; with a left argument it is called Root and raises the right argument to the power of one divided by the left argument.
+You could use Power to take square roots and *n*-th roots, but BQN has a primitive `√` for this purpose. If no left argument is provided, then it's the Square Root function; with a left argument it's called Root, and raises the right argument to the power of one divided by the left argument.
 
         √ 2
         3 √ 27
@@ -54,7 +54,7 @@ On the BQN keyboard, the six functions just given are all typed with the `+` and
     ÷ ×   # \
     √ ⋆   # \ shift
 
-In case you're wondering, Logarithm—the other inverse of Power—is written `⋆⁼`. We'll get to it in the section on modifiers.
+In case you're wondering, Logarithm—the other inverse of Power—is written `⋆⁼`. We'll see how that works when we introduce `⁼` in the section on 1-modifiers.
 
 ## Compound expressions
 
@@ -63,19 +63,21 @@ It's sometimes useful to write programs with more than one function in them. Her
         2×3 - 5
         (2×3) - 5
 
-I bet if you try hard you'll remember how much you hated learning to do exponentiation before multiplication and division before addition and subtraction. Didn't I tell you Earth was a confusing place? BQN treats all functions—not just primitives but the ones you'll define as well—the same way. They are evaluated from right to left, and parentheses can be used to group subexpressions that have to be evaluated before being used as arguments.
+I bet if you try hard you'll remember how much you hated learning to do exponentiation before multiplication and division before addition and subtraction. Didn't I tell you Earth was a confusing place? BQN treats all functions—not only primitives, but also the ones you define—the same way. They're evaluated from right to left, and parentheses form subexpressions that are evaluated entirely before they can be used.
 
 For a longer example, here's an expression for the [volume of a sphere](https://en.wikipedia.org/wiki/Sphere#Enclosed_volume) with radius 2.
 
         (4÷3) × π × 2⋆3
 
-The evaluation order is shown below, with the function `⋆` on the first line evaluated first, then `×` on the next, and so on. The effect of the parentheses is that `÷` is evaluated before the leftmost `×`.
+The evaluation order is diagrammed below, with the function `⋆` on the first line evaluated first, then `×` on the next, and so on. The effect of the parentheses is that `÷` is evaluated before the leftmost `×`.
 
 <!--GEN evalexp.bqn
 DrawEval "(4÷3) × π × 2⋆3"
 -->
 
-The following rule might help you to internalize this system in addition to identifying when parentheses are needed: an expression never needs to end with a parenthesis, or contain two closing parentheses in a row. If it does, at least one set of parentheses can be removed.
+The online REPL includes a tool to create diagrams like the one shown above. To enable it, click the "explain" button. Then a diagram of your source code will be shown above the result each time you run an expression.
+
+The following rule might help you to internalize this system in addition to identifying when parentheses are needed: an expression never needs to end with a parenthesis, or have two closing parentheses in a row. If it does, at least one set of parentheses can be removed without changing the meaning.
 
 ## One or two arguments?
 
@@ -84,7 +86,7 @@ What about functions without a left argument? Let's find an equation with lots o
         √ 3 + 2 × √2
         1 + √2
 
-They are the same, and now you can't say that BQN is the most complicated thing on this particular page! Just to make sure, we can find the difference by subtracting them, but we need to put the left argument in parentheses:
+They are the same, and now you can't say that BQN syntax is the most complicated thing on this particular page! Just to make sure, we can find the difference by subtracting them, but we need to put the left argument of the subtraction in parentheses:
 
         (√3 + 2×√2) - 1+√2
 
@@ -95,7 +97,7 @@ wh↩19⌾(¯1⊸⊑)wh
 DrawEval "(√3 + 2×√2) - 1+√2"
 -->
 
-But wait: how do we know that `√` in the expressions above uses the one-argument form? Remember that it can also take a left argument. For that matter, how do we know that `-` takes two arguments and not just one? Maybe this looks trivial now that we are just doing arithmetic, and a good enough answer for right now is that a function is called with one argument if there is nothing to its left, or another function, and with two arguments otherwise. But it gets more complicated as we expand the syntax with expressions that can return functions and so on, so it's never to early to start looking at a more rigorous viewpoint. In BQN, the way expressions are evaluated—the sequence of function calls and other operations—is determined by the *syntactic role* of the things it contains. A few rules of roles make sense of what's seen so far:
+But wait: how do we know that `√` in the expressions above uses the one-argument form? Remember that it can also take a left argument. For that matter, how do we know that `-` takes two arguments and not just one? Maybe this looks trivial right now: a good enough answer while we're only doing arithmetic is that a function is called with one argument if there is nothing to its left, or another function, and with two arguments otherwise. But it will get more complicated as we expand the syntax with expressions that can return functions and so on, so it's a good idea to discuss the foundations that will allow us to handle that complexity. In BQN, the way expressions are evaluated—the sequence of function calls and other operations—is determined by the *syntactic role* of the things it contains. A few rules of roles make sense of the syntax seen so far:
 
 * *Numeric literals* such as `1` and `π` are *subjects*.
 * *Primitive functions* are *functions* (gasp).
@@ -111,7 +113,7 @@ Gosh, that's a lot of arithmetic up there. Maybe adding characters will mix thin
 
         'c'
 
-A character is written with single quotes. As in the C language, it's not the same as a string, which is written with double quotes. There are no escapes for characters: any source code character between single quotes becomes a character literal, even a newline. Characters permit some kinds of arithmetic:
+A character is written with single quotes. As in the C language, it's not the same as a string, which is written with double quotes. There are no escapes for characters: any source code character between single quotes becomes a character literal, even a newline. Some kinds of arithmetic e[x](https://xkcd.com/1537/)tend to characters:
 
         'c' + 1
         'h' - 'a'
@@ -123,13 +125,13 @@ But as I blurted earlier, you can't add two characters (and **no** you can never
 Other examples of affine spaces are
 * Points on a line (with no origin). You can move a point by a distance or find the distance between two points, but can't add points.
 * Times in seconds. You can find the interval between two times or shift a time by some number of seconds, but adding two times together is nonsense.
-* Pointers in a computer's memory. I'll let you verify for yourself that the rules are the same.
+* Pointers in a computer's memory. Verify for yourself that the rules are the same, if you like.
 
 Want to shift an uppercase character to lowercase? Affine characters to the rescue:
 
         'K' + 'a'-'A'
 
-Convert a character to a digit? Here you go:
+Convert a digit to its value? Here you go:
 
         '4' - '0'
 
@@ -143,7 +145,7 @@ Primitives ⟨"'%%Character", "@%%Null character"⟩
 -->
 It's a convenient way to write non-printing characters without having to include them in your source code: for example `@+10` is the newline character.
 
-Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of "characterness" (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not be valid, if one of the values produced in the middle isn't legal.
+Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of "characterness" (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not work, if one of the values produced in the middle isn't legal.
 
 ## Modifiers
 
@@ -152,12 +154,12 @@ Functions are nice and all, but to really bring us into the space age BQN has a 
         2 -˜ 'd'  # Subtract from
         +˜ 3      # Add to itself
 
-This gives us two nice ways to square a value:
+This gives us two nice ways to square a number:
 
         ×˜ 4
         2 ⋆˜ 4
 
-What's wrong with `4⋆2`? Depends on the context. Because of the way evaluation flows from right to left, it's usually best if the right argument to a function is the one that's being manipulated directly while the left argument is sort of a "control value" that describes how to manipulate it. That way several manipulations can be done in a row without any parentheses required. `⋆` can go either way, but if "squaring" is the operation being done then the *left* argument is one being squared, so it's the active value. The Swap modifier allows us to put it on the right instead.
+What's wrong with `4⋆2`? Depends on the context. Because of the way evaluation flows from right to left, it's usually best if the right argument to a function is the one that's being manipulated directly while the left argument is sort of a "control value" that describes how to manipulate it. That way several manipulations can be done in a row without any parentheses required. `⋆` can go either way, but if "squaring" is the operation being done then the *left* argument is the one being squared, so it's the active value. The Swap modifier allows us to put it on the right instead.
 
 <!--GEN
 Primitives ⟨"˜%`%Swap%Self", "⁼%3%Undo", "˙%""%Constant"⟩
@@ -166,7 +168,7 @@ Another 1-modifier is Undo (`⁼`). BQN has just enough computer algebra facilit
 
         √⁼ 4
 
-The most important use for Undo in arithmetic is the logarithm, written `⋆⁼`. That's all a logarithm is: it undoes the Power function! With no left argument `⋆⁼` is the natural logarithm. If there's a left argument then Undo considers it part of the function to be undone. The result in this case is that `⋆⁼` with two arguments is the logarithm of the right argument with base given by the left one.
+But the most important use for Undo in arithmetic is the logarithm, written `⋆⁼`. That's all a logarithm is: it undoes the Power function! With no left argument `⋆⁼` is the natural logarithm. If there's a left argument then Undo considers it part of the function to be undone. The result in this case is that `⋆⁼` with two arguments is the logarithm of the right argument with base given by the left one.
 
         ⋆⁼ 10
         2 ⋆⁼ 32    # Log base 2
@@ -183,7 +185,7 @@ With three examples you may have noticed that 1-modifiers tend to cluster at the
 
 ## 2-modifiers
 
-Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop `∘`, which works a lot like mathematical composition except that it uses one or two arguments. These arguments are passed to the function on the right, and the result is passed to the function on the left. So the function on the left is only ever called with one argument.
+Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop `∘`, which works a lot like mathematical composition, except that it's extended to use one or two arguments. These arguments are passed to the function on the right, and the result is passed to the function on the left. So the function on the left is only ever called with one argument.
 
         3 ×˜∘+ 4  # Square of 3 plus 4
         -∘(×˜) 5  # Negative square of 5
@@ -191,17 +193,17 @@ Made it to the last role, the 2-modifier (if you think something's been skipped,
 <!--GEN
 Primitives ⟨"∘%j%Atop"⟩
 -->
-It's past time we covered how the syntax for modifiers works. Remember how I told you you hated learning the order of operations? No? Good. Modifiers bind more tightly than functions, so they are called on their operands before their operands can be used. As the parentheses above suggest, modifiers also associate from left to right, the opposite order as functions. For example, the first expression above is evaluated in the order shown below. First we construct the square function `×˜`, then compose it with `+`, and finally apply the result to some arguments.
+It's past time we covered how the syntax for modifiers works. Remember how I told you you hated learning the order of operations? No? Good. Modifiers bind more tightly than functions, so they are called on their operands before those operands can be used as arguments. As the parentheses above suggest, modifiers associate from left to right, the opposite order as functions. For example, the first expression above is evaluated in the order shown below. First we construct the square function `×˜`, then compose it with `+`, and finally apply the result to some arguments.
 
 <!--GEN
 DrawEval "3 ×˜∘+ 4"
 -->
 
-This ordering is more consistent with the fact that the operand of a 1-modifier goes to its left. If we tried going from right to left we'd end up with `×(˜∘+)`, which uses `˜` as an operand to `∘`. But a modifier can't be used as an operand. To make it work we'd essentially have to give 1-modifiers a higher precedence than 2-modifiers.
+This ordering is more consistent with the rule that a 1-modifier's operand should go to its left. If we tried going from right to left we'd end up with `×(˜∘+)`, which uses `˜` as an operand to `∘`. But a modifier can't be used as an operand. To make it work we'd have to give 1-modifiers a higher precedence than 2-modifiers.
 
-In fact, the rules for modifiers are exactly the same as those for functions, but reversed. So why is there a distinction between 1- and 2-modifiers, when for functions we can look to the left to see whether there is a left argument? The reason is that it's natural to follow a 1-modifier by a subject or function that isn't supposed to be its operand. Using an example from the last section, `+˜ 3` has a subject to the right of the 1-modifier `˜`. Even worse, `+˜ ÷ 3` looks the same syntactically as `+∘ ÷ 3`, but it's two functions `+˜` and `÷` applied to `3` while the version with Atop is a single function `+∘÷` applied to `3`. So the two-layer system of functions and modifiers forces modifiers to have a fixed number of operands even every function (including those derived by applying modifiers) can be called with one or two arguments.
+In fact, the rules for modifiers are exactly the same as those for functions, but reversed. So why is there a distinction between 1- and 2-modifiers, when for functions we can look to the left to see whether there is a left argument? The reason is that it's natural to follow a 1-modifier by a subject or function that isn't supposed to be its operand. Using an example from the last section, `+˜ 3` has a subject to the right of the 1-modifier `˜`. Even worse, `+˜ ÷ 3` looks just like `+∘ ÷ 3`, but it's two functions `+˜` and `÷` applied to `3` while the version with Atop is a single function `+∘÷` applied to `3`. So the two-layer system of functions and modifiers forces modifiers to have a fixed number of operands even though every function (including those derived by applying modifiers) can be called with one or two arguments.
 
-Remember that 1-modifiers are all superscripts? The characters for 2-modifiers use a different rule: each contains an *unbroken* circle (that is, lines might touch it but not go through it). The 2-modifiers in BQN are the combinators `∘○⊸⟜⌾`, the sort-of-combinators  `⊘◶⍟`, and the not-at-all-combinators `⎉⚇⎊`. And the functions that make that unbroken circle rule necessary are written `⌽⍉`. Since every primitive is a function, 1-modifier, or 2-modifier, you can always tell what type (and role) it has: a superscript is a 1-modifier, an unbroken circle makes it a 2-modifier, and otherwise it's a function.
+Remember that 1-modifiers are all superscripts? The characters for 2-modifiers use a different rule: each contains an *unbroken* circle (that is, lines might touch it but not go through it). The 2-modifiers in BQN are the combinators `∘○⊸⟜⊘`, the sort-of-combinators  `⌾◶⍟`, and the not-at-all-combinators `⎉⚇⎊`. And the functions that make that unbroken circle rule necessary are written `⌽⍉`. Since every primitive is a function, 1-modifier, or 2-modifier, you can always tell what type (and role) it has: a superscript is a 1-modifier, an unbroken circle makes it a 2-modifier, and otherwise it's a function.
 
 ## Summary
 
