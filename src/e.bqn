@@ -78,13 +78,13 @@ Explain ← {
   je←j∾¯1.25
   q←(/k≤j≠p⊏je-la) (⊏≍⊣) p
 
-  pd ← <⊸∾⟜⌽˘˜˝ q ⊏ ⍉wh×0.6‿0.1+je≍d
+  pd ← <∘(∾"M VH"∾¨∾⟜⌽)˘˜˝ q ⊏ FmtNum¨ ⍉wh×0.6‿0.1+je≍d
   tp ← ii ("text" Attr Pos)∘(to+wh×≍)¨ (k/p)⊏d
   dim← (wh×⟨≠𝕩,2+⌈´d⟩)+2‿0×pad
   (512‿0⊸⌈⊸(⊣∾˜(t+pad)-˜-˜÷2˙)dim+2×t) SVG gr Enc ∾⥊¨⟨
     <"rect" Elt rc∾(Pos-pad)∾"width"‿"height"≍˘FmtNum¨dim
     <"text" Enc src
-    (<"path" Elt ps∾"d"≍○<·∾"MVH"∾⟜Fmt¨⊢)˘ pd
+    ("path" Elt ps∾"d"≍○<⊢)¨ pd
     gt Enc ⟨gb,gf⟩ Enc¨ (1⊸⊑¨ ≍○<○(tp Enc¨⊢) ∾¨) toks
   ⟩
 }
