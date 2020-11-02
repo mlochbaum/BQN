@@ -6,9 +6,9 @@ pad← wh×2‿1
 to ← 1+wh÷2‿3
 t  ← 10
 
-ps ← At "class=Paren|stroke=currentColor|fill=none|stroke-width=1"
+ps ← At "stroke=currentColor|fill=none|stroke-width=1"
 rc ← At "class=code|stroke-width=1|rx=10"
-gr ← "g" At "font-family=BQN,monospace|font-size=18px"
+gr ← "g" At "font-family=BQN,monospace|font-size=18px|class=Paren|fill=currentColor"
 gt ← "g" At "font-size=15px|text-anchor=middle"
 gb ← "g" At "class=codeCover|stroke-width=8|stroke-linejoin=round"
 gf ← "g" At "opacity=0.9"
@@ -39,7 +39,6 @@ GetHlcl←hlch{(+`≠¨𝕗)⍋(∾𝕗)⊸⊐}
 hlTag ← {"<tspan class='"∾𝕩∾"'>"}¨ hlcl
 
 Explain ← {
-  𝕩↩'⋄'¨⌾((𝕩=@+10)⊸/)𝕩
   b‿const‿blk‿i‿tok ← 𝕨
   ba‿bc‿bo‿bp ← '0'-˜⟨ # For each instruction, number of:
     "11111000000000010000022000"  # Arguments
@@ -71,6 +70,8 @@ Explain ← {
     o ← hlTag ⊏˜ (n+3+role) (⊢+-×n⊸=) GetHlcl s⊏𝕩
     c ← "</tspan>"¨e
     t ← c∾o
+    ilf ← /𝕩=@+10
+    𝕩 ↩ ((ilf∊s)⊏" ⋄")⌾(ilf⊸⊏)𝕩
     src ← ((↕≠𝕩)∾(≠¨t)/e∾s-1) ⍋⊸⊏ 𝕩∾∾t
     tt← <˘⍉> ⟨o, e(𝕩⊏˜⊢+↕∘¬)¨s, c⟩
     ti← s⊐(¬f)/mi
