@@ -173,6 +173,7 @@ a:visited     { color: #3d155f; }
   a:visited   { color: #8781c1; }
 }
 
+svg text { white-space: pre; }
 svg tspan {
   fill: currentColor;
 }
