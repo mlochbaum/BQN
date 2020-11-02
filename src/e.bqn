@@ -13,8 +13,8 @@ gt ← "g" At "font-size=15px|text-anchor=middle"
 gb ← "g" At "class=codeCover|stroke-width=8|stroke-linejoin=round"
 gf ← "g" At "opacity=0.9"
 Shadow ← {
-  t ← (⟨0,0‿¯2⟩+⌜𝕨) ("text" Attr Pos)⊸Enc¨ (1⊸⊑¨≍∾¨) 𝕩
-  gt Enc ⟨gb,gf⟩ Enc¨<˘ t
+  p ← ("text" Attr ·Pos -⟜0‿2)¨ 𝕨
+  gt Enc ⟨gb,gf⟩ Enc¨ (1⊸⊑¨ ≍○<○(p Enc¨⊢) ∾¨) 𝕩
 }
 
 hlcl‿hlch ← <˘ ⍉ ∘‿2⥊⟨
