@@ -1,9 +1,9 @@
 # Expression explainer: generates an svg diagram to show how a BQN
 # program is evaluated
 
-wh ← 10.75‿24
+wh ← 10.84‿24
 pad← wh×2‿1
-to ← 1‿¯1+wh÷2‿3
+to ← 0‿¯1+wh÷2‿3
 t  ← 10
 
 ps ← At "stroke=currentColor|fill=none|stroke-width=1"
@@ -78,7 +78,7 @@ Explain ← {
   je←j∾¯1.25
   q←(/k≤j≠p⊏je-la) (⊏≍⊣) p
 
-  pd ← <∘(∾"M VH"∾¨∾⟜⌽)˘˜˝ q ⊏ FmtNum¨ ⍉wh×0.6‿0.1+je≍d
+  pd ← <∘(∾"M VH"∾¨∾⟜⌽)˘˜˝ q ⊏ FmtNum¨ ⍉wh×0.5‿0.1+je≍d
   tp ← ii ("text" Attr Pos)∘(to+wh×≍)¨ (k/p)⊏d
   dim← (wh×⟨≠𝕩,2+⌈´d⟩)+2‿0×pad
   (512‿0⊸⌈⊸(⊣∾˜(t+pad)-˜-˜÷2˙)dim+2×t) SVG gr Enc ∾⥊¨⟨
