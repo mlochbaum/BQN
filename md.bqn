@@ -58,7 +58,7 @@ CountRuns ← { (1+↕≠𝕩) (⊣ - ⌈`∘×) ¬𝕩 }
 # 𝕩 is a string; return a mask of the characters that are escaped, that
 # is, preceded by an odd number of backslashes (since a backslash can
 # escape another backslash).
-# Another implementation is {»<`𝕩}.
+# Another implementation is {»<`𝕩='\'}.
 IsEscaped ← {
   » 2 | CountRuns 𝕩 = '\'
 }
