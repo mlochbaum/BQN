@@ -34,6 +34,8 @@ hlcl ∾↩ ⟨
 GetHlcl←hlch{(+`≠¨𝕗)⍋(∾𝕗)⊸⊐}
 hlTag ← {"<tspan class='"∾𝕩∾"'>"}¨ hlcl
 
+escchars ← """&<>" ⋄ escapes ← ("&"∾∾⟜";")¨"quot"‿"amp"‿"lt"‿"gt"
+
 Explain ← {
   b‿const‿blk‿i‿tok ← 𝕨
   ba‿bc‿bo‿bp ← '0'-˜⟨ # For each instruction, number of:
@@ -68,9 +70,13 @@ Explain ← {
     t ← c∾o
     ilf ← /𝕩=@+10
     𝕩 ↩ ((ilf∊s)⊏" ⋄")⌾(ilf⊸⊏)𝕩
-    src ← ((↕≠𝕩)∾(≠¨t)/e∾s-1) ⍋⊸⊏ 𝕩∾∾t
-    tt← <˘⍉> ⟨o, e(𝕩⊏˜⊢+↕∘¬)¨s, c⟩
-    ti← s⊐k/mi
+    u←/¬em←escchars≠⊸>ei←escchars⊐𝕩 ⋄ t∾˜↩escapes⊏˜em/ei
+    ord← ⍋u∾(≠¨t)/(/em)∾e∾s-1
+    src← ord⊏(u⊏𝕩)∾∾t
+    el ← ei⊏(≠¨escapes)∾1
+    xe ← (ord⊏(+´el)>↕∘≠)⊸/src
+    tt ← <˘⍉> ⟨o, xe⊔˜el/1-˜s(⊣×>)○(+`(≠𝕩)↑/⁼)1+e, c⟩
+    ti ← s⊐k/mi
     ⟨src, ti⊏tt, ti⊏(s+e)÷2⟩
   } 𝕩
 
