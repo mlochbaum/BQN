@@ -119,7 +119,7 @@ With a left argument `⌽` means Rotate instead, and shifts values over by the s
 ### …and modifiers
 
 <!--GEN
-Primitives ⟨"¨%1%Each", "´%5%Fold", "∾%,%Join%Join To"⟩
+Primitives ⟨"¨%2%Each", "´%5%Fold", "∾%,%Join%Join To"⟩
 -->
 The 1-modifier Each (`¨`) applies its operand to every element of a list argument: it's the same as `map` in a functional programming language. With two list arguments (which have to have the same length), Each pairs the corresponding elements from each, a bit like a `zip` function. If one argument is a list and one's an atom, the atom is reused every time instead.
 
