@@ -51,7 +51,8 @@ Tokenize←{
   str←1↓¨𝕩⊔˜1-˜(+`si←a>»qe)×≠`dm∧ab         # Strings (indices /si)
 
   # Extract words: identifiers and numbers
-  is←/1»f⋄ie←/f⋄Fs←{is/˜↩𝕨⋄𝕨/𝕩}             # Token start and end
+  ie←/f⋄is←ie≠⊸↑/1»f⋄Fs←{is/˜↩𝕨⋄𝕨/𝕩}        # Token start and end
+  is-↩is(-×⊏⟜c)ie                           # Comment → ending newline only
   t←CharCode ie⊏𝕩
   w←»⊸<l←t M bD(⊣≍-˜)○⊑bW⋄us←t=¯1++´bA      # Word chars l, start w
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
