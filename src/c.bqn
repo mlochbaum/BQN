@@ -106,9 +106,6 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
     Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
     0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
   }
-  ErrUndeclared←{
-    0 !˜ "Undefined identifier"Pl𝕩
-  }
 
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gp←g⊏p⋄gb←g⊏r=¯1⋄gx←g⊏𝕩
   gp(>⟜0⊸/ErrMismatchedBrackets⍟≢1-˜<⟜0⊸/)gx
@@ -163,7 +160,7 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
   "Multiple definitions" ! ∧´ixx∨○(»⊸≠((≠d)⊸≤⊸/ig)⊸⊏)ixf
   ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
   d⊏˜↩ig⋄idx⊏˜↩ig
-  ErrUndeclared∘/⟜idx⍟(∨´)d<»⊸≠idx
+  ("Undefined identifier"Pl/)_err_(ig⊏id⊏g⊸⊏) d<»⊸≠idx
   "Imports must have been exported" ! ∧´2>-⟜»(d∨×)⊸/ig⊏(ip M 1‿3)∾2¨ic
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex
   lc←(1«c)/dn←c(⊢-T)+`idm∧ac M 2‿4
