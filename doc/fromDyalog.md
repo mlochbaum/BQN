@@ -22,7 +22,7 @@ BQN shares the terms "cell" and "major cell" with Dyalog, and uses
 
 ### Roles
 
-Dyalog uses value types (array, function, and so on) to determine syntax while BQN uses a separate concept called syntactic roles. See [context-free grammer](context.md).
+Dyalog uses value types (array, function, and so on) to determine syntax while BQN uses a separate concept called syntactic roles. See [context-free grammar](context.md).
 
 | Dyalog type      | BQN role   |
 |------------------|------------|
