@@ -162,7 +162,7 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
   "Multiple definitions" ! ∧´ixx∨○(»⊸≠((≠d)⊸≤⊸/ig)⊸⊏)ixf
   ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
   d⊏˜↩ig⋄idx⊏˜↩ig
-  ("Undefined identifier"Pl/)_err_(ig⊏id⊏g⊸⊏) d<»⊸≠idx
+  ("Undefined identifier"Pl/)_err_(ig⊏id⊸⊏) d<»⊸≠idx
   "Imports must have been exported" ! ∧´2>-⟜»(d∨×)⊸/ig⊏(ip M 1‿3)∾2¨ic
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex
   lc←(1«c)/dn←c(⊢-T)+`idm∧ac M 2‿4
