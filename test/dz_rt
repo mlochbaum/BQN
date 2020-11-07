@@ -57,4 +57,4 @@ E_redef ← { # handles [fmd] [←↩]
 pre ∾↩ E_isdef◶E_proc‿E_redef¨ impl
 t ← (¬∘⊑':'∊⊢)¨⊸/ 3⊸↓⌾(3⊸⊑) •LNS "prim.bqn"
 res ← DRun ∾ ∾⟜(@+10)¨ pre ∾ E_proc¨ t
-• ← ("All "∾(⍕≠res)∾" passed!")⍟(0=≠) /res
+•Out ("All "∾(⍕≠res)∾" passed!")⍟(0=≠) /res

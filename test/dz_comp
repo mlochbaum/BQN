@@ -5,4 +5,4 @@ c ← ∾(•LNS ∾⟜"cases.bqn")¨""‿"b"
 {𝕩: c ∾↩ (¬":"⊑∘∊⊢)¨⊸/ "1 %"⊸∾¨ (3≤≠)◶0‿(('#'≠2⊸⊑)∧"  "≡2⊸↑)¨⊸/ •LNS "prim.bqn" }⍟⊢⊑(<"-prim")∊•args
 M ← {e‿b: (⍎e)⊸≢◶""‿{(@+10)∾˜""""∾b∾""": expected "∾e∾" but received "∾⍕𝕩} DRun b}
 r ← '%' M∘((+`-2⊸×)∘=⊔⊢)¨ c
-• ← ("All "∾(⍕≠c)∾" passed!")⍟(0=≠) ∾r
+•Out ("All "∾(⍕≠c)∾" passed!")⍟(0=≠) ∾r
