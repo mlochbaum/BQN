@@ -145,14 +145,14 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
   ni←1+(1↓nf)/bk←b⊏gi
-  "Modules must be immediately assigned" ! (0<≠)◶1‿(r≠⊸>⟜(1+⌈´)◶0‿(∧´∘⥊¯3‿0‿¯1=∾⟜¯1⊏˜(↕3)+⌜⊢)⊢)ni
-  "Modules must be destructured" ! ¬∨´(⊏⟜idm>⊏⟜rev⊏sr˙)(ni+1)⊏g
+  "Modules must be immediately assigned"_err_(ni⊏g⊸⊏)∘(∨˝¯3‿0‿¯1≠r∾⟜¯1‿1⊸(⊏˜)(↕3)+⌜⊢)⍟(0<≠)ni
+  "Modules must be destructured"_err_(ni⊏g⊸⊏) (⊏⟜idm>⊏⟜rev⊏sr˙)(ni+1)⊏g
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧r=3
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r
-  "Role of the two sides in assignment must match" ! (at⊏er)≡ar←at⊏r
-  "Function or modifier assignment to a non-name" ! ∧´(ar=0)∨(at⊏g)⊏idm
+  "Role of the two sides in assignment must match"_err_(at⊏g⊸⊏) (at⊏er)≠ar←at⊏r
+  "Function or modifier assignment to a non-name"_err_(at⊏g⊸⊏) ¬(ar=0)∨(at⊏g)⊏idm
   aa←×g⊏ac←»+`gi⊏«⊸-(1+af+(ai∊ni)+2×(⊑bG)-˜ai⊏𝕩)⌾(at⊸⊏)0¨𝕩
 
   ip←id⊏ac⋄d←ip M 2‿4⋄zic←0¨ic←id/˜icf←2(<∧|)ip
