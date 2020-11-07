@@ -56,7 +56,7 @@ The glyphs `«` and `»`, suggesting movement, were chosen for the same reasons 
 
         3 ⥊⟜0⊸« i    # Alternate left shift
 
-With a number in big-endian format, a right shift might be logical, shifting in zeros, or arithmetic, shifting in copies of the highest-order bit (for little-endian numbers, this applies to left shift rather than right ones). The two kinds of shift can be performed with similar code, using `0` or `⊏𝕩` for the inserted cell.
+With a number in big-endian format, a right shift might be logical, shifting in zeros, or arithmetic, shifting in copies of the highest-order bit (for little-endian numbers, this applies to left shifts rather than right ones). The two kinds of shift can be performed with similar code, using `0` or `⊏𝕩` for the inserted cell.
 
         3 ⥊⟜0⊸» i    # Logical right shift
 
