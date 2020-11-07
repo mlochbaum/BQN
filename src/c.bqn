@@ -109,7 +109,7 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
 
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gp←g⊏p⋄gb←g⊏r=¯1⋄gx←g⊏𝕩
   gp(>⟜0⊸/ErrMismatchedBrackets⍟≢1-˜<⟜0⊸/)gx
-  _err_←{(0!˜/⟜𝔾⟜ind≍○<𝔽)⍟(∨´∘⊢)}
+  _err_←{(0!˜∧∘/⟜𝔾⟜ind≍○<𝔽)⍟(∨´∘⊢)}
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
   "Parentheses can't contain separators"_err_(gb/g⊸⊏) ((⊑bB)⊸=»⊸∧sep⊸=)gb/gx
   {"Empty statement or expression"_err_(𝕩/0∾g⊸⊏) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
@@ -145,7 +145,9 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
   "Modules must be immediately assigned"_err_(ni⊏g⊸⊏)∘(∨˝¯3‿0‿¯1≠r∾⟜¯1‿1⊸(⊏˜)(↕3)+⌜⊢)⍟(0<≠)ni
   "Modules must be destructured"_err_(ni⊏g⊸⊏) (⊏⟜idm>⊏⟜rev⊏sr˙)(ni+1)⊏g
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps
-  oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧r=3
+  oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3
+  "Missing operand"_err_(g⊸⊏) op>(«∧m2≤»)m2<ro∨r∊↕2
+  "Double subjects (missing ‿?)"_err_(g⊸⊏) ∧⟜«ro»⊸∨⊸<r=0
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r
   "Role of the two sides in assignment must match"_err_(at⊏g⊸⊏) (at⊏er)≠ar←at⊏r
