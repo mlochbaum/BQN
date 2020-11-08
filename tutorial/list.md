@@ -14,14 +14,14 @@ There we go. Now in BQN arrays are not just lists, which are a 1-dimensional dat
 
 ## List notation
 
-There are three kinds of list notation in BQN. Every one has a subject role, even though expressions used inside it might have other roles. First, a *string* is a list of characters, and is written by placing those characters in double quotes.
+There are three kinds of list notation in BQN. Each of them has a subject role overall, even if expressions used inside it might have other roles. First, a *string* is a list of characters, and is written by placing those characters in double quotes.
 
     "Text!"
 
 <!--GEN prim.bqn
 Primitives ⟨"""%%String", "⟨%(%Start list", "⟩%)%End list", "⋄%;%Separator", ",%%Separator"⟩
 -->
-Only one character needs to be escaped to place it in a string: the double quote, which is escaped by writing it twice. Any other character, including a newline, can be placed directly in a string.
+Just one character needs to be escaped to be used a string: the double quote has to be written twice—a lone double quote would end the string, of course. Any other character, including a newline, can be placed directly in a string. For example, `"'"""` is a string with two characters, the single and double quote.
 
 Second, *list notation* uses angle brackets `⟨⟩`. The *elements* in the list are kept apart with one of the three *separator* characters: `,`, `⋄`, and newline. Anything can be used as an element, even a function, or a modifier like `∘`. Here's a list containing a number, a 2-modifier, a string, and a non-string list:
 
@@ -41,14 +41,14 @@ The two characters `,` and `⋄` are completely interchangeable, and newline is 
 <!--GEN
 Primitives ⟨"#%%Comment", "‿% %Strand"⟩
 -->
-Finally, *strand notation* is a shortcut for simple lists like a few numbers. It's written with the *ligature* `‿`, which has a higher precedence than either functions or operators. A sequence of values joined with ligatures becomes a list, so that for example the following two expressions are equivalent:
+Finally, *strand notation* is a shortcut for simple lists, like one that just lists a few numbers. It's written with the *ligature* `‿`, which has a higher precedence than either functions or operators (and on the BQN keyboard, the ligature is written with a backslash, then a space). A sequence of values joined with ligatures becomes a list, so that for example the following two expressions are equivalent:
 
     ⟨2,+,-⟩
     2‿+‿-
 
-Strand notation is shorter and looks less cluttered in this example. As with lists, anything goes in a strand, but if it's the result of a function or operator, or another strand, then it has to be put in parentheses. With one set of parentheses, a strand will be just as long as the equivalent bracketed list, and with two you're better off using the list.
+Strand notation is shorter and looks less cluttered in this example. As with lists, anything goes in a strand, but if it's the result of a function or operator, or another strand, then it has to be put in parentheses first. With one set of parentheses, a strand will be just as long as the equivalent bracketed list, and with two you're better off using the list.
 
-A ligature is a kind of notation and doesn't do something specific like a function does. It's the sequence of ligatures that makes whatever they join together into a list. So if we parenthesize either ligature below, we get a different result! Ligatures aren't right-associative or left-associative.
+An individual ligature part of BQN syntax, not a value, and it doesn't do something specific like a function does. It's the sequence of ligatures that makes whatever they join together into a list. So if we parenthesize either ligature below, we get a different result! Ligatures aren't right-associative or left-associative.
 
         0‿1‿2
         (0‿1)‿2
@@ -222,7 +222,7 @@ Was it as anticlimactic as you'd hoped? In fact there's a simpler way to do the 
 
 ## Summary
 
-There are three types of syntax that create lists: the `"string literal"` for lists of characters and either enclosing angle brackets `⟨⟩` with `,` or `⋄` or newline characters or connecting ligatures `‿` for lists with arbitrary elements. The ligature has a higher precedence than functions or modifiers, so we should add to to our precedence table:
+There are three types of syntax that create lists: the `"string literal"` for lists of characters and either enclosing angle brackets `⟨⟩` with `,` or `⋄` or newline characters or connecting ligatures `‿` for lists with arbitrary elements. The ligature has a higher precedence than functions or modifiers, so we should add it to our precedence table:
 
 Precedence | Role     | Associativity
 -----------|----------|--------------
@@ -246,4 +246,4 @@ Glyph | 1 arg                    | 2 args
 
 Additionally, we saw that the arithmetic functions work naturally on lists, automatically applying to every element of a single list argument or pairing up the elements of two list arguments.
 
-Even this small amount of list functionality is enough to solve some small problems. We haven't even introduced a function notation yet!
+Even this small amount of list functionality is enough to tackle some little problems. We haven't even introduced a function notation yet!
