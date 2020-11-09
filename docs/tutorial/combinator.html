@@ -1,0 +1,385 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Tutorial: Combinators</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">tutorial</a></div>
+<h1 id="tutorial-combinators">Tutorial: Combinators</h1>
+<p>BQN has a normal enough curly-brace syntax for functions and so on. I don't want to talk about it just yet. Before you get to thinking about how to write <a href="http://www.pbm.com/~lindahl/real.programmers.html">FORTRAN in any language</a> in BQN, let's see if we can acquire some instincts about idiomatic BQN the way that only being stuck in a tightly restricted and horribly confining programming environment can accomplish.</p>
+<p>There are benefits to being tightly restricted and horribly confined! In programming. I don't just mean that it forces you to learn new techniques like I said, I mean that using the restricted style we will learn is actually a better way to write portions of a program. This is because a restriction you apply in one part of a program is a promise you can rely on in the rest of the program. So what are we giving up, and what can we rely on in return?</p>
+<p><em>Tacit programming</em> does not use variables during the execution of a function (but you might use them for convenience in order to <em>construct</em> a tacit program). Variables allow you to use any accessible value in the program with the same level of ease. Tacit code doesn't. In fact it becomes pretty unusable when more than about three values are active at once. One consequence is that tacit code won't cause confusion by modifying far-away variables. But something unique to the tacit paradigm is that when only a small number of values are active—which is always true in a small enough portion of a program!—it has more powerful ways to describe the way these values flow through the program. The main way it achieves this is with combinators.</p>
+<h2 id="whats-a-combinator">What's a combinator?</h2>
+<p>(It's when you can't stop adding suffixes to &quot;combine&quot;). In the first tutorial, we briefly presented three <em>combinators</em>, <code><span class='Modifier2'>∘</span></code>, <code><span class='Modifier'>˜</span></code>, and <code><span class='Modifier'>˙</span></code>. These are functions or modifiers that produce a result from their inputs (arguments or operands) only by applying functions to arguments. For example, let's look at a composition:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=fOKImC0gNg==">↗️</a><pre>    <span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span> <span class='Number'>6</span>
+6
+</pre>
+<p>This composition starts with the three values <code><span class='Function'>|</span></code>, <code><span class='Function'>-</span></code>, and <code><span class='Number'>6</span></code>. To produce its result, it first applies <code><span class='Function'>-</span></code> to <code><span class='Number'>6</span></code>, giving <code><span class='Number'>¯6</span></code>, a new value that it's free to use later. Then it applies <code><span class='Function'>|</span></code> to <code><span class='Number'>¯6</span></code>, giving <code><span class='Number'>6</span></code> again. Bit of a waste.</p>
+<p>In BQN's combinators, the result of a function application is never used as a function itself. This allows us to use a graphic like the one below to represent a combinator. In each graph, function applications are illustrated with the name of the function linked by yellow lines to its arguments below (this is the same view as the expression diagrams we've been using, flipped upside down and cleaned up a little).</p>
+<svg viewBox='-191 0 672 270'>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Atop</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<p>The expression <code><span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span> <span class='Number'>6</span></code> matches <code><span class='Function'>𝔽</span><span class='Modifier2'>∘</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code> on the left: to evaluate we would start with <code><span class='Value'>𝕩</span></code>, which is <code><span class='Number'>6</span></code>, at the bottom, then apply <code><span class='Function'>𝔾</span></code> or <code><span class='Function'>-</span></code>, then <code><span class='Function'>𝔽</span></code> or <code><span class='Function'>|</span></code>. However, we can see at the right that <code><span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span></code> might also be called with two arguments: in this case it is <code><span class='Function'>𝔾</span></code> or <code><span class='Function'>-</span></code> at the bottom that receives both arguments.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NyB84oiYLSA5">↗️</a><pre>    <span class='Number'>7</span> <span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span> <span class='Number'>9</span>
+2
+</pre>
+<p>So <code><span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span></code> is the absolute difference: a useful function for a change! If we have two points represented as lists of numbers, we can go further: the <em>sum</em> of absolute differences is the <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Manhattan distance</a> between them.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MTTigL84IHziiJgtIDE54oC/NgoxNOKAvzggK8K04oiYfOKImC0gMTnigL82">↗️</a><pre>    <span class='Number'>14</span><span class='Ligature'>‿</span><span class='Number'>8</span> <span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span> <span class='Number'>19</span><span class='Ligature'>‿</span><span class='Number'>6</span>
+⟨ 5 2 ⟩
+    <span class='Number'>14</span><span class='Ligature'>‿</span><span class='Number'>8</span> <span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span> <span class='Number'>19</span><span class='Ligature'>‿</span><span class='Number'>6</span>
+7
+</pre>
+<p>This means that if you are at 14th and 8th, and want to get to 19th and 6th, or vice-versa, you must walk at least seven blocks total: five to get from 14th to 19th and two from 8th to 6th, not necessarily in that order. The function <code><span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span></code> actually uses both cases of <code><span class='Modifier2'>∘</span></code>: the one-argument case for <code><span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>|</span></code>, and the two argument case for the <code><span class='Modifier2'>∘</span><span class='Function'>-</span></code> part.</p>
+<table class='primitives'>
+  <tr>
+    <td><span class='Modifier'>˜</span></td>
+    <td><kbd>\`</kbd></td>
+    <td>Self</td>
+    <td>Swap</td>
+  </tr>
+  <tr>
+    <td><span class='Modifier'>˙</span></td>
+    <td><kbd>\"</kbd></td>
+    <td colspan='2'>Constant</td>
+  </tr>
+  <tr>
+    <td><span class='Modifier2'>∘</span></td>
+    <td><kbd>\j</kbd></td>
+    <td colspan='2'>Atop</td>
+  </tr>
+</table>
+
+<p>We've seen three combinators so far: Atop (<code><span class='Modifier2'>∘</span></code>), Self/Swap (<code><span class='Modifier'>˜</span></code>), and Constant (<code><span class='Modifier'>˙</span></code>). The 1-modifiers are much simpler than Atop, as they only have a single function to call, and Constant never even calls it! Other 1-modifier combinators are possible—for example one that calls its operand twice—but not particularly useful (the Repeat modifier <code><span class='Modifier2'>⍟</span></code> is much more general). For that matter, I still haven't explained why Constant is useful. I'll admit, it was added a lot later than the other combinators. We'll get to it, though.</p>
+<svg viewBox='0 0 850 270'>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Atop</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(425,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Self/Swap</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier'>˜</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q-41.6 57 0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q41.6 57 0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier'>˜</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C-40 28.5 -0 57 32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C40 28.5 0 57 -32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(705,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Constant</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕗</tspan><tspan class='Modifier'>˙</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='57'><tspan class='Value'>𝕗</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Value'>𝕗</tspan><tspan class='Modifier'>˙</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='57'><tspan class='Value'>𝕗</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<h2 id="comparisons">Comparisons</h2>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'><</span></td>
+    <td></td>
+    <td></td>
+    <td>Less Than</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>></span></td>
+    <td></td>
+    <td></td>
+    <td>Greater Than</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>≠</span></td>
+    <td><kbd>\/</kbd></td>
+    <td>Length</td>
+    <td>Not Equals</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>=</span></td>
+    <td></td>
+    <td>Rank</td>
+    <td>Equals</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>≤</span></td>
+    <td><kbd>\<</kbd></td>
+    <td></td>
+    <td>Less Than or Equal to</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>≥</span></td>
+    <td><kbd>\></kbd></td>
+    <td></td>
+    <td>Greater Than or Equal to</td>
+  </tr>
+</table>
+
+<p>Before we go further, let's introduce some new functions that we might like to use with combinators. BQN includes the full mathematical suite of <a href="https://en.wikipedia.org/wiki/Inequality_(mathematics)">comparisons</a>, with their standard widely-known Unicode symbols. It's surprising how much having the proper symbols instead of digraphs like <code><span class='Function'>!=</span></code> or <code><span class='Function'>&gt;=</span></code> improves readability!</p>
+<p>The comparisons are functions like any other—specifically, they are all two-argument functions, and the same symbol with only one argument might mean something else. Given two numbers or characters, they return <code><span class='Number'>1</span></code> if these arguments compare in the specified way and <code><span class='Number'>0</span></code> if they don't: for example, <code><span class='Function'>&lt;</span></code> returns <code><span class='Number'>1</span></code> when the left argument is strictly less than the right and <code><span class='Function'>&gt;</span></code> returns <code><span class='Number'>1</span></code> if the right is strictly less than the left. Characters are always considered to be greater than numbers, as though a larger &quot;characterness&quot; counts for more than any number.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyA8IDQKNCA+IOKIngriiJ4gPCBA">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>&lt;</span> <span class='Number'>4</span>
+1
+    <span class='Number'>4</span> <span class='Function'>&gt;</span> <span class='Number'>∞</span>
+0
+    <span class='Number'>∞</span> <span class='Function'>&lt;</span> <span class='String'>@</span>
+1
+</pre>
+<h3 id="booleans">Booleans</h3>
+<p>The return values <code><span class='Number'>0</span></code> and <code><span class='Number'>1</span></code> are natural choices because BQN has no dedicated boolean type: instead, in BQN, the word <em>boolean</em> indicates a number that's 0 or 1, much like &quot;natural number&quot; selects a subset of the possible numbers. This is a choice that might be at odds with your own programming experience, and especially clashes with the world of typed functional programming, where even using the boolean type rather than a dedicated type for an option might be considered a code smell! The design principle guiding this decision, and most of BQN's type system, is that there should only be one type that accomplishes any given programming task. Any distinctions that it has are there because they are really necessary: conflating numbers and characters would make working with strings too difficult, and functions can't really be combined with modifiers because one-argument functions and 1-modifiers take their inputs on different sides.</p>
+<p>The advantage of this strategy is that you will spend much less time thinking about types when writing programs. The decisions are already made: if there are a few things, they go in a list; if there a few possible values in a qualitative category then they should be labelled with numbers. And if some value has multiple interpretations then BQN is less likely to require an explicit conversion between these. For example, while the result of <code><span class='Function'>=</span></code> might be taking to say <em>whether</em> two atoms have equal values, maybe it also says <em>how many times</em> the atom on the left appears in the right argument—which is at most one, because there's only one right argument. A silly distinction, or is it? An important property of counts is that we can add them together, for instance, to find how many times the letter &quot;e&quot; appears in a string.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2UnID0gIkdlb3JnZSBCb29sZSIKCivCtCAnZScgPSAiR2VvcmdlIEJvb2xlIgoKJ2UnICvCtOKImD0gIkdlb3JnZSBCb29sZSIgICMgV2l0aCBhIGNvbWJpbmF0b3I=">↗️</a><pre>    <span class='String'>'e'</span> <span class='Function'>=</span> <span class='String'>&quot;George Boole&quot;</span>
+⟨ 0 1 0 0 0 1 0 0 0 0 0 1 ⟩
+
+    <span class='Function'>+</span><span class='Modifier'>´</span> <span class='String'>'e'</span> <span class='Function'>=</span> <span class='String'>&quot;George Boole&quot;</span>
+3
+
+    <span class='String'>'e'</span> <span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>=</span> <span class='String'>&quot;George Boole&quot;</span>  <span class='Comment'># With a combinator
+</span>3
+</pre>
+<p>This, a well-typed and well-spoken programmer should declare, is an outrage! The purpose of types is to <em>protect</em> us from applying functions to types they're not intended for, because the most likely result is that such an application doesn't make sense. Static types provide a valuable service by catching these dangerous actions at compile time and allowing a programmer to prove that they never happen. Well… this is all true. BQN chooses not to pay the type price of this service and so doesn't get the type protection. And it helps that it's consistent about this choice, so you know that BQN's types are never the answer to these sorts of safety concerns. You will have to find a different way to avoid type errors: perhaps just programming carefully in a small or one-off program, and testing and code review or even external tools in a large one. All that said, I think programmers from outside the array programming world (and even many inside!) drastically underestimate how often a boolean value is really just a narrow-minded take on a counting number.</p>
+<h3 id="comparing-whole-arrays">Comparing whole arrays</h3>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'>≡</span></td>
+    <td><kbd>\m</kbd></td>
+    <td>Depth</td>
+    <td>Match</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>≢</span></td>
+    <td><kbd>\M</kbd></td>
+    <td></td>
+    <td>Not Match</td>
+  </tr>
+</table>
+
+<p>Programmers not as inclined to grandiose philosophical discursions will note from the example above that <code><span class='Function'>=</span></code> is a pervasive function, like arithmetic functions such as <code><span class='Function'>+</span></code> and <code><span class='Function'>⋆</span></code>. This can be useful, as that example shows, but it's difficult to use <code><span class='Function'>=</span></code> to check whether, for example, two lists are the same. For equal-length lists we might compare element-wise and then multiply the results together (giving <code><span class='Number'>0</span></code> if the resulting list contained a <code><span class='Number'>0</span></code>):</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiY2QiIMOXwrTiiJg9ICJhYmRkIg==">↗️</a><pre>    <span class='String'>&quot;abcd&quot;</span> <span class='Function'>×</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>=</span> <span class='String'>&quot;abdd&quot;</span>
+0
+</pre>
+<p>For arbitrary values it's harder: we need to know whether the arguments are atoms or lists, and whether they have the same length, and what happens if some of their <em>elements</em> are lists? To avoid all this trouble, the function Match (<code><span class='Function'>≡</span></code>) tests whether its arguments are identical, returning <code><span class='Number'>1</span></code> if they are and <code><span class='Number'>0</span></code> if they aren't—always an atomic return value and never a list.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiY2QiIOKJoSAiYWJkZCIKImFiYyLigL8iZGUiIOKJoSAiYWJjIuKAvyJkZSI=">↗️</a><pre>    <span class='String'>&quot;abcd&quot;</span> <span class='Function'>≡</span> <span class='String'>&quot;abdd&quot;</span>
+0
+    <span class='String'>&quot;abc&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;de&quot;</span> <span class='Function'>≡</span> <span class='String'>&quot;abc&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;de&quot;</span>
+1
+</pre>
+<p>In analogy with Not Equals (<code><span class='Function'>≠</span></code>) testing whether two atoms are different, Not Match (<code><span class='Function'>≢</span></code>) tests whether two arbitrary values differ.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAvzPigL804oC/MiDiiaAgM+KAvzPigL8y4oC/Mgoy4oC/M+KAvzTigL8yIOKJoiAz4oC/M+KAvzLigL8y">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>≠</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+⟨ 1 0 1 0 ⟩
+    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>≢</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+1
+</pre>
+<h2 id="length-rank-and-depth">Length, rank, and depth</h2>
+<p>I said above that the comparison functions might have a different meaning when called with only one argument, so let's cover a few of these.</p>
+<p>Length (<code><span class='Function'>≠</span></code>) gives the number of elements in a list. For atoms it returns 1; it can't result in an error.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omgICJ0ZXN0aW5nIgriiaAg4p+o4p+pCuKJoCDin6ggz4AsIOKImCwgImVsZW1lbnQiIOKLhCDin6gnbCcsMSw1LCd0J+KfqSDin6kK4omgIDQ=">↗️</a><pre>    <span class='Function'>≠</span> <span class='String'>&quot;testing&quot;</span>
+7
+    <span class='Function'>≠</span> <span class='Bracket'>⟨⟩</span>
+0
+    <span class='Function'>≠</span> <span class='Bracket'>⟨</span> <span class='Number'>π</span><span class='Separator'>,</span> <span class='Modifier2'>∘</span><span class='Separator'>,</span> <span class='String'>&quot;element&quot;</span> <span class='Separator'>⋄</span> <span class='Bracket'>⟨</span><span class='String'>'l'</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Separator'>,</span><span class='String'>'t'</span><span class='Bracket'>⟩</span> <span class='Bracket'>⟩</span>
+4
+    <span class='Function'>≠</span> <span class='Number'>4</span>
+1
+</pre>
+<p>Rank (<code><span class='Function'>=</span></code>) returns <code><span class='Number'>0</span></code> when called on an atom and <code><span class='Number'>1</span></code> when called on a list. I'm <strong>absolutely sure</strong> this boolean result is not just a narrow-minded take on a counting number. But don't assume that every value with rank 0 is an atom.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PSAwLjUKPSDihpUzCj0gJ2EnCj0gImEi">↗️</a><pre>    <span class='Function'>=</span> <span class='Number'>0.5</span>
+0
+    <span class='Function'>=</span> <span class='Function'>↕</span><span class='Number'>3</span>
+1
+    <span class='Function'>=</span> <span class='String'>'a'</span>
+0
+    <span class='Function'>=</span> <span class='String'>&quot;a&quot;</span>
+1
+</pre>
+<p>Depth (<code><span class='Function'>≡</span></code>) gives the recursive nesting depth of its argument: the greatest number of times you can take an element before reaching an atom. That is, for an atom, it's 0, but for a list, it's one more than the highest depth of any element.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhICJkcmVhbSIgICAgICAgICAgICAgICAgICAjIEFuIG9yZGluYXJ5IGRyZWFtCuKJoSAiZCLigL8iciLigL8iZSLigL8iYSLigL8ibSIgICAgICAjIFdoYXQgaWYgdGhlIGxldHRlcnMgd2VyZSBzdHJpbmdzPwriiaEg4p+oICJkIuKAvyJyIuKAvyJlIuKAvyJhIuKAvyJtIiDin6kgICMgV2UgaGF2ZSB0byBnbyBkZWVwZXI=">↗️</a><pre>    <span class='Function'>≡</span> <span class='String'>&quot;dream&quot;</span>                  <span class='Comment'># An ordinary dream
+</span>1
+    <span class='Function'>≡</span> <span class='String'>&quot;d&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;r&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;e&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;m&quot;</span>      <span class='Comment'># What if the letters were strings?
+</span>2
+    <span class='Function'>≡</span> <span class='Bracket'>⟨</span> <span class='String'>&quot;d&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;r&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;e&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;m&quot;</span> <span class='Bracket'>⟩</span>  <span class='Comment'># We have to go deeper
+</span>3
+</pre>
+<p>You probably won't end up using Depth too much. The data in a typical program has a fixed, known depth, so there's no point in asking BQN what it is. But it might be useful if you want to write a utility function that's flexible about its input. <code><span class='Number'>0</span><span class='Function'>&lt;≡</span><span class='Value'>a</span></code> is the idiomatic way to test whether <code><span class='Value'>a</span></code> is an array.</p>
+<h2 id="composition">Composition</h2>
+<table class='primitives'>
+  <tr>
+    <td><span class='Modifier2'>○</span></td>
+    <td><kbd>\k</kbd></td>
+    <td colspan='2'>Over</td>
+  </tr>
+  <tr>
+    <td><span class='Modifier2'>⊸</span></td>
+    <td><kbd>\h</kbd></td>
+    <td colspan='2'>Before/Bind</td>
+  </tr>
+  <tr>
+    <td><span class='Modifier2'>⟜</span></td>
+    <td><kbd>\l</kbd></td>
+    <td colspan='2'>After/Bind</td>
+  </tr>
+</table>
+
+<p>We've discussed Atop (<code><span class='Modifier2'>∘</span></code>), but hopefully you've intuited that it's not the end of the story as far as compositions go. In fact BQN has <strong>three</strong> more functions that could reasonably be interpreted as varieties of composition. Let's start by returning to a computation mentioned when we introduced Match (<code><span class='Function'>≡</span></code>), that of testing whether two arrays have the same length.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKJoCJzdHJpbmciKSA9IOKJoCJzdGluZyI=">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>≠</span><span class='String'>&quot;string&quot;</span><span class='Paren'>)</span> <span class='Function'>=</span> <span class='Function'>≠</span><span class='String'>&quot;sting&quot;</span>
+0
+</pre>
+<p>This code, to a BQN programmer, should look offensive. The exact same function is called twice, even though an English description only mentions it once. Not to mention that the call on the left is far away from the rest of the expression and requires an extra set of parentheses. It's possible to factor out the repeated <code><span class='Function'>≠</span></code> using Each and Reduce, but now the code is harder to read:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PcK04omgwqgg4p+oInN0cmluZyIsInN0aW5nIuKfqQ==">↗️</a><pre>    <span class='Function'>=</span><span class='Modifier'>´</span><span class='Function'>≠</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span><span class='String'>&quot;string&quot;</span><span class='Separator'>,</span><span class='String'>&quot;sting&quot;</span><span class='Bracket'>⟩</span>
+0
+</pre>
+<p>This is a very common pattern, and a sensible language should have a better way to handle it! BQN does, in the form of a 2-combinator called Over.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InN0cmluZyIgPeKXi+KJoCAic3Rpbmci">↗️</a><pre>    <span class='String'>&quot;string&quot;</span> <span class='Function'>=</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
+0
+</pre>
+<p>Let's use the list formation function Solo/Couple (<code><span class='Function'>≍</span></code>) to see what happens more clearly:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InN0cmluZyIg4omN4peL4omgICJzdGluZyIK4omN4peL4omgICJzdGluZyI=">↗️</a><pre>    <span class='String'>&quot;string&quot;</span> <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
+⟨ 6 5 ⟩
+    <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
+⟨ 5 ⟩
+</pre>
+<p>Atop always applies its right operand once, passing every argument (that is, one or two of them) in that call. Over calls its right operand on each argument individually. The results are the all used as arguments to the left operand. If there's only one argument, Atop and Over turn out to be the same: each calls the right operand, then the left, matching ordinary mathematical composition. Here are the two together for comparison.</p>
+<svg viewBox='-51 0 672 270'>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Atop</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(425,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Over</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>○</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>○</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+

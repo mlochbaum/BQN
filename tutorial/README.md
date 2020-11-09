@@ -9,3 +9,4 @@ Tutorials assume (pretty presumptively, really. Disgusting.) that you are alread
 The tutorials available so far:
 - [Expressions](expression.md)
 - [List manipulation](list.md)
+- [Combinators](combinator.md)
