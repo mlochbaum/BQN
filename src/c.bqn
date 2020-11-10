@@ -151,8 +151,10 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma⋄at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r
   "Role of the two sides in assignment must match"_err_(at⊏g⊸⊏) (at⊏er)≠ar←at⊏r
-  "Function or modifier assignment to a non-name"_err_(at⊏g⊸⊏) ¬(ar=0)∨(at⊏g)⊏idm
+  aid←(¯10⊸≤∧<⟜nv)𝕩-vi
+  "Function or modifier assignment to a non-name"_err_(at⊏g⊸⊏) ¬(ar=0)∨at⊏aid
   aa←×g⊏ac←»+`gi⊏«⊸-(1+af+(ai∊ni)+2×(⊑bG)-˜ai⊏𝕩)⌾(at⊸⊏)0¨𝕩
+  "Assignment target must be a name or list of targets"_err_(g⊸⊏) (aid∨ps∨𝕩∊bB⊑⊸+1‿5)<aa∧0=er
 
   ip←id⊏ac⋄d←ip M 2‿4⋄zic←0¨ic←id/˜icf←2(<∧|)ip
   il←ic⊏+`bv<0⋄ex←il⊏(/∾≠)c
