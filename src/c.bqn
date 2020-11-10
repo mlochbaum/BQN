@@ -101,7 +101,7 @@ ReadNums←{
 
 Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
   ErrMismatchedBrackets←{
-    Lcs ← ¯1 ⊑ 0˘∘⊢ {𝕩⌈⌈`𝕨+«𝕩}˝ =⌜
+    Lcs ← ¯1 ⊑ 0¨∘⊢ {𝕩⌈⌈`𝕨+»𝕩}˝ =⌜⟜⌽
     _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
     Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
     0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
