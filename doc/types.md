@@ -20,7 +20,7 @@ p ← 64‿38
 dim ← (2×p) + sh × d1 ← 128‿64
 rp ← 8÷d1
 Pos ↩ Pos d1⊸×
-Size ← "width"‿"height" ≍˘ ·FmtNum¨ d1×⊢
+Size ← "width"‿"height" ≍˘ ·FmtNum d1×⊢
 cl ← {"class"‿𝕩}¨ "purple"‿"bluegreen"‿"yellow"
 
 TP ← "text" Attr "dy"‿"0.32em"∾˜Pos⊘(∾⟜Pos)
