@@ -8,7 +8,7 @@ let setcount = !doc.count ? (s=>s) : (s=>{
 let setExplain = e=>e;
 let showErr = (s,e)=>{
   let r=e.src, w=e.message, loc=[];
-  while (w.sh&&w.sh[0]===2) {
+  while (w&&w.loc||(r!=='!'&&w.sh&&w.sh[0]===2)) {
     let is; [is,w]=w;
     let n=is.sh?is.sh[0]:0, i=n?is[0]:is;
     let to=i=>s.slice(0,i).join('').split('\n');
