@@ -27,7 +27,7 @@ let chkR = v => { if (v===null) throw Error("Runtime: Variable referenced before
 let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   let rD = 0;
   let r = L?"let l=0;try{":"";
-  let fin = L?"}catch(e){e.message=[l,e.message];e.message.sh=[2];throw e;}":"";
+  let fin = L?"}catch(e){e.message=[l,e.message];e.message.loc=true;e.message.sh=[2];throw e;}":"";
   let szM = 1;
   let rV = n => { szM=Math.max(szM,n+1); return 'v'+n; };
   let rP = val => rV(rD++) + "="+val+";";
