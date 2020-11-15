@@ -155,6 +155,7 @@ Parse ← {r‿vn‿ind←𝕨⋄nv←≠vn
   "Function or modifier assignment to a non-name"_err_(at⊏g⊸⊏) ¬(ar=0)∨at⊏aid
   aa←×g⊏ac←»+`gi⊏«⊸-(1+af+(ai∊ni)+2×(⊑bG)-˜ai⊏𝕩)⌾(at⊸⊏)0¨𝕩
   "Assignment target must be a name or list of targets"_err_(g⊸⊏) (aid∨ps∨𝕩∊bB⊑⊸+1‿5)<aa∧0=er
+  "Can't use result of function/modifier assignment without parentheses"_err_(g⊸⊏) (0<er)∧(0≤r)∧»⊸>aa
 
   ip←id⊏ac⋄d←ip M 2‿4⋄zic←0¨ic←id/˜icf←2(<∧|)ip
   il←ic⊏+`bv<0⋄ex←il⊏(/∾≠)c
