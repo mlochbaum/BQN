@@ -141,4 +141,3 @@ if (location.hash) {
   setcount(doc.code.value = (new TextDecoder()).decode(b));
   if (run) repl();
 }
-doc.code.focus();
