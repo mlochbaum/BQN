@@ -562,8 +562,8 @@ GetHighlights ← {
   # Turn non-whitespace classes into ⟨open,close⟩ html tags.
   classTag ← ""‿"" ∾ > {⟨"<span class='"∾𝕩∾"'>","</span>"⟩}¨ 1↓classes
 
-  # Find each character's group, sending unknowns to 1.
-  col ← (≠chars) (⊢--⟜1×=) chars FindGroup 𝕩
+  # Find each character's group, sending unknowns to 1 and # to 0.
+  col ← (1-˜≠chars) (⊢-⊣×≤) chars FindGroup 𝕩
 
   # Locate comments and strings.
   c ← 𝕩='#'
