@@ -40,6 +40,18 @@ table th {
   font-family: BQN;
   src: url(DejaVuBQNSansMono.ttf) format('truetype');
 }
+@font-face{
+  font-family: FFHD;
+  src: url(FairfaxHD_sub.woff2) format('woff2');
+}
+@font-face{
+  font-family: BQN386;
+  src: url(BQN386_sub.woff2) format('woff2');
+}
+@font-face{
+  font-family: JuliaMono;
+  src: url(JuliaMono_sub.woff2) format('woff2');
+}
 pre, code, textarea, .primitives tr td:first-child {
   background-color: #e3e7e7;
   color: #292929;
