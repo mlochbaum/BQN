@@ -160,20 +160,21 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Assignment target must be a name or list of targets"_err_(GI) (aid∨ps∨𝕩∊bB⊑⊸+1‿5)<aa∧0=er
   "Can't use result of function/modifier assignment without parentheses"_err_(GI) (0<er)∧(0≤r)∧»⊸>aa
 
-  ip←id⊏ac⋄d←ip M 2‿4⋄zic←0¨ic←id/˜icf←2(<∧|)ip
+  ip←id⊏ac⋄d←ip M 2‿4
+  zic←0¨ic←id/˜icf←2(<∧|)ip⋄II←∾⟜(icf⊸/)id⊏I
   il←ic⊏+`bv<0⋄ex←il⊏(/∾≠)c
   ixf←(((1=ip)+⊏⟜(¯1∾c/gf))∾(il∾d⊸/)⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
   d∾↩zic⋄idx∾↩icf/idx
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
-  "Multiple definitions" ! ∧´ixx∨○(»⊸≠((≠d)⊸≤⊸/ig)⊸⊏)ixf
+  {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)II) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
   ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
-  d⊏˜↩ig⋄idx⊏˜↩ig
-  ("Undefined identifier"Pl/)_err_(ig⊏id⊏I) d<»⊸≠idx
-  "Imports must have been exported" ! ∧´2>-⟜»(d∨×)⊸/ig⊏(ip M 1‿3)∾2¨ic
+  d⊏˜↩ig⋄idx⊏˜↩ig⋄II↩ig⊏II
+  ("Undefined identifier"Pl/)_err_(II) d<»⊸≠idx
+  {"Imports must have been exported"_err_(f/II) 2≤-⟜»(f←d∨×𝕩)/𝕩} ig⊏(ip M 1‿3)∾2¨ic
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex
   lc←(1«c)/dn←c(⊢-T)+`idm∧ac M 2‿4
-  ii←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv
-  ib←⟨21+0<ip∾zic∾sp⊏ac,(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp,ii⟩
+  idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv
+  ib←⟨21+0<ip∾zic∾sp⊏ac,(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp,idi⟩
   ed←/¯1⊸»⊸<ex
   idor←∾¯1⌽1‿3/⟨3/id∾ex∾sp,ed⊏ex⟩
   idbc←¯1⌽⟨⥊⍉>ib,3¨ed,ex≠⊸(«-⊢)ed,14¨ed⟩
