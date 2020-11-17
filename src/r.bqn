@@ -545,7 +545,7 @@ ReorderAxesInv←{
 ⍉ ← Transpose      ⊘ ReorderAxes
 
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
-ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
+ProgressiveIndexOf ← {𝕨⊐○((≠∾2˙)⥊·≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 
 ⊏ ← (<0)⊸GetCells  ⊘ (ToArray⊸(SelSub _onAxes_ 1))
 ⊑ ↩ (0⊑⥊)          ⊘ Pick
