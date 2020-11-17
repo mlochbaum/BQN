@@ -34,7 +34,7 @@ T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 
 # Error reporting for mask indicating error positions
 # 𝔽 is the message and 𝔾 returns indices corresponding to the mask
-_err_←{(0!˜∧∘/⟜𝔾≍○<𝔽)⍟(∨´∘⊢)}
+_err_←{(0!˜∧∘/⟜𝔾≍○<𝔽)⍟(∨´⍟=)}
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
 # Identifiers then literal tokens are numbered starting at vi
@@ -128,9 +128,9 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 
   H←¬1(∾/∾˜)c(∨/⊣)=
   sn←(0‿3‿4‿5+5+⊑bI)⍋𝕩⋄fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn
-  {⟨i/˜(0=fi)∧𝕩 M bI,"Special name outside of any block"⟩!0}⍟(0<⊑fr) 𝕩
+  "Special name outside of any block"_err_({(0=fi)∧𝕩 M bI}∘𝕩/I) 0<⊑fr
   nf←(⊑bG)H𝕩
-  {⟨i/˜(fi⊏0≠fr)∧𝕩=⊑bG,"Can't export from a non-immediate block"⟩!0}⍟(∨´nf>fr=0) 𝕩
+  "Can't export from a non-immediate block"_err_({(fi⊏0≠fr)∧𝕩=⊑bG}∘𝕩/I) ∨´nf>fr=0
   fsc←(ft⊏0‿2‿3)+3×fx
   pt←cp∧ns←¬sl∨sr
   r↩sl-˜ns×(1↓fr)⌾((b⊏rev)⊸⊏)r
