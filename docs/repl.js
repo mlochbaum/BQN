@@ -11,12 +11,12 @@ let showErr = (s,e)=>{
   while (w&&w.loc||(r!=='!'&&w.sh&&w.sh[0]===2)) {
     let is; [is,w]=w;
     let n=is.sh?is.sh[0]:0, i=n?is[0]:is;
-    let to=i=>s.slice(0,i).join('').split('\n');
+    let to=i=>s.slice(0,i).join('').split('\n').map(l=>Array.from(l));
     let ll=to(i), l=ll.length-1, j=ll[l].length, m=to()[l];
     let k=1,o=i-j,cl=j; while (k<n&&(cl=is[k]-o)<m.length) k++;
     let c=Array(cl).fill(0); c[j]=1;
     for (let h=1;h<k;h++) c[is[h]-o]=1;
-    let add = ['',m,c.map(t=>t?'^':' ').join('')];
+    let add = ['',m.join(''),c.map(t=>t?'^':' ').join('')];
     loc = add.concat(k<n?['(and other lines)']:[], loc);
   }
   if (r==='!') w=w?fmt(w).replace(/^/gm,'! '):'! Error';
@@ -25,17 +25,17 @@ let showErr = (s,e)=>{
   doc.rslt.textContent=[w].concat(loc).join('\n');
 }
 let repl = ()=>{
-  let s=Array.from(doc.code.value);
+  let s=Array.from(doc.code.value), src=str(s);
   doc.rslt.classList.remove('err');
   doc.rslt.textContent=' '; setExplain();
   setcount(s);
   setTimeout(() => {
     try {
-      let src=str(s), c=compile(src,runtime);
+      let c=compile(src,runtime);
       setExplain(src,c);
       doc.rslt.textContent=fmt(run.apply(null,c));
     } catch(e) {
-      showErr(s,e);
+      showErr(src,e);
     }
   }, 0);
 }
