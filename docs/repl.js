@@ -11,13 +11,16 @@ let showErr = (s,e)=>{
   while (w&&w.loc||(r!=='!'&&w.sh&&w.sh[0]===2)) {
     let is; [is,w]=w;
     let n=is.sh?is.sh[0]:0, i=n?is[0]:is;
+    let pair=n&&is.sh.length>1; if (pair) n*=2;
     let to=i=>s.slice(0,i).join('').split('\n').map(l=>Array.from(l));
     let ll=to(i), l=ll.length-1, j=ll[l].length, m=to()[l];
     let k=1,o=i-j,cl=j; while (k<n&&(cl=is[k]-o)<m.length) k++;
+    let ol=k<n; if (pair) { if (k%2) cl=m.length; else { k--; cl++; } }
     let c=Array(cl).fill(0); c[j]=1;
-    for (let h=1;h<k;h++) c[is[h]-o]=1;
+    for (let h=1;h<k;h++) c[is[h]-o+(pair?h%2:0)]=1;
+    if (pair) for (let h=1;h<cl;h++) c[h]^=c[h-1];
     let add = ['',m.join(''),c.map(t=>t?'^':' ').join('')];
-    loc = add.concat(k<n?['(and other lines)']:[], loc);
+    loc = add.concat(ol?['(and other lines)']:[], loc);
   }
   if (r==='!') w=w?fmt(w).replace(/^/gm,'! '):'! Error';
   else w=w.sh?w.join(''):w;
