@@ -119,9 +119,9 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   g⊏˜↩⍋g⊏sl
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sl∨r=¯1
 
-  gf←⍋fd←+`rev⊏br←p×𝕩M⟨2+⊑bB,2⟩
-  rev⊏˜↩gf⋄fd⊏˜↩gf
-  𝕩⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev⋄bv←rev⊏br⋄b←/bv<0⋄fi←+`c←bv>0
+  gf←⍋fd←+`br←rev⊏p×𝕩M⟨2+⊑bB,2⟩
+  rev⊏˜↩gf⋄fd⊏˜↩gf⋄br⊏˜↩gf
+  𝕩⊏˜↩rev⋄p⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev⋄b←/br<0⋄fi←+`c←br>0
 
   H←¬1(∾/∾˜)c(∨/⊣)=
   sn←(0‿3‿4‿5+5+⊑bI)⍋𝕩⋄fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn
@@ -138,10 +138,10 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 
   idx←𝕩⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄sp←/𝕩 M bI
 
-  g↩⍋+`rev⊏p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
-  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄ginv←⍋g
+  g↩⍋+`p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
+  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
-  ni←1+(1↓nf)/bk←b⊏ginv
+  ni←1+(1↓nf)/bk←b⊏gi
   "Modules must be immediately assigned"_err_(ni⊏G)∘(∨˝¯3‿0‿¯1≠r∾⟜¯1‿1⊸(⊏˜)(↕3)+⌜⊢)⍟(0<≠)ni
   "Modules must be destructured"_err_(ni⊏G) (⊏⟜idm>⊏⟜rev⊏sr˙)(ni+1)⊏g
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps
@@ -153,13 +153,13 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Role of the two sides in assignment must match"_err_(at⊏G) (at⊏er)≠ar←at⊏r
   aid←(¯10⊸≤∧<⟜nv)𝕩-vi
   "Function or modifier assignment to a non-name"_err_(at⊏G) ¬(ar=0)∨at⊏aid
-  aa←×g⊏ac←»+`ginv⊏«⊸-(1+af+(ai∊ni)+2×(⊑bG)-˜ai⊏𝕩)⌾(at⊸⊏)0¨𝕩
+  aa←×g⊏ac←»+`gi⊏«⊸-(1+af+(ai∊ni)+2×(⊑bG)-˜ai⊏𝕩)⌾(at⊸⊏)0¨𝕩
   "Assignment target must be a name or list of targets"_err_(G) (aid∨ps∨𝕩∊bB⊑⊸+1‿5)<aa∧0=er
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
 
   ip←id⊏ac⋄d←ip M 2‿4
   zic←0¨ic←id/˜icf←2(<∧|)ip⋄II←∾⟜(icf⊸/)∘id
-  il←ic⊏+`bv<0⋄ex←il⊏(/∾≠)c
+  il←ic⊏+`br<0⋄ex←il⊏(/∾≠)c
   ixf←(((1=ip)+⊏⟜(¯1∾c/gf))∾(il∾d⊸/)⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
   d∾↩zic⋄idx∾↩icf/idx
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
