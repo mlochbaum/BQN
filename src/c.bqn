@@ -138,7 +138,8 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 
   idx←𝕩⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄sp←/𝕩 M bI
 
-  g↩⍋+`p-br⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
+  p-↩br⋄g↩⍋+`p⋄gr←g⊏rev⋄sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB
+  {i↩(𝕩⊏i)⌾(𝕨⊸⊏)i⋄e↩(𝕨⊏e)⌾(𝕩⊸⊏)e}´⟨b,/c⟩∾¨0(>≍○(</⟜g)<)g⊏p
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
   ni←1+(1↓nf)/bk←b⊏gi
