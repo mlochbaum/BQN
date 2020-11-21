@@ -191,16 +191,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,14¨dr,⥊⍉(3+l⊏aa)≍ll
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
   oj←i(≠-1˙)⊸⌊oi(-⊸↓˜⟜≠∾⊢)g⊏˜∾⟨1-˜af/at,oa,fa,rt⟩
-  bcl‿el‿ol←LEB bc∾25
-  ⟨bcl,u,⟨ft,¬fx,el/˜1∾or≥bc-○≠rt,lc+fsc⟩, (ol/¯1∾˜or⊏oj)⊸⊏¨i‿e⟩
-}
-
-LEB←{
-  b←128
-  s←+`»i←1+l←⌊b⋆⁼1⌈𝕩
-  o←⍋⍋↕∘≠⊸-i/s
-  v←o⊏l{f←×𝕨⋄(𝕨-1)(b⊸(×⟜f+|)∾𝕊⟜(⌊÷⟜b)○(f⊸/))⍟(∨´f)𝕩}𝕩
-  v‿s‿i
+  ⟨bc∾25,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,lc+fsc⟩, (¯1∾˜or⊏oj)⊸⊏¨i‿e⟩
 }
 
 Compile←{
