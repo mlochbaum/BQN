@@ -28,6 +28,6 @@ DCompile⇐{
     s←(3×i)↓(t⊑3‿5‿6)↑special
     ⟨⟨t,i,𝕨,𝕨⟩ ⋄ ⟨l⊑el, s∾⥊¨'a'+↕n-≠s⟩⟩
   }¨fblk
-  ⟨bcl,o,blk,bdy,ol/⊑ind,ol/1⊑ind,𝕩⟩
+  ⟨bcl,o,blk,⊑blk,bdy,ol/⊑ind,ol/1⊑ind,𝕩⟩
 }
 DRun⇐•COMP∘DCompile
