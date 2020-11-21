@@ -19,6 +19,6 @@ DCompile⇐{
     s←(3×i)↓(t⊑3‿5‿6)↑special
     ⟨⟨t,i,𝕨,𝕨⟩ ⋄ ⟨l, s∾⥊¨'a'+↕n-≠s⟩⟩
   }¨fblk
-  ⟨bc,o,blk,bdy,ind,𝕩⟩
+  ⟨bc,o,blk,bdy,⊑ind,𝕩⟩
 }
 DRun⇐•COMP∘DCompile
