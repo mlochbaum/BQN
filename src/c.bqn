@@ -190,8 +190,9 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,dr,2/l,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,14¨dr,⥊⍉(3+l⊏aa)≍ll
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
+  oj←i(≠-1˙)⊸⌊oi(-⊸↓˜⟜≠∾⊢)g⊏˜∾⟨1-˜af/at,oa,fa,rt⟩
   bcl‿el‿ol←LEB bc∾25
-  ⟨bcl,u,⟨ft,¬fx,el/˜1∾or≥bc-○≠rt,lc+fsc⟩, ol/(¯1∾˜or⊏oi)⊏¯1(⊢∾⊏)i⟩
+  ⟨bcl,u,⟨ft,¬fx,el/˜1∾or≥bc-○≠rt,lc+fsc⟩, (ol/¯1∾˜or⊏oj)⊸⊏¨i‿e⟩
 }
 
 LEB←{
@@ -204,6 +205,6 @@ LEB←{
 
 Compile←{
   ⟨tok,role,val,t0,t1⟩←tx←Tokenize 𝕩
-  ⟨bc,prim,blk,indb⟩←⟨role,⊑val,t0,t1⟩ Parse tok
-  ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk, indb, tx⟩
+  ⟨bc,prim,blk,oi⟩←⟨role,⊑val,t0,t1⟩ Parse tok
+  ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk, oi, tx⟩
 }
