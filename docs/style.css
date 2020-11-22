@@ -52,6 +52,12 @@ table th {
   font-family: JuliaMono;
   src: url(JuliaMono_sub.woff2) format('woff2');
 }
+pre.DejaVu , .DejaVu  .kb span, .DejaVu  .code, .DejaVu  .rslt { font-family:BQN,monospace; }
+pre.BQN386 , .BQN386  .kb span, .BQN386  .code, .BQN386  .rslt { font-family:BQN386,monospace; }
+pre.Julia  , .Julia   .kb span, .Julia   .code, .Julia   .rslt { font-family:JuliaMono,monospace; }
+pre.Fairfax, .Fairfax .kb span, .Fairfax .code, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
+.Fairfax .kb span { line-height:1.25; }
+
 pre, code, textarea, .primitives tr td:first-child {
   background-color: #e3e7e7;
   color: #292929;
@@ -90,10 +96,17 @@ textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
   line-height: 1.5;
   width: 100%;
   padding: 0.3em 0;
+  position: relative;
 }
 .kb span {
   cursor: default;
   padding: 1px;
+}
+.kb select {
+  position: absolute; bottom: 0.4em; right: 0.1em;
+  color: currentColor; opacity: 0.5;
+  font-size: 0.7em;
+  border: none;
 }
 .rel { position: relative; }
 .demo {
@@ -154,7 +167,7 @@ a:visited     { color: #3d155f; }
 .kb.backslash { background-color: #cee; }
 
 @media (prefers-color-scheme: dark) {
-  body, input { color: #d6d7d9; background-color: #141515; }
+  body, input, select { color: #d6d7d9; background-color: #141515; }
   input       { border-color: #0c0d0e; }
   textarea, pre, code, .primitives tr td:first-child { color: #969698; background-color: #0c0d0e; }
   textarea, pre, code, .kb { border-color: #040509; }
