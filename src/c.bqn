@@ -128,13 +128,16 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   nf←(⊑bG)H𝕩
   "Can't export from a non-immediate block"_err_(/{(fi⊏0≠fr)∧𝕩=⊑bG}∘𝕩) ∨´nf>fr=0
-  fsc←(ft⊏0‿2‿3)+3×fx
-  pt←cp∧ns←¬sl∨sr
-  r↩sl-˜ns×(1↓fr)⌾((b⊏rev)⊸⊏)r
-  pp←pt∧»no←1⊸»⌾(g⊸⊏)r<0
-  ir←((»⌾(g⊸⊏)(1+no)×3=⊢)⌈⊢-no<2≤⊢)r+pp×(IT¬pp)⊏r
-  ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir
-  r+↩pt×»ir
+  fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
+
+  # Propagate roles through parentheses
+  # ir is the role of the expression ending at each position (truncated to the right)
+  pt←cp∧ns←¬sl∨sr                           # Pass-through parentheses: not in strands
+  r↩sl-˜ns×(1↓fr)⌾((b⊏rev)⊸⊏)r              # Add block roles; make strand elements ¯1
+  pp←pt∧»no←1⊸»⌾(g⊸⊏)r<0                    # Parens enclosing one object (maybe with assignment) don't change roles
+  ir←((»⌾(g⊸⊏)(1+no)×3=⊢)⌈⊢-no<2≤⊢)r+pp×(IT¬pp)⊏r # Propagate modifier roles
+  ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir # ...and function roles
+  r+↩pt×»ir                                 # Roles at pt were 0; set them now
 
   idx←𝕩⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi⋄sp←/𝕩 M bI
 
