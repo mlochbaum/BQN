@@ -191,7 +191,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,14¨dr,⥊⍉(3+l⊏aa)≍ll
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
-  ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜(rt≠⊸⌽or)⊸⊏)⊸⊏¨i‿e
+  ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   ⟨bc∾25,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,lc+fsc⟩,ind⟩
 }
 
