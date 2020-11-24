@@ -177,15 +177,15 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   idor←∾¯1⌽1‿3/⟨3/id∾ex∾sp,ed⊏ex⟩
   idbc←¯1⌽⟨⥊⍉>ib,3¨ed,ex≠⊸(«-⊢)ed,14¨ed⟩
 
-  ta←tr∧2(>∨|)ps(⊢-T)+`¬ro
-  fa←/(fe←ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op
+  ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
+  fa←/(fe←ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op      # Active functions: cases fe are excluded
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
-  dy←fa⊏«(𝕩=⊑bO)<(tr∧r≥0)∨ro<r=0
-  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep
-  cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩
-  s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB
-  ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0
-  dr←/ls<s⋄rt←/fo
+  dy←fa⊏«(𝕩=⊑bO)<(tr∧r≥0)∨ro<r=0            # Dyadic
+  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
+  cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩    # Constants
+  s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
+  ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
+  dr←/ls<s⋄rt←/fo                           # Drop (block separator) and return
 
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,dr,2/l,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,14¨dr,⥊⍉(3+l⊏aa)≍ll
