@@ -108,6 +108,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   }
   _err_←{(0!˜(∧∘⍉(i≍e)⊏⎉1˜/⟜𝔾)≍○<𝔽)⍟(∨´⍟=)}
 
+  "Empty program" ! 0<≠𝕩
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gb←g⊏r=¯1⋄gx←g⊏𝕩
   (g⊏p)(>⟜0⊸/ErrMismatchedBrackets⍟≢1-˜<⟜0⊸/)gx
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
