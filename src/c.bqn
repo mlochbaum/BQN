@@ -118,7 +118,11 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
   r-↩(𝕩=⊑bG)>ec←«0≤r+p                      # Role ¯4 for exports: ⊑bG is ⇐
   "Invalid assignment or stranding use"_err_(↕∘≠) ((¯4⊸<∧≤⟜¯2)r)>ec∧»0≤r
-  sr←»⌾(g⊸⊏)sl←«⊸∨r=¯2⋄cp←𝕩=1+⊑bB           # Strand right and left; closed paren
+  sr←»⌾(g⊸⊏)sl←«⊸∨r=¯2⋄ns←¬sl∨sr            # Strand right and left; not stranded
+  cp←𝕩=1+⊑bB                                # Closed paren
+  nr←(IT¬cp)⊏𝕩=⊑bO                          # Nothingness role: 1 for · (handle 𝕨 later?)
+  "Can't strand Nothing (·)"_err_(↕∘≠) ns<nr
+  "Can't return Nothing (·)"_err_(↕∘≠) nr∧1«𝕩=3+⊑bB
   g⊏˜↩⍋g⊏sl                                 # Avoid reordering strands in rev
   # Permutation to reverse each expression: *more* complicated than it looks
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sl∨r=¯1
@@ -138,12 +142,13 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 
   # Propagate roles through parentheses
   # ir is the role of the expression ending at each position (truncated to the right)
-  pt←cp∧ns←¬sl∨sr                           # Pass-through parentheses: not in strands
   r↩sl-˜ns×(1↓fr)⌾((b⊏rev)⊸⊏)r              # Add block roles; make strand elements ¯1
-  pp←pt∧»no←1⊸»⌾(g⊸⊏)r<0                    # Parens enclosing one object (maybe with assignment) don't change roles
-  ir←((»⌾(g⊸⊏)(1+no)×3=⊢)⌈⊢-no<2≤⊢)r+pp×(IT¬pp)⊏r # Propagate modifier roles
+  pt←cp∧ns                                  # Pass-through parentheses: not in strands
+  pp←pt∧»es←1⊸»⌾(g⊸⊏)r<0                    # Parens enclosing one object (maybe with assignment) don't change roles
+  ir←((»⌾(g⊸⊏)(1+es)×3=⊢)⌈⊢-es<2≤⊢)r+pp×(IT¬pp)⊏r # Propagate modifier roles
   ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir # ...and function roles
   r+↩pt×»ir                                 # Roles at pt were 0; set them now
+  ir(×⟜¬-⊢)↩nr                              # Include nothingness (doesn't handle 𝕎)
 
   # Prep for lexical resolution before reordering 𝕩
   idx←𝕩⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi
@@ -153,24 +158,26 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB    # Strand length; list starts
   bp←⟨b,/c⟩∾¨0(>≍○(</⟜g)<)g⊏p               # Bracket pairs
   {i↩(𝕩⊏i)⌾(𝕨⊸⊏)i⋄e↩(𝕨⊏e)⌾(𝕩⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
-  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Strand prefixes *‿ to the end
+  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
   ni←1+(1↓nf)/bk←b⊏gi                       # Indices of module assignment (import) arrows
   "Modules must be immediately assigned"_err_(ni⊏G)∘(∨˝¯3‿0‿¯1≠r∾⟜¯1‿1⊸(⊏˜)(↕3)+⌜⊢)⍟(0<≠)ni
   "Modules must be destructured"_err_(ni⊏G) (⊏⟜idm>⊏⟜rev⊏sr˙)(ni+1)⊏g
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps         # er: expression role; tr: train or modifier expression
+  no←ir<0⋄ne←er<0                           # Nothing value; expression
+  "Nothing (·) cannot be assigned"_err_(G) a∧ne
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3       # op: active modifiers; ro: mod or right operand
-  "Missing operand"_err_(G) op>(«∧m2≤»)m2<ro∨r∊↕2
+  "Missing operand"_err_(G) op>(«∧m2≤»)no<m2<ro∨r∊↕2
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1                     # Modified assignment
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r               # Assignment target; af for actual (non-export) assignment
-  "Role of the two sides in assignment must match"_err_(at⊏G) (at⊏er)≠ar←at⊏r
+  "Role of the two sides in assignment must match"_err_(at⊏G) (0⌈at⊏er)≠ar←at⊏r
   aid←(¯10⊸≤∧<⟜nv)𝕩-vi                      # Assignable identifer
   "Function or modifier assignment to a non-name"_err_(at⊏G) ¬(ar=0)∨at⊏aid
   ak←1+af+(ai∊ni)+2×(⊑bG)-˜ai⊏𝕩             # Class of assignment: 1⇐ 2⇐? 3⇐{⇐} 4←? 5←{⇐} 6↩? 7↩{⇐}
   aa←×g⊏ac←»+`gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩            # ac broadcasts it to the entire target
-  "Assignment target must be a name or list of targets"_err_(G) ((𝕩=3+⊑bB)<(aid∧r≤0)∨ps∨𝕩 M bB)<aa∧0=er
+  "Assignment target must be a name or list of targets"_err_(G) ((𝕩=3+⊑bB)<(aid∧r≤0)∨ps∨𝕩 M bB)<aa∧0≥er
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
 
   # Lexical resolution (independent of parsing part 2 below)
@@ -197,12 +204,14 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
   fa←/(fe←ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op      # Active functions: cases fe are excluded
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
-  dy←fa⊏«(𝕩=⊑bO)<(tr∧r≥0)∨ro<r=0            # Dyadic
+  dy←fa⊏«no<(tr∧r≥0)∨ro<r=0                 # Dyadic
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
   cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩    # Constants
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
+  "Can't use Nothing (·) in lists"_err_(G) (»lo∨ls)∧ne
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
   dr←/ls<s⋄rt←/fo                           # Drop (block separator) and return
+  dr∾↩((1+dy)×fn←fa⊏ne)/fa⋄fa/˜↩¬fn⋄dy/˜↩¬fn# Turn function applications on · to drops
 
   # Bytecode generation: numbers bc ordered by source location (after rev) oi
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,dr,2/l,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
