@@ -181,24 +181,27 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
 
   # Lexical resolution (independent of parsing part 2 below)
-  ip←id⊏ac⋄d←ip M 2‿4
-  zic←0¨ic←id/˜icf←2(<∧|)ip⋄II←∾⟜(icf⊸/)∘id
-  il←ic⊏+`br<0⋄ex←il⊏(/∾≠)c
-  ixf←(((1=ip)+⊏⟜(¯1∾c/gf))∾(il∾d⊸/)⊏((≠𝕩)∾b⊏gf)˜)id⊏fi
-  d∾↩zic⋄idx∾↩icf/idx
-  ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf
+  ip←id⊏ac⋄d←ip M 2‿4                       # Assignment classes; which are definitions
+  zic←0¨ic←id/˜icf←2(<∧|)ip⋄II←∾⟜(icf⊸/)∘id # Imports have class 3, 5, or 7
+  il←ic⊏+`br<0⋄ex←il⊏(/∾≠)c                 # Block for each import and its end index
+  # Order every referenced identifier, an extraction for each import, and an undeclaration for each declaration
+  ixf←(((1=ip)+⊏⟜(¯1∾c/gf))∾(il∾d⊸/)⊏((≠𝕩)∾b⊏gf)˜)id⊏fi # First order by block index, open for real and closed for virtual
+  d∾↩zic⋄idx∾↩icf/idx                       # Add in imports
+  ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf            # Then order by name
   {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)II) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
-  ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig
+  ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig           # Last order by declaration depth
   d⊏˜↩ig⋄idx⊏˜↩ig⋄II↩ig⊏II
   ("Undefined identifier"Pl/)_err_(II) d<»⊸≠idx
   {"Imports must have been exported"_err_(f/II) 2≤-⟜»(f←d∨×𝕩)/𝕩} ig⊏(ip M 1‿3)∾2¨ic
-  ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex
-  lc←(1«c)/dn←c(⊢-T)+`idm∧ac M 2‿4
-  idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv
-  ib←⟨21+0<ip∾zic∾sp⊏ac,(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp,idi⟩
-  ed←/¯1⊸»⊸<ex
-  idor←∾¯1⌽1‿3/⟨3/id∾ex∾sp,ed⊏ex⟩
-  idbc←¯1⌽⟨⥊⍉>ib,3¨ed,ex≠⊸(«-⊢)ed,14¨ed⟩
+  ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex                   # Index of definition (⊐ for identifiers)
+  lc←(1«c)/dn←c(⊢-T)+`idm∧ac M 2‿4          # Locals Count
+  idd←(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp          # Identifier frame depth
+  idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv # Slot within frame
+  # Generate code to load identifiers and list each module's extracted exports
+  ib←⟨21+0<ip∾zic∾sp⊏ac,idd,idi⟩ # Identifier bytecode: instruction, depth, slot
+  ed←/¯1⊸»⊸<ex                              # Select first export in each module
+  idor←∾¯1⌽1‿3/⟨3/id∾ex∾sp,ed⊏ex⟩           # Identifier bytecode ordering
+  idbc←¯1⌽⟨⥊⍉>ib,3¨ed,ex≠⊸(«-⊢)ed,14¨ed⟩    # and bytecode
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
