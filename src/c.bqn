@@ -129,10 +129,10 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   gf←⍋fd←+`br←rev⊏p×𝕩M⟨2+⊑bB,2⟩             # Order by brace depth fd to de-nest blocks
   rev⊏˜↩gf⋄fd⊏˜↩gf⋄br⊏˜↩gf
   𝕩⊏˜↩rev⋄p⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev
-  b←/br<0⋄fi←+`c←br>0                       # Block Begin (index) and Close (mask), in matching order
+  fi←+`b←br>0⋄c←/br<0                       # Block Begin (mask) and Close (index), in matching order
 
   # Block properties
-  H←¬1(∾/∾˜)c(∨/⊣)=                         # Which blocks have a property
+  H←¬1(∾/∾˜)b(∨/⊣)=                         # Which blocks have a property
   sn←(0‿3‿4‿5+5+⊑bI)⍋𝕩⋄sp←/𝕩 M bI           # Special name index
   fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn   # Block immediacy ¬fx and type ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
@@ -142,7 +142,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 
   # Propagate roles through parentheses
   # ir is the role of the expression ending at each position (truncated to the right)
-  r↩sl-˜ns×(1↓fr)⌾((b⊏rev)⊸⊏)r              # Add block roles; make strand elements ¯1
+  r↩sl-˜ns×(1↓fr)⌾((c⊏rev)⊸⊏)r              # Add block roles; make strand elements ¯1
   pt←cp∧ns                                  # Pass-through parentheses: not in strands
   pp←pt∧»es←1⊸»⌾(g⊸⊏)r<0                    # Parens enclosing one object (maybe with assignment) don't change roles
   ir←((»⌾(g⊸⊏)(1+es)×3=⊢)⌈⊢-es<2≤⊢)r+pp×(IT¬pp)⊏r # Propagate modifier roles
@@ -156,11 +156,11 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   # Parsing part 1
   p-↩br⋄g↩⍋+`p⋄gr←g⊏rev                     # Order by non-brace bracket depth
   sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB    # Strand length; list starts
-  bp←⟨b,/c⟩∾¨0(>≍○(</⟜g)<)g⊏p               # Bracket pairs
-  {i↩(𝕩⊏i)⌾(𝕨⊸⊏)i⋄e↩(𝕨⊏e)⌾(𝕩⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
+  bp←⟨/b,c⟩∾¨0(<≍○(</⟜g)>)g⊏p               # Bracket pairs
+  {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
-  ni←1+(1↓nf)/bk←b⊏gi                       # Indices of module assignment (import) arrows
+  ni←1+(1↓nf)/bk←c⊏gi                       # Indices of module assignment (import) arrows
   "Modules must be immediately assigned"_err_(ni⊏G)∘(∨˝¯3‿0‿¯1≠r∾⟜¯1‿1⊸(⊏˜)(↕3)+⌜⊢)⍟(0<≠)ni
   "Modules must be destructured"_err_(ni⊏G) (⊏⟜idm>⊏⟜rev⊏sr˙)(ni+1)⊏g
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps         # er: expression role; tr: train or modifier expression
@@ -183,9 +183,9 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   # Lexical resolution (independent of parsing part 2 below)
   ip←id⊏ac⋄d←ip M 2‿4                       # Assignment classes; which are definitions
   zic←0¨ic←id/˜icf←2(<∧|)ip⋄II←∾⟜(icf⊸/)∘id # Imports have class 3, 5, or 7
-  il←ic⊏+`br<0⋄ex←il⊏(/∾≠)c                 # Block for each import and its end index
+  il←ic⊏+`br<0⋄ex←il⊏(/∾≠)b                 # Block for each import and its end index
   # Order every referenced identifier, an extraction for each import, and an undeclaration for each declaration
-  ixf←(((1=ip)+⊏⟜(¯1∾c/gf))∾(il∾d⊸/)⊏((≠𝕩)∾b⊏gf)˜)id⊏fi # First order by block index, open for real and closed for virtual
+  ixf←(((1=ip)+⊏⟜(¯1∾b/gf))∾(il∾d⊸/)⊏((≠𝕩)∾c⊏gf)˜)id⊏fi # First order by block index, open for real and closed for virtual
   d∾↩zic⋄idx∾↩icf/idx                       # Add in imports
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf            # Then order by name
   {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)II) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
@@ -194,7 +194,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   ("Undefined identifier"Pl/)_err_(II) d<»⊸≠idx
   {"Imports must have been exported"_err_(f/II) 2≤-⟜»(f←d∨×𝕩)/𝕩} ig⊏(ip M 1‿3)∾2¨ic
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex                   # Index of definition (⊐ for identifiers)
-  lc←(1«c)/dn←c(⊢-T)+`idm∧ac M 2‿4          # Locals Count
+  lc←(1«b)/dn←b(⊢-T)+`idm∧ac M 2‿4          # Locals Count
   idd←(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp          # Identifier frame depth
   idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv # Slot within frame
   # Generate code to load identifiers and list each module's extracted exports
