@@ -13,7 +13,7 @@ prims ← (•Import "dzref"){𝔽} "⟨
 
 special←<˘∘‿2⥊"𝕤𝕩𝕨𝕣𝕗𝕘"
 DCompile⇐{
-  ⟨bc,o,fblk,ind⟩ ← 4 ↑ prims Compile 𝕩
+  ⟨bc,o,fblk,ind⟩ ← 4 ↑ (𝕨⊣prims) Compile 𝕩
   blk‿bdy ← <˘⍉>(↕≠fblk){
     ⟨t,i,l,n⟩←𝕩
     s←(3×i)↓(t⊑3‿5‿6)↑special
