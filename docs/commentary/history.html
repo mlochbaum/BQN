@@ -1,0 +1,217 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN's development history</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">commentary</a></div>
+<h1 id="bqns-development-history">BQN's development history</h1>
+<p>I (<a href="https://mlochbaum.github.io/">Marshall Lochbaum</a>) began designing BQN as a &quot;fixed APL&quot; in collaboration with my colleagues at <a href="https://aplwiki.com/wiki/Dyalog_Ltd.">Dyalog</a>, and decided to take it on as a personal project when I chose to leave the company several months later in early 2020. BQN is influenced by my array language background, previous work in programming design, studies of APL history, and design discussions before and after starting work on the language. I developed most of the novel functionality in BQN, and am at the end of the day the one who writes the spec, but it includes significant contributions from collaborators, most notably <a href="https://github.com/dzaima">dzaima</a> and <a href="https://github.com/abrudz">Adám Brudzewsky</a>.</p>
+<h3 id="background">Background</h3>
+<p>I learned <a href="https://aplwiki.com/wiki/J">J</a> as my first computer programming language in 2009, and it's been my language of choice for personal projects from then until I started working with BQN. My first exposure to APL was <a href="https://aplwiki.com/wiki/Dyalog_APL">Dyalog APL</a>, which I began learning gradually after starting work at Dyalog in 2017; while I understand every primitive in detail (I've substantially reimplemented most of them), I've never written even a medium-sized script with it. I studied APL's history and many other APL dialects while helping to create the new <a href="https://aplwiki.com/wiki/Main_Page">APL Wiki</a> in late 2019. In particular, I found <a href="https://aplwiki.com/wiki/A+">A+</a> to be a very sound design and nominally took it the starting point for BQN. As a result, BQN draws more from a general concept of APL than any particular dialect.</p>
+<p>I have been working on programming language design since 2011 or earlier. The start of my first major language, <a href="https://github.com/mlochbaum/ILanguage">I</a>, might be placed in 2012 when I published a paper on its approach to mapping, unifying J's trains and function rank. By this time I had worked with several languages including Python and Factor, and implemented little interpreters in Java, Scala, and Haskell. There are many new ideas in I and some of them have made it to BQN, but the language has served mainly as a warning: its pure and simple syntax and approach to array and tacit programming lead to a rigidity that seems to take over from any human designer. And the end result is not usable. So I sought out constructs that would give back some control, like APL's two-layer function/operator syntax and explicit functions (although Dyalog has lexical scoping, it is crippled by the lack of closures and I ended up learning proper use of lexical scoping from Javascript—I've never done real work with any actual Lisp). Another language that I envisioned before BQN, called Iridescence, goes further in this direction, with Python-like syntax that is &quot;noisy&quot; relative to APL. It remains purely theoretical (I'll implement it some day) but has already had an influence on some BQN primitives.</p>
+<p>The idea of a &quot;fixed APL&quot; is always percolating in the APL community, because of its long history and strong <a href="https://aplwiki.com/wiki/Backwards_compatibility">backwards compatibility</a> requirements. BQN arose out of sessions by the Young APLers Group (YAG, unfortunately) inside Dyalog after I suggested that wild ideas for the future of APL might be a good topic for meetings (the previous order of business, right at YAG's formation, was creating the APL Wiki). At these meetings <a href="https://github.com/abrudz">Adám</a>, <a href="https://rikedyp.uk/">Richard Park</a>, <a href="https://www.dyalog.com/blog/2019/08/welcome-nathan-rogers/">Nathan Rogers</a>, and sometimes others discussed and proposed many ideas including the sketch I created that ended up as the blueprint of BQN. When I left Dyalog (putting an end to any notions of using those ideas at the company), I joined <a href="https://chat.stackexchange.com/rooms/52405/the-apl-orchard">The APL Orchard</a> forum, which most YAG members already used, to post about BQN. <a href="https://github.com/dzaima">dzaima</a> quickly began building his own BQN implementation using the existing dzaima/APL, and has discussed and contributed to most BQN design decisions since.</p>
+<p><a href="https://shapecatcher.com/index.html">Shapecatcher</a> is an essential resource for finding appropriate unicode characters. I've been using it heavily, and so has everyone else interested in glyph choices.</p>
+<h2 id="timeline">Timeline</h2>
+<p>The table documents when I encountered features or interesting decisions in BQN. The &quot;source&quot; field indicates how I became aware of the idea while the &quot;person&quot; field gives, to the best of my knowledge, the original inventor (in blank entries and those that start with &quot;w/&quot;, I am an inventor).</p>
+<table>
+<thead>
+<tr>
+<th align="right">Date</th>
+<th>Source</th>
+<th>Person</th>
+<th>Feature</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">2009</td>
+<td>J</td>
+<td>Iverson, Hui, Whitney, etc.</td>
+<td>Array programming, function-level programming, leading axis theory, tacit programming</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2012</td>
+<td>I</td>
+<td>I</td>
+<td>Hook operators <code><span class='Modifier2'>⊸⟜</span></code> (as <code><span class='Value'>hH</span></code>)</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2014</td>
+<td>J</td>
+<td>Smith</td>
+<td>Occurrence count and Progressive Index-Of (<code><span class='Function'>⊒</span></code>)</td>
+<td><a href="http://www.jsoftware.com/pipermail/programming/2014-June/037746.html">0</a>, <a href="http://www.jsoftware.com/pipermail/programming/2016-January/044047.html">1</a></td>
+</tr>
+<tr>
+<td align="right">2016</td>
+<td><a href="https://aplwiki.com/wiki/Dyalog_APL">Dyalog</a></td>
+<td>Scholes</td>
+<td>dfns <code><span class='Brace'>{}</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2017</td>
+<td>Dyalog</td>
+<td></td>
+<td>Structural Under</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2018</td>
+<td>Dyalog</td>
+<td>Last, Brudzewsky</td>
+<td><a href="https://aplwiki.com/wiki/Array_notation">Array notation</a> <code><span class='Bracket'>⟨⟩</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td><a href="https://aplwiki.com/wiki/APL%5Civ">APL\iv</a></td>
+<td>ktye</td>
+<td>Variable case/type connection</td>
+<td></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td><a href="https://github.com/abrudz/dyalog-apl-extended">Extended</a></td>
+<td>Brudzewsky</td>
+<td>Computed axes in reshape</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2019</td>
+<td>Iridescence</td>
+<td></td>
+<td>Prefix, Suffix, Windows</td>
+<td></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td>Iridescence</td>
+<td></td>
+<td>Multidimensional Join</td>
+<td></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td><a href="https://aplwiki.com/wiki/A+">A+</a></td>
+<td>Whitney</td>
+<td>Interval Index as <code><span class='Function'>⍋</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2020</td>
+<td>YAG</td>
+<td></td>
+<td>Define/modify distinction <code><span class='Gets'>↩</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td>Brudzewsky</td>
+<td>Cross-roles</td>
+<td></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td>w/ Park?</td>
+<td>Ligature <code><span class='Ligature'>‿</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td>w/ Rogers</td>
+<td>Double-struck special names</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">-05</td>
+<td><a href="https://aplwiki.com/wiki/Ngn/apl">ngn/apl</a></td>
+<td>Nikolov</td>
+<td>Multiple function bodies <code><span class='Value'>;</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">-06</td>
+<td>BQN</td>
+<td></td>
+<td>Group (<code><span class='Function'>⊔</span></code>)</td>
+<td><a href="https://chat.stackexchange.com/transcript/52405?m=54600976#54600976">0</a>, <a href="https://chat.stackexchange.com/transcript/message/55456874#55456874">1</a></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td></td>
+<td>Nothing (<code><span class='Nothing'>·</span></code>)</td>
+<td><a href="https://chat.stackexchange.com/transcript/message/54703617#54703617">0</a></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td>dzaima</td>
+<td>Inverse headers <code><span class='Function'>𝕊</span><span class='Modifier'>⁼</span><span class='Value'>:</span></code></td>
+<td><a href="https://chat.stackexchange.com/transcript/52405?m=54639280#54639280">0</a>, <a href="https://chat.stackexchange.com/transcript/message/55860071#55860071">1</a></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td>w/ dzaima</td>
+<td>Headers <code><span class='Value'>:</span></code></td>
+<td><a href="https://chat.stackexchange.com/transcript/52405?m=54768112#54768112">0</a>, <a href="https://chat.stackexchange.com/transcript/message/54776688#54776688">1</a></td>
+</tr>
+<tr>
+<td align="right">-07</td>
+<td></td>
+<td></td>
+<td>Symbols for computed axes in <code><span class='Function'>⥊</span></code></td>
+<td><a href="https://chat.stackexchange.com/transcript/52405?m=55093689#55093689">0</a></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td></td>
+<td>Affine characters and null literal <code><span class='String'>@</span></code></td>
+<td><a href="https://chat.stackexchange.com/transcript/52405?m=55438211#55438211">0</a></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td></td>
+<td>Shift functions</td>
+<td><a href="https://chat.stackexchange.com/transcript/message/55528973#55528973">0</a></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td><a href="https://en.wikipedia.org/wiki/Common_Lisp">CL</a>, BQN</td>
+<td>w/ Mårtenson, dzaima</td>
+<td>Import/export <code><span class='Gets'>⇐</span></code></td>
+<td><a href="https://chat.stackexchange.com/transcript/message/55661706#55661706">0</a>, <a href="https://chat.stackexchange.com/transcript/message/55767519#55767519">1</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="features">Features</h2>
+<p>Discussion of specific features from the timeline above, with more detail.</p>
+<h4 id="structural-under">Structural Under</h4>
+<p>I developed structural Under in 2017 and 2018. By <a href="https://aplwiki.com/wiki/Dyalog_user_meeting#Dyalog_.2717">Dyalog '17</a> I had figured out the basic concept, and sometime later I discovered it could be unified with J's Under operator, which was being considered for inclusion in Dyalog.</p>
+<h4 id="prefix-suffix-and-windows">Prefix, Suffix, and Windows</h4>
+<p>I discovered Prefix, Suffix, and Windows while thinking about Iridescence, probably in 2019. They are influenced by J's Prefix, Suffix, and Infix operators, but in Iridescence, with no distinction between functions and arrays, Prefix is just the Take function, and Suffix is Drop!</p>
+<h4 id="array-notation">Array notation</h4>
+<p>APL <a href="https://aplwiki.com/wiki/Array_notation">array notation</a> has been developed mainly by Phil Last and later Adám Brudzewsky. The big difference from array literals in other languages is the idea that newline should be a separator equivalent to <code><span class='Separator'>⋄</span></code>, as it is in ordinary APL execution including dfns. The changes I made for BQN, other than the ligature <code><span class='Ligature'>‿</span></code> discussed below, were to use dedicated bracket pairs <code><span class='Bracket'>⟨⟩</span></code> and <code><span class='Value'>[]</span></code>, and to allow <code><span class='Separator'>,</span></code> as a separator.</p>
+<p>I picked out the ligature character <code><span class='Ligature'>‿</span></code> between YAG meetings, but I think Richard Park was most responsible for the idea of a &quot;shortcut&quot; list notation.</p>
+<h4 id="double-struck-special-names">Double-struck special names</h4>
+<p>There was a lot of discussion about names for arguments at YAG (no one liked alpha and omega); I think Nathan Rogers suggested using Unicode's mathematical variants of latin letters and I picked out the double-struck ones. My impression is that we were approaching a general concensus that &quot;w&quot; and &quot;x&quot; were the best of several bad choices of argument letters, but that I was the first to commit to them.</p>
+<h4 id="context-free-grammar">Context-free grammar</h4>
+<p>In YAG meetings, I suggested adopting <a href="https://aplwiki.com/wiki/APL%5Civ">APL\iv</a>'s convention that variable case must match variable type in order to achieve a context-free grammar. Adám, a proponent of case-insensitive names, pointed out that the case might indicate the type the programmer wanted to use instead of the value's type, creating cross roles.</p>
+<h4 id="headers">Headers</h4>
+<p>The idea of dfn headers is very common in the APL community, to the extent that it's hard to say which proposals lead to the form now used in BQN. A+ has headers which are similar but go outside the braces, and BQN headers aren't all that different from tradfn headers either. I found when creating BQN2NGN that ngn/apl allows dfns to include a monadic and dyadic case, separated by a semicolon. Some time later I realized that the ability to include multiple bodies is very powerful with headers because it enables a primitive sort of pattern matching, something I already wanted to squeeze into the language. I discussed this with dzaima, who added header support to dzaima/BQN almost immediately and was thus able to investigate the details of the format.</p>
+<h4 id="group">Group</h4>
+<p>I've been fiddling with the idea of function or map inversion (preimage creation, really) for several years, and in fact independently discovered something very similar to K's Group function <code><span class='Function'>=</span></code>, which is an excellent tool for languages that have dictionaries. I liked this approach as it didn't have all the ordering issues that J's Key has. However, I also didn't really want to introduce dictionaries to BQN, as they have a very strange relation to multidimensional arrays—are arrays like dictionaries with multiple keys, or dictionaries with a single vector key? I've been a proponent of <code><span class='Function'>/</span><span class='Modifier'>⁼</span></code> as a programming tool for <a href="http://www.jsoftware.com/pipermail/programming/2010-September/020302.html">much longer</a>. I'd also developed a sophisticated view of <a href="https://aplwiki.com/wiki/Partition_representations">partition representations</a> while studying an extension to Dyalog's Partitioned Enclose proposed by Adám and included in Dyalog 18.0. I finally put all this together while fighting with Key to develop BQN's compiler: I realized that if the &quot;key&quot; argument was restricted to array indices, then it would make sense for the result to be an array, and that this was simply the &quot;target indices&quot; partition representation minus the requirement that those indices be nondecreasing.</p>
+<h4 id="before--and-after-">Before <code><span class='Modifier2'>⊸</span></code> and After <code><span class='Modifier2'>⟜</span></code></h4>
+<p>It happens that BQN's Before (<code><span class='Modifier2'>⊸</span></code>) and After (<code><span class='Modifier2'>⟜</span></code>) modifiers are identical to I's hook (<code><span class='Value'>h</span></code>) and backhook (<code><span class='Function'>H</span></code>), but it took some time to arrive at this point. The hook function in I comes from J's 2-train, also called hook. But the model for Before and After was initially APL's Compose (∘) and the complement <a href="https://aplwiki.com/wiki/Reverse_Compose">Reverse Compose</a> that Adám created for Extended Dyalog APL. I noticed the similarity to Bind and decided to unify Binds and Composes at around the same time that I picked the symbols <code><span class='Modifier2'>⊸⟜</span></code>. However, I kept the idea that the one-argument case should be simple composition unless the bound operand had a subject role. Eventually I decided the violation of <a href="../problems.html#syntactic-type-erasure">syntactic type erasure</a> was too inconsistent and settled on the current definition. Now I think these forms are better even ignoring constant functions, although I do occasionally run into cases where I'd like to use APL's Compose.</p>
+<h4 id="constant-modifier">Constant modifier</h4>
+<p>The idea of a constant function is nothing new; I named it <code><span class='Value'>k</span></code> in I, taking influence from the <a href="https://en.wikipedia.org/wiki/SKI_combinator_calculus">SKI</a> calculus. It was actually Adám who suggested adding it to Dyalog with the glyph <code><span class='Value'>⍨</span></code>, although I was the one who campaigned for it and introduced it to the public in version 18.0. It wasn't initially clear that a dedicated modifier was needed in BQN because the treatment of data types as constant functions seems to fill this role, but I eventually found that I needed a constant function returning a function too often to leave it out.</p>
