@@ -66,9 +66,13 @@ Other linear combinations such as adding two characters or negating a character 
 
 ### Arrays
 
-A BQN array is a multidimensional arrangement of data.
+A BQN array is a multidimensional arrangement of data. This means it has a certain *shape*, which is a finite list of natural numbers giving the length along each axis, and it contains an *element* for each possible *index*, which is a choice of one natural number that's less than each axis length in the shape. The total number of elements, or *bound*, is then the product of all the lengths in the shape. The shape may have any length including zero, and this shape is known as the array's *rank*. An array of rank 0, which always contains exactly one element, is called a *unit*, while an array of rank 1 is called a *list* and an array of rank 2 is called a *table*.
 
-Currently, the intention is that arrays will not have prototypes, so that all empty arrays of the same shape behave identically. Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN will enforce 64-bit floating-point precision, and only use representations or methods compatible with it (for example, integers up to 32 bits).
+Each array—empty or nonempty—has an inferred property called a *fill*. The fill either indicates what element should be used to pad an array, or that such an element is not known and an error should result. Fills are used by Take (`↑`) and the two Nudge functions (`»«`).
+
+Arrays are value types (or immutable), so that there is no way to "change" the shape or elements of an array. An array with different properties is a different array. As a consequence, arrays are an inductive type, and it's not possible for an array to contain itself, or contain an array that contains itself, and so on. However, it is possible for an array to contain a function or other operation that has access to the array through a variable, and in this sense an array can "know about" itself.
+
+Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN values must not change behavior when placed in an array. However, this doesn't preclude changing the storage type of an array for better performance: for example, in a BQN implementation using 64-bit floats, an array whose elements are all integers that fit in 32-bit int range might be represented as an array of 32-bit ints.
 
 ## Operation types
 
