@@ -67,3 +67,11 @@ BQN's [**tutorials**](tutorial/README.md) are intended as an introduction to arr
 If you're already an array programmer, then you're in better shape: the current [**documentation**](doc/README.md) covers nearly all differences from APL, and the BQN-Dyalog APL [dictionary](doc/fromDyalog.md) might also be a useful resource. However, you should be aware of two key differences between BQN and existing array languages beyond just the changes of [primitives](doc/primitive.md)—if these differences don't seem important to you then you don't understand them! BQN's [based array model](doc/based.md) is different from both a flat array model like J and a nested one like APL2, Dyalog, or GNU APL in that it has true non-array values (plain numbers and characters) that are different from depth-0 scalars. BQN also uses [syntactic roles](doc/context.md) rather than dynamic type to determine how values interact, that is, what's an argument or operand and so on. This system, along with lexical closures, means BQN fully supports Lisp-style [functional programming](doc/functional.md).
 
 A useful tool for both beginners and experienced users is [**BQNcrate**](https://mlochbaum.github.io/bqncrate/), a searchable collection of BQN snippets to solve particular tasks. If you have a question about how you might approach a problem, give it a try by typing in a relevant keyword or two.
+
+## Where can I find BQN users?
+
+Most BQN users are active on [The APL Orchard](https://chat.stackexchange.com/rooms/52405/the-apl-orchard) forum. If you (like me) don't have a Stack Overflow or Stack Exchange account with a few points you'll have to send an email to get forum access; see the instructions in the room description.
+
+The official place to ask BQN programming questions is [topanswers.xyz/apl](https://topanswers.xyz/apl). Tag your questions with "bqn", of course.
+
+In addition to these forums, you can contact me personally via Github issues or with the email address in my Github profile.
