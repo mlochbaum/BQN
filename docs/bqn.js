@@ -38,27 +38,29 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
     if (p>B.length) throw Error("Internal compiler error: Unclosed function");
     if (L) r+="l="+p+";";
     switch(B[p++]) {
-      case 0:          { r+= rP("O["+num()+"]");                                                                                           break; }
-      case 3: case  4: { let n=num(); rD-= n;      r+=rP("list(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])");              break; }
-      case 5: case 16: { let        f=rG(),x=rG(); r+=rP("call("+f+","+x      +")");                                                       break; }
-      case 6: case 17: { let w=rG(),f=rG(),x=rG(); r+=rP("call("+f+","+x+","+w+")");                                                       break; }
-      case 7:          { let f=rG(),m=rG();        r+="chkM(1,"+m+");"+rP(m+"("+f      +")");                                              break; }
-      case 8:          { let f=rG(),m=rG(),g=rG(); r+="chkM(2,"+m+");"+rP(m+"("+f+","+g+")");                                              break; }
-      case 9:          { let        g=rG(),h=rG(); r+=rP("((  g,h)=>(x,w)=>call(g,call(h,x,w))"+                  ")("      +g+","+h+")"); break; }
-      case 10:case 19: { let f=rG(),g=rG(),h=rG(); r+=rP("((f,g,h)=>(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f))("+f+","+g+","+h+")"); break; }
-      case 11:         { let i=rG(),       v=rG(); r+=rP("set(1,"+i+","+v                       +")");                                     break; }
-      case 12:         { let i=rG(),       v=rG(); r+=rP("set(0,"+i+","+v                       +")");                                     break; }
-      case 13:         { let i=rG(),f=rG(),x=rG(); r+=rP("set(0,"+i+",call("+f+","+x+",get("+i+")))");                                     break; }
-      case 14:         { rD--;                                                                                                             break; }
-      case 15:         { r+= rP("D["+num()+"](e)");                                                                                        break; }
-      case 21:         { r+= rP(ge(num())+"["+num()+"]")+"chkR("+rV(rD-1)+");";                                                            break; }
-      case 22:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                                          break; }
-      case 25:         { if(rD!==1) throw Error("Internal compiler error: Wrong stack size"); r+= "return v0;";                            break loop; }
+      case 0:          { r+= rP("O["+num()+"]");                                                                              break; }
+      case 3: case  4: { let n=num(); rD-= n;      r+=rP("list(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])"); break; }
+      case 5: case 16: { let        f=rG(),x=rG(); r+=rP("call("+f+","+x      +")");                                          break; }
+      case 6: case 17: { let w=rG(),f=rG(),x=rG(); r+=rP("call("+f+","+x+","+w+")");                                          break; }
+      case 7:          { let f=rG(),m=rG();        r+="chkM(1,"+m+");"+rP(m+"("+f      +")");                                 break; }
+      case 8:          { let f=rG(),m=rG(),g=rG(); r+="chkM(2,"+m+");"+rP(m+"("+f+","+g+")");                                 break; }
+      case 9:          { let        g=rG(),h=rG(); r+=rP("train2("      +g+","+h+")");                                        break; }
+      case 10:case 19: { let f=rG(),g=rG(),h=rG(); r+=rP("train3("+f+","+g+","+h+")");                                        break; }
+      case 11:         { let i=rG(),       v=rG(); r+=rP("set(1,"+i+","+v                       +")");                        break; }
+      case 12:         { let i=rG(),       v=rG(); r+=rP("set(0,"+i+","+v                       +")");                        break; }
+      case 13:         { let i=rG(),f=rG(),x=rG(); r+=rP("set(0,"+i+",call("+f+","+x+",get("+i+")))");                        break; }
+      case 14:         { rD--;                                                                                                break; }
+      case 15:         { r+= rP("D["+num()+"](e)");                                                                           break; }
+      case 21:         { r+= rP(ge(num())+"["+num()+"]")+"chkR("+rV(rD-1)+");";                                               break; }
+      case 22:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                             break; }
+      case 25:         { if(rD!==1) throw Error("Internal compiler error: Wrong stack size"); r+= "return v0;";               break loop; }
     }
   }
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r+fin;
 }
 let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks
+  let train2=(  g,h)=>(x,w)=>call(g,call(h,x,w));
+  let train3=(f,g,h)=>(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f);
   let D = S.map(([type,imm,pos,varam],i) => {
     let I = imm? 0 : 3; // Operand start
     let def = new Array(I + (type==0?0:type+1) + varam).fill(null);
@@ -69,8 +71,8 @@ let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks
     if (type===0) c = "let e2=def;"+c;
     if (type===1) c = "const mod=(f  ) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;"                +c+"}; mod.m=1;return mod;";
     if (type===2) c = "const mod=(f,g) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;e2["+(I+2)+"]=g;"+c+"}; mod.m=2;return mod;";
-    return Function("'use strict'; return (chkM,chkR,has,call,get,set,list,O,L,def) => D => oe => {"+c+"};")()
-                                          (chkM,chkR,has,call,get,set,list,O,L,def);
+    return Function("'use strict'; return (chkM,chkR,has,call,get,set,list,train2,train3,O,L,def) => D => oe => {"+c+"};")()
+                                          (chkM,chkR,has,call,get,set,list,train2,train3,O,L,def);
   });
   D.forEach((d,i) => {D[i]=d(D)});
   return D[0]([]);
