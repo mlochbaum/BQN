@@ -70,7 +70,7 @@ A useful tool for both beginners and experienced users is [**BQNcrate**](https:/
 
 ## Where can I find BQN users?
 
-Most BQN users are active on [The APL Orchard](https://chat.stackexchange.com/rooms/52405/the-apl-orchard) forum. If you (like me) don't have a Stack Overflow or Stack Exchange account with a few points you'll have to send an email to get forum access; see the instructions in the room description.
+Most BQN users are active on the [APL Orchard](https://chat.stackexchange.com/rooms/52405/the-apl-orchard) forum. If you (like me) don't have a Stack Overflow or Stack Exchange account with a few points you'll have to send an email to get forum access; see the instructions in the room description. You can also chat there by IRC: a bot mirrors messages back and forth to the #apl freenode channel.
 
 The official place to ask BQN programming questions is [topanswers.xyz/apl](https://topanswers.xyz/apl). Tag your questions with "bqn", of course.
 
