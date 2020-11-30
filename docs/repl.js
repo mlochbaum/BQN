@@ -1,10 +1,23 @@
 let body = document.body;
 let doc={}; // html elements with a class
 body.querySelectorAll('[class]').forEach(e=>doc[e.classList[0]]=e);
-let setcount = !doc.count ? (s=>s) : (s=>{
-  let l = Array.from(s).length;
-  doc.count.textContent = l+" char"+(l!=1?"s":"");
-});
+
+let setcount = s=>s;
+if (doc.count) {
+  let count_activeMin;
+  setcount = (s,m) => {
+    let l = Array.from(s).length;
+    if (l<m && m!==count_activeMin) return;
+    count_activeMin = m;
+    doc.count.textContent = l<m ? "" : l+" char"+(l!=1?"s":"");
+  }
+  let c = doc.code;
+  c.onmouseup = c.onkeyup = () => {
+    let s=c.selectionStart, e=c.selectionEnd;
+    setcount(c.value.slice(s,e), 2);
+  }
+}
+
 let setExplain = e=>e;
 let showErr = (s,e)=>{
   let r=e.src, w=e.message, loc=[];
