@@ -306,7 +306,7 @@ Markdown ← {filename𝕊𝕩:
   IsHtmlBlock ← ("<!--"≡4↑⊢)◶('>'∨´∘=⊢)‿2
   ProcComment ← {
     n←≠s←"<!--GEN" ⋄ l←¯3↓⍟(1=≠𝕩)⊑𝕩 ⋄ a←s≡n↑l
-    Source ← {((0<≠)◶<‿(•LNS path∾⊢) Trim n↓l) ∾ 1↓¯1↓𝕩}
+    Source ← {((0<≠)◶<‿(•FLines path∾⊢) Trim n↓l) ∾ 1↓¯1↓𝕩}
     ⟨⟨⟩,"",path⟩ GenHtml⍟a JoinLines Source⍟a 𝕩
   }
   ProcHtml ← {
@@ -506,7 +506,7 @@ Markdown ← {filename𝕊𝕩:
 # Uses the test cases at https://spec.commonmark.org/0.29/spec.json
 # since Github doesn't seem to have published theirs
 TestSections ← {
-  tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊ 2↓•LNS"spec.json"
+  tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊ 2↓•FLines"spec.json"
   tests ↩ ((⊑2+⊐⟜':')¨∘⊏ ((-','=¯1⊑⊢)↓↓)¨⎉1 ⊢) tests
   testSection ← (1↓¯1↓⊢)¨ 5⊏˘tests
   UnEscape ← {
@@ -634,7 +634,7 @@ ConvertFile ← {
   fileout ← ".html" ∾˜ (¯6⊸↓∾"index"˙)⍟("README"⊸MatchEnd) ¯3↓𝕩
 
   # Contents of file to convert
-  md ← •LNS 𝕩
+  md ← •FLines 𝕩
   # Verify and remove the html link line: the output *is* the html file.
   IsView ← "*View this file"⊸MatchStart ∧ (siteURL∾fileout∾").*")⊸MatchEnd
   ⟨"File ",𝕩," has missing or incorrect view link"⟩ ∾⊸! IsView ⊑md
@@ -656,5 +656,5 @@ ConvertFile ← {
   crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"main")»parts
   nav ← RQ "div class='nav'" Html 3↓∾ " / "⊸∾¨ repo <⊸∾ crumbs
   front ← head ∾○(∾⟜lf) nav
-  ("docs/"∾fileout) •LNS front ∾ out
+  ("docs/"∾fileout) •FChars front ∾ out
 }
