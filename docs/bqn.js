@@ -59,8 +59,8 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r+fin;
 }
 let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks
-  let train2=(  g,h)=>{let t=(x,w)=>call(g,call(h,x,w));                     t.repr=()=>[0,  g,h];return t;}
-  let train3=(f,g,h)=>{let t=(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f);t.repr=()=>[1,f,g,h];return t;}
+  let train2=(  g,h)=>{                              let t=(x,w)=>call(g,call(h,x,w));            t.repr=()=>[0,  g,h];return t;}
+  let train3=(f,g,h)=>{if(!has(f))return train2(g,h);let t=(x,w)=>call(g,call(h,x,w),call(f,x,w));t.repr=()=>[1,f,g,h];return t;}
   let D = S.map(([type,imm,pos,varam],i) => {
     let I = imm? 0 : 3; // Operand start
     let def = new Array(I + (type==0?0:type+1) + varam).fill(null);
