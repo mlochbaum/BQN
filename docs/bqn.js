@@ -86,8 +86,6 @@ let assertFn = pre => (x,w) => {
 let arr = (r,sh) => {r.sh=sh;return r;}
 let list = l => arr(l,[l.length]);
 let str = s => list(Array.from(s));
-let m1 = m => {m.m=1;return m;}
-let m2 = m => {m.m=2;return m;}
 let setrepr = (r,f) => {f.repr=r; return f;}
 let ctrans = (c,t) => String.fromCodePoint(c.codePointAt(0)+t);
 let plus = (x,w) => {
@@ -114,10 +112,10 @@ let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
   return +(s!==t ? s<=t : w<=x);
 }
-let table = m1(f => setrepr(()=>[2,table,f], (x,w) => !has(w)
+let table = f => setrepr(()=>[2,table,f], (x,w) => !has(w)
   ? arr(x.map(e=>call(f,e)),x.sh)
-  : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh))));
-let scan = m1(f => setrepr(()=>[2,table,f], (x,w) => {
+  : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
+let scan = f => setrepr(()=>[2,table,f], (x,w) => {
   if (has(w)) throw Error("`: No dyadic form");
   let s=x.sh;
   if (!s||s.length===0) throw Error("`: 𝕩 must have rank at least 1");
@@ -129,9 +127,10 @@ let scan = m1(f => setrepr(()=>[2,table,f], (x,w) => {
     for(;i<l;i++) r[i]=call(f,x[i],r[i-c]);
   }
   return arr(r,s);
-}));
-let cases = m2((f,g) => setrepr(()=>[3,cases,f,g],
-  (x,w)=>has(w)?call(g,x,w):call(f,x,w)));
+});
+let cases = (f,g) => setrepr(()=>[3,cases,f,g],
+  (x,w)=>has(w)?call(g,x,w):call(f,x,w));
+table.m=scan.m=1; cases.m=2;
 let group_len = (x,w) => { // ≠¨⊔ for a valid list argument
   let l=x.reduce((a,b)=>Math.max(a,b),-1);
   let r=Array(l+1).fill(0);
