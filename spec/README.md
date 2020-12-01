@@ -13,3 +13,4 @@ The following aspects define BQN and are or will be specified:
 - [Evaluation semantics](evaluate.md)
 - Primitives ([reference implementations](reference.bqn))
 - [Inferred properties](inferred.md) (type, Undo, and Under)
+- [System-provided values](system.md) (`•`)

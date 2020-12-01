@@ -1,0 +1,187 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>Specification: BQN system-provided values</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">spec</a></div>
+<h1 id="specification-bqn-system-provided-values">Specification: BQN system-provided values</h1>
+<p>This portion of the spec is definitely still a draft.</p>
+<p>The <code><span class='Value'>•</span></code> symbol is used to access values other than primitives provided by BQN.</p>
+<h2 id="file-access">File access</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Value'>•path</span></code></td>
+<td>Current file's path</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•Import</span></code></td>
+<td>Load a script file</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•FChars</span></code></td>
+<td>Read from or write to an entire file, as characters</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•FLines</span></code></td>
+<td>Read from or write to an entire file, as lines</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•FBytes</span></code></td>
+<td>Read from or write to an entire file, as bytes</td>
+</tr>
+</tbody>
+</table>
+<p>File paths for any of the commands in this section may be relative or absolute. Relative paths are taken relative to the source file that loads that instance of the system command.</p>
+<p><code><span class='Value'>•path</span></code> simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.</p>
+<p><code><span class='Function'>•Import</span></code> loads another BQN script. The script is evaluated in its own scope, and its result is either the result of the last line, or a module if it exports with <code><span class='Gets'>⇐</span></code> at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.</p>
+<p>Functions <code><span class='Function'>•FChars</span></code>, <code><span class='Function'>•FLines</span></code>, and <code><span class='Function'>•FBytes</span></code> are all ambivalent. If only one argument is given, then it must be the name of a file, and the result is the contents of the file in the appropriate format. If there are two arguments, then the left argument is the filename and the right is the desired contents. These are written to the file, overwriting its contents. The three formats are:</p>
+<ul>
+<li>Chars: BQN characters, or UTF-32. The file is assumed to be UTF-8 encoded.</li>
+<li>Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.</li>
+<li>Bytes: Single-byte values, stored as BQN characters from <code><span class='String'>@</span></code> to <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>255</span></code>.</li>
+</ul>
+<h2 id="input-and-output">Input and output</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>•Out</span></code></td>
+<td>Print argument string</td>
+</tr>
+</tbody>
+</table>
+<h2 id="operation-properties">Operation properties</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>•Type</span></code></td>
+<td>Return a number indicating type</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•Glyph</span></code></td>
+<td>Return the glyph for a primitive</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•Source</span></code></td>
+<td>Return the source of a block, as a string</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•Decompose</span></code></td>
+<td>Show the parts of a compound function</td>
+</tr>
+</tbody>
+</table>
+<p>Each function in this section is monadic.</p>
+<p><code><span class='Function'>•Type</span></code> gives its argument's type, as a number from the table below:</p>
+<table>
+<thead>
+<tr>
+<th>Number</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Array</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Character</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Function</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1-modifier</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2-modifier</td>
+</tr>
+</tbody>
+</table>
+<p><code><span class='Function'>•Glyph</span></code> gives the glyph corresponding to a primitive as a single character, for example returning <code><span class='String'>'+'</span></code> given an argument matching <code><span class='Function'>+</span></code>. It causes an error if the argument is not a primitive.</p>
+<p><code><span class='Function'>•Source</span></code> gives a string containing a block's source, including the enclosing braces <code><span class='Brace'>{}</span></code>. It causes an error if the argument is not a primitive.</p>
+<p><code><span class='Function'>•Decompose</span></code> breaks down one level of a compound function or modifier, returning a list with a code giving what kind of structure it has (as listed in the table below) followed by each of its components. Non-operations do not cause an error, but return code -1, then the argument as a single component. The result is thus a list of length 2 to 4, and <code><span class='Function'>•Decompose</span></code> cannot cause an error.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Code</th>
+<th>Components</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Non-operation</td>
+<td>-1</td>
+<td><code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>Primitive</td>
+<td>0</td>
+<td><code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>Block</td>
+<td>1</td>
+<td><code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td>2-train</td>
+<td>2</td>
+<td><code>  <span class='Value'>g</span><span class='Separator'>,</span><span class='Value'>h</span></code></td>
+</tr>
+<tr>
+<td>3-train</td>
+<td>3</td>
+<td><code><span class='Value'>f</span><span class='Separator'>,</span><span class='Value'>g</span><span class='Separator'>,</span><span class='Value'>h</span></code></td>
+</tr>
+<tr>
+<td>1-mod</td>
+<td>4</td>
+<td><code><span class='Value'>𝕗</span><span class='Separator'>,</span><span class='Value'>𝕣</span></code></td>
+</tr>
+<tr>
+<td>2-mod</td>
+<td>5</td>
+<td><code><span class='Value'>𝕗</span><span class='Separator'>,</span><span class='Value'>𝕣</span><span class='Separator'>,</span><span class='Value'>𝕘</span></code></td>
+</tr>
+<tr>
+<td>Left partial</td>
+<td>6</td>
+<td><code><span class='Value'>𝕗</span><span class='Separator'>,</span><span class='Value'>𝕣</span></code></td>
+</tr>
+<tr>
+<td>Right partial</td>
+<td>7</td>
+<td><code>  <span class='Value'>𝕣</span><span class='Separator'>,</span><span class='Value'>𝕘</span></code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="timing">Timing</h2>
