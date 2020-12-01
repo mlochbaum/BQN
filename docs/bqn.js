@@ -59,14 +59,15 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r+fin;
 }
 let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks
-  let train2=(  g,h)=>(x,w)=>call(g,call(h,x,w));
-  let train3=(f,g,h)=>(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f);
+  let train2=(  g,h)=>{let t=(x,w)=>call(g,call(h,x,w));                     t.repr=()=>[0,  g,h];return t;}
+  let train3=(f,g,h)=>{let t=(x,w)=>call(g,call(h,x,w),has(f)?call(f,x,w):f);t.repr=()=>[1,f,g,h];return t;}
   let D = S.map(([type,imm,pos,varam],i) => {
     let I = imm? 0 : 3; // Operand start
     let def = new Array(I + (type==0?0:type+1) + varam).fill(null);
     let c = genjs(B, pos, L);
+    let repdf = ["","2,f,mod","3,f,mod,g"].map(s=>s?"fn.repr=()=>["+s+"];":s);
     if (imm) c =               "const e=[...e2];e.p=oe;"+c;
-    else c = "const fn=(x, w)=>{const e=[...e2];e.p=oe;e[0]=fn;e[1]=x;e[2]=w;"+c+"};return fn;";
+    else c = "const fn=(x, w)=>{const e=[...e2];e.p=oe;e[0]=fn;e[1]=x;e[2]=w;"+c+"};"+repdf[type]+"return fn;";
     
     if (type===0) c = "let e2=def;"+c;
     if (type===1) c = "const mod=(f  ) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;"                +c+"}; mod.m=1;return mod;";
@@ -87,6 +88,7 @@ let list = l => arr(l,[l.length]);
 let str = s => list(Array.from(s));
 let m1 = m => {m.m=1;return m;}
 let m2 = m => {m.m=2;return m;}
+let setrepr = (r,f) => {f.repr=r; return f;}
 let ctrans = (c,t) => String.fromCodePoint(c.codePointAt(0)+t);
 let plus = (x,w) => {
   if (!has(w)) return x;
@@ -112,10 +114,10 @@ let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
   return +(s!==t ? s<=t : w<=x);
 }
-let table = m1(f => (x,w) => !has(w)
+let table = m1(f => setrepr(()=>[2,table,f], (x,w) => !has(w)
   ? arr(x.map(e=>call(f,e)),x.sh)
-  : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
-let scan = m1(f => (x,w) => {
+  : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh))));
+let scan = m1(f => setrepr(()=>[2,table,f], (x,w) => {
   if (has(w)) throw Error("`: No dyadic form");
   let s=x.sh;
   if (!s||s.length===0) throw Error("`: 𝕩 must have rank at least 1");
@@ -127,7 +129,9 @@ let scan = m1(f => (x,w) => {
     for(;i<l;i++) r[i]=call(f,x[i],r[i-c]);
   }
   return arr(r,s);
-});
+}));
+let cases = m2((f,g) => setrepr(()=>[3,cases,f,g],
+  (x,w)=>has(w)?call(g,x,w):call(f,x,w)));
 let group_len = (x,w) => { // ≠¨⊔ for a valid list argument
   let l=x.reduce((a,b)=>Math.max(a,b),-1);
   let r=Array(l+1).fill(0);
@@ -162,7 +166,7 @@ let provide = [
  ,(x,w) => list(Array(x).fill().map((_,i)=>i))          // ↕
  ,table                                                 // ⌜
  ,scan                                                  // `
- ,m2((f,g)=>(x,w)=>has(w)?call(g,x,w):call(f,x,w))      // ⊘
+ ,cases                                                 // ⊘
 ];
 
 let runtime = run(
