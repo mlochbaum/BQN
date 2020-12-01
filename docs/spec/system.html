@@ -7,7 +7,7 @@
 <h1 id="specification-bqn-system-provided-values">Specification: BQN system-provided values</h1>
 <p>This portion of the spec is definitely still a draft.</p>
 <p>The <code><span class='Value'>•</span></code> symbol is used to access values other than primitives provided by BQN.</p>
-<h2 id="file-access">File access</h2>
+<h2 id="scripts">Scripts</h2>
 <table>
 <thead>
 <tr>
@@ -17,13 +17,37 @@
 </thead>
 <tbody>
 <tr>
+<td><code><span class='Function'>•Import</span></code></td>
+<td>Load a script file</td>
+</tr>
+<tr>
+<td><code><span class='Value'>•args</span></code></td>
+<td>Arguments passed to current file</td>
+</tr>
+<tr>
 <td><code><span class='Value'>•path</span></code></td>
 <td>Current file's path</td>
 </tr>
 <tr>
-<td><code><span class='Function'>•Import</span></code></td>
-<td>Load a script file</td>
+<td><code><span class='Value'>•name</span></code></td>
+<td>Current filename</td>
 </tr>
+</tbody>
+</table>
+<p><code><span class='Function'>•Import</span></code> loads another BQN script. The script is evaluated in its own scope, and its result is either the result of the last line, or a module if it exports with <code><span class='Gets'>⇐</span></code> at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.</p>
+<p>The right argument is a filename, which may be relative or absolute. Relative paths are taken relative to the source file where this instance of <code><span class='Function'>•Import</span></code> was written. The left argument, if given, is the list of arguments that should be passed through to the file as <code><span class='Value'>•args</span></code>. If no left argument is given then <code><span class='Bracket'>⟨⟩</span></code> is used for <code><span class='Value'>•args</span></code>. However, the behavior is different in this case. The same file will only be loaded once in a given BQN program by <code><span class='Function'>•Import</span></code> calls with no left argument: the first such call saves the returned value, even if it is mutable, and subsequent calls return this saved value. To avoid this and reload the file, pass a left argument of <code><span class='Bracket'>⟨⟩</span></code>.</p>
+<p><code><span class='Value'>•args</span></code> is the arguments passed as the file was invoked, either from the command line or <code><span class='Function'>•Import</span></code>. For command line calls it is a list of strings.</p>
+<p><code><span class='Value'>•path</span></code> simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.</p>
+<p><code><span class='Value'>•name</span></code> gives the name, including the extension, of the file in which it appears.</p>
+<h2 id="file-access">File access</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td><code><span class='Function'>•FChars</span></code></td>
 <td>Read from or write to an entire file, as characters</td>
@@ -38,10 +62,8 @@
 </tr>
 </tbody>
 </table>
-<p>File paths for any of the commands in this section may be relative or absolute. Relative paths are taken relative to the source file that loads that instance of the system command.</p>
-<p><code><span class='Value'>•path</span></code> simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.</p>
-<p><code><span class='Function'>•Import</span></code> loads another BQN script. The script is evaluated in its own scope, and its result is either the result of the last line, or a module if it exports with <code><span class='Gets'>⇐</span></code> at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.</p>
-<p>Functions <code><span class='Function'>•FChars</span></code>, <code><span class='Function'>•FLines</span></code>, and <code><span class='Function'>•FBytes</span></code> are all ambivalent. If only one argument is given, then it must be the name of a file, and the result is the contents of the file in the appropriate format. If there are two arguments, then the left argument is the filename and the right is the desired contents. These are written to the file, overwriting its contents. The three formats are:</p>
+<p>As with <code><span class='Function'>•Import</span></code>, file paths may be relative or absolute, and relative paths are relative to <code><span class='Value'>•path</span></code>.</p>
+<p>Functions <code><span class='Function'>•FChars</span></code>, <code><span class='Function'>•FLines</span></code>, and <code><span class='Function'>•FBytes</span></code> are all ambivalent. If only one argument is given, then it must be the name of a file, and the result is the contents of the file in the appropriate format. If there are two arguments, then the left argument is the filename and the right is the desired contents. These are written to the file, overwriting its contents, and the filename <code><span class='Value'>𝕨</span></code> is returned. The three formats are:</p>
 <ul>
 <li>Chars: BQN characters, or UTF-32. The file is assumed to be UTF-8 encoded.</li>
 <li>Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.</li>

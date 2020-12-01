@@ -6,23 +6,36 @@ This portion of the spec is definitely still a draft.
 
 The `•` symbol is used to access values other than primitives provided by BQN.
 
+## Scripts
+
+| Name       | Summary
+|------------|---------------------
+| `•Import`  | Load a script file
+| `•args`    | Arguments passed to current file
+| `•path`    | Current file's path
+| `•name`    | Current filename
+
+`•Import` loads another BQN script. The script is evaluated in its own scope, and its result is either the result of the last line, or a module if it exports with `⇐` at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.
+
+The right argument is a filename, which may be relative or absolute. Relative paths are taken relative to the source file where this instance of `•Import` was written. The left argument, if given, is the list of arguments that should be passed through to the file as `•args`. If no left argument is given then `⟨⟩` is used for `•args`. However, the behavior is different in this case. The same file will only be loaded once in a given BQN program by `•Import` calls with no left argument: the first such call saves the returned value, even if it is mutable, and subsequent calls return this saved value. To avoid this and reload the file, pass a left argument of `⟨⟩`.
+
+`•args` is the arguments passed as the file was invoked, either from the command line or `•Import`. For command line calls it is a list of strings.
+
+`•path` simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.
+
+`•name` gives the name, including the extension, of the file in which it appears.
+
 ## File access
 
 | Name       | Summary
 |------------|--------------------------
-| `•path`    | Current file's path
-| `•Import`  | Load a script file
 | `•FChars`  | Read from or write to an entire file, as characters
 | `•FLines`  | Read from or write to an entire file, as lines
 | `•FBytes`  | Read from or write to an entire file, as bytes
 
-File paths for any of the commands in this section may be relative or absolute. Relative paths are taken relative to the source file that loads that instance of the system command.
+As with `•Import`, file paths may be relative or absolute, and relative paths are relative to `•path`.
 
-`•path` simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.
-
-`•Import` loads another BQN script. The script is evaluated in its own scope, and its result is either the result of the last line, or a module if it exports with `⇐` at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.
-
-Functions `•FChars`, `•FLines`, and `•FBytes` are all ambivalent. If only one argument is given, then it must be the name of a file, and the result is the contents of the file in the appropriate format. If there are two arguments, then the left argument is the filename and the right is the desired contents. These are written to the file, overwriting its contents. The three formats are:
+Functions `•FChars`, `•FLines`, and `•FBytes` are all ambivalent. If only one argument is given, then it must be the name of a file, and the result is the contents of the file in the appropriate format. If there are two arguments, then the left argument is the filename and the right is the desired contents. These are written to the file, overwriting its contents, and the filename `𝕨` is returned. The three formats are:
 
 - Chars: BQN characters, or UTF-32. The file is assumed to be UTF-8 encoded.
 - Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.
