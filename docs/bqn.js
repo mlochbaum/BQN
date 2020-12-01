@@ -59,13 +59,13 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r+fin;
 }
 let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks
-  let train2=(  g,h)=>{                              let t=(x,w)=>call(g,call(h,x,w));            t.repr=()=>[0,  g,h];return t;}
-  let train3=(f,g,h)=>{if(!has(f))return train2(g,h);let t=(x,w)=>call(g,call(h,x,w),call(f,x,w));t.repr=()=>[1,f,g,h];return t;}
+  let train2=(  g,h)=>{                              let t=(x,w)=>call(g,call(h,x,w));            t.repr=()=>[2,  g,h];return t;}
+  let train3=(f,g,h)=>{if(!has(f))return train2(g,h);let t=(x,w)=>call(g,call(h,x,w),call(f,x,w));t.repr=()=>[3,f,g,h];return t;}
   let D = S.map(([type,imm,pos,varam],i) => {
     let I = imm? 0 : 3; // Operand start
     let def = new Array(I + (type==0?0:type+1) + varam).fill(null);
     let c = genjs(B, pos, L);
-    let repdf = ["","2,f,mod","3,f,mod,g"].map(s=>s?"fn.repr=()=>["+s+"];":s);
+    let repdf = ["","4,f,mod","5,f,mod,g"].map(s=>s?"fn.repr=()=>["+s+"];":s);
     if (imm) c =               "const e=[...e2];e.p=oe;"+c;
     else c = "const fn=(x, w)=>{const e=[...e2];e.p=oe;e[0]=fn;e[1]=x;e[2]=w;"+c+"};"+repdf[type]+"return fn;";
     
@@ -112,10 +112,10 @@ let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
   return +(s!==t ? s<=t : w<=x);
 }
-let table = f => setrepr(()=>[2,table,f], (x,w) => !has(w)
+let table = f => setrepr(()=>[4,table,f], (x,w) => !has(w)
   ? arr(x.map(e=>call(f,e)),x.sh)
   : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
-let scan = f => setrepr(()=>[2,table,f], (x,w) => {
+let scan = f => setrepr(()=>[4,table,f], (x,w) => {
   if (has(w)) throw Error("`: No dyadic form");
   let s=x.sh;
   if (!s||s.length===0) throw Error("`: 𝕩 must have rank at least 1");
@@ -128,7 +128,7 @@ let scan = f => setrepr(()=>[2,table,f], (x,w) => {
   }
   return arr(r,s);
 });
-let cases = (f,g) => setrepr(()=>[3,cases,f,g],
+let cases = (f,g) => setrepr(()=>[5,cases,f,g],
   (x,w)=>has(w)?call(g,x,w):call(f,x,w));
 table.m=scan.m=1; cases.m=2;
 let group_len = (x,w) => { // ≠¨⊔ for a valid list argument
