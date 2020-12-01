@@ -597,7 +597,7 @@ GetHighlights ← {
   wi ← 1-˜+`id/w             # Index of word containing each of /id
   col↩ (wi⊏wt)⌾(id⊸/) col
   # And the system dot
-  col↩ («col) ⊣⌾((id»⊸∧𝕩='•')⊸/) col
+  col↩ («col) ⊣⌾((id«⊸∧𝕩='•')⊸/) col
 
   # Tags are placed at boundaries between different colors
   boundary ← ¯1⊸»⊸≠ col
