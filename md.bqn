@@ -595,7 +595,9 @@ GetHighlights ← {
   wt+↩ '_' = («⊸<id)/𝕩       # Modifier1 to Modifier2 based on word end
   wt+↩ 5×0=wt                # Shift 0 to Number
   wi ← 1-˜+`id/w             # Index of word containing each of /id
-  col↩(wi⊏wt)⌾(id⊸/) col
+  col↩ (wi⊏wt)⌾(id⊸/) col
+  # And the system dot
+  col↩ («col) ⊣⌾((id»⊸∧𝕩='•')⊸/) col
 
   # Tags are placed at boundaries between different colors
   boundary ← ¯1⊸»⊸≠ col
