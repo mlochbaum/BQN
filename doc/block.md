@@ -168,7 +168,6 @@ Bodies before the last two must have headers that include arguments. When a bloc
 If no header is compatible, the call results in an error.
 
         3 CaseAdd 3
-    ERROR
 
 ### Case headers
 
