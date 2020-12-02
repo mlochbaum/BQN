@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/problems.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/commentary/problems.html).*
 
 # Problems with BQN
 
@@ -28,7 +28,7 @@ There are a lot of standard functions and I don't want to use separate primitive
 If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
 
 ### Control flow substitutes have awkward syntax
-At the moment BQN has no control structures, instead preferring modifiers, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. For example, it's natural to have two arguments for small structures, but that becomes unreadable for larger ones. However, predefined functions acting on functions can cover a lot of ground for the imperative programmer; see [Control flow in BQN](doc/control.md).
+At the moment BQN has no control structures, instead preferring modifiers, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. For example, it's natural to have two arguments for small structures, but that becomes unreadable for larger ones. However, predefined functions acting on functions can cover a lot of ground for the imperative programmer; see [Control flow in BQN](../doc/control.md).
 
 ### Hard to search part of an array or in a different order
 This includes index-of-last, and searching starting at a particular index, when the desired result indices are to the array to be seached *before* it is modified. Given indices `i` into an array `𝕨` (for example `⌽↕≠𝕨` or `a+↕b`), this section can be searched with `(i∾≠𝕨)⊏˜(i⊏𝕨)⊐𝕩`. But this is clunky and difficult for the implementation to optimize.
@@ -79,7 +79,7 @@ It could be more sound to look at all matches, but using just the first one is t
 Blanket issue for glyphs that need work. Currently I find `⥊⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
 
 ### Group doesn't include trailing empty groups
-But there are workarounds, described in [its documentation](doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
+But there are workarounds, described in [its documentation](../doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
 
 ### Under/bind combination is awkward
 It's most common to use Under with dyadic structural functions in the form `…⌾(i⊸F)`, for example where `F` is one of `/` or `↑`. This is frustrating for two reasons: it requires parentheses, and it doesn't allow `i` to be computed tacitly. If there's no left argument then the modifier `{𝔽⌾(𝕨⊸𝔾)𝕩}` can be more useful, but it doesn't cover some useful cases such as mask `a ⊣⌾(u⊸/) b`.
@@ -139,7 +139,7 @@ This is a natural array operation to do, and results in an array with a joinable
 So you end up with `˜↩` a lot of the time. For ordinary assignment it's pretty reasonable to say the value is primary, but modified assignment flips this around.
 
 ### And/Or/Max/Min are all tangled up
-Boolean And (`∧`) and Or (`∨`) are identical to Min (`⌊`) and Max (`⌈`) when restricted to Boolean arguments, and this would fit nicely with their monadic role as sorting functions: for example `a∧b ←→ ⊑∧a‿b`. Furthermore the pairing of Min with Floor and Max with Ceiling is mnemonic only and not especially natural. The reason I have not used these glyphs for Min and Max, and have instead extended them to the somewhat superfluous [arithmetic logical functions](doc/logic.md) is that Min and Max have different [identity elements](https://aplwiki.com/wiki/Identity_element) of `∞` and `¯∞` rather than `1` and `0`. Having to code around empty arrays when using `∧´` would be a fairly big issue.
+Boolean And (`∧`) and Or (`∨`) are identical to Min (`⌊`) and Max (`⌈`) when restricted to Boolean arguments, and this would fit nicely with their monadic role as sorting functions: for example `a∧b ←→ ⊑∧a‿b`. Furthermore the pairing of Min with Floor and Max with Ceiling is mnemonic only and not especially natural. The reason I have not used these glyphs for Min and Max, and have instead extended them to the somewhat superfluous [arithmetic logical functions](../doc/logic.md) is that Min and Max have different [identity elements](https://aplwiki.com/wiki/Identity_element) of `∞` and `¯∞` rather than `1` and `0`. Having to code around empty arrays when using `∧´` would be a fairly big issue.
 
 The other drawback of Min (`∧`) and Max (`∨`) is that the symbols are counterintuitive, but I have found a way to remember them: consider the graph of variables `a←x` and `b←¬x` for x from 0 to 1: two crossed lines. Now the graph of `a∧b` is a caret shape and `a∨b` is a vee.
 
@@ -209,10 +209,10 @@ This was an issue with using functions as control flow. For example, when loopin
 Fixed with multiple bodies: if there are two bodies with no headers such as `{2×𝕩;𝕨-𝕩}`, they are the monadic and dyadic case.
 
 ### How to choose a partitioning function?
-Fixed with [Group](doc/group.md), which I found May 2020. Group serves as a much improved [Partition](https://aplwiki.com/wiki/Partition). However, it doesn't partition along multiple axes, so a dedicated partition function that does this could also be wanted. Or could Group be made to work with multiple axes as well as multidimensional indices?
+Fixed with [Group](../doc/group.md), which I found May 2020. Group serves as a much improved [Partition](https://aplwiki.com/wiki/Partition). However, it doesn't partition along multiple axes, so a dedicated partition function that does this could also be wanted. Or could Group be made to work with multiple axes as well as multidimensional indices?
 
 ### Key doesn't do what you want
-Fixed with [Group](doc/group.md) to my satisfaction, except for the trailing-empty-group problem. There were various issues with Key operators in J and Dyalog, such as the fact that the ordering and presence of groups depends on where and whether the keys appear. Also, Dyalog's Key can return keys and values, but they are in a different format than the input: an array of pairs instead of two arrays. Monadic Group returns indices, which can be used how the programmer wants.
+Fixed with [Group](../doc/group.md) to my satisfaction, except for the trailing-empty-group problem. There were various issues with Key operators in J and Dyalog, such as the fact that the ordering and presence of groups depends on where and whether the keys appear. Also, Dyalog's Key can return keys and values, but they are in a different format than the input: an array of pairs instead of two arrays. Monadic Group returns indices, which can be used how the programmer wants.
 
 ### Greek letter issues
 Fixed by not using Greek letters. In particular, the idea of using fancy Latin letters as fixed names for function arguments was suggested in proto-BQN sessions, possibly by Nathan Rogers.
