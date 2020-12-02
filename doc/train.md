@@ -92,7 +92,7 @@ We might make the first train above easier to read by using Atop (`∘`) instead
 
 These two forms have a different emphasis, because the first breaks into subfunctions `⍷∘∧` and `|` and the second into `⍷` and `∧|`. It's more common to use `⍷∘∧` as a unit than `∧|`, so in this case `⍷∘∧|` is probably the better train.
 
-Many one-argument functions strung together is [a major weakness](../problems.md#trains-dont-like-monads) for train syntax. If there are many such functions it's probably best to stick with a block function instead!
+Many one-argument functions strung together is [a major weakness](../commentary/problems.md#trains-dont-like-monads) for train syntax. If there are many such functions it's probably best to stick with a block function instead!
 
         {⍷∧|𝕩} 3‿4‿¯3‿¯2‿0
 

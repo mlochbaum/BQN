@@ -69,7 +69,7 @@ This array can be [joined](join.md), indicating that the length of each inner ax
 
         ∾ 1‿1 ↓ ((↕1+≢)<⎉2∘↕¨<) 3‿2⥊"abcdef"
 
-But Prefixes and Suffixes [don't have](../problems.md#cant-take-prefixes-or-suffixes-on-multiple-axes) any way to specify that they should work on multiple axes, and always work on exactly one. So to extend this pattern we will have to define multi-dimensional versions. This turns out to be very easy: just replace Length with Shape in the [definitions](#definition) above.
+But Prefixes and Suffixes [don't have](../commentary/problems.md#cant-take-prefixes-or-suffixes-on-multiple-axes) any way to specify that they should work on multiple axes, and always work on exactly one. So to extend this pattern we will have to define multi-dimensional versions. This turns out to be very easy: just replace Length with Shape in the [definitions](#definition) above.
 
         Prefs ← (↕1+≢)↑¨<
         Suffs ← (↕1+≢)↓¨<
