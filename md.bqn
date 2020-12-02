@@ -221,7 +221,7 @@ Markdown ← {filename𝕊𝕩:
       (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
     }
     r‿ri ← addRslt◶(2⥊<⟨⟩)‿{
-      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⎊"ERROR"⍟(0<≠)¨ 𝕩
+      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⎊("ERROR"∾lf)⍟(0<≠)¨ 𝕩
         1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
     } 𝕩
 
