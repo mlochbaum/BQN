@@ -58,7 +58,7 @@ Tokenize←{
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
   i←l>n←l∧(+`w)⊏0∾wk<0                      # Identifier/Number masks
-  num←is ReadNums○((∨⟜«0∾n)/0⊸∾) t×l        # Numbers
+  num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))0⊸≤⊸/wk           # Identifier role
   id←(1-˜(i>us)×+`w>n)⊔t                    # Identifiers
 
