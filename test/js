@@ -12,11 +12,9 @@ if (prim || args.length==0) {
   let expt = t.map(e=>+e[0]);
   if (prim) {
     let r = load('prim.bqn').split('\n')
-            .filter(x=>x.charAt(0)===' '
-                     &&x.charAt(1)===' '
-                     &&x.charAt(2)!=='#'
-                     &&x.indexOf(':')===-1)
-            .map(x=>x.slice(2));
+            .filter(x=>x.length>0
+                     &&x.charAt(0)!=='#'
+                     &&x.indexOf(':')===-1);
     test = test.concat(r);
     expt = expt.concat(r.map(e=>1));
   }
