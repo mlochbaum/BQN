@@ -165,7 +165,7 @@ _under_←{
   s⥊{e=𝕩}◶⟨⊑⟜(⥊𝕩),{𝕩⋄r←(j⊑g)⊑v⋄e↩P j↩1+j⋄r}⟩⌜i
 }
 
-¨ ↩ {(𝔽⌜)⊘(𝔽_eachd)○ToArray}
+¨ ↩ {𝕨(𝔽⌜)⊘(𝔽_eachd)○ToArray𝕩}
 
 match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨=○IsArray, 0⟩
@@ -286,7 +286,7 @@ Windows←{
   }⍟(0<r)𝕩
 }
 
-˘ ← {𝔽 _rankOp_ ¯1}
+˘ ← {𝕨 𝔽 _rankOp_ ¯1 𝕩}
 _onAxes_←{
   F←𝔽
   (𝔾<≡)∘⊣◶{ # One axis
@@ -607,7 +607,7 @@ ReshapeT ← ⟨∘,⌊,⌽,↑⟩⊑∘⊐<
 
 ⍟ ↩ _repeat_
 ⥊ ↩ Deshape        ⊘ Reshape
-⌜ ↩ {𝔽⌜○ToArray}
+⌜ ↩ {𝕨𝔽⌜○ToArray𝕩}
 ⌾ ← _under_
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 ⍷ ← ∊⊸/            ⊘ Find
