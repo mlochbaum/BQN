@@ -86,7 +86,7 @@ Assignment can be used inline in an expression, and its result is always the val
 
 The double arrow `⇐` is used to export variables from an immediate block or file. It can only be used in these contexts, and not in function or modifier blocks. There are two ways to export variables. First, `←` in the variable definition can be replaced with `⇐` to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by `⇐` with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.
 
-    ⟨a:alias, b, c:c0‿c1, b:b2⟩←{
+    ⟨alias⇐a, b, c0‿c1⇐c, b2⇐b⟩←{
       b‿c⇐   # Non-definition exports can go anywhere
       a⇐2    # Define and export
       b←1+a
