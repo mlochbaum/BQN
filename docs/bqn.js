@@ -83,6 +83,7 @@ let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks
 let assertFn = pre => (x,w) => {
   if (x!==1) throw {src:pre, message:w}; return x;
 }
+let isnum = x => typeof x === "number"
 let arr = (r,sh) => {r.sh=sh;return r;}
 let list = l => arr(l,[l.length]);
 let str = s => list(Array.from(s));
@@ -98,7 +99,7 @@ let plus = (x,w) => {
   throw Error("+: Cannot add non-data values");
 }
 let minus = (x,w) => {
-  if (typeof x!=="number") {
+  if (!isnum(x)) {
     if (has(w)&&typeof w==="string") return w.codePointAt(0)-x.codePointAt(0);
     throw Error("-: Can only negate numbers");
   }
@@ -107,6 +108,28 @@ let minus = (x,w) => {
   if (s==="number") return w-x;
   if (s==="string") return ctrans(w,-x);
   throw Error("-: Cannot subtract from non-data value");
+}
+let times = (x,w) => {
+  if (isnum(x)&&isnum(w)) return x*w;
+  throw Error("×: Arguments must be numbers");
+}
+let divide = (x,w) => {
+  if (isnum(x)&&(!has(w)||isnum(w))) return (has(w)?w:1)/x;
+  throw Error("÷: Arguments must be numbers");
+}
+let power = (x,w) => {
+  if (isnum(x)) {
+    if (!has(w)) return Math.exp(x);
+    if (isnum(w)) return Math.pow(w,x);
+  }
+  throw Error("⋆: Arguments must be numbers");
+}
+let log = (x,w) => {
+  if (isnum(x)) {
+    if (!has(w)) return Math.log(x);
+    if (isnum(w)) return Math.log(x)/Math.log(w);
+  }
+  throw Error("⋆⁼: Arguments must be numbers");
 }
 let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
@@ -145,27 +168,27 @@ let group_ord = (x,w) => { // ∾⊔x assuming w=group_len(x)
 }
 
 let provide = [
-  (x,w) => x.sh?1:0                                     // IsArray
- ,(x,w) => 0                                            // Type
- ,(x,w) => has(w)?Math.log(x)/Math.log(w):Math.log(x)   // Log  
- ,group_len                                             // GroupLen
- ,group_ord                                             // GroupOrd
- ,assertFn("")                                          // !
- ,plus                                                  // +
- ,minus                                                 // -
- ,(x,w) => w*x                                          // ×
- ,(x,w) => (has(w)?w:1)/x                               // ÷
- ,(x,w) => has(w)?Math.pow(w,x):Math.exp(x)             // ⋆
- ,(x,w) => Math.floor(x)                                // ⌊
- ,(x,w) => has(w)?+(x===w):x.sh?x.sh.length:0           // =
- ,lesseq                                                // ≤
- ,(x,w) => list(x.sh)                                   // ≢
- ,(x,w) => arr(x.slice(),has(w)?w:[x.length])           // ⥊
- ,(x,w) => x[w]                                         // ⊑
- ,(x,w) => list(Array(x).fill().map((_,i)=>i))          // ↕
- ,table                                                 // ⌜
- ,scan                                                  // `
- ,cases                                                 // ⊘
+  (x,w) => x.sh?1:0                            // IsArray
+ ,(x,w) => 0                                   // Type
+ ,log                                          // Log  
+ ,group_len                                    // GroupLen
+ ,group_ord                                    // GroupOrd
+ ,assertFn("")                                 // !
+ ,plus                                         // +
+ ,minus                                        // -
+ ,times                                        // ×
+ ,divide                                       // ÷
+ ,power                                        // ⋆
+ ,(x,w) => Math.floor(x)                       // ⌊
+ ,(x,w) => has(w)?+(x===w):x.sh?x.sh.length:0  // =
+ ,lesseq                                       // ≤
+ ,(x,w) => list(x.sh)                          // ≢
+ ,(x,w) => arr(x.slice(),has(w)?w:[x.length])  // ⥊
+ ,(x,w) => x[w]                                // ⊑
+ ,(x,w) => list(Array(x).fill().map((_,i)=>i)) // ↕
+ ,table                                        // ⌜
+ ,scan                                         // `
+ ,cases                                        // ⊘
 ];
 
 let runtime = run(
