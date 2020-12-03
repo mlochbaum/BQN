@@ -76,22 +76,23 @@
 <span class='Brace'>}</span>
 </pre>
 <p>We can pass it the exponential function as an argument by giving it the name <code><span class='Function'>Exp</span></code> and then referring to it in lowercase (that is, in a subject role). The result is a train that adds 1 to <em>e</em>-1 times the argument.</p>
-<pre>    <span class='Function'>Exp</span> <span class='Gets'>←</span> <span class='Function'>⋆</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=TGluIOKGkCB7IHYw4oaQ8J2VjzAg4ouEIHYwKygo8J2VjzEpLXYwKcOX4oqiIH0KRXhwIOKGkCDii4YKTGluIGV4cA==">↗️</a><pre>    <span class='Function'>Lin</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>v0</span><span class='Gets'>←</span><span class='Function'>𝕏</span><span class='Number'>0</span> <span class='Separator'>⋄</span> <span class='Value'>v0</span><span class='Function'>+</span><span class='Paren'>((</span><span class='Function'>𝕏</span><span class='Number'>1</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>v0</span><span class='Paren'>)</span><span class='Function'>×⊢</span> <span class='Brace'>}</span>
+    <span class='Function'>Exp</span> <span class='Gets'>←</span> <span class='Function'>⋆</span>
     <span class='Function'>Lin</span> <span class='Value'>exp</span>
-<span class='Paren'>(</span><span class='Number'>1</span> <span class='Function'>+</span> <span class='Paren'>(</span><span class='Number'>1.71828182845905</span> <span class='Function'>×</span> <span class='Function'>⊢</span><span class='Paren'>))</span>
+1+1.718281828459045×⊢
 </pre>
 <p>As with all functions, the result of <code><span class='Function'>Lin</span></code> has a subject role. To use it as a function, we give it a name and then use that name with an uppercase spelling.</p>
-<pre>    <span class='Value'>expLin</span> <span class='Gets'>←</span> <span class='Function'>Lin</span> <span class='Value'>exp</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ZXhwTGluIOKGkCBMaW4gZXhwCkV4cExpbiA1">↗️</a><pre>    <span class='Value'>expLin</span> <span class='Gets'>←</span> <span class='Function'>Lin</span> <span class='Value'>exp</span>
     <span class='Function'>ExpLin</span> <span class='Number'>5</span>
-<span class='Number'>9.59140914229523</span>
+9.591409142295225
 </pre>
 <p>A tricker but more compact method is to use the 1-modifier <code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Brace'>}</span></code>, as the input to a modifier can have a subject or function role but its output always has a function role.</p>
-<pre>    <span class='Paren'>(</span><span class='Function'>Lin</span> <span class='Value'>exp</span><span class='Paren'>)</span><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Brace'>}</span> <span class='Number'>5</span>
-<span class='Number'>9.59140914229523</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KExpbiBleHApe/CdlL19IDU=">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>Lin</span> <span class='Value'>exp</span><span class='Paren'>)</span><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Brace'>}</span> <span class='Number'>5</span>
+9.591409142295225
 </pre>
 <p>Not the most accurate approximation, though.</p>
-<pre>    <span class='Function'>Exp</span> <span class='Number'>5</span>
-<span class='Number'>148.413159102577</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RXhwIDU=">↗️</a><pre>    <span class='Function'>Exp</span> <span class='Number'>5</span>
+148.4131591025766
 </pre>
 <p>Note also in this case that we could have used a modifier with a very similar definition to <code><span class='Function'>Lin</span></code>. The modifier is identical in definition except that <code><span class='Function'>𝕏</span></code> is replaced with <code><span class='Function'>𝔽</span></code>.</p>
 <pre><span class='Modifier'>_lin</span> <span class='Gets'>↩</span> <span class='Brace'>{</span>
@@ -100,13 +101,14 @@
 <span class='Brace'>}</span>
 </pre>
 <p>Its call syntax is simpler as well. In other cases, however, the function version might be preferable, for example when dealing with arrays of functions or many arguments including a function.</p>
-<pre>    <span class='Function'>Exp</span> <span class='Modifier'>_lin</span> <span class='Number'>5</span>
-<span class='Number'>9.59140914229523</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=X2xpbiDihqkgeyB2MOKGkPCdlL0wIOKLhCB2MCsoKPCdlL0xKS12MCnDl+KKoiB9CkV4cCBfbGluIDU=">↗️</a><pre>    <span class='Modifier'>_lin</span> <span class='Gets'>↩</span> <span class='Brace'>{</span> <span class='Value'>v0</span><span class='Gets'>←</span><span class='Function'>𝔽</span><span class='Number'>0</span> <span class='Separator'>⋄</span> <span class='Value'>v0</span><span class='Function'>+</span><span class='Paren'>((</span><span class='Function'>𝔽</span><span class='Number'>1</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>v0</span><span class='Paren'>)</span><span class='Function'>×⊢</span> <span class='Brace'>}</span>
+    <span class='Function'>Exp</span> <span class='Modifier'>_lin</span> <span class='Number'>5</span>
+9.591409142295225
 </pre>
 <h3 id="arrays-of-functions">Arrays of functions</h3>
 <p>It's very convenient to put a function in an array, which is fortunate because this is one of the most important uses of functions as subjects. Here's an example of an array of functions with a reduction applied to it, composing them together.</p>
-<pre>    <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Modifier2'>∘</span><span class='Function'>𝕏</span><span class='Brace'>}</span><span class='Modifier'>´</span> <span class='Function'>⋆</span><span class='Ligature'>‿</span><span class='Function'>-</span><span class='Ligature'>‿</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Paren'>)</span>
-<span class='Function'>⋆</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Paren'>))</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=e/CdlY7iiJjwnZWPfcK0IOKLhuKAvy3igL8ow5fLnCk=">↗️</a><pre>    <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Modifier2'>∘</span><span class='Function'>𝕏</span><span class='Brace'>}</span><span class='Modifier'>´</span> <span class='Function'>⋆</span><span class='Ligature'>‿</span><span class='Function'>-</span><span class='Ligature'>‿</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Paren'>)</span>
+⋆∘(-∘(×˜))
 </pre>
 <p>Like any function, this one can be given a name and then called. A quirk of this way of defining a function is that it has a subject role (it's the result of the function <code><span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Modifier2'>∘</span><span class='Function'>𝕏</span><span class='Brace'>}</span><span class='Modifier'>´</span></code>) and so must be defined with a lowercase name.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Z2F1c3Mg4oaQIHvwnZWO4oiY8J2Vj33CtCDii4bigL8t4oC/KMOXy5wpCkdhdXNzIDI=">↗️</a><pre>    <span class='Value'>gauss</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Modifier2'>∘</span><span class='Function'>𝕏</span><span class='Brace'>}</span><span class='Modifier'>´</span> <span class='Function'>⋆</span><span class='Ligature'>‿</span><span class='Function'>-</span><span class='Ligature'>‿</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Paren'>)</span>

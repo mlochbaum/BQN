@@ -109,25 +109,22 @@ First, let's look at the basics: a small program that has functions as its argum
 
 We can pass it the exponential function as an argument by giving it the name `Exp` and then referring to it in lowercase (that is, in a subject role). The result is a train that adds 1 to *e*-1 times the argument.
 
+        Lin ← { v0←𝕏0 ⋄ v0+((𝕏1)-v0)×⊢ }
         Exp ← ⋆
         Lin exp
-    (1 + (1.71828182845905 × ⊢))
 
 As with all functions, the result of `Lin` has a subject role. To use it as a function, we give it a name and then use that name with an uppercase spelling.
 
         expLin ← Lin exp
         ExpLin 5
-    9.59140914229523
 
 A tricker but more compact method is to use the 1-modifier `{𝔽}`, as the input to a modifier can have a subject or function role but its output always has a function role.
 
         (Lin exp){𝔽} 5
-    9.59140914229523
 
 Not the most accurate approximation, though.
 
         Exp 5
-    148.413159102577
 
 Note also in this case that we could have used a modifier with a very similar definition to `Lin`. The modifier is identical in definition except that `𝕏` is replaced with `𝔽`.
 
@@ -138,15 +135,14 @@ Note also in this case that we could have used a modifier with a very similar de
 
 Its call syntax is simpler as well. In other cases, however, the function version might be preferable, for example when dealing with arrays of functions or many arguments including a function.
 
+        _lin ↩ { v0←𝔽0 ⋄ v0+((𝔽1)-v0)×⊢ }
         Exp _lin 5
-    9.59140914229523
 
 ### Arrays of functions
 
 It's very convenient to put a function in an array, which is fortunate because this is one of the most important uses of functions as subjects. Here's an example of an array of functions with a reduction applied to it, composing them together.
 
         {𝕎∘𝕏}´ ⋆‿-‿(×˜)
-    ⋆∘(-∘(×˜))
 
 Like any function, this one can be given a name and then called. A quirk of this way of defining a function is that it has a subject role (it's the result of the function `{𝕎∘𝕏}´`) and so must be defined with a lowercase name.
 
