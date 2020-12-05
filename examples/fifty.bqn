@@ -102,18 +102,17 @@ InversePermutation ← ⍋  # Or ⊐⟜(↕≠) or ∾∘⊔
 ! (↕10) ≡ InversePermutation⊸⊏ 1‿4‿5‿2‿6‿8‿3‿7‿0‿9
 
 # 21
-IndexFromPermutation‿PermutationFromIndex ← {
+⟨IndexFromPermutation⇐Ifp,PermutationFromIndex⇐Pfi⟩ ← {
   Rfd ← ⊢+´∘>¨¯1↓↓
   Dfr ← (⍋∘⍋∾)´
-  Ifp ← {𝕊⁼:𝕨Pfi𝕩; (⌽×`1+»↕≠𝕩) +´∘× Rfd𝕩}
-  Pfi ← {𝕊⁼:𝕨Ifp𝕩; w𝕊𝕩: Dfr (1+↕w) (⌽⊣|¯1↓·⌊∘÷`∾˜) 𝕩}
-  Ifp‿Pfi
+  Ifp ⇐ {𝕊⁼:𝕨Pfi𝕩; (⌽×`1+»↕≠𝕩) +´∘× Rfd𝕩}
+  Pfi ⇐ {𝕊⁼:𝕨Ifp𝕩; w𝕊𝕩: Dfr (1+↕w) (⌽⊣|¯1↓·⌊∘÷`∾˜) 𝕩}
 }
 ! {
   p ← 1‿3‿0‿7‿6‿5‿4‿9‿8‿2
-  p ≡ 10 PermutationFromIndex i ← IndexFromPermutation p
-  p ≡ ⊢⌾(10⊸IndexFromPermutation) p
-  i ≡ ⊢⌾(10⊸PermutationFromIndex) i
+  ! p ≡ 10 PermutationFromIndex i ← IndexFromPermutation p
+  ! p ≡ ⊢⌾(10⊸IndexFromPermutation) p
+  ! i ≡ ⊢⌾(10⊸PermutationFromIndex) i
 }
 
 # 22
@@ -121,14 +120,14 @@ Combinations ← {𝕨(=∨0=⊣)◶⟨(0∾˘𝕊⌾(-⟜1))∾1+𝕊⟜(-⟜1)
 ! (3 Combinations 5) ≡ 10‿3⥊0‿1‿2‿0‿1‿3‿0‿1‿4‿0‿2‿3‿0‿2‿4‿0‿3‿4‿1‿2‿3‿1‿2‿4‿1‿3‿4‿2‿3‿4
 
 # 23
-IndexFromCombination‿CombinationFromIndex ← {
+⟨IndexFromCombination⇐Ic,CombinationFromIndex⇐Ci⟩ ← {
   C ← ((-˜+↕∘⊣)÷○(×´1⊸+)↕∘⊣)˘  # Combination function (APL's dyadic !)
-  Ic ← {
+  Ic ⇐ {
     𝕊⁼: 𝕨Ci𝕩;
     m‿n𝕊𝕩:
     ⊑-˝(m-↕m) +˝∘(C˘) n-(»1+𝕩)∾˘𝕩
   }
-  Ci ← {
+  Ci ⇐ {
     𝕊⁼: 𝕨Ic𝕩;
     0‿n𝕊𝕩: ⟨⟩;
     m‿n𝕊𝕩:
@@ -136,7 +135,6 @@ IndexFromCombination‿CombinationFromIndex ← {
     k←(v>𝕩)⊐1
     k∾(1+k)+(𝕨-1∾1+k)𝕊(𝕩-k⊏0∾v)
   }
-  Ic‿Ci
 }
 ! 11 ≡ 4‿6 IndexFromCombination 1‿2‿3‿5
 ! 1‿2‿3‿5 ≡ 4‿6 CombinationFromIndex 11
