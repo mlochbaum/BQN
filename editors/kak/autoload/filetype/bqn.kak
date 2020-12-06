@@ -67,6 +67,7 @@ add-highlighter shared/bqn/code/ regex "[←⇐↩→]" 0:normal
 add-highlighter shared/bqn/code/ regex "·" 0:value
 add-highlighter shared/bqn/code/ regex "@" 0:string
 add-highlighter shared/bqn/code/ regex "(?<![A-Z_a-z0-9π∞¯])¯?((\d+\.)?\d+(e¯?\d+)?|π|∞)(i¯?((\d+\.)?\d+(e¯?\d+)?|π|∞))?" 0:value
+add-highlighter shared/bqn/code/ regex "\." 0:normal
 add-highlighter shared/bqn/code/ regex "[𝕗𝕘𝕨𝕩𝕤]" 0:normal
 add-highlighter shared/bqn/code/ regex "•|•?\b[a-z][A-Z_a-z0-9π∞¯]*|𝕣" 0:normal
 add-highlighter shared/bqn/code/ regex "[𝔽𝔾𝕎𝕏𝕊+\-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!⍕⍎]" 0:green
