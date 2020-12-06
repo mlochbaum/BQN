@@ -147,6 +147,10 @@ Suffixes←{
 
 _sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ ⊏}
 
+FirstCell←{
+  "⊏𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  (<0) GetCells 𝕩
+}
 SelSub←{
   "𝕨⊏𝕩: 𝕩 must be an array" ! IsArray 𝕨
   "𝕨⊏𝕩: Indices in 𝕨 must be integers" ! 1×´⥊Int⌜ 𝕨
@@ -547,7 +551,7 @@ ReorderAxesInv←{
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
 ProgressiveIndexOf ← {𝕨⊐○((≠∾2˙)⥊·≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 
-⊏ ← (<0)⊸GetCells  ⊘ (ToArray⊸(SelSub _onAxes_ 1))
+⊏ ← FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1))
 ⊑ ↩ (0⊑⥊)          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 
