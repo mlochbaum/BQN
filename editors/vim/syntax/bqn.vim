@@ -21,6 +21,7 @@ syn match bqnsid "\(•\|•\?[a-z][A-Z_a-z0-9π∞¯]*\|𝕣\)"
 syn match bqnfid "•\?[A-Z][A-Z_a-z0-9π∞¯]*"
 syn match bqn1id "\(•\?_[A-Za-z][A-Z_a-z0-9π∞¯]*\|_𝕣\)"
 syn match bqn2id "\(•\?_[A-Za-z][A-Z_a-z0-9π∞¯]*_\|_𝕣_\)"
+syn match bqndot "\."
 syn match bqncom "#.*$"
 syn match bqnquo /""/ contained
 syn region bqnstr matchgroup=bqnstr start=/"/ end=/"/ contains=bqnquo
@@ -40,6 +41,7 @@ hi link bqnstr string
 hi link bqnquo specialchar
 hi link bqnnum number
 hi link bqnnot constant
+hi link bqndot normal
 hi link bqnsub normal
 hi link bqnsid normal
 hi link bqnfun type
