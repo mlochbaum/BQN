@@ -30,11 +30,12 @@
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="index.html">main</a></div>
 <h1>Fonts for BQN</h1>
 
-<p>This page shows samples, and a font-selectable REPL at the end, for all four free fonts I know of that fully support BQN's character set:</p>
+<p>This page shows samples, and a font-selectable REPL at the end, for all five free fonts I know of that fully support BQN's character set:</p>
 <ul>
   <li><a href="https://github.com/mlochbaum/BQN/blob/master/docs/DejaVuBQNSansMono.ttf">DejaVu Sans Mono BQN</a>, which I adapted from DejaVu Sans Mono</li>
   <li><a href="https://github.com/dzaima/BQN386">BQN386</a>, derived from APL385 by way of APL386</li>
-  <li><a href="http://www.kreativekorp.com/software/fonts/fairfaxhd.shtml">Fairfax HD</a></li>
+  <li><a href="http://www.kreativekorp.com/software/fonts/fairfaxhd.shtml">Fairfax HD</a> (bitmap font <a href="http://www.kreativekorp.com/software/fonts/fairfax.shtml">Fairfax</a> is only missing <code class="Function">⥊</code>)</li>
+  <li><a href="https://github.com/rbanffy/3270font">3270</a>, based on the IBM 3270 terminal family</li>
   <li><a href="https://github.com/cormullion/juliamono">Julia Mono</a></li>
 </ul>
 <p>Other than DejaVu, the versions embedded on this page are small subsets, and you should get your copy from the links above (unless perhaps you want to use them for embedding as well). In addition to these, <a href="https://www.fsd.it/shop/fonts/pragmatapro/">Pragmata Pro</a> and <a href="https://www.evertype.com/emono/">Everson Mono</a> have full support, but each charges a significant fee for usage and I can't freely embed them here.</p>
@@ -96,7 +97,7 @@ Fairfax HD
 </td>
 
 <td>
-<pre class="Julia"><span class='Modifier'>`</span><span class='Number'>1234567890</span><span class='Function'>=</span>  ~<span class='Function'>!</span><span class='String'>@</span><span class='Comment'>#</span>$%^&amp;*<span class='Paren'>()</span><span class='Modifier2'>_</span><span class='Function'>+</span>
+<pre class="f3270"><span class='Modifier'>`</span><span class='Number'>1234567890</span><span class='Function'>=</span>  ~<span class='Function'>!</span><span class='String'>@</span><span class='Comment'>#</span>$%^&amp;*<span class='Paren'>()</span><span class='Modifier2'>_</span><span class='Function'>+</span>
  <span class='Value'>qwertyuiop</span>[] <span class='Function'>QWERTYUIOP</span><span class='Brace'>{}</span>
  <span class='Value'>asdfghjkl;</span><span class='String'>'</span>\ <span class='Function'>ASDFGHJKL</span><span class='Value'>:</span><span class='String'>&quot;</span><span class='Function'>|</span>
  <span class='Value'>zxcvbnm</span><span class='Separator'>,</span><span class='Number'>.</span><span class='Function'>/</span>   <span class='Function'>ZXCVBNM&lt;&gt;</span><span class='Value'>?</span>
@@ -109,7 +110,26 @@ Fairfax HD
 ⍬⍺⍵⍴⍳⍸⌷⍨⍤⍥⍣⊖⊂⊃⊆⊇∩∪⊥⊤⍝⍀⌿⍪
 ⎕⌺⌹⌸⍞⍠⌶⍱⍲⍫∇∆⍢⍙…
 </pre>
-<div class="right">Julia Mono</div>
+<div class="right">3270</div>
+</td>
+</tr>
+
+<tr>
+<td colspan="2">
+<pre class="Julia" style="width:48%; margin-left:auto; margin-right:auto"><span class='Modifier'>`</span><span class='Number'>1234567890</span><span class='Function'>=</span>  ~<span class='Function'>!</span><span class='String'>@</span><span class='Comment'>#</span>$%^&amp;*<span class='Paren'>()</span><span class='Modifier2'>_</span><span class='Function'>+</span>
+ <span class='Value'>qwertyuiop</span>[] <span class='Function'>QWERTYUIOP</span><span class='Brace'>{}</span>
+ <span class='Value'>asdfghjkl;</span><span class='String'>'</span>\ <span class='Function'>ASDFGHJKL</span><span class='Value'>:</span><span class='String'>&quot;</span><span class='Function'>|</span>
+ <span class='Value'>zxcvbnm</span><span class='Separator'>,</span><span class='Number'>.</span><span class='Function'>/</span>   <span class='Function'>ZXCVBNM&lt;&gt;</span><span class='Value'>?</span>
+
+<span class='Modifier'>˜˘¨⁼⌜´˝</span> <span class='Number'>∞¯</span><span class='Value'>•</span><span class='Function'>×</span>  <span class='Function'>¬</span><span class='Modifier2'>⎉⚇⍟◶⊘⎊</span>⍎⍕<span class='Bracket'>⟨⟩</span><span class='Function'>√⋆</span>
+ <span class='Function'>⌽</span><span class='Value'>𝕨</span><span class='Function'>∊↑∧</span> <span class='Function'>⊔⊏⊐</span><span class='Number'>π</span><span class='Gets'>←→</span> ↙<span class='Function'>𝕎⍷</span><span class='Value'>𝕣</span><span class='Function'>⍋</span>  <span class='Function'>⊑⊒</span>⍳<span class='Function'>⊣⊢</span>
+ <span class='Function'>⍉</span><span class='Value'>𝕤</span><span class='Function'>↕</span><span class='Value'>𝕗𝕘</span><span class='Modifier2'>⊸∘○⟜</span><span class='Separator'>⋄</span><span class='Gets'>↩</span>  ↖<span class='Function'>𝕊</span> <span class='Function'>𝔽𝔾«</span> <span class='Modifier2'>⌾</span><span class='Function'>»</span><span class='Nothing'>·</span><span class='Modifier'>˙</span>
+ <span class='Function'>⥊</span><span class='Value'>𝕩</span><span class='Function'>↓∨⌊</span> <span class='Function'>≡∾≍≠</span> <span class='Ligature'>‿</span>  <span class='Function'>𝕏</span> <span class='Function'>⍒⌈</span> <span class='Function'>≢≤≥</span><span class='Gets'>⇐</span>
+
+⍬⍺⍵⍴⍳⍸⌷⍨⍤⍥⍣⊖⊂⊃⊆⊇∩∪⊥⊤⍝⍀⌿⍪
+⎕⌺⌹⌸⍞⍠⌶⍱⍲⍫∇∆⍢⍙…
+</pre>
+<div>Julia Mono</div>
 </td>
 </tr>
 </table>
@@ -173,6 +193,25 @@ Fairfax HD
 <span class='Brace'>}</span>
 </pre>
 
+<pre class="f3270"><span class='Value ul'>3270</span>
+
+  <span class='Value'>c</span><span class='Gets'>←</span><span class='Value'>𝕩</span><span class='Function'>=</span><span class='String'>'#'</span><span class='Separator'>⋄</span><span class='Value'>s</span><span class='Gets'>←</span><span class='Function'>/</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>«</span><span class='Modifier2'>⊸</span><span class='Function'>∧</span><span class='Value'>sm</span><span class='Gets'>←</span><span class='Value'>𝕩</span><span class='Function'>=</span><span class='String'>'''</span><span class='Separator'>⋄</span><span class='Value'>d</span><span class='Gets'>←</span><span class='Function'>/</span><span class='Value'>dm</span><span class='Gets'>←</span><span class='Value'>𝕩</span><span class='Function'>=</span><span class='String'>'&quot;'</span>
+  <span class='Value'>g</span><span class='Gets'>←</span><span class='Function'>⍋</span><span class='Value'>q</span><span class='Gets'>←</span><span class='Function'>∾</span><span class='Bracket'>⟨</span>  <span class='Value'>s</span><span class='Separator'>⋄</span><span class='Number'>¯1</span><span class='Function'>↓</span><span class='Value'>d</span><span class='Separator'>⋄</span><span class='Function'>/</span><span class='Value'>c</span><span class='Bracket'>⟩</span> <span class='Separator'>⋄</span><span class='Value'>q</span><span class='Gets'>↩</span><span class='Value'>g</span><span class='Function'>⊏</span><span class='Value'>q</span>                <span class='Comment'># Open indices
+</span>  <span class='Value'>e</span><span class='Gets'>←</span> <span class='Value'>g</span><span class='Function'>⊏∾</span><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Function'>+</span><span class='Value'>s</span><span class='Separator'>⋄</span> <span class='Number'>1</span><span class='Function'>↓</span><span class='Value'>d</span><span class='Separator'>⋄</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span><span class='Modifier2'>∘</span><span class='Function'>⊏</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>∾+</span><span class='Modifier'>`</span><span class='Value'>c</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>//</span><span class='Paren'>(</span><span class='Value'>𝕩</span><span class='Function'>=</span><span class='Value'>lf</span><span class='Paren'>)</span><span class='Function'>∾</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Comment'># Matching close indices
+</span>  <span class='Function'>Se</span><span class='Gets'>←</span><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>⊏</span><span class='Modifier'>˜</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>Se</span> <span class='Number'>1</span><span class='Modifier'>¨</span><span class='Modifier2'>⌾</span><span class='Paren'>((</span><span class='Value'>𝕩</span><span class='Function'>/</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span><span class='Paren'>)</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>=</span><span class='Number'>¯1</span><span class='Function'>⊑⊢</span><span class='Paren'>)</span>       <span class='Comment'># Mark reachable openings
+</span>
+<span class='Function'>PrecedesGroup</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+  <span class='Comment'># We prepend a 0 to 𝕨, so that 0 is the &quot;before start&quot; index, with a
+</span>  <span class='Comment'># false value, and normal indices are increased by 1.
+</span>  <span class='Value'>𝕨</span> <span class='Function'>∾</span><span class='Modifier'>˜</span><span class='Gets'>↩</span> <span class='Number'>0</span>
+  <span class='Value'>inds</span> <span class='Gets'>←</span> <span class='Number'>1</span> <span class='Function'>+</span> <span class='Function'>↕≠</span><span class='Value'>𝕩</span>
+  <span class='Comment'># Zero out indices where 𝕩 was true, and find the greatest index so
+</span>  <span class='Comment'># far at each position.
+</span>  <span class='Value'>last</span> <span class='Gets'>←</span> <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Value'>inds</span> <span class='Function'>×</span> <span class='Function'>¬</span><span class='Value'>𝕩</span>
+  <span class='Value'>last</span> <span class='Function'>⊏</span> <span class='Value'>𝕨</span>
+<span class='Brace'>}</span>
+</pre>
+
 <pre class="Julia"><span class='Value ul'>Julia Mono</span>
 
   <span class='Value'>c</span><span class='Gets'>←</span><span class='Value'>𝕩</span><span class='Function'>=</span><span class='String'>'#'</span><span class='Separator'>⋄</span><span class='Value'>s</span><span class='Gets'>←</span><span class='Function'>/</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>«</span><span class='Modifier2'>⊸</span><span class='Function'>∧</span><span class='Value'>sm</span><span class='Gets'>←</span><span class='Value'>𝕩</span><span class='Function'>=</span><span class='String'>'''</span><span class='Separator'>⋄</span><span class='Value'>d</span><span class='Gets'>←</span><span class='Function'>/</span><span class='Value'>dm</span><span class='Gets'>←</span><span class='Value'>𝕩</span><span class='Function'>=</span><span class='String'>'&quot;'</span>
@@ -201,8 +240,10 @@ Fairfax HD
   <label for="f1">BQN386</label>
   <input type="radio" id="f2" name="font" class="Fairfax"/>
   <label for="f2">Fairfax</label>
-  <input type="radio" id="f3" name="font" class="Julia"/>
-  <label for="f3">Julia</label>
+  <input type="radio" id="f3" name="font" class="f3270"/>
+  <label for="f3">3270</label>
+  <input type="radio" id="f4" name="font" class="Julia"/>
+  <label for="f4">Julia</label>
 </div>
 <div id="setfont">
   <div class="cont">
