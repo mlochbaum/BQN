@@ -2,8 +2,7 @@
 # limited initial functionality. Implementations are designed to be
 # simple and not fast.
 
-# Not yet included: characters, complex numbers, comparison tolerance,
-# selective assignment, and Under.
+# Not yet included: complex numbers or comparison tolerance.
 
 # In some cases an operation is defined with limited functionality at
 # first and later expanded. For convenience, rather than renaming these

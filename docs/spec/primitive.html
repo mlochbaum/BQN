@@ -1,0 +1,25 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>Specification: BQN primitives</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">spec</a></div>
+<h1 id="specification-bqn-primitives">Specification: BQN primitives</h1>
+<p>Most primitives are specified by the BQN-based implementation in <a href="https://github.com/mlochbaum/BQN/blob/master/spec/reference.bqn">reference.bqn</a>. This document specifies the basic functionality required by those definitions. Descriptions of other primitives are for informational purposes only.</p>
+<h2 id="arithmetic">Arithmetic</h2>
+<p>Functions here are defined for atoms only; the reference implementations extend them to arrays.</p>
+<p>BQN uses five arithmetic functions that are standard in mathematics. The precision of these operations should be specified by the number <a href="types.html">type</a>.</p>
+<ul>
+<li>Add <code><span class='Function'>+</span></code></li>
+<li>Negate <code><span class='Function'>-</span></code> and Subtract <code><span class='Function'>-</span></code> invert addition, with <code><span class='Function'>-</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Number'>0</span><span class='Function'>-</span><span class='Value'>𝕩</span></code> and <code><span class='Value'>𝕨</span><span class='Function'>-</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Value'>𝕨</span><span class='Function'>+-</span><span class='Value'>𝕩</span></code></li>
+<li>Multiply <code><span class='Function'>×</span></code> generalizes repeated addition.</li>
+<li>Divide <code><span class='Function'>÷</span></code> inverts multiplication, with <code><span class='Function'>÷</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Number'>1</span><span class='Function'>÷</span><span class='Value'>𝕩</span></code> and <code><span class='Value'>𝕨</span><span class='Function'>÷</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Value'>𝕨</span><span class='Function'>×÷</span><span class='Value'>𝕩</span></code></li>
+<li>Power <code><span class='Function'>⋆</span></code> generalizes repeated multiplication, and Exponential <code><span class='Function'>⋆</span></code> is Power with Euler's number <em>e</em> as the base.</li>
+</ul>
+<p>The three higher functions <code><span class='Function'>×</span></code>, <code><span class='Function'>÷</span></code>, and <code><span class='Function'>⋆</span></code> apply to numbers and no other atomic types. <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> apply to numbers, and possibly also to characters, according to the rules of the affine character type:</p>
+<ul>
+<li>If one argument to <code><span class='Function'>+</span></code> is the character with code point <code><span class='Value'>c</span></code> and the other is a number <code><span class='Value'>n</span></code> (in either order), then the result is the character with code point <code><span class='Value'>c</span><span class='Function'>+</span><span class='Value'>n</span></code>.</li>
+<li>If the left argument to <code><span class='Function'>-</span></code> is the character with code point <code><span class='Value'>c</span></code> and the right is a number <code><span class='Value'>n</span></code>, the result is the character with code point <code><span class='Value'>c</span><span class='Function'>-</span><span class='Value'>n</span></code>.</li>
+<li>If both arguments to <code><span class='Function'>-</span></code> are characters, the result is the difference of their respective code points.</li>
+</ul>
+<p>In the first two cases, if the result would not be a valid Unicode code point, then an error results. The remaining cases of <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> (adding two characters; negating a character or subtracting it from a number) are not allowed.</p>
