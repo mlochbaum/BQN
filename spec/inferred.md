@@ -137,3 +137,60 @@ For a structural function `𝔾`, the *structural inverse* of `𝔾` on `v` into
 In order to show that the structural inverse of a structural function is well-defined, we must show that it does not depend on the choice of structural function decomposition. That is, for a given `𝕩`, if `G` and `H` are structure transformations from different decompositions of `𝔾` both capturing `𝕩`, then the structural inverse of `G` on `v` into `𝕩` matches that of `H` on `v` into `𝕩`. Call these inverses `y` and `z`. Now begin by supposing that `H` captures `y` and `G` captures `z`; we will show this later. From the definition of a structural inverse, `v≡G y`, so that `v≡𝔾 y`, and because `H` captures `y` we have `v≡H y` as well. Let `S w` indicate the set of all functions `F` such that `w ≡○F 𝕩` (this is not a BQN value, both because it is a set and because it's usually infinite): from the definition of `z` we know that `S z` is a strict superset of `S w` for any `w` other than `z` with `v≡H w`. It follows that either `y≡z` or `S y` is a strict subset of `S z`. By symmetry the same relation holds exchanging `y` and `z`, but it's not possible for `S y` to be a strict subset of `S z` and vice-versa. The only remaining possibility is that `y≡z`.
 
 We now need to show that `H` captures `y` (the proof that `G` captures `z` is of course the same as `H` and `G` are symmetric). To do this we must show that any array in the initial structure of `H` corresponds to a matching array in `y`. Choose the position of an array in `H`, and assume by induction that each array containing it already has the desired property; this implies that this position exists in `y` as well although we know nothing about its contents. `G` captures `y`, so `G`'s initial structure is `·` at this position or some parent position. There are now two cases: either `G` makes use of this postion—at least one position in its final structure corresponds to it—or it doesn't. If not, then the contents of `y` at this position are the same as those of `𝕩`. Since `H` captures `𝕩`, its initial structure matches `𝕩` and hence `y` as well at this position. If it does, then instead `y` matches a part of `v`.
+
+### Required structural inverses
+
+The following primitive functions be fully supported by structural Under. Each manipulates its right argument structurally.
+
+| Type    | Primitives
+|---------|-----------
+| Monad   | `⊣⊢<>∾⥊≍↑↓⌽⍉⊏⊑`
+| Dyad    | `⊢⥊↑↓↕⌽⍉/⊏⊑⊔`
+
+The following combinations must also be supported, where `S` and `T` are structural functions and `k` is a constant function (data type, or function derived from `˙`):
+
+| Expression | Remarks
+|------------|--------
+| `S∘T`      |
+| `S T`      |
+| `·S T`     |
+| `S○T`      |
+| `k⊸T`      |
+| `k T ⊢`    |
+| `S⍟k`      | `k` a natural number
+| `S¨`       |
+| `S⚇k`      | `k` contains only negative numbers
+| `S⌜`       |
+| `S˘`       |
+| `S⎉k`      |
+
+### A structural Under algorithm
+
+This section offers the outline for a procedure that computes most structural inverses that a programmer would typically use. The concept is to build a special result array whose elements are not BQN values but instead indicate positions within the initial argument. This structural array is applied to the initial argument by replacing its elements with the values at those positions, and inverted by placing elements back in the original array at these indices, checking for any conflicts. If operations like dyadic `∾` are allowed, then a structural array might have some indices that are prefixes or parents of others, making it slightly different from a structural transformation as defined above (although it could be represented as a structural transformation by expanding some of these). This requires additional checking to ensure that elements of previously inserted elements can't be modified.
+
+Structural functions can be applied to structural arrays directly, after ensuring that they have the necessary depth as given below. An array's depth can be increased by expanding each position in it into an array of child positions, or, if that position contains an atom and the structural function in question would tolerate an atom, enclosing it.
+
+| Level | Monads          | Dyads           | Modifiers
+|:-----:|-----------------|-----------------|----------
+| 0     | `⊢⊣<`           | `⊢⊣`            | `˜∘○⊸⟜⊘◶`
+| 1     | `=≠≢⥊≍↑↓»«⌽⍉⊏⊑` | `⥊∾≍↑↓↕»«⌽⍉/⊏⊔` | `˘¨⌜⎉`
+| 2     | `>∾`            |                 |
+| n     |                 | `⊑`             | `⚇`
+
+Not all primitives in the table above are required. Of note are `=≠≢`, which accept a structural array but return an ordinary value; this might be used as a left argument later. If the final result is not structural, then the function in question can't be structural, and the attempt to find a structural inverse can be aborted.
+
+### Non-structural case
+
+The behavior of invertible and computational Under is fully dependent on that of [Undo](#undo), and does not need to be repeated here. However, it is important to discuss when this definition can be applied: specifically, either
+- When `𝔾` is exactly invertible, or
+- When `𝔾` is provably not a structural function.
+
+A substantial class of functions that is easy to identify and always satisfies one of the above criteria is the functions that *never perform non-invertible structural manipulation*, or more colloquially *don't discard argument elements*. This class consists of functions made up of plain primitives that don't contain the following primitives:
+
+| Valence | Primitives
+|---------|-----------
+| Monad   | `»«⊏⊑`
+| Dyad    | `⥊↑↓»«⍉/⊏⊑⊔`
+| Modifer | `` ⁼⍟´˝` ``
+
+If a function of this class is a structural function, then it must be invertible, because the remaining primitives leave no way to retain some elements but discard others (an element's value can be ignored by replacing it by a constant, but a function that does this can't be structural). It can be extended to include some dyadic functions like `⥊↑⍉/` if it can be determined that the left argument never allows information to be discarded; for example if the left argument to `⍉` contains no duplicates or the left argument to `⥊` always has a product larger than its argument's bound. Inverses from `⁼` or `⍟` might be allowed on a case-by-case basis, and `⍟` with a constant right operand that contains no negative numbers can also be allowed.

@@ -361,3 +361,152 @@
 <h4 id="well-definedness">Well-definedness</h4>
 <p>In order to show that the structural inverse of a structural function is well-defined, we must show that it does not depend on the choice of structural function decomposition. That is, for a given <code><span class='Value'>𝕩</span></code>, if <code><span class='Function'>G</span></code> and <code><span class='Function'>H</span></code> are structure transformations from different decompositions of <code><span class='Function'>𝔾</span></code> both capturing <code><span class='Value'>𝕩</span></code>, then the structural inverse of <code><span class='Function'>G</span></code> on <code><span class='Value'>v</span></code> into <code><span class='Value'>𝕩</span></code> matches that of <code><span class='Function'>H</span></code> on <code><span class='Value'>v</span></code> into <code><span class='Value'>𝕩</span></code>. Call these inverses <code><span class='Value'>y</span></code> and <code><span class='Value'>z</span></code>. Now begin by supposing that <code><span class='Function'>H</span></code> captures <code><span class='Value'>y</span></code> and <code><span class='Function'>G</span></code> captures <code><span class='Value'>z</span></code>; we will show this later. From the definition of a structural inverse, <code><span class='Value'>v</span><span class='Function'>≡G</span> <span class='Value'>y</span></code>, so that <code><span class='Value'>v</span><span class='Function'>≡𝔾</span> <span class='Value'>y</span></code>, and because <code><span class='Function'>H</span></code> captures <code><span class='Value'>y</span></code> we have <code><span class='Value'>v</span><span class='Function'>≡H</span> <span class='Value'>y</span></code> as well. Let <code><span class='Function'>S</span> <span class='Value'>w</span></code> indicate the set of all functions <code><span class='Function'>F</span></code> such that <code><span class='Value'>w</span> <span class='Function'>≡</span><span class='Modifier2'>○</span><span class='Function'>F</span> <span class='Value'>𝕩</span></code> (this is not a BQN value, both because it is a set and because it's usually infinite): from the definition of <code><span class='Value'>z</span></code> we know that <code><span class='Function'>S</span> <span class='Value'>z</span></code> is a strict superset of <code><span class='Function'>S</span> <span class='Value'>w</span></code> for any <code><span class='Value'>w</span></code> other than <code><span class='Value'>z</span></code> with <code><span class='Value'>v</span><span class='Function'>≡H</span> <span class='Value'>w</span></code>. It follows that either <code><span class='Value'>y</span><span class='Function'>≡</span><span class='Value'>z</span></code> or <code><span class='Function'>S</span> <span class='Value'>y</span></code> is a strict subset of <code><span class='Function'>S</span> <span class='Value'>z</span></code>. By symmetry the same relation holds exchanging <code><span class='Value'>y</span></code> and <code><span class='Value'>z</span></code>, but it's not possible for <code><span class='Function'>S</span> <span class='Value'>y</span></code> to be a strict subset of <code><span class='Function'>S</span> <span class='Value'>z</span></code> and vice-versa. The only remaining possibility is that <code><span class='Value'>y</span><span class='Function'>≡</span><span class='Value'>z</span></code>.</p>
 <p>We now need to show that <code><span class='Function'>H</span></code> captures <code><span class='Value'>y</span></code> (the proof that <code><span class='Function'>G</span></code> captures <code><span class='Value'>z</span></code> is of course the same as <code><span class='Function'>H</span></code> and <code><span class='Function'>G</span></code> are symmetric). To do this we must show that any array in the initial structure of <code><span class='Function'>H</span></code> corresponds to a matching array in <code><span class='Value'>y</span></code>. Choose the position of an array in <code><span class='Function'>H</span></code>, and assume by induction that each array containing it already has the desired property; this implies that this position exists in <code><span class='Value'>y</span></code> as well although we know nothing about its contents. <code><span class='Function'>G</span></code> captures <code><span class='Value'>y</span></code>, so <code><span class='Function'>G</span></code>'s initial structure is <code><span class='Nothing'>·</span></code> at this position or some parent position. There are now two cases: either <code><span class='Function'>G</span></code> makes use of this postion—at least one position in its final structure corresponds to it—or it doesn't. If not, then the contents of <code><span class='Value'>y</span></code> at this position are the same as those of <code><span class='Value'>𝕩</span></code>. Since <code><span class='Function'>H</span></code> captures <code><span class='Value'>𝕩</span></code>, its initial structure matches <code><span class='Value'>𝕩</span></code> and hence <code><span class='Value'>y</span></code> as well at this position. If it does, then instead <code><span class='Value'>y</span></code> matches a part of <code><span class='Value'>v</span></code>.</p>
+<h3 id="required-structural-inverses">Required structural inverses</h3>
+<p>The following primitive functions be fully supported by structural Under. Each manipulates its right argument structurally.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Primitives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monad</td>
+<td><code><span class='Function'>⊣⊢&lt;&gt;∾⥊≍↑↓⌽⍉⊏⊑</span></code></td>
+</tr>
+<tr>
+<td>Dyad</td>
+<td><code><span class='Function'>⊢⥊↑↓↕⌽⍉/⊏⊑⊔</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>The following combinations must also be supported, where <code><span class='Function'>S</span></code> and <code><span class='Function'>T</span></code> are structural functions and <code><span class='Value'>k</span></code> is a constant function (data type, or function derived from <code><span class='Modifier'>˙</span></code>):</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>S</span><span class='Modifier2'>∘</span><span class='Function'>T</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Function'>S</span> <span class='Function'>T</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Nothing'>·</span><span class='Function'>S</span> <span class='Function'>T</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Function'>S</span><span class='Modifier2'>○</span><span class='Function'>T</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Value'>k</span><span class='Modifier2'>⊸</span><span class='Function'>T</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Value'>k</span> <span class='Function'>T</span> <span class='Function'>⊢</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Function'>S</span><span class='Modifier2'>⍟</span><span class='Value'>k</span></code></td>
+<td><code><span class='Value'>k</span></code> a natural number</td>
+</tr>
+<tr>
+<td><code><span class='Function'>S</span><span class='Modifier'>¨</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Function'>S</span><span class='Modifier2'>⚇</span><span class='Value'>k</span></code></td>
+<td><code><span class='Value'>k</span></code> contains only negative numbers</td>
+</tr>
+<tr>
+<td><code><span class='Function'>S</span><span class='Modifier'>⌜</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Function'>S</span><span class='Modifier'>˘</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Function'>S</span><span class='Modifier2'>⎉</span><span class='Value'>k</span></code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="a-structural-under-algorithm">A structural Under algorithm</h3>
+<p>This section offers the outline for a procedure that computes most structural inverses that a programmer would typically use. The concept is to build a special result array whose elements are not BQN values but instead indicate positions within the initial argument. This structural array is applied to the initial argument by replacing its elements with the values at those positions, and inverted by placing elements back in the original array at these indices, checking for any conflicts. If operations like dyadic <code><span class='Function'>∾</span></code> are allowed, then a structural array might have some indices that are prefixes or parents of others, making it slightly different from a structural transformation as defined above (although it could be represented as a structural transformation by expanding some of these). This requires additional checking to ensure that elements of previously inserted elements can't be modified.</p>
+<p>Structural functions can be applied to structural arrays directly, after ensuring that they have the necessary depth as given below. An array's depth can be increased by expanding each position in it into an array of child positions, or, if that position contains an atom and the structural function in question would tolerate an atom, enclosing it.</p>
+<table>
+<thead>
+<tr>
+<th align="center">Level</th>
+<th>Monads</th>
+<th>Dyads</th>
+<th>Modifiers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">0</td>
+<td><code><span class='Function'>⊢⊣&lt;</span></code></td>
+<td><code><span class='Function'>⊢⊣</span></code></td>
+<td><code><span class='Modifier'>˜</span><span class='Modifier2'>∘○⊸⟜⊘◶</span></code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td><code><span class='Function'>=≠≢⥊≍↑↓»«⌽⍉⊏⊑</span></code></td>
+<td><code><span class='Function'>⥊∾≍↑↓↕»«⌽⍉/⊏⊔</span></code></td>
+<td><code><span class='Modifier'>˘¨⌜</span><span class='Modifier2'>⎉</span></code></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td><code><span class='Function'>&gt;∾</span></code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">n</td>
+<td></td>
+<td><code><span class='Function'>⊑</span></code></td>
+<td><code><span class='Modifier2'>⚇</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Not all primitives in the table above are required. Of note are <code><span class='Function'>=≠≢</span></code>, which accept a structural array but return an ordinary value; this might be used as a left argument later. If the final result is not structural, then the function in question can't be structural, and the attempt to find a structural inverse can be aborted.</p>
+<h3 id="non-structural-case">Non-structural case</h3>
+<p>The behavior of invertible and computational Under is fully dependent on that of <a href="#undo">Undo</a>, and does not need to be repeated here. However, it is important to discuss when this definition can be applied: specifically, either</p>
+<ul>
+<li>When <code><span class='Function'>𝔾</span></code> is exactly invertible, or</li>
+<li>When <code><span class='Function'>𝔾</span></code> is provably not a structural function.</li>
+</ul>
+<p>A substantial class of functions that is easy to identify and always satisfies one of the above criteria is the functions that <em>never perform non-invertible structural manipulation</em>, or more colloquially <em>don't discard argument elements</em>. This class consists of functions made up of plain primitives that don't contain the following primitives:</p>
+<table>
+<thead>
+<tr>
+<th>Valence</th>
+<th>Primitives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monad</td>
+<td><code><span class='Function'>»«⊏⊑</span></code></td>
+</tr>
+<tr>
+<td>Dyad</td>
+<td><code><span class='Function'>⥊↑↓»«⍉/⊏⊑⊔</span></code></td>
+</tr>
+<tr>
+<td>Modifer</td>
+<td><code><span class='Modifier'>⁼</span><span class='Modifier2'>⍟</span><span class='Modifier'>´˝`</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>If a function of this class is a structural function, then it must be invertible, because the remaining primitives leave no way to retain some elements but discard others (an element's value can be ignored by replacing it by a constant, but a function that does this can't be structural). It can be extended to include some dyadic functions like <code><span class='Function'>⥊↑⍉/</span></code> if it can be determined that the left argument never allows information to be discarded; for example if the left argument to <code><span class='Function'>⍉</span></code> contains no duplicates or the left argument to <code><span class='Function'>⥊</span></code> always has a product larger than its argument's bound. Inverses from <code><span class='Modifier'>⁼</span></code> or <code><span class='Modifier2'>⍟</span></code> might be allowed on a case-by-case basis, and <code><span class='Modifier2'>⍟</span></code> with a constant right operand that contains no negative numbers can also be allowed.</p>
