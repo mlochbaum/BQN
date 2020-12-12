@@ -24,7 +24,7 @@ Inc ← {
 }
 
 # Required functionality passed in as an argument
-def ← ⟨"IsArray","Type","Log","GroupLen","GroupOrd"⟩
+def ← ⟨"Type","GetFill","Log","GroupLen","GroupOrd"⟩
 keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘"
 len ⇐ def+○≠keep
 ki ← chr⊐keep
