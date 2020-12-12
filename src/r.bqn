@@ -1,5 +1,5 @@
 # BQN runtime. Requires:
-# IsArray Type Log GroupLen GroupOrd  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+# Type GetFill Log GroupLen GroupOrd  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
 
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
 ⊢ ← {𝕩}
@@ -12,8 +12,9 @@
 ⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
 ⍟ ← {𝕨((𝕨𝔾𝕩)⊑⊢‿𝕗){𝔽}𝕩}   # LIMITED to boolean right operand result
 
-Int←IsArray◶⟨⌊⊸=,0⟩
-Nat←IsArray◶⟨0⊸≤×⌊⊸=,0⟩
+IsArray←0=Type
+Int←(1=Type)◶⟨0,⌊⊸=⟩
+Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
 Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 Box ← {⟨⟩⥊⟨𝕩⟩}
@@ -240,7 +241,7 @@ _takeDrop←{
       sh ∾↩ t ← (s⊑˜r⊸+)⌜↕(≠s)-r
       {i 𝕩_c↩ ↕𝕩}⍟(1-1⊸=) k×´t
       Sel ← ⊑⟜(⥊𝕩)
-      {Sel↩0⊸≤◶⟨(Type𝕩)˙,Sel⟩}⍟⊢fill
+      {Sel↩0⊸≤◶⟨(GetFill𝕩)˙,Sel⟩}⍟⊢fill
       Sel⌜ sh ⥊ i
     } ToArray 𝕩
   }
@@ -271,7 +272,7 @@ ShiftAfter←{
 }
 FC←{ # Fill cell
   "« or »: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  (Type 𝕩)⌜ ⥊⟜(↕1×´⊢) 1 Cell 𝕩
+  (GetFill 𝕩)⌜ ⥊⟜(↕1×´⊢) 1 Cell 𝕩
 }
 
 Windows←{
@@ -339,10 +340,10 @@ Reshape←{
     Chk ← ⊢ ⊣ "𝕨⥊𝕩: Shape must be exact when reshaping with ∘" ! ⌊⊸=
     a←(2⌊t)◶⟨Chk,⌊,⌈⟩n÷lp
     s↩p⊣◶⊢‿a¨s
-    {d∾↩(Type d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
+    {d∾↩(GetFill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
   } s
   s⥊{
-    𝕩(0<n)◶⟨Type⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
+    𝕩(0<n)◶⟨GetFill⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
   }⍟(l≠n)d
 }
 ⥊ ↩ Deshape        ⊘ ⥊

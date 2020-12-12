@@ -8,8 +8,8 @@ nc‿rt‿prim ← "-nocomp"‿"-rt"‿"-prim" ∊ •args
 GetRT ← {𝕤:
   ⟨ref⟩ ← •Import "../src/pr.bqn"
   provide ← ⟨
-    0≠≡      # IsArray
-    ⊑⟨⟩⥊0⊸⥊  # Type
+    •Type    # Type
+    ⊑⟨⟩⥊0⊸⥊  # GetFill
     ⋆⁼       # Log
     ≠¨⊔      # GroupLen
     ∾⊔∘⊢     # GroupOrd
