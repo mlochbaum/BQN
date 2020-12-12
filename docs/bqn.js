@@ -215,7 +215,7 @@ let bqn = src => run.apply(null,compile(str(src),runtime));
 let fmtnum = x => str(x==Infinity ? "∞" : x==-Infinity ? "¯∞"
                     : (""+x).replace(/-/g,"¯"));
 let type = x => typeof x === "function" ? 3+(x.m||0)
-              : x.sh ? 0 : 1+(typeof x === "number");
+              : x.sh ? 0 : 2-(typeof x === "number");
 let decompose = x => list(typeof x !== "function" ? [-1,x]
                         : x.glyph ? [0,x] : x.repr ? x.repr() : [1,x]);
 let glyph = x => x.glyph;
