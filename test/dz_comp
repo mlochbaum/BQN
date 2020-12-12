@@ -8,11 +8,13 @@ nc‿rt‿prim ← "-nocomp"‿"-rt"‿"-prim" ∊ •args
 GetRT ← {𝕤:
   ⟨ref⟩ ← •Import "../src/pr.bqn"
   provide ← ⟨
-    •Type    # Type
-    ⊑⟨⟩⥊0⊸⥊  # GetFill
-    ⋆⁼       # Log
-    ≠¨⊔      # GroupLen
-    ∾⊔∘⊢     # GroupOrd
+    •Type      # Type
+    •Decompose # Decompose
+    •Glyph     # Glyph
+    ⊑⟨⟩⥊0⊸⥊    # GetFill
+    ⋆⁼         # Log
+    ≠¨⊔        # GroupLen
+    ∾⊔∘⊢       # GroupOrd
     !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,⊘
   ⟩
   •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
