@@ -1,5 +1,7 @@
 # BQN runtime. Requires:
-# Type GetFill Log GroupLen GroupOrd  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+# Type Decompose Glyph GetFill Log GroupLen GroupOrd  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+Decompose
+Glyph
 
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
 ⊢ ← {𝕩}
