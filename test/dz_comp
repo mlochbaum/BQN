@@ -6,18 +6,20 @@ nc‿rt‿prim ← "-nocomp"‿"-rt"‿"-prim" ∊ •args
 ⟨DRun,DCompile⟩ ← •Import "../dc.bqn"
 
 GetRT ← {𝕤:
-  ⟨ref⟩ ← •Import "../src/pr.bqn"
+  ⟨ref,glyphs⟩ ← •Import "../src/pr.bqn"
+  PrimInd ← {⊑rt⊐<𝕩}
+  Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
   provide ← ⟨
-    •Type      # Type
-    •Decompose # Decompose
-    •Glyph     # Glyph
-    ⊑⟨⟩⥊0⊸⥊    # GetFill
-    ⋆⁼         # Log
-    ≠¨⊔        # GroupLen
-    ∾⊔∘⊢       # GroupOrd
+    •Type           # Type
+    Decompose       # Decompose
+    glyphs⊑˜PrimInd # Glyph
+    ⊑⟨⟩⥊0⊸⥊         # GetFill
+    ⋆⁼              # Log
+    ≠¨⊔             # GroupLen
+    ∾⊔∘⊢            # GroupOrd
     !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,⊘
   ⟩
-  •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
+  rt ← •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
 }
 
 Native ← {⍎𝕩}
