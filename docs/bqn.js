@@ -136,10 +136,10 @@ let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
   return +(s!==t ? s<=t : w<=x);
 }
-let table = f => setrepr(()=>[4,table,f], (x,w) => !has(w)
+let table = f => setrepr(()=>[4,f,table], (x,w) => !has(w)
   ? arr(x.map(e=>call(f,e)),x.sh)
   : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
-let scan = f => setrepr(()=>[4,table,f], (x,w) => {
+let scan = f => setrepr(()=>[4,f,scan], (x,w) => {
   if (has(w)) throw Error("`: No dyadic form");
   let s=x.sh;
   if (!s||s.length===0) throw Error("`: 𝕩 must have rank at least 1");
