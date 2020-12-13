@@ -10,7 +10,7 @@ chrs←⟨
   "∘○⊸⟜⌾⊘◶⎉⚇⍟"
 ⟩
 nc ← ≠¨chrs
-chr ← ∾chrs
+glyphs ⇐ chr ← ∾chrs
 itr ← 0⥊˜≠chr
 
 init ← " "⊸∾¨(/⟜"_"¨nc/0‿1‿1)∾¨(nc/"FMD")∾¨(nc+´⊸↑⥊"ABC"∾⌜•a)
