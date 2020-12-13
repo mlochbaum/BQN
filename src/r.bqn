@@ -557,9 +557,29 @@ ProgressiveIndexOf ← {𝕨⊐○((≠∾2˙)⥊·≍˘⟜OccurrenceCount𝕨�
 ⊏ ← FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1))
 ⊑ ↩ (0⊑⥊)          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
+⁼ ← {Inverse 𝕗}
+
+_repeat_←{
+  n←𝕨𝔾𝕩
+  l←u←0
+  {"⍟: Repetition numbers in 𝕨 must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
+  a←𝕩⋄_p←{𝔽∘⊣`⟨a⟩∾↕0+𝕩}
+  pos←(𝕨𝔽 ⊢)_p u
+  neg←(𝕨𝔽⁼⊢)_p-l
+  (|⊑<⟜0⊑pos‿neg˙)⚇0 n
+}
+
+ReshapeT ← ⟨∘,⌊,⌽,↑⟩⊑∘⊐<
+
+⍟ ↩ _repeat_
+⥊ ↩ Deshape        ⊘ Reshape
+⌾ ← _under_
+⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
+⍷ ← ∊⊸/            ⊘ Find
 
 IA ← "⁼: Inverse failed"⊸!
 IX ← "⁼: Inverse does not exist"⊸!
+INF← "⁼: Inverse not found"!0˙
 _invChk_ ← {i←𝕨𝔽𝕩⋄IX 𝕩≡𝕨𝔾i⋄i}
 GroupIndsInv ← {
   IA 1==𝕩
@@ -575,7 +595,11 @@ GroupInv ← {
   IA ∧´Nat⌜𝕨
   (⊔𝕨) ⍋⊸⊏○∾ 𝕩
 }
-inverse ← {(⊑(0⊏𝕩)⊐<) ⊑ ((1⊏𝕩)∾⟨"⁼: Inverse not found"!0˜⟩)˜} ⍉ (2∾˜2÷˜≠)⊸⥊ ⟨
+_lookup_ ← {
+  s ← 2×↕(≠𝕘)÷2
+  (⊑(s⊏𝕘)⊐<) ⊑ (((1+s)⊏𝕘)∾⟨𝕗⟩)˙
+}
+PrimInverse ← INF _lookup_ ⟨
   +, +⊘(-˜)
   -, -
   ×, ⊢⊘(÷˜)
@@ -598,23 +622,53 @@ inverse ← {(⊑(0⊏𝕩)⊐<) ⊑ ((1⊏𝕩)∾⟨"⁼: Inverse not found"!0
   /, {IA 1==𝕩⋄IA∧´Nat⌜𝕩⋄IX(∧´¯1⊸↓≤1⊸↓)𝕩⋄GroupLen𝕩}⊘(IA∘0)
   ⊔, GroupIndsInv ⊘ GroupInv
 ⟩
-⁼ ← {Inverse 𝕗}
-
-_repeat_←{
-  n←𝕨𝔾𝕩
-  l←u←0
-  {"⍟: Repetition numbers in 𝕨 must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
-  a←𝕩⋄_p←{𝔽∘⊣`⟨a⟩∾↕0+𝕩}
-  pos←(𝕨𝔽 ⊢)_p u
-  neg←(𝕨𝔽⁼⊢)_p-l
-  (|⊑<⟜0⊑pos‿neg˙)⚇0 n
-}
-
-ReshapeT ← ⟨∘,⌊,⌽,↑⟩⊑∘⊐<
-
-⍟ ↩ _repeat_
-⥊ ↩ Deshape        ⊘ Reshape
 ⌜ ↩ {𝕨𝔽⌜○ToArray𝕩}
-⌾ ← _under_
-⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
-⍷ ← ∊⊸/            ⊘ Find
+_inv_ ← {𝕘⋄𝕨𝔽𝕩}
+AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
+Mod1Inverse ← INF˙ _lookup_ ⟨
+  ˜, INF _lookup_ ⟨
+    +, ÷⟜2⊘(-˜)
+    -, IA∘0⊘+
+    ×, √⊘(÷˜)
+    ÷, IA∘0⊘×
+    ⋆, IA∘0⊘√
+    √, IA∘0⊘(÷Log)
+    ∧, √⊘(÷˜)
+    ∨, (¬√∘¬)⊘(-˜÷1-⊣)
+    ¬, IA∘0⊘(+-1˙)
+  ⟩
+  ¨, {𝕏⁼¨       ⊣·IA 0<≡∘⊢}
+  ⌜, {𝕏⁼⌜⊘(IA∘0)⊣·IA 0<≡∘⊢}
+  ˘, {𝕏⁼˘       ⊣·IA 0<=∘⊢}
+  `, {(⊏∾¯1⊸↓𝕏⁼¨1⊸↓)⍟(1<≠)⊘(IA∘0)}
+⟩ {
+  0⊸⊑ {𝕏𝕨}⟜𝔽 1⊸⊑
+}
+IsConstant ← (3≤Type)◶⟨1 ⋄ 4‿˙ ≡ 0‿¯1⊏Decompose⟩
+Mod2Inverse ← INF˙ _lookup_ ⟨
+  _inv_, {𝕎⊸⊢𝕏}
+  ∘, AtopInverse
+  ○, {Fi←𝕎⁼⋄𝕏⁼ Fi⊘(𝕏⊸Fi)}
+  ⌾, {𝕎⁼⌾𝕏}  # Need to verify for computation Under
+  ⍟, Int∘⊢◶⟨IA∘0˙,{𝕎⍟(-𝕩)}⟩
+  ⊘, {(𝕎⁼)⊘(𝕏⁼)}
+  ⊸, IsConstant∘⊣ ⊣◶{INF⊘𝕏}‿⊢ {𝕎⊸(𝕏⁼)}
+  ⟜, IsConstant∘⊢◶⟨INF˙,{(𝕨𝕏˜⁼⊢)⊘(IA∘0)}⟩
+⟩ {
+  0‿2⊸⊏ {𝕏´𝕨}⟜𝔽 1⊸⊑
+}
+TrainInverse ← {
+  f‿g‿h←𝕩
+  K←¬IsConstant⊸∧⟜((⊑⟨⊢⟩)⊸=)
+  f K◶⟨{𝕨G⁼⊢},K˜◶⟨{𝕩G˜⁼⊢},INF˙⟩⟩ h
+}
+FuncInverse ← (⊑ ⊣◶⟨
+  PrimInverse∘⊑⊢                         # 0 primitive
+  ("Cannot currently invert blocks"!0˙)˙ # 1 block
+  AtopInverse´⊢                          # 2-train
+  TrainInverse                           # 3-train
+  Mod1Inverse                            # 4 1-modifier
+  Mod2Inverse                            # 5 2-modifier
+⟩ 1⊸↓) Decompose
+Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
+⁼ ↩ {𝕗 ≠◶⊢‿{𝕩_inv_𝕨} Inverse 𝕗}
