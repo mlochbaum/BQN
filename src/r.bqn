@@ -646,7 +646,7 @@ Mod1Inverse ← INF˙ _lookup_ ⟨
 }
 IsConstant ← (3≤Type)◶⟨1 ⋄ 4‿˙ ≡ 0‿¯1⊏Decompose⟩
 Mod2Inverse ← INF˙ _lookup_ ⟨
-  _inv_, {𝕎⊸⊢𝕏}
+  _inv_, {𝕏_invChk_𝕎}
   ∘, AtopInverse
   ○, {Fi←𝕎⁼⋄𝕏⁼ Fi⊘(𝕏⊸Fi)}
   ⌾, {𝕎⁼⌾𝕏}  # Need to verify for computation Under

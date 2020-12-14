@@ -94,7 +94,7 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 | `F G`   |                      |
 | `·F G`  |                      |
 | `○`     | `{𝔾⁼(𝔾𝕨)𝔽⁼𝕩}`        |
-| `⁼`     | `{𝔽⁼⊸⊢∘𝔽}`           |
+| `⁼`     | `{r←𝔽𝕩⋄!𝕩≡𝔽⁼r⋄r}`    |
 | `⌾`     | `{𝔽⁼⌾𝔾}`             | Verify result for computational Under
 | `⍟n`    | `⍟(-n)`              | Atomic number n
 | `⊘`     | `{(𝔽⁼)⊘(𝔾⁼)}`        |
