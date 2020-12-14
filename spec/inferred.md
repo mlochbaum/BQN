@@ -41,7 +41,7 @@ The following structural functions have unique inverses, except in a few cases. 
 | `⊢` | `⊢`                 | `⊢`
 | `⊣` | `⊢`                 | `{!𝕨≡𝕩⋄𝕩}`
 | `<` | `{!0==𝕩⋄!0<≡𝕩⋄⊑𝕩}`  |
-| `⌽` | `⌽`                 | `(-⊸⌽)`
+| `⌽` | `⌽`                 | `-⊸⌽`
 | `⍉` | `(1⌽↕∘=)⊸⍉⍟(0<=)`   | `{!∧´∊𝕨⋄𝕨⍉𝕩⋄(⍋⍷𝕨∾↕=𝕩)⍉𝕩}`
 | `/` | `≠¨∘⊔`              |
 
@@ -98,10 +98,10 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 | `⌾`     | `{𝔽⁼⌾𝔾}`             | Verify result for computational Under
 | `⍟n`    | `⍟(-n)`              | Atomic number n
 | `⊘`     | `{(𝔽⁼)⊘(𝔾⁼)}`        |
-| `k⊸𝔽`   | `k⊸(𝔽⁼)`             | Constant k
-| `k𝔽⊢`   |                      |
+| `⊸`     | `{𝔽⊸(𝔾⁼)}`           | Dyadic case or constant `𝔽` only
+| `k𝔽⊢`   | `k𝔽⁼⊢`               | Constant k
 | `𝔽⟜k𝕩`  | `k𝔽˜⁼𝕩`              | Constant k
-| `⊢𝔽k˙`  |                      | Arbitrary k
+| `⊢𝔽K`   |                      | Constant k
 
 ## Under
 
