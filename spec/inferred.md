@@ -170,12 +170,12 @@ This section offers the outline for a procedure that computes most structural in
 
 Structural functions can be applied to structural arrays directly, after ensuring that they have the necessary depth as given below. An array's depth can be increased by expanding each position in it into an array of child positions, or, if that position contains an atom and the structural function in question would tolerate an atom, enclosing it.
 
-| Level | Monads          | Dyads           | Modifiers
-|:-----:|-----------------|-----------------|----------
-| 0     | `⊢⊣<`           | `⊢⊣`            | `˜∘○⊸⟜⊘◶`
-| 1     | `=≠≢⥊≍↑↓»«⌽⍉⊏⊑` | `⥊∾≍↑↓↕»«⌽⍉/⊏⊔` | `˘¨⌜⎉`
-| 2     | `>∾`            |                 |
-| n     |                 | `⊑`             | `⚇`
+| Level | Monads          | Dyads            | Modifiers
+|:-----:|-----------------|------------------|----------
+| 0     | `⊢⊣<`           | `⊢⊣`             | `˜∘○⊸⟜⊘◶`
+| 1     | `=≠≢⥊≍↑↓»«⌽⍉⊏⊑` | `⥊∾≍↑↓↕»«⌽⍉/⊏⊑⊔` | `˘¨⌜⎉`
+| 2     | `>∾`            |                  |
+| n     |                 |                  | `⚇`
 
 Not all primitives in the table above are required. Of note are `=≠≢`, which accept a structural array but return an ordinary value; this might be used as a left argument later. If the final result is not structural, then the function in question can't be structural, and the attempt to find a structural inverse can be aborted.
 
