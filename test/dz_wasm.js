@@ -5,7 +5,7 @@ const execFile = require('child_process').execFile
     , runWasm=w=>new WebAssembly.Instance(new WebAssembly.Module(Uint8Array.from(w)))
                  .exports.fn()
 
-const t=load('cases.bqn').split('\n').filter(x=>x).map(x=>x.split(' % '))
+const t=load('cases/simple.bqn').split('\n').filter(x=>x).map(x=>x.split(' % '))
     , test=t.map(e=>'"'+e[1]+'"').join('\n')
     , expt=t.map(e=>+e[0])
 
