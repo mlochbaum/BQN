@@ -9,10 +9,10 @@ dz_comp uses the self-hosted compiler ../src/c.bqn by default but not
 the runtime ../src/r.bqn. Pass -rt to test with the runtime, and -comp
 to test dzaima/BQN only (this doesn't pass as of the time of writing).
 
-Test cases:
+Test cases (cases/):
                   js    dz_comp   dz_wasm.js
-- cases.bqn        *       *          *
-- bcases.bqn       *       *
+- simple.bqn       *       *          *
+- syntax.bqn       *       *
 - prim.bqn       -prim   -prim
 
 Contents of bin/dbqn follow (3 lines). Replace "/path/to/dzaima/" with
