@@ -3,20 +3,15 @@
 let bqn = require(__dirname+'/../docs/bqn.js');
 let read = require('fs').readFileSync;
 let cases = f=>read(__dirname+'/cases/'+f+'.bqn','utf8').split('\n')
-               .filter(x=>x.length>0 && x.charAt(0)!=='#');
+               .filter(x=>x.length>0 && x.charAt(0)!=='#')
+               .map(x=>x.indexOf('%')===-1?[1,x]:x.split(' % '));
 let args = process.argv.slice(2);
 let prim = args[0]==="-prim";
 
 if (prim || args.length==0) {
-  let t = [].concat(cases('simple'),cases('syntax'))
-          .map(x=>x.split(' % '));
+  let t = [].concat(cases('simple'),cases('syntax'),prim?cases('prim'):[]);
   let test = t.map(e=>e[1]);
   let expt = t.map(e=>+e[0]);
-  if (prim) {
-    let r = cases('prim');
-    test = test.concat(r);
-    expt = expt.concat(r.map(e=>1));
-  }
 
   let rslt = test.map(bqn);
   let pass = rslt.map((r,i)=>r===expt[i]);
