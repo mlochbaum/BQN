@@ -13,8 +13,7 @@ if (prim || args.length==0) {
   if (prim) {
     let r = load('prim.bqn').split('\n')
             .filter(x=>x.length>0
-                     &&x.charAt(0)!=='#'
-                     &&x.indexOf(':')===-1);
+                     &&x.charAt(0)!=='#');
     test = test.concat(r);
     expt = expt.concat(r.map(e=>1));
   }
