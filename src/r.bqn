@@ -671,4 +671,4 @@ FuncInverse ← (⊑ ⊣◶⟨
   Mod2Inverse                            # 5 2-modifier
 ⟩ 1⊸↓) Decompose
 Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
-⁼ ↩ {𝕗 (≠∧INF˙⊸≠)◶0‿(5‿_inv_≢0‿¯2⊏Decompose∘⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
+⁼ ↩ {𝕗 (≢∧INF˙⊸≢)◶0‿(5‿_inv_≢0‿¯2⊏Decompose∘⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
