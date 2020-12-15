@@ -26,11 +26,10 @@ Native ← {⍎𝕩}
 exec ← (rt¬nc)◶⟨Native˙, DRun˙, {𝕩⊸DRun}∘GetRT⟩ @
 
 Cases ← (0<≠)◶0‿('#'≠⊑)¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
-c ← ∾ Cases¨ "simple"‿"syntax"
-{𝕩: c ∾↩ "1 %"⊸∾¨ Cases "prim" }⍟⊢ prim
+c ← ∾ Cases¨ "simple"‿"syntax"∾prim/⟨"prim"⟩
 M ← {e‿b:
   Err ← {(@+10)∾˜""""∾b∾""": expected "∾e∾" but received "∾⍕𝕩}
   (Native e) ≢◶""‿Err Exec b
 }
-r ← '%' M∘((+`-2⊸×)∘=⊔⊢)¨ c
+r ← (M '%'⊸= (∨´⊣)◶⟨"1"≍○<⊢,(+`-2⊸×)⊸⊔⟩ ⊢)¨ c
 •Out ("All "∾(⍕≠c)∾" passed!")⍟(0=≠) ∾r
