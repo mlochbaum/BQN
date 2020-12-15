@@ -1,6 +1,7 @@
 #! /usr/bin/env dbqn
 
-nc‿rt‿prim ← "-nocomp"‿"-rt"‿"-prim" ∊ •args
+nc‿rt ← "-nocomp"‿"-rt" ∊ •args
+files ← "simple"‿"syntax"‿"prim"⍟(0=≠) ('-'≠⊑)¨⊸/ •args
 "Can't test runtime without the compiler!" ! ¬nc∧rt
 
 ⟨DRun,DCompile⟩ ← •Import "../dc.bqn"
@@ -26,7 +27,7 @@ Native ← {⍎𝕩}
 exec ← (rt¬nc)◶⟨Native˙, DRun˙, {𝕩⊸DRun}∘GetRT⟩ @
 
 Cases ← (0<≠)◶0‿('#'≠⊑)¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
-c ← ∾ Cases¨ "simple"‿"syntax"∾prim/⟨"prim"⟩
+c ← ∾ Cases¨ files
 M ← {e‿b:
   Err ← {(@+10)∾˜""""∾b∾""": expected "∾e∾" but received "∾⍕𝕩}
   (Native e) ≢◶""‿Err Exec b

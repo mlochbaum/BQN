@@ -6,10 +6,11 @@ let cases = f=>read(__dirname+'/cases/'+f+'.bqn','utf8').split('\n')
                .filter(x=>x.length>0 && x.charAt(0)!=='#')
                .map(x=>x.indexOf('%')===-1?[1,x]:x.split(' % '));
 let args = process.argv.slice(2);
-let prim = args[0]==="-prim";
+let onfiles = args[0]==='--';
+let files = onfiles ? args.slice(1) : ['simple','syntax'];
 
-if (prim || args.length==0) {
-  let t = [].concat(cases('simple'),cases('syntax'),prim?cases('prim'):[]);
+if (onfiles || args.length==0) {
+  let t = [].concat.apply([],files.map(cases));
   let test = t.map(e=>e[1]);
   let expt = t.map(e=>+e[0]);
 
