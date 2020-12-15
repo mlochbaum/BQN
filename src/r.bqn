@@ -653,7 +653,7 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
   ⍟, Int∘⊢◶⟨IA∘0˙,{𝕎⍟(-𝕩)}⟩
   ⊘, {(𝕎⁼)⊘(𝕏⁼)}
   ⊸, IsConstant∘⊣ ⊣◶{INF⊘𝕏}‿⊢ {𝕎⊸(𝕏⁼)}
-  ⟜, IsConstant∘⊢◶⟨INF˙,{(𝕨𝕏˜⁼⊢)⊘(IA∘0)}⟩
+  ⟜, IsConstant∘⊢◶⟨INF˙,{(𝕩𝕎˜⁼⊢)⊘(IA∘0)}⟩
 ⟩ {
   0‿2⊸⊏ {𝕏´𝕨}⟜𝔽 1⊸⊑
 }
