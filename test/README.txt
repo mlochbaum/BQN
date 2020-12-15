@@ -13,7 +13,10 @@ Test cases (cases/):
                   js    dz_comp   dz_wasm.js
 - simple.bqn       *       *          *
 - syntax.bqn       *       *
-- prim.bqn       -prim   -prim
+- prim.bqn                 *
+
+dz_comp can be run on a different set of tests by passing their names
+as arguments; for js the argument "--" is needed, then the names.
 
 Contents of bin/dbqn follow (3 lines). Replace "/path/to/dzaima/" with
 your path.
