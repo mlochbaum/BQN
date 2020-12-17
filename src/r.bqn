@@ -659,8 +659,8 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
 }
 TrainInverse ← {
   f‿g‿h←𝕩
-  K←¬IsConstant⊸∧⟜((⊑⟨⊢⟩)⊸=)
-  f K◶⟨{𝕨G⁼⊢},K˜◶⟨{𝕩G˜⁼⊢},INF˙⟩⟩ h
+  K←¬IsConstant
+  f K∘⊣◶⟨{𝕏⁼𝕨G⁼⊢},K∘⊢◶⟨{𝕎⁼𝕩G˜⁼⊢},INF˙⟩⟩ h
 }
 FuncInverse ← (⊑ ⊣◶⟨
   PrimInverse∘⊑⊢                         # 0 primitive

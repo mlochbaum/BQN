@@ -96,12 +96,12 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 | `○`     | `{𝔾⁼(𝔾𝕨)𝔽⁼𝕩}`        |
 | `⁼`     | `{r←𝔽𝕩⋄!𝕩≡𝔽⁼r⋄r}`    |
 | `⌾`     | `{𝔽⁼⌾𝔾}`             | Verify result for computational Under
-| `⍟n`    | `⍟(-n)`              | Atomic number n
+| `⍟n`    | `⍟(-n)`              | Atomic number `n`
 | `⊘`     | `{(𝔽⁼)⊘(𝔾⁼)}`        |
 | `⊸`     | `{𝔽⊸(𝔾⁼)}`           | Dyadic case or constant `𝔽` only
-| `k𝔽⊢`   | `k𝔽⁼⊢`               | Constant k
-| `𝔽⟜k𝕩`  | `k𝔽˜⁼𝕩`              | Constant k
-| `⊢𝔽K`   |                      | Constant k
+| `𝔽⟜k𝕩`  | `k𝔽˜⁼𝕩`              | Constant `k`
+| `k𝔽𝔾`   | `𝔾⁼k𝔽⁼⊢`             | Constant `k`
+| `𝔽𝔾K`   | `𝔽⁼k𝔾˜⁼⊢`            | Constant `k`
 
 ## Under
 
