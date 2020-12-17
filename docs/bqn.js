@@ -10,7 +10,8 @@ let call = (f,x,w) => {
   return f(x, w);
 }
 
-let get = x => x.e ? x.e[x.p] : arr(x.map(c=>get(c)), x.sh);
+let getv= (a,i) => { let v=a[i]; if (v===null) throw Error("Runtime: Variable referenced before definition"); return v; }
+let get = x => x.e ? getv(x.e,x.p) : arr(x.map(c=>get(c)), x.sh);
 let set = (d, id, v) => {
   let eq = (a,b) => a.length===b.length && a.every((e,i)=>e===b[i]);
   if (id.e) {
@@ -25,7 +26,6 @@ let set = (d, id, v) => {
 }
 
 let chkM = (v,m) => { if (m.m!==v) throw Error("Runtime: Only a "+v+"-modifier can be called as a "+v+"-modifier"); }
-let chkR = v => { if (v===null) throw Error("Runtime: Variable referenced before definition"); }
 let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   let rD = 0;
   let r = L?"let l=0;try{":"";
@@ -53,7 +53,7 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
       case 13:         { let i=rG(),f=rG(),x=rG(); r+=rP("set(0,"+i+",call("+f+","+x+",get("+i+")))");                        break; }
       case 14:         { rD--;                                                                                                break; }
       case 15:         { r+= rP("D["+num()+"](e)");                                                                           break; }
-      case 21:         { r+= rP(ge(num())+"["+num()+"]")+"chkR("+rV(rD-1)+");";                                               break; }
+      case 21:         { r+= rP("getv("+ge(num())+","+num()+")");                                                             break; }
       case 22:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                             break; }
       case 25:         { if(rD!==1) throw Error("Internal compiler error: Wrong stack size"); r+= "return v0;";               break loop; }
     }
@@ -74,8 +74,8 @@ let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks
     if (type===0) c = "let e2=def;"+c;
     if (type===1) c = "const mod=(f  ) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;"                +c+"}; mod.m=1;return mod;";
     if (type===2) c = "const mod=(f,g) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;e2["+(I+2)+"]=g;"+c+"}; mod.m=2;return mod;";
-    return Function("'use strict'; return (chkM,chkR,has,call,get,set,list,train2,train3,O,L,def) => D => oe => {"+c+"};")()
-                                          (chkM,chkR,has,call,get,set,list,train2,train3,O,L,def);
+    return Function("'use strict'; return (chkM,has,call,getv,get,set,list,train2,train3,O,L,def) => D => oe => {"+c+"};")()
+                                          (chkM,has,call,getv,get,set,list,train2,train3,O,L,def);
   });
   D.forEach((d,i) => {D[i]=d(D)});
   return D[0]([]);
