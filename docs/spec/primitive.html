@@ -6,15 +6,16 @@
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">spec</a></div>
 <h1 id="specification-bqn-primitives">Specification: BQN primitives</h1>
 <p>Most primitives are specified by the BQN-based implementation in <a href="https://github.com/mlochbaum/BQN/blob/master/spec/reference.bqn">reference.bqn</a>. This document specifies the basic functionality required by those definitions. Descriptions of other primitives are for informational purposes only.</p>
-<h2 id="arithmetic">Arithmetic</h2>
-<p>Functions here are defined for atoms only; the reference implementations extend them to arrays.</p>
+<h2 id="pervasive-primitives">Pervasive primitives</h2>
+<p>Functions in this section are defined for atoms only; the reference implementations extend them to arrays.</p>
+<h3 id="arithmetic">Arithmetic</h3>
 <p>BQN uses five arithmetic functions that are standard in mathematics. The precision of these operations should be specified by the number <a href="types.html">type</a>.</p>
 <ul>
-<li>Add <code><span class='Function'>+</span></code></li>
-<li>Negate <code><span class='Function'>-</span></code> and Subtract <code><span class='Function'>-</span></code> invert addition, with <code><span class='Function'>-</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Number'>0</span><span class='Function'>-</span><span class='Value'>𝕩</span></code> and <code><span class='Value'>𝕨</span><span class='Function'>-</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Value'>𝕨</span><span class='Function'>+-</span><span class='Value'>𝕩</span></code></li>
-<li>Multiply <code><span class='Function'>×</span></code> generalizes repeated addition.</li>
-<li>Divide <code><span class='Function'>÷</span></code> inverts multiplication, with <code><span class='Function'>÷</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Number'>1</span><span class='Function'>÷</span><span class='Value'>𝕩</span></code> and <code><span class='Value'>𝕨</span><span class='Function'>÷</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Value'>𝕨</span><span class='Function'>×÷</span><span class='Value'>𝕩</span></code></li>
-<li>Power <code><span class='Function'>⋆</span></code> generalizes repeated multiplication, and Exponential <code><span class='Function'>⋆</span></code> is Power with Euler's number <em>e</em> as the base.</li>
+<li><strong>Add</strong> <code><span class='Function'>+</span></code></li>
+<li><strong>Negate</strong> and <strong>Subtract</strong> <code><span class='Function'>-</span></code> invert addition, with <code><span class='Function'>-</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Number'>0</span><span class='Function'>-</span><span class='Value'>𝕩</span></code>.</li>
+<li><strong>Multiply</strong> <code><span class='Function'>×</span></code> generalizes repeated addition.</li>
+<li><strong>Divide</strong> and <strong>Reciprocal</strong> <code><span class='Function'>÷</span></code> invert multiplication, with <code><span class='Function'>÷</span><span class='Value'>𝕩</span></code> equivalent to <code><span class='Number'>1</span><span class='Function'>÷</span><span class='Value'>𝕩</span></code>.</li>
+<li><strong>Power</strong> <code><span class='Function'>⋆</span></code> generalizes repeated multiplication, and <strong>Exponential</strong> <code><span class='Function'>⋆</span></code> is Power with Euler's number <em>e</em> as the base.</li>
 </ul>
 <p>The three higher functions <code><span class='Function'>×</span></code>, <code><span class='Function'>÷</span></code>, and <code><span class='Function'>⋆</span></code> apply to numbers and no other atomic types. <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> apply to numbers, and possibly also to characters, according to the rules of the affine character type:</p>
 <ul>
@@ -23,3 +24,19 @@
 <li>If both arguments to <code><span class='Function'>-</span></code> are characters, the result is the difference of their respective code points.</li>
 </ul>
 <p>In the first two cases, if the result would not be a valid Unicode code point, then an error results. The remaining cases of <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> (adding two characters; negating a character or subtracting it from a number) are not allowed.</p>
+<p>Additionally, the <strong>Floor</strong> function <code><span class='Function'>⌊</span></code> returns the largest integer smaller than the argument, or the argument itself if it is <code><span class='Number'>¯∞</span></code> or <code><span class='Number'>∞</span></code>. It's needed because the arithmetic operations give no fixed-time way to determine if a value is an integer. Floor gives an error if the argument is an atom other than a number.</p>
+<h3 id="comparison">Comparison</h3>
+<p>Two kinds of comparison are needed to define BQN's primitives: <em>equality</em> comparison and <em>ordered</em> comparison.</p>
+<p>Ordered comparison is simpler and is provided by the dyadic Less than or Equal to (<code><span class='Function'>≤</span></code>) function. This function gives an error if either argument is an operation, so it needs to be defined only for numbers and characters. For numbers it is defined by the number system, and for characters it returns <code><span class='Number'>1</span></code> if the left argument's code point is less than that of the right argument. Characters are considered greater than numbers, so that <code><span class='Value'>n</span><span class='Function'>≤</span><span class='Value'>c</span></code> is <code><span class='Number'>1</span></code> and <code><span class='Value'>c</span><span class='Function'>≤</span><span class='Value'>n</span></code> is <code><span class='Number'>0</span></code> if <code><span class='Value'>c</span></code> is a character and <code><span class='Value'>n</span></code> is a number.</p>
+<p>The dyadic function <code><span class='Function'>=</span></code>, representing equality comparison, can be applied to any two atoms without an error. Roughly speaking, it returns <code><span class='Number'>1</span></code> if they are indistinguishable within the language and <code><span class='Number'>0</span></code> otherwise. If the two arguments have different types, the result is <code><span class='Number'>0</span></code>; if they have the same type, the comparison depends on type:</p>
+<ul>
+<li>Equality of numbers is specified by the number type.</li>
+<li>Characters are equal if they have the same code point.</li>
+</ul>
+<p>Operations are split into subtypes depending on how they were created.</p>
+<ul>
+<li>Primitives are equal if they have the same token spelling.</li>
+<li>Derived operations are equal if they are derived by the same rule and each corresponding component is the same.</li>
+<li>Block instances are equal if they are the same instance.</li>
+</ul>
+<p>This means that block instance equality indicates identity in the context of mutability: two block instances are equal if any change of state in one would be reflected in the other as well. The concept of identity holds even if the blocks in question have no way of changing or accessing state. For example, <code><span class='Function'>=</span><span class='Modifier2'>○</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}}</span><span class='Modifier'>˜</span><span class='String'>@</span></code> is <code><span class='Number'>0</span></code> while <code><span class='Function'>=</span><span class='Modifier'>˜</span><span class='Modifier2'>○</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}}</span><span class='String'>@</span></code> is <code><span class='Number'>1</span></code>.</p>
