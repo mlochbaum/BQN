@@ -40,3 +40,31 @@
 <li>Block instances are equal if they are the same instance.</li>
 </ul>
 <p>This means that block instance equality indicates identity in the context of mutability: two block instances are equal if any change of state in one would be reflected in the other as well. The concept of identity holds even if the blocks in question have no way of changing or accessing state. For example, <code><span class='Function'>=</span><span class='Modifier2'>○</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}}</span><span class='Modifier'>˜</span><span class='String'>@</span></code> is <code><span class='Number'>0</span></code> while <code><span class='Function'>=</span><span class='Modifier'>˜</span><span class='Modifier2'>○</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}}</span><span class='String'>@</span></code> is <code><span class='Number'>1</span></code>.</p>
+<h2 id="array-functionality">Array functionality</h2>
+<p>Several subsets of primitives, or dedicated operations, are used to manipulate arrays in the reference implementation.</p>
+<ul>
+<li><code><span class='Function'>IsArray</span></code> returns <code><span class='Number'>1</span></code> if the argument is an array and <code><span class='Number'>0</span></code> if it's an atom.</li>
+</ul>
+<p>The following functions translate between arrays and the two lists that define them: the shape and ravel.</p>
+<ul>
+<li><strong>Shape</strong> (<code><span class='Function'>≢</span></code>) returns the shape of array <code><span class='Value'>𝕩</span></code>, as a list of natural numbers.</li>
+<li><strong>Deshape</strong> (monadic <code><span class='Function'>⥊</span></code>) returns the ravel of array <code><span class='Value'>𝕩</span></code>, that is, the list of its elements.</li>
+<li><strong>Reshape</strong> (dyadic <code><span class='Function'>⥊</span></code>) returns an array with the same ravel as <code><span class='Value'>𝕩</span></code> with shape <code><span class='Value'>𝕨</span></code>. It can be assumed that <code><span class='Function'>≢</span><span class='Value'>𝕩</span></code> and <code><span class='Value'>𝕨</span></code> have the same product.</li>
+</ul>
+<p>The following functions manipulate lists. In these functions, a valid index for list <code><span class='Value'>l</span></code> is a natural number less than the length of <code><span class='Value'>l</span></code>.</p>
+<ul>
+<li><strong>Range</strong> gives the list of length <code><span class='Value'>𝕩</span></code> (a natural number) with value <code><span class='Value'>i</span></code> at any index <code><span class='Value'>i</span></code>.</li>
+<li><strong>Pick</strong> (<code><span class='Function'>⊑</span></code>) selects the element at index <code><span class='Value'>𝕨</span></code> from list <code><span class='Value'>𝕩</span></code>.</li>
+<li><code><span class='Modifier'>_amend</span></code> returns an array identical to list <code><span class='Value'>𝕩</span></code> except that the element at index <code><span class='Value'>𝕗</span></code> is changed to <code><span class='Value'>𝕨</span></code>.</li>
+</ul>
+<h2 id="inferred-functionality">Inferred functionality</h2>
+<p>Inferred properties are specified in <a href="inferred.html">their own document</a>, not in the reference implementation.</p>
+<ul>
+<li><code><span class='Function'>Identity</span></code> gives the identity value for reduction by function <code><span class='Function'>𝕏</span></code>.</li>
+<li><strong>Undo</strong> (<code><span class='Modifier'>⁼</span></code>) gives a partial right inverse for function <code><span class='Function'>𝔽</span></code>.</li>
+<li><code><span class='Function'>Type</span></code> gives the enclose of the fill value for array <code><span class='Value'>𝕩</span></code>.</li>
+</ul>
+<h2 id="other-provided-functionality">Other provided functionality</h2>
+<ul>
+<li><strong>Assert</strong> (<code><span class='Function'>!</span></code>) causes an error if the argument is not <code><span class='Number'>1</span></code>. If <code><span class='Value'>𝕨</span></code> is provided, it gives a message to be associated with this error (which can be any value, not necessarily a string).</li>
+</ul>

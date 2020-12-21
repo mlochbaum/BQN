@@ -44,3 +44,33 @@ Operations are split into subtypes depending on how they were created.
 - Block instances are equal if they are the same instance.
 
 This means that block instance equality indicates identity in the context of mutability: two block instances are equal if any change of state in one would be reflected in the other as well. The concept of identity holds even if the blocks in question have no way of changing or accessing state. For example, `=○{𝕩⋄{𝕩}}˜@` is `0` while `=˜○{𝕩⋄{𝕩}}@` is `1`.
+
+## Array functionality
+
+Several subsets of primitives, or dedicated operations, are used to manipulate arrays in the reference implementation.
+
+- `IsArray` returns `1` if the argument is an array and `0` if it's an atom.
+
+The following functions translate between arrays and the two lists that define them: the shape and ravel.
+
+- **Shape** (`≢`) returns the shape of array `𝕩`, as a list of natural numbers.
+- **Deshape** (monadic `⥊`) returns the ravel of array `𝕩`, that is, the list of its elements.
+- **Reshape** (dyadic `⥊`) returns an array with the same ravel as `𝕩` with shape `𝕨`. It can be assumed that `≢𝕩` and `𝕨` have the same product.
+
+The following functions manipulate lists. In these functions, a valid index for list `l` is a natural number less than the length of `l`.
+
+- **Range** gives the list of length `𝕩` (a natural number) with value `i` at any index `i`.
+- **Pick** (`⊑`) selects the element at index `𝕨` from list `𝕩`.
+- `_amend` returns an array identical to list `𝕩` except that the element at index `𝕗` is changed to `𝕨`.
+
+## Inferred functionality
+
+Inferred properties are specified in [their own document](inferred.md), not in the reference implementation.
+
+- `Identity` gives the identity value for reduction by function `𝕏`.
+- **Undo** (`⁼`) gives a partial right inverse for function `𝔽`.
+- `Type` gives the enclose of the fill value for array `𝕩`.
+
+## Other provided functionality
+
+- **Assert** (`!`) causes an error if the argument is not `1`. If `𝕨` is provided, it gives a message to be associated with this error (which can be any value, not necessarily a string).
