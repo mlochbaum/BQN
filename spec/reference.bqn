@@ -15,14 +15,14 @@
 # LAYER 0: Assumed functionality
 
 # IEEE 754, except NaN results cause an error and -0 is converted to 0.
-# LIMITED to the stated cases and real number arguments.
+# LIMITED to the stated cases and atomic arguments.
 +          #                Add
 -          # Negate         Subtract
 ×          #                Multiply
 ÷          # Reciprocal     Divide
 ⋆          # Exponential    Power
 ⌊          # Floor
-=          # Rank           Equals
+=          #                Equals
 ≤          #                Less Than or Equal to
 
 # Other basic functionality that we need to assume
@@ -53,6 +53,8 @@ Type       # Unit (enclosed) prototype of 𝕩
 ⊸ ← {(𝔽𝕨⊣𝕩)𝔾𝕩}
 ⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
 
+≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
+
 # LIMITED to numeric arguments for arithmetic cases
 √ ← 2⊸√      ⊘ (⋆⟜÷˜)
 ∧ ←            ×
@@ -62,14 +64,17 @@ Type       # Unit (enclosed) prototype of 𝕩
 < ← {⟨⟩⥊⟨𝕩⟩} ⊘ (¬≤˜)
 > ←            (¬≤)
 ≥ ← !∘0      ⊘ (≤˜)
-≠ ← Length   ⊘ (¬∘=)
+≠ ← Length   ⊘ (¬=)
+= ↩ Rank     ⊘ =
 × ↩ 0⊸(<->)  ⊘ ×
 ⌊ ↩ ⌊        ⊘ {(𝕨>𝕩)⊑𝕨‿𝕩}
 ⌈ ← -∘⌊∘-    ⊘ {(𝕨<𝕩)⊑𝕨‿𝕩}
-≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
 
 ¨ ← _eachm   # LIMITED to monadic case and array 𝕩
 ´ ← _fold
+
+Rank ← 0⊑≢∘≢
+Length ← (0<Rank)◶⟨1⋄0⊑≢⟩
 
 _eachm←{
   r←⥊𝕩 ⋄ F←𝔽
@@ -83,7 +88,6 @@ _fold←{
   {r↩(𝕩⊑v)F r}¨(l-1)⊸-¨↕l
   r
 }
-Length ← (0<=)◶⟨1⋄0⊑≢⟩
 
 
 #⌜
