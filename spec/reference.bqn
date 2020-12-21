@@ -30,8 +30,8 @@ IsArray    # Return 1 if 𝕩 is an array
 !          # 𝕩 is 0 or 1; throw an error if it's 0
 ≢          # LIMITED to monadic case
 ⥊          # LIMITED to array 𝕩 and (×´𝕨)≡≢𝕩
-⊑          # LIMITED to natural number 𝕩 and vector 𝕨
-_amend     # {(𝕗⊑𝕩)↩𝕨⋄𝕩}
+⊑          # LIMITED to natural number 𝕨 and list 𝕩
+_amend     # {𝕨˙⌾(𝕗⊸⊑)𝕩}
 ↕          # LIMITED to number 𝕩
 Identity   # Left or right identity of function 𝕏
 ⁼          # Inverse of function 𝔽
