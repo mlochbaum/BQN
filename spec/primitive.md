@@ -69,7 +69,7 @@ Inferred properties are specified in [their own document](inferred.md), not in t
 
 - `Identity` gives the identity value for reduction by function `𝕏`.
 - **Undo** (`⁼`) gives a partial right inverse for function `𝔽`.
-- `Type` gives the enclose of the fill value for array `𝕩`.
+- `Fill` gives the enclose of the fill value for array `𝕩`.
 
 ## Other provided functionality
 

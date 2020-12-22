@@ -35,7 +35,7 @@ _amend     # {𝕨˙⌾(𝕗⊸⊑)𝕩}
 ↕          # LIMITED to number 𝕩
 Identity   # Left or right identity of function 𝕏
 ⁼          # Inverse of function 𝔽
-Type       # Unit (enclosed) prototype of 𝕩
+Fill       # Enclosed fill value for 𝕩
 
 
 #⌜
@@ -146,9 +146,9 @@ Reshape←{
     ! +´e
     a←(2⌊t)◶⟨{!Nat𝕩⋄𝕩},⌊,⌈⟩n÷lp
     s↩p⊣◶⊢‿a¨s
-    {d∾↩(Type d)⌜↕𝕩-n⋄n↩𝕩}⍟(n⊸<)⍟(3=t)lp×a
+    {d∾↩(Fill d)⌜↕𝕩-n⋄n↩𝕩}⍟(n⊸<)⍟(3=t)lp×a
   } s
-  s⥊d(n<○(0⊸<)l)◶⟨Type⊸(⊣¨)⋄{⊑⟜𝕨¨n|𝕩}⟩↕l
+  s⥊d(n<○(0⊸<)l)◶⟨Fill⊸(⊣¨)⋄{⊑⟜𝕨¨n|𝕩}⟩↕l
 }
 
 Range←{
@@ -301,7 +301,7 @@ Take←{
     ! Int 𝕨
     l←≠𝕩
     i←(l+1)|¯1⌈l⌊((𝕨<0)×𝕨+l)+↕|𝕨
-    i⊏JoinTo⟜(1⊸Cell⥊Type)⍟(∨´l=i)𝕩
+    i⊏JoinTo⟜(1⊸Cell⥊Fill)⍟(∨´l=i)𝕩
   }
   𝕨 T _onAxes_ 0 (⟨1⟩⥊˜0⌈𝕨-○≠⊢)⊸∾∘≢⊸⥊𝕩
 }
