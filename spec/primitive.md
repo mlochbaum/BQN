@@ -74,3 +74,33 @@ Inferred properties are specified in [their own document](inferred.md), not in t
 ## Other provided functionality
 
 - **Assert** (`!`) causes an error if the argument is not `1`. If `𝕨` is provided, it gives a message to be associated with this error (which can be any value, not necessarily a string).
+
+## Commentary on other primitives
+
+As noted above, see [reference.bqn](reference.bqn) for the authoritative definitions. Commentary here gives an overall description and highlights implementation subtleties and edge cases.
+
+### Combinators
+
+There's little to say about BQN's true combinators, since each is simply a pattern of function application. All primitive combinators use their operands as functions, and thus treat a data operand as a constant function.
+
+- **Choose** (`◶`) is later redefined to use the complete `⊑` rather than the simple version assumed (using this primitive means it's not a true combinator).
+- **Constant** (`˙`)
+- **Valences** (`⊘`) uses a trick with ambivalent `-` to find out whether there's a left argument, described below.
+- **Right** (`⊢`)
+- **Left** (`⊣`)
+- **Self**/**Swap** (`˜`)
+- **Atop** (`∘`)
+- **Over** (`○`)
+- **Before**/**Bind** (`⊸`)
+- **After**/**Bind** (`⟜`)
+
+The somewhat complicated definition of Valences could be replaced with `{𝔽𝕩;𝕨𝔾𝕩}` using headers. However, reference.bqn uses a simple subset of BQN's syntax that doesn't include headers. Instead, the definition relies on the fact that `𝕨` works like `·` if no left argument is given: `(1˙𝕨)-0` is `1-0` or `1` if `𝕨` is present and `(1˙·)-0` otherwise: this reduces to `·-0` or `0`.
+
+### Array properties
+
+The reference implementations extend Shape (`≢`) to atoms as well as arrays, in addition to implementing other properties. In all cases, an atom behaves as if it has shape `⟨⟩`. The functions in this section never cause an error.
+
+- **Shape** (`≢`) gives the shape of an array or atom.
+- **Rank** (`=`) gives the length of the shape.
+- **Length** (`≠`) gives the number of major cells, or `1` for an argument of rank `0`.
+- **Depth** (`≡`) gives the nesting depth. It ignores the shapes of arrays, and considering only the depths of their elements.
