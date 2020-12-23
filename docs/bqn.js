@@ -138,6 +138,7 @@ let floor = (x,w) => {
 }
 let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
+  if (s==="function"||t==="function") throw Error("𝕨≤𝕩: Cannot compare operations");
   return +(s!==t ? s<=t : w<=x);
 }
 let table = f => setrepr(()=>[4,f,table], (x,w) => !has(w)
