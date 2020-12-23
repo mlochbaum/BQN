@@ -132,6 +132,10 @@ let log = (x,w) => {
   }
   throw Error("⋆⁼: Arguments must be numbers");
 }
+let floor = (x,w) => {
+  if (isnum(x)) return Math.floor(x);
+  throw Error("⌊𝕩: Argument must be a number");
+}
 let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
   return +(s!==t ? s<=t : w<=x);
@@ -186,7 +190,7 @@ let provide = [
  ,times                                        // ×
  ,divide                                       // ÷
  ,power                                        // ⋆
- ,(x,w) => Math.floor(x)                       // ⌊
+ ,floor                                        // ⌊
  ,(x,w) => has(w)?+(x===w):x.sh?x.sh.length:0  // =
  ,lesseq                                       // ≤
  ,(x,w) => list(x.sh)                          // ≢
