@@ -104,3 +104,17 @@ The reference implementations extend Shape (`≢`) to atoms as well as arrays, i
 - **Rank** (`=`) gives the length of the shape.
 - **Length** (`≠`) gives the number of major cells, or `1` for an argument of rank `0`.
 - **Depth** (`≡`) gives the nesting depth. It ignores the shapes of arrays, and considering only the depths of their elements.
+
+### Arithmetic
+
+Arithmetic functions not already provided are defined in layer 1. These definitions, like the provided functions, apply to atoms only; they should be extended to arrays using the `_perv` modifier from layer 2.
+
+- **Sign** (`×`) 
+- **Square Root** and **Root** (`√`) are defined in terms of Power. If a dedicated implementation is used for square roots, then Power should check for a right argument of `0.5` and use this implementation in order to maintain consistency.
+- **Ceiling** (`⌈`) is like Floor, but rounds up instead of down.
+- **Not** (`¬`) is a linear extension of logical negation, and **Span** (`¬`) adds the left argument.
+- **And** (`∧`) and **Or** (`∨`) are bilinear extensions of the boolean functions.
+- **Minimum** (`⌊`) and **Maximum** (`⌈`) return the smaller or larger of the arguments, respectively. They are *not required* to be implemented for character arguments, and may give an error if either argument is a character.
+- **Absolute Value** (`|`)
+- **Modulus** (`|`) is an extension of modular division to real numbers. As it uses floor instead of truncation, it's not the same as the `%` operator from C or other languages when `𝕨<0`.
+- Comparisons **Less Than** (`<`), **Greater Than** (`>`), **Greater Than or Equal to** (`≥`), and **Not Equals** (`≠`) are defined in terms of the two provided comparisons.
