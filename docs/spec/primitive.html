@@ -93,3 +93,16 @@
 <li><strong>Length</strong> (<code><span class='Function'>≠</span></code>) gives the number of major cells, or <code><span class='Number'>1</span></code> for an argument of rank <code><span class='Number'>0</span></code>.</li>
 <li><strong>Depth</strong> (<code><span class='Function'>≡</span></code>) gives the nesting depth. It ignores the shapes of arrays, and considering only the depths of their elements.</li>
 </ul>
+<h3 id="arithmetic">Arithmetic</h3>
+<p>Arithmetic functions not already provided are defined in layer 1. These definitions, like the provided functions, apply to atoms only; they should be extended to arrays using the <code><span class='Modifier'>_perv</span></code> modifier from layer 2.</p>
+<ul>
+<li><strong>Sign</strong> (<code><span class='Function'>×</span></code>) </li>
+<li><strong>Square Root</strong> and <strong>Root</strong> (<code><span class='Function'>√</span></code>) are defined in terms of Power. If a dedicated implementation is used for square roots, then Power should check for a right argument of <code><span class='Number'>0.5</span></code> and use this implementation in order to maintain consistency.</li>
+<li><strong>Ceiling</strong> (<code><span class='Function'>⌈</span></code>) is like Floor, but rounds up instead of down.</li>
+<li><strong>Not</strong> (<code><span class='Function'>¬</span></code>) is a linear extension of logical negation, and <strong>Span</strong> (<code><span class='Function'>¬</span></code>) adds the left argument.</li>
+<li><strong>And</strong> (<code><span class='Function'>∧</span></code>) and <strong>Or</strong> (<code><span class='Function'>∨</span></code>) are bilinear extensions of the boolean functions.</li>
+<li><strong>Minimum</strong> (<code><span class='Function'>⌊</span></code>) and <strong>Maximum</strong> (<code><span class='Function'>⌈</span></code>) return the smaller or larger of the arguments, respectively. They are <em>not required</em> to be implemented for character arguments, and may give an error if either argument is a character.</li>
+<li><strong>Absolute Value</strong> (<code><span class='Function'>|</span></code>)</li>
+<li><strong>Modulus</strong> (<code><span class='Function'>|</span></code>) is an extension of modular division to real numbers. As it uses floor instead of truncation, it's not the same as the <code><span class='Value'>%</span></code> operator from C or other languages when <code><span class='Value'>𝕨</span><span class='Function'>&lt;</span><span class='Number'>0</span></code>.</li>
+<li>Comparisons <strong>Less Than</strong> (<code><span class='Function'>&lt;</span></code>), <strong>Greater Than</strong> (<code><span class='Function'>&gt;</span></code>), <strong>Greater Than or Equal to</strong> (<code><span class='Function'>≥</span></code>), and <strong>Not Equals</strong> (<code><span class='Function'>≠</span></code>) are defined in terms of the two provided comparisons.</li>
+</ul>
