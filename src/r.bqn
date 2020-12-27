@@ -356,7 +356,14 @@ Range←{
   IsArray◶I‿M 𝕩
 }
 
-_ranks ← {⟨2⟩⊘⟨1,0⟩((⊣-1+|)˜⟜≠⊑¨<∘⊢)⥊∘𝔽}
+ValidateRanks←{
+  "⎉ or ⚇: 𝔽 result must have rank at most 1" ! 1≥=𝕩
+  𝕩↩⥊𝕩
+  "⎉ or ⚇: 𝔽 result must have 1 to 3 elements" ! (1⊸≤∧≤⟜3)≠𝕩
+  "⎉ or ⚇: 𝔽 result must consist of integers" ! ∧´Int⌜𝕩
+  𝕩
+}
+_ranks ← {⟨2⟩⊘⟨1,0⟩ ((⊣-1+|)˜⟜≠⊑¨<∘⊢) ValidateRanks∘𝔽}
 _depthOp_←{
   neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
   _d←{
