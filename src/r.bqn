@@ -152,6 +152,7 @@ _sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ ⊏}
 
 FirstCell←{
   "⊏𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  "⊏𝕩: 𝕩 cannot have length 0" ! 0<≠𝕩
   (<0) GetCells 𝕩
 }
 SelSub←{
