@@ -162,6 +162,7 @@ SelSub←{
   "𝕨⊏𝕩: Indices out of range" ! 1×´⥊ ((-l)⊸≤×l⊸>)⌜ 𝕨
   𝕨 (⊢+l×0>⊢)⌜⊸⊏ 𝕩
 }
+First ← (0<≠)◶⟨GetFill,0⊸⊑⟩ Deshape
 
 _under_←{
   i←↕l←1×´s←≢𝕩
@@ -563,7 +564,7 @@ OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
 ProgressiveIndexOf ← {𝕨⊐○((≠∾2˙)⥊·≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
 
 ⊏ ← FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1))
-⊑ ↩ (0⊑⥊)          ⊘ Pick
+⊑ ↩ First          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 ⁼ ← {Inverse 𝕗}
 
