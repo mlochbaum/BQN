@@ -6,6 +6,24 @@ BQN includes some simple deductive capabilities: detecting the type of empty arr
 
 For the specified cases, the given functions and modifiers refer to those particular representations. It is not necessary to detect equivalent representations, for example to reduce `(+-×)⁼` to `∨⁼`. However, it is necessary to identify computed functions and modifiers: for example `F⁼` when the value of `F` in the expression is `∨`, or `(1⊑∧‿∨)⁼`.
 
+## Identities
+
+When monadic Fold (`´`) or Insert (`˝`) is called on an array of length 0, BQN attempts to infer a right identity value for the function in order to determine the result. A right identity value for a dyadic function `𝔽` is a value `r` such that `e≡e𝔽r` for any element `e` in the domain. For such a value `r`, the reduction `r 𝔽´ l` is equivalent to `𝔽´ l` for a non-empty list `l`, because the first application `(¯1⊑l) 𝔽 r` gives `¯1⊑l`, which is the starting point when no initial value is given. It's thus reasonable to define `𝔽´ l` to be `r 𝔽´ l` for an empty list `l` as well, giving a result `r`.
+
+More specifically, the identity of a dyadic function `𝔽` is defined to be a right identity value for the *range* of `𝔽`, if exactly one such value exists. Otherwise, there is no identity and `𝔽´` or `𝔽˝` on an argument with length 0 results in an error.
+
+Identity values for the arithmetic primitives below must be recognized.
+
+| Id   | Fn  | Fn  | Id   |
+|-----:|:---:|:---:|-----:|
+|  `0` | `+` | `-` |  `0` |
+|  `1` | `×` | `÷` |  `1` |
+|  `1` | `⋆` | `¬` |  `1` |
+|  `∞` | `⌊` | `⌈` | `¯∞` |
+|  `0` | `∨` | `∧` |  `1` |
+|  `0` | `≠` | `=` |  `1` |
+|  `0` | `>` | `≥` |  `1` |
+
 ## Undo
 
 The Undo 1-modifier `⁼`, given an operand `𝔽` and argument `𝕩`, and possibly a left argument `𝕨`, finds a value `y` such that `𝕩≡𝕨𝔽y`, that is, an element of the pre-image of `𝕩` under `𝔽` or `𝕨𝔽⊢`. Thus it satisfies the constraint `𝕩 ≡ 𝕨𝔽𝕨𝔽⁼𝕩` (`𝕨𝔽⁼⊢` is a *right inverse* of `𝕨𝔽⊢`) provided `𝔽⁼` and `𝔽` both complete without error. `𝔽⁼` should of course give an error if no inverse element exists, and can also fail if no inverse can be found. It is also preferred for `𝔽⁼` to give an error if there are many choices of inverse with no clear way to choose one of them: for example, `0‿0⍉m` returns the diagonal of matrix `m`; `0‿0⍉⁼2‿3` requires values to be chosen for the off-diagonal elements in its result. It is better to give an error, encouraging the programmer to use a fully-specified approach like `2‿3⌾(0‿0⊸⍉)` applied to a matrix of initial elements, than to return a result that could be very different from other implementations.

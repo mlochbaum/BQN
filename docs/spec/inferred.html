@@ -7,6 +7,64 @@
 <h1 id="specification-bqn-inferred-properties">Specification: BQN inferred properties</h1>
 <p>BQN includes some simple deductive capabilities: detecting the type of empty array elements, and the Undo (<code><span class='Modifier'>⁼</span></code>) and Under (<code><span class='Modifier2'>⌾</span></code>) modifiers. These tasks are a kind of proof-based or constraint programming, and can never be solved completely (some instances will be undecidable) but can be solved in more instances by ever-more sophisticated algorithms. To allow implementers to develop more advanced implementations while offering some stability and portability to programmers, two kinds of specification are given here. First, constraints are given on the behavior of inferred properties. These are not exact and require some judgment on the part of the implementer. Second, behavior for common or useful cases is specified more precisely. Non-normative suggestions are also given as a reference for implementers.</p>
 <p>For the specified cases, the given functions and modifiers refer to those particular representations. It is not necessary to detect equivalent representations, for example to reduce <code><span class='Paren'>(</span><span class='Function'>+-×</span><span class='Paren'>)</span><span class='Modifier'>⁼</span></code> to <code><span class='Function'>∨</span><span class='Modifier'>⁼</span></code>. However, it is necessary to identify computed functions and modifiers: for example <code><span class='Function'>F</span><span class='Modifier'>⁼</span></code> when the value of <code><span class='Function'>F</span></code> in the expression is <code><span class='Function'>∨</span></code>, or <code><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>⊑∧</span><span class='Ligature'>‿</span><span class='Function'>∨</span><span class='Paren'>)</span><span class='Modifier'>⁼</span></code>.</p>
+<h2 id="identities">Identities</h2>
+<p>When monadic Fold (<code><span class='Modifier'>´</span></code>) or Insert (<code><span class='Modifier'>˝</span></code>) is called on an array of length 0, BQN attempts to infer a right identity value for the function in order to determine the result. A right identity value for a dyadic function <code><span class='Function'>𝔽</span></code> is a value <code><span class='Value'>r</span></code> such that <code><span class='Value'>e</span><span class='Function'>≡</span><span class='Value'>e</span><span class='Function'>𝔽</span><span class='Value'>r</span></code> for any element <code><span class='Value'>e</span></code> in the domain. For such a value <code><span class='Value'>r</span></code>, the reduction <code><span class='Value'>r</span> <span class='Function'>𝔽</span><span class='Modifier'>´</span> <span class='Value'>l</span></code> is equivalent to <code><span class='Function'>𝔽</span><span class='Modifier'>´</span> <span class='Value'>l</span></code> for a non-empty list <code><span class='Value'>l</span></code>, because the first application <code><span class='Paren'>(</span><span class='Number'>¯1</span><span class='Function'>⊑</span><span class='Value'>l</span><span class='Paren'>)</span> <span class='Function'>𝔽</span> <span class='Value'>r</span></code> gives <code><span class='Number'>¯1</span><span class='Function'>⊑</span><span class='Value'>l</span></code>, which is the starting point when no initial value is given. It's thus reasonable to define <code><span class='Function'>𝔽</span><span class='Modifier'>´</span> <span class='Value'>l</span></code> to be <code><span class='Value'>r</span> <span class='Function'>𝔽</span><span class='Modifier'>´</span> <span class='Value'>l</span></code> for an empty list <code><span class='Value'>l</span></code> as well, giving a result <code><span class='Value'>r</span></code>.</p>
+<p>More specifically, the identity of a dyadic function <code><span class='Function'>𝔽</span></code> is defined to be a right identity value for the <em>range</em> of <code><span class='Function'>𝔽</span></code>, if exactly one such value exists. Otherwise, there is no identity and <code><span class='Function'>𝔽</span><span class='Modifier'>´</span></code> or <code><span class='Function'>𝔽</span><span class='Modifier'>˝</span></code> on an argument with length 0 results in an error.</p>
+<p>Identity values for the arithmetic primitives below must be recognized.</p>
+<table>
+<thead>
+<tr>
+<th align="right">Id</th>
+<th align="center">Fn</th>
+<th align="center">Fn</th>
+<th align="right">Id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right"><code><span class='Number'>0</span></code></td>
+<td align="center"><code><span class='Function'>+</span></code></td>
+<td align="center"><code><span class='Function'>-</span></code></td>
+<td align="right"><code><span class='Number'>0</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>1</span></code></td>
+<td align="center"><code><span class='Function'>×</span></code></td>
+<td align="center"><code><span class='Function'>÷</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>1</span></code></td>
+<td align="center"><code><span class='Function'>⋆</span></code></td>
+<td align="center"><code><span class='Function'>¬</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>∞</span></code></td>
+<td align="center"><code><span class='Function'>⌊</span></code></td>
+<td align="center"><code><span class='Function'>⌈</span></code></td>
+<td align="right"><code><span class='Number'>¯∞</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>0</span></code></td>
+<td align="center"><code><span class='Function'>∨</span></code></td>
+<td align="center"><code><span class='Function'>∧</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>0</span></code></td>
+<td align="center"><code><span class='Function'>≠</span></code></td>
+<td align="center"><code><span class='Function'>=</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>0</span></code></td>
+<td align="center"><code><span class='Function'>&gt;</span></code></td>
+<td align="center"><code><span class='Function'>≥</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="undo">Undo</h2>
 <p>The Undo 1-modifier <code><span class='Modifier'>⁼</span></code>, given an operand <code><span class='Function'>𝔽</span></code> and argument <code><span class='Value'>𝕩</span></code>, and possibly a left argument <code><span class='Value'>𝕨</span></code>, finds a value <code><span class='Value'>y</span></code> such that <code><span class='Value'>𝕩</span><span class='Function'>≡</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Value'>y</span></code>, that is, an element of the pre-image of <code><span class='Value'>𝕩</span></code> under <code><span class='Function'>𝔽</span></code> or <code><span class='Value'>𝕨</span><span class='Function'>𝔽⊢</span></code>. Thus it satisfies the constraint <code><span class='Value'>𝕩</span> <span class='Function'>≡</span> <span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Modifier'>⁼</span><span class='Value'>𝕩</span></code> (<code><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Modifier'>⁼</span><span class='Function'>⊢</span></code> is a <em>right inverse</em> of <code><span class='Value'>𝕨</span><span class='Function'>𝔽⊢</span></code>) provided <code><span class='Function'>𝔽</span><span class='Modifier'>⁼</span></code> and <code><span class='Function'>𝔽</span></code> both complete without error. <code><span class='Function'>𝔽</span><span class='Modifier'>⁼</span></code> should of course give an error if no inverse element exists, and can also fail if no inverse can be found. It is also preferred for <code><span class='Function'>𝔽</span><span class='Modifier'>⁼</span></code> to give an error if there are many choices of inverse with no clear way to choose one of them: for example, <code><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Function'>⍉</span><span class='Value'>m</span></code> returns the diagonal of matrix <code><span class='Value'>m</span></code>; <code><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Function'>⍉</span><span class='Modifier'>⁼</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span></code> requires values to be chosen for the off-diagonal elements in its result. It is better to give an error, encouraging the programmer to use a fully-specified approach like <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>⍉</span><span class='Paren'>)</span></code> applied to a matrix of initial elements, than to return a result that could be very different from other implementations.</p>
 <p>When working with limited-precision numbers, it may be difficult or impossible to exactly invert the operand function. Instead, it is generally acceptable to perform a computation that, if done with unlimited precision, would exactly invert <code><span class='Function'>𝔽</span></code> computed with unlimited precision. This principle is the basis for the numeric inverses specified below. It is also acceptable to find an inverse by numeric methods, provided that the error in the inverse value found relative to an unlimited-precision inverse can be kept close to the inherent error in the implementation's number format.</p>
