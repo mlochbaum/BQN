@@ -394,7 +394,9 @@ _rankOp_←{
 }
 _insert←{
   "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  𝕨 𝔽´ <˘𝕩
+  F←𝔽
+  Id ← {s←1 Drop ≢𝕩 ⋄ s joinPrim˙⊸≠◶⟨(0<↕∘≠)⊸×⊸⥊⟜⟨⟩, Reshape⟜Identity⟩ f}
+  𝕨 (0<≠)⊘1◶Id‿{𝕨F´<˘𝕩} 𝕩
 }
 ˝ ← _insert
 
@@ -588,6 +590,7 @@ _repeat_←{
 }
 
 ReshapeT ← ⟨∘,⌊,⌽,↑⟩⊑∘⊐<
+JoinPrim ← ∾
 
 ⍟ ↩ _repeat_
 ⥊ ↩ Deshape        ⊘ Reshape
