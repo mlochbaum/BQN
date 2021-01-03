@@ -77,7 +77,7 @@ pre, code, textarea, .kb {
 }
 code {
   padding: 0.15em 0.1em 0.05em;
-  white-space: nowrap;
+  white-space: pre;
   border-width: 0.3px;
 }
 pre, textarea, .kb {
