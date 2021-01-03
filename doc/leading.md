@@ -59,7 +59,7 @@ The Each (`¨`) and Table (`⌜`) modifiers return functions which are the same 
 
 ## Dyadic functions
 
-For dyadic functions the pattern of working on only one argument axis is not so common. Only two functions can be said to follow it roughly: Join to (`∾`) combines two arrays along one axis, using the first axis of both arguments if they have the same rank and of the higher-rank argument if they differ by one. [Couple](couple.md) (`≍`), like Solo, does not manipulate the argument axes but adds a result axis. There are also some functions that can't be limited to leading axes: Reshape (`⥊`) treats the argument as one long list, and Pick (`⊑`) requires each index to be as long as the right argument's rank, because it selects elements and not cells from the right argument.
+For dyadic functions the pattern of working on only one argument axis is not so common. Only two functions can be said to follow it roughly: Join to (`∾`) combines two arrays along one axis, using the first axis of both arguments if they have the same rank and of the higher-rank argument if they differ by one. [Couple](couple.md) (`≍`), like Solo, does not manipulate the argument axes but adds a result axis. There are also some functions that can't be limited to leading axes: [Reshape](reshape.md) (`⥊`) treats the argument as one long list, and Pick (`⊑`) requires each index to be as long as the right argument's rank, because it selects elements and not cells from the right argument.
 
 ### Multiple axes
 

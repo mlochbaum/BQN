@@ -1,0 +1,158 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Deshape and Reshape</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="deshape-and-reshape">Deshape and Reshape</h1>
+<p>The glyph <code><span class='Function'>⥊</span></code> indicates BQN's facilities to reflow the data in an array, giving it a different shape. Its monadic form, Deshape, simply removes all shape information, returning a list of all the elements from the array in reading order. With a left argument, <code><span class='Function'>⥊</span></code> is called Reshape and is a more versatile tool for rearranging the data in an array into the desired shape.</p>
+<p>Because of its dependence on the reading order of an array, Reshape is less fundamental than other array operations. Using Reshape in the central computations of a program can be a sign of imperfect usage of arrays. For example, it may be useful to use Reshape to create a constant array or repeat a sequence of values several times, but the same task might also be accomplished more simply with Table <code><span class='Modifier'>⌜</span></code>, or by taking advantage of leading axis agreement in arithmetic primitives.</p>
+<h2 id="deshape">Deshape</h2>
+<p>The result of Deshape is a list containing the same elements as the argument.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQICvijJzCtCDin6gxMDDigL8yMDAsIDMw4oC/NDAsIDXigL824oC/N+KfqQoK4qWKIGE=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Function'>+</span><span class='Modifier'>⌜´</span> <span class='Bracket'>⟨</span><span class='Number'>100</span><span class='Ligature'>‿</span><span class='Number'>200</span><span class='Separator'>,</span> <span class='Number'>30</span><span class='Ligature'>‿</span><span class='Number'>40</span><span class='Separator'>,</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Bracket'>⟩</span>
+┌─             
+╎ 135 136 137  
+  145 146 147  
+               
+  235 236 237  
+  245 246 247  
+              ┘
+
+    <span class='Function'>⥊</span> <span class='Value'>a</span>
+⟨ 135 136 137 145 146 147 235 236 237 245 246 247 ⟩
+</pre>
+<p>The elements are ordered in reading order—left to right, then top to bottom. This means that leading axes &quot;matter more&quot; for ordering: if one element comes earlier in the first axis but later in the second than some other element, it will come first in the result. In another view, elements are ordered according to their <a href="indices.html">indices</a>. In other words, deshaping the array of indices for an array will always give a sorted array.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaV4omiYQoK4o2LIOKliiDihpXiiaJh">↗️</a><pre>    <span class='Function'>↕≢</span><span class='Value'>a</span>
+┌─                               
+╎ ⟨ 0 0 0 ⟩ ⟨ 0 0 1 ⟩ ⟨ 0 0 2 ⟩  
+  ⟨ 0 1 0 ⟩ ⟨ 0 1 1 ⟩ ⟨ 0 1 2 ⟩  
+                                 
+  ⟨ 1 0 0 ⟩ ⟨ 1 0 1 ⟩ ⟨ 1 0 2 ⟩  
+  ⟨ 1 1 0 ⟩ ⟨ 1 1 1 ⟩ ⟨ 1 1 2 ⟩  
+                                ┘
+
+    <span class='Function'>⍋</span> <span class='Function'>⥊</span> <span class='Function'>↕≢</span><span class='Value'>a</span>
+⟨ 0 1 2 3 4 5 6 7 8 9 10 11 ⟩
+</pre>
+<p>This ordering is also known as <em>row-major</em> order.</p>
+<p>Deshape turns a unit argument into a single-element list, automatically enclosing it if it's an atom. However, if you know the argument is a unit, a more principled way to turn it into a list is to apply <a href="couple.html">Solo</a> (<code><span class='Function'>≍</span></code>), which adds a length-1 axis before any other axes. If you ever add axes to the data format, Solo is more likely to continue working after this transition, unless there's a reason the result should always be a list.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4qWKIDIK4omNIDI=">↗️</a><pre>    <span class='Function'>⥊</span> <span class='Number'>2</span>
+⟨ 2 ⟩
+    <span class='Function'>≍</span> <span class='Number'>2</span>
+⟨ 2 ⟩
+</pre>
+<h2 id="reshape">Reshape</h2>
+<p>While Deshape removes all shape information from its argument array, Reshape adds shape information back based on the left argument. Reshape ignores the shape of its original argument, treating it like a list of elements as though it were deshaped initially.</p>
+<p>The left argument of Reshape gives the shape of the result, except that one entry can be left unspecified for BQN to fill in. We'll look at the cases where a full shape is given first.</p>
+<h3 id="matching-lengths">Matching lengths</h3>
+<p>If the number of elements implied by this shape—that is, <code><span class='Function'>×</span><span class='Modifier'>´</span><span class='Value'>𝕨</span></code>—is equal to the number of elements in the argument, then the argument is simply rearranged to match that shape. The element list is kept the same, so that the deshaped result matches the deshaped argument.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YQoKNuKAvzIg4qWKIGEKCijipYphKSDiiaEg4qWKIDbigL8y4qWKYQ==">↗️</a><pre>    <span class='Value'>a</span>
+┌─             
+╎ 135 136 137  
+  145 146 147  
+               
+  235 236 237  
+  245 246 247  
+              ┘
+
+    <span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⥊</span> <span class='Value'>a</span>
+┌─         
+╵ 135 136  
+  137 145  
+  146 147  
+  235 236  
+  237 245  
+  246 247  
+          ┘
+
+    <span class='Paren'>(</span><span class='Function'>⥊</span><span class='Value'>a</span><span class='Paren'>)</span> <span class='Function'>≡</span> <span class='Function'>⥊</span> <span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='Value'>a</span>
+1
+</pre>
+<p>One common usage is to generate an array with a specified shape that counts up from 0 in reading order. The idiomatic phrase to do this is <code><span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>↕×</span><span class='Modifier'>´</span><span class='Paren'>)</span></code>, since it doesn't require writing the shape and its product separately.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAvzcg4qWKIOKGlTE0CuKliuKfnCjihpXDl8K0KSAy4oC/Nw==">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>14</span>
+┌─                   
+╵ 0 1 2  3  4  5  6  
+  7 8 9 10 11 12 13  
+                    ┘
+    <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>↕×</span><span class='Modifier'>´</span><span class='Paren'>)</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span>
+┌─                   
+╵ 0 1 2  3  4  5  6  
+  7 8 9 10 11 12 13  
+                    ┘
+</pre>
+<h3 id="non-matching-lengths">Non-matching lengths</h3>
+<p>If the left argument implies a smaller number of elements, then only the initial elements of the argument are used. Here the result stops at <code><span class='Number'>237</span></code>, three-quarters of the way through <code><span class='Value'>a</span></code>, because at that point the result is filled up.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAvzMg4qWKIGE=">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Value'>a</span>
+┌─             
+╵ 135 136 137  
+  145 146 147  
+  235 236 237  
+              ┘
+</pre>
+<p>If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element <code><span class='Number'>247</span></code> and start over at <code><span class='Number'>135</span></code>. If the array doesn't have any elements to start with, its fill value is used instead, but it's probably best not to invoke this case!</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MTUg4qWKIGEKCjQg4qWKIOKGlTAgICMgRmlsbCBmb3Ig4oaVMCBpcyAw">↗️</a><pre>    <span class='Number'>15</span> <span class='Function'>⥊</span> <span class='Value'>a</span>
+⟨ 135 136 137 145 146 147 235 236 237 245 246 247 135 136 137 ⟩
+
+    <span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>0</span>  <span class='Comment'># Fill for ↕0 is 0
+</span>⟨ 0 0 0 0 ⟩
+</pre>
+<p>Reshape is the idiomatic way to make an array filled with a constant value (that is, where all elements are the same). For an atom element, just reshape it directly; for an arbitrary element, first enclose it to create a unit, and then reshape it.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAvzQg4qWKIDAKCjUg4qWKIDwgInN0cmluZyI=">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Number'>0</span>
+┌─         
+╵ 0 0 0 0  
+  0 0 0 0  
+  0 0 0 0  
+          ┘
+
+    <span class='Number'>5</span> <span class='Function'>⥊</span> <span class='Function'>&lt;</span> <span class='String'>&quot;string&quot;</span>
+⟨ "string" "string" "string" "string" "string" ⟩
+</pre>
+<h3 id="computed-lengths">Computed lengths</h3>
+<p>What if you want to reshape an array into, say, rows of length 2, but don't want to have to write out the number of rows?</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiY4oC/MiDipYogImFBZUVpSW9PdVUi">↗️</a><pre>    <span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⥊</span> <span class='String'>&quot;aAeEiIoOuU&quot;</span>
+┌─    
+╵"aA  
+  eE  
+  iI  
+  oO  
+  uU" 
+     ┘
+</pre>
+<p>Above, the length given is <code><span class='Modifier2'>∘</span></code>, a special value that indicates that a length that fits the argument should be computed. In fact, BQN has four different special values that can be used. Every one works the same for a case like the above, where the rest of the shape divides the argument length evenly. They differ in how they handle uneven cases, where the required length would fall between two whole numbers.</p>
+<ul>
+<li><code><span class='Modifier2'>∘</span></code> says the length must be an exact fit, and gives an error in such a case.</li>
+<li><code><span class='Function'>⌊</span></code> rounds the length down, so that some elements are discarded.</li>
+<li><code><span class='Function'>⌽</span></code> rounds the length up, repeating elements to make up the difference.</li>
+<li><code><span class='Function'>↑</span></code> rounds the length up, but uses the argument's fill values for the needed extra elements.</li>
+</ul>
+<p>These values are just BQN primitives of course. They're not called by Reshape or anything like that; the primitives are just chosen to suggest the corresponding functionality.</p>
+<p>Here's an example. If we try to turn five elements into two rows, <code><span class='Modifier2'>∘</span></code> gives an error, <code><span class='Function'>⌊</span></code> drops the last element, <code><span class='Function'>⌽</span></code> uses the first element again, and <code><span class='Function'>↑</span></code> uses a fill element (like <code><span class='Number'>5</span><span class='Function'>↑</span><span class='String'>&quot;abcde&quot;</span></code> would).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAv+KImCDipYogImFiY2RlIgoy4oC/4oyKIOKliiAiYWJjZGUiCjLigL/ijL0g4qWKICJhYmNkZSIKMuKAv+KGkSDipYogImFiY2RlIg==">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;abcde&quot;</span>
+ERROR
+    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>⌊</span> <span class='Function'>⥊</span> <span class='String'>&quot;abcde&quot;</span>
+┌─    
+╵"ab  
+  cd" 
+     ┘
+    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>⌽</span> <span class='Function'>⥊</span> <span class='String'>&quot;abcde&quot;</span>
+┌─     
+╵"abc  
+  dea" 
+      ┘
+    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>↑</span> <span class='Function'>⥊</span> <span class='String'>&quot;abcde&quot;</span>
+┌─     
+╵"abc  
+  de " 
+      ┘
+</pre>
+<p>A computed length can be useful to input an array without using nested notation: for example, if you have a table with rows of three elements, you might write it as one long list, using <code><span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Function'>⥊</span><span class='Bracket'>⟨</span><span class='Value'>…</span><span class='Bracket'>⟩</span></code> to get it back to the appropriate shape. <code><span class='Modifier2'>∘</span></code> is definitely the value to use here, as it will check that you haven't missed an element or something like that.</p>
+<p>Computed Reshape might also be used in actual data processing: for example, to sum a list in groups of four, you might first reshape it using <code><span class='Function'>↑</span><span class='Ligature'>‿</span><span class='Number'>4</span></code> for the shape, then average the rows. Here the code <code><span class='Function'>↑</span></code> is useful because added fill elements of <code><span class='Number'>0</span></code> won't change the sum, so that if the last group doesn't have four elements (<code><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>7</span></code> below), it will still be summed correctly.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8K0y5gg4oaR4oC/NCDipYog4p+oMCwyLDEsMSwgNSw5LDYsNCwgMywzLDMsMywgOSw34p+p">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>´˘</span> <span class='Function'>↑</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Bracket'>⟨</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>5</span><span class='Separator'>,</span><span class='Number'>9</span><span class='Separator'>,</span><span class='Number'>6</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>9</span><span class='Separator'>,</span><span class='Number'>7</span><span class='Bracket'>⟩</span>
+⟨ 4 24 12 16 ⟩
+</pre>
+<p>Computed Reshape can even be used with structural Under. Only the <code><span class='Modifier2'>∘</span></code> case really makes sense, although <code><span class='Function'>⌊</span></code>, which leaves trailing elements unchanged, could conceivably be useful. Below, we either split the argument into three groups and reverse their order or reverse it in groups of three.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oy94oy+KDPigL/iiJjiirjipYopIOKGlTE1CuKMveKMvijiiJjigL8z4oq44qWKKSAibm9seXJpY3NoZXJlIg==">↗️</a><pre>    <span class='Function'>⌽</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Modifier2'>∘⊸</span><span class='Function'>⥊</span><span class='Paren'>)</span> <span class='Function'>↕</span><span class='Number'>15</span>
+⟨ 10 11 12 13 14 5 6 7 8 9 0 1 2 3 4 ⟩
+    <span class='Function'>⌽</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Modifier2'>⊸</span><span class='Function'>⥊</span><span class='Paren'>)</span> <span class='String'>&quot;nolyricshere&quot;</span>
+"erecshyrinol"
+</pre>
