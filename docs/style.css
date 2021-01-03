@@ -58,6 +58,9 @@ pre.Julia  , .Julia   .kb span, .Julia   .code, .Julia   .rslt { font-family:Jul
 pre.Fairfax, .Fairfax .kb span, .Fairfax .code, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
 .Fairfax .kb span { line-height:1.25; }
 
+code, kbd, svg text {
+  white-space: pre;
+}
 pre, code, textarea, .primitives tr td:first-child {
   background-color: #e3e7e7;
   color: #292929;
@@ -77,7 +80,6 @@ pre, code, textarea, .kb {
 }
 code {
   padding: 0.15em 0.1em 0.05em;
-  white-space: pre;
   border-width: 0.3px;
 }
 pre, textarea, .kb {
@@ -142,7 +144,6 @@ kbd {
   padding: 0.04em 0.3em;
   border-radius: 0.4em;
   box-shadow: -0.02em 0.05em 0 0 currentColor;
-  white-space: pre;
 }
 
 .Value        { color: #1f2020; }
@@ -198,7 +199,6 @@ a:visited     { color: #3d155f; }
   a:visited   { color: #8781c1; }
 }
 
-svg text { white-space: pre; }
 svg tspan {
   fill: currentColor;
 }
