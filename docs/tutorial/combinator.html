@@ -282,25 +282,17 @@
 </pre>
 <p>You probably won't end up using Depth too much. The data in a typical program has a fixed, known depth, so there's no point in asking BQN what it is. But it might be useful if you want to write a utility function that's flexible about its input. <code><span class='Number'>0</span><span class='Function'>&lt;≡</span><span class='Value'>a</span></code> is the idiomatic way to test whether <code><span class='Value'>a</span></code> is an array.</p>
 <h2 id="composition">Composition</h2>
+<p>We've discussed Atop (<code><span class='Modifier2'>∘</span></code>), but hopefully you've intuited that it's not the end of the story as far as compositions go. In fact BQN has <strong>three</strong> more modifiers that could reasonably be interpreted as varieties of composition.</p>
+<h3 id="over">Over</h3>
 <table class='primitives'>
   <tr>
     <td><span class='Modifier2'>○</span></td>
     <td><kbd>\k</kbd></td>
     <td colspan='2'>Over</td>
   </tr>
-  <tr>
-    <td><span class='Modifier2'>⊸</span></td>
-    <td><kbd>\h</kbd></td>
-    <td colspan='2'>Before/Bind</td>
-  </tr>
-  <tr>
-    <td><span class='Modifier2'>⟜</span></td>
-    <td><kbd>\l</kbd></td>
-    <td colspan='2'>After/Bind</td>
-  </tr>
 </table>
 
-<p>We've discussed Atop (<code><span class='Modifier2'>∘</span></code>), but hopefully you've intuited that it's not the end of the story as far as compositions go. In fact BQN has <strong>three</strong> more functions that could reasonably be interpreted as varieties of composition. Let's start by returning to a computation mentioned when we introduced Match (<code><span class='Function'>≡</span></code>), that of testing whether two arrays have the same length.</p>
+<p>Let's start by returning to a computation mentioned when we introduced Match (<code><span class='Function'>≡</span></code>), that of testing whether two arrays have the same length.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKJoCJzdHJpbmciKSA9IOKJoCJzdGluZyI=">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>≠</span><span class='String'>&quot;string&quot;</span><span class='Paren'>)</span> <span class='Function'>=</span> <span class='Function'>≠</span><span class='String'>&quot;sting&quot;</span>
 0
 </pre>
@@ -308,7 +300,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PcK04omgwqgg4p+oInN0cmluZyIsInN0aW5nIuKfqQ==">↗️</a><pre>    <span class='Function'>=</span><span class='Modifier'>´</span><span class='Function'>≠</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span><span class='String'>&quot;string&quot;</span><span class='Separator'>,</span><span class='String'>&quot;sting&quot;</span><span class='Bracket'>⟩</span>
 0
 </pre>
-<p>This is a very common pattern, and a sensible language should have a better way to handle it! BQN does, in the form of a 2-combinator called Over.</p>
+<p>This is a very common pattern, and a sensible language should have a better way to handle it! BQN does, in the form of a 2-modifier called Over.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InN0cmluZyIgPeKXi+KJoCAic3Rpbmci">↗️</a><pre>    <span class='String'>&quot;string&quot;</span> <span class='Function'>=</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
 0
 </pre>
@@ -318,7 +310,7 @@
     <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
 ⟨ 5 ⟩
 </pre>
-<p>Atop always applies its right operand once, passing every argument (that is, one or two of them) in that call. Over calls its right operand on each argument individually. The results are the all used as arguments to the left operand. If there's only one argument, Atop and Over turn out to be the same: each calls the right operand, then the left, matching ordinary mathematical composition. Here are the two together for comparison.</p>
+<p>Atop always applies its right operand once, passing every argument (that is, one or two of them) in that call. Over calls its right operand on each argument individually. The results are then all used as arguments to the left operand. If there's only one argument, Atop and Over turn out to be the same: both of them call the right operand, then the left, like ordinary mathematical composition. Here are the two together for comparison.</p>
 <svg viewBox='-51 0 672 270'>
   <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
     <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
@@ -383,3 +375,451 @@
   </g>
 </svg>
 
+<h3 id="before-and-after">Before and After</h3>
+<p>Atop (<code><span class='Modifier2'>∘</span></code>) and Over (<code><span class='Modifier2'>○</span></code>) are both symmetric in some sense: with two arguments, <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier2'>∘</span><span class='Function'>G</span><span class='Paren'>)</span><span class='Modifier'>˜</span></code> is <code><span class='Function'>F</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>G</span><span class='Modifier'>˜</span><span class='Paren'>)</span></code>, and <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier2'>○</span><span class='Function'>G</span><span class='Paren'>)</span><span class='Modifier'>˜</span></code> is <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier2'>○</span><span class='Function'>G</span></code>. Put another way, reversing the order of arguments to Atop or Over as a whole is the same as reversing the order of every two-argument function inside—<code><span class='Function'>G</span></code> for <code><span class='Function'>F</span><span class='Modifier2'>∘</span><span class='Function'>G</span></code> and <code><span class='Function'>F</span></code> for <code><span class='Function'>F</span><span class='Modifier2'>○</span><span class='Function'>G</span></code>. If it's not obvious why this is the case, work it out for yourself by walking through how these functions would apply to their arguments! This causes their diagrams to be symmetric as well. Swap (<code><span class='Modifier'>˜</span></code>) also has a symmetric diagram, and it's very easy to show that it's symmetric: take a look at <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier'>˜</span></code> and <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier'>˜</span></code>. In both cases I started with <code><span class='Function'>F</span><span class='Modifier'>˜</span></code>, but in one case I applied <code><span class='Modifier'>˜</span></code> to the entire function and in the other I applied it on the inside, to <code><span class='Function'>F</span></code> only. And I won't tell you which is which.</p>
+<table class='primitives'>
+  <tr>
+    <td><span class='Modifier2'>⊸</span></td>
+    <td><kbd>\h</kbd></td>
+    <td colspan='2'>Before/Bind</td>
+  </tr>
+  <tr>
+    <td><span class='Modifier2'>⟜</span></td>
+    <td><kbd>\l</kbd></td>
+    <td colspan='2'>After/Bind</td>
+  </tr>
+</table>
+
+<p>Sometimes we'd like to handle the arguments differently, so BQN has a pair of 2-modifiers to apply a function to one argument only: Before (<code><span class='Modifier2'>⊸</span></code>) and After (<code><span class='Modifier2'>⟜</span></code>). Each is written with a circle for composition (remember, every 2-modifier has a circle in it!), with a line pointing to the function that takes only one argument. Here's how that works with some example functions and arguments.</p>
+<table>
+<thead>
+<tr>
+<th>After</th>
+<th>Before</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier2'>⟜</span><span class='Function'>-</span> <span class='Number'>3</span></code></td>
+<td><code><span class='Number'>2</span>  <span class='Function'>⋆</span><span class='Modifier2'>⊸</span><span class='Function'>-</span>  <span class='Number'>3</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Number'>2</span> <span class='Function'>⋆</span> <span class='Function'>-</span> <span class='Number'>3</span></code></td>
+<td><code><span class='Paren'>(</span><span class='Function'>⋆</span> <span class='Number'>2</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Number'>3</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>The order of application matches the way the two modifiers' names are pronounced in English. <code><span class='Function'>⋆</span><span class='Modifier2'>⟜</span><span class='Function'>-</span></code> is &quot;Power After Negation&quot;, so that it negates <code><span class='Number'>3</span></code> first, then raises <code><span class='Number'>2</span></code> to that power. <code><span class='Function'>⋆</span><span class='Modifier2'>⊸</span><span class='Function'>-</span></code> is &quot;Exponent Before Subtracting&quot;, so it takes the natural exponent of <code><span class='Number'>2</span></code> first, and then subtracts <code><span class='Number'>3</span></code>. After doesn't need parentheses when it's expanded to a full phrase, so you might think of it as the more &quot;natural&quot; of the two.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDii4bin5wtIDMKMiDii4biirgtIDM=">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier2'>⟜</span><span class='Function'>-</span> <span class='Number'>3</span>
+0.125
+    <span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier2'>⊸</span><span class='Function'>-</span> <span class='Number'>3</span>
+4.38905609893065
+</pre>
+<p>Despite this, I tend to use <code><span class='Modifier2'>⊸</span></code> a little more than <code><span class='Modifier2'>⟜</span></code>. As one example, remember that Rotate (<code><span class='Function'>⌽</span></code>) rotates its right argument to the left by an amount given by the left argument. But a negative left argument goes in the opposite direction, so <code><span class='Function'>-</span><span class='Modifier2'>⊸</span><span class='Function'>⌽</span></code> is a compact way to write the &quot;opposite rotate&quot;.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NCAt4oq44oy9ICIgYmVmb3JlIiAgIyBSb3RhdGUgdG8gdGhlIHJpZ2h0IGJ5IGZvdXIKNCDijL3igbwgICIgYmVmb3JlIiAgIyBPa2F5IHRoaXMgdGltZSBVbmRvIGlzIGJldHRlcg==">↗️</a><pre>    <span class='Number'>4</span> <span class='Function'>-</span><span class='Modifier2'>⊸</span><span class='Function'>⌽</span> <span class='String'>&quot; before&quot;</span>  <span class='Comment'># Rotate to the right by four
+</span>"fore be"
+    <span class='Number'>4</span> <span class='Function'>⌽</span><span class='Modifier'>⁼</span>  <span class='String'>&quot; before&quot;</span>  <span class='Comment'># Okay this time Undo is better
+</span>"fore be"
+</pre>
+<p>Here are the diagrams for Before and After: as promised, they're not symmetrical. The function on the circle side of the symbol always goes on top, since it's the one that takes two arguments. If you find these diagrams to be a helpful way to visualize things, you might picture picking up the expression at the ring to drag that function up and away from the rest of the expression.</p>
+<svg viewBox='-51 0 672 270'>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Before</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q41.6 57 0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C40 57 32 51.3 32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(425,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>After</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q-41.6 57 0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C-40 57 -32 51.3 -32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<p>What about the one-argument case? The structure of application is exactly the same, except that there's only one argument available, so it's used in both input positions. If I describe it that way, it sounds like lazy design, but the ability to use one argument in two ways makes the one-argument versions of Before and After even more useful than the two-argument ones. For example, consider the function <code><span class='Value'>y</span> <span class='Function'>=</span> <span class='Value'>x</span><span class='Function'>×</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>-</span><span class='Value'>x</span><span class='Paren'>)</span></code>, which gives a parabola that's equal to 0 at 0 and 1, and peaks between them when x is 0.5. Remembering that Span (<code><span class='Function'>¬</span></code>) is defined so that <code><span class='Function'>¬</span><span class='Value'>x</span></code> is <code><span class='Number'>1</span><span class='Function'>-</span><span class='Value'>x</span></code>, we can write this function as either <code><span class='Function'>¬</span><span class='Modifier2'>⊸</span><span class='Function'>×</span></code> or <code><span class='Function'>×</span><span class='Modifier2'>⟜</span><span class='Function'>¬</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wqziirjDlyAwLjU=">↗️</a><pre>    <span class='Function'>¬</span><span class='Modifier2'>⊸</span><span class='Function'>×</span> <span class='Number'>0.5</span>
+0.25
+</pre>
+<p>What if we want to call it on eight equally-spaced numbers between 0 and 1? Well, <code><span class='Function'>↕</span><span class='Number'>8</span></code> gives us eight equally-spaced numbers, but to rescale them we'd want to divide by <code><span class='Number'>8</span></code>. That's <code><span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Function'>÷</span><span class='Number'>8</span></code>, but it's nicer to use Before again.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaV4oq4w7cgOAoKwqziirjDlyDihpXiirjDtyA4">↗️</a><pre>    <span class='Function'>↕</span><span class='Modifier2'>⊸</span><span class='Function'>÷</span> <span class='Number'>8</span>
+⟨ 0 0.125 0.25 0.375 0.5 0.625 0.75 0.875 ⟩
+
+    <span class='Function'>¬</span><span class='Modifier2'>⊸</span><span class='Function'>×</span> <span class='Function'>↕</span><span class='Modifier2'>⊸</span><span class='Function'>÷</span> <span class='Number'>8</span>
+⟨ 0 0.109375 0.1875 0.234375 0.25 0.234375 0.1875 0.109375 ⟩
+</pre>
+<p>Our list of arguments stops before reaching 1, because <code><span class='Function'>↕</span><span class='Number'>8</span></code> doesn't include <code><span class='Number'>8</span></code>. If we wanted a list from 0 to 1 <em>inclusive</em>, we'd need to divide by <code><span class='Number'>7</span></code> (that is, <code><span class='Number'>8</span><span class='Function'>-</span><span class='Number'>1</span></code>) instead of <code><span class='Number'>8</span></code>. We can do this as well! But first we need to understand some other ways to apply Before and After.</p>
+<h4 id="bind">Bind</h4>
+<p>We showed in the first tutorial that a modifier's operand doesn't have to be a function, but can also be a data value. That hasn't come up yet, except for a cryptic use of &quot;Bind&quot; (<code><span class='Modifier2'>⊸</span></code>?) in the function <code><span class='Paren'>(</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Modifier'>¨</span></code> from the last tutorial. How does that work? Some kind of secret identity for Before and After?</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MeKKuCsgNQor4p+cMSA1">↗️</a><pre>    <span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Number'>5</span>
+6
+    <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Number'>1</span> <span class='Number'>5</span>
+6
+</pre>
+<p>Nope, just the regular identity, plus the fact that BQN allows data values to be applied as functions. Specifically, <em>constant</em> functions, that ignore the arguments and just return themselves. For a simpler example, let's use <code><span class='Modifier'>˜</span></code> (but remember that BQN has a dedicated constant modifier <code><span class='Modifier'>˙</span></code> which is better to use if you're trying to define a constant function since it will also work on function or modifier operands).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImNvbnN0IsucIDUKQCAiY29uc3Qiy5wgNg==">↗️</a><pre>    <span class='String'>&quot;const&quot;</span><span class='Modifier'>˜</span> <span class='Number'>5</span>
+"const"
+    <span class='String'>@</span> <span class='String'>&quot;const&quot;</span><span class='Modifier'>˜</span> <span class='Number'>6</span>
+"const"
+</pre>
+<p>The modifier <code><span class='Modifier'>˜</span></code> applies its operand function to the arguments, after swapping them around or whatever. In this case, the operand function is a data type (not a function or modifier), so it ignores those arguments! Our &quot;Bind&quot; modifiers work the same way: for example, <code><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Number'>5</span></code> is <code><span class='Paren'>(</span><span class='Number'>1</span> <span class='Number'>5</span><span class='Paren'>)</span><span class='Function'>+</span><span class='Number'>5</span></code>, or it would be if <code><span class='Number'>1</span></code> were a function. Applying <code><span class='Number'>1</span></code> to <code><span class='Number'>5</span></code> gives <code><span class='Number'>1</span></code>, so the final result is <code><span class='Number'>1</span><span class='Function'>+</span><span class='Number'>5</span></code> or <code><span class='Number'>6</span></code>.</p>
+<p>To use Bind, you have to remember that the line points towards the constant value. Otherwise the constant will be applied last, and it'll return itself as the final result regardless of what you did before.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K+KKuDEgNQ==">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier2'>⊸</span><span class='Number'>1</span> <span class='Number'>5</span>
+1
+</pre>
+<p>Here's another way to look at splitting up an expression with Bind: to split up <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>5</span></code> we can either Bind 2 Before Power, or Bind 5 After Power. Which one to use depends on the situation.</p>
+<table>
+<thead>
+<tr>
+<th>Before</th>
+<th></th>
+<th>After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⋆</span> <span class='Number'>5</span></code></td>
+<td><code><span class='Number'>2</span> <span class='Function'>⋆</span> <span class='Number'>5</span></code></td>
+<td><code><span class='Function'>⋆</span><span class='Modifier2'>⟜</span><span class='Number'>5</span> <span class='Number'>2</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Back to our unsatisfactory list of numbers. We have the first, but we want the second.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaV4oq4w7cgOAoo4oaVOCkgw7cgNw==">↗️</a><pre>    <span class='Function'>↕</span><span class='Modifier2'>⊸</span><span class='Function'>÷</span> <span class='Number'>8</span>
+⟨ 0 0.125 0.25 0.375 0.5 0.625 0.75 0.875 ⟩
+    <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>8</span><span class='Paren'>)</span> <span class='Function'>÷</span> <span class='Number'>7</span>
+⟨ 0 0.14285714285714285 0.2857142857142857 0.42857142857142855 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
+</pre>
+<p>What function turns 8 into 7? We can bind <code><span class='Number'>1</span></code> to <code><span class='Function'>-</span></code> on the left:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LeKfnDEgOA==">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span> <span class='Number'>8</span>
+7
+</pre>
+<p>Now we need to apply <code><span class='Function'>↕</span></code> <em>and</em> this function to <code><span class='Number'>8</span></code>, dividing the results. It turns out we can do this using both Before and After. On one side we'll have <code><span class='Function'>↕</span><span class='Number'>8</span></code>, and on the other <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span> <span class='Number'>8</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaV4oq4w7fin5woLeKfnDEpIDg=">↗️</a><pre>    <span class='Function'>↕</span><span class='Modifier2'>⊸</span><span class='Function'>÷</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Number'>8</span>
+⟨ 0 0.14285714285714285 0.2857142857142857 0.42857142857142855 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
+</pre>
+<p>This structure—Before on the left, After on the right—is also useful with two arguments: I call it &quot;split compose&quot;, and it applies one function to the left argument and another to the right before passing them both to the middle function (if the functions on both sides are the same, that would be Over!). Although it turns out it's not needed in the one-argument case. You'll get the same result just by jamming the functions together. This is called a &quot;train&quot; and we should probably leave it for another tutorial before going too far off the rails.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKGlcO3LeKfnDEpIDg=">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>↕÷-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Number'>8</span>
+⟨ 0 0.14285714285714285 0.2857142857142857 0.42857142857142855 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
+</pre>
+<h2 id="base-decoding-continued">Base decoding continued</h2>
+<p>We're speeding up a bit now, so in the examples below it might take some time for you to break down what I did and why. Remember that you can open any expression in the REPL in order to change parts of it or view the syntax. And don't get discouraged just because of how long it takes to understand a line of code! First, you'll surely get faster in fitting the pieces together. Second, a line of BQN often has more code in it than a line in other languages, because primitives have such short names. Think about how much <em>functionality</em> you can read and understand rather than how few <em>lines</em> you get through.</p>
+<p>In the last tutorial I <a href="list.html#example-base-decoding">went over</a> a way to decode a list of strings containing binary codes for ASCII characters:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QCArICvCtMKoICjijL0y4ouG4oaVOCniirjDl8KoICcwJyAty5wgIjAxMDAwMDEwIuKAvyIwMTAxMDAwMSLigL8iMDEwMDExMTAi">↗️</a><pre>    <span class='String'>@</span> <span class='Function'>+</span> <span class='Function'>+</span><span class='Modifier'>´¨</span> <span class='Paren'>(</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Modifier'>¨</span> <span class='String'>'0'</span> <span class='Function'>-</span><span class='Modifier'>˜</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
+"BQN"
+</pre>
+<p>Now that we know our combinators, we can do a bit more work on this code. First, we can rather mechanically turn it into a standalone function (fit to be passed as an operand, or given a name, if we knew how to give things names). Just bind each left argument to the corresponding function, and then join all the functions with <code><span class='Modifier2'>∘</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QOKKuCsgK8K0wqggKOKMvTLii4bihpU4KeKKuMOXwqggLeKfnCcwJyAiMDEwMDAwMTAi4oC/IjAxMDEwMDAxIuKAvyIwMTAwMTExMCIKCihA4oq4KyniiJgoK8K0wqgp4oiYKCjijL0y4ouG4oaVOCniirjDl8KoKeKImCgt4p+cJzAnKSAiMDEwMDAwMTAi4oC/IjAxMDEwMDAxIuKAvyIwMTAwMTExMCI=">↗️</a><pre>    <span class='String'>@</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Function'>+</span><span class='Modifier'>´¨</span> <span class='Paren'>(</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Modifier'>¨</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='String'>'0'</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
+"BQN"
+
+    <span class='Paren'>(</span><span class='String'>@</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Paren'>)</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>´¨</span><span class='Paren'>)</span><span class='Modifier2'>∘</span><span class='Paren'>((</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='String'>'0'</span><span class='Paren'>)</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
+"BQN"
+</pre>
+<p>We might clean up a little by combining the functions that use <code><span class='Modifier'>¨</span></code>. Here <code><span class='Function'>+</span><span class='Modifier'>´</span></code> doesn't need parentheses because it comes at the left of a group of modifiers. For that matter, neither does <code><span class='String'>@</span><span class='Modifier2'>⊸</span><span class='Function'>+</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QOKKuCviiJgoK8K04oiYKCjijL0y4ouG4oaVOCniirjDlynCqCniiJgoLeKfnCcwJykgIjAxMDAwMDEwIuKAvyIwMTAxMDAwMSLigL8iMDEwMDExMTAi">↗️</a><pre>    <span class='String'>@</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Paren'>((</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='String'>'0'</span><span class='Paren'>)</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
+"BQN"
+</pre>
+<p>Because <code><span class='Function'>×</span></code> is commutative, the argument <code><span class='Paren'>(</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span></code> can be placed on either side. While I usually default to Before, in this case moving it to the right lets us remove a set of parentheses and use the dot product <code><span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>×</span></code>, a nice combination.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QOKKuCviiJgoK8K04oiYw5fin5wo4oy9MuKLhuKGlTgpwqgp4oiYKC3in5wnMCcpICIwMTAwMDAxMCLigL8iMDEwMTAwMDEi4oC/IjAxMDAxMTEwIg==">↗️</a><pre>    <span class='String'>@</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>×</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='String'>'0'</span><span class='Paren'>)</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
+"BQN"
+</pre>
+<p>There's another algorithm (<a href="https://en.wikipedia.org/wiki/Horner%27s_method">Horner's rule</a>) that gives us somewhat simpler code. The idea is that instead of multiplying a number by its place value, we split the number into its lowest digit, and the rest. In base 10, for example, we might have <code><span class='Number'>1234</span> <span class='Function'>=</span> <span class='Paren'>(</span><span class='Number'>123</span><span class='Function'>×</span><span class='Number'>10</span><span class='Paren'>)</span><span class='Function'>+</span><span class='Number'>4</span></code>. After performing that expansion three more times, we have:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KCgoKCgxw5cxMCkrMinDlzEwKSszKcOXMTApKzQKKCgxw5fin5wxMOKKuCsyKcOX4p+cMTDiirgrMynDl+KfnDEw4oq4KzQgICAjIE1ha2UgdGhlIGNvbWJpbmluZyBzdGVwIGEgZnVuY3Rpb24KNCvin5woMTDiirjDlykzK+KfnCgxMOKKuMOXKTIr4p+cKDEw4oq4w5cpMSAjIEZsaXAgdGhlIGNvbWJpbmluZyBmdW5jdGlvbiBhcm91bmQKK+KfnCgxMOKKuMOXKcK0IDTigL8z4oC/MuKAvzEgICAgICAgICAgICAjIE5vdyBpdCdzIGEgQlFOIGZvbGQKK+KfnCgxMOKKuMOXKcK0IOKMvSAx4oC/MuKAvzPigL80ICAgICAgICAgICMgVG8gZm9sZCBpbiByZXZlcnNlLCByZXZlcnNlIHRoZW4gZm9sZA==">↗️</a><pre>    <span class='Paren'>(((((</span><span class='Number'>1</span><span class='Function'>×</span><span class='Number'>10</span><span class='Paren'>)</span><span class='Function'>+</span><span class='Number'>2</span><span class='Paren'>)</span><span class='Function'>×</span><span class='Number'>10</span><span class='Paren'>)</span><span class='Function'>+</span><span class='Number'>3</span><span class='Paren'>)</span><span class='Function'>×</span><span class='Number'>10</span><span class='Paren'>)</span><span class='Function'>+</span><span class='Number'>4</span>
+1234
+    <span class='Paren'>((</span><span class='Number'>1</span><span class='Function'>×</span><span class='Modifier2'>⟜</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Number'>2</span><span class='Paren'>)</span><span class='Function'>×</span><span class='Modifier2'>⟜</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Number'>3</span><span class='Paren'>)</span><span class='Function'>×</span><span class='Modifier2'>⟜</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Number'>4</span>   <span class='Comment'># Make the combining step a function
+</span>1234
+    <span class='Number'>4</span><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Number'>3</span><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Number'>2</span><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Number'>1</span> <span class='Comment'># Flip the combining function around
+</span>1234
+    <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>´</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span>            <span class='Comment'># Now it's a BQN fold
+</span>1234
+    <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>´</span> <span class='Function'>⌽</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>          <span class='Comment'># To fold in reverse, reverse then fold
+</span>1234
+</pre>
+<p>(Why does <code><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span></code> need parentheses when <code><span class='Function'>×</span><span class='Modifier2'>⟜</span><span class='Number'>10</span><span class='Modifier2'>⊸</span><span class='Function'>+</span></code> doesn't? Why doesn't the reversed expression have outer parentheses?). Changing this from base 10 to base 2 is pretty simple (although a character-counter might not stop until reaching the less obvious function <code><span class='Function'>+</span><span class='Modifier'>˜</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Modifier'>˜´</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span></code>).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8K04oiYw5fin5wo4oy9MuKLhuKGlTgpICIwMTAxMDAwMSItJzAnCivin5woMuKKuMOXKcK04oiY4oy9ICIwMTAxMDAwMSItJzAn">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>×</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span> <span class='String'>&quot;01010001&quot;</span><span class='Function'>-</span><span class='String'>'0'</span>
+81
+    <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span> <span class='String'>&quot;01010001&quot;</span><span class='Function'>-</span><span class='String'>'0'</span>
+81
+</pre>
+<p>Plugging that back in, we have another base-decoding function:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QOKKuCviiJgoK+KfnCgy4oq4w5cpwrTiiJjijL3CqCniiJgoLeKfnCcwJykgIjAxMDAwMDEwIuKAvyIwMTAxMDAwMSLigL8iMDEwMDExMTAi">↗️</a><pre>    <span class='String'>@</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='String'>'0'</span><span class='Paren'>)</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
+"BQN"
+</pre>
+<p>With the still-mysterious trains, this function could even be cleaned up more, removing the clutter of <code><span class='Modifier2'>∘</span></code>s and <code><span class='Paren'>()</span></code>s that makes it hard to focus on what one part of the function is doing:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KEArIMK3K+KfnCgy4oq4w5cpwrTiiJjijL3CqCAt4p+cJzAnKSAiMDEwMDAwMTAi4oC/IjAxMDEwMDAxIuKAvyIwMTAwMTExMCI=">↗️</a><pre>    <span class='Paren'>(</span><span class='String'>@</span><span class='Function'>+</span> <span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span><span class='Modifier'>¨</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='String'>'0'</span><span class='Paren'>)</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
+"BQN"
+</pre>
+<h2 id="summary">Summary</h2>
+<p>BQN has a full complement of comparison functions, which are pervasive (work on atoms only) like arithmetic functions. The non-pervasive functions Match (<code><span class='Function'>≡</span></code>) and Not Match (<code><span class='Function'>≢</span></code>) compare entire arrays. Comparison functions return <code><span class='Number'>1</span></code> if the comparison holds and <code><span class='Number'>0</span></code> if it doesn't; these two numbers make up the &quot;booleans&quot;.</p>
+<table>
+<thead>
+<tr>
+<th>Glyph</th>
+<th>1 arg</th>
+<th>2 args</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>&lt;</span></code></td>
+<td></td>
+<td>Less Than</td>
+</tr>
+<tr>
+<td><code><span class='Function'>&gt;</span></code></td>
+<td></td>
+<td>Greater Than</td>
+</tr>
+<tr>
+<td><code><span class='Function'>≠</span></code></td>
+<td>Length</td>
+<td>Not Equals</td>
+</tr>
+<tr>
+<td><code><span class='Function'>=</span></code></td>
+<td>Rank</td>
+<td>Equals</td>
+</tr>
+<tr>
+<td><code><span class='Function'>≤</span></code></td>
+<td></td>
+<td>Less Than or Equal to</td>
+</tr>
+<tr>
+<td><code><span class='Function'>≥</span></code></td>
+<td></td>
+<td>Greater Than or Equal to</td>
+</tr>
+<tr>
+<td><code><span class='Function'>≡</span></code></td>
+<td><a href="../doc/depth.html">Depth</a></td>
+<td>Match</td>
+</tr>
+<tr>
+<td><code><span class='Function'>≢</span></code></td>
+<td></td>
+<td>Not Match</td>
+</tr>
+</tbody>
+</table>
+<p>A combinator is a function or modifier that produces its result from its inputs purely by applying functions to arguments, without introducing any external values. BQN's combinators can all be described with diagrams showing how arguments are passed through operands, with the result emerging at the top. The diagrams below define six combinators in BQN.</p>
+<svg viewBox='0 0 850 530'>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Atop</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(425,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Self/Swap</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier'>˜</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q-41.6 57 0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q41.6 57 0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier'>˜</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C-40 28.5 0 57 32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C40 28.5 0 57 -32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(705,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Constant</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕗</tspan><tspan class='Modifier'>˙</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='57'><tspan class='Value'>𝕗</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Value'>𝕗</tspan><tspan class='Modifier'>˙</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='57'><tspan class='Value'>𝕗</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,280)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Over</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>○</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>○</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(425,280)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Before</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q41.6 57 0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C40 57 32 51.3 32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(705,280)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>After</text>
+    <g font-size='21px' font-family='monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q-41.6 57 0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C-40 57 -32 51.3 -32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<p>A data value (number, character, or array) can be applied as a function, in which case it ignores any arguments and returns itself. In particular, using a data value as the left operand of Before or the right operand of After is called Bind because it attaches that data value as an argument to the other operand.</p>
+<p>This section was a bit long because combinators are conceptually difficult, but as you can see we didn't cover all that much material (and our diagrams <em>fully</em> define the combinators in question, which is unusual in a summary!). The tacit style we've used here can be very confusing or uncomfortable at first, maybe <em>because</em> it's so radically simple. We'll keep working with it in future tutorials, and it should start to feel more solid and logical. Even if not, that's okay! As I said, BQN has a more explicit function style as well, and it's completely possible to program without ever using a combinator. But perhaps you'll find that a well-placed Over or Bind can make things a lot smoother.</p>

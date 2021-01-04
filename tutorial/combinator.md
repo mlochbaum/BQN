@@ -130,14 +130,16 @@ You probably won't end up using Depth too much. The data in a typical program ha
 
 ## Composition
 
+We've discussed Atop (`∘`), but hopefully you've intuited that it's not the end of the story as far as compositions go. In fact BQN has **three** more modifiers that could reasonably be interpreted as varieties of composition.
+
+### Over
+
 <!--GEN
 Primitives ⟨
   "○%k%Over"
-  "⊸%h%Before/Bind"
-  "⟜%l%After/Bind"
 ⟩
 -->
-We've discussed Atop (`∘`), but hopefully you've intuited that it's not the end of the story as far as compositions go. In fact BQN has **three** more functions that could reasonably be interpreted as varieties of composition. Let's start by returning to a computation mentioned when we introduced Match (`≡`), that of testing whether two arrays have the same length.
+Let's start by returning to a computation mentioned when we introduced Match (`≡`), that of testing whether two arrays have the same length.
 
         (≠"string") = ≠"sting"
 
@@ -145,7 +147,7 @@ This code, to a BQN programmer, should look offensive. The exact same function i
 
         =´≠¨ ⟨"string","sting"⟩
 
-This is a very common pattern, and a sensible language should have a better way to handle it! BQN does, in the form of a 2-combinator called Over.
+This is a very common pattern, and a sensible language should have a better way to handle it! BQN does, in the form of a 2-modifier called Over.
 
         "string" =○≠ "sting"
 
@@ -154,8 +156,162 @@ Let's use the list formation function Solo/Couple (`≍`) to see what happens mo
         "string" ≍○≠ "sting"
         ≍○≠ "sting"
 
-Atop always applies its right operand once, passing every argument (that is, one or two of them) in that call. Over calls its right operand on each argument individually. The results are the all used as arguments to the left operand. If there's only one argument, Atop and Over turn out to be the same: each calls the right operand, then the left, matching ordinary mathematical composition. Here are the two together for comparison.
+Atop always applies its right operand once, passing every argument (that is, one or two of them) in that call. Over calls its right operand on each argument individually. The results are then all used as arguments to the left operand. If there's only one argument, Atop and Over turn out to be the same: both of them call the right operand, then the left, like ordinary mathematical composition. Here are the two together for comparison.
 
 <!--GEN
 DrawComp ≍"∘○"
 -->
+
+### Before and After
+
+Atop (`∘`) and Over (`○`) are both symmetric in some sense: with two arguments, `(F∘G)˜` is `F∘(G˜)`, and `(F○G)˜` is `(F˜)○G`. Put another way, reversing the order of arguments to Atop or Over as a whole is the same as reversing the order of every two-argument function inside—`G` for `F∘G` and `F` for `F○G`. If it's not obvious why this is the case, work it out for yourself by walking through how these functions would apply to their arguments! This causes their diagrams to be symmetric as well. Swap (`˜`) also has a symmetric diagram, and it's very easy to show that it's symmetric: take a look at `(F˜)˜` and `(F˜)˜`. In both cases I started with `F˜`, but in one case I applied `˜` to the entire function and in the other I applied it on the inside, to `F` only. And I won't tell you which is which.
+
+<!--GEN
+Primitives ⟨
+  "⊸%h%Before/Bind"
+  "⟜%l%After/Bind"
+⟩
+-->
+Sometimes we'd like to handle the arguments differently, so BQN has a pair of 2-modifiers to apply a function to one argument only: Before (`⊸`) and After (`⟜`). Each is written with a circle for composition (remember, every 2-modifier has a circle in it!), with a line pointing to the function that takes only one argument. Here's how that works with some example functions and arguments.
+
+After     | Before
+----------|------------
+`2 ⋆⟜- 3` | `2  ⋆⊸-  3`
+`2 ⋆ - 3` | `(⋆ 2) - 3`
+
+The order of application matches the way the two modifiers' names are pronounced in English. `⋆⟜-` is "Power After Negation", so that it negates `3` first, then raises `2` to that power. `⋆⊸-` is "Exponent Before Subtracting", so it takes the natural exponent of `2` first, and then subtracts `3`. After doesn't need parentheses when it's expanded to a full phrase, so you might think of it as the more "natural" of the two.
+
+        2 ⋆⟜- 3
+        2 ⋆⊸- 3
+
+Despite this, I tend to use `⊸` a little more than `⟜`. As one example, remember that Rotate (`⌽`) rotates its right argument to the left by an amount given by the left argument. But a negative left argument goes in the opposite direction, so `-⊸⌽` is a compact way to write the "opposite rotate".
+
+        4 -⊸⌽ " before"  # Rotate to the right by four
+        4 ⌽⁼  " before"  # Okay this time Undo is better
+
+Here are the diagrams for Before and After: as promised, they're not symmetrical. The function on the circle side of the symbol always goes on top, since it's the one that takes two arguments. If you find these diagrams to be a helpful way to visualize things, you might picture picking up the expression at the ring to drag that function up and away from the rest of the expression.
+
+<!--GEN
+DrawComp ≍"⊸⟜"
+-->
+
+What about the one-argument case? The structure of application is exactly the same, except that there's only one argument available, so it's used in both input positions. If I describe it that way, it sounds like lazy design, but the ability to use one argument in two ways makes the one-argument versions of Before and After even more useful than the two-argument ones. For example, consider the function `y = x×(1-x)`, which gives a parabola that's equal to 0 at 0 and 1, and peaks between them when x is 0.5. Remembering that Span (`¬`) is defined so that `¬x` is `1-x`, we can write this function as either `¬⊸×` or `×⟜¬`.
+
+        ¬⊸× 0.5
+
+What if we want to call it on eight equally-spaced numbers between 0 and 1? Well, `↕8` gives us eight equally-spaced numbers, but to rescale them we'd want to divide by `8`. That's `(↕8)÷8`, but it's nicer to use Before again.
+
+        ↕⊸÷ 8
+
+        ¬⊸× ↕⊸÷ 8
+
+Our list of arguments stops before reaching 1, because `↕8` doesn't include `8`. If we wanted a list from 0 to 1 *inclusive*, we'd need to divide by `7` (that is, `8-1`) instead of `8`. We can do this as well! But first we need to understand some other ways to apply Before and After.
+
+#### Bind
+
+We showed in the first tutorial that a modifier's operand doesn't have to be a function, but can also be a data value. That hasn't come up yet, except for a cryptic use of "Bind" (`⊸`?) in the function `(⌽2⋆↕8)⊸×¨` from the last tutorial. How does that work? Some kind of secret identity for Before and After?
+
+        1⊸+ 5
+        +⟜1 5
+
+Nope, just the regular identity, plus the fact that BQN allows data values to be applied as functions. Specifically, *constant* functions, that ignore the arguments and just return themselves. For a simpler example, let's use `˜` (but remember that BQN has a dedicated constant modifier `˙` which is better to use if you're trying to define a constant function since it will also work on function or modifier operands).
+
+        "const"˜ 5
+        @ "const"˜ 6
+
+The modifier `˜` applies its operand function to the arguments, after swapping them around or whatever. In this case, the operand function is a data type (not a function or modifier), so it ignores those arguments! Our "Bind" modifiers work the same way: for example, `1⊸+ 5` is `(1 5)+5`, or it would be if `1` were a function. Applying `1` to `5` gives `1`, so the final result is `1+5` or `6`.
+
+To use Bind, you have to remember that the line points towards the constant value. Otherwise the constant will be applied last, and it'll return itself as the final result regardless of what you did before.
+
+        +⊸1 5
+
+Here's another way to look at splitting up an expression with Bind: to split up `2⋆5` we can either Bind 2 Before Power, or Bind 5 After Power. Which one to use depends on the situation.
+
+Before  |         | After
+--------|---------|--------
+`2⊸⋆ 5` | `2 ⋆ 5` | `⋆⟜5 2`
+
+Back to our unsatisfactory list of numbers. We have the first, but we want the second.
+
+        ↕⊸÷ 8
+        (↕8) ÷ 7
+
+What function turns 8 into 7? We can bind `1` to `-` on the left:
+
+        -⟜1 8
+
+Now we need to apply `↕` *and* this function to `8`, dividing the results. It turns out we can do this using both Before and After. On one side we'll have `↕8`, and on the other `-⟜1 8`.
+
+        ↕⊸÷⟜(-⟜1) 8
+
+This structure—Before on the left, After on the right—is also useful with two arguments: I call it "split compose", and it applies one function to the left argument and another to the right before passing them both to the middle function (if the functions on both sides are the same, that would be Over!). Although it turns out it's not needed in the one-argument case. You'll get the same result just by jamming the functions together. This is called a "train" and we should probably leave it for another tutorial before going too far off the rails.
+
+        (↕÷-⟜1) 8
+
+## Base decoding continued
+
+We're speeding up a bit now, so in the examples below it might take some time for you to break down what I did and why. Remember that you can open any expression in the REPL in order to change parts of it or view the syntax. And don't get discouraged just because of how long it takes to understand a line of code! First, you'll surely get faster in fitting the pieces together. Second, a line of BQN often has more code in it than a line in other languages, because primitives have such short names. Think about how much *functionality* you can read and understand rather than how few *lines* you get through.
+
+In the last tutorial I [went over](list.md#example-base-decoding) a way to decode a list of strings containing binary codes for ASCII characters:
+
+        @ + +´¨ (⌽2⋆↕8)⊸×¨ '0' -˜ "01000010"‿"01010001"‿"01001110"
+
+Now that we know our combinators, we can do a bit more work on this code. First, we can rather mechanically turn it into a standalone function (fit to be passed as an operand, or given a name, if we knew how to give things names). Just bind each left argument to the corresponding function, and then join all the functions with `∘`.
+
+        @⊸+ +´¨ (⌽2⋆↕8)⊸×¨ -⟜'0' "01000010"‿"01010001"‿"01001110"
+
+        (@⊸+)∘(+´¨)∘((⌽2⋆↕8)⊸×¨)∘(-⟜'0') "01000010"‿"01010001"‿"01001110"
+
+We might clean up a little by combining the functions that use `¨`. Here `+´` doesn't need parentheses because it comes at the left of a group of modifiers. For that matter, neither does `@⊸+`.
+
+        @⊸+∘(+´∘((⌽2⋆↕8)⊸×)¨)∘(-⟜'0') "01000010"‿"01010001"‿"01001110"
+
+Because `×` is commutative, the argument `(⌽2⋆↕8)` can be placed on either side. While I usually default to Before, in this case moving it to the right lets us remove a set of parentheses and use the dot product `+´∘×`, a nice combination.
+
+        @⊸+∘(+´∘×⟜(⌽2⋆↕8)¨)∘(-⟜'0') "01000010"‿"01010001"‿"01001110"
+
+There's another algorithm ([Horner's rule](https://en.wikipedia.org/wiki/Horner%27s_method)) that gives us somewhat simpler code. The idea is that instead of multiplying a number by its place value, we split the number into its lowest digit, and the rest. In base 10, for example, we might have `1234 = (123×10)+4`. After performing that expansion three more times, we have:
+
+        (((((1×10)+2)×10)+3)×10)+4
+        ((1×⟜10⊸+2)×⟜10⊸+3)×⟜10⊸+4   # Make the combining step a function
+        4+⟜(10⊸×)3+⟜(10⊸×)2+⟜(10⊸×)1 # Flip the combining function around
+        +⟜(10⊸×)´ 4‿3‿2‿1            # Now it's a BQN fold
+        +⟜(10⊸×)´ ⌽ 1‿2‿3‿4          # To fold in reverse, reverse then fold
+
+(Why does `+⟜(10⊸×)` need parentheses when `×⟜10⊸+` doesn't? Why doesn't the reversed expression have outer parentheses?). Changing this from base 10 to base 2 is pretty simple (although a character-counter might not stop until reaching the less obvious function `+˜⊸+˜´∘⌽`).
+
+        +´∘×⟜(⌽2⋆↕8) "01010001"-'0'
+        +⟜(2⊸×)´∘⌽ "01010001"-'0'
+
+Plugging that back in, we have another base-decoding function:
+
+        @⊸+∘(+⟜(2⊸×)´∘⌽¨)∘(-⟜'0') "01000010"‿"01010001"‿"01001110"
+
+With the still-mysterious trains, this function could even be cleaned up more, removing the clutter of `∘`s and `()`s that makes it hard to focus on what one part of the function is doing:
+
+        (@+ ·+⟜(2⊸×)´∘⌽¨ -⟜'0') "01000010"‿"01010001"‿"01001110"
+
+## Summary
+
+BQN has a full complement of comparison functions, which are pervasive (work on atoms only) like arithmetic functions. The non-pervasive functions Match (`≡`) and Not Match (`≢`) compare entire arrays. Comparison functions return `1` if the comparison holds and `0` if it doesn't; these two numbers make up the "booleans".
+
+Glyph | 1 arg                    | 2 args
+------|--------------------------|--------
+`<`   |                          | Less Than
+`>`   |                          | Greater Than
+`≠`   | Length                   | Not Equals
+`=`   | Rank                     | Equals
+`≤`   |                          | Less Than or Equal to
+`≥`   |                          | Greater Than or Equal to
+`≡`   | [Depth](../doc/depth.md) | Match
+`≢`   |                          | Not Match
+
+A combinator is a function or modifier that produces its result from its inputs purely by applying functions to arguments, without introducing any external values. BQN's combinators can all be described with diagrams showing how arguments are passed through operands, with the result emerging at the top. The diagrams below define six combinators in BQN.
+
+<!--GEN
+DrawComp "∘˜˙"≍"○⊸⟜"
+-->
+
+A data value (number, character, or array) can be applied as a function, in which case it ignores any arguments and returns itself. In particular, using a data value as the left operand of Before or the right operand of After is called Bind because it attaches that data value as an argument to the other operand.
+
+This section was a bit long because combinators are conceptually difficult, but as you can see we didn't cover all that much material (and our diagrams *fully* define the combinators in question, which is unusual in a summary!). The tacit style we've used here can be very confusing or uncomfortable at first, maybe *because* it's so radically simple. We'll keep working with it in future tutorials, and it should start to feel more solid and logical. Even if not, that's okay! As I said, BQN has a more explicit function style as well, and it's completely possible to program without ever using a combinator. But perhaps you'll find that a well-placed Over or Bind can make things a lot smoother.
