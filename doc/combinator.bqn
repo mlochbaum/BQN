@@ -3,8 +3,8 @@ Text ← "text" Attr "dy"‿"0.32em"∾⊢
 w‿h ← 280‿260
 Pnt ← 32‿57×⌽
 
-comps ← "∘○˙⊸⟜˜"
-names ← (¬×+`)⊸-∘=⟜' '⊸⊔ "Atop Over Constant Before After Self/Swap"
+comps ← "∘○˙⊸⟜˜⊘"
+names ← (¬×+`)⊸-∘=⟜' '⊸⊔ "Atop Over Constant Before After Self/Swap Cases"
 
 ps ← At "class=yellow|style=fill:none|stroke-width=2"
 _trans ← {𝕗 At "transform=translate("∾(⊣∾","∾⊢)○FmtNum∾")"˙}
