@@ -361,7 +361,7 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 ∨ ↩ ⍒⊸⊏            ⊘ ∨
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 
-Join←{
+Join←(0<=)◶{!IsArray𝕩⋄>𝕩}‿{
   C←(<⟨⟩)⥊⊸∾⌜´⊢  # Cartesian array product
   ! IsArray 𝕩
   s←≢¨𝕩
