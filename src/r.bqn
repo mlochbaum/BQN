@@ -193,11 +193,12 @@ Merge←{
   𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
 }⍟(0<≠∘⥊)⍟IsArray
 
-Join←(1==)◶⟨1,1-1×´(1==)⌜⟩◶{
+Join1←{
   # List of lists
   i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
   {{e↩a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜Indices≠⌜𝕩
-}‿{
+}
+JoinM←{
   # Multidimensional
   n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ d←≠0⊑s ⋄ r←=𝕩
   "∾𝕩: Elements of 𝕩 must all have the same rank" ! 1×´(d=≠)⌜s
@@ -223,7 +224,10 @@ Join←(1==)◶⟨1,1-1×´(1==)⌜⟩◶{
     "∾𝕩: 𝕩 element trailing shapes must match" ! 1×´(×´t=¨Dr)⌜s
     ti←t⥊↕tp←×´t⋄(𝕨tp⊸×⊸+⌜ti)G𝕩⊣⌜ti
   } j
-}⍟{"∾𝕩: 𝕩 must be an array" ! IsArray 𝕩 ⋄ 0<≠⥊𝕩}
+}
+Join←(2⌊=)◶⟨
+  Merge, (1×´(1==)⌜)◶JoinM‿Join1, JoinM
+⟩⍟{"∾𝕩: 𝕩 must be an array" ! IsArray 𝕩 ⋄ 0<≠⥊𝕩}
 
 _takeDrop←{
   ⟨gl,Noop,_inds⟩←𝕗
