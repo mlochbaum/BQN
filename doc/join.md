@@ -1,8 +1,38 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/join.html).*
 
-# Join
+# Join and Join To
 
-Join (`∾`) is an extension of the monadic function [Raze](https://aplwiki.com/wiki/Raze) from A+ and J to arbitrary argument ranks. It has the same relationship to Join to, the dyadic function sharing the same glyph, as [Merge](couple.md) (`>`) does to Couple (`≍`): `a≍b` is `>a‿b` and `a∾b` is `∾a‿b`. While Merge and Couple combine arrays (the elements of Merge's argument, or the arguments themselves for Couple) along a new leading axis, Join and Join to combine them along the existing leading axis. Both Merge and Join can also be called on a higher-rank array, causing Merge to add multiple leading axes while Join combines elements along multiple existing axes.
+The glyph `∾` combines arrays along an existing axis, a concept that other languages might call "concatenation" or "catenation" but BQN names "Join". The one-argument form Join and two-argument form Join To are parallel to the [functions that combine arrays along a new axis](couple.md), Merge (`>`) and Couple (`≍`).
+
+## Join To
+
+Join To connects its two arguments together, for example to join two strings:
+
+        "abcd" ∾ "EFG"
+
+If the arguments have the same rank, then they are combined along the first axis: the result is an array whose major cells are the major cells of `𝕨` followed by the major cells of `𝕩`. For arrays with rank two or more, this means they will be joined "vertically" according to BQN's display.
+
+        ⊢ a ← 3 +⌜○↕ 4
+        ⊢ b ← 2‿4 ⥊ ↕8
+        a ∾ b
+
+For this definition to work, major cells of `𝕨` and `𝕩` have to have the same shape. That means that `𝕨≡○(1↓≢)𝕩`, and the shape of the result is the sum of the lengths of `𝕨` and `𝕩` followed by their shared major cell shape: to use a self-referential definition, the final shape is given by `+○≠ ∾ ⊣⁼○(1↓≢)` for arguments of equal rank.
+
+        a ∾ 2‿5⥊b
+
+Join To will also allow arguments with ranks that are one apart. In this case, the smaller-rank argument is treated as a major cell in its entirety. If for example `𝕨<○=𝕩`, then we must have `(≢𝕨)≡1↓≢𝕩`, and the result shape is `1⊸+⌾⊑≢𝕩`.
+
+        4‿2‿3‿0 ∾ a
+
+An edge case for Join To is that it can also be applied to two units to make a list:
+
+        3 ∾ 'c'
+
+This case is unusual because the rank of the result is higher than that of either argument. It's also identical to Couple (`≍`); Couple should be preferred because it doesn't require a special case for this situation. See [coupling units](couple.md#coupling-units).
+
+## Join
+
+The monadic form of `∾`, called simply Join, is more complicated than Join To because it really takes not just one argument but an entire array of them. Join is an extension of the monadic function [Raze](https://aplwiki.com/wiki/Raze) from A+ and J to arbitrary argument ranks. It has the same relationship to Join to, the dyadic function sharing the same glyph, as [Merge](couple.md) (`>`) does to Couple (`≍`): `a≍b` is `>a‿b` and `a∾b` is `∾a‿b`. While Merge and Couple combine arrays (the elements of Merge's argument, or the arguments themselves for Couple) along a new leading axis, Join and Join to combine them along the existing leading axis. Both Merge and Join can also be called on a higher-rank array, causing Merge to add multiple leading axes while Join combines elements along multiple existing axes.
 
 Join can be used to combine several strings into a single string, like `array.join()` in Javascript (but it doesn't force the result to be a string).
 

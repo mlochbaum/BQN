@@ -33,7 +33,7 @@ Functions that have significant differences from APL functions are marked with a
 | `⊣`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Left](https://aplwiki.com/wiki/Identity)
 | `⊢`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Right](https://aplwiki.com/wiki/Identity)
 | `⥊`   | [Deshape](reshape.md)                               | [Reshape](reshape.md)*
-| `∾`   | [Join](join.md)*                                    | [Join to](https://aplwiki.com/wiki/Catenate)
+| `∾`   | [Join](join.md)*                                    | [Join to](join.md)
 | `≍`   | [Solo](couple.md)*                                  | [Couple](couple.md)*
 | `↑`   | [Prefixes](prefixes.md)*                            | [Take](https://aplwiki.com/wiki/Take)
 | `↓`   | [Suffixes](prefixes.md)*                            | [Drop](https://aplwiki.com/wiki/Drop)
