@@ -412,7 +412,7 @@ Markdown ← {filename𝕊𝕩:
     lInds +⎉1↩ 1‿0‿1‿0
     unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
     linkGroup ← 1 -˜ (1‿0⥊˜≢)⊸(/ (⊣×>)○(+`I2M) ¬⊸/) ⥊lInds
-    links ← ProcLink¨˝˘ (lInds≠⊸∾2) (⊣⥊×´⊸↑) linkGroup ⊔ 𝕩
+    links ← ProcLink¨˝˘ (lInds≠⊸≍2) (⊣⥊×´⊸↑) linkGroup ⊔ 𝕩
 
     # Emphasis (still rudimentary)
     eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
@@ -614,7 +614,7 @@ GetHighlights ← {
 GetMultiHighlights ← {
   start ← »⊸< 𝕨
   groups ← (1 -˜ 𝕨 × +` start) ⊔ 𝕩
-  <∘∾˘ ⍉ ((≠∾2˙) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
+  <∘∾˘ ⍉ ((≠≍2˙) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
 }
 
 
