@@ -71,7 +71,7 @@ Tokenize←{
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
   t{ie/˜↩𝕨⋄𝕨Fs𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep            # Remove the rest
-  r←ir⌾((t M vi∾≠⊑k)⊸/)(vi⌊t)⊏charRole∾0    # Role
+  r←ir⌾((t M vi≍≠⊑k)⊸/)(vi⌊t)⊏charRole∾0    # Role
   t+↩5×t M⟨⊑bI,5⟩                           # Case-insensitive special names
   ⟨t,r,k,is,ie⟩
 }
