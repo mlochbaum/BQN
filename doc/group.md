@@ -72,12 +72,12 @@ The obvious application of Group is to group some values according to a known or
 If we would like a particular index to key correspondence, we can use a fixed left argument to Index Of.
 
         countries ← "IT"‿"JP"‿"NO"‿"SU"‿"US"
-        countries ∾˘ co countries⊸⊐⊸⊔ ln
+        countries ≍˘ co countries⊸⊐⊸⊔ ln
 
 However, this solution will fail if there are trailing keys with no values. To force the result to have a particular length you can append that length as a dummy index to each argument, then remove the last group after grouping.
 
         countries ↩ "IT"‿"JP"‿"NO"‿"SU"‿"US"‿"ZW"
-        countries ∾˘ co countries{𝕗⊸⊐⊸(¯1↓⊔○(∾⟜(≠𝕗)))} ln
+        countries ≍˘ co countries{𝕗⊸⊐⊸(¯1↓⊔○(∾⟜(≠𝕗)))} ln
 
 ### Partitioning
 

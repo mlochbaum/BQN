@@ -151,7 +151,7 @@ Like any function, this one can be given a name and then called. A quirk of this
 
 Another, and probably more common, use of arrays of functions is to apply several different functions to one or more arguments. Here we apply three different functions to the number 9:
 
-        ⟨√, 2⊸∾, ⊢-⋆⟩ {𝕎𝕩}¨ 9
+        ⟨√, 2⊸≍, ⊢-⋆⟩ {𝕎𝕩}¨ 9
 
 The 2-modifier Choose (`◶`) relies on arrays of functions to… function. It's very closely related to Pick `⊑`, and in fact when the left operand and the elements of the right operand are all data there's no real difference: Choose returns the constant function `𝕗⊑𝕘`.
 

@@ -39,7 +39,7 @@ Of these, `𝕣` is sort of a "more special" character, as we'll discuss below. 
 The names `𝕨` and `𝕩`, and their uppercase spellings, represent function arguments. As the argument to a function is typically data, it's more common to use the lowercase forms for these. Either of these names will turn an immediate block into a function (or an immediate modifier into a deferred one; see the next section). Instead of being evaluated as soon as it appears in the source, a function is evaluated when it's called, with the special names set to appropriate values. Unlike in Dyalog APL's dfns, their values can be changed like ordinary variables.
 
         {'c'=𝕩} "abcd"
-        { 𝕩+↩2 ⋄ 0∾𝕩 } 3
+        { 𝕩+↩2 ⋄ 0≍𝕩 } 3
         4 { ⟨𝕩⋄-𝕨⟩ } 5
 
 A function with `𝕨` in its definition doesn't have to be called with two arguments. If it has only one, then `𝕨` is given the special value Nothing `·`. This is the only time a variable can ever be Nothing, as an assignment such as `v←·` is not allowed.
