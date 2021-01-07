@@ -10,9 +10,11 @@ For the specified cases, the given functions and modifiers refer to those partic
 
 When monadic Fold (`´`) or Insert (`˝`) is called on an array of length 0, BQN attempts to infer a right identity value for the function in order to determine the result. A right identity value for a dyadic function `𝔽` is a value `r` such that `e≡e𝔽r` for any element `e` in the domain. For such a value `r`, the reduction `r 𝔽´ l` is equivalent to `𝔽´ l` for a non-empty list `l`, because the first application `(¯1⊑l) 𝔽 r` gives `¯1⊑l`, which is the starting point when no initial value is given. It's thus reasonable to define `𝔽´ l` to be `r 𝔽´ l` for an empty list `l` as well, giving a result `r`.
 
-More specifically, the identity of a dyadic function `𝔽` is defined to be a right identity value for the *range* of `𝔽`, if exactly one such value exists. Otherwise, there is no identity and `𝔽´` or `𝔽˝` on an argument with length 0 results in an error.
+For Fold, the result of `𝔽´` on an empty list is defined to be a right identity value for the *range* of `𝔽`, if exactly one such value exists. If an identity can't be proven to uniquely exist, then an error results.
 
-Identity values for the arithmetic primitives below must be recognized.
+For Insert, `𝔽˝` on an array of length 0 is defined similarly, but also depends on the cell shape `1↓≢𝕩`. The required domain is the arrays of that shape that also lie in the range of `𝔽` (over arbitrary arguments, not shape-restricted ones).
+
+Identity values for the arithmetic primitives below must be recognized. Under Fold, the result is the given identity value, while under Insert, it is the identity value reshaped to the argument's cell shape.
 
 | Id   | Fn  | Fn  | Id   |
 |-----:|:---:|:---:|-----:|
@@ -23,6 +25,8 @@ Identity values for the arithmetic primitives below must be recognized.
 |  `0` | `∨` | `∧` |  `1` |
 |  `0` | `≠` | `=` |  `1` |
 |  `0` | `>` | `≥` |  `1` |
+
+Additionally, the identity of `∾˝` must be recognized: if `0=≠𝕩`, then `∾˝𝕩` is `(0∾2↓≢𝕩)⥊𝕩`.
 
 ## Undo
 
