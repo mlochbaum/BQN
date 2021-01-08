@@ -12,7 +12,7 @@ When monadic Fold (`´`) or Insert (`˝`) is called on an array of length 0, BQN
 
 For Fold, the result of `𝔽´` on an empty list is defined to be a right identity value for the *range* of `𝔽`, if exactly one such value exists. If an identity can't be proven to uniquely exist, then an error results.
 
-For Insert, `𝔽˝` on an array of length 0 is defined similarly, but also depends on the cell shape `1↓≢𝕩`. The required domain is the arrays of that shape that also lie in the range of `𝔽` (over arbitrary arguments, not shape-restricted ones).
+For Insert, `𝔽˝` on an array of length 0 is defined similarly, but also depends on the cell shape `1↓≢𝕩`. The required domain is the arrays of that shape that also lie in the range of `𝔽` (over arbitrary arguments, not shape-restricted ones). Furthermore, an identity may be unique among all possible arguments as in the case of Fold, or it may be an array with shape `1↓≢𝕩` and be unique among arrays with that shape. For example, with cell shape `3‿2`, all of `0`, `2⥊0`, and `3‿2⥊0` are identities for `+`, but `3‿2⥊0` can be used because it is the only indentity with shape `3‿2`, while the other identities aren't unique and can't be used.
 
 Identity values for the arithmetic primitives below must be recognized. Under Fold, the result is the given identity value, while under Insert, it is the identity value reshaped to the argument's cell shape.
 
