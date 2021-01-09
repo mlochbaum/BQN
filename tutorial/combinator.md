@@ -195,7 +195,7 @@ Here are the diagrams for Before and After: as promised, they're not symmetrical
 DrawComp ≍"⊸⟜"
 -->
 
-What about the one-argument case? The structure of application is exactly the same, except that there's only one argument available, so it's used in both input positions. If I describe it that way, it sounds like lazy design, but the ability to use one argument in two ways makes the one-argument versions of Before and After even more useful than the two-argument ones. For example, consider the function `y = x×(1-x)`, which gives a parabola that's equal to 0 at 0 and 1, and peaks between them when x is 0.5. Remembering that Span (`¬`) is defined so that `¬x` is `1-x`, we can write this function as either `¬⊸×` or `×⟜¬`.
+What about the one-argument case? The structure of application is exactly the same, except that there's only one argument available, so it's used in both input positions. If I describe it that way, it sounds like lazy design, but the ability to use one argument in two ways makes the one-argument versions of Before and After even more useful than the two-argument ones. For example, consider the function `y = x×(1-x)`, which gives a parabola that's equal to 0 at 0 and 1, and peaks between them when x is 0.5. The function Not (`¬`, which we'll discuss in a later tutorial) is defined so that `¬x` is `1-x`, which conveniently allows us to write this function as either `¬⊸×` or `×⟜¬`.
 
         ¬⊸× 0.5
 
