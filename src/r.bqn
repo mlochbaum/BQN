@@ -399,7 +399,11 @@ _rankOp_←{
 _insert←{
   "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
   F←𝔽
-  Id ← {s←1 Drop ≢𝕩 ⋄ s joinPrim˙⊸≠◶⟨(0<↕∘≠)⊸×⊸⥊⟜⟨⟩, Reshape⟜Identity⟩ f}
+  Id ← {
+    s ← 1 Drop ≢𝕩
+    JoinSh ← {"˝: Identity does not exist"!0<≠𝕨 ⋄ 𝕨×0<↕≠𝕨}
+    s joinPrim˙⊸≠◶⟨JoinSh⥊𝕩˙, Reshape⟜Identity⟩ f
+  }
   𝕨 (0<≠)⊘1◶Id‿{𝕨F´<˘𝕩} 𝕩
 }
 ˝ ← _insert

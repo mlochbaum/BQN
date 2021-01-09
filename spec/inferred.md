@@ -26,7 +26,7 @@ Identity values for the arithmetic primitives below must be recognized. Under Fo
 |  `0` | `≠` | `=` |  `1` |
 |  `0` | `>` | `≥` |  `1` |
 
-Additionally, the identity of `∾˝` must be recognized: if `0=≠𝕩`, then `∾˝𝕩` is `(0∾2↓≢𝕩)⥊𝕩`.
+Additionally, the identity of `∾˝` must be recognized: if `0=≠𝕩` and `1<=𝕩`, then `∾˝𝕩` is `(0∾2↓≢𝕩)⥊𝕩`. If `1==𝕩`, then there is no identity element, as the result of `∾` always has rank at least 1, but the cell rank is 0.
 
 ## Undo
 
