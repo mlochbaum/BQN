@@ -26,5 +26,5 @@ if (onfiles || args.length==0) {
       : "All "+test.length+" passed!"
   );
 } else {
-  console.log(args.map(bqn));
+  args.map(a=>console.log(bqn.fmt(bqn(a))));
 }

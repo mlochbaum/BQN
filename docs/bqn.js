@@ -233,4 +233,7 @@ let fmt1 = run(
 )(list([type, decompose, glyph, fmtnum]));
 let fmt = x => fmt1(x).map(c=>c===0?" ":c).join("");
 
-if(typeof module!=='undefined'){module.exports=bqn;}
+if (typeof module!=='undefined') {
+  bqn.fmt=fmt; bqn.compile=compile; bqn.run=run;
+  module.exports=bqn;
+}
