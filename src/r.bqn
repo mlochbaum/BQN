@@ -165,11 +165,11 @@ First ← (0<≠)◶⟨GetFill,0⊸⊑⟩ Deshape
 
 ¨ ↩ {𝕨(𝔽⌜)⊘(𝔽_eachd)○ToArray𝕩}
 
+StructErr←{𝕩}
+IsStructErr ← (3=Type)◶⟨0,StructErr˙⊸=⟩
 _under_←{
-  i←↕l←1×´s←≢𝕩
   v←𝕨𝔽○𝔾𝕩 ⋄ root‿elem←𝔾_structural 𝕩
   Captures←IsArray∘⊣◶⟨1, {𝕨◶0‿𝕩}´⟨IsArray⊢, =○=, 1×´=¨○≢, {1×´⥊𝕨Captures¨𝕩}⟩⟩
-  ! elem Captures v
   Set←{
     Set1←𝕨⊸{
       i←↕l←1×´s←≢𝕩
@@ -183,7 +183,8 @@ _under_←{
     _at_←{(𝔾{𝕨⊸=⌜𝕩}↕∘≠) 𝔽⍟⊣¨ ⊢}
     0 { (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩𝕩 } 𝕩
   }
-  elem (IsArray root)◶⟨v˙_perv elem˙, Set⟩ 𝕩
+  Struct ← elem IsArray∘root◶⟨{𝕨𝕊○First⍟(IsArray⊣)𝕩}⟜(v˙), Set⟩ ⊢
+  elem IsStructErr∘⊣◶⟨Captures⟜(v˙),0⟩◶⟨{𝕏v}·Inverse𝔾˙,Struct⟩ 𝕩
 }
 
 match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
@@ -713,8 +714,17 @@ FuncInverse ← (⊑ ⊣◶⟨
 Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
 ⁼ ↩ {𝕗 (≢∧INF˙⊸≢)◶0‿(5‿_inv_≢0‿¯2⊏Decompose∘⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
 
+Recompose ← ⊣◶⟨
+  ⊢                  # 0 primitive
+  ⊢                  # 1 block
+  {𝕎𝕏}´⊢             # 2-train
+  {F‿G‿H←𝕩⋄F G H}    # 3-train
+  {F‿m←𝕩⋄F _m}       # 4 1-modifier
+  {F‿m‿G←𝕩⋄F _m_ G}  # 5 2-modifier
+⟩
 _structural←{
-  Inds ← ⥊⟜(↕1×´⊢)∘≢ 𝕩⊑⟜⥊´⌽
+  E←StructErr˙
+  Inds ← ⥊⟜(↕1×´⊢)∘≢⍟(¬IsStructErr) 𝕩 IsArray∘⊢◶⟨E,⊑⟜⥊⟩´ ⌽
   _s_ ← {
     f←𝕗
     st‿d‿o←𝕩
@@ -724,5 +734,31 @@ _structural←{
   IsStruct ← 5‿s ≡ 0‿¯2⊏Decompose
   _sfn ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕨‿𝕗{𝕨𝕏𝕗}⟩}
   Depth←1 _sfn ⋄ Info←0 _sfn
-  1‿3 ⊏ Decompose {𝕎𝕩}´ ⟨1 Depth 𝕗, ¯1 _s_ 0⟩
+
+  Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
+  SE ← {⊢⊘∨○IsStructErr◶⟨𝕏,StructErr˙⟩}⍟(3≥Type)
+  _lk_ ← {
+    s ← 2×↕(≠𝕘)÷2
+    p ← ⥊¨s⊏𝕘
+    (⊑(∾p)⊐<)◶((p≠¨⊸/(1+s)⊏𝕘)∾⟨𝕗⟩)
+  }
+  StructPrim ← (3=Type)◶⟨E˙,{⊢⊘∨○IsStruct◶⟨𝕏,StructErr˙⟩}⟩ _lk_ ⟨
+    ⊢‿⊣‿˜‿∘‿○‿⊸‿⟜‿⊘‿◶, ⊢
+    =‿≠‿≢            , Mon 1⊸Info
+    <                , Mon 0⊸Depth
+    ≍                , Mon 1⊸Depth  # Dyad combines
+    ↕‿/‿»‿«‿⊔        , Dy  1⊸Depth
+    ⥊‿↑‿↓‿⌽‿⍉‿⊏‿⊑    ,     1⊸Depth
+  # >                , Mon 2⊸Depth
+  # ∾                , Mon 2⊸Depth  # Dyad combines
+  # ˘⎉¨⌜
+  # ⚇
+  ⟩
+  StructFn ← (⊑ ⌊⟜2◶⟨
+    SE · StructPrim ⊑∘⊢     #  0 primitive
+    StructErr˙              #  1 block
+    Recompose⟜{StructFn¨𝕩}  #    other operation
+    SE ⊑∘⊢                  # ¯1 constant
+  ⟩ 1⊸↓) Decompose
+  IsStruct◶⟨@‿StructErr,1‿3⊏Decompose⟩ {𝕎𝕩}´ ⟨StructFn 𝕗, ¯1 _s_ 0⟩
 }
