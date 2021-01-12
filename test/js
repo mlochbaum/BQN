@@ -26,5 +26,11 @@ if (onfiles || args.length==0) {
       : "All "+test.length+" passed!"
   );
 } else {
-  args.map(a=>console.log(bqn.fmt(bqn(a))));
+  args.map(a=>{
+    try {
+      console.log(bqn.fmt(bqn(a)))
+    } catch(e) {
+      console.error('[31m'+bqn.fmtErr(Array.from(a),e)+'[39m');
+    }
+  });
 }
