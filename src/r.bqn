@@ -186,6 +186,49 @@ _under_←{
   Struct ← elem IsArray∘root◶⟨{𝕨𝕊○First⍟(IsArray⊣)𝕩}⟜(v˙), Set⟩ ⊢
   elem IsStructErr∘⊣◶⟨Captures⟜(v˙),0⟩◶⟨{𝕏v}·Inverse𝔾˙,Struct⟩ 𝕩
 }
+Recompose ← ⊣◶⟨
+  ⊢                  # 0 primitive
+  ⊢                  # 1 block
+  {𝕎𝕏}´⊢             # 2-train
+  {F‿G‿H←𝕩⋄F G H}    # 3-train
+  {F‿m←𝕩⋄F _m}       # 4 1-modifier
+  {F‿m‿G←𝕩⋄F _m_ G}  # 5 2-modifier
+⟩
+_structural←{
+  E←StructErr˙
+  Inds ← ⥊⟜(↕1×´⊢)∘≢⍟(1-IsStructErr) 𝕩 IsArray∘⊢◶⟨E,⊑⟜⥊⟩´ Reverse
+  _s_ ← {
+    f←𝕗
+    st‿d‿o←𝕩
+    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩}⍟(d>IsArray) 𝕘
+    {f _s_ 𝕩}⍟o g
+  }
+  IsStruct ← (5=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ Decompose
+  _sfn ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕨‿𝕗{𝕨𝕏𝕗}⟩}
+  Depth←1 _sfn ⋄ Info←0 _sfn
+
+  Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
+  _errIf←{⊢⊘×○(1-𝔽)◶⟨StructErr˙,𝕏⟩}
+  SE ← IsStructErr _errIf⍟(3≥Type)
+  StructPrim ← ⊢ {𝕏𝕨} StructPrimClass ⊑ ⟨
+    ⊢            # ⊢⊣˜∘○⊸⟜⊘◶
+    Mon 1⊸Info   # =≠≢
+    Mon 0⊸Depth  # <
+    Mon 1⊸Depth  # ≍         # Dyad combines
+    Dy  1⊸Depth  # ↕/»«⊔
+        1⊸Depth  # ⥊↑↓⌽⍉⊏⊑
+  # Mon 2⊸Depth  # >
+  # Mon 2⊸Depth  # ∾         # Dyad combines
+    (3=Type)◶⟨E˙, IsStruct _errIf⟩
+  ⟩˙
+  StructFn ← (0⊸⊑ 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘⊣◶⟨
+    SE · StructPrim 0⊑⊢     #  0 primitive
+    StructErr˙              #  1 block
+    Recompose⟜{StructFn¨𝕩}  #    other operation
+    SE 0⊑⊢                  # ¯1 constant
+  ⟩ 1⊸Drop) Decompose
+  IsStruct◶⟨0‿StructErr,1‿3⊏Decompose⟩ {𝕎𝕩}´ ⟨StructFn 𝕗, ¯1 _s_ 0⟩
+}
 
 match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨=○IsArray, 0⟩
@@ -714,14 +757,6 @@ FuncInverse ← (⊑ ⊣◶⟨
 Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
 ⁼ ↩ {𝕗 (≢∧INF˙⊸≢)◶0‿(5‿_inv_≢0‿¯2⊏Decompose∘⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
 
-Recompose ← ⊣◶⟨
-  ⊢                  # 0 primitive
-  ⊢                  # 1 block
-  {𝕎𝕏}´⊢             # 2-train
-  {F‿G‿H←𝕩⋄F G H}    # 3-train
-  {F‿m←𝕩⋄F _m}       # 4 1-modifier
-  {F‿m‿G←𝕩⋄F _m_ G}  # 5 2-modifier
-⟩
 structPrimClass ← {((/∾≠)≠¨𝕩)⊑˜·⊑(∾𝕩)⊐<} ⥊¨ ⟨
   ⊢‿⊣‿˜‿∘‿○‿⊸‿⟜‿⊘‿◶
   =‿≠‿≢
@@ -734,37 +769,3 @@ structPrimClass ← {((/∾≠)≠¨𝕩)⊑˜·⊑(∾𝕩)⊐<} ⥊¨ ⟨
 # ˘⎉¨⌜
 # ⚇
 ⟩
-_structural←{
-  E←StructErr˙
-  Inds ← ⥊⟜(↕1×´⊢)∘≢⍟(¬IsStructErr) 𝕩 IsArray∘⊢◶⟨E,⊑⟜⥊⟩´ ⌽
-  _s_ ← {
-    f←𝕗
-    st‿d‿o←𝕩
-    g←𝕨 St Inds∘{f↩f(¯1≢⊣)◶⟨⟩‿∾𝕩}⍟(d>IsArray) 𝕘
-    {f _s_ 𝕩}⍟o g
-  }
-  IsStruct ← 5‿s ≡ 0‿¯2⊏Decompose
-  _sfn ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕨‿𝕗{𝕨𝕏𝕗}⟩}
-  Depth←1 _sfn ⋄ Info←0 _sfn
-
-  Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
-  SE ← {⊢⊘∨○IsStructErr◶⟨𝕏,StructErr˙⟩}⍟(3≥Type)
-  StructPrim ← ⊢ {𝕏𝕨} StructPrimClass ⊑ ⟨
-    ⊢            # ⊢⊣˜∘○⊸⟜⊘◶
-    Mon 1⊸Info   # =≠≢
-    Mon 0⊸Depth  # <
-    Mon 1⊸Depth  # ≍         # Dyad combines
-    Dy  1⊸Depth  # ↕/»«⊔
-        1⊸Depth  # ⥊↑↓⌽⍉⊏⊑
-  # Mon 2⊸Depth  # >
-  # Mon 2⊸Depth  # ∾         # Dyad combines
-    (3=Type)◶⟨E˙,{⊢⊘∨○IsStruct◶⟨𝕏,StructErr˙⟩}⟩
-  ⟩˙
-  StructFn ← (⊑ ⌊⟜2◶⟨
-    SE · StructPrim ⊑∘⊢     #  0 primitive
-    StructErr˙              #  1 block
-    Recompose⟜{StructFn¨𝕩}  #    other operation
-    SE ⊑∘⊢                  # ¯1 constant
-  ⟩ 1⊸↓) Decompose
-  IsStruct◶⟨0‿StructErr,1‿3⊏Decompose⟩ {𝕎𝕩}´ ⟨StructFn 𝕗, ¯1 _s_ 0⟩
-}
