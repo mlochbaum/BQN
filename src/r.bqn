@@ -208,7 +208,7 @@ _structural←{
   Depth←1 _sfn ⋄ Info←0 _sfn
 
   Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
-  _errIf←{⊢⊘×○(1-𝔽)◶⟨StructErr˙,𝕏⟩}
+  _errIf←{⊢⊘×○(1-𝔽)◶⟨E,𝕏⟩}
   SE ← IsStructErr _errIf⍟(3≥Type)
   NS ← IsStruct _errIf
   StructPrim ← ⊢ {𝕏𝕨} StructPrimClass ⊑ ⟨
@@ -224,7 +224,7 @@ _structural←{
   ⟩˙
   StructFn ← (0⊸⊑ 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘⊣◶⟨
     SE · StructPrim 0⊑⊢     #  0 primitive
-    StructErr˙              #  1 block
+    E˙                      #  1 block
     Recompose⟜{StructFn¨𝕩}  #    other operation
     SE 0⊑⊢                  # ¯1 constant
   ⟩ 1⊸Drop) Decompose
