@@ -210,6 +210,7 @@ _structural←{
   Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
   _errIf←{⊢⊘×○(1-𝔽)◶⟨StructErr˙,𝕏⟩}
   SE ← IsStructErr _errIf⍟(3≥Type)
+  NS ← IsStruct _errIf
   StructPrim ← ⊢ {𝕏𝕨} StructPrimClass ⊑ ⟨
     ⊢            # ⊢⊣˜∘○⊸⟜⊘◶
     Mon 1⊸Info   # =≠≢
@@ -219,7 +220,7 @@ _structural←{
         1⊸Depth  # ⥊↑↓⌽⍉⊏⊑
   # Mon 2⊸Depth  # >
   # Mon 2⊸Depth  # ∾         # Dyad combines
-    (3=Type)◶⟨E˙, IsStruct _errIf⟩
+    (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩
   ⟩˙
   StructFn ← (0⊸⊑ 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘⊣◶⟨
     SE · StructPrim 0⊑⊢     #  0 primitive
