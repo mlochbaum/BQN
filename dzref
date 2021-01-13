@@ -26,10 +26,9 @@ _depthOp_←{
 #⌜
 # LAYER 5: Structural functions
 
-Nat←IsArray◶⟨0⊸≤∧⌊⊸=,0⟩
-
 Windows←{
-  ! IsArray 𝕩
+  Nat←(1=•Type)◶⟨0,0⊸≤∧⌊⊸=⟩
+  ! 0=•Type 𝕩
   ! 1≥=𝕨
   ! 𝕨≤○≠≢𝕩
   ! ∧´Nat¨⥊𝕨
@@ -95,11 +94,7 @@ _withRef ← ˙
   }
 
   # built-in assumptions
-  Mod ← {((⊑chr⊐𝕨)⊑names) ∾ " ← " ∾ 𝕩}
-
-  Raw¨ ⟨
-    "IsArray ← 0≠≡"
-  ⟩∾Mod⟜⥊¨ "↕⊐"
+  (Raw (chr⊸⊐⌾<⊑names˙)∾" ← "∾⥊)¨ "↕⊐"
   chr∾↩"⍎" ⋄ names∾↩⟨"⍎_withRef "⟩
 
 
