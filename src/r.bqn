@@ -168,24 +168,38 @@ First ← (0<≠)◶⟨GetFill,0⊸⊑⟩ Deshape
 StructErr←{𝕩}
 IsStructErr ← (3=Type)◶⟨0,StructErr˙⊸=⟩
 _under_←{
-  v←𝕨𝔽○𝔾𝕩 ⋄ root‿elem←𝔾_structural 𝕩
-  Captures←IsArray∘⊣◶⟨1, {𝕨◶0‿𝕩}´⟨IsArray⊢, =○=, 1×´=¨○≢, {1×´⥊𝕨Captures¨𝕩}⟩⟩
-  Set←{
+  val←𝕨𝔽○𝔾𝕩 ⋄ root‿ind←𝔾_structural 𝕩
+  # Traverse indices 𝕩 and values 𝕨.
+  # Return a list of index‿value pairs, or structErr if 𝕨 doesn't capture 𝕩.
+  GetInserts←{
+    conform ← {𝕨◶0‿𝕩}´⟨IsArray⊢, =○=, 1×´=¨○≢⟩
+    Fail←{𝕊‿0}
+    # 𝕎 is parent traversal; 𝕩 is current components of ind and val
+    Trav←(IsArray 0⊑⊢)◶⟨Pair, Conform´∘⊢◶Fail‿{
+      Parent←𝕎 ⋄ n←≠⊑a←⥊¨𝕩 ⋄ j←¯1
+      Child←Trav⟜(⊑¨⟜a)
+      { j+↩1 ⋄ f←n⊸≤◶⟨𝕊˙⊸Child,Parent˙⟩j ⋄ F 0 }
+    }⟩
+    count←0⋄{IsArray◶⟨{𝕩⋄count+↩1},𝕊⌜⟩𝕩}𝕩
+    next ← 0 Trav 𝕩‿𝕨
+    res ← {n‿o←Next𝕩⋄next↩n⋄o}⌜ ↕count
+    StructErr˙⍟(next=fail) res
+  }⍟(1-IsStructErr∘⊢)
+  Struct←{
     Set1←𝕨⊸{
       𝕩↩<⍟(1-IsArray)𝕩
-      i←↕l←1×´s←≢𝕩
-      nv‿gi←((IsArray 𝕨)⊑{⟨𝕩⟩}‿⥊)¨ v‿𝕨
-      ! 1×´Nat⌜gi
+      l←1×´s←≢𝕩
+      gi←0⊸⊑⌜𝕨⋄nv←1⊸⊑⌜𝕨
       g←Cmp0 _grade_ 0 gi
       P←(≠g)⊸≤◶⟨(⊑⟜g)⊑gi˙,l⟩
       e←P j←0
-      s⥊{e=𝕩}◶⟨⊑⟜(⥊𝕩),{𝕩⋄r←(j⊑g)⊑nv⋄e↩P j↩1+j⋄r}⟩⌜i
+      s⥊{e=𝕩}◶⟨⊑⟜(⥊𝕩),{𝕩⋄r←(j⊑g)⊑nv⋄e↩P j↩1+j⋄r}⟩⌜↕l
     }
-    _at_←{(𝔾{𝕨⊸=⌜𝕩}↕∘≠) 𝔽⍟⊣¨ ⊢}
-    0 { (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩𝕩 } 𝕩
+    _at_ ← {(↕≠𝕩) 𝔽⍟((𝔾𝕩)=⊣)¨ 𝕩}
+    Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
+    IsArray∘root◶⟨1⊑0⊑𝕨˙, Set⟩ 𝕩
   }
-  Struct ← elem IsArray∘root◶⟨{𝕨𝕊○First⍟(IsArray⊣)𝕩}⟜(v˙), Set⟩ ⊢
-  elem IsStructErr∘⊣◶⟨Captures⟜(v˙),0⟩◶⟨{𝕏v}·Inverse𝔾˙,Struct⟩ 𝕩
+  IsStructErr◶⟨Struct⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val GetInserts ind
 }
 Recompose ← ⊣◶⟨
   ⊢                  # 0 primitive
