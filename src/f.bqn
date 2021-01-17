@@ -88,6 +88,7 @@
     Paren ← "("∾∾⟜")"
     FromComp ← ∾(⌽⍟(p>1)·-0=↕∘≠)(+⟜⊑Paren∘⊢⍟((2⌊p)≤⊣)1⊸⊑)⟜FmtComp¨⊢
     s ← (2⌊k)◶⟨⥊∘FF𝕩˙,(𝕨-2)◶tn,FromComp⟩ 1↓d
+    s ↩ ∾⟜"{𝔽}"⍟(3>·Type ¯1⊑d˙)⍟(2≤p) s
     p‿s
   }
 
