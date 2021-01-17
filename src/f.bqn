@@ -77,7 +77,7 @@
   }
 
   # Format data type
-  FmtDat ← (2⌊≡)◶⟨FmtAtom,(∧´∘⥊3≤Type⌜)◶FmtSimple‿FmtMixed,FmtMixed⟩
+  FmtDat ← (2⌊≡)◶⟨FmtAtom,(∨´∘⥊3≤Type⌜)◶FmtSimple‿FmtMixed,FmtMixed⟩
 
   # Format part of a compound operation; return precedence‿string
   FmtOp ← {
