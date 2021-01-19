@@ -394,6 +394,7 @@ GroupInds←{
 IndexOf←{
   c←1-˜=𝕨
   ! 0≤c
+  ! c≤=𝕩
   𝕨 (0<≠𝕨)◶⟨0⎉c∘⊢,(+˝∧`)≢⎉c⎉c‿∞⟩ 𝕩
 }
 UniqueMask←{
