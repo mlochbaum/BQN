@@ -656,7 +656,12 @@ ReorderAxesInv←{
 ⍉ ← Transpose      ⊘ ReorderAxes
 
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
-ProgressiveIndexOf ← {𝕨⊐○((≠∾2˙)⥊·≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
+ProgressiveIndexOf ← {
+  c←1-˜=𝕨
+  "⊒: Rank of 𝕨 must be at least 1" ! 0≤c
+  "⊒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
+  𝕨⊐○(((≢∾2˙)⥊≍˘⟜OccurrenceCount∘⥊) 𝕨⊸⊐)𝕩
+}
 
 ⊏ ← FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1))
 ⊑ ↩ First          ⊘ Pick

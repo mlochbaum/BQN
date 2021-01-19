@@ -449,4 +449,4 @@ _bins←{
 }
 
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
-ProgressiveIndexOf ← {𝕨⊐○(≍˘⟜OccurrenceCount𝕨⊸⊐)𝕩}
+ProgressiveIndexOf ← {𝕨⊐○(((≢∾2˙)⥊≍˘⟜OccurrenceCount∘⥊)𝕨⊸⊐)𝕩}
