@@ -70,7 +70,11 @@ _eachd←{
 
 _perv←{ # Pervasion
   R←𝔽{𝕨𝔽_perv𝕩}
-  +○IsArray◶⟨𝔽⋄R⌜⊘(>○IsArray◶{𝕨{𝕗R𝕩}⌜𝕩}‿{𝕩{𝕩R𝕗}⌜𝕨})⋄R _eachd⟩
+  +○IsArray◶⟨
+    𝔽
+    R⌜⊘(>○IsArray◶{𝕨{𝕗R𝕩}⌜𝕩}‿{𝕩{𝕩R𝕗}⌜𝕨}) _fillBy_ R
+    R _eachd _fillBy_ R
+  ⟩
 }
 
 Cmp0 ← ≥-≤
