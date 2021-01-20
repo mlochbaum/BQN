@@ -268,11 +268,14 @@ Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 ≡ ← Depth          ⊘ Match
 ≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
 
+IF ← ⊢⊣!∘≡  # Intersect fill
+IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
+_fillMerge ← {𝔽 ⊣_fillBy_⊢ IEF}
 Merge←{
   c←≢0⊑⥊𝕩
   ">𝕩: Elements of 𝕩 must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
   𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
-}⍟(0<≠∘⥊)⍟IsArray
+}_fillMerge⍟(0<≠∘⥊)⍟IsArray
 
 Join1←{
   # List of lists
@@ -308,7 +311,7 @@ JoinM←{
 }
 Join←(2⌊=)◶⟨
   Merge, (1×´(1==)⌜)◶JoinM‿Join1, JoinM
-⟩⍟{"∾𝕩: 𝕩 must be an array" ! IsArray 𝕩 ⋄ 0<≠⥊𝕩}
+⟩_fillMerge⍟{"∾𝕩: 𝕩 must be an array" ! IsArray 𝕩 ⋄ 0<≠⥊𝕩}
 
 _takeDrop←{
   ⟨gl,Noop,_inds⟩←𝕗
@@ -498,7 +501,7 @@ JoinTo←∨○(1<=)◶(∾○⥊)‿{
   "𝕨∾𝕩: Cell shapes of 𝕨 and 𝕩 must match" ! ≡´c
   l←+´(a=k)⊣◶1‿(0⊑⊢)¨s
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
-} _fillBy_ (⊢⊣!∘≡)
+} _fillBy_ IF
 
 Rep ← Indices⊸⊏
 Replicate ← IsArray∘⊣◶{
@@ -633,7 +636,7 @@ Find←{
   0 Fill 𝕨 ≡⎉r (≢𝕨) ↕⎉r 𝕩
 }
 
-≍ ← >∘Pair _fillBy_ (⊢⊘(⊢⊣!∘≡))
+≍ ← >∘Pair _fillBy_ (⊢⊘IF)
 ∾ ↩ Join           ⊘ JoinTo
 ⊔ ← GroupInds      ⊘ GroupGen
 ⊐ ← SelfClas       ⊘ (1 _search)
