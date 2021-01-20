@@ -14,7 +14,7 @@ GetRT ← {𝕤:
     •Type           # Type
     Decompose       # Decompose
     glyphs⊑˜PrimInd # Glyph
-    ⊑⟨⟩⥊0⊸⥊         # GetFill
+    (⊑⟨⟩⥊0⊸⥊)⊘⊢     # Fill
     ⋆⁼              # Log
     ≠¨⊔             # GroupLen
     ∾⊔∘⊢            # GroupOrd
