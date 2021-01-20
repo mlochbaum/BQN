@@ -24,16 +24,17 @@ Inc ← {
 }
 
 # Required functionality passed in as an argument
-def ← ⟨"Type","Decompose","Glyph","Fill","Log","GroupLen","GroupOrd"⟩
+def ← ⟨"Type","Decompose","Glyph","Fill","Log","GroupLen","GroupOrd","_fillBy_"⟩
 keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘"
 len ⇐ def+○≠keep
 ki ← chr⊐keep
-kt ← (+`nc)(∾(def≠⊸»⊣)+⊔⟜⊒∘⍋)ki
+dt ← ⊔⟜⊒ (+´·∧`'_'=0‿¯1⊸⊏)¨ def
+ns ← » ne←+`nc
+kt ← ∾ (ns+≠¨dt) + ⊔⟜⊒ne⍋ki
 names ↩ (⥊¨kt⊏chr)⌾(ki⊸⊏)names
 
-
 E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩
-E_proc ← ({𝕨∘𝕩}´ {𝕨•_R_𝕩}⟜⥊¨⟜(≠↑chr˜) def)∘{
+E_proc ← ({𝕨∘𝕩}´ def {𝕨•_R_𝕩}⟜⥊¨ chr⊏˜∾ns+dt)∘{
   l←≠chr
   q←≠`𝕩='"' ⋄ q∨↩≠`q<𝕩=''' ⋄ f←¬∨`q<𝕩='#'
   ∾ (((l×f/q)+chr⊸⊐) (≥⟜l)◶⟨⊑⟜names,⥊∘⊢⟩¨ ⊢) f/𝕩

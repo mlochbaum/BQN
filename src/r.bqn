@@ -1,5 +1,6 @@
 # BQN runtime. Requires:
-# Type Decompose Glyph Fill Log GroupLen GroupOrd  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+# Type Decompose Glyph Fill Log GroupLen GroupOrd _fillBy_
+# !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
 Glyph
 
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
@@ -16,7 +17,7 @@ Glyph
 IsArray←0=Type
 Int←(1=Type)◶⟨0,⌊⊸=⟩
 Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
-Deshape←IsArray◶{⟨𝕩⟩}‿⥊
+Deshape←IsArray◶{𝕩Fill⟨𝕩⟩}‿⥊
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 Box ← {𝕩Fill⟨⟩⥊⟨𝕩⟩}
 ToArray ← Box⍟(1-IsArray)
@@ -48,7 +49,7 @@ GetCells←(1==∘⊢)◶{
   𝕨((⥊𝕩)⊑˜c⊸×⊸+)⌜s⥊↕c
 }‿{
   ⊑⟜𝕩⌜𝕨
-}
+} _fillBy_ ⊢
 ⊏ ← GetCells  # LIMITED to depth-1 natural number left argument
 
 _eachd←{
@@ -121,11 +122,11 @@ Indices←{
 Transpose←{
   l←≠𝕩 ⋄ m←1×´c←1 Cell 𝕩
   (c⥊↕m)(+⟜(m⊸×)⊑(⥊𝕩)˙)⌜↕l
-}⍟(0<=)
+}_fillBy_⊢⍟(0<=)
 TransposeInv←{
   r←1-˜=𝕩 ⋄ s←≢𝕩 ⋄ l←r⊑s ⋄ c←⊑⟜s⌜↕r
   (↕l)(+⟜(l⊸×)⊑(⥊𝕩)˙)⌜c⥊↕1×´c
-}⍟(0<=)
+}_fillBy_⊢⍟(0<=)
 
 Reverse←{
   "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
@@ -326,7 +327,7 @@ _takeDrop←{
       Sel ← ⊑⟜(⥊𝕩)
       𝕩{Sel↩0⊸≤◶⟨(Fill𝕨)˙,Sel⟩}⍟⊢doFil
       Sel⌜ sh ⥊ i
-    } ToArray 𝕩
+    }_fillBy_⊢ ToArray 𝕩
   }
 }
 Take ← ⟨"↑" ⋄ 1-=⟜| ⋄ { 𝔽⍟(𝕨⊸<)a←|𝕩 ⋄ (0<𝕩)◶⟨¯∞⍟(<⟜0)⌜+⟜(𝕨+𝕩)⌜, ¯∞⍟(𝕨⊸≤)⌜⟩↕a }⟩_takeDrop
@@ -371,7 +372,7 @@ Windows←{
     k←1×´t←(r⊸+⌜↕s≠⊸-r)⊏s
     str ← Reverse ×`⟨k⟩∾{(s⊑˜𝕩⊸-)⌜↕𝕩}r-1
     ⊑⟜(⥊𝕩)⌜ k +⌜⟜(t⥊↕)˜⍟(1-=⟜1) l +⌜○(+⌜´str{𝕨⊸×⌜↕𝕩}¨⊢) 𝕨
-  }⍟(0<r)𝕩
+  }_fillBy_⊢⍟(0<r)𝕩
 }
 
 ˘ ← {𝕨 𝔽 _rankOp_ ¯1 𝕩}
@@ -436,7 +437,7 @@ Reshape←{
   } s
   s⥊{
     𝕩(0<n)◶⟨<∘Fill⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
-  }⍟(l≠n)d
+  }_fillBy_⊢⍟(l≠n)d
 }
 ⥊ ↩ Deshape        ⊘ ⥊
 
@@ -493,7 +494,7 @@ JoinTo←∨○(1<=)◶(∾○⥊)‿{
   "𝕨∾𝕩: Cell shapes of 𝕨 and 𝕩 must match" ! ≡´c
   l←+´(a=k)⊣◶1‿(0⊑⊢)¨s
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
-}
+} _fillBy_ (⊢⊣!∘≡)
 
 Rep ← Indices⊸⊏
 Replicate ← IsArray∘⊣◶{
@@ -503,7 +504,7 @@ Replicate ← IsArray∘⊣◶{
 }‿{
   "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕨=○≠𝕩
   𝕨 Rep 𝕩
-} _onAxes_ (1-0=≠)
+} _onAxes_ (1-0=≠) _fillBy_ ⊢
 
 ↑ ← Prefixes       ⊘ Take
 ↓ ← Suffixes       ⊘ Drop
@@ -628,7 +629,7 @@ Find←{
   0 Fill 𝕨 ≡⎉r (≢𝕨) ↕⎉r 𝕩
 }
 
-≍ ← >∘Pair
+≍ ← >∘Pair _fillBy_ (⊢⊘(⊢⊣!∘≡))
 ∾ ↩ Join           ⊘ JoinTo
 ⊔ ← GroupInds      ⊘ GroupGen
 ⊐ ← SelfClas       ⊘ (1 _search)
@@ -641,7 +642,7 @@ ReorderChk←{
 }
 ReorderAxesSub←{
   (𝕨⊸⊏Pick𝕩˙)⌜↕⌊´⌜𝕨⊔≢𝕩
-}
+} _fillBy_ ⊢
 ReorderAxes←{
   𝕨 ReorderChk 𝕩
   𝕨↩⥊𝕨
@@ -666,7 +667,7 @@ ProgressiveIndexOf ← 0 Fill {
   𝕨⊐○(((≢∾2˙)⥊≍˘⟜OccurrenceCount∘⥊) 𝕨⊸⊐)𝕩
 }
 
-⊏ ← FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1))
+⊏ ↩ FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1)) _fillBy_ ⊢
 ⊑ ↩ First          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 ⁼ ← {Inverse 𝕗}
