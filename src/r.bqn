@@ -1,5 +1,5 @@
 # BQN runtime. Requires:
-# Type Decompose Glyph GetFill Log GroupLen GroupOrd  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+# Type Decompose Glyph Fill Log GroupLen GroupOrd  !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
 Glyph
 
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
@@ -161,7 +161,7 @@ SelSub←{
   "𝕨⊏𝕩: Indices out of range" ! 1×´⥊ ((-l)⊸≤×l⊸>)⌜ 𝕨
   𝕨 (⊢+l×0>⊢)⌜⊸⊏ 𝕩
 }
-First ← (0<≠)◶⟨GetFill,0⊸⊑⟩ Deshape
+First ← (0<≠)◶⟨Fill,0⊸⊑⟩ Deshape
 
 ¨ ↩ {𝕨(𝔽⌜)⊘(𝔽_eachd)○ToArray𝕩}
 
@@ -318,13 +318,13 @@ _takeDrop←{
     s ← r {(1⌜∘↕𝕨-≠𝕩)∾𝕩}⍟(>⟜≠) ≢𝕩
     _c ← { (×⟜𝕗⌜𝕨) +⌜ 𝕩 }
     i←<0 ⋄ k←1 ⋄ UIk←{ i (k×𝕨)_c↩ k ↕⊸(𝕨_c)⍟(1-=⟜1) 𝕩 ⋄ k↩1 ⋄ ≠𝕩 }
-    fill←0
-    sh ← (⊑⟜s Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {fill↩1}_inds) ⊑⟜𝕨)⌜ ↕r
+    doFil←0
+    sh ← (⊑⟜s Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {doFil↩1}_inds) ⊑⟜𝕨)⌜ ↕r
     (0<=i)◶(s⊸⥊)‿{
       sh ∾↩ t ← (s⊑˜r⊸+)⌜↕(≠s)-r
       {i 𝕩_c↩ ↕𝕩}⍟(1-1⊸=) k×´t
       Sel ← ⊑⟜(⥊𝕩)
-      {Sel↩0⊸≤◶⟨(GetFill𝕩)˙,Sel⟩}⍟⊢fill
+      {Sel↩0⊸≤◶⟨(Fill𝕩)˙,Sel⟩}⍟⊢doFil
       Sel⌜ sh ⥊ i
     } ToArray 𝕩
   }
@@ -355,7 +355,7 @@ ShiftAfter←{
 }
 FC←{ # Fill cell
   "« or »: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  (GetFill 𝕩)⌜ ⥊⟜(↕1×´⊢) 1 Cell 𝕩
+  (Fill 𝕩)⌜ ⥊⟜(↕1×´⊢) 1 Cell 𝕩
 }
 
 Windows←{
@@ -432,10 +432,10 @@ Reshape←{
     Chk ← ⊢ ⊣ "𝕨⥊𝕩: Shape must be exact when reshaping with ∘" ! ⌊⊸=
     a←(2⌊t)◶⟨Chk,⌊,⌈⟩n÷lp
     s↩p⊣◶⊢‿a¨s
-    {d∾↩(GetFill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
+    {d∾↩(Fill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
   } s
   s⥊{
-    𝕩(0<n)◶⟨GetFill⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
+    𝕩(0<n)◶⟨Fill⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
   }⍟(l≠n)d
 }
 ⥊ ↩ Deshape        ⊘ ⥊

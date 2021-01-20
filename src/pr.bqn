@@ -24,7 +24,7 @@ Inc ← {
 }
 
 # Required functionality passed in as an argument
-def ← ⟨"Type","Decompose","Glyph","GetFill","Log","GroupLen","GroupOrd"⟩
+def ← ⟨"Type","Decompose","Glyph","Fill","Log","GroupLen","GroupOrd"⟩
 keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘"
 len ⇐ def+○≠keep
 ki ← chr⊐keep
