@@ -30,6 +30,32 @@ Identity values for the arithmetic primitives below must be recognized. Under Fo
 
 Additionally, the identity of `∾˝` must be recognized: if `0=≠𝕩` and `1<=𝕩`, then `∾˝𝕩` is `(0∾2↓≢𝕩)⥊𝕩`. If `1==𝕩`, then there is no identity element, as the result of `∾` always has rank at least 1, but the cell rank is 0.
 
+## Fill elements
+
+Any BQN array can have a *fill element*, which is a sort of "default" value for the array. The reference implementations use `Fill` to access this element, and it is used primarily for Take (`↑`), First (`⊑`), and Nudge (`«`, `»`). One way to extract the fill element of an array `a` in BQN is `⊑0⥊a`.
+
+A fill element can be either `0`, `' '`, or an array of valid fill elements. If the fill element is an array, then it may also have a fill element (since it is an ordinary BQN array). The fill element is meant to describe the shared structure of the elements of an array: for example, the fill element of an array of numbers should be `0`, while the fill element for an array of variable-length lists should probably be `⟨⟩`. However, the fill element, unlike other inferred properties, does not satisfy any particular constraints that relate it to its array.
+
+### Required functions
+
+Combinators `⊣⊢!˙˜´˝∘○⊸⟜⊘◶⍟` do not affect fill element computation: if the combinator calls a function that computes a fill element, then that fill element must be retained if the result is passed to other functions or returned. `⍟` constructs arrays if its right operand is or contains arrays, and the fill elements of these arrays are not specified; converting `𝕩` to a fill element is a reasonable choice in some cases but not others.
+
+Arithmetic primitives—all valences of `+-×÷⋆√⌊⌈|¬∧∨` and dyadic `<>≠=≤≥`—obtain their fill elements by applying to the fill elements of the arguments. If this is an error, there is no fill element; otherwise, the fill element is the result, with all numbers in it changed to `0` and all characters changed to `' '`.
+
+Fill elements for many primitives are given in the table below. The "Fill" column indicates the strategy used to compute the result's fill. Fields `0`, `0↑𝕩`, and `0⚇0𝕩` indicate the fill directly, while `⊢` and `∩` indicate that the fill is to be computed from the argument fills (if not all arguments have fills, then the fill element is unspecified). For `⊢`, the fill element of the result is the fill element of `𝕩`. For `∩`, the fill is equal to the fill values for multiple arrays, provided that they are all equal (it's unspecified if they are not all equal). In the two argument case, these arrays are `𝕨` and `𝕩`. In the one-argument case, they are the elements of `𝕩`; however, if `𝕩` is empty, then the result's fill is the fill of the fill of `𝕩`.
+
+| Fill   | Monads     | Dyads       | Modifiers
+|--------|------------|-------------|----------
+| `⊢`    | `⥊⌽⍉⊏≍∧∨`  | `⥊⌽⍉⊏↑↓↕/⍷` | `` 𝔽` ``
+| `0`    | `≢/⍋⍒∊⍷⊐⊒` | `⍋⍒∊⊐⊒`
+| `∩`    | `>∾`       | `∾≍`
+| `0↑𝕩`  | `↑↓`
+| `0⚇0𝕩` | `↕`
+
+For Group and Group Indices (`⊔`), the fill element of the result and its elements are both specified: the fill element of each element of the result is the same as that of `𝕩` for Group, and is `0` for Group Indices. The fill element of the result is `(0⚇1𝕨)↑𝕩` for Group, and `⥊⟜<0⚇1𝕩` for Group Indices.
+
+Fill elements of iteration modifiers such as `¨⌜` are not specified. It is reasonable to define the fill element of `𝔽⌜` or `𝔽¨` to be `𝔽` applied to the fill elements of the arguments. Regardless of definition, computing the fill element cannot cause side effects or an error.
+
 ## Undo
 
 The Undo 1-modifier `⁼`, given an operand `𝔽` and argument `𝕩`, and possibly a left argument `𝕨`, finds a value `y` such that `𝕩≡𝕨𝔽y`, that is, an element of the pre-image of `𝕩` under `𝔽` or `𝕨𝔽⊢`. Thus it satisfies the constraint `𝕩 ≡ 𝕨𝔽𝕨𝔽⁼𝕩` (`𝕨𝔽⁼⊢` is a *right inverse* of `𝕨𝔽⊢`) provided `𝔽⁼` and `𝔽` both complete without error. `𝔽⁼` should of course give an error if no inverse element exists, and can also fail if no inverse can be found. It is also preferred for `𝔽⁼` to give an error if there are many choices of inverse with no clear way to choose one of them: for example, `0‿0⍉m` returns the diagonal of matrix `m`; `0‿0⍉⁼2‿3` requires values to be chosen for the off-diagonal elements in its result. It is better to give an error, encouraging the programmer to use a fully-specified approach like `2‿3⌾(0‿0⊸⍉)` applied to a matrix of initial elements, than to return a result that could be very different from other implementations.
