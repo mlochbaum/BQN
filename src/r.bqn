@@ -18,7 +18,7 @@ Int←(1=Type)◶⟨0,⌊⊸=⟩
 Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
 Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
-Box ← {⟨⟩⥊⟨𝕩⟩}
+Box ← {𝕩Fill⟨⟩⥊⟨𝕩⟩}
 ToArray ← Box⍟(1-IsArray)
 
 # LIMITED to numeric arguments for arithmetic cases
@@ -90,7 +90,7 @@ _grade_←{
   d←⥊𝕩
   # Counting sort for small-range ints
   bl←bu←0⋄r←1-{((bu↩⌈´𝕩)-bl↩⌊´𝕩)≤2×l}⟜𝕩⍟⊢((m=1)×32<l)◶0‿(1×´Int⌜)d
-  r◶⟨GroupLen⊸GroupOrd (𝕘⊑⟨-⟜bl,bu⊸-⟩)⌜ ⋄ 𝔽{𝕩⋄
+  0 Fill r◶⟨GroupLen⊸GroupOrd (𝕘⊑⟨-⟜bl,bu⊸-⟩)⌜ ⋄ 𝔽{𝕩⋄
     # Merge sort
     GT←(m 𝔽○(⊑⟜d) _getCellCmp 0)>0˜
     B←l⊸≤◶⊢‿l
@@ -108,7 +108,7 @@ _grade_←{
 Indices←{
   "/: Replication argument must have rank 1" ! 1==𝕩
   l←≠𝕩
-  {
+  0 Fill {
     "/: Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
     k←l-1
     N ← ((⊢+-×0=𝕩⊑˜⊢)`k⊸-⌜↕l)⊑˜k-⊢  # Next nonzero
@@ -139,12 +139,12 @@ Rot←{
 
 Prefixes←{
   "↑𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  ↕⊸⊏⟜𝕩⌜↕1+≠𝕩
+  0⊸⊑⊸Fill ↕⊸⊏⟜𝕩⌜ ↕1+≠𝕩
 }
 Suffixes←{
   "↓𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   l←≠𝕩
-  {𝕩⊸+⌜↕l-𝕩}⊸⊏⟜𝕩⌜↕1+l
+  0⊸⊑⊸Fill {𝕩⊸+⌜↕l-𝕩}⊸⊏⟜𝕩⌜ ↕1+l
 }
 
 _sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ ⊏}
@@ -319,12 +319,12 @@ _takeDrop←{
     _c ← { (×⟜𝕗⌜𝕨) +⌜ 𝕩 }
     i←<0 ⋄ k←1 ⋄ UIk←{ i (k×𝕨)_c↩ k ↕⊸(𝕨_c)⍟(1-=⟜1) 𝕩 ⋄ k↩1 ⋄ ≠𝕩 }
     doFil←0
-    sh ← (⊑⟜s Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {doFil↩1}_inds) ⊑⟜𝕨)⌜ ↕r
+    sh ← (⊑⟜s Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {𝕩⋄doFil↩1}_inds) ⊑⟜𝕨)⌜ ↕r
     (0<=i)◶(s⊸⥊)‿{
       sh ∾↩ t ← (s⊑˜r⊸+)⌜↕(≠s)-r
       {i 𝕩_c↩ ↕𝕩}⍟(1-1⊸=) k×´t
       Sel ← ⊑⟜(⥊𝕩)
-      {Sel↩0⊸≤◶⟨(Fill𝕩)˙,Sel⟩}⍟⊢doFil
+      𝕩{Sel↩0⊸≤◶⟨(Fill𝕨)˙,Sel⟩}⍟⊢doFil
       Sel⌜ sh ⥊ i
     } ToArray 𝕩
   }
@@ -435,14 +435,14 @@ Reshape←{
     {d∾↩(Fill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
   } s
   s⥊{
-    𝕩(0<n)◶⟨Fill⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
+    𝕩(0<n)◶⟨<∘Fill⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
   }⍟(l≠n)d
 }
 ⥊ ↩ Deshape        ⊘ ⥊
 
 Range←{
   I←{"↕𝕩: 𝕩 must consist of natural numbers"!Nat𝕩⋄↕𝕩}
-  M←{"↕𝕩: 𝕩 must be a number or list"!1==𝕩⋄(<⟨⟩)⥊⊸∾⌜´I⌜𝕩}
+  M←{"↕𝕩: 𝕩 must be a number or list"!1==𝕩⋄(0⌜𝕩)Fill(<⟨⟩)⥊⊸∾⌜´I⌜𝕩}
   IsArray◶I‿M 𝕩
 }
 
@@ -522,7 +522,10 @@ _group←{
 GroupInds←{
   "⊔𝕩: 𝕩 must be a list" ! 1==𝕩
   G←⊢_group
-  (1<≡)◶⟨G , (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊↕≢𝕩)⌜ G⥊𝕩}⌜⟩ 𝕩
+  (1<≡)◶⟨
+    ↕∘0             Fill G
+    ((⊢Fill⥊⟜⟨⟩)0⌜) Fill (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊↕≢𝕩)⌜ G⥊𝕩}⌜
+  ⟩ 𝕩
 }
 GroupGen←{
   "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
@@ -531,9 +534,9 @@ GroupGen←{
   n←+´=⌜𝕨
   "𝕨⊔𝕩: Total rank of 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
   "𝕨⊔𝕩: Lengths of components of 𝕨 must be compatible with 𝕩" ! ∧´(Join≢⌜𝕨)=n↑≢𝕩
-  l←≠⌜𝕨↩⥊⌜𝕨
-  S←⊏⟜(𝕩⥊˜⟨×´l⟩∾n Cell 𝕩)
-  (1≠≠)◶(S _group 0⊸⊑)‿(S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group⌜) 𝕨
+  l←≠⌜𝕨↩⥊⌜𝕨 ⋄ LS←∾⟜(n Cell 𝕩) Reshape 𝕩˙
+  S←⊏⟜(LS⟨×´l⟩)
+  (LS 0⌜𝕨) Fill (1≠≠)◶(S _group 0⊸⊑)‿(S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group⌜) 𝕨
 }
 
 Pick1←{
@@ -590,7 +593,7 @@ _bins←{
   sx←cx Cell ToArray 𝕩 ⋄ lc←sw CmpLen sx
   cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
   B←(×´sw)⊸×⊸Cc≤0˜
-  (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)⌜↕cx
+  0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)⌜↕cx
 }
 
 ⚇ ← _depthOp_
@@ -602,7 +605,7 @@ _bins←{
 _search←{ # 0 for ∊˜, 1 for ⊐
   ind ← 𝕗
   red ← 𝕗⊑⟨¬∧˝,+˝∧`⟩
-  {
+  0 Fill {
     c←1-˜=𝕨
     "p⊐𝕩 or 𝕨∊p: p must have rank at least 1" ! 0≤c
     "p⊐n or n∊p: Rank of n must be at least cell rank of p" ! c≤=𝕩
@@ -616,13 +619,13 @@ PermInv ← 1¨⊸GroupOrd
 _self←{
   "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   g←⍋𝕩
-  (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
+  0 Fill (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
 }
 SelfClas ← (PermInv∘⍋∘/˜⊏˜1-˜+`∘⊢) _self
 Find←{
   r←=𝕨
   "⍷𝕩: Rank of 𝕨 cannot exceed rank of 𝕩" ! r≤=𝕩
-  𝕨 ≡⎉r (≢𝕨) ↕⎉r 𝕩
+  0 Fill 𝕨 ≡⎉r (≢𝕨) ↕⎉r 𝕩
 }
 
 ≍ ← >∘Pair
@@ -655,8 +658,8 @@ ReorderAxesInv←{
 }
 ⍉ ← Transpose      ⊘ ReorderAxes
 
-OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
-ProgressiveIndexOf ← {
+OccurrenceCount ← 0 Fill ⊐˜(⊢-⊏)⍋∘⍋
+ProgressiveIndexOf ← 0 Fill {
   c←1-˜=𝕨
   "⊒: Rank of 𝕨 must be at least 1" ! 0≤c
   "⊒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
