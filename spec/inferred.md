@@ -6,6 +6,8 @@ BQN includes some simple deductive capabilities: detecting the type of empty arr
 
 For the specified cases, the given functions and modifiers refer to those particular representations. It is not necessary to detect equivalent representations, for example to reduce `(+-×)⁼` to `∨⁼`. However, it is necessary to identify computed functions and modifiers: for example `F⁼` when the value of `F` in the expression is `∨`, or `(1⊑∧‿∨)⁼`.
 
+Failing to compute an inferred property for a function or array as it's created cannot cause an error. An error can only be caused when the missing inferred property is needed for a computation.
+
 ## Identities
 
 When monadic Fold (`´`) or Insert (`˝`) is called on an array of length 0, BQN attempts to infer a right identity value for the function in order to determine the result. A right identity value for a dyadic function `𝔽` is a value `r` such that `e≡e𝔽r` for any element `e` in the domain. For such a value `r`, the reduction `r 𝔽´ l` is equivalent to `𝔽´ l` for a non-empty list `l`, because the first application `(¯1⊑l) 𝔽 r` gives `¯1⊑l`, which is the starting point when no initial value is given. It's thus reasonable to define `𝔽´ l` to be `r 𝔽´ l` for an empty list `l` as well, giving a result `r`.
