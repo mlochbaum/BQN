@@ -190,10 +190,12 @@ let fill = (x,w) => {
 }
 let fill_by = (f,g) => (x,w) => {
   let r = f(x,w);
-  let xf=x.sh?x.fill:x;
+  let a2fill = x => isfunc(x)?x:isnum(x)?0:' ';
+  let xf=x.sh?x.fill:a2fill(x);
   if (r.sh&&has(xf)) {
     try {
-      let wf = !(has(w)&&w.sh) ? w
+      let wf = !has(w) ? w
+             : !w.sh ? a2fill(w)
              : has(w.fill) ? w.fill : runtime[42];
       r.fill=tofill(g(xf,wf));
     } catch(e){}
@@ -257,7 +259,7 @@ let fmt1 = run(
  ,[runtime[0],runtime[1],runtime[2],runtime[6],runtime[7],runtime[9],runtime[11],runtime[12],runtime[13],runtime[14],runtime[15],runtime[16],runtime[18],runtime[19],runtime[20],runtime[21],runtime[22],runtime[23],runtime[24],runtime[25],runtime[26],runtime[27],runtime[29],runtime[30],runtime[32],runtime[35],runtime[36],runtime[43],runtime[44],runtime[45],runtime[46],runtime[47],runtime[49],runtime[50],runtime[51],runtime[52],runtime[53],runtime[54],runtime[55],runtime[56],runtime[58],runtime[59],runtime[61],0,-1,Infinity,1,2,5,4,127,32,3,10,' ',' ','┐','↕','\"','␡','␀','·','*','0',str("@"),str("\'"),str("⟨⟩"),str("⟨"),str("⟩"),str("┌"),str("·─"),str("·╵╎┆┊"),str("┘"),str("┌┐"),str("└┘"),str(" "),str("‿"),str("array"),str("function"),str("1-modifier"),str("2-modifier"),str("00321111"),str("("),str(")"),str("{𝔽}")]
  ,[[0,1,0,0],[1,1,3,19],[0,0,399,3],[0,0,465,6],[0,0,565,3],[0,0,616,4],[0,0,655,3],[0,0,685,4],[0,0,808,3],[0,0,846,3],[0,0,885,3],[0,0,938,7],[0,0,1168,3],[0,0,1201,8],[0,0,1420,3],[0,0,1449,3],[0,0,1459,11],[0,0,1814,3],[0,0,1866,3]]
 )(list([type, decompose, glyph, fmtnum]));
-let fmt = x => fmt1(x).map(c=>c===0?" ":c).join("");
+let fmt = x => fmt1(x).join("");
 
 let fmtErr = (s,e) => {
   let r=e.src, w=e.message, loc=[];
