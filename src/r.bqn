@@ -168,7 +168,12 @@ SelSub←{
 }
 First ← (0<≠)◶⟨Fill,0⊸⊑⟩ Deshape
 
-¨ ↩ {𝕨(𝔽⌜)⊘(𝔽_eachd)○ToArray𝕩}
+_fillByPure_←{
+  p ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1(𝕊d⊑˜1⊸+)⊸×´·↕1-˜≠∘d⟩0⊑d} 𝕘
+  p⊑⟨𝕗,𝕗_fillBy_𝕘⟩
+}
+
+¨ ↩ {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
 
 StructErr←{𝕩}
 IsStructErr ← (3=Type)◶⟨0,StructErr˙⊸=⟩
@@ -744,7 +749,7 @@ PrimInverse ← INF _lookup_ ⟨
   /, {IA 1==𝕩⋄IA∧´Nat⌜𝕩⋄IX(∧´¯1⊸↓≤1⊸↓)𝕩⋄GroupLen𝕩}⊘(IA∘0)
   ⊔, GroupIndsInv ⊘ GroupInv
 ⟩
-⌜ ↩ {𝕨𝔽⌜○ToArray𝕩}
+⌜ ↩ {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
 _inv_ ← {𝕘⋄𝕨𝔽𝕩}
 AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
 Mod1Inverse ← INF˙ _lookup_ ⟨
