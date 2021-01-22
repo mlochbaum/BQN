@@ -36,6 +36,8 @@ Any BQN array can have a *fill element*, which is a sort of "default" value for 
 
 A fill element can be either `0`, `' '`, or an array of valid fill elements. If the fill element is an array, then it may also have a fill element (since it is an ordinary BQN array). The fill element is meant to describe the shared structure of the elements of an array: for example, the fill element of an array of numbers should be `0`, while the fill element for an array of variable-length lists should probably be `⟨⟩`. However, the fill element, unlike other inferred properties, does not satisfy any particular constraints that relate it to its array.
 
+In addition to the requirements below, the fill element for the value of a string literal is `' '`.
+
 ### Required functions
 
 Combinators `⊣⊢!˙˜´˝∘○⊸⟜⊘◶⍟` do not affect fill element computation: if the combinator calls a function that computes a fill element, then that fill element must be retained if the result is passed to other functions or returned. `⍟` constructs arrays if its right operand is or contains arrays, and the fill elements of these arrays are not specified; converting `𝕩` to a fill element is a reasonable choice in some cases but not others.
