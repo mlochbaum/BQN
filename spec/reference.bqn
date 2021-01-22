@@ -167,6 +167,7 @@ Pick1←{
 }
 Pickd←(∨´∘⥊IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
 Pick←IsArray◶⥊‿⊢⊸Pickd
+First←(0<≠)◶⟨Fill,0⊸⊑⟩∘Deshape
 
 match←{¬∘(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨≠○IsArray , 0⟩
@@ -178,7 +179,7 @@ match←{¬∘(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
 
 Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 
-⊑ ↩ (0¨∘≢)⊸Pick    ⊘ Pick
+⊑ ↩ First          ⊘ Pick
 ⥊ ↩ Deshape        ⊘ Reshape
 ↕ ↩ Range
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
