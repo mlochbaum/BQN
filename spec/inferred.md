@@ -44,12 +44,13 @@ Combinators `⊣⊢!˙˜´˝∘○⊸⟜⊘◶⍟` do not affect fill element co
 
 Arithmetic primitives—all valences of `+-×÷⋆√⌊⌈|¬∧∨` and dyadic `<>≠=≤≥`—obtain their fill elements by applying to the fill elements of the arguments. If this is an error, there is no fill element; otherwise, the fill element is the result, with all numbers in it changed to `0` and all characters changed to `' '`.
 
-Fill elements for many primitives are given in the table below. The "Fill" column indicates the strategy used to compute the result's fill. Fields `0`, `0↑𝕩`, and `0⚇0𝕩` indicate the fill directly, while `⊢` and `∩` indicate that the fill is to be computed from the argument fills (if not all arguments have fills, then the fill element is unspecified). For `⊢`, the fill element of the result is the fill element of `𝕩`. For `∩`, the fill is equal to the fill values for multiple arrays, provided that they are all equal (it's unspecified if they are not all equal). In the two argument case, these arrays are `𝕨` and `𝕩`. In the one-argument case, they are the elements of `𝕩`; however, if `𝕩` is empty, then the result's fill is the fill of the fill of `𝕩`.
+Fill elements for many primitives are given in the table below. The "Fill" column indicates the strategy used to compute the result's fill. Fields `0`, `𝕩`, `0↑𝕩`, and `0⚇0𝕩` indicate the fill directly, while `⊢` and `∩` indicate that the fill is to be computed from the argument fills (if not all arguments have fills, then the fill element is unspecified). For `⊢`, the fill element of the result is the fill element of `𝕩`. For `∩`, the fill is equal to the fill values for multiple arrays, provided that they are all equal (it's unspecified if they are not all equal). In the two argument case, these arrays are `𝕨` and `𝕩`. In the one-argument case, they are the elements of `𝕩`; however, if `𝕩` is empty, then the result's fill is the fill of the fill of `𝕩`.
 
 | Fill   | Monads     | Dyads       | Modifiers
 |--------|------------|-------------|----------
 | `⊢`    | `⥊⌽⍉⊏≍∧∨`  | `⥊⌽⍉⊏↑↓↕/⍷` | `` 𝔽` ``
 | `0`    | `≢/⍋⍒∊⍷⊐⊒` | `⍋⍒∊⊐⊒`
+| `𝕩`    | `<`
 | `∩`    | `>∾`       | `∾≍`
 | `0↑𝕩`  | `↑↓`
 | `0⚇0𝕩` | `↕`
