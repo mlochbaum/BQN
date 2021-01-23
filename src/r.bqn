@@ -160,7 +160,7 @@ FirstCell←{
   (<0) GetCells 𝕩
 }
 SelSub←{
-  "𝕨⊏𝕩: 𝕩 must be an array" ! IsArray 𝕨
+  "𝕨⊏𝕩: 𝕨 must be an array" ! IsArray 𝕨
   "𝕨⊏𝕩: Indices in 𝕨 must be integers" ! 1×´⥊Int⌜ 𝕨
   l←≠𝕩
   "𝕨⊏𝕩: Indices out of range" ! 1×´⥊ ((-l)⊸≤×l⊸>)⌜ 𝕨
