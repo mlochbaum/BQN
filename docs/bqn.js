@@ -41,7 +41,7 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
     if (L) r+="l="+p+";";
     switch(B[p++]) {
       case 0:          { r+= rP("O["+num()+"]");                                                                              break; }
-      case 3: case  4: { let n=num(); rD-= n;      r+=rP("list(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])"); break; }
+      case 3: case  4: { let n=num(); rD-= n;      r+=rP("llst(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])"); break; }
       case 5: case 16: { let        f=rG(),x=rG(); r+=rP("call("+f+","+x      +")");                                          break; }
       case 6: case 17: { let w=rG(),f=rG(),x=rG(); r+=rP("call("+f+","+x+","+w+")");                                          break; }
       case 7:          { let f=rG(),m=rG();        r+="chkM(1,"+m+");"+rP(m+"("+f      +")");                                 break; }
@@ -74,8 +74,8 @@ let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks
     if (type===0) c = "let e2=def;"+c;
     if (type===1) c = "const mod=(f  ) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;"                +c+"}; mod.m=1;return mod;";
     if (type===2) c = "const mod=(f,g) => {let e2=[...def]; e2["+I+"]=mod;e2["+(I+1)+"]=f;e2["+(I+2)+"]=g;"+c+"}; mod.m=2;return mod;";
-    return Function("'use strict'; return (chkM,has,call,getv,get,set,list,train2,train3,O,L,def) => D => oe => {"+c+"};")()
-                                          (chkM,has,call,getv,get,set,list,train2,train3,O,L,def);
+    return Function("'use strict'; return (chkM,has,call,getv,get,set,llst,train2,train3,O,L,def) => D => oe => {"+c+"};")()
+                                          (chkM,has,call,getv,get,set,llst,train2,train3,O,L,def);
   });
   D.forEach((d,i) => {D[i]=d(D)});
   return D[0]([]);
@@ -87,6 +87,7 @@ let assertFn = pre => (x,w) => {
 }
 let arr = (r,sh,fill) => {r.sh=sh;r.fill=fill;return r;}
 let list = (l,fill) => arr(l,[l.length],fill);
+let llst = l => list(l, l.length>0&&l.every(isnum)?0:undefined);
 let str = s => list(Array.from(s), ' ');
 let setrepr = (r,f) => {f.repr=r; return f;}
 let ctrans = (c,t) => String.fromCodePoint(c.codePointAt(0)+t);
