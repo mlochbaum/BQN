@@ -213,7 +213,7 @@ _under_←{
     _at_ ← {(↕≠𝕩) 𝔽⍟((𝔾𝕩)=⊣)¨ 𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
     IsArray∘root◶⟨1⊑0⊑𝕨˙, Set⟩ 𝕩
-  }
+  } _fillBy_ ⊢
   IsStructErr◶⟨Struct⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val GetInserts ind
 }
 Recompose ← ⊣◶⟨
@@ -524,8 +524,8 @@ Replicate ← IsArray∘⊣◶{
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
-» ← FC⊸ShiftBefore ⊘ ShiftBefore
-« ← FC⊸ShiftAfter  ⊘ ShiftAfter
+» ← FC⊸ShiftBefore ⊘ ShiftBefore _fillBy_ (⊢⊘IF)
+« ← FC⊸ShiftAfter  ⊘ ShiftAfter  _fillBy_ (⊢⊘IF)
 
 _group←{
   "⊔: Grouping argument must consist of integers" ! ∧´Int⌜𝕩
