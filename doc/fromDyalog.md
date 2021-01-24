@@ -63,7 +63,7 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><th> Glyph          </th><th> Monadic                      </th><th> Dyadic </th>               </tr>
 <tr><td> <code>*</code> </td><td colspan=2><code>⋆</code></td>                                      </tr>
 <tr><td> <code>⍟</code> </td><td colspan=2><code>⋆⁼</code></td>                                     </tr>
-<tr><td> <code>!</code> </td><td colspan=2>Implement it yourself</td>                               </tr>
+<tr><td> <code>!</code> </td><td><code>×´1+↕</code>            </td><td> <code>-˜(+÷○(×´)⊢)1+↕∘⊣</code></td></tr>
 <tr><td> <code>○</code> </td><td colspan=2>Some complex exponential stuff, maybe</td>               </tr>
 <tr><td> <code>~</code> </td><td> <code>¬</code>               </td><td> <code>¬∘∊/⊣</code></td>    </tr>
 <tr><td> <code>?</code> </td><td colspan=2>Library?</td>                                            </tr>
@@ -76,7 +76,7 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>↓</code> </td><td> <code><˘</code>              </td><td> <code>↑</code></td>        </tr>
 <tr><td> <code>⊂</code> </td><td> <code><</code>               </td><td> <code>+`⊸⊔</code></td>     </tr>
 <tr><td> <code>⊆</code> </td><td> <code><⍟(0<≡)</code>         </td><td> <code>⊔</code></td>        </tr>
-<tr><td> <code>∊</code> </td><td> <code>{0=≡𝕩:⥊𝕩⋄∾⥊∇¨𝕩}</code> </td><td> <code>∊</code></td>        </tr>
+<tr><td> <code>∊</code> </td><td> <code>{0=≡𝕩:⥊𝕩⋄∾⥊𝕊¨𝕩}</code> </td><td> <code>∊</code></td>        </tr>
 <tr><td> <code>⊃</code> </td><td colspan=2><code>⊑</code></td>                                      </tr>
 <tr><td> <code>⍀</code> </td><td>                              </td><td> <code>/⁼</code></td>       </tr>
 <tr><td> <code>∩</code> </td><td>                              </td><td> <code>∊/⊣</code></td>      </tr>
@@ -114,6 +114,6 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>f⍠B</code> </td><td colspan=2> Uh                                     </td></tr>
 <tr><td> <code>f⌸</code>  </td><td><code>⊐⊔↕∘≠</code></td><td><code>⊐⊸⊔</code>       </td></tr>
 <tr><td> <code>f⌺B</code> </td><td colspan=2> <code>↕</code>                         </td></tr>
-<tr><td> <code>A⌶</code>  </td><td colspan=2> <code>•</code>                         </td></tr>
+<tr><td> <code>A⌶</code>  </td><td colspan=2> <code>•Something</code>                </td></tr>
 <tr><td> <code>f&</code>  </td><td colspan=2> Nothing yet                            </td></tr>
 </table>
