@@ -164,13 +164,13 @@ let group_len = (x,w) => { // ≠¨⊔ for a valid list argument
   let l=x.reduce((a,b)=>Math.max(a,b),-1);
   let r=Array(l+1).fill(0);
   x.map(e=>{if(e>=0)r[e]+=1;});
-  return list(r);
+  return list(r,0);
 }
 let group_ord = (x,w) => { // ∾⊔x assuming w=group_len(x)
   let l=0,s=w.map(n=>{let l0=l;l+=n;return l0;});
   let r=Array(l);
   x.map((e,i)=>{if(e>=0)r[s[e]++]=i;});
-  return list(r);
+  return list(r,x.fill);
 }
 let type = x => isfunc(x) ? 3+(x.m||0) : x.sh ? 0 : 2-isnum(x);
 let decompose = x => list(!isfunc(x) ? [-1,x]
