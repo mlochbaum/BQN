@@ -170,7 +170,7 @@ First ← (0<≠)◶⟨Fill,0⊸⊑⟩ Deshape
 
 IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1(𝕊d⊑˜1⊸+)⊸×´·↕1-˜≠∘d⟩0⊑d}
 _fillByPure_←{
-  𝕘 {(𝕨HomFil𝕩)_fillBy_𝕨}⍟(IsPure⊣) 𝕗
+  𝕘 (3≤Type∘⊣)◶⟨{𝕨Fill𝕏},{(𝕨HomFil𝕩)_fillBy_𝕨}⍟(IsPure⊣)⟩ 𝕗
 }
 
 ¨ ↩ {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
