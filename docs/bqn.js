@@ -184,7 +184,7 @@ let fill = (x,w) => {
   if (has(w)) {
     return arr(x.slice(),x.sh,tofill(w));
   } else {
-    let f = x.fill || 0;
+    let f = x.fill;
     if (!has(f)) throw Error("Fill does not exist");
     return f;
   }
