@@ -32,6 +32,27 @@ Dyalog uses value types (array, function, and so on) to determine syntax while B
 | Dyadic operator  | 2-modifier |
 | Niladic function | *go away*  |
 
+## Syntax
+
+BQN comments are written with `#`, not `⍝`. BQN strings use double quotes `""` while single quotes `''` enclose a character.
+
+BQN's functions use `{}`, like Dyalog's dfns. The names for inputs and self-reference are different:
+
+| Dyalog | BQN |
+|--------|-----|
+| `⍺`    | `𝕨` |
+| `⍵`    | `𝕩` |
+| `∇`    | `𝕊` |
+| `⍺⍺`   | `𝔽` |
+| `⍵⍵`   | `𝔾` |
+| `∇∇`   | `𝕣` |
+
+BQN doesn't have guards: it uses modifiers or [control structures](control.md) instead. However, BQN function and modifier blocks have headers that allow pattern matching. See the [block](block.md) documentation.
+
+The assignment arrow `←` defines a new variable in a block, while `↩` modifies an existing one.
+
+BQN uses the ligature character `‿` for stranding, instead of plain juxtaposition. It also has a [list notation](syntax.md#list-notation) using `⟨⟩`.
+
 ## For reading
 
 Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs as APL. Correspondence can be approximate, and `⌽` is just used as a decorator to mean "reverse some things".

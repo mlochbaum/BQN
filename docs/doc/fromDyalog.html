@@ -69,6 +69,46 @@
 </tr>
 </tbody>
 </table>
+<h2 id="syntax">Syntax</h2>
+<p>BQN comments are written with <code><span class='Comment'>#</span></code>, not <code><span class='Value'>⍝</span></code>. BQN strings use double quotes <code><span class='String'>&quot;&quot;</span></code> while single quotes <code><span class='String'>''</span></code> enclose a character.</p>
+<p>BQN's functions use <code><span class='Brace'>{}</span></code>, like Dyalog's dfns. The names for inputs and self-reference are different:</p>
+<table>
+<thead>
+<tr>
+<th>Dyalog</th>
+<th>BQN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Value'>⍺</span></code></td>
+<td><code><span class='Value'>𝕨</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>⍵</span></code></td>
+<td><code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>∇</span></code></td>
+<td><code><span class='Function'>𝕊</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>⍺⍺</span></code></td>
+<td><code><span class='Function'>𝔽</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>⍵⍵</span></code></td>
+<td><code><span class='Function'>𝔾</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>∇∇</span></code></td>
+<td><code><span class='Value'>𝕣</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>BQN doesn't have guards: it uses modifiers or <a href="control.html">control structures</a> instead. However, BQN function and modifier blocks have headers that allow pattern matching. See the <a href="block.html">block</a> documentation.</p>
+<p>The assignment arrow <code><span class='Gets'>←</span></code> defines a new variable in a block, while <code><span class='Gets'>↩</span></code> modifies an existing one.</p>
+<p>BQN uses the ligature character <code><span class='Ligature'>‿</span></code> for stranding, instead of plain juxtaposition. It also has a <a href="syntax.html#list-notation">list notation</a> using <code><span class='Bracket'>⟨⟩</span></code>.</p>
 <h2 id="for-reading">For reading</h2>
 <p>Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs as APL. Correspondence can be approximate, and <code><span class='Function'>⌽</span></code> is just used as a decorator to mean &quot;reverse some things&quot;.</p>
 <table>
