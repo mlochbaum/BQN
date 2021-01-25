@@ -34,6 +34,7 @@ Primitives:
 References:
 - [Glossary](glossary.md)
 - [BQN-Dyalog dictionary](fromDyalog.md)
+- [BQN-J dictionary](fromJ.md)
 
 Speculation:
 - [Possible language extensions](extensions.md)
