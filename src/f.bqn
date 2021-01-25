@@ -60,7 +60,7 @@
 
   FmtSimple ← (≠(0⊸<+≤)+´)∘(⥊<@˙)◶{ # Depth 1
     # All characters
-    r ← =𝕩 ⋄ 𝕩 ↩ 0↓𝕩
+    r ← =𝕩 ⋄ 𝕩 ↩ 0↓𝕩⌾⊢""
     k ← ∞⍟(0⊸=) -≠ c ← ¯1↓≢𝕩
     q ← '"'
     # Escape quotes in strings (rank 1) and substitute control chars
