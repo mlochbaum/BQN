@@ -276,11 +276,12 @@ Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 IF ← ⊢⊣!∘≡  # Intersect fill
 IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
 _fillMerge ← {𝔽 ⊣_fillBy_⊢ IEF}
-Merge←{
+MergeA←{
   c←≢0⊑⥊𝕩
   ">𝕩: Elements of 𝕩 must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
   𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
-}_fillMerge⍟(0<≠∘⥊)⍟IsArray
+}_fillMerge
+Merge ← (0<≠∘⥊)◶⟨(∾○≢⥊⟨⟩˙)_fillBy_⊢⟜Fill, MergeA⟩⍟IsArray
 
 Join1←{
   # List of lists
@@ -480,8 +481,8 @@ _rankOp_←{
   k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
   Enc←{
     f←(↕𝕨)⊏≢𝕩
-    c←×´s←𝕨Cell𝕩
-    f⥊((⥊𝕩)⊏˜(s⥊↕c)+c×⊢)⌜↕×´f
+    c←×´s←𝕨Cell𝕩⋄i←s⥊↕c
+    (f⥊((⥊𝕩)⊏˜i+c×⊢)⌜↕×´f)˙_fillBy_{(<𝕩)⌜i} 𝕩
   }
   Enc↩(>⟜0×1+≥⟜=)◶⟨<⊢,Enc,<⌜⊢⟩
   > ((0⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
