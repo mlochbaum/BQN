@@ -275,13 +275,12 @@ Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 
 IF ← ⊢⊣!∘≡  # Intersect fill
 IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
-_fillMerge ← {𝔽 ⊣_fillBy_⊢ IEF}
-MergeA←{
+_fillMerge_ ← {(0<≠∘⥊)◶⟨(𝔾○≢⥊⟨⟩˙)_fillBy_⊢⟜Fill, 𝔽 ⊣_fillBy_⊢ IEF⟩}
+Merge←{
   c←≢0⊑⥊𝕩
   ">𝕩: Elements of 𝕩 must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
   𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
-}_fillMerge
-Merge ← (0<≠∘⥊)◶⟨(∾○≢⥊⟨⟩˙)_fillBy_⊢⟜Fill, MergeA⟩⍟IsArray
+}_fillMerge_∾⍟IsArray
 
 Join1←{
   # List of lists
@@ -317,7 +316,11 @@ JoinM←{
 }
 Join←(2⌊=)◶⟨
   Merge, (1×´(1==)⌜)◶JoinM‿Join1, JoinM
-⟩_fillMerge⍟{"∾𝕩: 𝕩 must be an array" ! IsArray 𝕩 ⋄ 0<≠⥊𝕩}
+⟩_fillMerge_{
+  r←≠𝕨 ⋄ d←≠𝕩
+  "∾𝕩: empty 𝕩 fill rank must be at least argument rank" ! d≥r
+  (r≤⊣)◶⟨⊑⟜𝕨⊸×,⊢⟩⟜(⊑⟜𝕩)⌜↕d
+} ⊣ "∾𝕩: 𝕩 must be an array"!IsArray
 
 _takeDrop←{
   ⟨gl,Noop,_inds⟩←𝕗
