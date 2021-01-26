@@ -74,9 +74,9 @@ Functions `+` `-` `|` `<` `>` are the same in both languages.
 
 Most of BQN's combinators have J equivalents. The J equivalent `"_` for `˙` assumes a noun operand, but `˙` makes a constant function for any operand. `◶` has arguments reversed relative to `@.`, and uses an actual array of functions rather than gerunds. Besides these, BQN's `⟜` is like a J hook, that is, `F⟜G` is `(F G)`, and `⊸` applies in the opposite direction.
 
-| BQN | `˙`  | `˜` | `∘`  | `○`  | `⌾`   | `⊘` | `◶`  |
-|:---:|:----:|:---:|:----:|:----:|:-----:|:---:|:----:|
-| J   | `"_` | `~` | `@:` | `&:` | `&.:` | `:` | `@.` |
+| BQN | `˙`  | `˜` | `∘`  | `○`  | `⌾`   | `⊘` | `◶`  | `⎊`  |
+|:---:|:----:|:---:|:----:|:----:|:-----:|:---:|:----:|:----:|
+| J   | `"_` | `~` | `@:` | `&:` | `&.:` | `:` | `@.` | `::` |
 
 For other modifiers the correspondence is looser. Here `⌜` shows the dyadic case and `´` the monadic case only.
 
@@ -100,6 +100,10 @@ Some other primitives are essentially the same in J and BQN, but with different 
 | J   | `*` | `%` | `^` | `^.` | `%:` | `<.` | `>.` | `[` | `]` | `\|.` | `\|:` |
 |:---:|:---:|:---:|:---:|:----:|:----:|:----:|:----:|:---:|:---:|:-----:|:-----:|
 | BQN | `×` | `÷` | `⋆` | `⋆⁼` | `√`  | `⌊`  | `⌈`  | `⊣` | `⊢` | `⌽`   | `⍉`   |
+
+| J   | `~` | `@:` | `&:` | `&.:` | `:` | `/` | `"` | `L:` | `^:` |
+|:---:|:---:|:----:|:----:|:-----:|:---:|:---:|:---:|:----:|:----:|
+| BQN | `˜` | `∘`  | `○`  | `⌾`   | `⊘` | `˝` | `⎉` | `⚇`  | `⍟`  |
 
 Additionally, `|.!.f` is `⥊⟜f⊸«` with a natural number left argument. Change `«` to `»` to rotate right instead of left.
 
@@ -137,7 +141,24 @@ The tables below give approximate implementations of J primitives. J has a whole
 | `}:` | `¯1⊸↓`                  |
 | `e.` | `><∘∾∊¨⊢`               | `∊`
 | `E.` |                         | `⍷`
-| `i.` | `↕`                     | `⊐`
+| `i.` | `↕` (`⥊⟜(↕×´)` for lists) | `⊐`
 | `i:` | `{𝕩-˜↕1+2×𝕩}`           | `≠∘⊣-1+⌽⊸⊐`
 | `I.` | `/`                     | `⍋`
 | `L.` | `≡`                     |
+
+Some J modifier expressions are translated below. BQN doesn't keep track of the rank of functions, so the "close" compositions `@` `&` `&.` have no BQN equivalents: instead, specify a rank after composing.
+
+| J              | BQN
+|----------------|-----
+| `&.>`          | `¨`
+| `` F`G`H@.C `` | `C◶⟨F,G,H⟩`
+| `x y} z`       | `x⌾(y⊸⊏) z`
+| `F/ .G`        | `F˝∘G⎉1‿∞` (dyadic)
+
+BQN uses functions, not modifiers, for structural manipulation. The following table gives BQN functions corresponding to J's structural modifiers. The result is an array of arrays; use `F¨` to apply a function to each of these, and `>F¨` to apply a function and merge the results into a single array.
+
+| J    | Monad         | Dyad
+|------|---------------|------
+| `/.` | `(+⌜´↕¨∘≢)⊸⊔` | `⊐⊸⊔`
+| `\`  | `1↓↑`         | `<˘↕`
+| `\.` | `¯1↓↓`        |
