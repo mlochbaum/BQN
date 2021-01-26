@@ -204,11 +204,11 @@ DropV← {⊑⟜𝕩¨𝕨+↕𝕨-˜≠𝕩}
 Cell ← DropV⟜≢
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 
-Merge←(IsArray∧0<≠∘⥊)◶⊢‿{
+Merge←(0<≠∘⥊)◶((∾○≢⥊⊢)⟜Fill)‿{
   c←≢⊑𝕩
   ! ∧´⥊(c≡≢)¨𝕩
   𝕩⊑⟜ToArray˜⌜↕c
-}
+}⍟IsArray
 ValidateRanks←{
   ! 1≥=𝕩
   𝕩↩⥊𝕩
