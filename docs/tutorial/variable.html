@@ -1,0 +1,132 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Tutorial: Variables</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">tutorial</a></div>
+<h1 id="tutorial-variables">Tutorial: Variables</h1>
+<p>To take a proud denizen of the eternal cosmos of values, held for a fleeting instant by the course of code, and bind it. Tie it down with a name, failing always to alter its inner nature but allowing context to reform its outer appearance. So labelled, perhaps through the progress of time it will know escape, or else find itself passed through one bond to another, ever tethered. It's a task to be approached only with respect.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=aGV5IOKGkCAiSGkgdGhlcmUiCgpoZXkg4oi+ICIsIFdvcmxkISI=">↗️</a><pre>    <span class='Value'>hey</span> <span class='Gets'>←</span> <span class='String'>&quot;Hi there&quot;</span>
+
+    <span class='Value'>hey</span> <span class='Function'>∾</span> <span class='String'>&quot;, World!&quot;</span>
+"Hi there, World!"
+</pre>
+<p>Like that.</p>
+<h2 id="defining-variables">Defining variables</h2>
+<p>BQN uses the left-pointing arrow <code><span class='Gets'>←</span></code> to define variables, as shown above. Most of the time it's best to use it in a plain way, with just the name and its definition, but it's also possible to define multiple variables using list notation, or to define a variable as part of a larger expression that continues to the left (in terms of precedence, <code><span class='Gets'>←</span></code> behaves like a function, but it isn't one—it's a part of syntax).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cGnigL9l4oC/dGVuIOKGkCDin6ggz4AsIOKLhjEsIDEwIOKfqQoKdGVuIMOXIHBpCgp0aHJlZSDiiY0gdGVuIC0gdGhyZWUg4oaQIDM=">↗️</a><pre>    <span class='Value'>pi</span><span class='Ligature'>‿</span><span class='Value'>e</span><span class='Ligature'>‿</span><span class='Value'>ten</span> <span class='Gets'>←</span> <span class='Bracket'>⟨</span> <span class='Number'>π</span><span class='Separator'>,</span> <span class='Function'>⋆</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>10</span> <span class='Bracket'>⟩</span>
+⟨ 3.141592653589793 2.718281828459045 10 ⟩
+
+    <span class='Value'>ten</span> <span class='Function'>×</span> <span class='Value'>pi</span>
+31.41592653589793
+
+    <span class='Value'>three</span> <span class='Function'>≍</span> <span class='Value'>ten</span> <span class='Function'>-</span> <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>3</span>
+⟨ 3 7 ⟩
+</pre>
+<p>A variable can't be defined twice in the same <em>scope</em>. Later we'll work with functions and other pieces of code that create their own scopes, but for now all you need to know is that all the code in a tutorial runs in the same scope. So <code><span class='Value'>three</span></code> is already defined, and can't be defined again.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4oaQIDQ=">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>4</span>
+ERROR
+</pre>
+<p>It's a little crazy to call them variables if the definition can never change, right? Doesn't &quot;variable&quot; <em>mean</em> &quot;able to change&quot;? Fortunately, this is one way in which BQN isn't crazy. You can <em>modify</em> a variable's value with the arrow <code><span class='Gets'>↩</span></code> provided it's already been defined. This never does anything to the original value: that value stays the same; it's just (probably) not the value of the modified variable any more.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4oapIDQKCnRocmVlID0gMyAgICMgV2FpdCB3aHkgZGlkIEkgZG8gdGhhdAoKMyA9IHRocmVlIOKGqSAzCgpmb3VyIOKGqSAzICAgICMgZm91ciBpc24ndCBkZWZpbmVkIHlldA==">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>↩</span> <span class='Number'>4</span>
+
+    <span class='Value'>three</span> <span class='Function'>=</span> <span class='Number'>3</span>   <span class='Comment'># Wait why did I do that
+</span>0
+
+    <span class='Number'>3</span> <span class='Function'>=</span> <span class='Value'>three</span> <span class='Gets'>↩</span> <span class='Number'>3</span>
+1
+
+    <span class='Value'>four</span> <span class='Gets'>↩</span> <span class='Number'>3</span>    <span class='Comment'># four isn't defined yet
+</span>ERROR
+</pre>
+<p>It's an odd distinction to have when your program is just one long sequence of statements, because there's only ever one arrow you can use: it just changes annoyingly after you define the variable for the first time. With multiple scopes this isn't the case: if you start a new scope inside another, then you'll still be able to use variables from the outside scope. Then <code><span class='Gets'>↩</span></code> lets you change the value of one of these variables while <code><span class='Gets'>←</span></code> allows you to define your own. If you're coming from a typical curly-brace language, you'd say that <code><span class='Gets'>←</span></code> both declares and assigns a variable, while <code><span class='Gets'>↩</span></code> only assigns it.</p>
+<h2 id="variable-roles">Variable roles</h2>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QlFOIOKGkCAiW21hbnkgcGFnZXMgb2Ygc3BlY2lmaWNhdGlvbl0i">↗️</a><pre>    <span class='Function'>BQN</span> <span class='Gets'>←</span> <span class='String'>&quot;[many pages of specification]&quot;</span>
+ERROR
+</pre>
+<p>What's going on? Does BQN not know about capital letters? Does it object to self-reference? Why is &quot;<code><span class='Function'>BQN</span></code>&quot; green?</p>
+<p>If you open that statement in the online REPL, you'll see the more informative message &quot;Role of the two sides in assignment must match&quot; (<em>assignment</em> means anything written with a leftward arrow—either definition or modification). This is still cryptic but at least a &quot;role&quot; is something we've heard about before.</p>
+<p>I'll first confuse you a little more by pointing out that BQN's variables are case-insensitive, and even underscore-insensitive!</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUKdGhyRWUKVGhSZUUKdGhyX0VFCl9fdGhyZWUKX1RfSF9SX0VfRV8=">↗️</a><pre>    <span class='Value'>three</span>
+3
+    <span class='Value'>thrEe</span>
+3
+    <span class='Function'>ThReE</span>
+3
+    <span class='Value'>thr_EE</span>
+3
+    <span class='Modifier'>__three</span>
+3
+    <span class='Modifier2'>_T_H_R_E_E_</span>
+3
+</pre>
+<p>But the syntax highlighter still seems to care, and you'll get a strange result if you try to apply a function to one of the uppercase spellings:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LSBUaHJlZQoKLSBfdGhyZWU=">↗️</a><pre>    <span class='Function'>-</span> <span class='Function'>Three</span>
+-3{𝔽}
+
+    <span class='Function'>-</span> <span class='Modifier'>_three</span>
+ERROR
+</pre>
+<p>Now might be a good time to <a href="expression.html#one-or-two-arguments">review</a> the earlier material on roles, experiment, and see if you can puzzle out what's happening here. Or a good time to keep reading until the horrifying distortions these texts inevitably wrap around your existence become apparent, so I'll explain that all these names do represent the same value—they all refer to the same variable—but they have different syntactic roles. Just as the same person might sometimes stand in front of the counter to order a coffee and sometimes stand behind it pouring coffee, the same variable is spelled different ways to indicate what it might be doing right now. There's a spelling for each role:</p>
+<table>
+<thead>
+<tr>
+<th>Spelling</th>
+<th>Role</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Value'>lowercase</span></code></td>
+<td>Subject</td>
+<td>Argument or operand</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Uppercase</span></code></td>
+<td>Function</td>
+<td>Function call or operand</td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>_leftUnderscore</span></code></td>
+<td>1-modifier</td>
+<td>1-modifier call</td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>_twoUnderscores_</span></code></td>
+<td>2-modifier</td>
+<td>2-modifier call</td>
+</tr>
+</tbody>
+</table>
+<p>The role only depends on the first character of the name, and the last one if the first one was an underscore. Whether the characters in the middle are uppercase or lowercase doesn't matter. I tend to stick to <code><span class='Value'>camelCase</span></code>, but if you prefer <code><span class='Value'>snake_case</span></code>, or choose depending on your current biome, that's also fine (but &quot;snake&quot; and &quot;camel&quot; aren't interchangeable, they are different animals).</p>
+<p>By the way, you can also write numbers with underscores in the middle: they'll be ignored just like in names. This can be useful as a thousands separator, for example.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MV8wMDBfMDAw">↗️</a><pre>    <span class='Number'>1_000_000</span>
+1000000
+</pre>
+<h2 id="function-assignment">Function assignment</h2>
+<p>While you could build up a script by computing values and assigning them names, the main way to use assignment in tacit programming is to give names to functions, not data. For example, we might name the base-2 conversion function from our last tutorial:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QmFzZTIg4oaQICvin5woMuKKuMOXKcK04oiY4oy9CgpCYXNlMiAx4oC/MOKAvzHigL8wCgpCYXNlMiAiMDEwMTAwMDEiLScwJwoKQCArIEJhc2UywqggJzAnIC3LnCAiMDEwMDAwMTAi4oC/IjAxMDEwMDAxIuKAvyIwMTAwMTExMCI=">↗️</a><pre>    <span class='Function'>Base2</span> <span class='Gets'>←</span> <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span>
+
+    <span class='Function'>Base2</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+10
+
+    <span class='Function'>Base2</span> <span class='String'>&quot;01010001&quot;</span><span class='Function'>-</span><span class='String'>'0'</span>
+81
+
+    <span class='String'>@</span> <span class='Function'>+</span> <span class='Function'>Base2</span><span class='Modifier'>¨</span> <span class='String'>'0'</span> <span class='Function'>-</span><span class='Modifier'>˜</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
+"BQN"
+</pre>
+<p>This strategy allows us to break down a program into smaller parts. However, you can only name a function in this way, not an expression. We'll explain later how to turn an expression into an explicit function. But one thing remains true regardless of how a function is created: functions are just another kind of BQN value, and giving a function a name uses the ordinary definition arrow <code><span class='Gets'>←</span></code>, not any special syntax.</p>
+<p>Even if you define a variable to be a function at first, you're not locked in to that choice. You can modify the variable to have a different value (but remember to change the casing to match the new value's role!). If it's a data value, you'll still be able to call it as a function: it will return itself.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QmFzZTIKCmJhc2UyIOKGqSAxNiAgICMgQ2hhbmdlIGl0IHRvIGEgbnVtYmVyCgpCYXNlMgoKQmFzZTIgNg==">↗️</a><pre>    <span class='Function'>Base2</span>
++⟜(2⊸×)´∘⌽
+
+    <span class='Value'>base2</span> <span class='Gets'>↩</span> <span class='Number'>16</span>   <span class='Comment'># Change it to a number
+</span>
+    <span class='Function'>Base2</span>
+16
+
+    <span class='Function'>Base2</span> <span class='Number'>6</span>
+16
+</pre>
