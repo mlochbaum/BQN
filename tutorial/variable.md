@@ -98,3 +98,67 @@ Even if you define a variable to be a function at first, you're not locked in to
         Base2
 
         Base2 6
+
+## Modifying part of an array
+
+You cannot modify part of an array. You can't modify an array: an array that differs a little bit from another array *is a different array*. And this isn't just a terminology choice: it has real effects on how BQN arrays behave and even which arrays are representable, as we'll discuss later.
+
+But say I have a list, and I want to subtract one from one of the elements. With the understanding that the resulting list is different from the first one, BQN allows this!
+
+        "BQN"            # A list of characters
+
+        -⟜1⌾(2⊸⊑) "BQN"  # Wait why did I do that
+
+<!--GEN prim.bqn
+Primitives ⟨ "⌾%K%Under", "⊑%I%First%Pick" ⟩
+-->
+Besides using some primitives we haven't seen here, the notation is a little noisy. In return it's very flexible, in that you can apply any function you want, at a location you can select with a large class of BQN functions.
+
+So let's break this down. The 2-modifier Under (`⌾`) has two operands: the left one, `-⟜1`, subtracts one, and the right one, `2⊸⊑` uses a function we haven't seen before. It uses the right operand to pick out part of its argument, then the left one acts on that part only, and the entire argument, with the necessary modifications, is returned.
+
+<!--GEN evalexp.bqn
+DrawEval "-⟜1⌾(2⊸⊑) ""BQN"""
+-->
+
+Well, the function Pick (`⊑`) isn't doing anything too special here: the left argument is an index and it picks the element at that index from the right argument (which has to be a list, although there's a more complicated case with a compound left argument that we won't talk about now). Elements of a list are numbered starting at 0. This matches with the Range (`↕`) function we saw earlier, in that the value of Range's result at a particular index is equal to that index. As an illustration, we can pair up each element of a list with its index by calling Range on the list's length.
+
+        (↕3) ≍¨ "BQN"
+
+        1 ⊑ "BQN"
+
+A sometimes-useful shorthand is that with no left argument, `⊑` indicates First, the first element of a list. So we can quickly replace the first element of a list. The second two elements don't change here, but they're written differently because unlike a list of characters—a string—a list with numbers and characters doesn't use a special notation.
+
+        8⌾⊑ "BQN"        # Change the first element to 8
+
+BQN doesn't have a dedicated syntax such as `list[index]` to select from a list, because a function is more consistent with the rest of BQN's notation and can be manipulated more easily. This decision has already been useful to us, because Under's right operand is a function! With a special notation we'd have to first "package" index selection into a function to use it.
+
+<!--GEN
+Primitives ⟨ "↑%r%%Take", "↓%c%%Drop" ⟩
+-->
+What other selection functions can we use for Under's right operand? The only limit standing in our way is our knowledge of BQN primitives, which… frankly is pretty limiting. Let's work on that. Starting with the function Take (`↑`), which selects the first few elements of a list, or the last few.
+
+        ↕7
+
+        4 ↑ ↕7           # The first four elements
+
+        ⌽⌾(4⊸↑) ↕7       # And reverse them
+
+        ⌽⌾(¯4⊸↑) ↕7      # Or reverse the last four
+
+This function takes from the beginning if the left argument is positive and from the end if the left argument is negative. If the left argument is zero, the result is an empty list, so it doesn't really take from the beginning *or* the end. Another thing to notice about the left argument here is that it's on the left. Less circularly, these sorts of selection primitives in BQN always take the array to select from on the right and a control value describing how to select on the left. Another example is Rotate (`⌽`), where the rotation amount goes on the left. It doesn't usually make sense to use Rotate in the right operand to Under, but we can easily rotate, say, the contents of element 1 of a list, or all the elements but the first two.
+
+        2⊸⌽⌾(1⊸⊑) "xyz"‿"ABCDE"‿"wxyz"‿"yz"
+
+        2⊸⌽⌾(2⊸↓) "XYabcde"
+
+Drop (`↓`), on display in the second expression above, is a sort of "opposite" to take: it returns all the elements *except* the ones that Take would select. So for example `2⊸↑` gets the first two elements but `2⊸↓` removes them. Like Take, a negative left argument works from the end, and a left argument of zero returns the full list, so it doesn't drop from the beginning or the end.
+
+        ¯3 ↓ "abcdefgh"
+
+        2 ↑ 4 ↓ "abcdefgh"
+
+As you can see, by applying Take and then Drop, we can pick out a slice of a list with a given starting point (4) and length (2). Can we use Under to act on that slice only? Yes!
+
+        ('A'-'a')⊸+ ⌾ (2 ↑ 4⊸↓)  "abcdefgh"
+
+(Here I've snuck in a train `2 ↑ 4⊸↓` to combine the two functions. As an exercise, you might try to write that function using combinators instead, and as an extra hard exercise you might then ponder why someone would want to add trains to a language).
