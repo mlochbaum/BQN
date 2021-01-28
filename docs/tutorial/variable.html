@@ -130,3 +130,125 @@ ERROR
     <span class='Function'>Base2</span> <span class='Number'>6</span>
 16
 </pre>
+<h2 id="modifying-part-of-an-array">Modifying part of an array</h2>
+<p>You cannot modify part of an array. You can't modify an array: an array that differs a little bit from another array <em>is a different array</em>. And this isn't just a terminology choice: it has real effects on how BQN arrays behave and even which arrays are representable, as we'll discuss later.</p>
+<p>But say I have a list, and I want to subtract one from one of the elements. With the understanding that the resulting list is different from the first one, BQN allows this!</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IkJRTiIgICAgICAgICAgICAjIEEgbGlzdCBvZiBjaGFyYWN0ZXJzCgot4p+cMeKMvigy4oq44oqRKSAiQlFOIiAgIyBXYWl0IHdoeSBkaWQgSSBkbyB0aGF0">↗️</a><pre>    <span class='String'>&quot;BQN&quot;</span>            <span class='Comment'># A list of characters
+</span>"BQN"
+
+    <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span><span class='Paren'>)</span> <span class='String'>&quot;BQN&quot;</span>  <span class='Comment'># Wait why did I do that
+</span>"BQM"
+</pre>
+<table class='primitives'>
+  <tr>
+    <td><span class='Modifier2'>⌾</span></td>
+    <td><kbd>\K</kbd></td>
+    <td colspan='2'>Under</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>⊑</span></td>
+    <td><kbd>\I</kbd></td>
+    <td>First</td>
+    <td>Pick</td>
+  </tr>
+</table>
+
+<p>Besides using some primitives we haven't seen here, the notation is a little noisy. In return it's very flexible, in that you can apply any function you want, at a location you can select with a large class of BQN functions.</p>
+<p>So let's break this down. The 2-modifier Under (<code><span class='Modifier2'>⌾</span></code>) has two operands: the left one, <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span></code>, subtracts one, and the right one, <code><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span></code> uses a function we haven't seen before. It uses the right operand to pick out part of its argument, then the left one acts on that part only, and the entire argument, with the necessary modifications, is returned.</p>
+<svg viewBox='-174.7 -34 512 188'>
+  <g font-family='BQN,monospace' font-size='18px' class='Paren' fill='currentColor'>
+    <rect class='code' stroke-width='1' rx='10' x='-21.68' y='-24' width='205.96' height='168'/>
+    <text><tspan class='Function'>-</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Number'>1</tspan><tspan class='Modifier2'>⌾</tspan><tspan class='Paren'>(</tspan><tspan class='Number'>2</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>⊑</tspan><tspan class='Paren'>)</tspan> <tspan class='String'>&quot;BQN&quot;</tspan></text>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M135.5 2.4V98.4H37.94'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M81.3 2.4V26.4H70.46'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M59.62 2.4V26.4H70.46'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M70.46 26.4V74.4H37.94'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M27.1 2.4V50.4H16.26'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M5.42 2.4V50.4H16.26'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M16.26 50.4V74.4H37.94'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M37.94 74.4V98.4H37.94'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M37.94 98.4V122.4H-8.13'/>
+    <g font-size='15px' text-anchor='middle'>
+      <g class='codeCover' stroke-width='8' stroke-linejoin='round'>
+        <text x='135.5' y='103'>&quot;BQN&quot;</text>
+        <text x='81.3' y='31'>⊑</text>
+        <text x='70.46' y='31'>⊸</text>
+        <text x='59.62' y='31'>2</text>
+        <text x='37.94' y='79'>⌾</text>
+        <text x='27.1' y='55'>1</text>
+        <text x='16.26' y='55'>⟜</text>
+        <text x='5.42' y='55'>-</text>
+      </g>
+      <g opacity='0.9'>
+        <text x='135.5' y='103'><tspan class='String'>&quot;BQN&quot;</tspan></text>
+        <text x='81.3' y='31'><tspan class='Function'>⊑</tspan></text>
+        <text x='70.46' y='31'><tspan class='Modifier2'>⊸</tspan></text>
+        <text x='59.62' y='31'><tspan class='Number'>2</tspan></text>
+        <text x='37.94' y='79'><tspan class='Modifier2'>⌾</tspan></text>
+        <text x='27.1' y='55'><tspan class='Number'>1</tspan></text>
+        <text x='16.26' y='55'><tspan class='Modifier2'>⟜</tspan></text>
+        <text x='5.42' y='55'><tspan class='Function'>-</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
+
+<p>Well, the function Pick (<code><span class='Function'>⊑</span></code>) isn't doing anything too special here: the left argument is an index and it picks the element at that index from the right argument (which has to be a list, although there's a more complicated case with a compound left argument that we won't talk about now). Elements of a list are numbered starting at 0. This matches with the Range (<code><span class='Function'>↕</span></code>) function we saw earlier, in that the value of Range's result at a particular index is equal to that index. As an illustration, we can pair up each element of a list with its index by calling Range on the list's length.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKGlTMpIOKJjcKoICJCUU4iCgoxIOKKkSAiQlFOIg==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>3</span><span class='Paren'>)</span> <span class='Function'>≍</span><span class='Modifier'>¨</span> <span class='String'>&quot;BQN&quot;</span>
+⟨ ⟨ 0 'B' ⟩ ⟨ 1 'Q' ⟩ ⟨ 2 'N' ⟩ ⟩
+
+    <span class='Number'>1</span> <span class='Function'>⊑</span> <span class='String'>&quot;BQN&quot;</span>
+'Q'
+</pre>
+<p>A sometimes-useful shorthand is that with no left argument, <code><span class='Function'>⊑</span></code> indicates First, the first element of a list. So we can quickly replace the first element of a list. The second two elements don't change here, but they're written differently because unlike a list of characters—a string—a list with numbers and characters doesn't use a special notation.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=OOKMvuKKkSAiQlFOIiAgICAgICAgIyBDaGFuZ2UgdGhlIGZpcnN0IGVsZW1lbnQgdG8gOA==">↗️</a><pre>    <span class='Number'>8</span><span class='Modifier2'>⌾</span><span class='Function'>⊑</span> <span class='String'>&quot;BQN&quot;</span>        <span class='Comment'># Change the first element to 8
+</span>⟨ 8 'Q' 'N' ⟩
+</pre>
+<p>BQN doesn't have a dedicated syntax such as <code><span class='Value'>list[index]</span></code> to select from a list, because a function is more consistent with the rest of BQN's notation and can be manipulated more easily. This decision has already been useful to us, because Under's right operand is a function! With a special notation we'd have to first &quot;package&quot; index selection into a function to use it.</p>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'>↑</span></td>
+    <td><kbd>\r</kbd></td>
+    <td></td>
+    <td>Take</td>
+  </tr>
+  <tr>
+    <td><span class='Function'>↓</span></td>
+    <td><kbd>\c</kbd></td>
+    <td></td>
+    <td>Drop</td>
+  </tr>
+</table>
+
+<p>What other selection functions can we use for Under's right operand? The only limit standing in our way is our knowledge of BQN primitives, which… frankly is pretty limiting. Let's work on that. Starting with the function Take (<code><span class='Function'>↑</span></code>), which selects the first few elements of a list, or the last few.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVNwoKNCDihpEg4oaVNyAgICAgICAgICAgIyBUaGUgZmlyc3QgZm91ciBlbGVtZW50cwoK4oy94oy+KDTiirjihpEpIOKGlTcgICAgICAgIyBBbmQgcmV2ZXJzZSB0aGVtCgrijL3ijL4owq804oq44oaRKSDihpU3ICAgICAgIyBPciByZXZlcnNlIHRoZSBsYXN0IGZvdXI=">↗️</a><pre>    <span class='Function'>↕</span><span class='Number'>7</span>
+⟨ 0 1 2 3 4 5 6 ⟩
+
+    <span class='Number'>4</span> <span class='Function'>↑</span> <span class='Function'>↕</span><span class='Number'>7</span>           <span class='Comment'># The first four elements
+</span>⟨ 0 1 2 3 ⟩
+
+    <span class='Function'>⌽</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>4</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span> <span class='Function'>↕</span><span class='Number'>7</span>       <span class='Comment'># And reverse them
+</span>⟨ 3 2 1 0 4 5 6 ⟩
+
+    <span class='Function'>⌽</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯4</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span> <span class='Function'>↕</span><span class='Number'>7</span>      <span class='Comment'># Or reverse the last four
+</span>⟨ 0 1 2 6 5 4 3 ⟩
+</pre>
+<p>This function takes from the beginning if the left argument is positive and from the end if the left argument is negative. If the left argument is zero, the result is an empty list, so it doesn't really take from the beginning <em>or</em> the end. Another thing to notice about the left argument here is that it's on the left. Less circularly, these sorts of selection primitives in BQN always take the array to select from on the right and a control value describing how to select on the left. Another example is Rotate (<code><span class='Function'>⌽</span></code>), where the rotation amount goes on the left. It doesn't usually make sense to use Rotate in the right operand to Under, but we can easily rotate, say, the contents of element 1 of a list, or all the elements but the first two.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKKuOKMveKMvigx4oq44oqRKSAieHl6IuKAvyJBQkNERSLigL8id3h5eiLigL8ieXoiCgoy4oq44oy94oy+KDLiirjihpMpICJYWWFiY2RlIg==">↗️</a><pre>    <span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⌽</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span><span class='Paren'>)</span> <span class='String'>&quot;xyz&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;ABCDE&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;wxyz&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;yz&quot;</span>
+⟨ "xyz" "CDEAB" "wxyz" "yz" ⟩
+
+    <span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⌽</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span><span class='Paren'>)</span> <span class='String'>&quot;XYabcde&quot;</span>
+"XYcdeab"
+</pre>
+<p>Drop (<code><span class='Function'>↓</span></code>), on display in the second expression above, is a sort of &quot;opposite&quot; to take: it returns all the elements <em>except</em> the ones that Take would select. So for example <code><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span></code> gets the first two elements but <code><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span></code> removes them. Like Take, a negative left argument works from the end, and a left argument of zero returns the full list, so it doesn't drop from the beginning or the end.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wq8zIOKGkyAiYWJjZGVmZ2giCgoyIOKGkSA0IOKGkyAiYWJjZGVmZ2gi">↗️</a><pre>    <span class='Number'>¯3</span> <span class='Function'>↓</span> <span class='String'>&quot;abcdefgh&quot;</span>
+"abcde"
+
+    <span class='Number'>2</span> <span class='Function'>↑</span> <span class='Number'>4</span> <span class='Function'>↓</span> <span class='String'>&quot;abcdefgh&quot;</span>
+"ef"
+</pre>
+<p>As you can see, by applying Take and then Drop, we can pick out a slice of a list with a given starting point (4) and length (2). Can we use Under to act on that slice only? Yes!</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KCdBJy0nYScp4oq4KyDijL4gKDIg4oaRIDTiirjihpMpICAiYWJjZGVmZ2gi">↗️</a><pre>    <span class='Paren'>(</span><span class='String'>'A'</span><span class='Function'>-</span><span class='String'>'a'</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Modifier2'>⌾</span> <span class='Paren'>(</span><span class='Number'>2</span> <span class='Function'>↑</span> <span class='Number'>4</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span><span class='Paren'>)</span>  <span class='String'>&quot;abcdefgh&quot;</span>
+"abcdEFgh"
+</pre>
+<p>(Here I've snuck in a train <code><span class='Number'>2</span> <span class='Function'>↑</span> <span class='Number'>4</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span></code> to combine the two functions. As an exercise, you might try to write that function using combinators instead, and as an extra hard exercise you might then ponder why someone would want to add trains to a language).</p>
