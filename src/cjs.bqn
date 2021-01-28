@@ -6,8 +6,8 @@ Ind ← {∾𝕨‿"["‿𝕩‿"]"}          # Native list/array indexing
 Cat ← {∾𝕨‿".concat("‿𝕩‿")"}   # Native list/array concatenation (like ∾)
 # Escape the special characters that appear in BQN sources.
 Esc←{
-  in ← (@+9‿10‿13)∾"'"""      # Tab, LF, CR, and quotes
-  out ← "tnr"                 # Whitespace characters changed to letters
+  in ← (@+0‿9‿10‿13)∾"'"""    # Null, Tab, LF, CR, and quotes
+  out ← "0tnr"                # Whitespace characters changed to letters
   i ← in⊐𝕩
   𝕩 ↩ i ⊏⟜out⌾((i<≠out)⊸/) 𝕩  # Replace
   ∾(i<≠in) /⟜"\"⊸∾¨ 𝕩         # Insert \
