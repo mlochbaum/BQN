@@ -154,7 +154,7 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 | `⊸`     | `{𝔽⊸(𝔾⁼)}`           | Dyadic case or constant `𝔽` only
 | `⟜`     | `{𝔾⁼𝔽⁼}`             | Dyadic case
 | `𝔽⟜k`   | `k𝔽˜⁼⊢`              | Monadic case, constant `k`
-| `k𝔽𝔾`   | `𝔾⁼k𝔽⁼⊢`             | Constant `k`
+| `k𝔽𝔾`   | `𝔾⁼{𝕨𝔽𝔾𝕩}(k𝔽⁼⊢)`     | Constant `k`
 | `𝔽𝔾K`   | `𝔽⁼k𝔾˜⁼⊢`            | Constant `k`
 
 ## Under
