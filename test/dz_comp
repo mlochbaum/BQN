@@ -14,11 +14,11 @@ GetRT ← {𝕤:
     •Type           # Type
     Decompose       # Decompose
     glyphs⊑˜PrimInd # Glyph
-    (⊑⟨⟩⥊0⊸⥊)⊘⊢     # Fill
+    •FillFn         # Fill
     ⋆⁼              # Log
     ≠¨⊔             # GroupLen
     ∾⊔∘⊢            # GroupOrd
-    !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,{𝕘⋄𝔽},⊘
+    !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,•_fillBy_,⊘
   ⟩
   rt ← •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
 }
