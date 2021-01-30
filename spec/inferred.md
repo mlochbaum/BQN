@@ -152,7 +152,8 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 | `⍟n`    | `⍟(-n)`              | Atomic number `n`
 | `⊘`     | `{(𝔽⁼)⊘(𝔾⁼)}`        |
 | `⊸`     | `{𝔽⊸(𝔾⁼)}`           | Dyadic case or constant `𝔽` only
-| `𝔽⟜k𝕩`  | `k𝔽˜⁼𝕩`              | Constant `k`
+| `⟜`     | `{𝔾⁼𝔽⁼}`             | Dyadic case
+| `𝔽⟜k`   | `k𝔽˜⁼⊢`              | Monadic case, constant `k`
 | `k𝔽𝔾`   | `𝔾⁼k𝔽⁼⊢`             | Constant `k`
 | `𝔽𝔾K`   | `𝔽⁼k𝔾˜⁼⊢`            | Constant `k`
 
