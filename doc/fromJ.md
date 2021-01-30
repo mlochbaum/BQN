@@ -105,9 +105,7 @@ Some other primitives are essentially the same in J and BQN, but with different 
 |:---:|:---:|:----:|:----:|:-----:|:---:|:---:|:---:|:----:|:----:|
 | BQN | `˜` | `∘`  | `○`  | `⌾`   | `⊘` | `˝` | `⎉` | `⚇`  | `⍟`  |
 
-Additionally, `|.!.f` is `⥊⟜f⊸«` with a natural number left argument. Change `«` to `»` to rotate right instead of left.
-
-The tables below give approximate implementations of J primitives. J has a whole lot of complicated primitives that no one uses (some of which are officially deprecated), so not everything is translated here.
+The tables below give approximate implementations of J primitives. J has a whole lot of complicated primitives that no one uses (some of which are officially deprecated), so not everything is translated here. Operations that only apply to complex numbers are omitted because no BQN implementation currently supports them.
 
 | J    | Monad                   | Dyad
 |------|-------------------------|-----
@@ -116,6 +114,7 @@ The tables below give approximate implementations of J primitives. J has a whole
 | `>:` | `1⊸+`                   | `≥`
 | `+.` |                         | `∨`
 | `+:` | `2⊸×`                   | `¬∨`
+| `*.` |                         | `∧`
 | `*:` | `×˜`                    | `¬∧`
 | `-.` | `¬`                     | `¬∘∊/⊣`
 | `-:` | `÷⟜2`                   | `≡`
@@ -151,9 +150,13 @@ Some J modifier expressions are translated below. BQN doesn't keep track of the 
 | J              | BQN
 |----------------|-----
 | `&.>`          | `¨`
-| `` F`G`H@.C `` | `C◶⟨F,G,H⟩`
+| ``F`G`H@.C``   | `C◶⟨F,G,H⟩`
 | `x y} z`       | `x⌾(y⊸⊏) z`
-| `F/ .G`        | `F˝∘G⎉1‿∞` (dyadic)
+| `x F/ .G y`    | `x F˝∘G⎉1‿∞ y`
+| `F:.G`         | `{𝕊: 𝕨F𝕩; 𝕊⁼: 𝕨G𝕩}`
+| `<;._1`        | ``((1-˜¬×+`)=⟜⊏⊘⊣)⊔⊢``
+| `x {.!.f y`    | `y » x⥊f`
+| `x \|.!.f y`   | `x ⥊⟜f⊸« y`, or `(-x) ⥊⟜f⊸» y` if `𝕩<0`
 
 BQN uses functions, not modifiers, for structural manipulation. The following table gives BQN functions corresponding to J's structural modifiers. The result is an array of arrays; use `F¨` to apply a function to each of these, and `>F¨` to apply a function and merge the results into a single array.
 

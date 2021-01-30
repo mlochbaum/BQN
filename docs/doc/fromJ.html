@@ -415,8 +415,7 @@
 </tr>
 </tbody>
 </table>
-<p>Additionally, <code><span class='Function'>|</span><span class='Number'>.</span><span class='Function'>!</span><span class='Number'>.f</span></code> is <code><span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Value'>f</span><span class='Modifier2'>⊸</span><span class='Function'>«</span></code> with a natural number left argument. Change <code><span class='Function'>«</span></code> to <code><span class='Function'>»</span></code> to rotate right instead of left.</p>
-<p>The tables below give approximate implementations of J primitives. J has a whole lot of complicated primitives that no one uses (some of which are officially deprecated), so not everything is translated here.</p>
+<p>The tables below give approximate implementations of J primitives. J has a whole lot of complicated primitives that no one uses (some of which are officially deprecated), so not everything is translated here. Operations that only apply to complex numbers are omitted because no BQN implementation currently supports them.</p>
 <table>
 <thead>
 <tr>
@@ -450,6 +449,11 @@
 <td><code><span class='Function'>+</span><span class='Value'>:</span></code></td>
 <td><code><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>×</span></code></td>
 <td><code><span class='Function'>¬∨</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>*</span><span class='Number'>.</span></code></td>
+<td></td>
+<td><code><span class='Function'>∧</span></code></td>
 </tr>
 <tr>
 <td><code><span class='Value'>*:</span></code></td>
@@ -620,8 +624,24 @@
 <td><code><span class='Value'>x</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Value'>y</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span><span class='Paren'>)</span> <span class='Value'>z</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>F/</span> <span class='Number'>.G</span></code></td>
-<td><code><span class='Function'>F</span><span class='Modifier'>˝</span><span class='Modifier2'>∘</span><span class='Function'>G</span><span class='Modifier2'>⎉</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>∞</span></code> (dyadic)</td>
+<td><code><span class='Value'>x</span> <span class='Function'>F/</span> <span class='Number'>.G</span> <span class='Value'>y</span></code></td>
+<td><code><span class='Value'>x</span> <span class='Function'>F</span><span class='Modifier'>˝</span><span class='Modifier2'>∘</span><span class='Function'>G</span><span class='Modifier2'>⎉</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>∞</span> <span class='Value'>y</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>F</span><span class='Value'>:</span><span class='Number'>.G</span></code></td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝕊</span><span class='Value'>:</span> <span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩;</span> <span class='Function'>𝕊</span><span class='Modifier'>⁼</span><span class='Value'>:</span> <span class='Value'>𝕨</span><span class='Function'>G</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>&lt;</span><span class='Value'>;</span><span class='Number'>._1</span></code></td>
+<td><code><span class='Paren'>((</span><span class='Number'>1</span><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Function'>¬×+</span><span class='Modifier'>`</span><span class='Paren'>)</span><span class='Function'>=</span><span class='Modifier2'>⟜</span><span class='Function'>⊏</span><span class='Modifier2'>⊘</span><span class='Function'>⊣</span><span class='Paren'>)</span><span class='Function'>⊔⊢</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>x</span> <span class='Brace'>{</span><span class='Number'>.</span><span class='Function'>!</span><span class='Number'>.f</span> <span class='Value'>y</span></code></td>
+<td><code><span class='Value'>y</span> <span class='Function'>»</span> <span class='Value'>x</span><span class='Function'>⥊</span><span class='Value'>f</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>x</span> <span class='Function'>|</span><span class='Number'>.</span><span class='Function'>!</span><span class='Number'>.f</span> <span class='Value'>y</span></code></td>
+<td><code><span class='Value'>x</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Value'>f</span><span class='Modifier2'>⊸</span><span class='Function'>«</span> <span class='Value'>y</span></code>, or <code><span class='Paren'>(</span><span class='Function'>-</span><span class='Value'>x</span><span class='Paren'>)</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Value'>f</span><span class='Modifier2'>⊸</span><span class='Function'>»</span> <span class='Value'>y</span></code> if <code><span class='Value'>𝕩</span><span class='Function'>&lt;</span><span class='Number'>0</span></code></td>
 </tr>
 </tbody>
 </table>
