@@ -4,27 +4,11 @@ nc‿rt ← "-nocomp"‿"-rt" ∊ •args
 files ← "simple"‿"syntax"‿"prim"⍟(0=≠) ('-'≠⊑)¨⊸/ •args
 "Can't test runtime without the compiler!" ! ¬nc∧rt
 
-⟨DRun,DCompile⟩ ← •Import "../dc.bqn"
-
-GetRT ← {𝕤:
-  ⟨ref,glyphs⟩ ← •Import "../src/pr.bqn"
-  PrimInd ← {⊑rt⊐<𝕩}
-  Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
-  provide ← ⟨
-    •Type           # Type
-    Decompose       # Decompose
-    glyphs⊑˜PrimInd # Glyph
-    •FillFn         # Fill
-    ⋆⁼              # Log
-    ≠¨⊔             # GroupLen
-    ∾⊔∘⊢            # GroupOrd
-    !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,•_fillBy_,⊘
-  ⟩
-  rt ← •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
-}
-
-Native ← {⍎𝕩}
-exec ← (rt¬nc)◶⟨Native˙, DRun˙, {𝕩⊸DRun}∘GetRT⟩ @
+exec ← (rt¬nc)◶⟨
+  {⍎𝕩}˙                                   # Native
+  {𝕤⋄ ⟨DRun⟩←•Import "../dc.bqn" ⋄ DRun}  # Compiled; native runtime
+  {𝕤⋄ •Import"../bqn.bqn"}                # Self-hosted
+⟩ @
 
 Cases ← (0<≠)◶0‿('#'≠⊑)¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
 c ← ∾ Cases¨ files
