@@ -60,7 +60,8 @@ Tokenize←{
   i←l>n←l∧(+`w)⊏0∾wk<0                      # Identifier/Number masks
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))0⊸≤⊸/wk           # Identifier role
-  id←(1-˜(i>us)×+`w>n)⊔t                    # Identifiers
+  id←(ig←1-˜(i>us)×+`w>n)⊔t                 # Identifiers
+  {⟨ig⊐/𝕩,"Numbers can't start with underscores"⟩!0}⍟(∨´)(⊑bA)>⊑¨id
 
   # Deduplicate literals and identifiers; other cleanup
   ki←((⍋⊏⟜n)⊸⊏/w)∾(ci∾/si)⊏+`»f             # Indices in t
