@@ -36,8 +36,8 @@ In J, the part of speech is an inherent property of a value, while in BQN it is 
 | `NB.`             | `#`         |
 | `'`               | `"`         | `'` creates characters
 | `=.` and `=:`     | `←` and `↩` | `←` to define; `↩` to modify
-| `3 :…` or `{{…}}` | `;`         | To separate function cases
-| `:`               | `{…}`       |
+| `3 :…` or `{{…}}` | `{…}`       |
+| `:`               | `;`         | To separate function cases
 | `x` `y`           | `𝕨` `𝕩`     | `𝕊` for block function self-reference
 | `u` `v`           | `𝔽` `𝔾`     | `𝕣` for block modifier self-reference
 | `_`               | `¯` or `∞`  |
@@ -65,7 +65,7 @@ Functions `+` `-` `|` `<` `>` are the same in both languages.
 | BQN   | `↑`  | `↓`   | `↕`  | `»`            | `«`             | `/`  |
 |:-----:|:----:|:-----:|:----:|:--------------:|:---------------:|:----:|
 | Monad | `<\` | `<\.` | `i.` | `#{.(_1-#){.]` | `-@#{.(1+#){.]` | `I.` |
-| Dyad  | `{.` | `}.`  | `<\` | `#@]{.,`       | `-@#@]{.,~`     | `#`  |
+| Dyad  | `{.` | `}.`  | `]\` | `#@]{.,`       | `-@#@]{.,~`     | `#`  |
 
 | BQN   | `⍋`  | `⍒`     | `⊏`  | `⊑`     | `⊐`     | `⊒` | `∊`  | `⍷`  | `⊔`       |
 |:-----:|:----:|:-------:|:----:|:-------:|:-------:|:---:|:----:|:----:|:---------:|
