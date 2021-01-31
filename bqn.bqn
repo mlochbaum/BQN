@@ -4,6 +4,7 @@
 ⟨DRun,DCompile⟩ ← •Import "dc.bqn"
 ⟨ref,glyphs⟩ ← •Import "src/pr.bqn"
 
+rt ← ⟨⟩
 PrimInd ← {⊑rt⊐<𝕩}
 Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
 provide ← ⟨
@@ -16,5 +17,5 @@ provide ← ⟨
   ∾⊔∘⊢            # GroupOrd
   !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,•_fillBy_,⊘
 ⟩
-rt ← •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
+rt ↩ •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
 rt⊸DRun
