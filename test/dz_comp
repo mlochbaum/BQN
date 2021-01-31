@@ -4,8 +4,9 @@ nc‿rt ← "-nocomp"‿"-rt" ∊ •args
 files ← "simple"‿"syntax"‿"prim"⍟(0=≠) ('-'≠⊑)¨⊸/ •args
 "Can't test runtime without the compiler!" ! ¬nc∧rt
 
+Native ← {⍎𝕩}
 exec ← (rt¬nc)◶⟨
-  {⍎𝕩}˙                                   # Native
+  Native˙                                 # Native
   {𝕤⋄ ⟨DRun⟩←•Import "../dc.bqn" ⋄ DRun}  # Compiled; native runtime
   {𝕤⋄ •Import"../bqn.bqn"}                # Self-hosted
 ⟩ @
