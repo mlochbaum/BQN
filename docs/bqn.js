@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 "use strict";
 // Virtual machine
 let has = x => x!==undefined;
@@ -286,4 +288,14 @@ let fmtErr = (s,e) => {
 if (typeof module!=='undefined') {
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;
   module.exports=bqn;
+  if (!module.parent) {
+    let args = process.argv.slice(2);
+    args.map(a=>{
+      try {
+        console.log(fmt(bqn(a)))
+      } catch(e) {
+        console.error('[31m'+fmtErr(Array.from(a),e)+'[39m');
+      }
+    });
+  }
 }

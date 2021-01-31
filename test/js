@@ -6,31 +6,20 @@ let cases = f=>read(__dirname+'/cases/'+f+'.bqn','utf8').split('\n')
                .filter(x=>x.length>0 && x.charAt(0)!=='#')
                .map(x=>x.indexOf('%')===-1?[1,x]:x.split(' % '));
 let args = process.argv.slice(2);
-let onfiles = args[0]==='--';
-let files = onfiles ? args.slice(1) : ['simple','syntax'];
+let files = args.length ? args : ['simple','syntax'];
 
-if (onfiles || args.length==0) {
-  let t = [].concat.apply([],files.map(cases));
-  let test = t.map(e=>e[1]);
-  let expt = t.map(e=>e[0]==='!'?null:+e[0]);
+let t = [].concat.apply([],files.map(cases));
+let test = t.map(e=>e[1]);
+let expt = t.map(e=>e[0]==='!'?null:+e[0]);
 
-  let rslt = test.map(t => {try{return bqn(t);}catch(e){return null;}});
-  let pass = rslt.map((r,i)=>r===expt[i]);
-  let fail = pass.map((p,i)=>p?-1:i).filter(i=>i>=0);
-  console.log(
-      fail.length
-      ? fail.map(i=>'"'+test[i]+'": expected '
-                   +(e=>e===null?'to fail':e)(expt[i])
-                   +' but '
-                   +(r=>r===null?'evaluation failed':'received '+r)(rslt[i]))
-      : "All "+test.length+" passed!"
-  );
-} else {
-  args.map(a=>{
-    try {
-      console.log(bqn.fmt(bqn(a)))
-    } catch(e) {
-      console.error('[31m'+bqn.fmtErr(Array.from(a),e)+'[39m');
-    }
-  });
-}
+let rslt = test.map(t => {try{return bqn(t);}catch(e){return null;}});
+let pass = rslt.map((r,i)=>r===expt[i]);
+let fail = pass.map((p,i)=>p?-1:i).filter(i=>i>=0);
+console.log(
+    fail.length
+    ? fail.map(i=>'"'+test[i]+'": expected '
+                 +(e=>e===null?'to fail':e)(expt[i])
+                 +' but '
+                 +(r=>r===null?'evaluation failed':'received '+r)(rslt[i]))
+    : "All "+test.length+" passed!"
+);
