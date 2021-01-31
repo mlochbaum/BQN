@@ -1,12 +1,12 @@
 Test scripts:
 
   Script            Compiler host   Output host/VM
-- js [-prim]        Self-host       Javascript
-- dz_comp [-prim]   dzaima/BQN      dzaima/BQN
+- js                Self-host       Javascript
+- dz_comp           dzaima/BQN      dzaima/BQN
 - dz_wasm.js        dzaima/BQN      WebAssembly
 
 dz_comp uses the self-hosted compiler ../src/c.bqn by default but not
-the runtime ../src/r.bqn. Pass -rt to test with the runtime, and -comp
+the runtime ../src/r.bqn. Pass -rt to test with the runtime, and -nocomp
 to test dzaima/BQN only (this doesn't pass as of the time of writing).
 
 Test cases (cases/):
@@ -15,8 +15,8 @@ Test cases (cases/):
 - syntax.bqn       *       *
 - prim.bqn                 *
 
-dz_comp can be run on a different set of tests by passing their names
-as arguments; for js the argument "--" is needed, then the names.
+js or dz_comp can be run on a specified set of tests by passing the test
+names as arguments.
 
 Contents of bin/dbqn follow (3 lines). Replace "/path/to/dzaima/" with
 your path.
