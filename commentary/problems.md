@@ -30,6 +30,8 @@ If you include multiple multi-line functions in what would otherwise be a one-li
 ### Control flow substitutes have awkward syntax
 At the moment BQN has no control structures, instead preferring modifiers, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. For example, it's natural to have two arguments for small structures, but that becomes unreadable for larger ones. However, predefined functions acting on functions can cover a lot of ground for the imperative programmer; see [Control flow in BQN](../doc/control.md).
 
+One particular sore point with Repeat (`⍟`) and Choose (`◶`) is that the condition and action(s) always apply to the same set of arguments. Often you'd like them to apply to completely different things: this seems like the sort of thing that split compose `F⊸G⟜H` solved for trains, but here there's no such solution.
+
 ### Hard to search part of an array or in a different order
 This includes index-of-last, and searching starting at a particular index, when the desired result indices are to the array to be seached *before* it is modified. Given indices `i` into an array `𝕨` (for example `⌽↕≠𝕨` or `a+↕b`), this section can be searched with `(i∾≠𝕨)⊏˜(i⊏𝕨)⊐𝕩`. But this is clunky and difficult for the implementation to optimize.
 
@@ -66,6 +68,9 @@ It's common when manipulating text to want to replace a slice with a different s
 
 Dyalog's solution here (and dzaima/BQN's) is Regex, which is a nice feature but also an entire second language to learn.
 
+### Can't always transfer ambivalence in tacit code
+For example, there's no tacit equivalent of the old APL (NARS) `∘`, which in explicit BQN is simply `{𝕨𝔽𝔾𝕩}`. Similarly, `{(𝔽𝕨)𝔾𝕩}` is missing. The contrast with Atop and Over, which work very smoothly, can be jarring and make it harder to get an intuition for what the code is doing.
+
 ### Poor font support 
 Characters `⥊∾⟜⎉⚇˜` and double-struck letters are either missing from many fonts or drawn strangely.
 
@@ -78,17 +83,20 @@ It could be more sound to look at all matches, but using just the first one is t
 ### Glyphs that aren't great
 Blanket issue for glyphs that need work. Currently I find `⥊⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
 
+### Can't mix define and modify in multiple assignment
+Say `a` is a pair and `h` isn't defined yet; how would you set `h` to the first element of `a` and change `a` to be just the second? `h‿a↩a` doesn't work because `h` isn't defined, so the best I have is `h←@⋄h‿a↩a`. A heavier assignment syntax wouldn't break down; BQN could allow `⟨h←,a⟩↩a` but I don't think this merits special syntax.
+
 ### Group doesn't include trailing empty groups
 But there are workarounds, described in [its documentation](../doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
+
+### Trains don't like monads
+If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing `⟜`. Largely solved with the "nothing" glyph `·`, which acts like J's Cap (`[:`) in a train, but still a minor frustration.
 
 ### Under/bind combination is awkward
 It's most common to use Under with dyadic structural functions in the form `…⌾(i⊸F)`, for example where `F` is one of `/` or `↑`. This is frustrating for two reasons: it requires parentheses, and it doesn't allow `i` to be computed tacitly. If there's no left argument then the modifier `{𝔽⌾(𝕨⊸𝔾)𝕩}` can be more useful, but it doesn't cover some useful cases such as mask `a ⊣⌾(u⊸/) b`.
 
 ### Axis ordering is big-endian
 The most natural ordering for polynomial coefficients and base representations is little-endian, because it aligns element `i` of the list with power `i` of the argument or base. It also allows a forward scan instead of a reverse one. Array axes go the other way. However, there are advantages to this ordering as well. For example, it's common to act only on the first few axes, so having them at the beginning of the array is good (`≠a ←→ ⊑∘≢a`).
-
-### Trains don't like monads
-If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing `⟜`. Largely solved with the "nothing" glyph `·`, which acts like J's Cap (`[:`) in a train, but still a minor frustration.
 
 ### Inverse is not fully specified
 So it seems a bit strange to rely on it for core language features like `/⁼`. On the other hand, this is a good fit for `⋆⁼` since we are taking an arbitrary branch of a complex function that has many of them. I'm pretty sure it's impossible to solve the issue as stated but it might be possible to move to less hazardous constructs. Structural Under is a start.
@@ -112,6 +120,9 @@ It's unergonomic, and also quadratic in a naive runtime. The problem of course i
 
 ### Must read the body to find headerless block's type
 You have to scan for headers or double-struck names (and so does a compiler). A little inelegant, and difficult to describe in BNF. This can usually be fixed by adding a block header, except in the case of immediate modifiers: even an immediate modifier with a header can be made into a deferred modifier by adding a special name like `𝕨`.
+
+### No one right way to check if a value is an array
+The mathematical approach is `0<≡𝕩`, which can be slow without runtime support, while the efficient approach is `0=•Type𝕩`, which is ugly and uses a system function for something that has nothing at all to do with the system. These are minor flaws, but programmers shouldn't have to hesitate about which one they want to use.
 
 ### Each block body has its own label
 In a block with multiple bodies, the label (the self-name part of the header) refers to the entire block. However, there's no way to give only one label to the entire block. If you want to consistently use the same internal name, then you may have to write it many times. It's also a weird mismatch, conceptually.
@@ -150,7 +161,7 @@ When taking Windows along more than one axis, acting on the resulting array requ
 "Operand" is derived from "operator". "Modificand" would be better if it weren't both made up and hideous.
 
 ### Converting a function expression to a subject is tricky
-You can name it, you can write `⊑⟨Expr⟩` or `(Expr)˙0`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from subject to function, isn't too bad: the modifier `{𝔽}` does it.
+You can name it, you can write `⊑⟨Expr⟩` or `(Expr)˙0`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from subject to function, isn't too bad: the modifier `{𝔽}` does it, as does `○⊢`.
 
 ### Scan ordering is weird
 Scan moves along the array so that it uses results as left arguments, which is opposite to the usual right-to-left order of evaluation. But I think this is still better than scanning the array in reverse. You can always use Swap on the operand, or recover the APL scan ordering by doing a Reduce-Each on Prefixes.
