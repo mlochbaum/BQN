@@ -21,6 +21,7 @@ Concepts:
 
 Primitives:
 - [Array depth](depth.md) (`≡` and `⚇`)
+- [Assert](assert.md) (`!`)
 - [Deshape and Reshape](reshape.md) (`⥊`)
 - [Group](group.md) (`⊔`)
 - [Join and Join To](join.md) (`∾`)

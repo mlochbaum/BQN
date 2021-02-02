@@ -1,0 +1,32 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Assert</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="assert">Assert</h1>
+<p>BQN takes the position that errors exist to indicate exceptional conditions that the developer of a given program didn't expect. However, the types of errors that BQN naturally checks for, such as mismatched shapes in Couple (<code><span class='Function'>≍</span></code>), aren't always enough to detect exceptional conditions. Issues like numeric values that don't make physical sense will slip right through. BQN makes it easy for a programmer to check for these sorts of problems by building in the primitive Assert, written <code><span class='Function'>!</span></code>. This function checks whether <code><span class='Value'>𝕩</span></code> matches <code><span class='Number'>1</span></code>: if it does, then it does nothing and returns <code><span class='Value'>𝕩</span></code>, and otherwise it gives an error.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ISAyPTIgICMgUGFzc2VkCiEgMj0zICAjIEZhaWxlZA==">↗️</a><pre>    <span class='Function'>!</span> <span class='Number'>2</span><span class='Function'>=</span><span class='Number'>2</span>  <span class='Comment'># Passed
+</span>1
+    <span class='Function'>!</span> <span class='Number'>2</span><span class='Function'>=</span><span class='Number'>3</span>  <span class='Comment'># Failed
+</span>ERROR
+</pre>
+<p>To pass, the right argument must be exactly the number <code><span class='Number'>1</span></code>; any other value causes an error. For example, an array of <code><span class='Number'>1</span></code>s still causes an error; use <code><span class='Function'>∧</span><span class='Modifier'>´</span><span class='Function'>⥊</span></code> to convert a boolean array to a single boolean that indicates whether all of its values are true.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ISAo4oinPeKIqOKMvsKsKeKMnMucIOKGlTIKISDiiKfCtOKliiAo4oinPeKIqOKMvsKsKeKMnMucIOKGlTI=">↗️</a><pre>    <span class='Function'>!</span> <span class='Paren'>(</span><span class='Function'>∧=∨</span><span class='Modifier2'>⌾</span><span class='Function'>¬</span><span class='Paren'>)</span><span class='Modifier'>⌜˜</span> <span class='Function'>↕</span><span class='Number'>2</span>
+ERROR
+    <span class='Function'>!</span> <span class='Function'>∧</span><span class='Modifier'>´</span><span class='Function'>⥊</span> <span class='Paren'>(</span><span class='Function'>∧=∨</span><span class='Modifier2'>⌾</span><span class='Function'>¬</span><span class='Paren'>)</span><span class='Modifier'>⌜˜</span> <span class='Function'>↕</span><span class='Number'>2</span>
+1
+</pre>
+<p>Assert can take a left argument, which gives a message to be associated with the error. It's typical to use a string for the left argument in order to display it to the programmer, but the left argument can be any value.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Ik1lc3NhZ2UiICEgMArin6jiiJgsImFiYyIsy5zin6kgISAnMCcgICMgT2theSB0aGlzIGlzIG5vdCBhIHZlcnkgaGVscGZ1bCBwcmludG91dA==">↗️</a><pre>    <span class='String'>&quot;Message&quot;</span> <span class='Function'>!</span> <span class='Number'>0</span>
+ERROR
+    <span class='Bracket'>⟨</span><span class='Modifier2'>∘</span><span class='Separator'>,</span><span class='String'>&quot;abc&quot;</span><span class='Separator'>,</span><span class='Modifier'>˜</span><span class='Bracket'>⟩</span> <span class='Function'>!</span> <span class='String'>'0'</span>  <span class='Comment'># Okay this is not a very helpful printout
+</span>ERROR
+</pre>
+<h3 id="computing-the-error-message-on-demand">Computing the error message on demand</h3>
+<p>Because the left argument to a function is always computed before the function is called, Assert <a href="../commentary/problems.html#assert-has-no-way-to-compute-the-error-message">doesn't let you</a> compute the error message only if there's an error. This might be a problem if the error message computation is slow or has side effects. There are a few ways to work around the issue:</p>
+<ul>
+<li>Handle errors with ordinary if-then logic (perhaps using <a href="control.html">control structures</a>). This is probably the best path for user-facing applications where displaying an error goes through the user interface.</li>
+<li>Write a function <code><span class='Function'>Message</span></code> to compute the message, and call <code><span class='Value'>𝕨</span> <span class='Function'>Message</span><span class='Modifier2'>⊸</span><span class='Function'>!</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>≢</span><span class='Paren'>)</span> <span class='Value'>𝕩</span></code> or similar instead of <code><span class='Function'>!</span></code>.</li>
+<li>If the error will be caught elsewhere in the program, use a closure for the message and evaluate it when caught. With a function <code><span class='Function'>Message</span></code> as above, <code><span class='Value'>message</span> <span class='Function'>!</span> <span class='Value'>𝕩</span></code> works, and <code><span class='Brace'>{</span><span class='Value'>…</span><span class='Brace'>}</span><span class='Modifier'>˙</span><span class='Modifier2'>⊸</span><span class='Function'>!</span> <span class='Value'>𝕩</span></code> is a convenient syntax for block functions.</li>
+</ul>

@@ -52,7 +52,7 @@ Functions that have significant differences from APL functions are marked with a
 | `∊`   | [Unique Mask](https://aplwiki.com/wiki/Nub_Sieve)   | [Member of](https://aplwiki.com/wiki/Membership)
 | `⍷`   | [Deduplicate](https://aplwiki.com/wiki/Unique)      | [Find](https://aplwiki.com/wiki/Find)
 | `⊔`   | [Group Indices](group.md)*                          | [Group](group.md)*
-| `!`   | Assert*                                             | Assert with Message*
+| `!`   | [Assert](assert.md)*                                | [Assert with Message](assert.md)*
 
 ## Modifiers
 
