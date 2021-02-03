@@ -303,8 +303,8 @@ Glyph | 1 arg                    | 2 args
 `=`   | Rank                     | Equals
 `≤`   |                          | Less Than or Equal to
 `≥`   |                          | Greater Than or Equal to
-`≡`   | [Depth](../doc/depth.md) | Match
-`≢`   |                          | Not Match
+`≡`   | [Depth](../doc/depth.md) | [Match](../doc/match.md)
+`≢`   |                          | [Not Match](../doc/match.md)
 
 A combinator is a function or modifier that produces its result from its inputs purely by applying functions to arguments, without introducing any external values. BQN's combinators can all be described with diagrams showing how arguments are passed through operands, with the result emerging at the top. The diagrams below define six combinators in BQN.
 
