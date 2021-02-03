@@ -49,7 +49,7 @@ Functions that have significant differences from APL functions are marked with a
 | `⊑`   | [First](https://aplwiki.com/wiki/First)             | Pick*
 | `⊐`   | Classify* (`⍷⊸⊐`)                                   | [Index of](https://aplwiki.com/wiki/Index_Of)
 | `⊒`   | Occurrence Count*                                   | Progressive Index of*
-| `∊`   | [Unique Mask](https://aplwiki.com/wiki/Nub_Sieve)   | [Member of](https://aplwiki.com/wiki/Membership)
+| `∊`   | [Mark Firsts](https://aplwiki.com/wiki/Nub_Sieve)   | [Member of](https://aplwiki.com/wiki/Membership)
 | `⍷`   | [Deduplicate](https://aplwiki.com/wiki/Unique)      | [Find](https://aplwiki.com/wiki/Find)
 | `⊔`   | [Group Indices](group.md)*                          | [Group](group.md)*
 | `!`   | [Assert](assert.md)*                                | [Assert with Message](assert.md)*
