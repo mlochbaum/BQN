@@ -20,7 +20,7 @@
   }⍟(2 < =)
   PadVMixed ← {
     # PadV, but with 2-cells enclosed: they might have different lengths
-    ∾ (1 PadCount ≢𝕩) (⊢∾∾⟜(¯1⊑≢)⥊' '˙)¨ ⥊𝕩
+    ∾ (1 PadCount ≢𝕩) (⊢∾≍⟜(¯1⊑≢)⥊' '˙)¨ ⥊𝕩
   }
 
   # Horizontal padding: just some spaces on either side
