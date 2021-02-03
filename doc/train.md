@@ -46,7 +46,7 @@ In a train, arguments alternate strictly with combining functions between them. 
 
 ## Practice training
 
-The train `` ⊢>¯1»⌈` `` is actually a nice trick for getting the unique mask `∊𝕩` from the self-classify `⊐𝕩` without doing another search. Let's take a closer look, first by applying it mechanically. To do this, we apply each "argument" to the train's argument, and then combine them with the combining functions.
+The train `` ⊢>¯1»⌈` `` is actually a nice trick for marking first occurrences `∊𝕩` given the self-classify `⊐𝕩` without doing another search. Let's take a closer look, first by applying it mechanically. To do this, we apply each "argument" to the train's argument, and then combine them with the combining functions.
 
     (⊢ > ¯1 » ⌈`) 𝕩
     (⊢𝕩) > (¯1) » (⌈`𝕩)

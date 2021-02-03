@@ -185,7 +185,7 @@ The other arithmetic functions round to nearest, and compound functions such as 
 Select chooses whether the left argument maps to right argument axes or selects from the first axis only based on its depth. Without prototypes an empty array has depth 1, so it selects no major cells. However, it could also select from no axes (a no-op) and in some contexts the other behavior would be surprising.
 
 ### Unclear primitive names
-Blanket issue for names that I don't find informative: "Solo", "Bins", "Unique Mask", "Find", and "Group".
+Blanket issue for names that I don't find informative: "Solo", "Bins", "Find", and "Group".
 
 ### Strands go left to right
 This is the best ordering, since it's consistent with `⟨⋄⟩` lists. And code in a strand probably shouldn't have side effects anyway. Still, it's an odd little tack-on to say separators *and strands* go left to right, and it complicates the implementation a little.

@@ -165,9 +165,9 @@ For **Select** (`⊏`), `𝕨` is an array of natural numbers, or a list of such
 
 **Match** (`≡`) indicates whether two values are considered equivalent. It always returns 0 or 1, and never causes an error. If both arguments are atoms then it is identical to `=`, and if one is an atom and the other an array then it returns 0. If both arguments are arrays then it returns 1 only if they have the same shape and all pairs of corresponding elements match. Fill elements aren't taken into account, so that arrays that match might still differ in behavior. **Not Match** simply returns the complement of Match, `¬≡`.
 
-Monadic search functions compare the major cells of `𝕩` to each other. `𝕩` must have rank at least 1. Except for Unique (`⍷`), the result is a list of numbers with the same length as `𝕩`.
+Monadic search functions compare the major cells of `𝕩` to each other. `𝕩` must have rank at least 1. Except for Deduplicate (`⍷`), the result is a list of numbers with the same length as `𝕩`.
 
-- **Unique Mask** (`∊`) returns 1 for a cell if it doesn't match any earlier cell and 0 if it does.
+- **Mark Firsts** (`∊`) returns 1 for a cell if it doesn't match any earlier cell and 0 if it does.
 - **Deduplicate** (`⍷`) filters major cells to remove duplicates, retaining the ordering given by the first appearance of each unique cell.
 - **Classify** (`⊐`) returns, for each cell, the smallest index of a cell that matches it (it's necessarily less than or equal to `↕≠𝕩` element-wise, since each cell matches itself).
 - **Occurrence Count** (`⊒`) returns the number of earlier cells matching each cell.

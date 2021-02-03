@@ -67,9 +67,9 @@
 ⍒ Grade Down ; Bins Down
 ⊏ First Cell ; Select
 ⊑ First ; Pick
-⊐ ; Index of
+⊐ Classify ; Index of
 ⊒ Occurrence Count ; Progressive Index of
-∊ Unique Mask ; Member of
+∊ Mark Firsts ; Member of
 ⍷ Deduplicate ; Find
 ⊔ Group Indices ; Group
 ! Assert ; Assert with message

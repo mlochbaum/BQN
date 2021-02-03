@@ -37,7 +37,7 @@ In these three cases above, the results are the same as you would get from trans
 
 ### Comparing cells
 
-The functions in the last section manipulate cells in the same way regardless of what data they contain. Other functions compare cells to each other, either testing whether they match or how they are ordered relative to one another. The two Grade functions `⍋⍒`, and the self-comparison functions Unique Mask (`∊`) and Occurrence Count (`⊒`), each give a list result, with one number for each cell. We can see below that Occurrence Count returns the same results even as we make the argument cells more complicated, because the changes made preserve the matching of cells.
+The functions in the last section manipulate cells in the same way regardless of what data they contain. Other functions compare cells to each other, either testing whether they match or how they are ordered relative to one another. The two Grade functions `⍋⍒`, and the self-comparison functions Classify (`⊐`), Mark Firsts (`∊`), and Occurrence Count (`⊒`), each give a list result, with one number for each cell. We can see below that Occurrence Count returns the same results even as we make the argument cells more complicated, because the changes made preserve the matching of cells.
 
         s ← "abracadabra"
         ⊒ s
