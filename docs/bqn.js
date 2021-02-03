@@ -144,6 +144,12 @@ let lesseq = (x,w) => {
   if (s==="function"||t==="function") throw Error("𝕨≤𝕩: Cannot compare operations");
   return +(s!==t ? s<=t : w<=x);
 }
+let equals = (x,w) => {
+  let a,b;
+  if (typeof(w)!=="function" || !(a=w.repr)) return x===w;
+  if (typeof(x)!=="function" || !(b=x.repr)) return false;
+  b=b(); return a().every((e,i)=>e===b[i]);
+}
 let table = f => setrepr(()=>[4,f,table], (x,w) => !has(w)
   ? arr(x.map(e=>call(f,e)),x.sh)
   : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
@@ -222,7 +228,7 @@ let provide = [
  ,divide                                             // ÷
  ,power                                              // ⋆
  ,floor                                              // ⌊
- ,(x,w) => has(w)?+(x===w):x.sh?x.sh.length:0        // =
+ ,(x,w) => has(w)?+equals(x,w):x.sh?x.sh.length:0    // =
  ,lesseq                                             // ≤
  ,(x,w) => list(x.sh,0)                              // ≢
  ,(x,w) => arr(x.slice(),has(w)?w:[x.length],x.fill) // ⥊
