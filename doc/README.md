@@ -26,6 +26,7 @@ Primitives:
 - [Group](group.md) (`⊔`)
 - [Join and Join To](join.md) (`∾`)
 - [Logical functions](logic.md) (`∧∨¬`)
+- [Match](match.md) (`≡≢`)
 - [Prefixes and Suffixes](prefixes.md) (`↑↓`)
 - [Shift functions](shift.md) (`»«`)
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
