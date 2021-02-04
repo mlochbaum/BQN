@@ -1,6 +1,12 @@
 # BQN keybindings for Readline configuration file .inputrc
 # Enables BQN combinations in bash and rlwrap (used by dzaima/BQN REPL)
 
+# Readline bindings are recursive, so use this trick to turn double
+# backslash into an actual backslash character.
+# Assuming ctrl-x esc isn't bound, the part after \\ does nothing,
+# except keep Readline from waiting for a backslash combination.
+"\\\\" "\\"
+
 "\\`" "˜"
 "\\1" "˘"
 "\\2" "¨"
