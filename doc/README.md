@@ -28,6 +28,7 @@ Primitives:
 - [Logical functions](logic.md) (`∧∨¬`)
 - [Match](match.md) (`≡≢`)
 - [Prefixes and Suffixes](prefixes.md) (`↑↓`)
+- [Self-comparison functions](selfcmp.md) (`⊐⊒∊⍷`)
 - [Shift functions](shift.md) (`»«`)
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
 - [Transpose](transpose.md) (`⍉`)
