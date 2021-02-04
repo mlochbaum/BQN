@@ -1,0 +1,142 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Self-comparison functions</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="self-comparison-functions">Self-comparison functions</h1>
+<p>BQN has four self-comparison functions, Classify (<code><span class='Function'>⊐</span></code>), Occurrence Count (<code><span class='Function'>⊒</span></code>), Mark Firsts (<code><span class='Function'>∊</span></code>), and Deduplicate (<code><span class='Function'>⍷</span></code>). Each of these is a monadic function that obtains its result by comparing each major cell of the argument (which must have rank at least 1) to the earlier major cells with <a href="match.html">match</a>. For example, Mark Firsts indicates the cells that don't match any earlier cell, making them the first of their kind.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiKICJhYmFhY2Ii">↗️</a><pre>    <span class='Function'>∊</span> <span class='String'>&quot;abaacb&quot;</span>
+⟨ 1 1 0 0 1 0 ⟩
+</pre>
+<p>When the argument is a list, its major cells are units and thus contain one element each, so it's just as valid to say that a self-comparison function compares elements of its argument. Only with a higher-rank argument does the major cell nature become apparent.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGFyciDihpAgPiJhYmMi4oC/ImRjYiLigL8iYWJjIuKAvyJiY2Qi4oC/ImRjYiIK4oiKIGFycg==">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>arr</span> <span class='Gets'>←</span> <span class='Function'>&gt;</span><span class='String'>&quot;abc&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;dcb&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;abc&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;bcd&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;dcb&quot;</span>
+┌─     
+╵"abc  
+  dcb  
+  abc  
+  bcd  
+  dcb" 
+      ┘
+    <span class='Function'>∊</span> <span class='Value'>arr</span>
+⟨ 1 1 0 1 0 ⟩
+</pre>
+<p>The result has one number for each major cell, or in other words is a list with the same length as its argument. Three self-comparison functions follow this pattern, but Deduplicate (<code><span class='Function'>⍷</span></code>) is different: it returns an array of the same rank but possibly a shorter length than the argument.</p>
+<h2 id="classify">Classify</h2>
+<p>Classify is the universal self-comparison function, in that it preserves all the self-comparison information in its argument. It gives each different cell value a natural number, ordered by first appearance.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqQIDXigL824oC/MuKAvzLigL814oC/MQ==">↗️</a><pre>    <span class='Function'>⊐</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 0 1 2 2 0 3 ⟩
+</pre>
+<p><a href="couple.html">Coupling</a> the argument to the result shows how values are numbered. Each <code><span class='Number'>5</span></code> is <code><span class='Number'>0</span></code> in the result, each <code><span class='Number'>6</span></code> is <code><span class='Number'>1</span></code>, <code><span class='Number'>2</span></code> is <code><span class='Number'>2</span></code> in this particular case, and <code><span class='Number'>1</span></code> is <code><span class='Number'>3</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omN4p+c4oqQIDXigL824oC/MuKAvzLigL814oC/MQ==">↗️</a><pre>    <span class='Function'>≍</span><span class='Modifier2'>⟜</span><span class='Function'>⊐</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+┌─             
+╵ 5 6 2 2 5 1  
+  0 1 2 2 0 3  
+              ┘
+</pre>
+<p>Applying Classify before another self-comparison function will never change the result, except in the case of Deduplicate (<code><span class='Function'>⍷</span></code>), which constructs its result from cells in the argument. In particular, Classify is <a href="https://en.wikipedia.org/wiki/Idempotent">idempotent</a>, meaning that applying it twice is the same as applying it once.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiKICAgImRiYWVkY2JjZWNiY2QiCuKIiiDiipAgImRiYWVkY2JjZWNiY2QiCgp7KPCdlY/iiaHwnZWP4oiY4oqQKSJkYmFlZGNiY2VjYmNkIn3CqCDiipDigL/iipLigL/iiIrigL/ijbc=">↗️</a><pre>    <span class='Function'>∊</span>   <span class='String'>&quot;dbaedcbcecbcd&quot;</span>
+⟨ 1 1 1 1 0 1 0 0 0 0 0 0 0 ⟩
+    <span class='Function'>∊</span> <span class='Function'>⊐</span> <span class='String'>&quot;dbaedcbcecbcd&quot;</span>
+⟨ 1 1 1 1 0 1 0 0 0 0 0 0 0 ⟩
+
+    <span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝕏≡𝕏</span><span class='Modifier2'>∘</span><span class='Function'>⊐</span><span class='Paren'>)</span><span class='String'>&quot;dbaedcbcecbcd&quot;</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>⊐</span><span class='Ligature'>‿</span><span class='Function'>⊒</span><span class='Ligature'>‿</span><span class='Function'>∊</span><span class='Ligature'>‿</span><span class='Function'>⍷</span>
+⟨ 1 1 1 0 ⟩
+</pre>
+<h3 id="classify-and-deduplicate">Classify and Deduplicate</h3>
+<p>Classify is also related to <a href="#deduplicate">Deduplicate</a>. In a way they are complements: applying both in sequence always gives a completely uninteresting result!</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGMg4oaQID4ieWVsbG93IuKAvyJvcmFuZ2Ui4oC/InllbGxvdyLigL8icHVycGxlIuKAvyJvcmFuZ2Ui4oC/InllbGxvdyIK4o23IOKKkCBjCuKKkCDijbcgYw==">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>c</span> <span class='Gets'>←</span> <span class='Function'>&gt;</span><span class='String'>&quot;yellow&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;orange&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;yellow&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;purple&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;orange&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;yellow&quot;</span>
+┌─        
+╵"yellow  
+  orange  
+  yellow  
+  purple  
+  orange  
+  yellow" 
+         ┘
+    <span class='Function'>⍷</span> <span class='Function'>⊐</span> <span class='Value'>c</span>
+⟨ 0 1 2 ⟩
+    <span class='Function'>⊐</span> <span class='Function'>⍷</span> <span class='Value'>c</span>
+⟨ 0 1 2 ⟩
+</pre>
+<p>Applying both separately, in contrast, gives completely interesting results. These results contain all information from the original argument, as <code><span class='Function'>⍷</span></code> indicates which cells it contained and <code><span class='Function'>⊐</span></code> indicates where they were located. The function Select (<code><span class='Function'>⊏</span></code>) reconstructs the argument from the two values.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4o23IGMK4oqQIGMKKOKKkGMpIOKKjyAo4o23Yyk=">↗️</a><pre>    <span class='Function'>⍷</span> <span class='Value'>c</span>
+┌─        
+╵"yellow  
+  orange  
+  purple" 
+         ┘
+    <span class='Function'>⊐</span> <span class='Value'>c</span>
+⟨ 0 1 0 2 1 0 ⟩
+    <span class='Paren'>(</span><span class='Function'>⊐</span><span class='Value'>c</span><span class='Paren'>)</span> <span class='Function'>⊏</span> <span class='Paren'>(</span><span class='Function'>⍷</span><span class='Value'>c</span><span class='Paren'>)</span>
+┌─        
+╵"yellow  
+  orange  
+  yellow  
+  purple  
+  orange  
+  yellow" 
+         ┘
+</pre>
+<p>One way to view this relationship is to consider an idea from linear algebra, where an idempotent transformation is called a &quot;projection&quot;. That means that the argument might be any value but the result is part of a smaller class of values, and any argument from that smaller class is left the same. What arrays do the two functions project to? The result of Deduplicate is an array with no repeated major cells. The result of Classify is a list of natural numbers, but it also has an additional property: each number in the list is at most one higher than the previous numbers, and the first number is zero. This comes from the way Classify numbers the cells of its argument. When it finds a cell that hasn't appeared before (at a lower index), it always chooses the next higher number for it.</p>
+<p>Applying both Classify and Deduplicate gives an array that has both properties (this isn't the case for all pairs of projections—we need to know that Classify maintains the uniqueness property for Deduplicate and vice-versa). It has no duplicate major cells, <em>and</em> it's a list of natural numbers that starts with 0 and never goes up by more than one. Taken together, these are a tight constraint! The first element of the argument has to be 0. The next can't be 0 because it's already appeared, but it can't be more than one higher—it has to be 1. The next can't be 0 or 1, and has to be 2. And so on. So the result is always <code><span class='Function'>↕</span><span class='Value'>n</span></code> for some <code><span class='Value'>n</span></code>. In fact it's possible to determine the length as well, by noting that each function preserves the number of unique major cells in its argument. Classify does this because distinct numbers in the output correspond exactly to distinct major cells in the input; Deduplicate does this because it only removes duplicate cells, not distinct ones. So the final result is <code><span class='Function'>↕</span><span class='Value'>n</span></code>, where <code><span class='Value'>n</span></code> is the number of unique major cells in the argument.</p>
+<h3 id="mark-firsts">Mark Firsts</h3>
+<p><em>See the <a href="https://aplwiki.com/wiki/Unique_Mask">APL Wiki page</a> on this function as well.</em></p>
+<p>Mark Firsts (<code><span class='Function'>∊</span></code>) is the simplest self-comparison function: it returns <code><span class='Number'>0</span></code> for any major cell of the argument that is a duplicate of an earlier cell and <code><span class='Number'>1</span></code> for a major cell that's the first with its value. To implement <a href="#deduplicate">Deduplicate</a> in terms of Mark Firsts, just filter out the duplicates with <code><span class='Function'>∊</span><span class='Modifier2'>⊸</span><span class='Function'>/</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiKICAgM+KAvzHigL804oC/MeKAvzXigL854oC/MuKAvzbigL81CgriiIriirgvIDPigL8x4oC/NOKAvzHigL814oC/OeKAvzLigL824oC/NQ==">↗️</a><pre>    <span class='Function'>∊</span>   <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>5</span>
+⟨ 1 1 1 0 1 1 1 1 0 ⟩
+
+    <span class='Function'>∊</span><span class='Modifier2'>⊸</span><span class='Function'>/</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>5</span>
+⟨ 3 1 4 5 9 2 6 ⟩
+</pre>
+<p>Mark Firsts has other uses, of course. Instead of keeping the unique values, you might remove the first of each value with <code><span class='Function'>¬</span><span class='Modifier2'>∘</span><span class='Function'>∊</span><span class='Modifier2'>⊸</span><span class='Function'>/</span></code>. You can use <code><span class='Function'>∧</span><span class='Modifier'>´</span><span class='Function'>∊</span></code> to check that an array has no duplicate major cells, or <code><span class='Function'>+</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>∊</span></code> to count the number of unique ones.</p>
+<p>What about marking the elements that appear exactly once? There's a trick for this: find the cells that are firsts running both forwards (<code><span class='Function'>∊</span></code>) and backwards (<code><span class='Function'>∊</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span></code>). Such a cell has no equal before it, nor after it, so it's unique in the entire array.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKIiuKIp+KIiuKMvuKMvSkgImR1Y2si4oC/ImR1Y2si4oC/InRlYWwi4oC/ImR1Y2si4oC/Imdvb3NlIg==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>∊∧∊</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span><span class='Paren'>)</span> <span class='String'>&quot;duck&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;duck&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;teal&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;duck&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;goose&quot;</span>
+⟨ 0 0 1 0 1 ⟩
+</pre>
+<p>Remember that you don't have to apply the result of Mark Firsts to the same array you got it from! For example, it might be useful in a database application to find unique values in a particular column but use these to filter the entire table, or one other column.</p>
+<h3 id="occurrence-count">Occurrence Count</h3>
+<p>Occurrence Count (<code><span class='Function'>⊒</span></code>) is a somewhat more sophisticated take on the idea behind Mark Firsts: instead of just testing whether a cell is a duplicate, it returns a number indicating how many previous cells match it. This means that Mark Firsts can be implemented with <code><span class='Number'>0</span><span class='Function'>=⊒</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqSICAgMuKAvzfigL8x4oC/OOKAvzHigL834oC/MeKAvzjigL8y4oC/OOKAvzQKCuKJjeKfnOKKkiAy4oC/N+KAvzHigL844oC/MeKAvzfigL8x4oC/OOKAvzLigL844oC/NAoKMD3iipIgMuKAvzfigL8x4oC/OOKAvzHigL834oC/MeKAvzjigL8y4oC/OOKAvzQgICMgRmlyc3QgYXBwZWFyYW5jZXMgbWFya2Vk">↗️</a><pre>    <span class='Function'>⊒</span>   <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+⟨ 0 0 0 0 1 1 2 1 1 2 0 ⟩
+
+    <span class='Function'>≍</span><span class='Modifier2'>⟜</span><span class='Function'>⊒</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+┌─                       
+╵ 2 7 1 8 1 7 1 8 2 8 4  
+  0 0 0 0 1 1 2 1 1 2 0  
+                        ┘
+
+    <span class='Number'>0</span><span class='Function'>=⊒</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>4</span>  <span class='Comment'># First appearances marked
+</span>⟨ 1 1 1 1 0 0 0 0 0 0 1 ⟩
+</pre>
+<p>While Occurrence Count maintains more information than Mark Firsts, it's still not as much as <a href="#classify">Classify</a>. We can swap many digits around while keeping the occurrence counts the same; Classify would detect these changes.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqSICAgN+KAvzHigL8y4oC/OOKAvzfigL8x4oC/MeKAvzLigL844oC/OOKAvzQ=">↗️</a><pre>    <span class='Function'>⊒</span>   <span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+⟨ 0 0 0 0 1 1 2 1 1 2 0 ⟩
+</pre>
+<p>One easy example with Occurrence count is to take a list that has duplicates and return exactly one copy of each duplicate element. Taking each value where the count is 1 ensures that the result has no duplicates, and that every cell that appears twice or more in the argument is represented in the result, since the second occurrence has count 1. Results are ordered by the position of these second occurrences, so a different method might be needed if the ordering is important.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDE94oqSKeKKuC8gImFhYWFiY2RkY2Mi">↗️</a><pre>    <span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>=⊒</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>/</span> <span class='String'>&quot;aaaabcddcc&quot;</span>
+"adc"
+</pre>
+<p>An interesting combination is Occurrence Count applied to the result of Indices (<code><span class='Function'>/</span></code>). The result counts up to each number from the argument in turn; in other symbols, it's <code><span class='Function'>∾↕</span><span class='Modifier'>¨</span></code>. This version is interesting because it doesn't create any nested arrays, just lists of natural numbers.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqSIC8gMuKAvzPigL80">↗️</a><pre>    <span class='Function'>⊒</span> <span class='Function'>/</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+⟨ 0 1 0 1 2 0 1 2 3 ⟩
+</pre>
+<p>A more efficient way when the interpreter doesn't optimize <code><span class='Function'>⊒</span></code> here is <code><span class='Function'>/</span><span class='Paren'>(</span><span class='Number'>¯1</span><span class='Modifier2'>⊸</span><span class='Function'>⊑↕</span><span class='Modifier2'>⊸</span><span class='Function'>-⊏</span><span class='Modifier2'>⟜</span><span class='Function'>»</span><span class='Paren'>)</span><span class='Function'>+</span><span class='Modifier'>`</span></code>, but that's clearly quite a bit more complicated.</p>
+<h3 id="deduplicate">Deduplicate</h3>
+<p><em>There's also an <a href="https://aplwiki.com/wiki/Unique">APL Wiki page</a> on this function.</em></p>
+<p>Deduplicate removes every major cell from the argument that matches an earlier cell, resulting in an array with the same rank but possibly a shorter length. It might also be described as returning the unique major cells of the argument, ordered by first occurrence. Deduplicate Under Reverse (<code><span class='Function'>⍷</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span></code>) orders by last occurrence instead.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4o23ID4idGFrZSLigL8iZHJvcCLigL8iZHJvcCLigL8icGljayLigL8idGFrZSLigL8idGFrZSIKCuKNt+KMvuKMvSA+InRha2Ui4oC/ImRyb3Ai4oC/ImRyb3Ai4oC/InBpY2si4oC/InRha2Ui4oC/InRha2Ui">↗️</a><pre>    <span class='Function'>⍷</span> <span class='Function'>&gt;</span><span class='String'>&quot;take&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;drop&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;drop&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;pick&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;take&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;take&quot;</span>
+┌─      
+╵"take  
+  drop  
+  pick" 
+       ┘
+
+    <span class='Function'>⍷</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span> <span class='Function'>&gt;</span><span class='String'>&quot;take&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;drop&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;drop&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;pick&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;take&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;take&quot;</span>
+┌─      
+╵"drop  
+  pick  
+  take" 
+       ┘
+</pre>
+<p>The relationship between Classify and Deduplicate is discussed <a href="#classify-and-deduplicate">above</a>.</p>
