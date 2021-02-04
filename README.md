@@ -25,7 +25,7 @@ repl ∾< ∾(""Enc˜"script"Attr"src"≍○<∾⟜".js")¨"bqn"‿"repl"
 **BQN** is a new programming language in the APL lineage, which aims to remove irregular and burdensome aspects of the APL tradition and put the great ideas on a firmer footing. While its use demands a solid understanding of functions and multidimensional arrays, BQN's focus on providing simple, consistent, and powerful array operations (and documentation!) makes it a good language for learning array programming and building stronger array intuition.
 
 BQN maintains many of the ideas that made APL\360 revolutionary in 1966:
-* Human-friendly **infix notation** has no precedence rules to remember.
+* Human-friendly [**infix notation**](tutorial/expression.md) has no precedence rules to remember.
 * [**Built-in array operations**](doc/primitive.md) handle any number of dimensions easily.
 * **Higher-order functions** allow basic functions to be applied in more powerful ways.
 
