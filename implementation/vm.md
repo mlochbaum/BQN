@@ -190,7 +190,7 @@ The compiler takes the runtime as `𝕨` and source code as `𝕩`. To evaluate 
 I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next.
 
 * Test core runtime functions directly by calling them within the implementation language.
-* Test the virtual machine with small snippets of handwritten bytecode, or with the output of `src/cjs.bqn` on test expressions such as those in [test/bcases.bqn](../test/bcases.bqn).
+* Test the virtual machine with the output of `src/cjs.bqn` on the primitive-less test expressions in [test/cases/bytecode.bqn](../test/cases/bytecode.bqn).
 * Now test the self-hosted compiler by running it directly on small expressions.
-* For a larger test, use [test/prim.bqn](../test/prim.bqn). The result should be an empty list `⟨⟩` indicating no failed tests.
-* If test/prim.bqn passes you can almost certainly compile the compiler.
+* For a larger test, use [test/cases/prim.bqn](../test/cases/prim.bqn). The result should be an empty list `⟨⟩` indicating no failed tests.
+* If test/cases/prim.bqn passes you can almost certainly compile the compiler.

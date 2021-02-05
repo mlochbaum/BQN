@@ -535,8 +535,8 @@
 <p>I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next.</p>
 <ul>
 <li>Test core runtime functions directly by calling them within the implementation language.</li>
-<li>Test the virtual machine with small snippets of handwritten bytecode, or with the output of <code><span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span></code> on test expressions such as those in <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/bcases.bqn">test/bcases.bqn</a>.</li>
+<li>Test the virtual machine with the output of <code><span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span></code> on the primitive-less test expressions in <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/cases/bytecode.bqn">test/cases/bytecode.bqn</a>.</li>
 <li>Now test the self-hosted compiler by running it directly on small expressions.</li>
-<li>For a larger test, use <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/prim.bqn">test/prim.bqn</a>. The result should be an empty list <code><span class='Bracket'>⟨⟩</span></code> indicating no failed tests.</li>
-<li>If test/prim.bqn passes you can almost certainly compile the compiler.</li>
+<li>For a larger test, use <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/cases/prim.bqn">test/cases/prim.bqn</a>. The result should be an empty list <code><span class='Bracket'>⟨⟩</span></code> indicating no failed tests.</li>
+<li>If test/cases/prim.bqn passes you can almost certainly compile the compiler.</li>
 </ul>
