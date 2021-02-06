@@ -2,18 +2,18 @@
 
 # The BQN virtual machine and runtime
 
-BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. For example, the [Javascript environment](../docs/bqn.js) requires about 200 lines of Javascript code even though it compiles BQN bytecode to Javascript, a more complex strategy than interpreting it directly. This makes it fairly easy to port BQN to new platforms, allowing BQN to run "natively" within other programming languages and interact with arrays in those languages.
+BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. For example, the [Javascript environment](../docs/bqn.js) requires about 300 lines of Javascript code even though it compiles BQN bytecode to Javascript, a more complex strategy than interpreting it directly. This makes it fairly easy to port BQN to new platforms, allowing BQN to run "natively" within other programming languages and interact with arrays in those languages.
 
 ## Bytecode
 
-The BQN implementation here and dzaima/BQN share a stack-based bytecode format used to represent compiled code. dzaima/BQN can interpret this bytecode or convert it to [JVM](https://en.wikipedia.org/wiki/Java_virtual_machine) bytecode, while the Javascript VM previously interpreted bytecode but now always compiles it.
+The BQN implementation here and dzaima/BQN share a stack-based object code format used to represent compiled code. This format is a list of numbers of unspecified precision (small precision will limit the length of list literals and number of locals per block, blocks, and constants). Previously it was encoded as bytes with the [LEB128](https://en.wikipedia.org/wiki/LEB128) format; while it no longer has anything to do with bytes it's called a "bytecode" because this is shorter than "object code".
 
-Since interpretation is a simpler strategy, it may be helpful to use the [old Javascript bytecode interpreter](https://github.com/mlochbaum/BQN/blob/f74d9223ef880f2914030c2375f680dcc7e8c92b/bqn.js#L36) as a reference when implementing a BQN virtual machine.
+dzaima/BQN can interpret bytecode or convert it to [JVM](https://en.wikipedia.org/wiki/Java_virtual_machine) bytecode, while the Javascript VM previously interpreted bytecode but now always compiles it. Since interpretation is a simpler strategy, it may be helpful to use the [old Javascript bytecode interpreter](https://github.com/mlochbaum/BQN/blob/f74d9223ef880f2914030c2375f680dcc7e8c92b/bqn.js#L36) as a reference when implementing a BQN virtual machine.
 
 ### Components
 
 The complete bytecode for a program consists of the following:
-* A bytecode sequence `bytes`
+* A bytecode sequence `code`
 * A list `consts` of constants that can be loaded
 * *(dzaima/BQN only) A list of identifier names*
 * A list `blocks` of block information, described in the next section.
@@ -24,19 +24,11 @@ Each block in `blocks` is a list of the following properties:
 * Block type: (0) function/immediate, (1) 1-modifier, (2) 2-modifier
 * Block immediateness: (1) immediate or (0) deferred
 * *(dzaima/BQN only) List of local identifier names*
-* Block starting index in `bytes`
+* Block starting index in `code`
 
 Compilation separates blocks so that they are not nested in bytecode. All compiled code is contained in some block. The self-hosted compiler compiles the entire program into an immediate block, and the program is run by evaluating this block. Blocks are terminated with the RETN instruction.
 
 The starting index refers to the position where execution starts in order to evaluate the block. When the block is evaluated depends on its type and immediateness. An immediate block (0,1) is evaluated as soon as it is pushed; a function (0,0) is evaluated when called on arguments, an immediate modifier (1 or 2, 1) is evaluated when called on operands, and a deferred modifier (1 or 2, 0) creates a derived function when called on operands and is evaluated when this derived function is called on arguments.
-
-### LEB128
-
-Arguments for BQN bytecode are always natural numbers, encoded as a sequence of bytes using the unsigned [LEB128](https://en.wikipedia.org/wiki/LEB128) format. The environment only needs to decode this format and not encode it (encoding is done by `LEB` in the compiler).
-
-To read a number from the byte stream, read (unsigned) bytes from the stream in sequence, stopping when a byte less than 128 is found. Each byte contributes its lowest 7 bits to the number: the byte's value if it is less than 128, and its value minus 128 otherwise. Values are accumulated starting at the lowest-order bits. To accomplish this, begin with a multiplier of 1 (shift of 0). At each step, add the 7 bits read, times the multiplier, to a running total that starts at 0, then multiply the multiplier by 128 (or add 7 to the shift).
-
-Because most encoded numbers will be less than 128, for higher performance it's best to add a special case for the first byte, which simply returns the byte if it's less than 128.
 
 ### Instructions
 
