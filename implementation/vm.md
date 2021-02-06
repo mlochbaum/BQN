@@ -119,27 +119,30 @@ The contents of a core runtime are given below. The names given are those used i
 
 | Ind | Name       | Description / restrictions
 |----:|------------|---------------------------
-|   0 | `IsArray`  | 1 if the right argument is an array, 0 otherwise
-|   1 | `Type`     | The fill value for array `𝕩`
-|   2 | `Log`      | `⋆⁼` (natural or base-`𝕨` logarithm) for atomic arguments
-|   3 | `GroupLen` | `≠¨⊔𝕩` for a valid list `𝕩`
-|   4 | `GroupOrd` | `∾⊔𝕩` provided `𝕨` is `GroupLen 𝕩`
-|   5 | `!`        |
-|   6 | `+`        | On two atoms
-|   7 | `-`        | On one or two atoms
-|   8 | `×`        | On two atoms
-|   9 | `÷`        | On one or two atoms
-|  10 | `⋆`        | On one or two atoms
-|  11 | `⌊`        | On one atom
-|  12 | `=`        | On one value or two atoms
-|  13 | `≤`        | On two atoms
-|  14 | `≢`        | For array `𝕩`
-|  15 | `⥊`        | For array `𝕩` with no `𝕨` or `𝕨=○(×´)≢𝕩`
-|  16 | `⊑`        | For atom `𝕨` and list `𝕩`
-|  17 | `↕`        | For natural number `𝕩`
-|  18 | `⌜`        | On arrays
-|  19 | `` ` ``    |
-|  20 | `⊘`        |
+|   0 | `Type`     | `•Type`
+|   1 | `Decompose`| `•Decompose`
+|   2 | `Glyph`    | (Unused) `•Glyph` for primitive `𝕩`
+|   3 | `Fill`     | Get or set the fill value for array `𝕩`
+|   4 | `Log`      | `⋆⁼` (natural or base-`𝕨` logarithm) for atomic arguments
+|   5 | `GroupLen` | `≠¨⊔𝕩` for a valid list `𝕩`
+|   6 | `GroupOrd` | `∾⊔𝕩` provided `𝕨` is `GroupLen 𝕩`
+|   7 | `!`        |
+|   8 | `+`        | On two atoms
+|   9 | `-`        | On one or two atoms
+|  10 | `×`        | On two atoms
+|  11 | `÷`        | On one or two atoms
+|  12 | `⋆`        | On one or two atoms
+|  13 | `⌊`        | On one atom
+|  14 | `=`        | On one value or two atoms
+|  15 | `≤`        | On two atoms
+|  16 | `≢`        | For array `𝕩`
+|  17 | `⥊`        | For array `𝕩` with no `𝕨` or `𝕨=○(×´)≢𝕩`
+|  18 | `⊑`        | For atom `𝕨` and list `𝕩`
+|  19 | `↕`        | For natural number `𝕩`
+|  20 | `⌜`        | On arrays
+|  21 | `` ` ``    |
+|  22 | `_fillBy_` | `𝔽` with result fill computed using `𝔾`
+|  23 | `⊘`        |
 
 Remember that `+` and `-` can also work on characters in some circumstances, under the rules of affine characters. Other arithmetic functions should only accept numbers. `=` must work on numbers, characters, and primitives, and should give `0` without causing an error if the arguments have different types or one is a primitive and the other isn't. `≤` must work on numbers and characters.
 
