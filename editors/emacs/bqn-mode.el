@@ -77,17 +77,21 @@ using ‘set-create’ and to update ‘bqn-mode-map’ using
 (defvar bqn-mode-map (bqn--make-bqn-mode-map)
   "The keymap for ‘bqn-mode’.")
 
-;;;###autoload
-(define-derived-mode bqn-mode prog-mode "BQN"
-  "Major mode for editing BQN files."
-  :group 'bqn
-  (use-local-map bqn-mode-map))
-
 ;;;
-;;;  Load the other source files
+;;;  Define the mode
 ;;;
 
 (require 'bqn-input)
+(require 'bqn-syntax)
+
+;;;###autoload
+(define-derived-mode bqn-mode prog-mode "BQN"
+  "Major mode for editing BQN files."
+  :syntax-table bqn--syntax-table
+  :group 'bqn
+  (use-local-map bqn-mode-map)
+  (setq-local font-lock-defaults bqn--token-syntax-types)
+  )
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.bqn\\'" . bqn-mode))
