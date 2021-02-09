@@ -18,8 +18,8 @@ Functions that have significant differences from APL functions are marked with a
 | `√`   | [Square Root](https://aplwiki.com/wiki/Square_Root) | [Root](https://aplwiki.com/wiki/Root)
 | `⌊`   | [Floor](https://aplwiki.com/wiki/Floor)             | [Minimum](https://aplwiki.com/wiki/Minimum)
 | `⌈`   | [Ceiling](https://aplwiki.com/wiki/Ceiling)         | [Maximum](https://aplwiki.com/wiki/Maximum)
-| `∧`   | Sort Up                                             | [And](logic.md)*
-| `∨`   | Sort Down                                           | [Or](logic.md)*
+| `∧`   | [Sort Up](order.md#sort)                            | [And](logic.md)*
+| `∨`   | [Sort Down](order.md#sort)                          | [Or](logic.md)*
 | `¬`   | [Not](logic.md)*                                    | [Span](logic.md)*
 | `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
@@ -43,8 +43,8 @@ Functions that have significant differences from APL functions are marked with a
 | `⌽`   | [Reverse](https://aplwiki.com/wiki/Reverse)         | [Rotate](https://aplwiki.com/wiki/Rotate)
 | `⍉`   | [Transpose](transpose.md)*                          | [Reorder axes](transpose.md)*
 | `/`   | [Indices](https://aplwiki.com/wiki/Indices)         | [Replicate](https://aplwiki.com/wiki/Replicate)
-| `⍋`   | [Grade Up](https://aplwiki.com/wiki/Grade)          | [Bins Up](https://aplwiki.com/wiki/Interval_Index)
-| `⍒`   | [Grade Down](https://aplwiki.com/wiki/Grade)        | [Bins Down](https://aplwiki.com/wiki/Interval_Index)
+| `⍋`   | [Grade Up](order.md#grade)                          | [Bins Up](order.md#bins)
+| `⍒`   | [Grade Down](order.md#grade)                        | [Bins Down](order.md#bins)
 | `⊏`   | First Cell*                                         | Select*
 | `⊑`   | [First](https://aplwiki.com/wiki/First)             | Pick*
 | `⊐`   | [Classify](selfcmp.md#classify)* (`⍷⊸⊐`)            | [Index of](https://aplwiki.com/wiki/Index_Of)
