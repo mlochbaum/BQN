@@ -513,7 +513,8 @@ JoinTo←∨○(1<=)◶(∾○⥊)‿{
 } _fillBy_ IF
 
 Rep ← Indices⊸⊏
-Replicate ← IsArray∘⊣◶{
+Replicate ← (0<=∘⊣)◶{
+  𝕨↩(0⊑⥊)⍟IsArray𝕨
   "/: Amounts to replicate must be natural numbers" ! Nat 𝕨
   e←r←𝕨
   ({e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×≠𝕩) ⊏ 𝕩
