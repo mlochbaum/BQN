@@ -4,7 +4,7 @@
 
 This directory gives a specification for BQN. The specification differs from the [documentation](../doc/README.md) in that its purpose is only to describe the exact details of BQN's operation in the most quickly accessible way, rather than to explain the core ideas of BQN functionality and how it might be used.
 
-All normative sections of the core BQN specification (that is, excluding system-provided values) are now complete, but the non-normative commentary on primitive definitions is still missing a few sections.
+The core of BQN, which excludes system-provided values, is now completely specified, although the spec will continue to be edited further to improve clarity and cover edge cases that were missed initially.
 
 The BQN specification consists of the following documents:
 - [Types](types.md)
