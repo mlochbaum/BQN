@@ -376,7 +376,6 @@ FC←{ # Fill cell
 }
 
 Windows←{
-  "𝕨↕𝕩: 𝕩 must be an array" ! IsArray 𝕩
   "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   r←≠𝕨↩Deshape 𝕨
   𝕨{

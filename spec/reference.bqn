@@ -326,7 +326,6 @@ Nudge     ← (1↑0↑⊢)⊸ShiftBefore
 NudgeBack ← (1↑0↑⊢)⊸ShiftAfter
 
 Windows←{
-  ! IsArray 𝕩
   ! 1≥=𝕨
   ! 𝕨≤○≠≢𝕩
   ! ∧´Nat¨⥊𝕨
