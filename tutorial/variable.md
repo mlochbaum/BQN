@@ -162,3 +162,57 @@ As you can see, by applying Take and then Drop, we can pick out a slice of a lis
         ('A'-'a')⊸+ ⌾ (2 ↑ 4⊸↓)  "abcdefgh"
 
 (Here I've snuck in a train `2 ↑ 4⊸↓` to combine the two functions. As an exercise, you might try to write that function using combinators instead, and as an extra hard exercise you might then ponder why someone would want to add trains to a language).
+
+## Identity functions
+
+<!--GEN
+Primitives ⟨ "⊣%{%Identity%Left", "⊢%}%Identity%Right" ⟩
+-->
+I'm not going to lie. I'm making this its own section so it looks like I plan ahead when I write these tutorials. The function Right (`⊢`) always returns its right argument, and Left (`⊣`) returns its left argument if there is one, and the right argument otherwise.
+
+        ⊢ "only"
+
+        ⊣ "only"
+
+        "left" ⊢ "right"
+
+        "left" ⊣ "right"
+
+They are not complicated functions: if you're confused it's because you don't understand why anyone would ever use them. Indeed, it's harder to see why these functions are useful than to see what they do. That is a fact.
+
+## Modified assignment
+
+Let's revisit our question about modifying an array. As we said, the answer to "how do I modify part of an array?" is simply that you can't, and that the question doesn't make sense. But there's a seemingly similar question with a very different answer: "how do I modify part of a variable whose value is an array?" This is because unlike an array, a variable isn't defined by the value it has, but by the name used to refer to it (and the scope it resides in). Here's how we would modify the variable `a`:
+
+        a ← 4            # First it's a number
+        a
+
+        a ↩ 4‿5‿6        # Now it's a list!
+        a
+
+But this changes the value of `a` to a completely unrelated value. What if I want to apply a transformation to `a`, for example to subtract one? Of course I can write the value `a` on the right hand side of the assignment, but that's extra work and doesn't really seem to represent what I'm doing, which is conceptually just to apply a function to `a`. So BQN also has a shorthand, called *modified assignment*. Here, the modified assignment `-↩` subtracts a value from `a`.
+
+        a ↩ a - 1
+        a
+
+        a -↩ 1
+
+(In case you're wondering why I didn't have to write `a` again that last time, the evaluator suppresses the printed result for ordinary assignments but not modified ones. This is a feature of my website software and not the BQN language). It looks a lot like the special assignment operators `+=`, `/=`, and so on that you'll see in C or Javascript. What BQN brings to the table is that you can use any two-argument function at all here, because two-argument function are always written as operators. For example, we can prepend some elements to `a`:
+
+        a ∾˜↩ 0‿1
+
+But what about functions with only one argument? The syntax isn't the best, but at least it's possible. There still needs to be a value on the right side of the assignment even if it'll be ignored; I use the null character `@` for this. Then to turn a function that takes one argument into one that takes two, we can compose it with a function that takes two arguments and returns one of them. The left one, since the variable to modify is on the left hand side. Perhaps… Left? (`⊣`)?
+
+        "abcd" ⌽∘⊣ "wxyz"
+
+        a ⌽∘⊣↩ @
+
+Notice that there's no need for parentheses: modifiers bind more strongly than the assignment character. Now what if we want to decrease the last two elements of `a`? That is, we want to compute the following array while storing it in `a`.
+
+        -⟜4⌾(¯2⊸↑) a
+
+        a                # It hasn't changed, of course
+
+The code to do this looks the same as what we did with Reverse (`⌽`). Again we don't have to parenthesize the function, because modifiers associate from left to right, so Under (`⌾`) binds to its operands before Compose (`∘`) does.
+
+        a -⟜4⌾(¯2⊸↑)∘⊣↩ @
