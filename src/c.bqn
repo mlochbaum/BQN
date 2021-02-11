@@ -41,7 +41,7 @@ Tokenize←{
   e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`c)⊸//(𝕩=lf)∾1⟩ # Matching close indices
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
   St←(≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/          # All indices → reached mask
-  a←St q⋄b←St e⋄f←¬≠`ab←a∨b                 # Open/close masks; filter
+  a←St q⋄b←St e⋄f←1≠`ab←a∨b                 # Open/close masks; filter
   {⟨⊑/𝕩,"Unclosed quote"⟩!0}⍟(∨´)(sm∨dm)∧b<f
 
   # Extract character and string literals
@@ -91,7 +91,7 @@ ReadNums←{
   "π and ∞ must occur alone"_err_𝕨 (p∨i)>1(»∧(p∧«e)∨«)z∨n
   f←(17≥¬(⊢-T)+`)⊸∧(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m   # No leading 0s; max 17 digits
   l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/f×𝕩-1-˜⊑bD          # Digit lookup, with ∞ as 1 to avoid ∞×0
-  v←(>⟜«0≤l)/(0⊸≤××⟜10⊸+)`»«l               # Numeric values—mantissas and exponents
+  v←(>⟜«0≤l)/0(0⊸≤××⟜10⊸+)`l                # Numeric values—mantissas and exponents
   v×↩1‿¯1⊏˜(r←>⟜»m)/»n                      # Negate if ¯
   vm←c/z                                    # Mask of mantissas in l
   dp←vm/(»⊸<×-)⟜(⊏⟜(I1T d∾0))1+/>⟜«f        # Decimal position
