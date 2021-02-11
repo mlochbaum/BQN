@@ -281,7 +281,7 @@ _onAxes_←{
     ! 𝕨≤○≠≢𝕩
     R←{(⊑𝕨)F(1 DropV 𝕨)⊸R˘𝕩}⍟{0<≠𝕨}
     𝕨R𝕩
-  }
+  }⟜ToArray
 }
 
 SelSub←{
@@ -419,7 +419,7 @@ ReorderAxes←{
   𝕨↩𝕨∾𝕨(¬∘∊˜/⊢)↕r
   (𝕨⊸⊏⊑𝕩˙)¨↕⌊´¨𝕨⊔≢𝕩
 }
-Transpose←(=-1˙)⊸ReorderAxes⍟(0<=)
+Transpose←(0<=)◶⟨ToArray,(=-1˙)⊸ReorderAxes⟩
 
 # Sorting
 Cmp ← ∨○IsArray◶{ # No arrays
