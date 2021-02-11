@@ -154,14 +154,20 @@ let table = f => setrepr(()=>[4,f,table], (x,w) => !has(w)
   ? arr(x.map(e=>call(f,e)),x.sh)
   : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
 let scan = f => setrepr(()=>[4,f,scan], (x,w) => {
-  if (has(w)) throw Error("`: No dyadic form");
   let s=x.sh;
   if (!s||s.length===0) throw Error("`: 𝕩 must have rank at least 1");
+  if (has(w)) {
+    let r=w.sh, wr=r?r.length:0;
+    if (1+wr!==s.length) throw Error("`: rank of 𝕨 must be cell rank of 𝕩");
+    if (!r) w=[w];
+    else if (!r.every((l,a)=>l===s[1+a])) throw Error("`: shape of 𝕨 must be cell shape of 𝕩");
+  }
   let l=x.length,r=Array(l);
   if (l>0) {
     let c=1;for(let i=1;i<s.length;i++)c*=s[i];
     let i=0;
-    for(;i<c;i++) r[i]=x[i];
+    if (!has(w)) { for(;i<c;i++) r[i]=x[i]; }
+    else         { for(;i<c;i++) r[i]=call(f,x[i],w[i]); }
     for(;i<l;i++) r[i]=call(f,x[i],r[i-c]);
   }
   return arr(r,s,x.fill);
