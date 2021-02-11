@@ -142,7 +142,6 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 | `¨`     | `{!0<≡𝕩⋄𝕨𝔽⁼¨𝕩}`      |
 | `⌜`     | `{!0<≡𝕩⋄ 𝔽⁼⌜𝕩;}`     | Monadic case only
 | `˘`     | `{!0<=𝕩⋄𝕨𝔽⁼˘𝕩}`      |
-| `` ` `` | `{!0<=𝕩⋄(⊏∾¯1⊸↓𝔽⁼¨1⊸↓)⍟(1<≠)𝕩}` |
 | `F∘G`   | `{𝕨G⁼F⁼𝕩}`           |
 | `F G`   |                      |
 | `·F G`  |                      |
@@ -156,6 +155,10 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 | `𝔽⟜k`   | `k𝔽˜⁼⊢`              | Monadic case, constant `k`
 | `k𝔽𝔾`   | `𝔾⁼{𝕨𝔽𝔾𝕩}(k𝔽⁼⊢)`     | Constant `k`
 | `𝔽𝔾K`   | `𝔽⁼k𝔾˜⁼⊢`            | Constant `k`
+
+| Mod     | Inverse 
+|---------|---------
+| `` ` `` | `{!0<=𝕩 ⋄ 𝕨 (»𝔽⁼¨⊢){(⊏∾⊏𝔽1⊸↓)⍟(1<≠)⊘𝔽} 𝕩}`
 
 ## Under
 
