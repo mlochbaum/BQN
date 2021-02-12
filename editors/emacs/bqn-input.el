@@ -1,50 +1,58 @@
 ;;; -*- lexical-binding: t -*-
 
 (require 'cl-lib)
-(require 'quail)
 (require 'bqn-symbols)
 
-(quail-define-package "BQN-Z" "UTF-8" "⍉" t
-                      "Input mode for BQN"
-                      '(("\t" . quail-completion))
-                      t                 ; forget-last-selection
-                      nil               ; deterministic
-                      nil               ; kbd-translate
-                      t                 ; show-layout
-                      nil               ; create-decode-map
-                      nil               ; maximum-shortest
-                      nil               ; overlay-plist
-                      nil               ; update-translation-function
-                      nil               ; conversion-keys
-                      t                 ; simple
-                      )
+(defun bqn--make-key-command-sym (n)
+  (intern (concat "insert-sym-bqn-" n)))
 
-(defvar bqn--transcription-alist)
-(defun bqn--update-key-prefix (symbol new)
-  (quail-select-package "BQN-Z")
-  (quail-install-map
-   (let* ((prefix (string new))
-          (bqn--transcription-alist
-           (cl-loop for command in bqn--symbols
-                 for key-command = (cl-third command)
-                 append (cl-loop for s in (if (listp key-command)
-                                           key-command
-                                         (list key-command))
-                              collect (cons (concat prefix s)
-                                            (cl-second command))))))
-     (quail-map-from-table
-      '((default bqn--transcription-alist)))))
-  (set-default symbol new))
+(cl-macrolet ((make-insert-functions ()
+             `(progn
+                ,@(mapcar #'(lambda (command)
+                              `(defun ,(bqn--make-key-command-sym (car command)) ()
+                                 (interactive)
+                                 (insert ,(cadr command))))
+                          bqn--symbols))))
+  (make-insert-functions))
 
-(defun bqn--initialize-key-prefix (symbol new)
-  (custom-initialize-default symbol new)
-  (bqn--update-key-prefix symbol (eval new)))
+(defun bqn-insert-spc ()
+  "Insert a space. This is needed so that one can type a space
+character when using the super-prefixed characters."
+  (interactive)
+  (insert " "))
 
-(defcustom bqn-key-prefix ?\\
-  "Set a character to serve as prefix key for BQN symbol input."
-  :type 'character
+(defun bqn--kbd (definition)
+  (if (functionp #'kbd)
+      (kbd definition)
+    (eval `(kbd ,definition))))
+
+(defun bqn--make-base-mode-map (prefix)
+  (let ((map (make-sparse-keymap)))
+    (dolist (command bqn--symbols)
+      (let ((key-sequence (caddr command)))
+        (dolist (s (if (listp key-sequence) key-sequence (list key-sequence)))
+          (define-key map (bqn--kbd (concat prefix s)) (bqn--make-key-command-sym (car command))))))
+    (define-key map (kbd (concat prefix "SPC")) 'bqn-insert-spc)
+    (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN")))
+    map))
+
+(defun bqn--make-bqn-mode-map ()
+  (bqn--make-base-mode-map bqn-mode-map-prefix))
+
+(defun bqn--set-mode-map-prefix (symbol new)
+  "Recreate the prefix and the keymap."
+  (set-default symbol new)
+  (setq bqn--mode-map (bqn--make-bqn-mode-map)))
+
+(defcustom bqn-mode-map-prefix "s-"
+  "The keymap prefix for ‘bqn--mode-map’ used both to store the new value
+using ‘set-create’ and to update ‘bqn--mode-map’ using
+  `bqn--make-bqn-mode-map'. Kill and re-start your BQN buffers to reflect the change."
+  :type 'string
   :group 'bqn
-  :initialize #'bqn--initialize-key-prefix
-  :set #'bqn--update-key-prefix)
+  :set 'bqn--set-mode-map-prefix)
+
+(defvar bqn--mode-map (bqn--make-bqn-mode-map)
+  "The keymap for ‘bqn-mode’.")
 
 (provide 'bqn-input)
