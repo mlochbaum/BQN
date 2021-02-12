@@ -1,5 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
+(require 'cl-lib)
 (require 'quail)
 (require 'bqn-symbols)
 
@@ -24,13 +25,13 @@
   (quail-install-map
    (let* ((prefix (string new))
           (bqn--transcription-alist
-           (loop for command in bqn--symbols
-                 for key-command = (third command)
-                 append (loop for s in (if (listp key-command)
+           (cl-loop for command in bqn--symbols
+                 for key-command = (cl-third command)
+                 append (cl-loop for s in (if (listp key-command)
                                            key-command
                                          (list key-command))
                               collect (cons (concat prefix s)
-                                            (second command))))))
+                                            (cl-second command))))))
      (quail-map-from-table
       '((default bqn--transcription-alist)))))
   (set-default symbol new))

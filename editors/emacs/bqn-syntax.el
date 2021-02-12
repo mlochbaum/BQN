@@ -1,5 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
+(require 'cl-lib)
 (require 'bqn-symbols)
 
 (defface bqn-block-face
@@ -80,9 +81,9 @@
 
 (defvar bqn--syntax-table
   (let ((table (make-syntax-table)))
-    (loop for s in bqn--symbols
-          do (modify-syntax-entry (aref (second s) 0) "." table))
-    (loop for s in (append "$%&*+-/<=>|" nil)
+    (cl-loop for s in bqn--symbols
+          do (modify-syntax-entry (aref (cl-second s) 0) "." table))
+    (cl-loop for s in (append "$%&*+-/<=>|" nil)
           do (modify-syntax-entry s "." table))
     (modify-syntax-entry ?\n ">" table)
     (modify-syntax-entry ?#  "<" table)
