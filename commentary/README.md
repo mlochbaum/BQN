@@ -6,3 +6,4 @@ Documents in this directory give context on how BQN was designed or remark on as
 
 - [Problems with BQN](problems.md)
 - [BQN development history](history.md)
+- [BQN fan art](fanart.md)
