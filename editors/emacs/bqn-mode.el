@@ -22,13 +22,13 @@
 ;;;  Keymap functions
 ;;;
 
-(require 'cl)
+(require 'cl-lib)
 (require 'bqn-symbols)
 
 (defun bqn--make-key-command-sym (n)
   (intern (concat "insert-sym-bqn-" n)))
 
-(macrolet ((make-insert-functions ()
+(cl-macrolet ((make-insert-functions ()
              `(progn
                 ,@(mapcar #'(lambda (command)
                               `(defun ,(bqn--make-key-command-sym (car command)) ()
