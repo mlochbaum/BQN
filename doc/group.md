@@ -6,28 +6,40 @@ BQN replaces the [Key](https://aplwiki.com/wiki/Key) operator from J or Dyalog A
 
 ## Definition
 
-Group operates on a list of atomic-number indices and an array, treated as a list of its major cells or "values", to produce a list of groups, each of which is a selection from those cells. The two arrays have the same length, and each value cell is paired with the index at the same position. That index indicates the result group the cell should go into, with an "index" of ¯1 indicating that it should be dropped and not appear in the result.
+Group operates on a list of atomic-number [indices](indices.md) `𝕨` and an array `𝕩`, treated as a list of its major cells, to produce a list of groups, each containing some of the cells from `𝕩`. The two arguments have the same length, and each cell in `𝕩` is paired with the index in `𝕨` at the same position, which indicates which result group should include that cell.
 
         0‿1‿2‿0‿1 ≍ "abcde"  # Corresponding indices and values
         0‿1‿2‿0‿1 ⊔ "abcde"  # Values grouped by index
 
-For example, we might choose to group a list of words by length. Within each group, cells maintain the ordering they had in the list originally.
+A few extra options can be useful in some circumstances. First, an "index" of `¯1` in `𝕨` indicates that the corresponding cell should be dropped and not appear in the result. Second, `𝕨` is allowed to have an extra element after the end, which gives a minimum length for the result: otherwise, the result will be just long enough to accomodate the highest index in `𝕨`.
+
+        0‿¯1‿2‿2‿¯1 ⊔ "abcde"  # Drop c and e
+        0‿1‿2‿2‿1‿6 ⊔ "abcde"  # Length-6 result
+
+A third extension is that `𝕨` doesn't really have to be a list: if not, then it groups `-=𝕨`-cells of `𝕩` instead of just `¯1`-cells. These cells are placed in index order. This extension isn't compatible with the second option from above, because it's usually not possible to add just one extra element to a non-list array. One usage is to group the diagonals of a table. See if you can figure out how the code below does this.
+
+        ⊢ a ← 'a'+⥊⟜(↕×´)3‿5
+        (+⌜´·↕¨≢)⊸⊔ a
+
+For a concrete example, we might choose to group a list of words by length. Within each group, cells maintain the ordering they had in the list originally.
 
         phrase ← "BQN"‿"uses"‿"notation"‿"as"‿"a"‿"tool"‿"of"‿"thought"
-        ⥊˘ ≠¨⊸⊔ phrase
+        ≍˘ ≠¨⊸⊔ phrase
 
 (Could we define `phrase` more easily? See [below](#partitioning).)
 
 If we'd like to ignore words of 0 letters, or more than 5, we can set all word lengths greater than 5 to 0, then reduce the lengths by 1. Two words end up with left argument values of ¯1 and are omitted from the result.
 
         1 -˜ ≤⟜5⊸× ≠¨ phrase
-        ⥊˘ {1-˜≤⟜5⊸×≠¨𝕩}⊸⊔ phrase
+        ≍˘ {1-˜≤⟜5⊸×≠¨𝕩}⊸⊔ phrase
 
-Note that the length of the result is determined by the largest index. So the result never includes trailing empty groups. A reader of the above code might expect 5 groups (lengths 1 through 5), but there are no words of length 5, so the last group isn't there.
+Note that the length of the result is determined by the largest index. So the result never includes trailing empty groups. A reader of the above code might expect 5 groups (lengths 1 through 5), but there are no words of length 5, so the last group isn't there. To ensure the result always has 5 groups, we can add a `5` at the end of the left argument.
+
+        ≍˘ {5∾˜1-˜≤⟜5⊸×≠¨𝕩}⊸⊔ phrase
 
 When Group is called dyadically, the left argument is used for the indices and the right is used for values, as seen above. When it is called monadically, the right argument, which must be a list, gives the indices and the values grouped are the right argument's indices, that is, `↕≠𝕩`.
 
-        ⥊˘ ⊔ 2‿3‿¯1‿2
+        ≍˘ ⊔ 2‿3‿¯1‿2
 
 Here, the index 2 appears at indices 0 and 3 while the index 3 appears at index 1.
 
@@ -37,7 +49,7 @@ Dyadic Group allows the right argument to be grouped along multiple axes by usin
 
 Here we split up a rank-2 array into a rank-2 array of rank-2 arrays. Along the first axis we simply separate the first pair and second pair of rows—a partition. Along the second axis we separate odd from even indices.
 
-        ⟨0‿0‿1‿1,0‿1‿0‿1‿0‿1‿0⟩⊔(10×↕4)+⌜↕7
+        ⟨0‿0‿1‿1,0‿1‿0‿1‿0‿1‿0⟩ ⊔ (10×↕4)+⌜↕7
 
 Each group `i⊑𝕨⊔𝕩` is composed of the cells `j<¨⊸⊏𝕩` such that `i≢j⊑¨𝕨`. The groups retain their array structure and ordering along each argument axis. Using multidimensional Replicate we can say that `i⊑𝕨⊔𝕩` is `(i=𝕨)/𝕩`.
 
@@ -67,17 +79,17 @@ The obvious application of Group is to group some values according to a known or
 
         ln ← "Phelps"‿"Latynina"‿"Bjørgen"‿"Andrianov"‿"Bjørndalen"
         co ← "US"    ‿"SU"      ‿"NO"     ‿"SU"       ‿"NO"
-        ⥊˘ co ⊐⊸⊔ ln
+        ≍˘ co ⊐⊸⊔ ln
 
 If we would like a particular index to key correspondence, we can use a fixed left argument to Index Of.
 
         countries ← "IT"‿"JP"‿"NO"‿"SU"‿"US"
         countries ≍˘ co countries⊸⊐⊸⊔ ln
 
-However, this solution will fail if there are trailing keys with no values. To force the result to have a particular length you can append that length as a dummy index to each argument, then remove the last group after grouping.
+However, this solution will fail if there are trailing keys with no values. To force the result to have a particular length you can append that length to the left argument.
 
         countries ↩ "IT"‿"JP"‿"NO"‿"SU"‿"US"‿"ZW"
-        countries ≍˘ co countries{𝕗⊸⊐⊸(¯1↓⊔○(∾⟜(≠𝕗)))} ln
+        countries ≍˘ co countries⊸(⊐∾≠∘⊣)⊸⊔ ln
 
 ### Partitioning
 
@@ -95,7 +107,7 @@ In other cases, we might want to split on spaces, so that words are separated by
 
         ' '((⊢-˜¬×+`)∘=⊔⊢)"  string with  spaces   "
 
-However, trailing spaces are ignored because Group never produces trailing empty groups (to get them back we would use a dummy final character in the string). To avoid empty words, we should increase the word index only once per group of spaces. We can do this by taking the prefix sum of a list that is 1 only for a space with no space before it. To make such a list, we can use the [Shift Before](shift.md) function, giving a list of previous elements. To treat the first element as if it's before a space (so that leading spaces have no effect rather than creating an initial empty group), we shift in a 1.
+Trailing spaces are ignored because Group with equal-length arguments never produces trailing empty groups—to intentionally include them you'd replace `=` with `(=∾0˙)`. But in string processing we probably want to avoid empty words anywhere. To make this happen, we should increase the word index only once per group of spaces. We can do this by taking the prefix sum of a list that is 1 only for a space with no space before it. To make such a list, we can use the [Shift Before](shift.md) function, giving a list of previous elements. To treat the first element as if it's before a space (so that leading spaces have no effect rather than creating an initial empty group), we shift in a 1.
 
         (⊢≍1⊸»<⊢) ' '="  string with  spaces   "  # All, then filtered, spaces
         ≍⟜(⊢-˜¬×·+`1⊸»<⊢)' '="  string with  spaces   "  # More processing
