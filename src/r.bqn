@@ -534,7 +534,8 @@ Replicate ← (0<=∘⊣)◶{
 _group←{
   "⊔: Grouping argument must consist of integers" ! ∧´Int⌜𝕩
   "⊔: Grouping argument values cannot be less than ¯1" ! ∧´¯1≤𝕩
-  d←(l←GroupLen𝕩)GroupOrd𝕩
+  GL←GroupLen⋄𝕩↩𝕨(-˜⟜≠{GL↩(𝕨⊑𝕩)GL⊢⋄𝕨↑𝕩}⊢)⍟(0⊘⊣)𝕩
+  d←(l←GL𝕩)GroupOrd𝕩
   i←0⋄(𝔽{𝕩⋄(i↩i+1)⊢i⊑d}⌜∘↕)⌜l
 }
 GroupInds←{
@@ -549,12 +550,14 @@ GroupGen←{
   "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
   𝕨↩Pair∘ToArray⍟(2>≡)𝕨
   "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
-  n←+´=⌜𝕨
+  n←+´r←=⌜𝕨
   "𝕨⊔𝕩: Total rank of 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
-  "𝕨⊔𝕩: Lengths of components of 𝕨 must be compatible with 𝕩" ! ∧´(Join≢⌜𝕨)=n↑≢𝕩
+  ld←(Join≢⌜𝕨)-n↑≢𝕩
+  "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! ∧´(0⊸≤∧≤⟜(r/1=r))ld
+  dr←r⌊(0»+`r)⊏ld∾⟨0⟩
   l←≠⌜𝕨↩⥊⌜𝕨 ⋄ LS←∾⟜(n Cell 𝕩) Reshape 𝕩˙
   S←⊏⟜(LS⟨×´l⟩)
-  (LS 0⌜𝕨) Fill (1≠≠)◶(S _group 0⊸⊑)‿(S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group⌜) 𝕨
+  (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨S _group○(0⊸⊑), S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group¨⟩ 𝕨
 }
 
 Pick1←{
