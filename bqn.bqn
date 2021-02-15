@@ -13,7 +13,7 @@ provide ← ⟨
   glyphs⊑˜PrimInd # Glyph
   •FillFn         # Fill
   ⋆⁼              # Log
-  ≠¨⊔             # GroupLen
+  (≠¨⊔){𝔽⊘(↑⟜𝔽)}  # GroupLen
   ∾⊔∘⊢            # GroupOrd
   !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,•_fillBy_,⊘
 ⟩
