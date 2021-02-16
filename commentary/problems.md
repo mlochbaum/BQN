@@ -86,9 +86,6 @@ Blanket issue for glyphs that need work. Currently I find `⥊⊏⊑⊐⊒⍷⁼
 ### Can't mix define and modify in multiple assignment
 Say `a` is a pair and `h` isn't defined yet; how would you set `h` to the first element of `a` and change `a` to be just the second? `h‿a↩a` doesn't work because `h` isn't defined, so the best I have is `h←@⋄h‿a↩a`. A heavier assignment syntax wouldn't break down; BQN could allow `⟨h←,a⟩↩a` but I don't think this merits special syntax.
 
-### Group doesn't include trailing empty groups
-But there are workarounds, described in [its documentation](../doc/group.md). dzaima has suggested allowing a single extra element in the index argument to specify the result shape. Another possibility is for the result prototype to be specified to allow overtaking.
-
 ### Trains don't like monads
 If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing `⟜`. Largely solved with the "nothing" glyph `·`, which acts like J's Cap (`[:`) in a train, but still a minor frustration.
 
@@ -100,6 +97,9 @@ The most natural ordering for polynomial coefficients and base representations i
 
 ### Inverse is not fully specified
 So it seems a bit strange to rely on it for core language features like `/⁼`. On the other hand, this is a good fit for `⋆⁼` since we are taking an arbitrary branch of a complex function that has many of them. I'm pretty sure it's impossible to solve the issue as stated but it might be possible to move to less hazardous constructs. Structural Under is a start.
+
+### Group doesn't include trailing empty groups
+A length can now be specified either in an extra element in any rank-1 component of `𝕨`, or by overtaking, since the result's fill element is an empty group. However, it still seems like it would be pretty easy to end up with a length error when a program using Group encounters unexpected data. It's a fundamental safety-convenience tradeoff, though, because specifying a length has to take more code in the general case.
 
 ### Prefixes/Suffixes add depth and Windows doesn't
 It's an awkward inconsistency. Prefixes and Suffixes have to have a nested result, but Windows doesn't have to be flat; it's just that making it nested ignores the fact that it does have an array structure.
