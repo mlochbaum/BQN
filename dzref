@@ -79,48 +79,22 @@ _withRef ← ˙
     ""
     "⚇"
   ⟩
-  nc ← ≠¨chrs
-  chr ← ∾chrs
-  itr ← 0⥊˜≠chr
-
-  init ← " "⊸∾¨(/⟜"_"¨nc/0‿1‿1)∾¨(nc/"FMD")∾¨(nc+´⊸↑⥊"AB"∾⌜•a)
-  post ← ∾⟜" "¨/⟜"_"¨nc/0‿0‿1
-  names ← init∾¨'0'∾¨post
-
-  Inc ← {
-    i←⊑chr⊐𝕩
-    n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr
-    names↩((i⊑init)∾('0'+n)∾i⊑post)⌾(i⊑⊢)names
-  }
 
   # built-in assumptions
-  (Raw (chr⊸⊐⌾<⊑names˙)∾" ← "∾⥊)¨ "↕⊐"
-  chr∾↩"⍎" ⋄ names∾↩⟨"⍎_withRef "⟩
-
-
-  # checks if line is a builtin redefinition
-  E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩
-
-  # removes comments and replaces built-ins with names
-  E_proc ← {
-    l←≠chr
-    q←≠`𝕩∊"""'" ⋄ f←(𝕩=lf)≥○(↕∘≠⊸(⌈`×))q<𝕩='#'
-    ∾ (((l×f/q)+chr⊸⊐) (≥⟜l)◶⟨⊑⟜names,⥊∘⊢⟩¨ ⊢) f/𝕩
+  GetRepls ← {
+    c‿n ← 𝕩 ⋄ k←"↕⊐"
+    ⟨c,(⥊¨k)⌾(((⊑¨c)⊐k)⊸⊏)n⟩ ∾⟜<¨ "⍎"‿"⍎_withRef "
   }
 
-  E_redef ← { # handles [fmd] [←↩]
-    tail ← E_proc 3↓𝕩 # must use old def
-    Inc ⊑𝕩
-    (E_proc 1↑𝕩) ∾ "←" ∾ tail
-  }
+  ⟨E_proc,E_nodef⟩ ← chrs‿GetRepls •Import "src/pp.bqn"
 
   lf ← @+10
-  pre ← E_isdef◶E_proc‿E_redef¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
+  pre ← E_proc¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
   ExecFile←{
-    src ← E_proc¨ •FLines 𝕩
+    src ← E_nodef¨ •FLines 𝕩
     ⟨⟨⟩,"",(∨`⌾⌽'/'=𝕩)/𝕩⟩ Raw ∾ ∾⟜lf¨ src
   }
-  _withRef ↩ {𝔽∘E_proc⊘(𝔽⟜E_proc)}
+  _withRef ↩ {𝔽∘E_nodef⊘(𝔽⟜E_nodef)}
   X↩Raw _withRef
   Raw ∾ ∾⟜lf¨ pre
   ≠◶(X˙)‿{ExecFile ⊑𝕩}‿{ExecFile ⊑𝕩 ⋄ X 1⊑𝕩} •args
