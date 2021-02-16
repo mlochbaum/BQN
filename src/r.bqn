@@ -646,8 +646,8 @@ SelfClas ← (PermInv∘⍋∘/˜⊏˜1-˜+`∘⊢) _self
 Find←{
   r←=𝕨
   "⍷𝕩: Rank of 𝕨 cannot exceed rank of 𝕩" ! r≤=𝕩
-  0 Fill 𝕨 ≡⎉r (≢𝕨) ↕⎉r 𝕩
-}
+  0 Fill 𝕨 ≡⎉r ((1+r-⊸↑≢𝕩)⌊≢𝕨)⊸↕⎉r 𝕩
+}○ToArray
 
 ≍ ← >∘Pair _fillBy_ (⊢⊘IF)
 ∾ ↩ Join           ⊘ JoinTo

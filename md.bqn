@@ -310,7 +310,7 @@ Markdown ← {filename𝕊𝕩:
     ⟨⟨⟩,"",path⟩ GenHtml⍟a JoinLines Source⍟a 𝕩
   }
   ProcHtml ← {
-    codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○(⍷⟜𝕩 ∾ 0⥊˜1-˜≠) "</code>"
+    codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○((≠𝕩)↑⍷⟜𝕩) "</code>"
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
   }⟜JoinLines
   ProcHtmlBlock ← extensions◶JoinLines‿(<⟜2◶ProcComment‿ProcHtml)
@@ -449,7 +449,7 @@ Markdown ← {filename𝕊𝕩:
 
   # Chase HTML comments
   commentStart ← /(lineType=5)∧lineDat=2
-  EndsComment ← (3≤≠)◶0‿(∨´"-->"⍷⊢)∘(⊑⟜𝕩)
+  EndsComment ← ∨´"-->"⍷⊑⟜𝕩
   lastCommentEnd ← ¯1
   comInd ← ∾ comments ← {
     lastCommentEnd ↩ end ← {𝕊⍟(¬EndsComment)1+𝕩}⍟(lastCommentEnd⊸<) 𝕩-1
