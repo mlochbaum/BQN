@@ -197,7 +197,7 @@ Dyadic search functions check whether major cells of the *principal argument* (w
 - **Index of** (`⊐`) gives the smallest index of a principal argument cell that matches the cell, or `≠𝕨` if there is no such cell.
 - **Progressive Index of** (`⊒`) processes non-principal cells in ravel order, and gives the smallest index of a principal argument cell that matches the cell that hasn't already been included in the result. Again `≠𝕨` is returned for a given cell if there is no valid cell.
 
-**Find** (`⍷`) indicates positions where `𝕨` appears as a contiguous subarray of a `=𝕨`-cell of `𝕩`. It has one result element for each such subarray of `𝕩`, whose value is 1 if that subarray matches `𝕩` and 0 otherwise.
+**Find** (`⍷`) indicates positions where `𝕨` appears as a contiguous subarray of a `=𝕨`-cell of `𝕩`. It has one result element for each such subarray of `𝕩`, whose value is 1 if that subarray matches `𝕩` and 0 otherwise. Find cannot result in an error unless the rank of `𝕨` is higher than that of `𝕩`. If `𝕨` is longer along one axis than the corresponding trailing axis of `𝕩`, then the result has length 0 along that axis. Any atom argument to Find is automatically enclosed.
 
 ### Sorting
 
