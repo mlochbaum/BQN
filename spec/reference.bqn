@@ -354,7 +354,7 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 # LAYER 6: Everything else
 
 ∾ ↩ Join           ⊘ JoinTo
-⊔ ← ⊔⟜(↕≠⚇1)       ⊘ Group
+⊔ ← GroupInds      ⊘ Group
 ⍉ ← Transpose      ⊘ ReorderAxes
 ⊐ ← ⍷⊸⊐            ⊘ IndexOf
 ∊ ← MarkFirst      ⊘ (⊐˜<≠∘⊢)
