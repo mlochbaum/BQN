@@ -55,6 +55,9 @@ Fill       # Enclosed fill value for 𝕩
 ⍟ ← {𝕨𝔾◶⊢‿𝔽𝕩}   # LIMITED to boolean right operand result
 
 IsArray←0=Type
+Int←(1=Type)◶⟨0,⌊⊸=⟩
+Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
+
 ≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
 
 # LIMITED to numeric arguments for arithmetic cases
@@ -69,8 +72,8 @@ IsArray←0=Type
 ≠ ← Length   ⊘ (¬=)
 = ↩ Rank     ⊘ =
 × ↩ 0⊸(<->)  ⊘ ×
-⌊ ↩ ⌊        ⊘ {(𝕨>𝕩)⊑𝕨‿𝕩}
-⌈ ← -∘⌊∘-    ⊘ {(𝕨<𝕩)⊑𝕨‿𝕩}
+⌊ ↩ ⌊        ⊘ {𝕨{(𝕨>𝕩)⊑𝕨‿𝕩}_perv𝕩}
+⌈ ← -∘⌊∘-    ⊘ {𝕨{(𝕨<𝕩)⊑𝕨‿𝕩}_perv𝕩}
 
 ¨ ← _eachm   # LIMITED to monadic case and array 𝕩
 ´ ← _fold
@@ -126,20 +129,17 @@ _eachd←{
   }
   (>○=)◶⟨𝔽_e⋄𝔽˜_e˜⟩
 }
-_perv←{ # Pervasion
-  (⊢⊘∨○IsArray)◶⟨𝔽⋄𝔽{𝕨𝔽_perv𝕩}¨⟩
-}
 
 ⌜ ← {(𝔽_eachm)⊘(𝔽_table)○ToArray}
 ¨ ↩ {(𝔽_eachm)⊘(𝔽_eachd)○ToArray}
+_perv←{ # Pervasion
+  (⊢⊘∨○IsArray)◶⟨𝔽⋄𝔽{𝕨𝔽_perv𝕩}¨⟩
+}
 
 
 #⌜
 # LAYER 3: Remove other limits
 # Now all implementations are full except ∾; ↕ is monadic only
-
-Int←(1=Type)◶⟨0,⌊⊸=⟩
-Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
 
 Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Reshape←{
@@ -242,6 +242,7 @@ _rankOp_←{
     c←×´s←𝕨Cell𝕩
     f⥊⊑⟜(⥊𝕩)¨∘((s⥊↕c)+c×⊢)¨↕×´f
   }
+  Enc↩(>⟜0×1+≥⟜=)◶⟨<⊢,Enc,<⌜⊢⟩
   > ((⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
 }
 _insert←{
