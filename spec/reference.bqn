@@ -56,7 +56,7 @@ Fill       # Enclosed fill value for 𝕩
 ≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
 
 # LIMITED to numeric arguments for arithmetic cases
-√ ← 2⊸√      ⊘ (⋆⟜÷˜)
+√ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)
 ∧ ←            ×
 ∨ ←            (+-×)
 ¬ ← 1+-
@@ -356,9 +356,9 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 ∾ ↩ Join           ⊘ JoinTo
 ⊔ ← GroupInds      ⊘ Group
 ⍉ ← Transpose      ⊘ ReorderAxes
-⊐ ← ⍷⊸⊐            ⊘ IndexOf
-∊ ← MarkFirst      ⊘ (⊐˜<≠∘⊢)
+∊ ← MarkFirst      ⊘ (IndexOf˜<≠∘⊢)
 ⍷ ← ∊⊸/            ⊘ Find
+⊐ ← ⍷⊸IndexOf      ⊘ IndexOf
 ⍋ ←   Cmp _grade   ⊘ (  Cmp _bins)
 ⍒ ← -∘Cmp _grade   ⊘ (-∘Cmp _bins)
 ∧ ↩ ⍋⊸⊏            ⊘ ∧
@@ -431,7 +431,7 @@ ReorderAxes←{
 Transpose←(0<=)◶⟨ToArray,(=-1˙)⊸ReorderAxes⟩
 
 # Sorting
-Cmp ← ∨○IsArray◶{ # No arrays
+Cmp ← ⌈○IsArray◶{ # No arrays
   𝕨(>-<)𝕩 # Assume they're numbers
 }‿{ # At least one array
   e←𝕨-˜○(∨´0=≢)𝕩
