@@ -1,14 +1,15 @@
 #! /usr/bin/env dbqn
 
-nc‿rt ← "-nocomp"‿"-rt" ∊ •args
+nc‿rt‿ref ← "-nocomp"‿"-rt"‿"-ref" ∊ •args
 files ← "simple"‿"syntax"‿"prim"⍟(0=≠) ('-'≠⊑)¨⊸/ •args
-"Can't test runtime without the compiler!" ! ¬nc∧rt
+"Can't test runtime without the compiler!" ! ¬nc∧rt∨ref
 
 Native ← {⍎𝕩}
-exec ← (rt¬nc)◶⟨
+exec ← ((rt⌈2×ref)¬nc)◶⟨
   Native˙                                 # Native
   {𝕤⋄ ⟨DRun⟩←•Import "../dc.bqn" ⋄ DRun}  # Compiled; native runtime
-  {𝕤⋄ •Import"../bqn.bqn"}                # Self-hosted
+  {𝕤⋄ •Import "../bqn.bqn"}               # Self-hosted
+  {𝕤⋄ •Import "ref.bqn"}                  # Reference implementations
 ⟩ @
 
 Cases ← (0<≠)◶0‿('#'≠⊑)¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
