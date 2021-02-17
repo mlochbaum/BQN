@@ -18,7 +18,7 @@ pn ← init∾¨'0'∾¨post
 ⟨in,out⟩ ← GetReplacements ⟨⥊¨chr,pn⟩
 
 # Make a new name for primitive 𝕩
-itr ← 0⥊˜≠chr
+itr ← ¯1⥊˜≠chr
 Shadow ← {
   i←⊑chr⊐𝕩
   n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr

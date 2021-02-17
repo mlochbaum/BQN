@@ -26,7 +26,7 @@
 ≤          #                Less Than or Equal to
 
 # Other basic functionality that we need to assume
-IsArray    # Return 1 if 𝕩 is an array
+Type       # 0 if 𝕩 is an array, 1 if a number, >1 otherwise
 !          # 𝕩 is 0 or 1; throw an error if it's 0
 ≢          # LIMITED to monadic case
 ⥊          # LIMITED to array 𝕩 and (×´𝕨)≡≢𝕩
@@ -52,7 +52,9 @@ Fill       # Enclosed fill value for 𝕩
 ○ ← {(𝔾𝕨)𝔽𝔾𝕩}
 ⊸ ← {(𝔽𝕨⊣𝕩)𝔾𝕩}
 ⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
+⍟ ← {𝕨𝔾◶⊢‿𝔽𝕩}   # LIMITED to boolean right operand result
 
+IsArray←0=Type
 ≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
 
 # LIMITED to numeric arguments for arithmetic cases
@@ -81,10 +83,18 @@ _eachm←{
   E←(≠r)⊸≤◶{r↩r𝕩_amend˜F𝕩⊑r⋄E𝕩+1}‿⊢
   E 0 ⋄ (≢𝕩)⥊r
 }
+id ← {(0⊑𝕨)˙⊸=◶𝕩‿(1⊑𝕨)}´ ⟨
+  ×‿1, ¬‿1
+  ⌊‿∞ , ⌈‿¯∞
+  ∨‿0 , ∧‿1
+  ≠‿0 , =‿1
+  >‿0 , ≥‿1
+  Identity
+⟩
 _fold←{
   ! 1==𝕩
   l←≠v←𝕩 ⋄ F←𝔽
-  r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
+  r←𝕨 (0<l)◶{𝕩⋄Id f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
   {r↩(𝕩⊑v)F r}¨(l-1)⊸-¨↕l
   r
 }
@@ -128,8 +138,8 @@ _perv←{ # Pervasion
 # LAYER 3: Remove other limits
 # Now all implementations are full except ∾; ↕ is monadic only
 
-Int←IsArray◶⟨⌊⊸=,0⟩
-Nat←IsArray◶⟨0⊸≤∧⌊⊸=,0⟩
+Int←(1=Type)◶⟨0,⌊⊸=⟩
+Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
 
 Deshape←IsArray◶{⟨𝕩⟩}‿⥊
 Reshape←{
@@ -148,7 +158,7 @@ Reshape←{
     s↩p⊣◶⊢‿a¨s
     {d∾↩(Fill d)⌜↕𝕩-n⋄n↩𝕩}⍟(n⊸<)⍟(3=t)lp×a
   } s
-  s⥊d(n<○(0⊸<)l)◶⟨Fill⊸(⊣¨)⋄{⊑⟜𝕨¨n|𝕩}⟩↕l
+  s⥊d(0<n)◶⟨<∘Fill⊸(⊣¨)⋄{⊑⟜𝕨¨n|𝕩}⟩↕l
 }
 
 Range←{
@@ -191,11 +201,11 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 #⌜
 # LAYER 4: Operators
 
-> ↩ Merge          ⊘ >
+> ↩ Merge⍟IsArray  ⊘ >
 ≍ ← >∘Pair
 ⎉ ← _rankOp_
 ⚇ ← _depthOp_
-⍟ ← _repeat_
+⍟ ↩ _repeat_
 ˘ ← ⎉¯1
 ˝ ← _insert
 ` ← _scan
@@ -208,7 +218,7 @@ Merge←(0<≠∘⥊)◶((∾○≢⥊⊢)⟜Fill)‿{
   c←≢⊑𝕩
   ! ∧´⥊(c≡≢)¨𝕩
   𝕩⊑⟜ToArray˜⌜↕c
-}⍟IsArray
+}
 ValidateRanks←{
   ! 1≥=𝕩
   𝕩↩⥊𝕩
@@ -257,8 +267,10 @@ _repeat_←{
   f←⊑𝕨⟨𝔽⟩⊘⟨𝕨𝔽⊢⟩𝕩
   l←u←0
   {!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
-  a←𝕩⋄_p←{𝔽∘⊣`(1+𝕩)⥊<a}
-  pos←F _p u ⋄ neg←F⁼_p-l
+  b←𝕨{𝕏⊣}˙⊘{𝕨˙{𝔽𝕏⊣}}0
+  i←⟨𝕩⟩⋄P←B⊸{𝕎`i∾↕𝕩}
+  pos←𝕗 P u
+  neg←𝕗 0⊸<◶⟨i,{𝕏⁼}⊸P⟩ -l
   (|⊑<⟜0⊑pos‿neg˙)⚇0 n
 }
 
