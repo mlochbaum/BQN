@@ -86,18 +86,17 @@ _eachm←{
   E←(≠r)⊸≤◶{r↩r𝕩_amend˜F𝕩⊑r⋄E𝕩+1}‿⊢
   E 0 ⋄ (≢𝕩)⥊r
 }
-id ← {(0⊑𝕨)˙⊸=◶𝕩‿(1⊑𝕨)}´ ⟨
+{ Identity ↩ 𝕨˙⊸=◶Identity‿𝕩 }´¨ ⟨
   ×‿1, ¬‿1
   ⌊‿∞ , ⌈‿¯∞
   ∨‿0 , ∧‿1
   ≠‿0 , =‿1
   >‿0 , ≥‿1
-  Identity
 ⟩
 _fold←{
   ! 1==𝕩
   l←≠v←𝕩 ⋄ F←𝔽
-  r←𝕨 (0<l)◶{𝕩⋄Id f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
+  r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
   {r↩(𝕩⊑v)F r}¨(l-1)⊸-¨↕l
   r
 }
@@ -158,7 +157,7 @@ Reshape←{
     s↩p⊣◶⊢‿a¨s
     {d∾↩(Fill d)⌜↕𝕩-n⋄n↩𝕩}⍟(n⊸<)⍟(3=t)lp×a
   } s
-  s⥊d(0<n)◶⟨<∘Fill⊸(⊣¨)⋄{⊑⟜𝕨¨n|𝕩}⟩↕l
+  s⥊(↕l)(0<n)◶⟨<∘Fill⊸(⊣¨)⋄{⊑⟜𝕩¨n|𝕨}⟩⍟(l≠n)d
 }
 
 Range←{
@@ -378,6 +377,8 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 ∨ ↩ ⍒⊸⊏            ⊘ ∨
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 
+{ Identity ↩ 𝕨˙⊸=◶Identity‿𝕩 }´¨ ⟨ ∨‿0 , ∧‿1 ⟩
+
 Join←(0<=)◶{!IsArray𝕩⋄>𝕩}‿{
   C←(<⟨⟩)⥊⊸∾⌜´⊢  # Cartesian array product
   ! IsArray 𝕩
@@ -417,12 +418,12 @@ IndexOf←{
   c←1-˜=𝕨
   ! 0≤c
   ! c≤=𝕩
-  𝕨 (0<≠𝕨)◶⟨0⎉c∘⊢,(+˝∧`)≢⎉c⎉c‿∞⟩ 𝕩
+  𝕨 ∧○(0<≠)⟜⥊◶⟨0⥊˜c-⊸↓≢∘⊢, (+˝∧`)≢⎉c⎉c‿∞⟩ 𝕩
 }
 MarkFirst←{
   ! 1≤=𝕩
   u←0↑𝕩
-  {⊑𝕩∊u}⊘{u↩u∾𝕩⋄1}‿0˘𝕩
+  (0<≠)◶⟨⟨⟩,{⊑𝕩∊u}◶{u↩u∾𝕩⋄1}‿0˘⟩𝕩
 }
 Find←{
   r←=𝕨
@@ -465,6 +466,7 @@ _grade←{
 _bins←{
   c←1-˜=𝕨
   ! 0≤c
+  ! c≤=𝕩
   LE←𝔽⎉c≤0˜
   ! (0<≠)◶⟨1,∧´·LE˝˘2↕⊢⟩𝕨
   𝕨 (0<≠𝕨)◶⟨0⎉c∘⊢,+˝LE⎉¯1‿∞⟩ 𝕩
