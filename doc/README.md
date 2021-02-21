@@ -40,5 +40,8 @@ References:
 - [BQN-Dyalog dictionary](fromDyalog.md)
 - [BQN-J dictionary](fromJ.md)
 
+Environment:
+- [Embedded BQN](embed.md)
+
 Speculation:
 - [Possible language extensions](extensions.md)
