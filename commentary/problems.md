@@ -15,31 +15,28 @@ BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡�
 ### Glyphs are hard to type
 There's been a lot of work done on this. Still there, still a problem. On the other hand, glyphs are easy to read, and write by hand!
 
-### Tacit and one-line functions are hard to debug
-This problem hasn't manifested yet as BQN has no debugger, but it's something to keep in mind. Traditional line-by-line debuggers don't work when the line is doing so much work. Something like J's dissect or some kind of hybrid would probably do better.
-
-### Search function depth
-The simplest way to define a search function like Index Of is to require the left argument to be a list, and search for an element that matches the right argument. But this means you can only search for one element at a time, which is annoying and doesn't work for Progressive Index Of. So we instead treat the searched argument as a list of major cells. Then we decide to search for cells of the other argument that have the same rank as those cells, since only cells with the same rank can match. That's a little strange for Bins, where it still makes sense to compare cells of different ranks. Furthermore, the result of any search function is always an array. To search for a single element and get an plain number, you need something like `list⊸⊐⌾<elt`.
-
-### Trigonometry
-There are a lot of standard functions and I don't want to use separate primitives or a menu-style primitive like APL Circle for them. You can define all the functions eventually if you use complex exponential and take real and imaginary parts and inverses, but this doesn't sound well-suited for implementation. And there should be a math library that gives you the standard functions with normal names, but how will it be implemented?
-
-### Right-to-left multi-line functions go upwards
-If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
+### Syntactic type erasure
+A programmer can call a modifier on either a syntactic function or subject, but there's no way to know within the modifier which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The subject syntax suggests it should be Constant. Instead the Constant modifier `˙` has been added partially to mitigate this.
 
 ### Control flow substitutes have awkward syntax
 At the moment BQN has no control structures, instead preferring modifiers, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. For example, it's natural to have two arguments for small structures, but that becomes unreadable for larger ones. However, predefined functions acting on functions can cover a lot of ground for the imperative programmer; see [Control flow in BQN](../doc/control.md).
 
 One particular sore point with Repeat (`⍟`) and Choose (`◶`) is that the condition and action(s) always apply to the same set of arguments. Often you'd like them to apply to completely different things: this seems like the sort of thing that split compose `F⊸G⟜H` solved for trains, but here there's no such solution.
 
+### Search function depth
+The simplest way to define a search function like Index Of is to require the left argument to be a list, and search for an element that matches the right argument. But this means you can only search for one element at a time, which is annoying and doesn't work for Progressive Index Of. So we instead treat the searched argument as a list of major cells. Then we decide to search for cells of the other argument that have the same rank as those cells, since only cells with the same rank can match. That's a little strange for Bins, where it still makes sense to compare cells of different ranks. Furthermore, the result of any search function is always an array. To search for a single element and get an plain number, you need something like `list⊸⊐⌾<elt`.
+
+### Right-to-left multi-line functions go upwards
+If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
+
+### Tacit and one-line functions are hard to debug
+This problem hasn't manifested yet as BQN has no debugger, but it's something to keep in mind. Traditional line-by-line debuggers don't work when the line is doing so much work. Something like J's dissect or some kind of hybrid would probably do better.
+
 ### Hard to search part of an array or in a different order
 This includes index-of-last, and searching starting at a particular index, when the desired result indices are to the array to be seached *before* it is modified. Given indices `i` into an array `𝕨` (for example `⌽↕≠𝕨` or `a+↕b`), this section can be searched with `(i∾≠𝕨)⊏˜(i⊏𝕨)⊐𝕩`. But this is clunky and difficult for the implementation to optimize.
 
 ### Subtraction, division, and span are backwards
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). The commonly-paired `⌊∘÷` and `|` have opposite orders for this reason. Not really fixable; too much precedent.
-
-### Syntactic type erasure
-A programmer can call a modifier on either a syntactic function or subject, but there's no way to know within the modifier which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The subject syntax suggests it should be Constant. Instead the Constant modifier `˙` has been added partially to mitigate this.
 
 ### Nothing (`·`) interacts strangely with Before and After
 Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`). It's also a little strange that `v F˜·` is `·`, while `·F v` is `F v`.
@@ -190,15 +187,22 @@ Blanket issue for names that I don't find informative: "Solo", "Bins", "Find", a
 ### Strands go left to right
 This is the best ordering, since it's consistent with `⟨⋄⟩` lists. And code in a strand probably shouldn't have side effects anyway. Still, it's an odd little tack-on to say separators *and strands* go left to right, and it complicates the implementation a little.
 
-### Should have a rounding function
-There is a standard way to round floats—to nearest integer, ties to even—but it's fairly hard to implement and would have to be specially recognized for performance. It would be nice to have a better way to access this.
-
 ### Primitive name capitalization
 I went with "Index of" and "Less Than or Equal to" but the last word blends into surrounding text. Should they be fully capitalized or hyphenated?
 
 ## Solved problems
 
 Problems that existed in mainstream APL or a transitional BQN that have in my opinion been put to rest (while in some cases introducing new problems). Listed in reverse chronological order by time solved, by my recollection.
+
+### Trigonometry
+Solved with namespaces. dzaima/BQN uses `•math` to expose math functions, but it could also be provided in a system library (still deciding). It's up to the implementation how the functions are implemented.
+
+There are a lot of standard functions and I don't want to use separate primitives or a menu-style primitive like APL Circle for them. You can define all the functions eventually if you use complex exponential and take real and imaginary parts and inverses, but this doesn't sound well-suited for implementation. And there should be a math library that gives you the standard functions with normal names, but how will it be implemented?
+
+### Should have a rounding function
+Also placed in the math namespace.
+
+There is a standard way to round floats—to nearest integer, ties to even—but it's fairly hard to implement and would have to be specially recognized for performance. It would be nice to have a better way to access this.
 
 ### Array reductions are annoying
 There are really three kinds of reduction a BQN programmer might want to use.
@@ -220,7 +224,7 @@ This was an issue with using functions as control flow. For example, when loopin
 Fixed with multiple bodies: if there are two bodies with no headers such as `{2×𝕩;𝕨-𝕩}`, they are the monadic and dyadic case.
 
 ### How to choose a partitioning function?
-Fixed with [Group](../doc/group.md), which I found May 2020. Group serves as a much improved [Partition](https://aplwiki.com/wiki/Partition). However, it doesn't partition along multiple axes, so a dedicated partition function that does this could also be wanted. Or could Group be made to work with multiple axes as well as multidimensional indices?
+Fixed with [Group](../doc/group.md), which I found May 2020. Group serves as a much improved [Partition](https://aplwiki.com/wiki/Partition). Later extended to multiple axes as well to get all the functionality.
 
 ### Key doesn't do what you want
 Fixed with [Group](../doc/group.md) to my satisfaction, except for the trailing-empty-group problem. There were various issues with Key operators in J and Dyalog, such as the fact that the ordering and presence of groups depends on where and whether the keys appear. Also, Dyalog's Key can return keys and values, but they are in a different format than the input: an array of pairs instead of two arrays. Monadic Group returns indices, which can be used how the programmer wants.
