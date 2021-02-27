@@ -184,6 +184,9 @@ Select chooses whether the left argument maps to right argument axes or selects 
 ### Unclear primitive names
 Blanket issue for names that I don't find informative: "Solo", "Bins", "Find", and "Group".
 
+### Tacit exports can leak data
+One of the nice facets of BQN's module system is that it provides perfect encapsulation: if you have variables `a` and `b` in a namespace (or closure) initialized so that `a≤b`, and all exported operations maintain the property that `a≤b`, then that property will always be true. Well, not quite: if you define, say `Inc ⇐ IncA ⊣ IncB` to increase the values of both `a` and `b` by `𝕩`, then `Inc` maintains `a≤b`, but `IncA` doesn't—and it can be extracted with `•Decompose`. This isn't too serious because it sounds impossible to do accidentally, and it's easy to protect against.
+
 ### Strands go left to right
 This is the best ordering, since it's consistent with `⟨⋄⟩` lists. And code in a strand probably shouldn't have side effects anyway. Still, it's an odd little tack-on to say separators *and strands* go left to right, and it complicates the implementation a little.
 
