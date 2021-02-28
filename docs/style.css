@@ -49,6 +49,10 @@ table th {
   src: url(BQN386_sub.woff2) format('woff2');
 }
 @font-face{
+  font-family: Iosevka;
+  src: url(Iosevka_sub.woff2) format('woff2');
+}
+@font-face{
   font-family: JuliaMono;
   src: url(JuliaMono_sub.woff2) format('woff2');
 }
@@ -58,6 +62,7 @@ table th {
 }
 pre.DejaVu , .DejaVu  .kb span, .DejaVu  .code, .DejaVu  .rslt { font-family:BQN,monospace; }
 pre.BQN386 , .BQN386  .kb span, .BQN386  .code, .BQN386  .rslt { font-family:BQN386,monospace; }
+pre.Iosevka, .Iosevka .kb span, .Iosevka .code, .Iosevka .rslt { font-family:Iosevka,f3270,monospace; }
 pre.Julia  , .Julia   .kb span, .Julia   .code, .Julia   .rslt { font-family:JuliaMono,monospace; }
 pre.Fairfax, .Fairfax .kb span, .Fairfax .code, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
 .Fairfax .kb span { line-height:1.25; }
