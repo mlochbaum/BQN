@@ -296,7 +296,7 @@
 </tr>
 </tbody>
 </table>
-<p>For other modifiers the correspondence is looser. Here <code><span class='Modifier'>⌜</span></code> shows the dyadic case and <code><span class='Modifier'>´</span></code> the monadic case only.</p>
+<p>For other modifiers the correspondence is looser. Here <code><span class='Modifier'>⌜</span></code> shows the dyadic case and <code><span class='Modifier'>´</span></code> <code><span class='Modifier'>˝</span></code> the monadic case only.</p>
 <table>
 <thead>
 <tr>
@@ -394,7 +394,6 @@
 <th align="center"><code><span class='Value'>&amp;:</span></code></th>
 <th align="center"><code><span class='Value'>&amp;</span><span class='Number'>.</span><span class='Value'>:</span></code></th>
 <th align="center"><code><span class='Value'>:</span></code></th>
-<th align="center"><code><span class='Function'>/</span></code></th>
 <th align="center"><code><span class='String'>&quot;</span></code></th>
 <th align="center"><code><span class='Function'>L</span><span class='Value'>:</span></code></th>
 <th align="center"><code><span class='Value'>^:</span></code></th>
@@ -408,7 +407,6 @@
 <td align="center"><code><span class='Modifier2'>○</span></code></td>
 <td align="center"><code><span class='Modifier2'>⌾</span></code></td>
 <td align="center"><code><span class='Modifier2'>⊘</span></code></td>
-<td align="center"><code><span class='Modifier'>˝</span></code></td>
 <td align="center"><code><span class='Modifier2'>⎉</span></code></td>
 <td align="center"><code><span class='Modifier2'>⚇</span></code></td>
 <td align="center"><code><span class='Modifier2'>⍟</span></code></td>
@@ -616,6 +614,18 @@
 <td><code><span class='Modifier'>¨</span></code></td>
 </tr>
 <tr>
+<td><code><span class='Function'>F/</span> <span class='Value'>y</span></code></td>
+<td><code><span class='Function'>F</span><span class='Modifier'>˝</span> <span class='Value'>y</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>x</span> <span class='Function'>F</span><span class='Value'>&amp;</span><span class='Number'>.</span><span class='Function'>&gt;/</span> <span class='Value'>y</span></code></td>
+<td><code><span class='Value'>x</span> <span class='Function'>F</span><span class='Modifier'>⌜</span> <span class='Value'>y</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>x</span> <span class='Function'>F/</span> <span class='Value'>y</span></code></td>
+<td><code><span class='Value'>x</span> <span class='Function'>F</span><span class='Modifier2'>⎉</span><span class='Value'>r</span><span class='Ligature'>‿</span><span class='Number'>∞</span> <span class='Value'>y</span></code> where <code><span class='Value'>r</span></code> is <code><span class='Function'>F</span></code>'s left rank</td>
+</tr>
+<tr>
 <td><code><span class='Function'>F</span><span class='Modifier'>`</span><span class='Function'>G</span><span class='Modifier'>`</span><span class='Function'>H</span><span class='String'>@</span><span class='Number'>.C</span></code></td>
 <td><code><span class='Function'>C</span><span class='Modifier2'>◶</span><span class='Bracket'>⟨</span><span class='Function'>F</span><span class='Separator'>,</span><span class='Function'>G</span><span class='Separator'>,</span><span class='Function'>H</span><span class='Bracket'>⟩</span></code></td>
 </tr>
@@ -624,11 +634,11 @@
 <td><code><span class='Value'>x</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Value'>y</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span><span class='Paren'>)</span> <span class='Value'>z</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Value'>x</span> <span class='Function'>F/</span> <span class='Number'>.G</span> <span class='Value'>y</span></code></td>
+<td><code><span class='Value'>x</span> <span class='Function'>F/</span> <span class='Number'>.</span> <span class='Function'>G</span> <span class='Value'>y</span></code></td>
 <td><code><span class='Value'>x</span> <span class='Function'>F</span><span class='Modifier'>˝</span><span class='Modifier2'>∘</span><span class='Function'>G</span><span class='Modifier2'>⎉</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>∞</span> <span class='Value'>y</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>F</span><span class='Value'>:</span><span class='Number'>.G</span></code></td>
+<td><code><span class='Function'>F</span> <span class='Value'>:</span><span class='Number'>.</span> <span class='Function'>G</span></code></td>
 <td><code><span class='Brace'>{</span><span class='Function'>𝕊</span><span class='Value'>:</span> <span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩;</span> <span class='Function'>𝕊</span><span class='Modifier'>⁼</span><span class='Value'>:</span> <span class='Value'>𝕨</span><span class='Function'>G</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
 </tr>
 <tr>
