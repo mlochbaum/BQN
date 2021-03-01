@@ -78,6 +78,7 @@ pre, code, textarea, .primitives tr td:first-child {
 }
 pre, code, textarea, .kb {
   font-family: BQN, monospace;
+  font-weight: normal;
   font-size: 0.94em;
   border: 1px solid #bdcac4;
   letter-spacing: 0.2;
