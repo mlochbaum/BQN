@@ -43,6 +43,3 @@ References:
 
 Environment:
 - [Embedded BQN](embed.md)
-
-Speculation:
-- [Possible language extensions](extensions.md)
