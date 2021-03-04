@@ -107,8 +107,6 @@ The characters `⋄` and `,` and newline are completely interchangeable and are 
 
 Lists (1-dimensional arrays) are enclosed in angle brackets `⟨⟩`, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character `‿`. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.
 
-If added, [sets and dictionaries](extensions.md#sets-and-dictionaries) would also use a list-like notation.
-
 ### Blocks
 
 *[Full documentation](block.md)*
