@@ -17,6 +17,7 @@ Concepts:
 - [Functional programming](functional.md)
 - [Array indices](indices.md)
 - [The leading axis model](leading.md)
+- [Namespaces](namespace.md)
 - [Function trains](train.md)
 
 Primitives:
