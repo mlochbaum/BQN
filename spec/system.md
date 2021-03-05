@@ -41,11 +41,22 @@ Functions `•FChars`, `•FLines`, and `•FBytes` are all ambivalent. If only 
 - Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.
 - Bytes: Single-byte values, stored as BQN characters from `@` to `@+255`.
 
+## Execution and scope manipulation
+
+| Name       | Summary
+|------------|--------------------------
+| `•BQN`     | Evaluate the argument string in an isolated scope
+| `•Eval`    | Evaluate the argument string in the current scope
+| `•Using`   | Import all values from the argument namespace
+
+The effect of `•Eval` should be the same as if its argument were written as source code in the scope where `•Eval` appears. It can define variables, and modify those in the current scope or a parent.
+
 ## Input and output
 
 | Name   | Summary
 |--------|----------------------
 | `•Out` | Print argument string
+| `•Fmt` | Format value for printing
 
 ## Operation properties
 
