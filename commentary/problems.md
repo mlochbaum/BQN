@@ -109,6 +109,9 @@ As a general principle, a programmer should make choices in one part of a progra
 
 This is an issue with any lexically-scoped language; it's unlikely BQN can solve it. On the other hand, I'm surprised I've never seen any discussion of such a universal issue.
 
+### Negative indices don't fail by default
+The typical case when selecting from an array is that a negative index doesn't make sense, and you'd prefer it to give an error. But negative indices are pretty useful in some contexts so BQN trades safety for convenience. Manually checking that indices are non-negative is easier than full range checking, but the issue is that you have to do it manually at all.
+
 ### Rank/Depth negative zero
 A positive operand to Rank indicates the cell rank, so positive zero means to act on 0-cells. A negative operand indicates the frame length, so negative zero should act on the entire array. But it can't because it's equal to positive zero. Similar issue with Depth. Positive/negative is not really the right way to encode the frame/cell distinction, but it's convenient. Fortunately ∞ can be used in place of negative zero, but there can still be problems if the rank is computed.
 
