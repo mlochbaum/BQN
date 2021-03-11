@@ -291,7 +291,7 @@ Markdown ← {filename𝕊𝕩:
     tags ← rowType ⊏ "th"‿"td"
     DoRow ← { lf ∾ JoinLines 𝕨 Html¨ 𝕩 }
     rows ↩ (<˘ tags ∾⌜ align) DoRow¨ incl/rows
-    rowGroups ← ¯1 ↓ rowType ⊔○(∾⟜2) "tr"⊸Html¨ rows
+    rowGroups ← (rowType∾2) ⊔ "tr"⊸Html¨ rows
     sections ← "thead"‿"tbody" Html⟜(lf ∾ JoinLines)¨ rowGroups
     "table" Html lf ∾ JoinLines (0 < ≠¨rowGroups) / sections
   }
@@ -411,8 +411,8 @@ Markdown ← {filename𝕊𝕩:
     linkPos ← ⊏˘ lInds
     lInds +⎉1↩ 1‿0‿1‿0
     unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
-    linkGroup ← 1 -˜ (1‿0⥊˜≢)⊸(/ (⊣×>)○(+`I2M) ¬⊸/) ⥊lInds
-    links ← ProcLink¨˝˘ (lInds≠⊸≍2) (⊣⥊×´⊸↑) linkGroup ⊔ 𝕩
+    linkGroup ← 1 -˜ (⊣×>)○(+`I2M)´ (≠⊸⥊⟜↕∾⊢)⟜2⊸⊔ ⥊lInds
+    links ← ProcLink¨˝˘ ∘‿2 ⥊ linkGroup ⊔ 𝕩
 
     # Emphasis (still rudimentary)
     eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
@@ -581,7 +581,7 @@ GetHighlights ← {
   # Given a list of pairs, get a mask indicating included regions
   ToMask ← (≠`∨⊢) (≠𝕩)↑/⁼∘∾
   # Split rows and group into text‿comments
-  tc ← ((⊏˘b)⊏c) 2{𝕗↑⊔○(∾⟜𝕗)} <˘b
+  tc ← ((⊏˘b)⊏c) ∾⟜2⊸⊔ <˘b
   # Color with "String" and "Comment"
   col ⌈↩ +´ (2‿1-˜≠classes) × ToMask¨ tc
 
