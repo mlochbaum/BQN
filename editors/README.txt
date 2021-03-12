@@ -8,7 +8,7 @@ files for another editor I'd gladly accept them!
 
 The file bqn is for configuring XKB on Linux. I haven't tried this but
 others have it working. See:
-- en.wikipedia.org/wiki/X_keyboard_extension
+- https://en.wikipedia.org/wiki/X_keyboard_extension
 - https://aplwiki.com/wiki/Typing_glyphs_on_Linux
 
 The file inputrc can be copied or appended to ~/.inputrc to enable
