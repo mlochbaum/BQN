@@ -35,10 +35,10 @@ It incorporates concepts developed over years of APL practice:
 * Lightweight [**anonymous functions**](doc/block.md) (like [dfns](https://aplwiki.com/wiki/Dfn)) borrow some power from Lisp.
 
 But BQN is redesigned from the ground up, with brand new ideas to make these paradigms easier to use and less likely to fail.
-* The [**based array model**](doc/based.md) makes non-arrays (called atoms) a fundamental part of the language, and removes the surprise of floating arrays and the hassle of explicit boxes. New **array notation** eliminates the gotchas of [stranding](https://aplwiki.com/wiki/Strand_notation).
-* A [**context-free grammar**](doc/context.md) where a value's syntactic role is determined by its spelling makes it easier for machines and humans to understand code.
-* Oh, and it naturally leads to [**first-class functions**](doc/functional.md), which for example can be used to [reinvent control structures](doc/control.md).
+* The [**based array model**](doc/based.md) eliminates the surprise of floating arrays and the hassle of explicit boxes, while dedicated **array notation** does away with [stranding](https://aplwiki.com/wiki/Strand_notation) gotchas.
+* [**Context-free grammar**](doc/context.md) makes it easier for machines and humans to understand code, and naturally leads to [**first-class functions**](doc/functional.md), which can even be used to [reinvent control structures](doc/control.md).
 * **New symbols** for built-in functionality make the syntactic role of every primitive instantly visible, and aim to be more consistent and intuitive.
+* No-nonsense [**namespace syntax**](doc/namespace.md) encapsulates data and even allows for a little [object-oriented programming](doc/oop.md).
 
 ## What kind of name is "BQN"?
 
