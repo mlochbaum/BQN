@@ -4,7 +4,7 @@ nc‿rt‿ref ← "-nocomp"‿"-rt"‿"-ref" ∊ •args
 files ← "simple"‿"syntax"‿"prim"⍟(0=≠) ('-'≠⊑)¨⊸/ •args
 "Can't test runtime without the compiler!" ! ¬nc∧rt∨ref
 
-Native ← {⍎𝕩}
+Native ← •BQN
 exec ← ((rt⌈2×ref)¬nc)◶⟨
   Native˙                                 # Native
   {𝕤⋄ ⟨DRun⟩←•Import "../dc.bqn" ⋄ DRun}  # Compiled; native runtime

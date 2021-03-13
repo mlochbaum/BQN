@@ -32,7 +32,8 @@ E_nodef ⇐ {
   idChars ← "_¯.π∞"∾∾"0aA"+⟜↕¨10‿26‿26
   q←≠`𝕩='"' ⋄ q∨↩≠`q<𝕩='''                 # Quotes
   f←(𝕩=@+10)≥○((1+↕∘≠)⊸(⌈`×))q<𝕩='#'       # Comments
-  t ← (¯1+`·¬(»f/q)∨·»⊸∧∊⟜idChars)⊸⊔ f/𝕩   # Tokenize
+  w←('•'⊸=(∨»⊸∧⊢)∊⟜idChars) f/𝕩            # Group words
+  t←(¯1+`·¬(»f/q)∨w)⊸⊔ f/𝕩                 # Tokenize
   ∾ (in⊸⊐ ⊑⟜out⍟(<⟜(≠in))¨ ⊢) t            # Replace
 }
 # Process expression, possibly redefining a primitive
