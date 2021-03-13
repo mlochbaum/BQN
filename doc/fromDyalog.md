@@ -90,7 +90,7 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>*</code> </td><td colspan=2><code>⋆</code></td>                                      </tr>
 <tr><td> <code>⍟</code> </td><td colspan=2><code>⋆⁼</code></td>                                     </tr>
 <tr><td> <code>!</code> </td><td><code>×´1+↕</code>            </td><td> <code>-˜(+÷○(×´)⊢)1+↕∘⊣</code></td></tr>
-<tr><td> <code>○</code> </td><td colspan=2>Some complex exponential stuff, maybe</td>               </tr>
+<tr><td> <code>○</code> </td><td> <code>π⊸×</code>             </td><td> <code>•math</code></td>    </tr>
 <tr><td> <code>~</code> </td><td> <code>¬</code>               </td><td> <code>¬∘∊/⊣</code></td>    </tr>
 <tr><td> <code>?</code> </td><td colspan=2>Library?</td>                                            </tr>
 <tr><td> <code>⍲</code> </td><td>                              </td><td> <code>¬∘∧</code></td>      </tr>
@@ -112,8 +112,8 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>⍋</code> </td><td> <code>⍋</code>               </td><td> Give up </td>              </tr>
 <tr><td> <code>⍒</code> </td><td> <code>⍒</code>               </td><td> Give up </td>              </tr>
 <tr><td> <code>≢</code> </td><td> <code>≠</code>               </td><td> <code>≢</code></td>        </tr>
-<tr><td> <code>⍎</code> </td><td colspan=2 rowspan=2>To be decided</td>                             </tr>
-<tr><td> <code>⍕</code> </td>                                                                       </tr>
+<tr><td> <code>⍎</code> </td><td colspan=2><code>•Eval</code></td>                                  </tr>
+<tr><td> <code>⍕</code> </td><td colspan=2><code>•Fmt</code></td>                                   </tr>
 <tr><td> <code>⊥</code> </td><td>                              </td><td> <code>{+⟜(𝕨⊸×)´⌽𝕩}</code>    </td> </tr>
 <tr><td> <code>⊤</code> </td><td>                              </td><td> <code>{𝕨|1↓⌊∘÷`⌾⌽𝕨∾<𝕩}</code></td> </tr>
 <tr><td> <code>⌹</code> </td><td colspan=2><code>+˝∘×⎉1‿∞⁼</code> I guess</td>                      </tr>

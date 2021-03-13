@@ -31,6 +31,6 @@ GetRepls ← {
 ⟨E_proc⟩ ← chrs‿GetRepls •Import "../src/pp.bqn"
 
 rslt ← "⟨"∾"⟩"«∾","⊸∾¨∾chrs  # Output all primitives
-rt ← {⍎𝕩} ∾∾⟜(@+10)¨ pre ∾ order∾⟜≠⊸⊏E_proc¨ defs∾<rslt
+rt ← •BQN ∾∾⟜(@+10)¨ pre ∾ order∾⟜≠⊸⊏E_proc¨ defs∾<rslt
 ⟨DRun,DCompile⟩ ← •Import "../dc.bqn"
 rt⊸DRun

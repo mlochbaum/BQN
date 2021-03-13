@@ -1,2 +1,2 @@
 Compile ← (↕62)⊸(•Import "../src/c.bqn")
-DrawEval ← Compile⊸(⍎ •FChars "../src/e.bqn")
+DrawEval ← Compile⊸(•Eval •FChars "../src/e.bqn")

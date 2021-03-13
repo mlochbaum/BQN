@@ -138,12 +138,15 @@ The tables below give approximate implementations of J primitives. J has a whole
 | `{::`|                         | `⊑`
 | `}.` | `1⊸↓`                   | `↓`
 | `}:` | `¯1⊸↓`                  |
+| `".` | `•Eval`                 |
+| `":` | `•Fmt`                  |
 | `e.` | `><∘∾∊¨⊢`               | `∊`
 | `E.` |                         | `⍷`
 | `i.` | `↕` (`⥊⟜(↕×´)` for lists) | `⊐`
 | `i:` | `{𝕩-˜↕1+2×𝕩}`           | `≠∘⊣-1+⌽⊸⊐`
 | `I.` | `/`                     | `⍋`
 | `L.` | `≡`                     |
+| `o.` | `π⊸×`                   | `•math`
 
 Some J modifier expressions are translated below. BQN doesn't keep track of the rank of functions, so the "close" compositions `@` `&` `&.` have no BQN equivalents: instead, specify a rank after composing.
 
