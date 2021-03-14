@@ -18,6 +18,7 @@ Concepts:
 - [Array indices](indices.md)
 - [The leading axis model](leading.md)
 - [Namespaces](namespace.md)
+- [Object-oriented programming](oop.md)
 - [Function trains](train.md)
 
 Primitives:
