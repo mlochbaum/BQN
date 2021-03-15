@@ -17,10 +17,10 @@ A program is a list of statements. Almost all statements are expressions. Namesp
 Here we define the "atomic" forms of functions and modifiers, which are either single tokens or enclosed in paired symbols. Stranded vectors with `‿`, which binds more tightly than any form of execution, are also included.
 
     ANY      = atom | Func | _mod1 | _mod2_
-    _mod2_   = _c_ | _cl_ | "(" _m1Expr_ ")" | ( atom "." )? _brMod2_
-    _mod1    = _m  | _ml  | "(" _m2Expr  ")" | ( atom "." )? _brMod1
-    Func     =  F  |  Fl  | "(" FuncExpr ")" | ( atom "." )?  BrFunc
-    atom     =  s  |  sl  | "(" subExpr  ")" | ( atom "." )?  brSub | list
+    _mod2_   = ( atom "." )? _c_ | _cl_ | "(" _m1Expr_ ")" | _brMod2_
+    _mod1    = ( atom "." )? _m  | _ml  | "(" _m2Expr  ")" | _brMod1
+    Func     = ( atom "." )?  F  |  Fl  | "(" FuncExpr ")" |  BrFunc
+    atom     = ( atom "." )?  s  |  sl  | "(" subExpr  ")" |  brSub | list
     list     = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
     subject  = atom | ANY ( "‿" ANY )+
 
@@ -49,7 +49,7 @@ Functions can be formed by fully applying modifiers or as trains. modifiers are 
     FuncExpr = Train
              | F ASGN FuncExpr
 
-Subject expressions are complicated by the possibility of list assignment. We also define nothing-statements, which have very similar syntax to subject expressions but do not permit assignment.
+Subject expressions are complicated by the possibility of list and namespace assignment, which share the nodes `lhsList` and `lhsStr` and cannot be completely distinguished until execution. We also define nothing-statements, which have very similar syntax to subject expressions but do not permit assignment.
 
     arg      = subExpr
              | ( subject | nothing )? Derv arg
@@ -59,12 +59,10 @@ Subject expressions are complicated by the possibility of list assignment. We al
     LHS_ANY  = LHS_NAME | lhsList
     LHS_ATOM = LHS_ANY | "(" lhsStr ")"
     LHS_ELT  = LHS_ANY | lhsStr
+    LHS_ENTRY= LHS_ELT | lhs "⇐" LHS_NAME
     lhsStr   = LHS_ATOM ( "‿" LHS_ATOM )+
-    lhsList  = "⟨" ⋄? ( ( LHS_ELT ⋄ )* LHS_ELT ⋄? )? "⟩"
-    NS_VAR   = ( lhs "⇐" )? LHS_NAME
-    lhsNs    = LHS_NAME ( "‿" LHS_NAME )+
-             | "⟨" ⋄? ( ( NS_VAR ⋄ )* NS_VAR ⋄? )? "⟩"
-    lhs      = s | lhsList | lhsStr | lhsNs
+    lhsList  = "⟨" ⋄? ( ( LHS_ENTRY ⋄ )* LHS_ENTRY ⋄? )? "⟩"
+    lhs      = s | lhsList | lhsStr
     subExpr  = arg
              | lhs ASGN subExpr
              | lhs Derv "↩" subExpr       # Modified assignment

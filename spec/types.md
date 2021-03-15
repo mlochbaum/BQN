@@ -2,18 +2,21 @@
 
 # Specification: BQN types
 
-BQN programs manipulate data of six types:
+BQN programs manipulate data of seven types:
 - Character
 - Number
 - Array
 - Function
 - 1-Modifier
 - 2-Modifier
+- Namespace
 
-Of these, the first three are considered *data types* and the remaining three *operation types*. We first describe the operation types; the remainder of this page will be dedicated to the data types. A member of any operation type accepts some number of *inputs* and either returns a *result* or causes an error; inputs and the result are values of any type. When a function is given inputs (*called*), it may produce side effects before returning, such as manipulating variables and calling other functions within its scope, or performing I/O.
+Of these, the first three are considered *data types* and the next three *operation types*. We first describe the operation types and the namespace; the remainder of this page will be dedicated to the data types. A member of any operation type accepts some number of *inputs* and either returns a *result* or causes an error; inputs and the result are values of any type. When a function is given inputs (*called*), it may produce side effects before returning, such as manipulating variables and calling other functions within its scope, or performing I/O.
 - A *function* takes one (monadic call) or two (dyadic call) *arguments*.
 - A *1-modifier* takes one *operand*.
 - A *2-modifier* takes two *operands*.
+
+A namespace holds the variables used to evaluate a block or program, as defined in the [scoping rules](scope.md). The observable aspects of a namespace are that it can be compared for equality with other namespaces and that it exposes variables associated with certain names, whose values can be queried or set.
 
 To begin the data types, a *character* is a [Unicode](https://en.wikipedia.org/wiki/Unicode) code point, that is, its value is a non-negative integer within the ranges defined by Unicode (however, it is distinct from this number as a BQN value). Characters are ordered by this numeric value. BQN deals with code points as abstract entities and does not expose encodings such as UTF-8 or UTF-16.
 
