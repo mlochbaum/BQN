@@ -564,6 +564,7 @@ GetHighlights ← {
 
   # Find each character's group, sending unknowns to 1 and # to 0.
   col ← (1-˜≠chars) (⊢-⊣×≤) chars FindGroup 𝕩
+  col-↩ 4×(𝕩='.')>«𝕩∊'0'+↕10 # Namespace dot: 5→1
 
   # Locate comments and strings.
   c ← 𝕩='#'

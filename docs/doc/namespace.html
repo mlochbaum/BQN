@@ -10,7 +10,7 @@
 <p>The following quick example shows a few ways to use a namespace returned by <code><span class='Function'>•Import</span></code>:</p>
 <pre><span class='Value'>ns</span> <span class='Gets'>←</span> <span class='Function'>•Import</span> <span class='String'>&quot;file.bqn&quot;</span>
 <span class='Bracket'>⟨</span><span class='Value'>something</span><span class='Separator'>,</span> <span class='Value'>abbr</span><span class='Gets'>⇐</span><span class='Value'>abbreviation</span><span class='Bracket'>⟩</span> <span class='Gets'>←</span> <span class='Value'>ns</span>  <span class='Comment'># Destructure
-</span><span class='Value'>ns.DoThing</span> <span class='Number'>6</span>                         <span class='Comment'># Dot syntax
+</span><span class='Value'>ns.</span><span class='Function'>DoThing</span> <span class='Number'>6</span>                         <span class='Comment'># Dot syntax
 </span></pre>
 <p>An here's how the contents of file.bqn might look in order to define the variables used above:</p>
 <pre><span class='Bracket'>⟨</span><span class='Value'>something</span><span class='Separator'>,</span> <span class='Function'>DoThing</span><span class='Bracket'>⟩</span><span class='Gets'>⇐</span>     <span class='Comment'># Declare exports
@@ -42,9 +42,9 @@
 <p>The arrows <code><span class='Gets'>⇐</span></code> used for importing don't indicate that the surrounding block is a namespace or export variables. However, a single statement can both import and export, if it's a destructuring assignment and the main assignment arrow is <code><span class='Gets'>⇐</span></code>.</p>
 <pre><span class='Bracket'>⟨</span><span class='Value'>two</span><span class='Separator'>,</span> <span class='Value'>vars</span><span class='Bracket'>⟩</span> <span class='Gets'>⇐</span> <span class='Function'>•Import</span> <span class='String'>&quot;stuff.bqn&quot;</span>
 </pre>
-<p>The second way to get a value (just one at a time) from a namespace is dot syntax: write the namespace, then a dot <code><span class='Number'>.</span></code>, then another name.</p>
+<p>The second way to get a value (just one at a time) from a namespace is dot syntax: write the namespace, then a dot <code><span class='Value'>.</span></code>, then another name.</p>
 <pre><span class='Value'>example.b</span>
 
-<span class='Brace'>{</span><span class='Value'>n</span><span class='Gets'>⇐</span><span class='Number'>7</span><span class='Brace'>}</span><span class='Number'>.n</span>
+<span class='Brace'>{</span><span class='Value'>n</span><span class='Gets'>⇐</span><span class='Number'>7</span><span class='Brace'>}</span><span class='Value'>.n</span>
 </pre>
 <p>The syntax is any subject followed by a dot and then a name. This can be chained like <code><span class='Value'>a.b.c</span></code> if a namespace has a value that is also a namespace (and so on).</p>
