@@ -17,7 +17,7 @@
 <p>You can run <code><span class='Value'>dzref</span></code> from ordinary dzaima/BQN using the <code><span class='Function'>•Import</span></code> command; see for example <a href="https://github.com/mlochbaum/BQN/blob/master/wcshim.bqn">wcshim.bqn</a>. For testing, it is run as a Unix script, in which case it depends on an executable <code><span class='Value'>dbqn</span></code> that runs dzaima/BQN on a file argument. I use the following script, using the path to a clone of dzaima/BQN for the jar file.</p>
 <pre><span class='Comment'>#! /bin/bash
 </span>
-<span class='Value'>java</span> <span class='Function'>-</span><span class='Value'>jar</span> <span class='Function'>/</span><span class='Value'>path</span><span class='Function'>/</span><span class='Value'>to</span><span class='Function'>/</span><span class='Value'>dzaima</span><span class='Function'>/BQN/BQN.jar</span> <span class='Function'>-</span><span class='Value'>f</span> <span class='String'>&quot;$@&quot;</span>
+<span class='Value'>java</span> <span class='Function'>-</span><span class='Value'>jar</span> <span class='Function'>/</span><span class='Value'>path</span><span class='Function'>/</span><span class='Value'>to</span><span class='Function'>/</span><span class='Value'>dzaima</span><span class='Function'>/BQN/BQN</span><span class='Value'>.jar</span> <span class='Function'>-</span><span class='Value'>f</span> <span class='String'>&quot;$@&quot;</span>
 </pre>
 <p>The left argument for <code><span class='Function'>•Import</span></code> or the shell arguments can contain up to two arguments for the script. The first is a file to run, and the second is BQN code to be run after it.</p>
 <h3 id="bqn2ngn">BQN2NGN</h3>
