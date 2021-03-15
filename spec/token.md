@@ -10,7 +10,7 @@ A BQN *character literal* consists of a single character between single quotes, 
 
 A comment consists of the hash character `#` and any following text until (not including) the next newline character. The initial `#` must not be part of a string literal started earlier. Comments are ignored entirely and do not form tokens.
 
-Identifiers and numeric literals share the same token formation rule. These tokens are formed from the *numeric characters* `¯∞π.0123456789` and *alphabetic characters* `_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ` and the oddball `𝕣`. Any sequence of these characters adjacent to each other forms a single token, which is a *numeric literal* if it begins with a numeric character and an *identifier* if it begins with an alphabetic character. If a token begins with an underscore then its first non-underscore character must be alphabetic: for example, `_99` is not a valid token. Numeric literals are also subject to [numeric literal rules](literal.md), which specify which numeric literals are valid and which numbers they represent. If the token contains `𝕣` it must be either `𝕣`, `_𝕣`, or `_𝕣_` and is considered a special name (see below). As the value taken by this identifier can only be a modifier, the uppercase character `ℝ` is not allowed.
+Identifiers and numeric literals share the same token formation rule. These tokens are formed from the *numeric characters* `¯∞π0123456789` and *alphabetic characters* `_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ` and the oddball `𝕣`. Additionally, `.` is considered a numeric character if it is followed immediately by a digit (`0123456789`); otherwise it forms its own token. Any sequence of these characters adjacent to each other forms a single token, which is a *numeric literal* if it begins with a numeric character and an *identifier* if it begins with an alphabetic character. If a token begins with an underscore then its first non-underscore character must be alphabetic: for example, `_99` is not a valid token. Numeric literals are also subject to [numeric literal rules](literal.md), which specify which numeric literals are valid and which numbers they represent. If the token contains `𝕣` it must be either `𝕣`, `_𝕣`, or `_𝕣_` and is considered a special name (see below). As the value taken by this identifier can only be a modifier, the uppercase character `ℝ` is not allowed.
 
 Following this step, the whitespace characters space and tab are ignored, and do not form tokens. Only these whitespace characters, and the newline character, which does form a token, are allowed.
 
@@ -19,10 +19,10 @@ Otherwise, a single character forms a token. Only the specified set of character
 | Class                 | Characters
 |-----------------------|------------
 | Null literal          | `@`
-| Primitive Function    | `+-×÷⋆√⌊⌈\|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔`
+| Primitive Function    | `+-×÷⋆√⌊⌈\|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!`
 | Primitive 1-Modifier  | `` ˙˜˘¨⌜⁼´˝` ``
 | Primitive 2-Modifier  | `∘○⊸⟜⌾⊘◶⎉⚇⍟`
 | Special name          | `𝕨𝕩𝕗𝕘𝕤𝕎𝕏𝔽𝔾𝕊`
-| Punctuation           | `←⇐↩→(){}⟨⟩‿⋄,` and newline
+| Punctuation           | `←⇐↩→(){}⟨⟩‿⋄,.` and newline
 
 In the BQN [grammar specification](grammar.md), the three primitive classes are grouped into terminals `Fl`, `_ml`, and `_cl`, while the punctuation characters are identified separately as keywords such as `"←"`. The special names are handled specially. The uppercase versions `𝕎𝕏𝔽𝔾𝕊` and lowercase versions `𝕨𝕩𝕗𝕘𝕤` are two spellings of the five underlying inputs and function.
