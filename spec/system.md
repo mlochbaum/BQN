@@ -6,6 +6,8 @@ This portion of the spec is definitely still a draft.
 
 The `•` symbol is used to access values other than primitives provided by BQN.
 
+All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior.
+
 ## Scripts
 
 | Name       | Summary
