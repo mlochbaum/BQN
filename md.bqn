@@ -307,7 +307,7 @@ Markdown ← {filename𝕊𝕩:
   ProcComment ← {
     n←≠s←"<!--GEN" ⋄ l←¯3↓⍟(1=≠𝕩)⊑𝕩 ⋄ a←s≡n↑l
     Source ← {((0<≠)◶<‿(•FLines path∾⊢) Trim n↓l) ∾ 1↓¯1↓𝕩}
-    ⟨path,"",⟨⟩⟩ GenHtml⍟a JoinLines Source⍟a 𝕩
+    ⟨path⟩ GenHtml⍟a JoinLines Source⍟a 𝕩
   }
   ProcHtml ← {
     codeMask ← "<code>" (6⥊0)⊸»⊸(>○(⌈`(1+↕∘≠)⊸×))○((≠𝕩)↑⍷⟜𝕩) "</code>"
