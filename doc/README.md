@@ -8,6 +8,7 @@ Overview:
 - [Syntax](syntax.md)
 - [Types](types.md)
 - [Primitives](primitive.md)
+- [Paradigms](paradigms.md)
 
 Concepts:
 - [Based array theory](based.md)
