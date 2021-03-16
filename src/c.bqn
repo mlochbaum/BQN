@@ -215,10 +215,12 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Can't use Nothing (·) in lists"_err_(G) (»lo∨ls)∧ne
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
   dr←/ls<s⋄rt←/fo                           # Drop (block separator) and return
-  dr∾↩((1+dy)×fn←fa⊏ne)/fa⋄fa/˜↩¬fn⋄dy/˜↩¬fn# Turn function applications on · to drops
+  fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
+  dr∾↩((1+dy)×fn←fa⊏ne)/fl                  # Turn function applications on · to drops
+  fn↩¬fn⋄fa/˜↩fn⋄dy/˜↩fn⋄fl/˜↩fn            # And remove them
 
   # Bytecode generation: numbers bc ordered by source location (after rev) oi
-  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,dr,2/l,af/at,oa+1⌈oa⊏os,(dy×⊏⟜os)⊸+fa+dy,rt⟩
+  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,dr,2/l,af/at,oa+1⌈oa⊏os,fl,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,14¨dr,⥊⍉(3+l⊏aa)≍ll
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
   # Instruction source positions
