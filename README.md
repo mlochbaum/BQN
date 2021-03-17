@@ -70,7 +70,7 @@ A useful tool for both beginners and experienced users is [**BQNcrate**](https:/
 
 ## Where can I find BQN users?
 
-Most BQN users are active on the [APL Orchard](https://apl.chat) forum. If you (like me) don't have a Stack Overflow or Stack Exchange account with a few points you'll have to send an email to get forum access; see the instructions in the room description. You can also chat there by IRC: a bot mirrors messages back and forth to the #apl freenode channel, except when it's broken. The [Matrix](https://matrix.org/) channel #apl:matrix.org is similarly linked.
+There's a BQN channel on [Matrix](https://matrix.org/) (#bqn:matrix.org), which can be opened in the Element client with [this link](https://app.element.io/#/room/%23bqn:matrix.org), and one on Discord that you can join with [this invite](https://discord.gg/bKZJJkv2). The two channels are bridged so that comments in one appear in both. It should also be possible to link in an IRC channel, so contact me or get on one of the existing forums if you'd like to discuss making one. Past BQN discussion has mostly taken place on the [APL Orchard](https://apl.chat) forum, but I can [no longer recommend](commentary/orchard.md) it for discussing BQN.
 
 Asking programming questions in chat won't make it easy for future BQN users to find them. Especially if you have a general question about how the language or its environment works, consider asking at [topanswers.xyz/apl](https://topanswers.xyz/apl) with the "bqn" tag.
 
