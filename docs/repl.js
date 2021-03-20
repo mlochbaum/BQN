@@ -147,15 +147,17 @@ if (doc.demo) doc.demo.onclick = () => {
 }
 
 if (location.hash) {
-  let code='', run=1, ee=0;
+  let code, run=1, ee=0;
   location.hash.slice(1).split('&').map(s => {
     if (s.slice(0,5)==='code=') code=s.slice(5);
     if (s.slice(0,5)==='norun') run=0;
     if (s.slice(0,7)==='explain') ee=1;
   });
-  let b=atob(code);
-  b=new Uint8Array([...b].map(c=>c.charCodeAt(0)));
-  setcount(doc.code.value = (new TextDecoder()).decode(b));
-  if (ee && doc.doexplain) doc.doexplain.onclick();
-  if (run) repl();
+  if (code!==undefined) {
+    let b=atob(code);
+    b=new Uint8Array([...b].map(c=>c.charCodeAt(0)));
+    setcount(doc.code.value = (new TextDecoder()).decode(b));
+    if (ee && doc.doexplain) doc.doexplain.onclick();
+    if (run) repl();
+  }
 }
