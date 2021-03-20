@@ -8,7 +8,7 @@
 
 </center>
 
-*Try it online below or [here](https://mlochbaum.github.io/BQN/try.html), and see [running.md](running.md) for more options.*
+*Try it online below, on [this page](https://mlochbaum.github.io/BQN/try.html), or [in our chat](#where-can-i-find-bqn-users). Offline options [here](running.md).*
 <!--GEN
 E ← ⊐⟜":"⊸(↑At"class="∾1⊸+⊸↓)⊸Enc
 repl ← "div:cont" E ⟨
@@ -71,6 +71,8 @@ A useful tool for both beginners and experienced users is [**BQNcrate**](https:/
 ## Where can I find BQN users?
 
 There's a BQN channel on [Matrix](https://matrix.org/) (#bqn:matrix.org), which can be opened in the Element client with [this link](https://app.element.io/#/room/%23bqn:matrix.org), and one on Discord that you can join with [this invite](https://discord.gg/bKZJJkv2). The two channels are bridged so that comments in one appear in both. It should also be possible to link in an IRC channel, so contact me or get on one of the existing forums if you'd like to discuss making one. Past BQN discussion has mostly taken place on the [APL Orchard](https://apl.chat) forum, but I can [no longer recommend](commentary/orchard.md) it for discussing BQN.
+
+BQNBot will run your code from chat! Begin your message with `bqn)` and our friend (designation B-QN) will evaluate the rest and show the output. While putting your code in blocks `` `like this` `` is easier to read, the bot just operates on plain text and doesn't require it.
 
 Asking programming questions in chat won't make it easy for future BQN users to find them. Especially if you have a general question about how the language or its environment works, consider asking at [topanswers.xyz/apl](https://topanswers.xyz/apl) with the "bqn" tag.
 
