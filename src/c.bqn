@@ -214,7 +214,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
   "Can't use Nothing (·) in lists"_err_(G) (»lo∨ls)∧ne
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
-  dr←/ls<s⋄rt←/fo                           # Drop (block separator) and return
+  dr←/ne<ls<s⋄rt←/fo                        # Drop (block separator) and return
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←fa⊏ne)/fl                  # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄dy/˜↩fn⋄fl/˜↩fn            # And remove them
