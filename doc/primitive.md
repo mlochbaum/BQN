@@ -2,7 +2,11 @@
 
 # BQN primitives
 
-*Primitives* are functions and modifiers that are built into the language.
+*Primitives* are functions and modifiers that are built into the language and written with individual glyphs. The role of a primitive when written always matches its type (but you can use its value in other roles by assigning it or various other methods).
+
+Primitives have no side effects other than errors, and can't perform infinite computations, except in the case that the operand to a primitive modifier is a function that has side effects or never returns (primitive modifiers never perform computation when passed operands—they always bind the operands and act when called on arguments). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function with no side effects always returns the same result if passed the same arguments. Trains and list notation have the same properties, so that tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.
+
+Recursion is the primary way to perform potentially infinite computations in BQN, and it can be packaged into [control structures](control.md) like `While` for ease of use. A given BQN implementation might also provide [system values](../spec/system.md) for "impure" tasks like file access or other I/O.
 
 ## Functions
 
