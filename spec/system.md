@@ -45,13 +45,16 @@ Functions `•FChars`, `•FLines`, and `•FBytes` are all ambivalent. If only 
 
 ## Execution and scope manipulation
 
-| Name       | Summary
-|------------|--------------------------
-| `•BQN`     | Evaluate the argument string in an isolated scope
-| `•Eval`    | Evaluate the argument string in the current scope
-| `•Using`   | Import all values from the argument namespace
+| Name          | Summary
+|---------------|--------------------------
+| `•BQN`        | Evaluate the argument string in an isolated scope
+| `•Eval`       | Evaluate the argument string in the current scope
+| `•ScopedEval` | Evaluate the argument string in a scope
+| `•Using`      | Import all values from the argument namespace
 
 The effect of `•Eval` should be the same as if its argument were written as source code in the scope where `•Eval` appears. It can define variables, and modify those in the current scope or a parent.
+
+`•ScopedEval` creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to `{•Eval}`.
 
 ## Input and output
 
