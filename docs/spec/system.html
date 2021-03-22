@@ -88,12 +88,17 @@
 <td>Evaluate the argument string in the current scope</td>
 </tr>
 <tr>
+<td><code><span class='Function'>•ScopedEval</span></code></td>
+<td>Evaluate the argument string in a scope</td>
+</tr>
+<tr>
 <td><code><span class='Function'>•Using</span></code></td>
 <td>Import all values from the argument namespace</td>
 </tr>
 </tbody>
 </table>
 <p>The effect of <code><span class='Function'>•Eval</span></code> should be the same as if its argument were written as source code in the scope where <code><span class='Function'>•Eval</span></code> appears. It can define variables, and modify those in the current scope or a parent.</p>
+<p><code><span class='Function'>•ScopedEval</span></code> creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to <code><span class='Brace'>{</span><span class='Function'>•Eval</span><span class='Brace'>}</span></code>.</p>
 <h2 id="input-and-output">Input and output</h2>
 <table>
 <thead>
