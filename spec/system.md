@@ -103,7 +103,7 @@ Each function in this section is monadic.
 | Left partial  |  6   | `𝕗,𝕣`
 | Right partial |  7   | `  𝕣,𝕘`
 
-## Timing
+## Time
 
 | Name          | Summary
 |---------------|--------------------------
@@ -117,6 +117,6 @@ All times are measured in seconds.
 
 The [Unix epoch](https://en.wikipedia.org/wiki/Unix_time) is 1970-01-01 00:00:00 UTC. `•UnixTime` is intended for absolute time measurement and should be implemented with the method that gives the most accurate result at any given time. `•MonoTime` is intended for relative measurement and should use the method that gives the most precise time differences over the course of the program. Its return value must never decrease between calls.
 
-`•_timed` returns the total time taken divided by the number of function calls, including the overhead required for the outer loop that counts iterations (which will typically by negligible in comparison to the BQN code).
+`•_timed` returns the total time taken divided by the number of function calls, including the overhead required for the outer loop that counts iterations (which will typically be negligible in comparison to the BQN code).
 
 More accurately the modifier `•_maxTime_` *may* fail if execution of `𝔽` takes over `𝕨𝔾𝕩` seconds, and should fail as quickly as it is practically able to. The most likely way to implement this modifier is to interrupt execution at the given time. If `𝔽` completes before the interrupt there is no need to measure the amount of time it actually took.
