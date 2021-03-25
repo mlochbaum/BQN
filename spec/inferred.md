@@ -162,6 +162,10 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 |---------|---------
 | `` ` `` | `{!0<=𝕩 ⋄ 𝕨 (»𝔽⁼¨⊢){(⊏∾⊏𝔽1⊸↓)⍟(1<≠)⊘𝔽} 𝕩}`
 
+### Undo headers
+
+An `UndoHead` header specifies how a block function acts when undone. Like ordinary headers, undo headers are searched for a match when a block function `F` is undone, or when `F˜` is undone with two arguments (including the two modifier cases `𝔽⟜k` and `𝔽𝔾k` from the previous section). An `UndoHead` without `"˜"` matches the `F⁼` case while one with `"˜"` matches the `F˜⁼` case. The left and right arguments are matched to `headW` and `headX` as with ordinary headers, and the first matching case is evaluated to give the result of the Undo-derived function.
+
 ## Under
 
 The Under 2-modifier `⌾` conceptually applies its left operand under the action of its right operand. Setting `z←𝕨𝔽⌾𝔾𝕩`, it satisfies `(𝕨𝔽○𝔾𝕩) ≡ 𝔾z`. We might say that `𝔾` transforms values to a new domain, and `⌾𝔾` lifts actions `𝔽` performed in this domain to the original domain of values. For example, addition in the logarithmic domain corresponds to multiplication in the linear domain: `+⌾(⋆⁼)` is `×` (but less precise if computed in floating point).

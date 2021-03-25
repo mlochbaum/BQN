@@ -78,8 +78,15 @@ A header looks like a name for the thing being headed, or its application to inp
     FuncHead = headW? ( F | "𝕊" ) headX
              | sl | "(" subExpr ")" | brSub | list   # subject,
              | ANY ( "‿" ANY )+                      # but not s
+             | UndoHead
     _m1Head  = headW? Mod1H1 headX
     _m2Head_ = headW? Mod2H1 headX
+
+Additionally, an inference header doesn't affect evaluation of the function, but describes how an inferred property ([Undo](inferred.md#undo)) should be computed. Here `"˜"` and `"⁼"` are both specific instances of the `_ml` token.
+
+    UndoHead = headW? ( F | "𝕊" )      "⁼" headX
+             | headW  ( F | "𝕊" ) "˜"  "⁼" headX
+             |        ( F | "𝕊" ) "˜"? "⁼"
 
 A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. For an immediate block there are no inputs, so there can only be one possible case and one body. Functions and modifiers allow any number of "matched" bodies, with headers that have arguments, followed by at most two "main" bodies with either no headers or headers without arguments. If there is one main body, it is ambivalent, but two main bodies refer to the monadic and dyadic cases.
 
