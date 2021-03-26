@@ -4,18 +4,16 @@
 ⟨DRun,DCompile⟩ ← •Import "dc.bqn"
 ⟨ref,glyphs⟩ ← •Import "src/pr.bqn"
 
-rt ← ⟨⟩
-PrimInd ← {⊑rt⊐<𝕩}
-Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
 provide ← ⟨
   •Type           # Type
-  Decompose       # Decompose
-  glyphs⊑˜PrimInd # Glyph
   •FillFn         # Fill
   ⋆⁼              # Log
   (≠¨⊔){𝔽⊘(↑⟜𝔽)}  # GroupLen
   ∾⊔∘⊢            # GroupOrd
   !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,•_fillBy_,⊘
 ⟩
-rt ↩ •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
+rt‿SetPrims ← •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
+PrimInd ← rt⊸⊐⌾<
+Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
+SetPrims ⟨ Decompose, glyphs⊑˜PrimInd ⟩
 rt⊸DRun

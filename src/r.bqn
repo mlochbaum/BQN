@@ -1,7 +1,9 @@
 # BQN runtime. Requires:
-# Type Decompose Glyph Fill Log GroupLen GroupOrd _fillBy_
+# Type Fill Log GroupLen GroupOrd _fillBy_
 # !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
-Glyph
+Decompose ← {0‿𝕩}
+Glyph ← {𝕩⋄!0}
+SetPrims ← {Decompose‿Glyph ↩ 𝕩}
 
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
 ⊢ ← {𝕩}
@@ -779,7 +781,7 @@ Mod1Inverse ← INF˙ _lookup_ ⟨
 ⟩ {
   0⊸⊑ {𝕏𝕨}⟜𝔽 1⊸⊑
 }
-IsConstant ← (3≤Type)◶⟨1 ⋄ 4‿˙ ≡ 0‿¯1⊏Decompose⟩
+IsConstant ← (3≤Type)◶⟨1 ⋄ 4‿˙ ≡ 0‿¯1⊏{Decompose𝕩}⟩
 Mod2Inverse ← INF˙ _lookup_ ⟨
   _inv_, {𝕏_inv_𝕎}
   ∘, AtopInverse
@@ -804,7 +806,7 @@ FuncInverse ← (⊑ ⊣◶⟨
   TrainInverse                           # 3-train
   Mod1Inverse                            # 4 1-modifier
   Mod2Inverse                            # 5 2-modifier
-⟩ 1⊸↓) Decompose
+⟩ 1⊸↓) {Decompose𝕩}
 Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
 ⁼ ↩ {𝕗 (≢∧INF˙⊸≢)◶0‿(5‿_inv_≢0‿¯2⊏Decompose∘⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
 
