@@ -11,7 +11,7 @@ chrs←⟨
 glyphs ⇐ ∾chrs
 
 # Provided values, to be passed in through the constants array
-def ← ⟨"Type","Decompose","Glyph","Fill","Log","GroupLen","GroupOrd","_fillBy_"⟩
+def ← ⟨"Type","Fill","Log","GroupLen","GroupOrd","_fillBy_"⟩
 keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘"
 len ⇐ def+○≠keep
 
@@ -27,4 +27,4 @@ GetRepls ← {
 ⟨E_proc⟩ ← chrs‿GetRepls •Import "pp.bqn"
 
 rslt ← "⟨"∾"⟩"«∾","⊸∾¨glyphs  # Output all primitives
-ref ⇐ ∾∾⟜(@+10)¨ E_proc¨ (•FLines "r.bqn")∾<rslt
+ref ⇐ ∾∾⟜(@+10)¨ E_proc¨ (•FLines "r.bqn")∾<rslt∾"‿SetPrims"
