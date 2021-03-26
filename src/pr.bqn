@@ -26,5 +26,7 @@ GetRepls ← {
 
 ⟨E_proc⟩ ← chrs‿GetRepls •Import "pp.bqn"
 
+gd ← "glyphs←"""∾glyphs∾"%"""
 rslt ← "⟨"∾"⟩"«∾","⊸∾¨glyphs  # Output all primitives
-ref ⇐ ∾∾⟜(@+10)¨ E_proc¨ (•FLines "r.bqn")∾<rslt∾"‿SetPrims"
+src ← ∾⟨⟨gd⟩,•FLines"r.bqn",⟨"{PrimInd↩⊑𝕩⊐<⋄𝕩‿SetPrims}"∾rslt⟩⟩
+ref ⇐ ∾∾⟜(@+10)¨ E_proc¨ src
