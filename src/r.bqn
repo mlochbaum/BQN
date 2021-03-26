@@ -1,8 +1,9 @@
 # BQN runtime. Requires:
-# Type Fill Log GroupLen GroupOrd _fillBy_
-# !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+#   Type Fill Log GroupLen GroupOrd _fillBy_
+#   !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+# Filled in by runtime: glyphs and default PrimInd
 Decompose ← {0‿𝕩}
-PrimInd ← {𝕩⋄!0}
+PrimInd ← {𝕩}
 SetPrims ← {Decompose‿PrimInd ↩ 𝕩}
 
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
@@ -43,8 +44,7 @@ _fold←{
 ´ ← _fold
 
 _glyphLookup_ ← {
-  g←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!˙˜˘¨⌜⁼´˝`∘○⊸⟜⌾⊘◶⎉⚇⍟%"
-  {PrimInd𝕩} ⊑ ((𝕘⊑˜·+´·×`𝕗(1-=)⌜<)⌜g)˙
+  {PrimInd𝕩} ⊑ ((𝕘⊑˜·+´·×`𝕗(1-=)⌜<)⌜glyphs)˙
 }
 
 Cell←{(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}⟜≢
