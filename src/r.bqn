@@ -2,8 +2,8 @@
 # Type Fill Log GroupLen GroupOrd _fillBy_
 # !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
 Decompose ← {0‿𝕩}
-Glyph ← {𝕩⋄!0}
-SetPrims ← {Decompose‿Glyph ↩ 𝕩}
+PrimInd ← {𝕩⋄!0}
+SetPrims ← {Decompose‿PrimInd ↩ 𝕩}
 
 ◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
 ⊢ ← {𝕩}
@@ -41,6 +41,11 @@ _fold←{
   r
 }
 ´ ← _fold
+
+_glyphLookup_ ← {
+  g←"+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!˙˜˘¨⌜⁼´˝`∘○⊸⟜⌾⊘◶⎉⚇⍟%"
+  {PrimInd𝕩} ⊑ ((𝕘⊑˜·+´·×`𝕗(1-=)⌜<)⌜g)˙
+}
 
 Cell←{(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}⟜≢
 
@@ -704,12 +709,9 @@ JoinPrim ← ∾
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 ⍷ ← ∊⊸/            ⊘ Find
 
-_glyphLookup_ ← {
-  (0+´·∧`𝕗≠{Glyph𝕩})⊑(∾´𝕘)˙
-}
 _lookup_ ← {
   s ← 2×↕(≠𝕘)÷2
-  (s⊏𝕘) _glyphLookup_ ((1+s)⊏𝕘)‿𝕗
+  (s⊏𝕘) _glyphLookup_ (((1+s)⊏𝕘)∾<𝕗)
 }
 Identity ← {𝕏0} ("´: Identity not found"!0˙) _lookup_ ⟨
   '+',0 , '-',0
@@ -812,7 +814,7 @@ FuncInverse ← (⊑ ⊣◶⟨
 Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
 ⁼ ↩ {𝕗 (≢∧INF˙⊸≢)◶0‿(5‿_inv_≢0‿¯2⊏Decompose∘⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
 
-structPrimClass ← {(∾𝕩)_glyphLookup_((/≍○<≠)≠¨𝕩)} ⥊¨ ⟨
+structPrimClass ← {(∾𝕩)_glyphLookup_((/∾≠)≠¨𝕩)} ⥊¨ ⟨
   '⊢'‿'⊣'‿'˜'‿'∘'‿'○'‿'⊸'‿'⟜'‿'⊘'‿'◶'
   '='‿'≠'‿'≢'
   '<'

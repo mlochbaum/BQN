@@ -15,5 +15,5 @@ provide ← ⟨
 rt‿SetPrims ← •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
 PrimInd ← rt⊸⊐⌾<
 Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
-SetPrims ⟨ Decompose, glyphs⊑˜PrimInd ⟩
+SetPrims ⟨ Decompose, PrimInd ⟩
 rt⊸DRun
