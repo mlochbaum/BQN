@@ -5,7 +5,7 @@
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">spec</a></div>
 <h1 id="specification-bqn-system-provided-values">Specification: BQN system-provided values</h1>
-<p>This portion of the spec is definitely still a draft.</p>
+<p>This portion of the spec is still potentially subject to major changes.</p>
 <p>The <code><span class='Value'>•</span></code> symbol is used to access values other than primitives provided by BQN.</p>
 <p>All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior.</p>
 <h2 id="scripts">Scripts</h2>
@@ -35,11 +35,11 @@
 </tr>
 </tbody>
 </table>
-<p><code><span class='Function'>•Import</span></code> loads another BQN script. The script is evaluated in its own scope, and its result is either the result of the last line, or a module if it exports with <code><span class='Gets'>⇐</span></code> at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.</p>
+<p><code><span class='Function'>•Import</span></code> loads another BQN script. The script is evaluated in its own isolated scope, and its result is either the result of the last line, or a module if it exports with <code><span class='Gets'>⇐</span></code> at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.</p>
 <p>The right argument is a filename, which may be relative or absolute. Relative paths are taken relative to the source file where this instance of <code><span class='Function'>•Import</span></code> was written. The left argument, if given, is the list of arguments that should be passed through to the file as <code><span class='Value'>•args</span></code>. If no left argument is given then <code><span class='Bracket'>⟨⟩</span></code> is used for <code><span class='Value'>•args</span></code>. However, the behavior is different in this case. The same file will only be loaded once in a given BQN program by <code><span class='Function'>•Import</span></code> calls with no left argument: the first such call saves the returned value, even if it is mutable, and subsequent calls return this saved value. To avoid this and reload the file, pass a left argument of <code><span class='Bracket'>⟨⟩</span></code>.</p>
 <p><code><span class='Value'>•args</span></code> is the arguments passed as the file was invoked, either from the command line or <code><span class='Function'>•Import</span></code>. For command line calls it is a list of strings.</p>
 <p><code><span class='Value'>•path</span></code> simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.</p>
-<p><code><span class='Value'>•name</span></code> gives the name, including the extension, of the file in which it appears.</p>
+<p><code><span class='Value'>•name</span></code> gives the name, including the extension, of the file in which it appears. It doesn't include the path.</p>
 <h2 id="file-access">File access</h2>
 <table>
 <thead>
@@ -89,7 +89,7 @@
 </tr>
 <tr>
 <td><code><span class='Function'>•ScopedEval</span></code></td>
-<td>Evaluate the argument string in a scope</td>
+<td>Evaluate the argument string in a child scope</td>
 </tr>
 <tr>
 <td><code><span class='Function'>•Using</span></code></td>
@@ -98,7 +98,7 @@
 </tbody>
 </table>
 <p>The effect of <code><span class='Function'>•Eval</span></code> should be the same as if its argument were written as source code in the scope where <code><span class='Function'>•Eval</span></code> appears. It can define variables, and modify those in the current scope or a parent.</p>
-<p><code><span class='Function'>•ScopedEval</span></code> creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to <code><span class='Brace'>{</span><span class='Function'>•Eval</span><span class='Brace'>}</span></code>.</p>
+<p><code><span class='Function'>•ScopedEval</span></code> creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to <code><span class='Brace'>{</span><span class='Function'>•Eval</span><span class='Brace'>}</span></code>. Parent scopes are visible from the created scope; to make a scope without this property use <code><span class='Function'>•BQN</span><span class='String'>&quot;•Eval&quot;</span></code> or <code><span class='Function'>•BQN</span><span class='String'>&quot;•ScopedEval&quot;</span></code>.</p>
 <h2 id="input-and-output">Input and output</h2>
 <table>
 <thead>
@@ -179,10 +179,14 @@
 <td>5</td>
 <td>2-modifier</td>
 </tr>
+<tr>
+<td>6</td>
+<td>Namespace</td>
+</tr>
 </tbody>
 </table>
 <p><code><span class='Function'>•Glyph</span></code> gives the glyph corresponding to a primitive as a single character, for example returning <code><span class='String'>'+'</span></code> given an argument matching <code><span class='Function'>+</span></code>. It causes an error if the argument is not a primitive.</p>
-<p><code><span class='Function'>•Source</span></code> gives a string containing a block's source, including the enclosing braces <code><span class='Brace'>{}</span></code>. It causes an error if the argument is not a primitive.</p>
+<p><code><span class='Function'>•Source</span></code> gives a string containing a block's source, including the enclosing braces <code><span class='Brace'>{}</span></code>. It causes an error if the argument is not a block. In contrast to <code><span class='Function'>•Glyph</span></code>, this function does not give full information about <code><span class='Value'>𝕩</span></code> because the result cannot convey environment or mutable identity.</p>
 <p><code><span class='Function'>•Decompose</span></code> breaks down one level of a compound function or modifier, returning a list with a code giving what kind of structure it has (as listed in the table below) followed by each of its components. Non-operations do not cause an error, but return code -1, then the argument as a single component. The result is thus a list of length 2 to 4, and <code><span class='Function'>•Decompose</span></code> cannot cause an error.</p>
 <table>
 <thead>
@@ -273,5 +277,5 @@
 </table>
 <p>All times are measured in seconds.</p>
 <p>The <a href="https://en.wikipedia.org/wiki/Unix_time">Unix epoch</a> is 1970-01-01 00:00:00 UTC. <code><span class='Function'>•UnixTime</span></code> is intended for absolute time measurement and should be implemented with the method that gives the most accurate result at any given time. <code><span class='Function'>•MonoTime</span></code> is intended for relative measurement and should use the method that gives the most precise time differences over the course of the program. Its return value must never decrease between calls.</p>
-<p><code><span class='Modifier'>•_timed</span></code> returns the total time taken divided by the number of function calls, including the overhead required for the outer loop that counts iterations (which will typically be negligible in comparison to the BQN code).</p>
+<p><code><span class='Modifier'>•_timed</span></code> returns the total time taken divided by the number of function calls (<code><span class='Value'>𝕨</span></code> if provided and 1 otherwise), including the overhead required for the outer loop that counts iterations (which will typically be negligible in comparison to the BQN code).</p>
 <p>More accurately the modifier <code><span class='Modifier2'>•_maxTime_</span></code> <em>may</em> fail if execution of <code><span class='Function'>𝔽</span></code> takes over <code><span class='Value'>𝕨</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span></code> seconds, and should fail as quickly as it is practically able to. The most likely way to implement this modifier is to interrupt execution at the given time. If <code><span class='Function'>𝔽</span></code> completes before the interrupt there is no need to measure the amount of time it actually took.</p>
