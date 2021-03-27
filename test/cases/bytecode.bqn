@@ -16,7 +16,7 @@
 6  % {𝕩}6                  # 15 DFND
 3  % A←{𝕨}⋄3 A 4           #    dyadic block function
 7  % a‿b←7‿2⋄a             #  3 ARRO,  4 ARRM
-4  % 4{𝔽}6                 #  7 OP1D
+4  % 4{𝔽}                  #  7 OP1D
 6  % 4{𝔽⋄𝕩}6               #    deferred modifier
 1  % 3{𝔾}{𝕩} 1             #  8 OP2D
 2  % (2{𝔽}{𝕩})3            #  9 TR2D
