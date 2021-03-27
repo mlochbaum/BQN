@@ -8,23 +8,26 @@ BQN's self-hosted compiler and runtime mean that only a small amount of native c
 
 The BQN implementation here and dzaima/BQN share a stack-based object code format used to represent compiled code. This format is a list of numbers of unspecified precision (small precision will limit the length of list literals and number of locals per block, blocks, and constants). Previously it was encoded as bytes with the [LEB128](https://en.wikipedia.org/wiki/LEB128) format; while it no longer has anything to do with bytes it's called a "bytecode" because this is shorter than "object code".
 
-dzaima/BQN can interpret bytecode or convert it to [JVM](https://en.wikipedia.org/wiki/Java_virtual_machine) bytecode, while the Javascript VM previously interpreted bytecode but now always compiles it. Since interpretation is a simpler strategy, it may be helpful to use the [old Javascript bytecode interpreter](https://github.com/mlochbaum/BQN/blob/f74d9223ef880f2914030c2375f680dcc7e8c92b/bqn.js#L36) as a reference when implementing a BQN virtual machine.
+The self-hosted compiler uses a simpler, and less capable, format for block and variable data than dzaima/BQN. Only this format is described here; [dc.bqn](../dc.bqn) adapts it to be compatible with dzaima/BQN.
+
+dzaima/BQN can interpret bytecode or convert it to [JVM](https://en.wikipedia.org/wiki/Java_virtual_machine) bytecode, while the Javascript VM previously interpreted bytecode but now always compiles it. Since interpretation is a simpler strategy, it may be helpful to use the [old Javascript bytecode interpreter](https://github.com/mlochbaum/BQN/blob/f74d9223ef880f2914030c2375f680dcc7e8c92b/bqn.js#L36) as a reference (for bytecode execution only) when implementing a BQN virtual machine.
 
 ### Components
 
 The complete bytecode for a program consists of the following:
 * A bytecode sequence `code`
 * A list `consts` of constants that can be loaded
-* *(dzaima/BQN only) A list of identifier names*
-* A list `blocks` of block information, described in the next section.
+* A list `blocks` of block information, described in the next section
+* Optionally, source locations for each instruction
+* Optionally, tokenization information
 
 ### Blocks
 
 Each block in `blocks` is a list of the following properties:
 * Block type: (0) function/immediate, (1) 1-modifier, (2) 2-modifier
 * Block immediateness: (1) immediate or (0) deferred
-* *(dzaima/BQN only) List of local identifier names*
 * Block starting index in `code`
+* Number of variables the block needs to allocate
 
 Compilation separates blocks so that they are not nested in bytecode. All compiled code is contained in some block. The self-hosted compiler compiles the entire program into an immediate block, and the program is run by evaluating this block. Blocks are terminated with the RETN instruction.
 
