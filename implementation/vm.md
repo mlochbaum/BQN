@@ -113,38 +113,40 @@ The **SETN**, **SETU**, and **SETM** instructions set a value for a reference. I
 
 Primitive functions and modifiers used in a program are stored in its `consts` array. The compiler needs to be passed a *runtime* with the value of every primitive so that these functions and modifiers are available.
 
-While it's perfectly possible to implement the runtime from scratch, the pseudo-BQN file [r.bqn](../src/r.bqn) implements the full runtime in terms of a *core runtime* consisting of a smaller number of much simpler functions. [pr.bqn](../src/pr.bqn) converts this file so that it can be compiled. It changes values in the core runtime to primitives and primitives to generated identifiers, so that the first 21 values in the output's `consts` array are exactly the core runtime, and no other primitives are required.
+While it's perfectly possible to implement the runtime from scratch, the pseudo-BQN file [r.bqn](../src/r.bqn) implements the full runtime in terms of a *core runtime* consisting of a smaller number of much simpler functions. [pr.bqn](../src/pr.bqn) converts this file so that it can be compiled. It changes values in the core runtime to primitives and primitives to generated identifiers, so that the first 22 values in the output's `consts` array are exactly the core runtime, and no other primitives are required. The result is a list of two elements: first the list of all primitive values, and then a function that can be called to pass in two additional core functions used for inferred properties.
 
 The contents of a core runtime are given below. The names given are those used in r.bqn; the environment only provides a list of values and therefore doesn't need to use the same names. For named functions a description is given. For primitives, the implementation should match the BQN specification for that primitive on the specified domain, or the entire domain if left empty. They won't be called outside that domain except if there are bugs in r.bqn.
 
 | Ind | Name       | Description / restrictions
 |----:|------------|---------------------------
 |   0 | `Type`     | `•Type`
-|   1 | `Decompose`| `•Decompose`
-|   2 | `Glyph`    | (Unused) `•Glyph` for primitive `𝕩`
-|   3 | `Fill`     | Get or set the fill value for array `𝕩`
-|   4 | `Log`      | `⋆⁼` (natural or base-`𝕨` logarithm) for atomic arguments
-|   5 | `GroupLen` | `≠¨⊔𝕩` for a valid list `𝕩`
-|   6 | `GroupOrd` | `∾⊔𝕩` provided `𝕨` is `GroupLen 𝕩`
-|   7 | `!`        |
-|   8 | `+`        | On two atoms
-|   9 | `-`        | On one or two atoms
-|  10 | `×`        | On two atoms
-|  11 | `÷`        | On one or two atoms
-|  12 | `⋆`        | On one or two atoms
-|  13 | `⌊`        | On one atom
-|  14 | `=`        | On one value or two atoms
-|  15 | `≤`        | On two atoms
-|  16 | `≢`        | For array `𝕩`
-|  17 | `⥊`        | For array `𝕩` with no `𝕨` or `𝕨=○(×´)≢𝕩`
-|  18 | `⊑`        | For atom `𝕨` and list `𝕩`
-|  19 | `↕`        | For natural number `𝕩`
-|  20 | `⌜`        | On arrays
-|  21 | `` ` ``    |
-|  22 | `_fillBy_` | `𝔽` with result fill computed using `𝔾`
-|  23 | `⊘`        |
+|   1 | `Fill`     | Get or set the fill value for array `𝕩`
+|   2 | `Log`      | `⋆⁼` (natural or base-`𝕨` logarithm) for atomic arguments
+|   3 | `GroupLen` | `≠¨⊔𝕩` for a valid list `𝕩`
+|   4 | `GroupOrd` | `∾⊔𝕩` provided `𝕨` is `GroupLen 𝕩`
+|   5 | `!`        |
+|   6 | `+`        | On two atoms
+|   7 | `-`        | On one or two atoms
+|   8 | `×`        | On two atoms
+|   9 | `÷`        | On one or two atoms
+|  10 | `⋆`        | On one or two atoms
+|  11 | `⌊`        | On one atom
+|  12 | `=`        | On one value or two atoms
+|  13 | `≤`        | On two atoms
+|  14 | `≢`        | For array `𝕩`
+|  15 | `⥊`        | For array `𝕩` with no `𝕨` or `𝕨=○(×´)≢𝕩`
+|  16 | `⊑`        | For atom `𝕨` and list `𝕩`
+|  17 | `↕`        | For natural number `𝕩`
+|  18 | `⌜`        | On arrays
+|  19 | `` ` ``    |
+|  20 | `_fillBy_` | `𝔽` with result fill computed using `𝔾`
+|  21 | `⊘`        |
+|   — | `Decompose`| `•Decompose`
+|   — | `PrimInd`  | Index for primitive `𝕩`
 
-Remember that `+` and `-` can also work on characters in some circumstances, under the rules of affine characters. Other arithmetic functions should only accept numbers. `=` must work on numbers, characters, and primitives, and should give `0` without causing an error if the arguments have different types or one is a primitive and the other isn't. `≤` must work on numbers and characters.
+To define the final two functions, call the second returned element as a function, with argument `Decompose‿PrimInd`. The function `PrimInd` gives the index of `𝕩` in the list of all primitives (defined as `glyphs` in pr.bqn), or the length of the runtime if `𝕩` is not a primitive. The two functions are only needed for computing inferred properties, and are defined by default so that every value is assumed to be a primitive, and `PrimInd` performs a linear search over the returned runtime. If the runtime is used directly, then this means that without setting `Decompose‿PrimInd`, function inferred properties will work slowly and for primitives only; if values from the runtime are wrapped then function inferred properties will not work at all.
+
+Remember that `+` and `-` can also work on characters in some circumstances, under the rules of affine characters. Other arithmetic functions should only accept numbers. `=` must work on any atoms including functions and modifiers. `≤` must work on numbers and characters.
 
 ### GroupLen and GroupOrd
 
