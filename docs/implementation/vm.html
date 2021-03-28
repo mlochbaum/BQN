@@ -411,12 +411,12 @@
 <tr>
 <td align="right">3</td>
 <td><code><span class='Function'>GroupLen</span></code></td>
-<td><code><span class='Function'>≠</span><span class='Modifier'>¨</span><span class='Function'>⊔</span><span class='Value'>𝕩</span></code> for a valid list <code><span class='Value'>𝕩</span></code></td>
+<td><code><span class='Function'>≠</span><span class='Modifier'>¨</span><span class='Function'>⊔</span><span class='Value'>𝕩</span></code> for a valid list <code><span class='Value'>𝕩</span></code>, with minimum length <code><span class='Value'>𝕨</span></code></td>
 </tr>
 <tr>
 <td align="right">4</td>
 <td><code><span class='Function'>GroupOrd</span></code></td>
-<td><code><span class='Function'>∾⊔</span><span class='Value'>𝕩</span></code> provided <code><span class='Value'>𝕨</span></code> is <code><span class='Function'>GroupLen</span> <span class='Value'>𝕩</span></code></td>
+<td><code><span class='Function'>∾⊔</span><span class='Value'>𝕩</span></code> provided <code><span class='Value'>𝕨</span></code> is <code><span class='Value'>l</span> <span class='Function'>GroupLen</span> <span class='Value'>𝕩</span></code> (any <code><span class='Value'>l</span></code>)</td>
 </tr>
 <tr>
 <td align="right">5</td>
@@ -523,7 +523,7 @@
   <span class='Value'>l</span> <span class='Gets'>←</span> <span class='Number'>¯1</span> <span class='Function'>⌈</span><span class='Modifier'>´</span> <span class='Value'>𝕩</span>
   <span class='Value'>r</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Value'>l</span><span class='Function'>+</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>⥊</span> <span class='Number'>0</span>
   <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Value'>𝕩</span><span class='Function'>⊑</span><span class='Value'>r</span><span class='Paren'>)</span> <span class='Function'>+</span><span class='Gets'>↩</span> <span class='Number'>1</span> <span class='Brace'>}</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>≤</span><span class='Paren'>)</span><span class='Modifier'>¨</span> <span class='Value'>𝕩</span>
-  <span class='Value'>r</span>
+  <span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>⌈≠</span><span class='Value'>r</span><span class='Paren'>)</span> <span class='Function'>↑</span> <span class='Value'>r</span>
 <span class='Brace'>}</span>
 
 <span class='Function'>GroupOrd</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
