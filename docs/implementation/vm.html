@@ -540,17 +540,20 @@
 <h3 id="structure">Structure</h3>
 <p>The following steps give a working BQN system, assuming a working VM and core runtime:</p>
 <ul>
-<li>Evaluate the bytecode <code><span class='Value'>$</span> <span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span> <span class='Value'>r</span></code>, passing the core runtime <code><span class='Value'>provide</span></code> in the constants array. The result is the full runtime.</li>
+<li>Evaluate the bytecode <code><span class='Value'>$</span> <span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span> <span class='Value'>r</span></code>, passing the core runtime <code><span class='Value'>provide</span></code> in the constants array. The result is a BQN list of a full runtime, and a function <code><span class='Function'>SetPrims</span></code>.</li>
+<li>Optionally, call <code><span class='Function'>SetPrims</span></code> on a two-element list containing <code><span class='Function'>Decompose</span></code> and <code><span class='Function'>PrimInd</span></code>.</li>
 <li>Evaluate the bytecode <code><span class='Value'>$</span> <span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span> <span class='Value'>c</span></code>, which uses primitives from the runtime in its constants array. This is the compiler.</li>
 <li>Evaluate the bytecode <code><span class='Value'>$</span> <span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span> <span class='Value'>fmt</span></code>. This returns a 1-modifier. Call it on an operand function that formats atoms to obtain the formatter.</li>
 </ul>
 <p>The compiler takes the runtime as <code><span class='Value'>𝕨</span></code> and source code as <code><span class='Value'>𝕩</span></code>. To evaluate BQN source code, convert it into a BQN string (rank-1 array of characters), pass this string and runtime to the compiler, and evaluate the result as bytecode. Results can be formatted with the formatter for use in a REPL, or used from the implementation language.</p>
 <h3 id="testing">Testing</h3>
 <p>I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next.</p>
+<p>Because the compiler works almost entirely with lists of numbers, a correct fill implementation is not needed to run the compiler. Instead, you can define <code><span class='Function'>Fill</span></code> as <code><span class='Number'>0</span><span class='Modifier2'>⊘</span><span class='Function'>⊢</span></code> and <code><span class='Modifier2'>_fillBy_</span></code> as <code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Brace'>}</span></code> to always use a fill element of 0.</p>
 <ul>
 <li>Test core runtime functions directly by calling them within the implementation language.</li>
 <li>Test the virtual machine with the output of <code><span class='Value'>src</span><span class='Function'>/</span><span class='Value'>cjs.bqn</span></code> on the primitive-less test expressions in <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/cases/bytecode.bqn">test/cases/bytecode.bqn</a>.</li>
 <li>Now test the self-hosted compiler by running it directly on small expressions.</li>
 <li>For a larger test, use <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/cases/prim.bqn">test/cases/prim.bqn</a>. The result should be an empty list <code><span class='Bracket'>⟨⟩</span></code> indicating no failed tests.</li>
-<li>If test/cases/prim.bqn passes you can almost certainly compile the compiler.</li>
+<li>Now, if you haven't already, add a call to <code><span class='Function'>SetPrims</span></code>. Test for inferred properties: identity, under, and undo.</li>
+<li>If all tests pass you can probably compile the compiler.</li>
 </ul>
