@@ -179,7 +179,8 @@ BQN sources are compiled with [cjs.bqn](../src/cjs.bqn), which runs under [dzaim
 ### Structure
 
 The following steps give a working BQN system, assuming a working VM and core runtime:
-* Evaluate the bytecode `$ src/cjs.bqn r`, passing the core runtime `provide` in the constants array. The result is the full runtime.
+* Evaluate the bytecode `$ src/cjs.bqn r`, passing the core runtime `provide` in the constants array. The result is a BQN list of a full runtime, and a function `SetPrims`.
+* Optionally, call `SetPrims` on a two-element list containing `Decompose` and `PrimInd`.
 * Evaluate the bytecode `$ src/cjs.bqn c`, which uses primitives from the runtime in its constants array. This is the compiler.
 * Evaluate the bytecode `$ src/cjs.bqn fmt`. This returns a 1-modifier. Call it on an operand function that formats atoms to obtain the formatter.
 
@@ -189,8 +190,11 @@ The compiler takes the runtime as `𝕨` and source code as `𝕩`. To evaluate 
 
 I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next.
 
+Because the compiler works almost entirely with lists of numbers, a correct fill implementation is not needed to run the compiler. Instead, you can define `Fill` as `0⊘⊢` and `_fillBy_` as `{𝔽}` to always use a fill element of 0.
+
 * Test core runtime functions directly by calling them within the implementation language.
 * Test the virtual machine with the output of `src/cjs.bqn` on the primitive-less test expressions in [test/cases/bytecode.bqn](../test/cases/bytecode.bqn).
 * Now test the self-hosted compiler by running it directly on small expressions.
 * For a larger test, use [test/cases/prim.bqn](../test/cases/prim.bqn). The result should be an empty list `⟨⟩` indicating no failed tests.
-* If test/cases/prim.bqn passes you can almost certainly compile the compiler.
+* Now, if you haven't already, add a call to `SetPrims`. Test for inferred properties: identity, under, and undo.
+* If all tests pass you can probably compile the compiler.
