@@ -125,8 +125,8 @@ The contents of a core runtime are given below. The names given are those used i
 |   0 | `Type`     | `•Type`
 |   1 | `Fill`     | Get or set the fill value for array `𝕩`
 |   2 | `Log`      | `⋆⁼` (natural or base-`𝕨` logarithm) for atomic arguments
-|   3 | `GroupLen` | `≠¨⊔𝕩` for a valid list `𝕩`
-|   4 | `GroupOrd` | `∾⊔𝕩` provided `𝕨` is `GroupLen 𝕩`
+|   3 | `GroupLen` | `≠¨⊔𝕩` for a valid list `𝕩`, with minimum length `𝕨`
+|   4 | `GroupOrd` | `∾⊔𝕩` provided `𝕨` is `l GroupLen 𝕩` (any `l`)
 |   5 | `!`        |
 |   6 | `+`        | On two atoms
 |   7 | `-`        | On one or two atoms
@@ -159,7 +159,7 @@ GroupLen and GroupOrd, short for Group length and Group order, are used to imple
       l ← ¯1 ⌈´ 𝕩
       r ← (l+1) ⥊ 0
       { (𝕩⊑r) +↩ 1 }⍟(0⊸≤)¨ 𝕩
-      r
+      (𝕨⌈≠r) ↑ r
     }
 
     GroupOrd ← {
