@@ -70,7 +70,7 @@ A useful tool for both beginners and experienced users is [**BQNcrate**](https:/
 
 ## Where can I find BQN users?
 
-There's a BQN channel on [Matrix](https://matrix.org/) (#bqn:matrix.org), which can be opened in the Element client with [this link](https://app.element.io/#/room/%23bqn:matrix.org), and one on Discord that you can join with [this invite](https://discord.gg/bKZJJkv2). The two channels are bridged so that comments in one appear in both. It should also be possible to link in an IRC channel, so contact me or get on one of the existing forums if you'd like to discuss making one. Past BQN discussion has mostly taken place on the [APL Orchard](https://apl.chat) forum, but with a good alternative available I [don't recommend](commentary/orchard.md) it for discussing BQN.
+There's a BQN channel on [Matrix](https://matrix.org/) (#bqn:matrix.org), which can be opened in the Element client with [this link](https://app.element.io/#/room/%23bqn:matrix.org), and one on Discord that you can join with [this invite](https://discord.gg/SDTW36EhWF). The two channels are bridged so that comments in one appear in both. It should also be possible to link in an IRC channel, so contact me or get on one of the existing forums if you'd like to discuss making one. Past BQN discussion has mostly taken place on the [APL Orchard](https://apl.chat) forum, but with a good alternative available I [don't recommend](commentary/orchard.md) it for discussing BQN.
 
 BQNBot will run your code from chat! Begin your message with `bqn)` and our friend (designation B-QN) will evaluate the rest and show the output. While putting your code in blocks `` `like this` `` is easier to read, the bot just operates on plain text and doesn't require it.
 
