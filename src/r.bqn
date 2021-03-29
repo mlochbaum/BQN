@@ -431,6 +431,7 @@ _onAxes_←{
 ¬ ← 1+-
 HomFil ← {((𝕎0) Fill 𝕏)⊘𝕏}⍟(+´⟨=,≠,≡,≢⟩=⊣)
 
+ReshapeT ← "∘⌊⌽↑"_glyphLookup_(↕5)
 Reshape←{
   "𝕨⥊𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   s←Deshape 𝕨
@@ -700,7 +701,6 @@ _repeat_←{
   (|⊑<⟜0⊑pos‿neg˙)⚇0 n
 }
 
-ReshapeT ← ⟨∘,⌊,⌽,↑⟩⊑∘⊐<
 JoinPrim ← ∾
 
 ⍟ ↩ _repeat_
