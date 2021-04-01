@@ -180,11 +180,13 @@ BQN sources are compiled with [cjs.bqn](../src/cjs.bqn), which runs under [dzaim
 
 The following steps give a working BQN system, assuming a working VM and core runtime:
 * Evaluate the bytecode `$ src/cjs.bqn r`, passing the core runtime `provide` in the constants array. The result is a BQN list of a full runtime, and a function `SetPrims`.
-* Optionally, call `SetPrims` on a two-element list containing `Decompose` and `PrimInd`.
+* Optionally, call `SetPrims` on a two-element list `⟨Decompose, PrimInd⟩`.
 * Evaluate the bytecode `$ src/cjs.bqn c`, which uses primitives from the runtime in its constants array. This is the compiler.
-* Evaluate the bytecode `$ src/cjs.bqn fmt`. This returns a 1-modifier. Call it on an operand function that formats atoms to obtain the formatter.
+* Evaluate the bytecode `$ src/cjs.bqn f`. This returns a 1-modifier. To obtain the formatter, call it on a four-element operand list `⟨Type, Decompose, Glyph, FmtNum⟩`.
 
 The compiler takes the runtime as `𝕨` and source code as `𝕩`. To evaluate BQN source code, convert it into a BQN string (rank-1 array of characters), pass this string and runtime to the compiler, and evaluate the result as bytecode. Results can be formatted with the formatter for use in a REPL, or used from the implementation language.
+
+Two formatter arguments `Glyph` and `FmtNum` are not part of the runtime. `Glyph` assumes `𝕩` is a primitive and returns the character (not string) that represents it, and `FmtNum` assumes `𝕩` is a number and returns a string representing it.
 
 ### Testing
 
