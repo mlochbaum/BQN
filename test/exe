@@ -17,4 +17,8 @@ lf ← @+10
 code‿r‿err ← {inp⇐∾∾⟜lf¨i∾⟨""⟩} •SH exe
 err ! 0≡code
 rv ← (•BQN¨e) = (•BQN "⟨"∾r∾"⟩")
-•Out (0<≠)◶⟨"All "∾(⍕≠c)∾" passed!"˙,(⍕≠)∾" failed!"˙⟩ /1≢¨rv
+np ← ⍕≠c
+•Out (0<≠)◶⟨
+  "All "∾np∾" passed!"˙
+  (⍕≠)∾" of "∾np∾" failed:"∾·(∾lf⊸∾¨)⊏⟜c
+⟩ /1≢¨rv
