@@ -7,10 +7,14 @@ files‿exe ← •args ⊔˜ 2 ∾˜ ⊑◶⟨1⌾⊑,«⊸(⊣-<)⟩ ∨`⌾�
 
 files ↩ ⟨"prim"⟩⍟(0=≠) files
 
-Include ← '%'⊸(∧´≠) ∧ (0<≠)◶0‿('#'≠⊑)
+Include ← ("! %"≢3⊸↑) ∧ (0<≠)◶0‿('#'≠⊑)
 Cases ← Include¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
 c ← ∾ Cases¨ files
-code‿r‿err ← {inp⇐∾∾⟜(@+10)¨c∾⟨""⟩} •SH exe
+Trim ← ((∨`∧∨`⌾⌽)' '⊸≠)⊸/
+i‿e ← <˘⍉> ('%'⊸= (∨´⊣)◶⟨"1"≍○<⊢, Trim¨(+`-2⊸×)⊸⊔⟩ ⊢)¨ c
+
+lf ← @+10
+code‿r‿err ← {inp⇐∾∾⟜lf¨i∾⟨""⟩} •SH exe
 err ! 0≡code
-rv ← •BQN "⟨"∾r∾"⟩"
+rv ← (•BQN¨e) = (•BQN "⟨"∾r∾"⟩")
 •Out (0<≠)◶⟨"All "∾(⍕≠c)∾" passed!"˙,(⍕≠)∾" failed!"˙⟩ /1≢¨rv
