@@ -1,0 +1,16 @@
+#! /usr/bin/env dbqn
+
+"usage: exe name [opts --] [tests]"!1≤≠•args
+
+# BQN is called with the first argument, or all up to the last --
+files‿exe ← •args ⊔˜ 2 ∾˜ ⊑◶⟨1⌾⊑,«⊸(⊣-<)⟩ ∨`⌾⌽ •args≡¨<"--"
+
+files ↩ ⟨"prim"⟩⍟(0=≠) files
+
+Include ← '%'⊸(∧´≠) ∧ (0<≠)◶0‿('#'≠⊑)
+Cases ← Include¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
+c ← ∾ Cases¨ files
+code‿r‿err ← {inp⇐∾∾⟜(@+10)¨c∾⟨""⟩} •SH exe
+err ! 0≡code
+rv ← •BQN "⟨"∾r∾"⟩"
+•Out (0<≠)◶⟨"All "∾(⍕≠c)∾" passed!"˙,(⍕≠)∾" failed!"˙⟩ /1≢¨rv
