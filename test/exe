@@ -11,7 +11,7 @@ Include ← ("! %"≢3⊸↑) ∧ (0<≠)◶0‿('#'≠⊑)
 Cases ← Include¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
 c ← ∾ Cases¨ files
 Trim ← ((∨`∧∨`⌾⌽)' '⊸≠)⊸/
-i‿e ← <˘⍉> ('%'⊸= (∨´⊣)◶⟨"1"≍○<⊢, Trim¨(+`-2⊸×)⊸⊔⟩ ⊢)¨ c
+e‿i ← <˘⍉> ('%'⊸= (∨´⊣)◶⟨"1"≍○<⊢, Trim¨(+`-2⊸×)⊸⊔⟩ ⊢)¨ c
 
 lf ← @+10
 code‿r‿err ← {inp⇐∾∾⟜lf¨i∾⟨""⟩} •SH exe
