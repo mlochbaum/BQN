@@ -622,7 +622,7 @@ GetMultiHighlights ← {
 ################################
 # Format an array to a character matrix
 # Won't work on functions until we can catch errors
-fmtm ← ⟨"src/f.bqn"⟩ •Import "dzref"
+fmtm ← •Import "src/f.bqn"
 Fmt ← ⟨•Type,•Decompose,•Glyph,⍕⟩ _fmtm
 
 
