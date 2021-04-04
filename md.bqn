@@ -161,7 +161,7 @@ blobURL ← repoURL∾"/blob/master/"
 
 # Environments
 _getCodeExec ← {𝕗⋄•Eval}
-_getSvgExec ← {𝕗⋄JoinLines⍟(1<≡)∘(⟨"svg.bqn","•Eval"⟩ •Import "dzref")}
+_getSvgExec ← {𝕗⋄e←{•Eval} ⋄ E•FChars"svg.bqn" ⋄ JoinLines⍟(1<≡)∘E}
 
 
 ################################
