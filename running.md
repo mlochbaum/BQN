@@ -24,7 +24,7 @@ You can run `dzref` from ordinary dzaima/BQN using the `•Import` command; see 
 
     #! /bin/bash
     
-    java -jar /path/to/dzaima/BQN/BQN.jar -f "$@"
+    java -jar /path/to/dzaima/BQN/BQN.jar "$@"
 
 The left argument for `•Import` or the shell arguments can contain up to two arguments for the script. The first is a file to run, and the second is BQN code to be run after it.
 
