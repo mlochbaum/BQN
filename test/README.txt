@@ -23,4 +23,4 @@ your path.
 
 #! /bin/bash
 
-java -jar /path/to/dzaima/BQN/BQN.jar -f "$@"
+java -jar /path/to/dzaima/BQN/BQN.jar "$@"
