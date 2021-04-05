@@ -48,7 +48,7 @@ Tokenize←{
   u←f∧𝕩='@'⋄ci←/u∨»a∧sm
   chr←(⊏⟜𝕩-('@'-@)×⊏⟜u)ci                   # Characters (indices ci)
   f>↩qe←dm∧«a∧↩dm                           # Quote Escape ""
-  str←1↓¨𝕩⊔˜1-˜(+`si←a>»qe)×≠`dm∧ab         # Strings (indices /si)
+  str←𝕩⊔˜1-˜(si←a>»qe)(⊣+`⊸×○(∾⟜1)<)≠`dm∧ab # Strings (indices /si)
 
   # Extract words: identifiers and numbers
   ie←/f⋄is←ie≠⊸↑/1»f⋄Fs←{is/˜↩𝕨⋄𝕨/𝕩}        # Token start and end
