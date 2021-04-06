@@ -1,9 +1,9 @@
-#! ./dzref
+#! /usr/bin/env dbqn
 
 # WebAssembly backend (very incomplete)
 
 i←"⟨cgl,charSet,Tokenize⟩"
-⟨cgl,charSet,Tokenize⟩ ← ⟨•path∾"src/c.bqn",i⟩ •Import "dzref"
+⟨cgl,charSet,Tokenize⟩ ← •BQN i∾˜•FChars"src/c.bqn"
 chF←(⊑cgl)↑charSet
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
@@ -85,3 +85,5 @@ WCompile←{
   f←⟨rcp,or,body⟩
   Gen ⟨(≠¨f)/(1‿2‿0≍¨1)⥊¨¨f64 ⋄ 2 ⋄ ∾f⟩
 }
+
+•Eval ⊑•args
