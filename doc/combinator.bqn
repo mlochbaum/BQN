@@ -27,7 +27,7 @@ Connect ← {
 
 DrawComp ← {𝕊𝕩:(names⊏˜comps⊐𝕩)𝕊𝕩; names 𝕊 spel:
   sh  ← ≢spel
-  ops ← •Eval∘⥊¨ spel
+  ops ← •BQN∘⥊¨ spel
   m2  ← ¬spel∊"˙˜"
   isC ← spel='˙'
   _symb ← {𝕗<⊸∾≍○<}
