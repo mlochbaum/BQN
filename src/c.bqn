@@ -88,7 +88,7 @@ ReadNums←{
   "Negative sign in the middle of a number"_err_𝕨 n>»c
   "Portion of a number is empty"_err_𝕨 (1«s)∧n∨s
   "Ill-formed decimal or exponent use"_err_(s/𝕎) ¬(0⊸=∨»⊸<)s/𝕩
-  "π and ∞ must occur alone"_err_𝕨 (p∨i)>1(»∧(p∧«e)∨«)z∨n
+  "π and ∞ must occur alone"_err_𝕨 (p∨i)>1(»∧(p∧«e)∨«)z∨n>»e
   f←(17≥¬(⊢-T)+`)⊸∧(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m   # No leading 0s; max 17 digits
   l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/f×𝕩-1-˜⊑bD          # Digit lookup, with ∞ as 1 to avoid ∞×0
   v←(>⟜«0≤l)/0(0⊸≤××⟜10⊸+)`l                # Numeric values—mantissas and exponents
