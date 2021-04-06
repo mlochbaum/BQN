@@ -14,19 +14,19 @@ Because self-hosted BQN requires only a simple virtual machine to run, it is [fa
 
 ### dzaima/BQN
 
-[dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL. It should be easy to run on desktop Linux and Android. It is still in development and has almost complete syntax support but incomplete primitive support.
+[dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL. It should be easy to run on desktop Linux and Android. It is still in development and has almost complete syntax support but incomplete primitive support: major missing functionality is dyadic Depth (`⚇`), Windows (`↕`), and many cases of set functions (`⊐⊒∊⍷`, mostly with rank >1).
 
-### dzaima+reference BQN
-
-This repository contains a dzaima/BQN script `dzref` that fills in the gaps in primitive support using BQN implementations of primitives that are not yet up to spec ([reference implementations](spec/reference.bqn) of all primitives starting from a small set of pre-existing functions are part of BQN's specification).
-
-You can run `dzref` from ordinary dzaima/BQN using the `•Import` command; see for example [wcshim.bqn](wcshim.bqn). For testing, it is run as a Unix script, in which case it depends on an executable `dbqn` that runs dzaima/BQN on a file argument. I use the following script, using the path to a clone of dzaima/BQN for the jar file.
+In this repository and elsewhere, dzaima/BQN scripts are called with `#! /usr/bin/env dbqn`. This requires an executable file `dbqn` somewhere in your path with the following contents:
 
     #! /bin/bash
-    
+
     java -jar /path/to/dzaima/BQN/BQN.jar "$@"
 
-The left argument for `•Import` or the shell arguments can contain up to two arguments for the script. The first is a file to run, and the second is BQN code to be run after it.
+If compiled with Native Image, `nBQN` can be used directly instead.
+
+#### dzaima+reference BQN
+
+This repository contains a dzaima/BQN script `dzref` that fills in gaps in primitive support with BQN implementations. dzaima/BQN has good enough primitive support that I now almost never use this, but it's still needed for the website generator md.bqn. The command-line arguments are a script to run and followed by the `•args` to supply to it.
 
 ### BQN2NGN
 
