@@ -6,16 +6,16 @@ const execFile = require('child_process').execFile
                  .exports.fn()
 
 const t=load('cases/simple.bqn').split('\n').filter(x=>x).map(x=>x.split(' % '))
-    , test=t.map(e=>'"'+e[1]+'"').join('\n')
+    , test=t.map(e=> e[1])
     , expt=t.map(e=>+e[0])
 
 var compiler = execFile(
   __dirname+'/../wc.bqn',
-  [ '{•←WCompile𝕩}¨⟨'+test+'⟩' ],
+  test,
   function (error, stdout, stderr) {
     const rslt=stdout.split('\n').filter(a=>a.length)
-              .map(a=>runWasm(a.split("‿").map(n=>+n)))
-        , pass=rslt.map((r,i)=>r===expt[i])
+              .map(a=>runWasm(a.split(" ").map(n=>+n)))
+        , pass=expt.map((e,i)=>e===rslt[i])
         , fail=pass.map((p,i)=>p?-1:i).filter(i=>i>=0)
     console.log(
         fail.length
