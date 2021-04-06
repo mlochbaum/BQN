@@ -91,10 +91,10 @@ _withRef ← ˙
   pre ← E_proc¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
   ExecFile←{
     src ← E_nodef¨ •FLines 𝕩
-    ⟨⟨⟩,"",(∨`⌾⌽'/'=𝕩)/𝕩⟩ Raw ∾ ∾⟜lf¨ src
+    ((•path⊸∾⌾⊑(2∾˜∧`⌾⌽'/'≠𝕩)⊔𝕩)∾⟨𝕨⟩) Raw ∾ ∾⟜lf¨ src
   }
   _withRef ↩ {𝔽∘E_nodef⊘(𝔽⟜E_nodef)}
   X↩Raw _withRef
   Raw ∾ ∾⟜lf¨ pre
-  ≠◶(X˙)‿{ExecFile ⊑𝕩}‿{ExecFile ⊑𝕩 ⋄ X 1⊑𝕩} •args
+  (1⊸↓ ExecFile ⊑) •args
 }

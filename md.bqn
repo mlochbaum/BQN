@@ -659,3 +659,5 @@ ConvertFile ← {
   front ← head ∾○(∾⟜lf) nav
   ("docs/"∾fileout) •FChars front ∾ out
 }
+
+ConvertFile¨ •args
