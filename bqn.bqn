@@ -16,4 +16,11 @@ rt‿SetPrims ← •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
 PrimInd ← rt⊸⊐⌾<
 Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
 SetPrims ⟨ Decompose, PrimInd ⟩
-rt⊸DRun
+
+sys ← {𝕩⊏˜𝕨⊸⊐}˝⍉>⟨
+  "bqn"‿{BQN𝕩}
+  "type"‿•Type
+  "glyph"‿(glyphs⊑˜PrimInd)
+  "decompose"‿Decompose
+⟩
+BQN ← ⟨rt,Sys⌾(1⊸⊑)⟩⊸DRun
