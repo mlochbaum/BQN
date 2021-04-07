@@ -13,7 +13,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   '0'+↕10               # Digit
   "π∞¯."                # Numeric
   "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
-  (¯1↓"𝕨")∾" "∾@+9      # Whitespace (or special name prefix in UTF-16)
+  "•"∾(¯1↓"𝕨")∾" "∾@+9  # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
 bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
@@ -57,22 +57,25 @@ Tokenize←{
   w←»⊸<l←t M bD(⊣≍-˜)○⊑bW⋄us←t=¯1++´bA      # Word chars l, start w
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
-  i←l>n←l∧(+`w)⊏0∾wk<0                      # Identifier/Number masks
+  wi←0<wt←(2×wk≥0)(×⟜¬+⊢)w/»t=⊑bW           # Type: 0 number, 1 system, 2 identifier
+  i←l>n←l∧(+`w)⊏0∾¬wi                       # Number mask
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
-  ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))0⊸≤⊸/wk           # Identifier role
-  id←(ig←1-˜(i>us)×+`w>n)⊔t                 # Identifiers
-  {⟨ig⊐/𝕩,"Numbers can't start with underscores"⟩!0}⍟(∨´)(⊑bA)>⊑¨id
+  ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
+  id←(2∾˜1=wi/wt)⊔(ig←1-˜(i>us)×+`w>n)⊔t    # ⟨Identifiers, system values⟩
+  {⟨ig⊐/𝕩,"Numbers can't start with underscores"⟩!0}⍟(∨´)(⊑bA)>⊑¨∾id
 
   # Deduplicate literals and identifiers; other cleanup
-  ki←((⍋⊏⟜n)⊸⊏/w)∾(ci∾/si)⊏+`»f             # Indices in t
-  k←id‿num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
+  ki←(wt⍒⊸⊏/w)∾(ci∾/si)⊏+`»f                # Indices in t
+  k←id∾num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
+  Sl←(𝕎≍○<)⟜(⊏⟜charSet¨)
+  1⊸⊑{js‿ks←j Sl○𝔽k⋄j↩js⌾𝔽j⋄k↩ks⌾𝔽k}        # System value lookup
   wf←¬l∨t M bW⋄ie/˜↩wf∨>⟜«l                 # Index management for...
-  t↩(w∨wf)Fs(∾j++`vi»≠¨k)⌾(ki⊸⊏)t           # Add IDs; remove words/whitespace
+  t↩(w∨wf)Fs(∾j++`vi»kk←≠¨k)⌾(ki⊸⊏)t        # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
   t{ie/˜↩𝕨⋄𝕨Fs𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep            # Remove the rest
-  r←ir⌾((t M vi≍≠⊑k)⊸/)(vi⌊t)⊏charRole∾0    # Role
+  r←ir⌾((t M vi≍+´2↑kk)⊸/)(vi⌊t)⊏charRole∾0 # Role
   t+↩5×t M⟨⊑bI,5⟩                           # Case-insensitive special names
   ⟨t,r,k,is,ie⟩
 }
@@ -231,7 +234,8 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 }
 
 Compile←{
-  ⟨tok,role,val,t0,t1⟩←tx←Tokenize 𝕩
+  prims‿Sys←{⟨𝕩,("System values not supported"!0˙)¨¨⟩}⍟(2≠≠)𝕨
+  ⟨tok,role,val,t0,t1⟩←tx←sys Tokenize 𝕩
   ⟨bc,prim,blk,oi⟩←⟨role,⊑val,t0,t1⟩ Parse tok
-  ⟨bc, ∾⟨prim⊏𝕨⟩∾1↓val, <˘⍉>blk, oi, tx⟩
+  ⟨bc, ∾⟨prim⊏prims⟩∾1↓val, <˘⍉>blk, oi, tx⟩
 }
