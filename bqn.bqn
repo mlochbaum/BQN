@@ -23,4 +23,4 @@ sys ← {𝕩⊏˜𝕨⊸⊐}˝⍉>⟨
   "glyph"‿(glyphs⊑˜PrimInd)
   "decompose"‿Decompose
 ⟩
-BQN ← ⟨rt,Sys⌾(1⊸⊑)⟩⊸DRun
+BQN ← ⟨rt,Sys⟩⊸DRun
