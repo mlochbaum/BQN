@@ -297,7 +297,33 @@ let fmtErr = (s,e) => {
   return [w].concat(loc).join('\n');
 }
 
-let sysvals = {bqn, type, glyph, decompose, fmt:fmt1, listsys:0};
+let unixtime = (x,w) => Date.now()/1000;
+let sysvals = {
+  bqn, type, glyph, decompose, fmt:fmt1, listsys:0,
+  unixtime
+};
+
+let make_timed = tfn => {
+  let timed = f => (x,w) => {
+    let n=has(w)?w:1;
+    if (!isnum(n) || n!==Math.floor(n) || n<1) throw Error("•_timed: 𝕨 must be an integer above 1");
+    return tfn(() => { for (let i=0;i<n;i++) f(x); })/n;
+  }
+  timed.m=1;
+  return timed;
+}
+if (typeof process!=='undefined') {
+  let sec = t => t[0]+t[1]/1e9;
+  sysvals.monotime = (x,w) => sec(process.hrtime());
+  sysvals.timed = make_timed(f => {
+    let t0=process.hrtime(); f(); return sec(process.hrtime(t0));
+  });
+} else if (typeof performance!=='undefined') {
+  sysvals.monotime = (x,w) => performance.now()/1000;
+  sysvals.timed = make_timed(f => {
+    let t0=performance.now(); f(); return (performance.now()-t0)/1000;
+  });
+}
 sysvals.listsys = list(Object.keys(sysvals).map(str));
 
 if (typeof module!=='undefined') {
