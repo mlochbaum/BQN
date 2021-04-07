@@ -262,7 +262,9 @@ let compile = run(
  ,[[0,1,0,32],[1,0,464,5],[1,1,483,5],[0,0,607,49],[0,0,2304,22],[0,0,3111,119],[0,0,8011,15],[0,0,8162,3],[0,0,8170,3],[0,0,8210,3],[0,0,8229,3],[0,0,8252,3],[1,1,8274,4],[0,0,8336,3],[2,1,8360,3],[0,0,8396,6],[2,1,8533,3],[0,0,8602,3],[0,0,8652,3],[0,0,8674,3],[0,0,8704,3],[0,0,8762,3],[0,0,8824,4],[0,0,8876,3],[0,0,8898,3],[2,1,8923,3]]
 );
 runtime[42] = rtAssert;
-let bqn = src => run.apply(null,compile(str(src),runtime));
+let system = (x,w) => list([x[0],table(s=>sysvals[s.join("")])(x[1])]);
+let rt_sys = list([runtime, system]);
+let bqn = src => run.apply(null,compile(str(src),rt_sys));
 
 // Formatter
 let fmtnum = x => str(x==Infinity ? "∞" : x==-Infinity ? "¯∞"
@@ -294,6 +296,9 @@ let fmtErr = (s,e) => {
   else w=w.sh?w.join(''):w;
   return [w].concat(loc).join('\n');
 }
+
+let sysvals = {bqn, type, glyph, decompose, fmt:fmt1, listsys:0};
+sysvals.listsys = list(Object.keys(sysvals).map(str));
 
 if (typeof module!=='undefined') {
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;

@@ -26,7 +26,7 @@ let repl = ()=>{
   setcount(s);
   setTimeout(() => {
     try {
-      let c=compile(src,runtime);
+      let c=compile(src,rt_sys);
       setExplain(src,c);
       doc.rslt.textContent=fmt(run.apply(null,c));
     } catch(e) {
