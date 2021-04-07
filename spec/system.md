@@ -80,20 +80,24 @@ Times are Unix timestamps, that is, seconds since the Unix epoch, as used by [ti
 
 ### File access
 
-File access functions read or write files, either by manipulating files as a whole or interacting with the contents. Whole-file functions cannot overwrite target files: that is, `Rename` and `Copy` must give an error if a file exists at `𝕨`, while `Chars`, `Lines`, and `Bytes` can overwrite the contents of an existing file `𝕨`. However, these three functions must give an error if `𝕨` exists and is a directory.
+File access functions read or write files, either by manipulating files as a whole or interacting with the contents. Whole-file functions cannot overwrite target files: that is, `Rename` and `Copy` must give an error if a file exists at `𝕨`, and `CreateDir` if a file exists at `𝕩`, while `Chars`, `Lines`, and `Bytes` can overwrite the contents of an existing file `𝕨`. However, these three functions must give an error if `𝕨` exists and is a directory.
 
 | Name        | Summary
 |-------------|--------------------------
 | `Open`      | Return an open file object based on `𝕩`
 | `Rename`    | Rename file `𝕩` with path `𝕨`
 | `Copy`      | Copy file `𝕩` to path `𝕨`
+| `CreateDir` | Create a directory at path `𝕩`
 | `Remove`    | Delete file `𝕩`
 | `RemoveDir` | Recursively delete directory `𝕩` and all contents
+| `List`      | Return names of all files in directory `𝕩`
 | `Chars`     | Read from or write to entire file, as characters
 | `Lines`     | Read from or write to entire file, as lines
 | `Bytes`     | Read from or write to entire file, as bytes
 
-`Rename` and `Copy` return the path of the new file. `Remove` and `RemoveDir` return `1` to indicate successful removal (and error otherwise).
+`Rename`, `Copy`, and `CreateDir` return the path of the new file. `Remove` and `RemoveDir` return `1` to indicate successful removal (and error otherwise).
+
+`List` returns filenames only, without extensions. It lists all files and directories including hidden ones, but not the current and parent directory names `.` and `..`.
 
 Functions `Chars`, `Lines`, and `Bytes` are all ambivalent. If only `𝕩` is given, then it is a filename, and the result is the contents of the file in the appropriate format. If there are two arguments, then `𝕨` is the filename and `𝕩` is the desired contents. These are written to the file, overwriting its contents, and the absolute filename `𝕨` is returned. The three formats are:
 
