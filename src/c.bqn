@@ -67,8 +67,7 @@ Tokenize←{
   # Deduplicate literals and identifiers; other cleanup
   ki←(wt⍒⊸⊏/w)∾(ci∾/si)⊏+`»f                # Indices in t
   k←id∾num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
-  Sl←(𝕎≍○<)⟜(⊏⟜charSet¨)
-  1⊸⊑{js‿ks←j Sl○𝔽k⋄j↩js⌾𝔽j⋄k↩ks⌾𝔽k}        # System value lookup
+  k↩(𝕎⊏⟜charSet¨)⌾(1⊸⊑)k                    # System value lookup
   wf←¬l∨t M bW⋄ie/˜↩wf∨>⟜«l                 # Index management for...
   t↩(w∨wf)Fs(∾j++`vi»kk←≠¨k)⌾(ki⊸⊏)t        # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
