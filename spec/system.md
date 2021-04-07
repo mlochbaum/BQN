@@ -6,7 +6,20 @@ This portion of the spec is still potentially subject to major changes.
 
 The `•` symbol is used to access values other than primitives provided by BQN.
 
-All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior.
+All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior. For namespaces this rule applies to individual fields as well: a namespace may be provided with only some of the fields, but a field with one of the given names must behave as specified.
+
+## Execution and scope manipulation
+
+| Name          | Summary
+|---------------|--------------------------
+| `•BQN`        | Evaluate the argument string in an isolated scope
+| `•Eval`       | Evaluate the argument string in the current scope
+| `•ScopedEval` | Evaluate the argument string in a child scope
+| `•Using`      | Import all values from the argument namespace
+
+The effect of `•Eval` should be the same as if its argument were written as source code in the scope where `•Eval` appears. It can define variables, and modify those in the current scope or a parent.
+
+`•ScopedEval` creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to `{•Eval}`. Parent scopes are visible from the created scope; to make a scope without this property use `•BQN"•Eval"` or `•BQN"•ScopedEval"`.
 
 ## Scripts
 
@@ -27,34 +40,76 @@ The right argument is a filename, which may be relative or absolute. Relative pa
 
 `•name` gives the name, including the extension, of the file in which it appears. It doesn't include the path.
 
-## File access
+## Files
 
-| Name       | Summary
-|------------|--------------------------
-| `•FChars`  | Read from or write to an entire file, as characters
-| `•FLines`  | Read from or write to an entire file, as lines
-| `•FBytes`  | Read from or write to an entire file, as bytes
+The system namespace value `•file` deals with file operations. For the purposes of `•file`, paths in the filesystem are always strings. As with `•Import`, file paths may be relative or absolute, and relative paths are relative to `•path`, except in `•file.At` which allows `𝕨` to specify an alternate base directory. The value `•path` used for a particular instance of `•file` is determined by the file that contains that instance.
 
-As with `•Import`, file paths may be relative or absolute, and relative paths are relative to `•path`.
+When a `•file` function returns a file path or portion of a path, the path is always absolute and canonical, with `.` and `..` components removed.
 
-Functions `•FChars`, `•FLines`, and `•FBytes` are all ambivalent. If only one argument is given, then it must be the name of a file, and the result is the contents of the file in the appropriate format. If there are two arguments, then the left argument is the filename and the right is the desired contents. These are written to the file, overwriting its contents, and the filename `𝕨` is returned. The three formats are:
+Possible fields of `•file` are given in the subsections below.
+
+### File paths
+
+The following functions manipulate paths and don't access files. Each takes a relative or absolute path `𝕩`, and `At` may also take a base directory `𝕨`.
+
+| Name        | Summary
+|-------------|--------------------------
+| `path`      | Path of this source file, that is, `•path`
+| `At`        | Absolute path of file, with optional base `𝕨`
+| `Name`      | File name including extension
+| `Parent`    | Path of the containing directory, with trailing backslash
+| `BaseName`  | File name, with dot and extension removed
+| `Extension` | File extension, including leading dot
+| `Parts`     | List of parent, base name, and extension
+
+### File metadata
+
+Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path `𝕩`, and `Permissions` also allows new data in `𝕨`. The returned data in any case is the specified property.
+
+| Name          | Summary
+|---------------|--------------------------
+| `Exists`      | `1` if the file exists and `0` otherwise
+| `Type`        | `"none"`, `"file"`, or `"dir"`
+| `Created`     | Time created
+| `Accessed`    | Time of last access
+| `Modified`    | Time of last modification
+| `Size`        | Total size in bytes
+| `Permissions` | Query or set file permissions
+
+Times are Unix timestamps, that is, seconds since the Unix epoch, as used by [time](#time) system values.
+
+### File access
+
+File access functions read or write files, either by manipulating files as a whole or interacting with the contents. Whole-file functions cannot overwrite target files: that is, `Rename` and `Copy` must give an error if a file exists at `𝕨`, while `Chars`, `Lines`, and `Bytes` can overwrite the contents of an existing file `𝕨`. However, these three functions must give an error if `𝕨` exists and is a directory.
+
+| Name        | Summary
+|-------------|--------------------------
+| `Open`      | Return an open file object based on `𝕩`
+| `Rename`    | Rename file `𝕩` with path `𝕨`
+| `Copy`      | Copy file `𝕩` to path `𝕨`
+| `Remove`    | Delete file `𝕩`
+| `RemoveDir` | Recursively delete directory `𝕩` and all contents
+| `Chars`     | Read from or write to entire file, as characters
+| `Lines`     | Read from or write to entire file, as lines
+| `Bytes`     | Read from or write to entire file, as bytes
+
+`Rename` and `Copy` return the path of the new file. `Remove` and `RemoveDir` return `1` to indicate successful removal (and error otherwise).
+
+Functions `Chars`, `Lines`, and `Bytes` are all ambivalent. If only `𝕩` is given, then it is a filename, and the result is the contents of the file in the appropriate format. If there are two arguments, then `𝕨` is the filename and `𝕩` is the desired contents. These are written to the file, overwriting its contents, and the absolute filename `𝕨` is returned. The three formats are:
 
 - Chars: BQN characters, or UTF-32. The file is assumed to be UTF-8 encoded.
 - Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.
 - Bytes: Single-byte values, stored as BQN characters from `@` to `@+255`.
 
-## Execution and scope manipulation
+The following short names can also be provided for file access. They can be provided, and use the definitions from above even if `•file` is not provided.
 
-| Name          | Summary
-|---------------|--------------------------
-| `•BQN`        | Evaluate the argument string in an isolated scope
-| `•Eval`       | Evaluate the argument string in the current scope
-| `•ScopedEval` | Evaluate the argument string in a child scope
-| `•Using`      | Import all values from the argument namespace
+| Name       | Equivalent
+|------------|---------------
+| `•FChars`  | `•file.Chars`
+| `•FLines`  | `•file.Lines`
+| `•FBytes`  | `•file.Bytes`
 
-The effect of `•Eval` should be the same as if its argument were written as source code in the scope where `•Eval` appears. It can define variables, and modify those in the current scope or a parent.
-
-`•ScopedEval` creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to `{•Eval}`. Parent scopes are visible from the created scope; to make a scope without this property use `•BQN"•Eval"` or `•BQN"•ScopedEval"`.
+### Open file object
 
 ## Input and output
 

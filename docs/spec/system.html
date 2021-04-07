@@ -7,7 +7,36 @@
 <h1 id="specification-bqn-system-provided-values">Specification: BQN system-provided values</h1>
 <p>This portion of the spec is still potentially subject to major changes.</p>
 <p>The <code><span class='Value'>•</span></code> symbol is used to access values other than primitives provided by BQN.</p>
-<p>All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior.</p>
+<p>All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior. For namespaces this rule applies to individual fields as well: a namespace may be provided with only some of the fields, but a field with one of the given names must behave as specified.</p>
+<h2 id="execution-and-scope-manipulation">Execution and scope manipulation</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>•BQN</span></code></td>
+<td>Evaluate the argument string in an isolated scope</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•Eval</span></code></td>
+<td>Evaluate the argument string in the current scope</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•ScopedEval</span></code></td>
+<td>Evaluate the argument string in a child scope</td>
+</tr>
+<tr>
+<td><code><span class='Function'>•Using</span></code></td>
+<td>Import all values from the argument namespace</td>
+</tr>
+</tbody>
+</table>
+<p>The effect of <code><span class='Function'>•Eval</span></code> should be the same as if its argument were written as source code in the scope where <code><span class='Function'>•Eval</span></code> appears. It can define variables, and modify those in the current scope or a parent.</p>
+<p><code><span class='Function'>•ScopedEval</span></code> creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to <code><span class='Brace'>{</span><span class='Function'>•Eval</span><span class='Brace'>}</span></code>. Parent scopes are visible from the created scope; to make a scope without this property use <code><span class='Function'>•BQN</span><span class='String'>&quot;•Eval&quot;</span></code> or <code><span class='Function'>•BQN</span><span class='String'>&quot;•ScopedEval&quot;</span></code>.</p>
 <h2 id="scripts">Scripts</h2>
 <table>
 <thead>
@@ -40,7 +69,12 @@
 <p><code><span class='Value'>•args</span></code> is the arguments passed as the file was invoked, either from the command line or <code><span class='Function'>•Import</span></code>. For command line calls it is a list of strings.</p>
 <p><code><span class='Value'>•path</span></code> simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.</p>
 <p><code><span class='Value'>•name</span></code> gives the name, including the extension, of the file in which it appears. It doesn't include the path.</p>
-<h2 id="file-access">File access</h2>
+<h2 id="files">Files</h2>
+<p>The system namespace value <code><span class='Value'>•file</span></code> deals with file operations. For the purposes of <code><span class='Value'>•file</span></code>, paths in the filesystem are always strings. As with <code><span class='Function'>•Import</span></code>, file paths may be relative or absolute, and relative paths are relative to <code><span class='Value'>•path</span></code>, except in <code><span class='Value'>•file.</span><span class='Function'>At</span></code> which allows <code><span class='Value'>𝕨</span></code> to specify an alternate base directory. The value <code><span class='Value'>•path</span></code> used for a particular instance of <code><span class='Value'>•file</span></code> is determined by the file that contains that instance.</p>
+<p>When a <code><span class='Value'>•file</span></code> function returns a file path or portion of a path, the path is always absolute and canonical, with <code><span class='Value'>.</span></code> and <code><span class='Value'>..</span></code> components removed.</p>
+<p>Possible fields of <code><span class='Value'>•file</span></code> are given in the subsections below.</p>
+<h3 id="file-paths">File paths</h3>
+<p>The following functions manipulate paths and don't access files. Each takes a relative or absolute path <code><span class='Value'>𝕩</span></code>, and <code><span class='Function'>At</span></code> may also take a base directory <code><span class='Value'>𝕨</span></code>.</p>
 <table>
 <thead>
 <tr>
@@ -50,55 +84,151 @@
 </thead>
 <tbody>
 <tr>
-<td><code><span class='Function'>•FChars</span></code></td>
-<td>Read from or write to an entire file, as characters</td>
+<td><code><span class='Value'>path</span></code></td>
+<td>Path of this source file, that is, <code><span class='Value'>•path</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>•FLines</span></code></td>
-<td>Read from or write to an entire file, as lines</td>
+<td><code><span class='Function'>At</span></code></td>
+<td>Absolute path of file, with optional base <code><span class='Value'>𝕨</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>•FBytes</span></code></td>
-<td>Read from or write to an entire file, as bytes</td>
+<td><code><span class='Function'>Name</span></code></td>
+<td>File name including extension</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Parent</span></code></td>
+<td>Path of the containing directory, with trailing backslash</td>
+</tr>
+<tr>
+<td><code><span class='Function'>BaseName</span></code></td>
+<td>File name, with dot and extension removed</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Extension</span></code></td>
+<td>File extension, including leading dot</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Parts</span></code></td>
+<td>List of parent, base name, and extension</td>
 </tr>
 </tbody>
 </table>
-<p>As with <code><span class='Function'>•Import</span></code>, file paths may be relative or absolute, and relative paths are relative to <code><span class='Value'>•path</span></code>.</p>
-<p>Functions <code><span class='Function'>•FChars</span></code>, <code><span class='Function'>•FLines</span></code>, and <code><span class='Function'>•FBytes</span></code> are all ambivalent. If only one argument is given, then it must be the name of a file, and the result is the contents of the file in the appropriate format. If there are two arguments, then the left argument is the filename and the right is the desired contents. These are written to the file, overwriting its contents, and the filename <code><span class='Value'>𝕨</span></code> is returned. The three formats are:</p>
+<h3 id="file-metadata">File metadata</h3>
+<p>Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path <code><span class='Value'>𝕩</span></code>, and <code><span class='Function'>Permissions</span></code> also allows new data in <code><span class='Value'>𝕨</span></code>. The returned data in any case is the specified property.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>Exists</span></code></td>
+<td><code><span class='Number'>1</span></code> if the file exists and <code><span class='Number'>0</span></code> otherwise</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Type</span></code></td>
+<td><code><span class='String'>&quot;none&quot;</span></code>, <code><span class='String'>&quot;file&quot;</span></code>, or <code><span class='String'>&quot;dir&quot;</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>Created</span></code></td>
+<td>Time created</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Accessed</span></code></td>
+<td>Time of last access</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Modified</span></code></td>
+<td>Time of last modification</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Size</span></code></td>
+<td>Total size in bytes</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Permissions</span></code></td>
+<td>Query or set file permissions</td>
+</tr>
+</tbody>
+</table>
+<p>Times are Unix timestamps, that is, seconds since the Unix epoch, as used by <a href="#time">time</a> system values.</p>
+<h3 id="file-access">File access</h3>
+<p>File access functions read or write files, either by manipulating files as a whole or interacting with the contents. Whole-file functions cannot overwrite target files: that is, <code><span class='Function'>Rename</span></code> and <code><span class='Function'>Copy</span></code> must give an error if a file exists at <code><span class='Value'>𝕨</span></code>, while <code><span class='Function'>Chars</span></code>, <code><span class='Function'>Lines</span></code>, and <code><span class='Function'>Bytes</span></code> can overwrite the contents of an existing file <code><span class='Value'>𝕨</span></code>. However, these three functions must give an error if <code><span class='Value'>𝕨</span></code> exists and is a directory.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>Open</span></code></td>
+<td>Return an open file object based on <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>Rename</span></code></td>
+<td>Rename file <code><span class='Value'>𝕩</span></code> with path <code><span class='Value'>𝕨</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>Copy</span></code></td>
+<td>Copy file <code><span class='Value'>𝕩</span></code> to path <code><span class='Value'>𝕨</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>Remove</span></code></td>
+<td>Delete file <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>RemoveDir</span></code></td>
+<td>Recursively delete directory <code><span class='Value'>𝕩</span></code> and all contents</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Chars</span></code></td>
+<td>Read from or write to entire file, as characters</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Lines</span></code></td>
+<td>Read from or write to entire file, as lines</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Bytes</span></code></td>
+<td>Read from or write to entire file, as bytes</td>
+</tr>
+</tbody>
+</table>
+<p><code><span class='Function'>Rename</span></code> and <code><span class='Function'>Copy</span></code> return the path of the new file. <code><span class='Function'>Remove</span></code> and <code><span class='Function'>RemoveDir</span></code> return <code><span class='Number'>1</span></code> to indicate successful removal (and error otherwise).</p>
+<p>Functions <code><span class='Function'>Chars</span></code>, <code><span class='Function'>Lines</span></code>, and <code><span class='Function'>Bytes</span></code> are all ambivalent. If only <code><span class='Value'>𝕩</span></code> is given, then it is a filename, and the result is the contents of the file in the appropriate format. If there are two arguments, then <code><span class='Value'>𝕨</span></code> is the filename and <code><span class='Value'>𝕩</span></code> is the desired contents. These are written to the file, overwriting its contents, and the absolute filename <code><span class='Value'>𝕨</span></code> is returned. The three formats are:</p>
 <ul>
 <li>Chars: BQN characters, or UTF-32. The file is assumed to be UTF-8 encoded.</li>
 <li>Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.</li>
 <li>Bytes: Single-byte values, stored as BQN characters from <code><span class='String'>@</span></code> to <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>255</span></code>.</li>
 </ul>
-<h2 id="execution-and-scope-manipulation">Execution and scope manipulation</h2>
+<p>The following short names can also be provided for file access. They can be provided, and use the definitions from above even if <code><span class='Value'>•file</span></code> is not provided.</p>
 <table>
 <thead>
 <tr>
 <th>Name</th>
-<th>Summary</th>
+<th>Equivalent</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code><span class='Function'>•BQN</span></code></td>
-<td>Evaluate the argument string in an isolated scope</td>
+<td><code><span class='Function'>•FChars</span></code></td>
+<td><code><span class='Value'>•file.</span><span class='Function'>Chars</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>•Eval</span></code></td>
-<td>Evaluate the argument string in the current scope</td>
+<td><code><span class='Function'>•FLines</span></code></td>
+<td><code><span class='Value'>•file.</span><span class='Function'>Lines</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>•ScopedEval</span></code></td>
-<td>Evaluate the argument string in a child scope</td>
-</tr>
-<tr>
-<td><code><span class='Function'>•Using</span></code></td>
-<td>Import all values from the argument namespace</td>
+<td><code><span class='Function'>•FBytes</span></code></td>
+<td><code><span class='Value'>•file.</span><span class='Function'>Bytes</span></code></td>
 </tr>
 </tbody>
 </table>
-<p>The effect of <code><span class='Function'>•Eval</span></code> should be the same as if its argument were written as source code in the scope where <code><span class='Function'>•Eval</span></code> appears. It can define variables, and modify those in the current scope or a parent.</p>
-<p><code><span class='Function'>•ScopedEval</span></code> creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to <code><span class='Brace'>{</span><span class='Function'>•Eval</span><span class='Brace'>}</span></code>. Parent scopes are visible from the created scope; to make a scope without this property use <code><span class='Function'>•BQN</span><span class='String'>&quot;•Eval&quot;</span></code> or <code><span class='Function'>•BQN</span><span class='String'>&quot;•ScopedEval&quot;</span></code>.</p>
+<h3 id="open-file-object">Open file object</h3>
 <h2 id="input-and-output">Input and output</h2>
 <table>
 <thead>
