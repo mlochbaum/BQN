@@ -62,7 +62,7 @@ Tokenize←{
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
   ws←1=wi/wt⋄ig←1-˜(i>us)×+`w>n             # Identifier groups
-  {⟨𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/(¯1»⌈`)⊸<ig
+  {⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/(¯1»⌈`)⊸<ig
   id←ws(¬⊸/≍○</)ig⊔t                        # ⟨Identifiers, system values⟩
 
   # Deduplicate literals and identifiers; other cleanup
