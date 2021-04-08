@@ -58,11 +58,12 @@ Tokenize←{
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
   wi←0<wt←(2×wk≥0)(×⟜¬+⊢)w/»t=⊑bW           # Type: 0 number, 1 system, 2 identifier
-  i←l>n←l∧(+`w)⊏0∾¬wi                       # Number mask
+  i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
-  id←(2∾˜1=wi/wt)⊔(ig←1-˜(i>us)×+`w>n)⊔t    # ⟨Identifiers, system values⟩
-  {⟨ig⊐/𝕩,"Numbers can't start with underscores"⟩!0}⍟(∨´)(⊑bA)>⊑¨∾id
+  ws←1=wi/wt⋄ig←1-˜(i>us)×+`w>n             # Identifier groups
+  {⟨𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/(¯1»⌈`)⊸<ig
+  id←ws(¬⊸/≍○</)ig⊔t                        # ⟨Identifiers, system values⟩
 
   # Deduplicate literals and identifiers; other cleanup
   ki←(wt⍒⊸⊏/w)∾(ci∾/si)⊏+`»f                # Indices in t
