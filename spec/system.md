@@ -64,19 +64,28 @@ The following functions manipulate paths and don't access files. Each takes a re
 
 ### File metadata
 
-Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path `𝕩`, and `Permissions` also allows new data in `𝕨`. The returned data in any case is the specified property.
+Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path `𝕩`, and some functions also allow new data in `𝕨`. The returned data in any case is the specified property.
 
 | Name          | Summary
 |---------------|--------------------------
 | `Exists`      | `1` if the file exists and `0` otherwise
-| `Type`        | `"none"`, `"file"`, or `"dir"`
+| `Type`        | A character indicating the file's type
 | `Created`     | Time created
 | `Accessed`    | Time of last access
 | `Modified`    | Time of last modification
 | `Size`        | Total size in bytes
 | `Permissions` | Query or set file permissions
+| `Owner`       | Query or set owner user ID and group ID number
 
-Times are Unix timestamps, that is, seconds since the Unix epoch, as used by [time](#time) system values.
+Times are Unix timestamps, that is, seconds since the Unix epoch, as used by [time](#time) system values. File permissions on Unix are a three-element list of numbers giving the permissions for the owner, group, and other users. The file type is one of the following characters for the POSIX file types, matching Unix `ls -l` with `'f'` instead of `'-'`.
+
+- `'f'`: File
+- `'d'`: Directory
+- `'l'`: Symlink
+- `'p'`: Pipe (FIFO)
+- `'s'`: Socket
+- `'b'`: Block device
+- `'c'`: Character device
 
 ### File access
 
