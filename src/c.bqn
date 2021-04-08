@@ -54,10 +54,12 @@ Tokenize←{
   ie←/f⋄is←ie≠⊸↑/1»f⋄Fs←{is/˜↩𝕨⋄𝕨/𝕩}        # Token start and end
   is-↩is(-×⊏⟜c)ie                           # Comment → ending newline only
   t←CharCode ie⊏𝕩
-  w←»⊸<l←t M bD(⊣≍-˜)○⊑bW⋄us←t=¯1++´bA      # Word chars l, start w
+  w←»⊸<l←t M bD(⊣≍-˜)○⊑bW                   # Word chars l, start w
+  us←t=¯1++´bA⋄sy←t=⊑bW                     # Underscore, system dot
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
-  wi←0<wt←(2×wk≥0)(×⟜¬+⊢)w/»t=⊑bW           # Type: 0 number, 1 system, 2 identifier
+  {⟨𝕩/is,"System dot with no name"⟩!0}⍟(∨´)sy>«l
+  wi←0<wt←(2×wk≥0)(×⟜¬+⊢)w/»sy              # Type: 0 number, 1 system, 2 identifier
   i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
