@@ -114,7 +114,7 @@
 </tbody>
 </table>
 <h3 id="file-metadata">File metadata</h3>
-<p>Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path <code><span class='Value'>𝕩</span></code>, and <code><span class='Function'>Permissions</span></code> also allows new data in <code><span class='Value'>𝕨</span></code>. The returned data in any case is the specified property.</p>
+<p>Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path <code><span class='Value'>𝕩</span></code>, and some functions also allow new data in <code><span class='Value'>𝕨</span></code>. The returned data in any case is the specified property.</p>
 <table>
 <thead>
 <tr>
@@ -129,7 +129,7 @@
 </tr>
 <tr>
 <td><code><span class='Function'>Type</span></code></td>
-<td><code><span class='String'>&quot;none&quot;</span></code>, <code><span class='String'>&quot;file&quot;</span></code>, or <code><span class='String'>&quot;dir&quot;</span></code></td>
+<td>A character indicating the file's type</td>
 </tr>
 <tr>
 <td><code><span class='Function'>Created</span></code></td>
@@ -151,9 +151,22 @@
 <td><code><span class='Function'>Permissions</span></code></td>
 <td>Query or set file permissions</td>
 </tr>
+<tr>
+<td><code><span class='Function'>Owner</span></code></td>
+<td>Query or set owner user ID and group ID number</td>
+</tr>
 </tbody>
 </table>
-<p>Times are Unix timestamps, that is, seconds since the Unix epoch, as used by <a href="#time">time</a> system values.</p>
+<p>Times are Unix timestamps, that is, seconds since the Unix epoch, as used by <a href="#time">time</a> system values. File permissions on Unix are a three-element list of numbers giving the permissions for the owner, group, and other users. The file type is one of the following characters for the POSIX file types, matching Unix <code><span class='Value'>ls</span> <span class='Function'>-</span><span class='Value'>l</span></code> with <code><span class='String'>'f'</span></code> instead of <code><span class='String'>'-'</span></code>.</p>
+<ul>
+<li><code><span class='String'>'f'</span></code>: File</li>
+<li><code><span class='String'>'d'</span></code>: Directory</li>
+<li><code><span class='String'>'l'</span></code>: Symlink</li>
+<li><code><span class='String'>'p'</span></code>: Pipe (FIFO)</li>
+<li><code><span class='String'>'s'</span></code>: Socket</li>
+<li><code><span class='String'>'b'</span></code>: Block device</li>
+<li><code><span class='String'>'c'</span></code>: Character device</li>
+</ul>
 <h3 id="file-access">File access</h3>
 <p>File access functions read or write files, either by manipulating files as a whole or interacting with the contents. Whole-file functions cannot overwrite target files: that is, <code><span class='Function'>Rename</span></code> and <code><span class='Function'>Copy</span></code> must give an error if a file exists at <code><span class='Value'>𝕨</span></code>, and <code><span class='Function'>CreateDir</span></code> if a file exists at <code><span class='Value'>𝕩</span></code>, while <code><span class='Function'>Chars</span></code>, <code><span class='Function'>Lines</span></code>, and <code><span class='Function'>Bytes</span></code> can overwrite the contents of an existing file <code><span class='Value'>𝕨</span></code>. However, these three functions must give an error if <code><span class='Value'>𝕨</span></code> exists and is a directory.</p>
 <table>
