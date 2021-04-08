@@ -262,7 +262,16 @@ let compile = run(
  ,[[0,1,0,32],[1,0,464,5],[1,1,483,5],[0,0,607,48],[0,0,2297,22],[0,0,3104,119],[0,0,8004,15],[0,0,8155,3],[0,0,8163,3],[0,0,8203,3],[0,0,8222,3],[0,0,8245,3],[0,0,8267,3],[2,1,8291,3],[0,0,8327,6],[2,1,8464,3],[0,0,8533,3],[0,0,8583,3],[0,0,8605,3],[0,0,8635,3],[0,0,8693,3],[0,0,8755,4],[0,0,8807,3],[0,0,8829,3],[2,1,8854,3]]
 );
 runtime[42] = rtAssert;
-let system = (x,w) => table(s=>sysvals[s.join("")])(x);
+let system = (x,w) => {
+  let sv = sysvals;
+  if (!sv.listsys) { sv.listsys = list(Object.keys(sv).map(str)); }
+  let r = table(s=>sv[s.join("")])(x);
+  if (r.some(v=>!has(v))) {
+    let m = x.filter((_,i)=>!has(r[i])).map(s=>"•"+s.join("")).join(" ");
+    throw Error("Unknown system values (see •listSys for available): "+m);
+  }
+  return r;
+}
 let rt_sys = list([runtime, system]);
 let bqn = src => run.apply(null,compile(str(src),rt_sys));
 
@@ -324,7 +333,6 @@ if (typeof process!=='undefined') {
     let t0=performance.now(); f(); return (performance.now()-t0)/1000;
   });
 }
-sysvals.listsys = list(Object.keys(sysvals).map(str));
 
 if (typeof module!=='undefined') {
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;
