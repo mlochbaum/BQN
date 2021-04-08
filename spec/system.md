@@ -131,6 +131,8 @@ The following short names can also be provided for file access. They can be prov
 | `•Out` | Print argument string
 | `•Fmt` | Format value for printing
 
+`•Out` prints to stdout, with a trailing newline. `•Fmt` returns a string (not a character table: lines are separated by linefeeds) indicating how `𝕩` would be printed by the interactive environment.
+
 ## Operation properties
 
 | Name         | Summary
