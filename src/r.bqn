@@ -437,13 +437,13 @@ ReshapeT ← "∘⌊⌽↑"_glyphLookup_(↕5)
 Reshape←{
   "𝕨⥊𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   s←Deshape 𝕨
-  sp←+´p←¬Nat⌜s
+  sp←0+´p←¬Nat⌜s
   "𝕨⥊𝕩: 𝕨 must consist of natural numbers" ! 1≥sp
   n←≠d←Deshape 𝕩
-  l←sp◶(×´)‿{
-    lp←×´p⊣◶⊢‿1¨𝕩
+  l←sp◶(1×´⊢)‿{
+    lp←1×´p⊣◶⊢‿1¨𝕩
     "𝕨⥊𝕩: Can't compute axis length when rest of shape is empty" ! 0<lp
-    i←+´p×↕≠p
+    i←0+´p×↕≠p
     t←ReshapeT i⊑s
     "𝕨⥊𝕩: 𝕨 must consist of natural numbers or ∘ ⌊ ⌽ ↑" ! t<4
     Chk ← ⊢ ⊣ "𝕨⥊𝕩: Shape must be exact when reshaping with ∘" ! ⌊⊸=
@@ -467,7 +467,7 @@ ValidateRanks←{
   "⎉ or ⚇: 𝔽 result must have rank at most 1" ! 1≥=𝕩
   𝕩↩⥊𝕩
   "⎉ or ⚇: 𝔽 result must have 1 to 3 elements" ! (1⊸≤∧≤⟜3)≠𝕩
-  "⎉ or ⚇: 𝔽 result must consist of integers" ! ∧´Int⌜𝕩
+  "⎉ or ⚇: 𝔽 result must consist of integers" ! 1∧´Int⌜𝕩
   𝕩
 }
 _ranks ← {⟨2⟩⊘⟨1,0⟩ ((⊣-1+|)˜⟜≠⊑¨<∘⊢) ValidateRanks∘𝔽}
@@ -483,8 +483,8 @@ _rankOp_←{
   k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
   Enc←{
     f←(↕𝕨)⊏≢𝕩
-    c←×´s←𝕨Cell𝕩⋄i←s⥊↕c
-    (f⥊((⥊𝕩)⊏˜i+c×⊢)⌜↕×´f)˙_fillBy_{(<𝕩)⌜i} 𝕩
+    c←1×´s←𝕨Cell𝕩⋄i←s⥊↕c
+    (f⥊((⥊𝕩)⊏˜i+c×⊢)⌜↕1×´f)˙_fillBy_{(<𝕩)⌜i} 𝕩
   }
   Enc↩(>⟜0×1+≥⟜=)◶⟨<⊢,Enc,<⌜⊢⟩
   > ((0⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
@@ -505,10 +505,10 @@ _insert←{
 JoinTo←∨○(1<=)◶(∾○⥊)‿{
   s←𝕨Pair○≢𝕩
   a←1⌈´k←≠⌜s
-  "𝕨∾𝕩: Rank of 𝕨 and 𝕩 must differ by at most 1" ! ∧´1≥a-k
+  "𝕨∾𝕩: Rank of 𝕨 and 𝕩 must differ by at most 1" ! 1∧´1≥a-k
   c←(k¬a)+⟜(↕a-1)⊸⊏¨s
   "𝕨∾𝕩: Cell shapes of 𝕨 and 𝕩 must match" ! ≡´c
-  l←+´(a=k)⊣◶1‿(0⊑⊢)¨s
+  l←0+´(a=k)⊣◶1‿(0⊑⊢)¨s
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
 } _fillBy_ IF
 
@@ -532,8 +532,8 @@ Replicate ← (0<=∘⊣)◶{
 « ← FC⊸ShiftAfter  ⊘ ShiftAfter  _fillBy_ (⊢⊘IF)
 
 _group←{
-  "⊔: Grouping argument must consist of integers" ! ∧´Int⌜𝕩
-  "⊔: Grouping argument values cannot be less than ¯1" ! ∧´¯1≤𝕩
+  "⊔: Grouping argument must consist of integers" ! 1∧´Int⌜𝕩
+  "⊔: Grouping argument values cannot be less than ¯1" ! 1∧´¯1≤𝕩
   GL←GroupLen⋄𝕩↩𝕨(-˜⟜≠{GL↩(𝕨⊑𝕩)GL⊢⋄𝕨↑𝕩}⊢)⍟(0⊘⊣)𝕩
   d←(l←GL𝕩)GroupOrd𝕩
   i←0⋄(𝔽{𝕩⋄(i↩i+1)⊢i⊑d}⌜∘↕)⌜l
@@ -550,36 +550,36 @@ GroupGen←{
   "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
   𝕨↩Pair∘ToArray⍟(2>≡)𝕨
   "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
-  n←+´r←=⌜𝕨
+  n←0+´r←=⌜𝕨
   "𝕨⊔𝕩: Total rank of 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
   ld←(Join≢⌜𝕨)-n↑≢𝕩
-  "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! ∧´(0⊸≤∧≤⟜(r/1=r))ld
+  "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! 1∧´(0⊸≤∧≤⟜(r/1=r))ld
   dr←r⌊(0»+`r)⊏ld∾⟨0⟩
   l←≠⌜𝕨↩⥊⌜𝕨 ⋄ LS←∾⟜(n Cell 𝕩) Reshape 𝕩˙
-  S←⊏⟜(LS⟨×´l⟩)
+  S←⊏⟜(LS⟨1×´l⟩)
   (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨S _group○(0⊸⊑), S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group¨⟩ 𝕨
 }
 
 Pick1←{
   "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
   "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
-  "𝕨⊑𝕩: Indices in 𝕨 must consist of integers" ! ∧´Int⌜𝕨
-  "𝕨⊑𝕩: Index out of range" ! ∧´𝕨(≥⟜-∧<)s
+  "𝕨⊑𝕩: Indices in 𝕨 must consist of integers" ! 1∧´Int⌜𝕨
+  "𝕨⊑𝕩: Index out of range" ! 1∧´𝕨(≥⟜-∧<)s
   𝕨↩𝕨+s×𝕨<0
   (⥊𝕩)⊑˜0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨
 }
-Pickd←(∨´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
+Pickd←(0∨´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
 Pick←IsArray◶⥊‿⊢⊸Pickd
 
 # Sorting
 CmpLen ← {
-  e←𝕨-˜○(∨´0⊸=)𝕩
+  e←𝕨-˜○(0∨´0⊸=)𝕩
   𝕨(e=0)◶⟨0,e⟩‿{
     c←×𝕨-○≠𝕩
     r←𝕨⌊○≠𝕩
     l←𝕨{
-      i←+´∧`𝕨=𝕩
-      m←×´⊑⟜𝕨⌜↕i
+      i←0+´∧`𝕨=𝕩
+      m←1×´⊑⟜𝕨⌜↕i
       {c↩×-´𝕩⋄m↩m×⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i
       m
     }○(((-1+↕r)+≠)⊸{⊑⟜𝕩⌜𝕨})𝕩
@@ -607,14 +607,14 @@ _bins←{
   c←1-˜=𝕨
   "⍋ or ⍒: Rank of 𝕨 must be at least 1" ! 0≤c
   "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
-  lw←×´sw←1 Cell 𝕨
+  lw←1×´sw←1 Cell 𝕨
   cw←lw 𝔽○(⊑⟜(⥊𝕨)) _getCellCmp 0
-  "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,∧´0≤˜·cw⟜(lw⊸+)⌜lw×↕∘-⟜1⟩≠𝕨
+  "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1∧´0≤˜·cw⟜(lw⊸+)⌜lw×↕∘-⟜1⟩≠𝕨
   cx←c-˜=𝕩
   sx←cx Cell ToArray 𝕩 ⋄ lc←sw CmpLen sx
   cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
-  B←(×´sw)⊸×⊸Cc≤0˜
-  0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (×´sx) × ⥊⟜(↕×´)⊑⟜(≢𝕩)⌜↕cx
+  B←(1×´sw)⊸×⊸Cc≤0˜
+  0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx) × ⥊⟜(↕1×´⊢)⊑⟜(≢𝕩)⌜↕cx
 }
 
 ⚇ ← _depthOp_
@@ -658,7 +658,7 @@ Find←{
 ReorderChk←{
   "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   "𝕨⍉𝕩: Length of 𝕨 must not exceed rank of 𝕩" ! 𝕨≤○≠≢𝕩
-  "𝕨⍉𝕩: 𝕨 must consist of natural numbers" ! ∧´Nat⌜⥊𝕨
+  "𝕨⍉𝕩: 𝕨 must consist of natural numbers" ! 1∧´Nat⌜⥊𝕨
 }
 ReorderAxesSub←{
   (𝕨⊸⊏Pick𝕩˙)⌜↕⌊´⌜𝕨⊔≢𝕩
@@ -666,15 +666,15 @@ ReorderAxesSub←{
 ReorderAxes←{
   𝕨 ReorderChk 𝕩
   𝕨↩⥊𝕨
-  r←(=𝕩)-+´¬∊𝕨
-  "𝕨⍉𝕩: Skipped result axis" ! ∧´𝕨<r
+  r←(=𝕩)-0+´¬∊𝕨
+  "𝕨⍉𝕩: Skipped result axis" ! 1∧´𝕨<r
   (𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
 }
 ReorderAxesInv←{
   𝕨 ReorderChk 𝕩
   𝕨↩⥊𝕨
   r←=𝕩
-  IA ∧´(∊∧<⟜r)𝕨
+  IA 1∧´(∊∧<⟜r)𝕨
   (PermInv 𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
 }
 ⍉ ← Transpose      ⊘ ReorderAxes
@@ -730,15 +730,15 @@ _invChk_ ← {i←𝕨𝔽𝕩⋄IX 𝕩≡𝕨𝔾i⋄i}
 GroupIndsInv ← {
   IA 1==𝕩
   j←∾𝕩
-  IA∧´Nat⌜j
+  IA 1∧´Nat⌜j
   g←GroupLen j
-  IX∧´g≤1
+  IX 1∧´g≤1
   o←/¬g
   (⍋j∾o)⊏(/≠¨𝕩)∾¯1¨o
 }
 GroupInv ← {
   IA 1==𝕨
-  IA ∧´Nat⌜𝕨
+  IA 1∧´Nat⌜𝕨
   (⊔𝕨) ⍋⊸⊏○∾ 𝕩
 }
 PrimInverse ← INF _lookup_ ⟨
@@ -761,7 +761,7 @@ PrimInverse ← INF _lookup_ ⟨
   '↕', ≢_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
   '⌽', ⌽ ⊘ (-⊸⌽)
   '⍉', TransposeInv ⊘ ReorderAxesInv
-  '/', {IA 1==𝕩⋄IA∧´Nat⌜𝕩⋄IX(∧´¯1⊸↓≤1⊸↓)𝕩⋄GroupLen𝕩}⊘(IA∘0)
+  '/', {IA 1==𝕩⋄IA 1∧´Nat⌜𝕩⋄IX(1∧´¯1⊸↓≤1⊸↓)𝕩⋄GroupLen𝕩}⊘(IA∘0)
   '⊔', GroupIndsInv ⊘ GroupInv
 ⟩
 ⌜ ↩ {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
