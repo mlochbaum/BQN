@@ -11,7 +11,7 @@ The surfeit of ways to write control structures could be a bit of an issue for r
 The useful control structures introduced here are collected as shortened definitions below.
 
     If      ← {𝕏⍟𝕎@}´               # Also Repeat
-    IfElse  ← {c‿F‿T: c◶T‿F@}
+    IfElse  ← {c‿T‿F: c◶F‿T@}
     While   ← {𝕨{𝕊∘𝔾⍟𝔽𝕩}𝕩@}´        # While 1‿{... to run forever
     DoWhile ← {𝕨{𝕊⍟𝔽𝔾𝕩}𝕩@}´
     For     ← {I‿C‿P‿A: I@ ⋄ {𝕊∘P∘A⍟C 𝕩}@}
@@ -77,7 +77,7 @@ Despite the name, an if-else statement is most closely related to a [switch-case
 
 When using Choose, note that the natural ordering places the false case before the true one to match list index ordering. To get the typical if-else order, the condition should be negated or the statements reversed. Here's a function to get an if-else statement by swapping the conditions, and two ways its application might be written.
 
-    IfElse ← {cond‿False‿True: cond◶True‿False @}
+    IfElse ← {cond‿True‿False: cond◶False‿True @}
 
     IfElse ⟨𝕩<mid⊑𝕨
       {𝕤⋄ hi↩mid}
@@ -106,7 +106,7 @@ One pattern in imperative languages is to check one condition and apply an actio
 
 In BQN it's possible to nest `IfElse` expressions, but it's also possible to write a control structure that chains them all at one level. For this statement the input will be a sequence of `⟨Test,Action⟩` pairs, followed by a final action to perform if no test succeeds. The first test is always performed; other tests should be wrapped in blocks because otherwise they'll be executed even if an earlier test succeeded.
 
-    Test ← {fn←{Cond‿Act 𝕊 else: Cond◶Act‿Else}´𝕩 ⋄ Fn@}
+    Test ← {fn←{Cond‿Act 𝕊 else: Cond◶Else‿Act}´𝕩 ⋄ Fn@}
 
     Test ⟨
       (  a<b)‿{𝕤⋄a+↩1}
