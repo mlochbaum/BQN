@@ -43,9 +43,11 @@ _fold←{
 }
 ´ ← _fold
 
+_qSearch ← {+´·×`𝕗(1-=)⌜<}
 _glyphLookup_ ← {
-  {PrimInd𝕩} ⊑ ((𝕘⊑˜·+´·×`𝕗(1-=)⌜<)⌜glyphs)˙
+  {PrimInd𝕩} ⊑ ((𝕘⊑˜𝕗_qSearch)⌜glyphs)˙
 }
+IsJoin ← (glyphs _qSearch'∾') = {PrimInd𝕩}
 
 Cell←{(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}⟜≢
 
@@ -493,7 +495,7 @@ _insert←{
   Id ← {
     s ← 1 Drop ≢𝕩
     JoinSh ← {"˝: Identity does not exist"!0<≠𝕨 ⋄ 𝕨×0<↕≠𝕨}
-    s joinPrim˙⊸≠◶⟨JoinSh⥊𝕩˙, Reshape⟜Identity⟩ f
+    s ¬∘IsJoin∘⊢◶⟨JoinSh⥊𝕩˙, Reshape⟜Identity⟩ f
   }
   𝕨 (0<≠)⊘1◶Id‿{𝕨F´<˘𝕩} 𝕩
 }
@@ -700,8 +702,6 @@ _repeat_←{
   neg←𝕗 0⊸<◶⟨i,Inverse⊸P⟩ -l
   (|⊑<⟜0⊑pos‿neg˙)⚇0 n
 }
-
-JoinPrim ← ∾
 
 ⍟ ↩ _repeat_
 ⥊ ↩ Deshape        ⊘ Reshape
