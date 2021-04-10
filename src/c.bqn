@@ -138,7 +138,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   fi←+`b←br>0⋄c←/br<0                       # Block Begin (mask) and Close (index), in matching order
 
   # Block properties
-  H←¬1(∾/∾˜)b(∨/⊣)=                         # Which blocks have a property
+  PN←1(∾/∾˜)(∨/⊣)⋄H←b¬∘PN=                  # Which blocks have a property
   sn←(0‿3‿4‿5+5+⊑bI)⍋𝕩⋄sp←/𝕩 M bI           # Special name index
   fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn   # Block immediacy ¬fx and type ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
@@ -203,8 +203,9 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   lc←(1«b)/dn←b(⊢-T)+`idm∧ac M 2‿4          # Locals Count
   idd←(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp          # Identifier frame depth
   idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv # Slot within frame
+  uu←(ip∾zic)(((1«d)∧0=⊣)∧d(⊣+`⊸⊏PN)0<⊢)⌾(ig⊸⊏)idd # Unused marker
   # Generate code to load identifiers and list each module's extracted exports
-  ib←⟨21+0<ip∾zic∾sp⊏ac,idd,idi⟩ # Identifier bytecode: instruction, depth, slot
+  ib←⟨(10×uu)+21+0<ip∾zic∾sp⊏ac,idd,idi⟩    # Identifier bytecode: instruction, depth, slot
   ed←/¯1⊸»⊸<ex                              # Select first export in each module
   idor←∾¯1⌽1‿3/⟨3/id∾ex∾sp,ed⊏ex⟩           # Identifier bytecode ordering
   idbc←¯1⌽⟨⥊⍉>ib,3¨ed,ex≠⊸(«-⊢)ed,14¨ed⟩    # and bytecode
