@@ -252,7 +252,11 @@ runtime.map((r,i) => { r.prim = i; });
 let decompose = x => list(!isfunc(x) ? [-1,x] : has(x.prim) ? [0,x]
                         : x.repr ? x.repr() : [1,x]);
 setPrims(list([decompose, x=>has(x.prim)?x.prim:runtime.length]));
-let glyph = x => "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!˙˜˘¨⌜⁼´˝`∘○⊸⟜⌾⊘◶⎉⚇⍟"[x.prim];
+let glyph = x => {
+  let g = "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!˙˜˘¨⌜⁼´˝`∘○⊸⟜⌾⊘◶⎉⚇⍟"[x.prim];
+  if (!has(g)) throw Error("•Glyph 𝕩: 𝕩 must be a primitive");
+  return g;
+}
 
 // Compiler
 runtime[42] = assertFn("Compiler");
