@@ -311,8 +311,22 @@ let fmtErr = (s,e) => {
 }
 
 let unixtime = (x,w) => Date.now()/1000;
+let dojs = (x,w) => {
+  if (!(x.sh && x.sh.length==1 && x.every(c=>typeof c==="string")))
+    throw Error("•JS 𝕩: 𝕩 must be a string");
+  if (has(w)) throw Error("•JS: 𝕨 not allowed");
+  let r = Function("'use strict'; return ("+x.join("")+")")();
+  let toBQN = x => {
+    if (isnum(x)) return x;
+    if (typeof x==='string') { if (Array.from(x).length!==1) throw Error("•JS: JS strings are one character; use Array.from for BQN strings"); return x; }
+    if (x instanceof Array) return arr(x.map(toBQN),x.sh||[x.length],toBQN(x.fill));
+    if (isfunc(x)) { let f=(a,b)=>toBQN(x(a,b)); f.m=x.m; return f; }
+    throw Error("•JS: Unrecognized JS result");
+  }
+  return toBQN(r);
+}
 let sysvals = {
-  bqn, type, glyph, decompose, fmt:fmt1, listsys:0,
+  bqn, js:dojs, type, glyph, decompose, fmt:fmt1, listsys:0,
   unixtime
 };
 

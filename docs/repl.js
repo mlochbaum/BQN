@@ -33,6 +33,7 @@ let repl = ()=>{
       doc.rslt.classList.add('err');
       doc.rslt.textContent=fmtErr(src,e);
     }
+    sysvals.js=dojs; // In case it was disabled by fragment loading
   }, 0);
 }
 if (doc.run) doc.run.onclick = repl;
@@ -158,7 +159,8 @@ if (location.hash) {
     b=new Uint8Array([...b].map(c=>c.charCodeAt(0)));
     setcount(doc.code.value = (new TextDecoder()).decode(b));
     if (ee && doc.doexplain) doc.doexplain.onclick();
-    if (run) repl();
+    nojs = () => { throw Error("Possible script injection; press Run to confirm"); }
+    if (run) { sysvals.js=nojs; repl(); }
     doc.code.focus();
   }
 }
