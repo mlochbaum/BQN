@@ -251,9 +251,17 @@
 <td align="left"></td>
 <td>Returns top of stack</td>
 </tr>
+<tr>
+<td align="right">31</td>
+<td>LOCU</td>
+<td align="center">X</td>
+<td align="right">21</td>
+<td align="left"><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
+<td>Push and clear local variable <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
+</tr>
 </tbody>
 </table>
-<p>Stack effects for most instructions are given below. Instructions 16, 17, and 19 are identical to 5, 6, and 10 except that the indicated values in the higher-numbered instructions may be <code><span class='Nothing'>·</span></code>. The lower-numbered instructions are not yet emitted by the self-hosted compiler and can be implemented simply by making them identical to the higher-numbered ones; however, it may be possible to make them faster by not checking for Nothing.</p>
+<p>Stack effects for most instructions are given below. Instructions 16, 17, and 19 are identical to 5, 6, and 10 except that the indicated values in the higher-numbered instructions may be <code><span class='Nothing'>·</span></code>. Instruction 31 is identical to 21 but indicates that the local variable's value will never be used again, which may be useful for optimization. The lower-numbered instructions are not yet emitted by the self-hosted compiler and can be implemented simply by making them identical to the higher-numbered ones; however, it may be possible to make them faster by not checking for Nothing.</p>
 <table>
 <thead>
 <tr>
@@ -369,12 +377,12 @@
 </tbody>
 </table>
 <p>Many instructions just call functions or modifiers or otherwise have fairly obvious implementations. Instructions to handle variables and blocks are more complicated (although very typical of bytecode representations for lexically-scoped languages) and are described in more detail below.</p>
-<h3 id="local-variables-dfnd-loco-locm-retn">Local variables: DFND LOCO LOCM RETN</h3>
+<h3 id="local-variables-dfnd-loco-locu-locm-retn">Local variables: DFND LOCO LOCU LOCM RETN</h3>
 <p>The bytecode representation is designed with the assumption that variables will be stored in frames, one for each instance of a block. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see <a href="#blocks">#blocks</a>) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.</p>
 <p>A frame is a mutable list of <em>slots</em> for variable values. It has slots for any special names that are available during the blocks execution followed by the local variables it defines. Special names use the ordering <code><span class='Value'>𝕤𝕩𝕨𝕣𝕗𝕘</span></code>; the first three of these are available in non-immediate blocks while <code><span class='Value'>𝕣</span></code> and <code><span class='Value'>𝕗</span></code> are available in modifiers and <code><span class='Value'>𝕘</span></code> in 2-modifiers specifically.</p>
 <p>When a block is pushed with <strong>DFND</strong>, an instance of the block is created, with its <em>parent frame</em> set to be the frame of the currently-executing block. Setting the parent frame when the block is first seen, instead of when it's evaluated, is what distinguishes lexical from dynamic scoping. If it's an immediate block, it's evaluated immediately, and otherwise it's pushed onto the stack. When the block is evaluated, its frame is initialized using any arguments passed to it, the next instruction's index is pushed onto the return stack, and execution moves to the first instruction in the block. When the RETN instruction is encountered, an index is popped from the return stack and execution returns to this location. As an alternative to maintaining an explicit return stack, a block can be implemented as a native function that creates a new execution stack and returns the value in it when the <strong>RETN</strong> instruction is reached. This approach uses the implementation language's call stack for the return stack.</p>
-<p>Local variables are manipulated with the <strong>LOCO</strong> and <strong>LOCM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
-<p>Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with LOCO or modified with SETU or SETM only if it <em>has</em> been defined.</p>
+<p>Local variables are manipulated with the <strong>LOCO</strong> (or <strong>LOCU</strong>) and <strong>LOCM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
+<p>Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with LOCO or LOCU or modified with SETU or SETM only if it <em>has</em> been defined.</p>
 <h3 id="variable-references-arrm-locm-setn-setu-setm">Variable references: ARRM LOCM SETN SETU SETM</h3>
 <p>A <em>variable reference</em> indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. <strong>LOCM</strong> pushes a variable reference to the stack.</p>
 <p>A <em>reference list</em> is a list of variable references or reference lists. It's created with the <strong>ARRM</strong> instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.</p>
