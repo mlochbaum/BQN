@@ -728,9 +728,11 @@ IX ← "⁼: Inverse does not exist"⊸!
 INF← "⁼: Inverse not found"!0˙
 _invChk_ ← {i←𝕨𝔽𝕩⋄IX 𝕩≡𝕨𝔾i⋄i}
 GroupIndsInv ← {
-  IA 1==𝕩
+  IA 2=≡𝕩
+  IX 1∧´1==⌜𝕩
   j←∾𝕩
-  IA 1∧´Nat⌜j
+  IX 1∧´Nat⌜j
+  IX 1∧´j>∾¯1»¨𝕩
   g←GroupLen j
   IX 1∧´g≤1
   o←/¬g
@@ -739,7 +741,9 @@ GroupIndsInv ← {
 GroupInv ← {
   IA 1==𝕨
   IA 1∧´Nat⌜𝕨
-  (⊔𝕨) ⍋⊸⊏○∾ 𝕩
+  i←⊔𝕨
+  IX i≡○(≠¨)𝕩
+  i ⍋⊸⊏○∾ 𝕩
 }
 PrimInverse ← INF _lookup_ ⟨
   '+', +⊘(-˜)
