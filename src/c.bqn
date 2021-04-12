@@ -59,7 +59,8 @@ Tokenize←{
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
   {⟨𝕩/is,"System dot with no name"⟩!0}⍟(∨´)sy>«l
-  wi←0<wt←(2×wk≥0)(×⟜¬+⊢)w/»sy              # Type: 0 number, 1 system, 2 identifier
+  w≠↩»⊸∨sy                                  # Start system word at dot
+  wi←0<wt←(2×wk≥0)(×⟜¬+⊢)w/sy               # Type: 0 number, 1 system, 2 identifier
   i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
