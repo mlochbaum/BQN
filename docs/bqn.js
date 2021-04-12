@@ -267,14 +267,12 @@ let compile = run(
 );
 runtime[42] = rtAssert;
 let system = (x,w) => {
-  let sv = sysvals;
-  if (!sv.listsys) { sv.listsys = list(Object.keys(sv).map(str).sort()); }
-  let r = table(s=>sv[s.join("")])(x);
+  let r = table(s=>sysvals[s.join("")])(x);
   if (r.some(v=>!has(v))) {
     let m = x.filter((_,i)=>!has(r[i])).map(s=>"•"+s.join("")).join(" ");
     throw Error("Unknown system values (see •listSys for available): "+m);
   }
-  return r;
+  return table(v=>v.dynamic?v():v)(r);
 }
 let rt_sys = list([runtime, system]);
 let bqn = src => run.apply(null,compile(str(src),rt_sys));
@@ -326,9 +324,10 @@ let dojs = (x,w) => {
   return toBQN(r);
 }
 let sysvals = {
-  bqn, js:dojs, type, glyph, decompose, fmt:fmt1, listsys:0,
-  unixtime
+  bqn, js:dojs, type, glyph, decompose, fmt:fmt1, unixtime,
+  listsys: () => list(Object.keys(sysvals).map(str).sort())
 };
+sysvals.listsys.dynamic = 1;
 
 let make_timed = tfn => {
   let timed = f => (x,w) => {
