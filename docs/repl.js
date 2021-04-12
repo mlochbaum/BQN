@@ -26,9 +26,11 @@ let repl = ()=>{
   setcount(s);
   setTimeout(() => {
     try {
+      let out=[]; sysvals.show = (x,w) => { out.push(x); return x; }
       let c=compile(src,rt_sys);
       setExplain(src,c);
-      doc.rslt.textContent=fmt(run.apply(null,c));
+      out.push(run.apply(null,c));
+      doc.rslt.textContent=out.map(fmt).join('\n');
     } catch(e) {
       doc.rslt.classList.add('err');
       doc.rslt.textContent=fmtErr(src,e);

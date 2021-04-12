@@ -358,7 +358,9 @@ if (typeof module!=='undefined') {
     let args = process.argv.slice(2);
     args.map(a=>{
       try {
-        console.log(fmt(bqn(a)))
+        let out=[]; sysvals.show = (x,w) => { out.push(x); return x; }
+        out.push(bqn(a));
+        console.log(out.map(fmt).join('\n'));
       } catch(e) {
         console.error('[31m'+fmtErr(Array.from(a),e)+'[39m');
       }
