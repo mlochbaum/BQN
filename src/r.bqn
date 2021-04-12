@@ -771,18 +771,19 @@ PrimInverse ← INF _lookup_ ⟨
 ⌜ ↩ {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
 _inv_ ← {𝕘⋄𝕨𝔽𝕩}
 AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
+SwapInverse ← INF _lookup_ ⟨
+  '+', ÷⟜2⊘(-˜)
+  '-', IA∘0⊘+
+  '×', √⊘(÷˜)
+  '÷', IA∘0⊘×
+  '⋆', IA∘0⊘√
+  '√', IA∘0⊘(÷Log)
+  '∧', √⊘(÷˜)
+  '∨', (¬√∘¬)⊘(-˜÷1-⊣)
+  '¬', IA∘0⊘(+-1˙)
+⟩
 Mod1Inverse ← INF˙ _lookup_ ⟨
-  '˜', INF _lookup_ ⟨
-    '+', ÷⟜2⊘(-˜)
-    '-', IA∘0⊘+
-    '×', √⊘(÷˜)
-    '÷', IA∘0⊘×
-    '⋆', IA∘0⊘√
-    '√', IA∘0⊘(÷Log)
-    '∧', √⊘(÷˜)
-    '∨', (¬√∘¬)⊘(-˜÷1-⊣)
-    '¬', IA∘0⊘(+-1˙)
-  ⟩
+  '˜', SwapInverse
   '¨', {𝕏⁼¨                     ⊣·IX 0<≡∘⊢}
   '⌜', {𝕏⁼⌜⊘(IA∘0)              ⊣·IX 0<≡∘⊢}
   '˘', {(IX∘IsArray⊸⊢𝕏⁼)˘       ⊣·IX 0<=∘⊢}
@@ -798,14 +799,14 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
   '⍟', Int∘⊢◶⟨IA∘0˙,0⊸≤◶{𝕎⍟(-𝕩)_invChk_(𝕎⍟𝕩)}‿{𝕎⍟(-𝕩)}⟩
   '⊘', {(𝕎⁼)⊘(𝕏⁼)}
   '⊸', IsConstant∘⊣ ⊣◶{INF⊘𝕏}‿⊢ {𝕎⊸(𝕏⁼)}
-  '⟜', {(𝕨IsConstant∘⊢◶⟨IA∘0˙,{𝕩𝕎˜⁼⊢}⟩𝕩)⊘(𝕏⁼𝕎⁼)}
+  '⟜', {(𝕨IsConstant∘⊢◶⟨IA∘0˙,{𝕩𝕎{SwapInverse𝕗}⊢}⟩𝕩)⊘(𝕏⁼𝕎⁼)}
 ⟩ { inv˙⊸=◶⟨𝔽,{𝕏_inv_𝕎}˙⟩ } {
   0‿2⊸⊏ {𝕏´𝕨}⟜𝔽 1⊸⊑
 }
 TrainInverse ← {
   f‿g‿h←𝕩
   K←¬IsConstant
-  f K∘⊣◶⟨{𝕏⁼{𝕨𝔽𝔾𝕩}(𝕨G⁼⊢)},K∘⊢◶⟨{𝕎⁼𝕩G˜⁼⊢},INF˙⟩⟩ h
+  f K∘⊣◶⟨{𝕏⁼{𝕨𝔽𝔾𝕩}(𝕨G⁼⊢)},K∘⊢◶⟨{𝕎⁼𝕩G{SwapInverse𝕗}⊢},INF˙⟩⟩ h
 }
 FuncInverse ← (⊑ ⊣◶⟨
   PrimInverse∘⊑⊢                         # 0 primitive
