@@ -268,7 +268,7 @@ let compile = run(
 runtime[42] = rtAssert;
 let system = (x,w) => {
   let sv = sysvals;
-  if (!sv.listsys) { sv.listsys = list(Object.keys(sv).map(str)); }
+  if (!sv.listsys) { sv.listsys = list(Object.keys(sv).map(str).sort()); }
   let r = table(s=>sv[s.join("")])(x);
   if (r.some(v=>!has(v))) {
     let m = x.filter((_,i)=>!has(r[i])).map(s=>"•"+s.join("")).join(" ");
