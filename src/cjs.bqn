@@ -31,6 +31,6 @@ Long ← ∾ (≠↑1‿3/⟨"  "⊸∾⋄((@+10)∾" ,")⊸∾⟩˙) {𝕎𝕩}
   {𝕩⋄ref‿len←•Import"pr.bqn"⋄Long Frun len⊸↓⌾(1⊸⊑)Comp ref}
   {𝕩⋄Long Fout Comp •FChars "c.bqn"}
   {𝕩⋄Long Fout Comp •FChars "f.bqn"}
-  {𝕩⋄Long Fout Comp ⟨"Modify←GetHighlights←⊢⋄"⟩∾∾ •FChars∘∾⟜".bqn"¨ "../svg"‿"e"}
+  {𝕩⋄Long Fout Comp ∾⟨"Modify←GetHighlights←⊢⋄"⟩∾ •FChars∘∾⟜".bqn"¨ "../svg"‿"e"}
   ¯1 ↓ · J L∘Fout∘Comp¨
 ⟩ args
