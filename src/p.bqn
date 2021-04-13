@@ -28,7 +28,7 @@ Plot ← {
   line ← {'M'⌾⊑ ∾⥊ "L "∾¨⎉1𝕩}¨ (/≠¨⊏xy) ⊔ FmtNum ⍉> dim×Scale pts
   ((-pad)∾dim+2×pad) SVG gr Enc ∾⥊¨ ⟨
     <"rect" Elt rc∾(Pos-pad÷2)∾"width"‿"height"≍˘FmtNum dim+pad
-    pa⊸Path¨ ((0⊸≤∧≤⟜1)/·<∘∾˘("M "⊸∾˘"VH")∾¨·FmtNum dim×·∾⟜1˘(=⌜˜↕2)⊸×) Scale 0
+    pa⊸Path¨ ((0⊸≤∧≤⟜1)/·<∘∾˘("M "⊸∾˘"VH")∾¨·FmtNum dim(×∾˘⌽∘⊣)(=⌜˜↕2)⊸×) Scale 0
     pg⊸Path¨ line
   ⟩
 }
