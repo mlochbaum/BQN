@@ -47,7 +47,8 @@ _qSearch ← {+´·×`𝕗(1-=)⌜<}
 _glyphLookup_ ← {
   {PrimInd𝕩} ⊑ ((𝕘⊑˜𝕗_qSearch)⌜glyphs)˙
 }
-IsJoin ← (glyphs _qSearch'∾') = {PrimInd𝕩}
+_isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
+IsJoin ← '∾'_isGlyph
 
 Cell←{(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}⟜≢
 
@@ -791,7 +792,7 @@ Mod1Inverse ← INF˙ _lookup_ ⟨
 ⟩ {
   0⊸⊑ {𝕏𝕨}⟜𝔽 1⊸⊑
 }
-IsConstant ← (3≤Type)◶⟨1 ⋄ 4‿˙ ≡ 0‿¯1⊏{Decompose𝕩}⟩
+IsConstant ← (3≤Type)◶⟨1 ⋄ ∧´ ⟨4⊸≡,'˙'_isGlyph⟩ {𝕎𝕩}¨ 0‿¯1⊏{Decompose𝕩}⟩
 Mod2Inverse ← INF˙ _lookup_ ⟨
   '∘', AtopInverse
   '○', {Fi←𝕎⁼⋄𝕏⁼ Fi⊘(𝕏⊸Fi)}
