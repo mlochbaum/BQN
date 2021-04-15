@@ -358,16 +358,19 @@ if (typeof process!=='undefined') {
   });
 }
 
-if (typeof module!=='undefined') {
+if (typeof module!=='undefined') {  // Node.js
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;
   module.exports=bqn;
+
+  let show = x => console.log(fmt(x));
+  sysvals.show = (x,w) => { show(x); return x; };
+  sysvals.out = (x,w) => { req1str("•Out",x,w);console.log(x.join("")); return x; };
+
   if (!module.parent) {
     let args = process.argv.slice(2);
     args.map(a=>{
       try {
-        let out=[]; sysvals.show = (x,w) => { out.push(x); return x; }
-        out.push(bqn(a));
-        console.log(out.map(fmt).join('\n'));
+        show(bqn(a));
       } catch(e) {
         console.error('[31m'+fmtErr(Array.from(a),e)+'[39m');
       }
