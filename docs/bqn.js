@@ -316,10 +316,11 @@ let unixtime = (x,w) => Date.now()/1000;
 let req1str = (e,x,w) => {
   if (!isstr(x)) throw Error(e+" 𝕩: 𝕩 must be a string");
   if (has(w)) throw Error(e+": 𝕨 not allowed");
+  return x.join("");
 }
 let dojs = (x,w) => {
-  req1str("•JS",x,w);
-  let r = Function("'use strict'; return ("+x.join("")+")")();
+  let s = req1str("•JS",x,w);
+  let r = Function("'use strict'; return ("+s+")")();
   let toBQN = x => {
     if (isnum(x)) return x;
     if (typeof x==='string') { if (Array.from(x).length!==1) throw Error("•JS: JS strings are one character; use Array.from for BQN strings"); return x; }
@@ -330,7 +331,7 @@ let dojs = (x,w) => {
   return toBQN(r);
 }
 let sysvals = {
-  bqn:(x,w)=>{req1str("•BQN",x,w);return bqn(x);}, js:dojs,
+  bqn:(x,w)=> bqn(req1str("•BQN",x,w)), js:dojs,
   type, glyph, decompose, fmt:fmt1, unixtime,
   listsys: () => list(Object.keys(sysvals).map(str).sort())
 };
@@ -364,16 +365,30 @@ if (typeof module!=='undefined') {  // Node.js
 
   let show = x => console.log(fmt(x));
   sysvals.show = (x,w) => { show(x); return x; };
-  sysvals.out = (x,w) => { req1str("•Out",x,w);console.log(x.join("")); return x; };
+  sysvals.out = (x,w) => { console.log(req1str("•Out",x,w)); return x; };
 
   if (!module.parent) {
     let args = process.argv.slice(2);
-    args.map(a=>{
+    let arg0 = args[0];
+    let exec = fn => src => {
       try {
-        show(bqn(a));
+        fn(bqn(src));
       } catch(e) {
-        console.error('[31m'+fmtErr(Array.from(a),e)+'[39m');
+        console.error('[31m'+fmtErr(Array.from(src),e)+'[39m');
       }
-    });
+    }
+    if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
+      sysvals.args = list(args.slice(1).map(str));
+      let res = require('path').resolve;
+      let fread = require('fs').readFileSync;
+      let path = res(arg0,'..');
+      let read = f => fread(f,'utf-8');
+      sysvals.path = str(path);
+      sysvals.flines = (x,w) =>
+        list(read(res(path,req1str("•FLines",x,w))).split('\n').map(str));
+      exec(r=>r)(read(res(arg0)));
+    } else if (arg0 === '-e') {
+      args.slice(1).map(exec(show));
+    }
   }
 }
