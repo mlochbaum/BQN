@@ -29,6 +29,7 @@ The effect of `•Eval` should be the same as if its argument were written as so
 | `•args`    | Arguments passed to current file
 | `•path`    | Current file's path
 | `•name`    | Current filename
+| `•Exit`    | Leave the top-level running program
 
 `•Import` loads another BQN script. The script is evaluated in its own isolated scope, and its result is either the result of the last line, or a module if it exports with `⇐` at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.
 
@@ -39,6 +40,8 @@ The right argument is a filename, which may be relative or absolute. Relative pa
 `•path` simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.
 
 `•name` gives the name, including the extension, of the file in which it appears. It doesn't include the path.
+
+`•Exit` immediately terminates the running BQN process. If the argument is a valid return code (on Unix, an integer), it is returned; otherwise, the default return code (the one returned when the end of the program is reached) is used.
 
 ## Files
 
@@ -126,12 +129,13 @@ The following short names can also be provided for file access. They can be prov
 
 ## Input and output
 
-| Name   | Summary
-|--------|----------------------
-| `•Out` | Print argument string
-| `•Fmt` | Format value for printing
+| Name    | Summary
+|---------|----------------------
+| `•Out`  | Print argument string
+| `•Show` | Print argument value
+| `•Fmt`  | Format value for printing
 
-`•Out` prints to stdout, with a trailing newline. `•Fmt` returns a string (not a character table: lines are separated by linefeeds) indicating how `𝕩` would be printed by the interactive environment.
+`•Out` prints a string to stdout, with a trailing newline. `•Show` displays a BQN value to the programmer (the representation is not specified, and does not need to be plain text). `•Fmt` returns a string (not a character table: lines are separated by linefeeds) indicating how `𝕩` would be printed by the interactive environment. Both `•Show` and `•Fmt` may take a left argument configuring how the value should be formatted.
 
 ## Operation properties
 
