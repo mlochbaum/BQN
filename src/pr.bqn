@@ -6,13 +6,13 @@
 chrs←⟨
   "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"
   "˙˜˘¨⌜⁼´˝`"
-  "∘○⊸⟜⌾⊘◶⎉⚇⍟"
+  "∘○⊸⟜⌾⊘◶⎉⚇⍟⎊"
 ⟩
 glyphs ⇐ ∾chrs
 
 # Provided values, to be passed in through the constants array
 def ← ⟨"Type","Fill","Log","GroupLen","GroupOrd","_fillBy_"⟩
-keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘"
+keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘⎊"
 len ⇐ def+○≠keep
 
 GetRepls ← {

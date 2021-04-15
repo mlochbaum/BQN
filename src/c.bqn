@@ -2,7 +2,7 @@ lf←@+10
 charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
   "˙˜˘¨⌜⁼´˝`"           # 1-modifier
-  "∘○⊸⟜⌾⊘◶⎉⚇⍟"          # 2-modifier
+  "∘○⊸⟜⌾⊘◶⎉⚇⍟⎊"         # 2-modifier
   "⋄,"∾lf               # Separator
   "⇐←↩"                 # Gets
   "(){}⟨⟩"              # Bracket
