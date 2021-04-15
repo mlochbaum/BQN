@@ -311,11 +311,14 @@ let fmtErr = (s,e) => {
   return [w].concat(loc).join('\n');
 }
 
+let isstr = x => x.sh && x.sh.length==1 && x.every(c=>typeof c==="string");
 let unixtime = (x,w) => Date.now()/1000;
+let req1str = (e,x,w) => {
+  if (!isstr(x)) throw Error(e+" 𝕩: 𝕩 must be a string");
+  if (has(w)) throw Error(e+": 𝕨 not allowed");
+}
 let dojs = (x,w) => {
-  if (!(x.sh && x.sh.length==1 && x.every(c=>typeof c==="string")))
-    throw Error("•JS 𝕩: 𝕩 must be a string");
-  if (has(w)) throw Error("•JS: 𝕨 not allowed");
+  req1str("•JS",x,w);
   let r = Function("'use strict'; return ("+x.join("")+")")();
   let toBQN = x => {
     if (isnum(x)) return x;
@@ -327,7 +330,8 @@ let dojs = (x,w) => {
   return toBQN(r);
 }
 let sysvals = {
-  bqn, js:dojs, type, glyph, decompose, fmt:fmt1, unixtime,
+  bqn:(x,w)=>{req1str("•BQN",x,w);return bqn(x);}, js:dojs,
+  type, glyph, decompose, fmt:fmt1, unixtime,
   listsys: () => list(Object.keys(sysvals).map(str).sort())
 };
 sysvals.listsys.dynamic = 1;
