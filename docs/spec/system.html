@@ -62,6 +62,10 @@
 <td><code><span class='Value'>•name</span></code></td>
 <td>Current filename</td>
 </tr>
+<tr>
+<td><code><span class='Function'>•Exit</span></code></td>
+<td>Leave the top-level running program</td>
+</tr>
 </tbody>
 </table>
 <p><code><span class='Function'>•Import</span></code> loads another BQN script. The script is evaluated in its own isolated scope, and its result is either the result of the last line, or a module if it exports with <code><span class='Gets'>⇐</span></code> at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.</p>
@@ -69,6 +73,7 @@
 <p><code><span class='Value'>•args</span></code> is the arguments passed as the file was invoked, either from the command line or <code><span class='Function'>•Import</span></code>. For command line calls it is a list of strings.</p>
 <p><code><span class='Value'>•path</span></code> simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.</p>
 <p><code><span class='Value'>•name</span></code> gives the name, including the extension, of the file in which it appears. It doesn't include the path.</p>
+<p><code><span class='Function'>•Exit</span></code> immediately terminates the running BQN process. If the argument is a valid return code (on Unix, an integer), it is returned; otherwise, the default return code (the one returned when the end of the program is reached) is used.</p>
 <h2 id="files">Files</h2>
 <p>The system namespace value <code><span class='Value'>•file</span></code> deals with file operations. For the purposes of <code><span class='Value'>•file</span></code>, paths in the filesystem are always strings. As with <code><span class='Function'>•Import</span></code>, file paths may be relative or absolute, and relative paths are relative to <code><span class='Value'>•path</span></code>, except in <code><span class='Value'>•file.</span><span class='Function'>At</span></code> which allows <code><span class='Value'>𝕨</span></code> to specify an alternate base directory. The value <code><span class='Value'>•path</span></code> used for a particular instance of <code><span class='Value'>•file</span></code> is determined by the file that contains that instance.</p>
 <p>When a <code><span class='Value'>•file</span></code> function returns a file path or portion of a path, the path is always absolute and canonical, with <code><span class='Value'>.</span></code> and <code><span class='Value'>..</span></code> components removed.</p>
@@ -265,12 +270,16 @@
 <td>Print argument string</td>
 </tr>
 <tr>
+<td><code><span class='Function'>•Show</span></code></td>
+<td>Print argument value</td>
+</tr>
+<tr>
 <td><code><span class='Function'>•Fmt</span></code></td>
 <td>Format value for printing</td>
 </tr>
 </tbody>
 </table>
-<p><code><span class='Function'>•Out</span></code> prints to stdout, with a trailing newline. <code><span class='Function'>•Fmt</span></code> returns a string (not a character table: lines are separated by linefeeds) indicating how <code><span class='Value'>𝕩</span></code> would be printed by the interactive environment.</p>
+<p><code><span class='Function'>•Out</span></code> prints a string to stdout, with a trailing newline. <code><span class='Function'>•Show</span></code> displays a BQN value to the programmer (the representation is not specified, and does not need to be plain text). <code><span class='Function'>•Fmt</span></code> returns a string (not a character table: lines are separated by linefeeds) indicating how <code><span class='Value'>𝕩</span></code> would be printed by the interactive environment. Both <code><span class='Function'>•Show</span></code> and <code><span class='Function'>•Fmt</span></code> may take a left argument configuring how the value should be formatted.</p>
 <h2 id="operation-properties">Operation properties</h2>
 <table>
 <thead>
