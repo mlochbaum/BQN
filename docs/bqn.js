@@ -91,6 +91,7 @@ let arr = (r,sh,fill) => {r.sh=sh;r.fill=fill;return r;}
 let list = (l,fill) => arr(l,[l.length],fill);
 let llst = l => list(l, l.length>0&&l.every(isnum)?0:undefined);
 let str = s => list(Array.from(s), ' ');
+let unstr = s => s.join("");
 let setrepr = (r,f) => {f.repr=r; return f;}
 let ctrans = (c,t) => String.fromCodePoint(c.codePointAt(0)+t);
 let plus = (x,w) => {
@@ -270,9 +271,9 @@ let compile = run(
 );
 runtime[42] = rtAssert;
 let system = (x,w) => {
-  let r = table(s=>sysvals[s.join("")])(x);
+  let r = table(s=>sysvals[unstr(s)])(x);
   if (r.some(v=>!has(v))) {
-    let m = x.filter((_,i)=>!has(r[i])).map(s=>"•"+s.join("")).join(" ");
+    let m = x.filter((_,i)=>!has(r[i])).map(s=>"•"+unstr(s)).join(" ");
     throw Error("Unknown system values (see •listSys for available): "+m);
   }
   return table(v=>v.dynamic?v():v)(r);
@@ -288,7 +289,7 @@ let fmt1 = run(
  ,[runtime[0],runtime[1],runtime[2],runtime[6],runtime[7],runtime[9],runtime[11],runtime[12],runtime[13],runtime[14],runtime[15],runtime[16],runtime[18],runtime[19],runtime[20],runtime[21],runtime[22],runtime[23],runtime[24],runtime[25],runtime[26],runtime[27],runtime[29],runtime[30],runtime[32],runtime[35],runtime[36],runtime[43],runtime[44],runtime[45],runtime[46],runtime[47],runtime[49],runtime[50],runtime[51],runtime[52],runtime[53],runtime[54],runtime[55],runtime[56],runtime[58],runtime[59],runtime[61],0,-1,Infinity,1,2,5,4,127,32,3,10,'\0',' ','┐','↕','\"','␡','␀','·','*','0',str("@"),str("\'"),str("⟨⟩"),str("⟨"),str("⟩"),str("┌"),str("·─"),str("·╵╎┆┊"),str("┘"),str("┌┐"),str("└┘"),str(" "),str("‿"),str(""),str("array"),str("function"),str("1-modifier"),str("2-modifier"),str("00321111"),str("("),str(")"),str("{𝔽}")]
  ,[[0,1,0,0],[1,1,3,19],[0,0,399,3],[0,0,465,6],[0,0,565,3],[0,0,616,4],[0,0,655,3],[0,0,685,4],[0,0,808,3],[0,0,846,3],[0,0,885,3],[0,0,938,7],[0,0,1168,3],[0,0,1201,8],[0,0,1428,3],[0,0,1457,3],[0,0,1467,11],[0,0,1822,3],[0,0,1874,3]]
 )(list([type, decompose, glyph, fmtnum]));
-let fmt = x => fmt1(x).join("");
+let fmt = x => unstr(fmt1(x));
 
 let fmtErr = (s,e) => {
   let r=e.src, w=e.message, loc=[];
@@ -316,7 +317,7 @@ let unixtime = (x,w) => Date.now()/1000;
 let req1str = (e,x,w) => {
   if (!isstr(x)) throw Error(e+" 𝕩: 𝕩 must be a string");
   if (has(w)) throw Error(e+": 𝕨 not allowed");
-  return x.join("");
+  return unstr(x);
 }
 let dojs = (x,w) => {
   let s = req1str("•JS",x,w);
@@ -330,12 +331,12 @@ let dojs = (x,w) => {
   }
   return toBQN(r);
 }
+let dynsys = f => { f.dynamic=1; return f; }
 let sysvals = {
   bqn:(x,w)=> bqn(req1str("•BQN",x,w)), js:dojs,
   type, glyph, decompose, fmt:fmt1, unixtime,
-  listsys: () => list(Object.keys(sysvals).map(str).sort())
+  listsys: dynsys(() => list(Object.keys(sysvals).map(str).sort()))
 };
-sysvals.listsys.dynamic = 1;
 
 let make_timed = tfn => {
   let timed = f => (x,w) => {
@@ -367,6 +368,22 @@ if (typeof module!=='undefined') {  // Node.js
   sysvals.show = (x,w) => { show(x); return x; };
   sysvals.out = (x,w) => { console.log(req1str("•Out",x,w)); return x; };
 
+  let path = require('path');
+  let fs = require('fs');
+  let ff = (e,fr,fw,o) => dynsys(() => {
+    let p = sysvals.path;
+    let resolve = p ? (f=>path.resolve(unstr(p),f))
+      : (f => { if (!path.isAbsolute(f)) throw Error(e+": Paths must be absolute when not running from a file"); return f; });
+    return (x,w) => {
+      let f = resolve(req1str(e,has(w)?w:x));
+      if (has(w)) { fs.writeFileSync(f,fw(x),o); return str(f); }
+      else { return fr(fs.readFileSync(f,o)); }
+    }
+  });
+  sysvals.fchars = ff('•FChars',str,unstr,'utf-8');
+  sysvals.flines = ff('•FLines',s=>list(s.split('\n').map(str)),s=>s.map(unstr).join('\n'),'utf-8');
+  sysvals.fbytes = ff('•FBytes',s=>list(Array.from(s).map(c=>String.fromCodePoint(c))),s=>Buffer.from(s.map(c=>c.codePointAt(0))));
+
   if (!module.parent) {
     let args = process.argv.slice(2);
     let arg0 = args[0];
@@ -378,15 +395,10 @@ if (typeof module!=='undefined') {  // Node.js
       }
     }
     if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
+      sysvals.path = str(path.resolve(arg0,'..')+'/');
+      sysvals.name = str(path.basename(arg0));
       sysvals.args = list(args.slice(1).map(str));
-      let res = require('path').resolve;
-      let fread = require('fs').readFileSync;
-      let path = res(arg0,'..');
-      let read = f => fread(f,'utf-8');
-      sysvals.path = str(path);
-      sysvals.flines = (x,w) =>
-        list(read(res(path,req1str("•FLines",x,w))).split('\n').map(str));
-      exec(r=>r)(read(res(arg0)));
+      exec(r=>r)(fs.readFileSync(arg0,'utf-8'));
     } else if (arg0 === '-e') {
       args.slice(1).map(exec(show));
     }
