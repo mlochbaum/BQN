@@ -370,37 +370,49 @@ if (typeof module!=='undefined') {  // Node.js
 
   let path = require('path');
   let fs = require('fs');
-  let ff = (e,fr,fw,o) => dynsys(() => {
+  let getres = e => {
     let p = sysvals.path;
-    let resolve = p ? (f=>path.resolve(unstr(p),f))
-      : (f => { if (!path.isAbsolute(f)) throw Error(e+": Paths must be absolute when not running from a file"); return f; });
-    return (x,w) => {
-      let f = resolve(req1str(e,has(w)?w:x));
-      if (has(w)) { fs.writeFileSync(f,fw(x),o); return str(f); }
-      else { return fr(fs.readFileSync(f,o)); }
-    }
+    if (p) { p=unstr(p); return f=>path.resolve(p,f); }
+    return f => { if (!path.isAbsolute(f)) throw Error(e+": Paths must be absolute when not running from a file"); return f; };
+  }
+  let withres = (e,fn) => dynsys(() => fn(getres(e)));
+  let ff = (e,fr,fw,o) => withres(e, resolve => (x,w) => {
+    let f = resolve(req1str(e,has(w)?w:x));
+    if (has(w)) { fs.writeFileSync(f,fw(x),o); return str(f); }
+    else { return fr(fs.readFileSync(f,o)); }
   });
-  sysvals.fchars = ff('•FChars',str,unstr,'utf-8');
-  sysvals.flines = ff('•FLines',s=>list(s.split('\n').map(str)),s=>s.map(unstr).join('\n'),'utf-8');
-  sysvals.fbytes = ff('•FBytes',s=>list(Array.from(s).map(c=>String.fromCodePoint(c))),s=>Buffer.from(s.map(c=>c.codePointAt(0))));
+  sysvals.fchars = ff("•FChars",str,unstr,"utf-8");
+  sysvals.flines = ff("•FLines",s=>list(s.split('\n').map(str)),s=>s.map(unstr).join('\n'),"utf-8");
+  sysvals.fbytes = ff("•FBytes",s=>list(Array.from(s).map(c=>String.fromCodePoint(c))),s=>Buffer.from(s.map(c=>c.codePointAt(0))));
+  let bqn_state = sysvals.bqn = (x,w) => {
+    w = w||[];
+    sysvals.path=w[0]; sysvals.name=w[1]; sysvals.args=w[2];
+    return bqn(x);
+  }
+  sysvals.bqn = (x,w) => bqn_state(req1str("•BQN",x), w);
+  let bqn_file = (f,t,w) => bqn_state(
+    t, [ str(path.resolve(f,'..')+'/'), str(path.basename(f)), w ]
+  );
+  sysvals.import = withres("•Import", resolve => (x,w) => {
+    let f = resolve(req1str("•Import",x));
+    return bqn_file(f, fs.readFileSync(f,'utf-8'), w);
+  });
 
   if (!module.parent) {
     let args = process.argv.slice(2);
     let arg0 = args[0];
     let exec = fn => src => {
       try {
-        fn(bqn(src));
+        fn(src);
       } catch(e) {
         console.error('[31m'+fmtErr(Array.from(src),e)+'[39m');
       }
     }
     if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
-      sysvals.path = str(path.resolve(arg0,'..')+'/');
-      sysvals.name = str(path.basename(arg0));
-      sysvals.args = list(args.slice(1).map(str));
-      exec(r=>r)(fs.readFileSync(arg0,'utf-8'));
+      let f=arg0, a=list(args.slice(1).map(str));
+      exec(s=>bqn_file(f,s,a))(fs.readFileSync(f,'utf-8'));
     } else if (arg0 === '-e') {
-      args.slice(1).map(exec(show));
+      args.slice(1).map(exec(s=>show(bqn_state(s))));
     }
   }
 }
