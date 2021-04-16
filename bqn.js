@@ -35,9 +35,16 @@ sysvals.bqn = (x,w) => bqn_state(req1str("•BQN",x), w);
 let bqn_file = (f,t,w) => bqn_state(
   t, [ str(path.resolve(f,'..')+'/'), str(path.basename(f)), w ]
 );
+let imports = {};
 sysvals.import = withres("•Import", resolve => (x,w) => {
   let f = resolve(req1str("•Import",x));
-  return bqn_file(f, fs.readFileSync(f,'utf-8'), w);
+  let save = r=>r;
+  if (!has(w)) {
+    let c=imports[f]; if (has(c)) return c;
+    save = r => (imports[f]=r);
+    w=list([]);
+  }
+  return save(bqn_file(f, fs.readFileSync(f,'utf-8'), w));
 });
 
 if (!module.parent) {
