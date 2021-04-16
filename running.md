@@ -6,7 +6,7 @@ There are currently two active BQN implementations: the self-hosted one in this 
 
 ### BQN
 
-The online REPL is [here](https://mlochbaum.github.io/BQN/try.html). The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be loaded from HTML or Node.js. It can also be called directly from the command line (using Node): pass a file and `•args` or `-e` to execute all remaining arguments directly and print the results. [This notebook](https://observablehq.com/@lsh/bqn) shows how to run it in an Observable notebook.
+The online REPL is [here](https://mlochbaum.github.io/BQN/try.html). The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script [bqn.js](bqn.js), passing a file and `•args`, or `-e` to execute all remaining arguments directly and print the results. [This notebook](https://observablehq.com/@lsh/bqn) shows how to run it in an Observable notebook.
 
 The version of BQN in this repository is implemented mainly in BQN itself—the compiler is entirely self-hosted, while the runtime is built from a small number of starting functions using preprocessed BQN. It completely supports the core language except for block headers and multiple body syntax, and a few cases of structural Under (`⌾`). The Javascript-based compiler is also slow, taking about 0.05 seconds plus 1 second per kilobyte of source (this is purely due to the slow runtime, as dzaima+reference achieves 1ms/kB with the same compiler once warmed up).
 
