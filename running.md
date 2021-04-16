@@ -12,7 +12,7 @@ The version of BQN in this repository is implemented mainly in BQN itself—the 
 
 Because self-hosted BQN requires only a simple virtual machine to run, it is [fairly easy](implementation/vm.md) to embed it in another programming language by implementing this virtual machine. The way data is represented is part of the VM implementation: it can use native arrays or a custom data structure, depending on what the language supports. An initial implementation will be very slow, but can be improved by replacing functions from the BQN-based runtime with native code. As the VM system can be hard to work with if you're not familiar with it, I advise you to contact me to discuss this option it you are interested.
 
-In progress VMs are [CBQN](https://github.com/dzaima/CBQN) in C, and [ebqn](https://github.com/cannadayr/ebqn) in Erlang. Although both of these work (can compile and run code; only missing some fill support in CBQN), neither is considered useful for any purpose yet. CBQN is likely to become the main high-performance BQN implementation but is currently only a few times faster than Javascript and has an interface that's only useful for testing. ebqn is extremely slow—hours to compile.
+In progress VMs are [CBQN](https://github.com/dzaima/CBQN) in C, and [ebqn](https://github.com/cannadayr/ebqn) in Erlang. Although both of these execute BQN just like the JS version, neither is considered useful for any purpose yet. CBQN is likely to become the main high-performance BQN implementation but is currently only a few times faster than Javascript and has an interface that's only useful for testing. ebqn is extremely slow—hours to compile.
 
 ### dzaima/BQN
 
