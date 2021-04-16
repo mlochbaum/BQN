@@ -6,6 +6,8 @@ This page describes the semantics of the code constructs whose grammar is given 
 
 Here we assume that the referent of each identifier, or equivalently the connections between identifiers, have been identified according to the [scoping rules](scope.md).
 
+Errors described in this page are "evaluation errors" and can be caught by the Catch (`⎊`) modifier. If an error is caught, evaluation halts without attempting to complete any in-progress node, and is restarted as part of the execution of Catch.
+
 ### Programs and blocks
 
 The result of parsing a valid BQN program is a `PROGRAM`, and the program is run by evaluating this term.

@@ -68,6 +68,9 @@
 <ul>
 <li><strong>Assert</strong> (<code><span class='Function'>!</span></code>) causes an error if the argument is not <code><span class='Number'>1</span></code>. If <code><span class='Value'>𝕨</span></code> is provided, it gives a message to be associated with this error (which can be any value, not necessarily a string).</li>
 </ul>
+<ul>
+<li><strong>Catch</strong> (<code><span class='Modifier2'>⎊</span></code>) evaluates <code><span class='Function'>𝔽</span></code> on the arguments <code><span class='Value'>𝕨</span></code> (if present) and <code><span class='Value'>𝕩</span></code>. If <code><span class='Function'>𝔽</span></code> completes without error it returns the result, but if evaluation of <code><span class='Function'>𝔽</span></code> results in an error then the error is suppressed, and Catch evaluates <code><span class='Function'>𝔾</span></code> on the arguments and returns the result. Errors in <code><span class='Function'>𝔾</span></code> are not caught. Catch only prevents evaluation errors, and not syntax errors: these are considered errors in the program as a whole rather than any particular part of it.</li>
+</ul>
 <h2 id="commentary-on-other-primitives">Commentary on other primitives</h2>
 <p>As noted above, see <a href="https://github.com/mlochbaum/BQN/blob/master/spec/reference.bqn">reference.bqn</a> for the authoritative definitions. Commentary here gives an overall description and highlights implementation subtleties and edge cases.</p>
 <h3 id="combinators">Combinators</h3>
