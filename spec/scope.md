@@ -20,6 +20,8 @@ The definition for an identifier is chosen from the potential definitions based 
 
 The definition of *program order* for identifier tokens follows the order of BQN [execution](evaluate.md). It corresponds to the order of a particular traversal of the abstract syntax tree for a program. To find the relative ordering of two identifiers in a program, we consider the highest-depth node that they both belong to; in this node they must occur in different components, or that component would be a higher-depth node containing both of them. In most nodes, the program order goes from right to left: components further to the right come earlier in program order. The exceptions are `PROGRAM`, `BODY`, `NS_BODY`, `list`, `subject` (for stranding), and body case (`FCase`, `_mCase`, `_cCase_`, `FMain`, `_mMain`, `_cMain_`, `brSub`, `BrFunc`, `_brMod1`, and `_brMod2_`) nodes, in which program order goes in the opposite order, from left to right (some assignment target nodes also contain lists or strands, but their ordering is irrelevant because if two identifiers with the same name appear in such a list, then it can't be a definition).
 
+A subject label is the `s` term in a `brSub` node. As part of a header, it can serve as the definition for an identifier. However, it's defined to be a syntax error if another instance of this identifier appears, except in a `Return` node (which cannot access its value).
+
 ### Special names
 
 Special names such as `𝕩` or `𝕣` refer to variables, but have no definition and do not use scoping. Instead, they always refer to the immediately enclosing scope, and are defined automatically when the block is evaluated.
@@ -41,3 +43,7 @@ When a body in a block is evaluated, it creates a *namespace*, which contains a 
 The first access to a variable must be made by its definition (this also means it sets the variable). If a different instance of its identifier accesses it first, then an error results. This can happen because every scope contained in a particular scope sees all the definitions it uses, and such a scope could be called before the definition is run. Because of conditional execution, this property must be checked at run time in general; however, in cases where it is possible to statically determine that a program will always violate it, a BQN instance can give an error at compile time rather than run time.
 
 A namespace defines a mapping from names to variables: if the given name is shared by an exported identifier in the body used to create that namespace, then that name maps to the variable corresponding to that identifier. The mapping is undefined for other names.
+
+## Returns
+
+The name `NAME | "𝕊" | "𝕣"` in a `Return` node is resolved exactly like any other identifier. Following resolution, the block that defines the identifier must not be a namespace block (export variables or contain an `EXPORT` statement). Furthermore, if it is a `NAME`, then its definition must be an internal name for a containing block: `s` in `brSub`, `F` in `FuncHead` or `FMain`, `_m` in `Mod1H1` or `_mMain`, or `_c_` in `Mod2H1` or `_cMain_`. When reached, the `Return` node's identifier is not accessed; instead, it is used to indicate the namespace that contains it, and through this the block evaluation that created that namespace.
