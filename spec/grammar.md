@@ -34,11 +34,13 @@ Starting at the highest-order objects, modifiers have fairly simple syntax. In m
              | Operand _mod2_             # Left partial application
              | _m  ASGN _m1Expr
 
-Functions can be formed by fully applying modifiers or as trains. modifiers are left-associative, so that the left operand (`Operand`) can include modifier applications but the right operand (`subject | Func`) cannot. Trains are right-associative, but bind less tightly than modifiers. Assignment is not allowed in the top level of a train: it must be parenthesized.
+Functions can be formed by fully applying modifiers, as trains, or with the return token `→`, which behaves syntactically like a 1-modifier whose operand must be an identifier. Modifiers are left-associative, so that the left operand (`Operand`) can include modifier applications but the right operand (`subject | Func`) cannot. Trains are right-associative, but bind less tightly than modifiers. Assignment is not allowed in the top level of a train: it must be parenthesized.
 
     Derv     = Func
              | Operand _mod1
              | Operand _mod2_ ( subject | Func )
+             | Return
+    Return   = ( NAME | "𝕊" | "𝕣" ) "→"
     Operand  = subject
              | Derv
     Fork     = Derv
@@ -55,11 +57,11 @@ Subject expressions are complicated by the possibility of list and namespace ass
              | ( subject | nothing )? Derv arg
     nothing  = "·"
              | ( subject | nothing )? Derv nothing
-    LHS_NAME = s | F | _m | _c_
-    LHS_ANY  = LHS_NAME | lhsList
+    NAME     = s | F | _m | _c_
+    LHS_ANY  = NAME | lhsList
     LHS_ATOM = LHS_ANY | "(" lhsStr ")"
     LHS_ELT  = LHS_ANY | lhsStr
-    LHS_ENTRY= LHS_ELT | lhs "⇐" LHS_NAME
+    LHS_ENTRY= LHS_ELT | lhs "⇐" NAME
     lhsStr   = LHS_ATOM ( "‿" LHS_ATOM )+
     lhsList  = "⟨" ⋄? ( ( LHS_ENTRY ⋄ )* LHS_ENTRY ⋄? )? "⟩"
     lhs      = s | lhsList | lhsStr
