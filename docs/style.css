@@ -46,7 +46,7 @@ table th {
 }
 @font-face{
   font-family: BQN386;
-  src: url(BQN386_sub.woff2) format('woff2');
+  src: url(BQN386.ttf) format('truetype');
 }
 @font-face{
   font-family: Iosevka;
