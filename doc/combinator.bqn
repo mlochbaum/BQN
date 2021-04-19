@@ -14,7 +14,7 @@ rc ← At "class=code|stroke-width=1|rx=12"
 rc ∾↩ (Pos⟨¯0.43×w,1⟩)∾"width"‿"height"≍˘FmtNum⟨0.86×w,h-55⟩
 cc ← At "r=12|class=code|stroke-width=0"
 n ← Text∘‿2⥊⟨"y",FmtNum h-37, "fill","currentColor"⟩
-case ← (¯1‿1×w÷4.6) ("g"At"font-size=21px|font-family=monospace")_trans¨ 25
+case ← (¯1‿1×w÷4.6) ("g"At"font-size=21px|font-family=BQN,monospace")_trans¨ 25
 lt← Text∘‿2⥊⟨"y",FmtNum h-105, "font-size","19px"⟩
 
 FromPath ← ≠≍+´
