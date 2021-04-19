@@ -125,7 +125,7 @@ doc.kb.onmousedown = ev => {
 }
 
 if (doc.demo) {
-  let fonts=[["DejaVu","Mod"],["BQN386"],["Fairfax","HD"],["3270","font"],["Iosevka","Term"],["Julia","Mono"]];
+  let fonts=[["BQN386"],["DejaVu","Mod"],["Fairfax","HD"],["3270","font"],["Iosevka","Term"],["Julia","Mono"]];
   let fclass = f => f==="3270"?"f"+f:f
   let fontsel = '<select>'+fonts.map(f =>
       '<option value="'+f[0]+'">'+f[0]+(f[1]?' '+f[1]:'')+'</option>'
