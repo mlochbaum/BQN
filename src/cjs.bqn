@@ -14,14 +14,13 @@ Esc←{
 }
 Str ← "str("""∾Esc∾""")"˜     # A BQN string
 Char ← "'"(∾∾⊣)Esc∘⥊          # A BQN character
-FP ← ∞⊸=◶⟨⍕,"Infinity"⟩       # Format positive number
+F ← ⍕                         # Format number
+FP ← ∞⊸=◶⟨F,"Infinity"⟩       # Format positive number
 Num ← 0⊸≤◶⟨"-"∾FP∘|,FP⟩       # Format number
-
-F ← ⍕  # Format number
 
 compile ← •Import "c.bqn"
 useInd ← "-i"≡⊑args←•args ⋄ args↓˜↩useInd
-Comp ← (3+useInd) ↑ ((<"runtime" Ind ⍕)¨↕62)⊸Compile
+Comp ← (3+useInd) ↑ ((<"runtime" Ind F)¨↕62)⊸Compile
 J ← ∾∾⟜(@+10)¨
 Fconst ← ≡◶⟨@⊸≤◶Num‿Char, Str, ⊑⟩
 Fout ← (≠↑⟨F,Fconst,L F¨,F⟩˙) {L𝕎¨𝕩}¨ ⊢
