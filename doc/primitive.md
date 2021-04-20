@@ -80,12 +80,12 @@ Choose isn't really a combinator since it calls the function `⊑`, and Under is
 
 Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: in each case the 1-modifier happens to be the same as the 2-modifier with a right operand of `¯1`.
 
-1-Modifier | Name    | 2-Modifier | Name
------------|---------|------------|--------
-`˘`        | Cells   | `⎉`        | Rank
-`¨`        | Each    | `⚇`        | Depth
-`⌜`        | Table   |
-`⁼`        | Undo    | `⍟`        | Repeat
-`´`        | Fold    |
-`˝`        | Insert  |
-`` ` ``    | Scan    |
+1-Modifier | Name                                  | 2-Modifier | Name
+-----------|---------------------------------------|------------|--------
+`˘`        | Cells                                 | `⎉`        | [Rank](https://aplwiki.com/wiki/Rank_(operator))
+`¨`        | [Each](https://aplwiki.com/wiki/Each) | `⚇`        | Depth
+`⌜`        | Table                                 |
+`⁼`        | Undo                                  | `⍟`        | Repeat
+`´`        | Fold                                  |
+`˝`        | Insert                                |
+`` ` ``    | Scan                                  |
