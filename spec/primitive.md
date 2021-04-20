@@ -26,7 +26,7 @@ The three higher functions `×`, `÷`, and `⋆` apply to numbers and no other a
 
 In the first two cases, if the result would not be a valid Unicode code point, then an error results. The remaining cases of `+` and `-` (adding two characters; negating a character or subtracting it from a number) are not allowed.
 
-Additionally, the **Floor** function `⌊` returns the largest integer smaller than the argument, or the argument itself if it is `¯∞` or `∞`. It's needed because the arithmetic operations give no fixed-time way to determine if a value is an integer. Floor gives an error if the argument is an atom other than a number.
+Additionally, the **Floor** function `⌊` returns the largest integer smaller than or equal to the argument, or the argument itself if it is `¯∞` or `∞`. It's needed because the arithmetic operations give no fixed-time way to determine if a value is an integer. Floor gives an error if the argument is an atom other than a number.
 
 ### Comparison
 
