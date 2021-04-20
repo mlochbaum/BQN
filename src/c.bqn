@@ -95,12 +95,12 @@ ReadNums←{
   "Portion of a number is empty"_err_𝕨 (1«s)∧n∨s
   "Ill-formed decimal or exponent use"_err_(s/𝕎) ¬(0⊸=∨»⊸<)s/𝕩
   "π and ∞ must occur alone"_err_𝕨 (p∨i)>1(»∧(p∧«e)∨«)z∨n>»e
-  f←(17≥¬(⊢-T)+`)⊸∧(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m   # No leading 0s; max 17 digits
+  f←(17≥¬(⊢-T)+`)⊸∧g←(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m # No leading 0s; max 17 digits
   l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/f×𝕩-1-˜⊑bD          # Digit lookup, with ∞ as 1 to avoid ∞×0
   v←(>⟜«0≤l)/0(0⊸≤××⟜10⊸+)`l                # Numeric values—mantissas and exponents
   v×↩1‿¯1⊏˜(r←>⟜»m)/»n                      # Negate if ¯
   vm←c/z                                    # Mask of mantissas in l
-  dp←vm/(»⊸<×-)⟜(⊏⟜(I1T d∾0))1+/>⟜«f        # Decimal position
+  dp←vm/f(--»⊸-(<×⊢)⊏⟜(I1T«d)⊸-)○(/>⟜«)g    # Decimal position
   t←10⋆|ee←dp-˜vm/«v×¬vm                    # Power of 10
   t÷˜⌾((0>ee)⊸/)t×⌾((0<ee)⊸/)vm/v×(r/i)⊏1‿∞ # Correct ∞ then ×10⋆ee
 }
