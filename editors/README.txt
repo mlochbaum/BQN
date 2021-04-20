@@ -3,8 +3,14 @@ performed with a backslash prefix by default, using the layout
 illustrated at the top of the file ./bqn . To type an actual backslash,
 hit the backslash key twice.
 
-The file bqn is for configuring XKB on Linux. I haven't tried this but
-others have it working. See:
+The file bqn is for configuring XKB on Linux. To use, copy it
+to /usr/share/X11/xkb/symbols/, then run
+$ setxkbmap -layout us,bqn -option grp:switch
+replacing "us" with your ordinary keyboard layout. "switch" indicates
+the right alt key and can be replaced with "lswitch" for left alt or
+other codes. The setting will go away on shutdown so you will probably
+want to configure it to run every time you start up. The way to do this
+depends on your desktop environment. For further discussion, see:
 - https://en.wikipedia.org/wiki/X_keyboard_extension
 - https://aplwiki.com/wiki/Typing_glyphs_on_Linux
 
