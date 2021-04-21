@@ -1,0 +1,146 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Fold and Insert</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="fold-and-insert">Fold and Insert</h1>
+<p>The closely related 1-modifiers Fold (<code><span class='Modifier'>´</span></code>) and Insert (<code><span class='Modifier'>˝</span></code>) apply a dyadic operand function <code><span class='Function'>𝔽</span></code> repeatedly between elements or major cells of <code><span class='Value'>𝕩</span></code>. Neither is quite like the APL2-style Reduce operator (<code><span class='Function'>/</span></code> or <code><span class='Value'>⌿</span></code> in APL), although I sometimes use the term &quot;reduction&quot; to mean either Fold or Insert. There are a bunch of other names like &quot;accumulate&quot; and &quot;aggregate&quot; for this class of calculations—I don't know which is best but I know &quot;catamorphism&quot; is worst.</p>
+<p>A distinguishing feature of APL-family reductions is that they don't use an initial value, and try to derive an &quot;identity element&quot; from the operand if the argument array is empty. BQN retains this capability but also allows the programmer to supply an initial value as <code><span class='Value'>𝕨</span></code>.</p>
+<h2 id="fold">Fold</h2>
+<p>As its glyph suggests, Fold is slightly simpler than Insert. The argument <code><span class='Value'>𝕩</span></code> must always be a list, and Fold applies <code><span class='Function'>𝔽</span></code> between elements—always two at a time—of the list to yield a single result value. In this sense, <code><span class='Function'>𝔽</span><span class='Modifier'>´</span></code> removes a layer of <a href="depth.html">depth</a> from <code><span class='Value'>𝕩</span></code>, although it's not necessarily true that the depth of <code><span class='Function'>𝔽</span><span class='Modifier'>´</span><span class='Value'>𝕩</span></code> is less than that of <code><span class='Value'>𝕩</span></code> because the function <code><span class='Function'>𝔽</span></code> might increase depth.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8K0IDLigL804oC/M+KAvzEKK8K0IOKfqDLigL80LCAz4oC/MeKfqQ==">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>´</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+10
+    <span class='Function'>+</span><span class='Modifier'>´</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Bracket'>⟩</span>
+⟨ 5 5 ⟩
+</pre>
+<p>Any function can be used as an operand. With Maximum (<code><span class='Function'>⌈</span></code>) you can find the largest number out of an entire list, and likewise for Minimum (<code><span class='Function'>⌊</span></code>).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oyIwrQgMuKAvzTigL8z4oC/MQrijIrCtCAy4oC/NOKAvzPigL8xCsOXwrQgMuKAvzTigL8z4oC/MSAgIyBQcm9kdWN0IGFzIHdlbGw=">↗️</a><pre>    <span class='Function'>⌈</span><span class='Modifier'>´</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+4
+    <span class='Function'>⌊</span><span class='Modifier'>´</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+1
+    <span class='Function'>×</span><span class='Modifier'>´</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span>  <span class='Comment'># Product as well
+</span>24
+</pre>
+<p>The <a href="logic.html">logic</a> function And (<code><span class='Function'>∧</span></code>) tests if all elements of a boolean list are 1, while Or (<code><span class='Function'>∨</span></code>) tests if any are 1.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oinwrQgMeKAvzHigL8wCuKIqMK0IDHigL8x4oC/MA==">↗️</a><pre>    <span class='Function'>∧</span><span class='Modifier'>´</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+0
+    <span class='Function'>∨</span><span class='Modifier'>´</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+1
+</pre>
+<h3 id="identity-values">Identity values</h3>
+<p>Folding over a list of length 1 never calls the operand function: it returns the lone element unchanged.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IcK0IOKfqOKOiuKfqQ==">↗️</a><pre>    <span class='Function'>!</span><span class='Modifier'>´</span> <span class='Bracket'>⟨</span><span class='Modifier2'>⎊</span><span class='Bracket'>⟩</span>
+⎊
+</pre>
+<p>Folding over a list of two values applies <code><span class='Function'>𝔽</span></code> once, since <code><span class='Function'>𝔽</span></code> is always called on two arguments. But what about zero values? Should <code><span class='Function'>𝔽</span></code> be applied minus one times? Sort of. BQN checks to see if it knows an <em>identity value</em> for the operand function, and returns that, never calling the function. This works for the arithmetic functions we showed above, always returning a single number.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8K0IOKfqOKfqSAgIyBBZGQgbm90aGluZyB1cCwgZ2V0IHplcm8K4oyIwrQg4p+o4p+pICAjIFRoZSBzbWFsbGVzdCBudW1iZXIK4oinwrQg4p+o4p+pICAjIEFsbCB0aGUgZWxlbWVudHMgaW4gdGhlIGxpc3QgYXJlIHRydWXigKY=">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>´</span> <span class='Bracket'>⟨⟩</span>  <span class='Comment'># Add nothing up, get zero
+</span>0
+    <span class='Function'>⌈</span><span class='Modifier'>´</span> <span class='Bracket'>⟨⟩</span>  <span class='Comment'># The smallest number
+</span>¯∞
+    <span class='Function'>∧</span><span class='Modifier'>´</span> <span class='Bracket'>⟨⟩</span>  <span class='Comment'># All the elements in the list are true…
+</span>1
+</pre>
+<p>The full list of identity values Fold has to use is shown below.</p>
+<table>
+<thead>
+<tr>
+<th align="right">Id</th>
+<th align="center">Fn</th>
+<th align="center">Fn</th>
+<th align="right">Id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right"><code><span class='Number'>0</span></code></td>
+<td align="center"><code><span class='Function'>+</span></code></td>
+<td align="center"><code><span class='Function'>-</span></code></td>
+<td align="right"><code><span class='Number'>0</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>1</span></code></td>
+<td align="center"><code><span class='Function'>×</span></code></td>
+<td align="center"><code><span class='Function'>÷</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>1</span></code></td>
+<td align="center"><code><span class='Function'>⋆</span></code></td>
+<td align="center"><code><span class='Function'>¬</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>∞</span></code></td>
+<td align="center"><code><span class='Function'>⌊</span></code></td>
+<td align="center"><code><span class='Function'>⌈</span></code></td>
+<td align="right"><code><span class='Number'>¯∞</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>0</span></code></td>
+<td align="center"><code><span class='Function'>∨</span></code></td>
+<td align="center"><code><span class='Function'>∧</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>0</span></code></td>
+<td align="center"><code><span class='Function'>≠</span></code></td>
+<td align="center"><code><span class='Function'>=</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td align="right"><code><span class='Number'>0</span></code></td>
+<td align="center"><code><span class='Function'>&gt;</span></code></td>
+<td align="center"><code><span class='Function'>≥</span></code></td>
+<td align="right"><code><span class='Number'>1</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="right-to-left">Right-to-left</h3>
+<p>The functions we've shown so far are associative (ignoring floating point imprecision), meaning it's equally valid to combine elements of the argument list in any order. But it can be useful to fold using a non-associative function. In this case you must know that Fold performs a <em>right fold</em>, starting from the array and working towards the beginning.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omN4peLPMK0ICJhYmNkIgoKJ2EnIOKJjeKXizwgJ2InIOKJjeKXizwgJ2MnIOKJjeKXizwgJ2QnICAjIEV4cGFuZGVkIGZvcm0=">↗️</a><pre>    <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span><span class='Modifier'>´</span> <span class='String'>&quot;abcd&quot;</span>
+⟨ 'a' ⟨ 'b' "cd" ⟩ ⟩
+
+    <span class='String'>'a'</span> <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span> <span class='String'>'b'</span> <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span> <span class='String'>'c'</span> <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span> <span class='String'>'d'</span>  <span class='Comment'># Expanded form
+</span>⟨ 'a' ⟨ 'b' "cd" ⟩ ⟩
+</pre>
+<p>Using the pair function <code><span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span></code> as an operand shows the structure nicely. This fold first pairs the final two characters <code><span class='String'>'c'</span></code> and <code><span class='String'>'d'</span></code>, then pairs <code><span class='String'>'b'</span></code> with that and so on. This matches BQN's right-to-left order of evaluation. More declaratively we might say that each character is paired with the result of folding over everything to its right.</p>
+<p>BQN doesn't provide a left Fold (<code><span class='Modifier'>`</span></code> is Scan). However, you can fold from the left by reversing (<code><span class='Function'>⌽</span></code>) the argument list and also reversing (<code><span class='Modifier'>˜</span></code>) the operand function's argument order.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omN4peLPMucwrQg4oy9ICJhYmNkIg==">↗️</a><pre>    <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span><span class='Modifier'>˜´</span> <span class='Function'>⌽</span> <span class='String'>&quot;abcd&quot;</span>
+⟨ ⟨ "ab" 'c' ⟩ 'd' ⟩
+</pre>
+<p>One consequence of this ordering is that folding with Minus (<code><span class='Function'>-</span></code>) gives an alternating sum, where the first value is added, the second subtracted, the third added, and so on. Similarly, <code><span class='Function'>÷</span></code> gives an alternating product, with some elements multiplied and some divided.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LcK0IDMw4oC/MeKAvzIw4oC/MuKAvzEw">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier'>´</span> <span class='Number'>30</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>20</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>10</span>
+57
+</pre>
+<p>The operand <code><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Function'>÷</span></code> is a quick way to compute a <a href="https://en.wikipedia.org/wiki/Continued_fraction">continued fraction</a>'s value from a list of numbers. Here are a few terms from the continued fraction for <em>e</em>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K+KfnMO3wrQgMuKAvzHigL8y4oC/MeKAvzHigL804oC/MeKAvzE=">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Function'>÷</span><span class='Modifier'>´</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+2.7183098591549295
+</pre>
+<h3 id="initial-element">Initial element</h3>
+<p>When the operand isn't just an arithmetic primitive, folding with no initial element can be dangerous. Even if you know <code><span class='Value'>𝕩</span></code> isn't empty, saving you from an &quot;Identity not found&quot; error, the case with only one element can easily violate expectations. Here's a somewhat silly example of a function meant to merge elements of the argument into a single list (<code><span class='Function'>∾⥊</span><span class='Modifier'>¨</span></code> is a much better way to do this):</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oi+4peL4qWKwrQg4p+oMuKAvzTiiY024oC/OCwiYWJjZCIsMOKfqQoK4oi+4peL4qWKwrQg4p+oMuKAvzTiiY024oC/OCwiYWJjZCLin6kKCuKIvuKXi+KlisK0IOKfqDLigL804omNNuKAvzjin6k=">↗️</a><pre>    <span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Function'>⥊</span><span class='Modifier'>´</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>≍</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Separator'>,</span><span class='String'>&quot;abcd&quot;</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Bracket'>⟩</span>
+⟨ 2 4 6 8 'a' 'b' 'c' 'd' 0 ⟩
+
+    <span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Function'>⥊</span><span class='Modifier'>´</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>≍</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Separator'>,</span><span class='String'>&quot;abcd&quot;</span><span class='Bracket'>⟩</span>
+⟨ 2 4 6 8 'a' 'b' 'c' 'd' ⟩
+
+    <span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Function'>⥊</span><span class='Modifier'>´</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>≍</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Bracket'>⟩</span>
+┌─     
+╵ 2 4  
+  6 8  
+      ┘
+</pre>
+<p>The result always has rank 1, until the one-element case, when <code><span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Function'>⥊</span></code> is never applied and can't deshape anything. Using Fold with lots of complex operands and no initial element can make a program fragile.</p>
+<p>However, it's easy to specify an initial element for Fold: simply pass it as <code><span class='Value'>𝕨</span></code>. Because <code><span class='Value'>𝕨</span></code> behaves like an element of <code><span class='Value'>𝕩</span></code>, it doesn't need to be enclosed and will usually have one smaller depth. For <code><span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Function'>⥊</span></code> the natural starting element for a fold that returns a list is the empty list.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+o4p+pIOKIvuKXi+KlisK0IOKfqDLigL804omNNuKAvzjin6k=">↗️</a><pre>    <span class='Bracket'>⟨⟩</span> <span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Function'>⥊</span><span class='Modifier'>´</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>≍</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Bracket'>⟩</span>
+⟨ 2 4 6 8 ⟩
+</pre>
+<p>The initial element is used in the first function application, so it behaves as though it's added to the end of the list (<code><span class='Function'>∾</span><span class='Modifier2'>⟜</span><span class='Function'>&lt;</span><span class='Modifier'>˜</span></code> would accomplish this as well).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImVuZCIg4oi+4peL4qWKwrQg4p+oInN0YXJ0IiwibWlkZGxlIuKfqQ==">↗️</a><pre>    <span class='String'>&quot;end&quot;</span> <span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Function'>⥊</span><span class='Modifier'>´</span> <span class='Bracket'>⟨</span><span class='String'>&quot;start&quot;</span><span class='Separator'>,</span><span class='String'>&quot;middle&quot;</span><span class='Bracket'>⟩</span>
+"startmiddleend"
+</pre>
+<p>Folding with <code><span class='Value'>𝕨</span></code> never needs to come up with an identity value, and the number of function applications is exactly the length of <code><span class='Value'>𝕩</span></code>. A function <code><span class='Function'>P</span></code> can be applied to each element of <code><span class='Value'>𝕩</span></code> before operating using <code><span class='Value'>𝕨</span><span class='Function'>P</span><span class='Modifier2'>⊸</span><span class='Function'>F</span><span class='Modifier'>´</span><span class='Value'>𝕩</span></code>, which is equivalent to <code><span class='Value'>𝕨</span> <span class='Function'>F</span><span class='Modifier'>´</span> <span class='Function'>P</span><span class='Modifier'>¨</span><span class='Value'>𝕩</span></code> except for the order in which <code><span class='Function'>F</span></code> and <code><span class='Function'>P</span></code> are invoked (if they have side effects).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IlNUT1AiIOKMveKKuOKIvsK0ICJBQkNERSLigL8iMDEyIuKAvyJhYmNkIg==">↗️</a><pre>    <span class='String'>&quot;STOP&quot;</span> <span class='Function'>⌽</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>´</span> <span class='String'>&quot;ABCDE&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;012&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;abcd&quot;</span>
+"EDCBA210dcbaSTOP"
+</pre>

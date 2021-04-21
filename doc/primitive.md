@@ -86,6 +86,6 @@ Other modifiers control array traversal and iteration. In three cases a simpler 
 `¨`        | [Each](https://aplwiki.com/wiki/Each) | `⚇`        | Depth
 `⌜`        | Table                                 |
 `⁼`        | Undo                                  | `⍟`        | Repeat
-`´`        | Fold                                  |
-`˝`        | Insert                                |
+`´`        | [Fold](fold.md)                       |
+`˝`        | [Insert](fold.md)                     |
 `` ` ``    | Scan                                  |
