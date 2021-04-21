@@ -20,7 +20,7 @@ M ← {e‿b:
     """",b,""": expected "
     "to fail"⍟("!"⊸≡)e
     " but "
-    0⊸≡◶⟨"received "∾2•Pretty⊑,"evaluation failed"⟩𝕩
+    0⊸≡◶⟨"received "∾2•Fmt⊑,"evaluation failed"⟩𝕩
     ⥊@+10
   ⟩}
   ("!"⊸≡◶⟨<Native,0˙⟩ e) ≢◶""‿Msg <∘Exec⎊0 b
