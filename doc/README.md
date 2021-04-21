@@ -26,6 +26,7 @@ Primitives:
 - [Array depth](depth.md) (`≡` and `⚇`)
 - [Assert](assert.md) (`!`)
 - [Deshape and Reshape](reshape.md) (`⥊`)
+- [Fold and Insert](fold.md) (`´˝`)
 - [Group](group.md) (`⊔`)
 - [Join and Join To](join.md) (`∾`)
 - [Logical functions](logic.md) (`∧∨¬`)
