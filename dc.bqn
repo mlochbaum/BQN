@@ -4,12 +4,9 @@
 # multiple bodies, and use variable names instead of counts.
 # Rearrange and make up some names so the bytecode can be run.
 
-compile ← •Import "src/c.bqn"
-prims ← ⟨
-  +,-,×,÷,⋆,√,⌊,⌈,|,¬,∧,∨,<,>,≠,=,≤,≥,≡,≢,⊣,⊢,⥊,∾,≍,↑,↓,↕,«,»,⌽,⍉,/,⍋,⍒,⊏,⊑,⊐,⊒,∊,⍷,⊔,!
-  ˙,˜,˘,¨,⌜,⁼,´,˝,`
-  ∘,○,⊸,⟜,⌾,⊘,◶,⎉,⚇,⍟
-⟩
+glyphs ← •Import "src/glyphs.bqn"
+compile ← glyphs •Import "src/c.bqn"
+prims ← •BQN∘⥊¨ ∾glyphs
 
 special←<˘∘‿2⥊"𝕤𝕩𝕨𝕣𝕗𝕘"
 DCompile⇐{
