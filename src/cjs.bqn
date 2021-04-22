@@ -27,13 +27,17 @@ Fconst ← ≡◶⟨@⊸≤◶Num‿Char, Str, ⊑⟩
 Fout ← (≠↑⟨F,Fconst,L F¨,F⟩˙) {L𝕎¨𝕩}¨ ⊢
 Frun ← "provide"⊸Cat⌾(1⊸⊑) Fout
 Long ← ∾ (≠↑1‿3/⟨"  "⊸∾⋄((@+10)∾" ,")⊸∾⟩˙) {𝕎𝕩}¨ ⊢
+LFC ← Long∘Fout∘Comp
+
 SVG ← {∾⟨"Modify←GetHighlights←⊢⋄"⟩∾ •FChars∘∾⟜".bqn"¨ "../svg"‿𝕩}
-•Out (⊑"r"‿"c"‿"f"‿"e"‿"p"⊐⊏)◶⟨
+CArg ← {J (¯5⊸↓∾𝕩˙)⌾⊑ •FLines "c.bqn"}
+
+•Out (⊑"r"‿"c"‿"cc"‿"f"‿"e"‿"p"⊐⊏)◶⟨
   {𝕩⋄ref‿len←•Import"pr.bqn"⋄Long Frun len⊸↓⌾(1⊸⊑)Comp ref}
-  {𝕩⋄g←"⟨"∾"⟩"«∾","⊸∾¨'"'(⊣∾∾˜)¨glyphs
-     Long Fout Comp J (¯5⊸↓∾g˙)⌾⊑ •FLines "c.bqn"}
-  {𝕩⋄Long Fout Comp •FChars "f.bqn"}
-  {𝕩⋄Long Fout Comp SVG "e"}
-  {𝕩⋄Long Fout Comp SVG "p"}
+  {𝕩⋄LFC CArg "⟨"∾"⟩"«∾","⊸∾¨'"'(⊣∾∾˜)¨glyphs}
+  {𝕩⋄LFC "{"∾"}"∾˜CArg"𝕩"}
+  {𝕩⋄LFC •FChars "f.bqn"}
+  {𝕩⋄LFC SVG "e"}
+  {𝕩⋄LFC SVG "p"}
   ¯1 ↓ · J L∘Fout∘Comp¨
 ⟩ args
