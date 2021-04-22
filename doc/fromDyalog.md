@@ -124,7 +124,7 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><th colspan=3>Operators</th></tr>
 <tr><th> Syntax           </th><th> Monadic          </th><th> Dyadic                </th></tr>
 <tr><td> <code>⌿</code>   </td><td> <code>¨˝</code>  </td><td> <code>↕</code>        </td></tr>
-<tr><td> <code>⍀</code>   </td><td colspan=2> <code>↑</code> or <code>`</code>       </td></tr>
+<tr><td> <code>⍀</code>   </td><td colspan=2> <code>↑</code>, or <code>`</code> if associative </td></tr>
 <tr><td> <code>¨</code>   </td><td colspan=2> <code>¨</code>                         </td></tr>
 <tr><td> <code>⍨</code>   </td><td colspan=2> <code>˜</code>                         </td></tr>
 <tr><td> <code>⍣</code>   </td><td colspan=2> <code>⍟</code>                         </td></tr>
