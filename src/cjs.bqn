@@ -18,7 +18,8 @@ F ← ⍕                         # Format number
 FP ← ∞⊸=◶⟨F,"Infinity"⟩       # Format positive number
 Num ← 0⊸≤◶⟨"-"∾FP∘|,FP⟩       # Format number
 
-compile ← •Import "c.bqn"
+glyphs ← •Import "glyphs.bqn"
+compile ← glyphs •Import "c.bqn"
 useInd ← "-i"≡⊑args←•args ⋄ args↓˜↩useInd
 Comp ← (3+useInd) ↑ ((<"runtime" Ind F)¨↕62)⊸Compile
 J ← ∾∾⟜(@+10)¨
@@ -29,7 +30,8 @@ Long ← ∾ (≠↑1‿3/⟨"  "⊸∾⋄((@+10)∾" ,")⊸∾⟩˙) {𝕎𝕩}
 SVG ← {∾⟨"Modify←GetHighlights←⊢⋄"⟩∾ •FChars∘∾⟜".bqn"¨ "../svg"‿𝕩}
 •Out (⊑"r"‿"c"‿"f"‿"e"‿"p"⊐⊏)◶⟨
   {𝕩⋄ref‿len←•Import"pr.bqn"⋄Long Frun len⊸↓⌾(1⊸⊑)Comp ref}
-  {𝕩⋄Long Fout Comp •FChars "c.bqn"}
+  {𝕩⋄g←"⟨"∾"⟩"«∾","⊸∾¨'"'(⊣∾∾˜)¨glyphs
+     Long Fout Comp J (¯5⊸↓∾g˙)⌾⊑ •FLines "c.bqn"}
   {𝕩⋄Long Fout Comp •FChars "f.bqn"}
   {𝕩⋄Long Fout Comp SVG "e"}
   {𝕩⋄Long Fout Comp SVG "p"}

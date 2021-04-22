@@ -1,8 +1,9 @@
+func‿mod1‿mod2 ← •args
 lf←@+10
 charSet‿cgl←(∾ ≍○< ≠¨)⟨
-  "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!" # Function
-  "˙˜˘¨⌜⁼´˝`"           # 1-modifier
-  "∘○⊸⟜⌾⊘◶⎉⚇⍟⎊"         # 2-modifier
+  func                  # Function
+  mod1                  # 1-modifier
+  mod2                  # 2-modifier
   "⋄,"∾lf               # Separator
   "⇐←↩"                 # Gets
   "(){}⟨⟩"              # Bracket
