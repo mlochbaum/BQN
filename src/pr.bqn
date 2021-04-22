@@ -3,11 +3,7 @@
 # Process BQN runtime
 
 # All primitives
-chrs←⟨
-  "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"
-  "˙˜˘¨⌜⁼´˝`"
-  "∘○⊸⟜⌾⊘◶⎉⚇⍟⎊"
-⟩
+chrs←•Import "glyphs.bqn"
 glyphs ⇐ ∾chrs
 
 # Provided values, to be passed in through the constants array
