@@ -93,3 +93,51 @@ The initial element is used in the first function application, so it behaves as 
 Folding with `𝕨` never needs to come up with an identity value, and the number of function applications is exactly the length of `𝕩`. A function `P` can be applied to each element of `𝕩` before operating using `𝕨P⊸F´𝕩`, which is equivalent to `𝕨 F´ P¨𝕩` except for the order in which `F` and `P` are invoked (if they have side effects).
 
         "STOP" ⌽⊸∾´ "ABCDE"‿"012"‿"abcd"
+
+## Insert
+
+Fold only works on lists. What if you want to, say, sum the columns of a table?
+
+        ⊢ tab ← (2+↕5) |⌜ 9+↕3
+
+        +˝ tab
+
+The Insert (`˝`) modifier will do this for you. Because it works on the [leading axis](leading.md) of the argument, Insert can be applied to axes other than the first with Rank. Sum each row (second axis) with `˘`, for example.
+
+        +˝˘ tab
+
+This case is tricky, because `+´˘ tab` yields the same result but is actually unsound—if `tab` contains arrays then they will be merged together at the end. Remember that if you want to reduce along one axis of an array but get an array of results out, you should use Insert (possibly adding Each to work on elements instead of cells; see [APL2 reduction](#apl2-reduction) below).
+
+A function with Insert `𝔽˝` is nearly equivalent to `𝔽´<˘` (and both fail on unit arguments, because there's no axis to apply along). Besides being more convenient, `𝔽˝` is a little safer because it takes the argument shape into account when returning an identity value:
+
+        +´<˘ 0‿4⥊0
+        +˝   0‿4⥊0
+
+Just like Fold, Insert allows an initial element for the left argument, so that you don't need to rely on the interpreter knowing the identity. A more complete translation into Fold is therefore `{𝕨𝔽´<˘𝕩}`. The expression below shows that the operand function is called on the last major cell when the identity, then the next-to-last major cell and so on. In total there are `≠𝕩` calls, while there would be `1-˜≠𝕩` without the left argument.
+
+        "id" ≍○<˝ "row0 "∾"row1 "≍"row2 "
+
+One trick involving Insert is `∾˝`, which merges the first two axes of `𝕩` into one long axis. It even works on empty arrays, because BQN knows that there's only one result shape that makes sense (in contrast to `∾´⟨⟩`, where many results sometimes work but none of them always work).
+
+        ⊢ let ← ("AHW"-'A') +⌜ "aA" +⌜ ↕4
+
+        ∾˝ let
+
+        ≢ ∾˝ ↕3‿2‿4
+
+        ≢ ∾˝ ↕0‿2‿4  # The identity is an empty cell
+
+As a historical note, Insert is named after J's adverb `/`, which comes from SHARP APL's `⌿`, reduce-down. In the original APL, only arithmetic reductions were defined, and nested arrays didn't exist—arrays were either all characters or all numbers. SHARP extended them by splitting the array into cells as we've shown. However, there's another interpretation, which is what you'll find in mainstream APLs today…
+
+## APL2 reduction?
+
+If you try an expression like `⍪⌿` in Dyalog APL, you'll get results very different from BQN's `∾˝`. Instead of combining the cells like we see above, APL applies the function on pairs of *elements* much like Fold. The difference is that, because reduction happens only along one axis but an array might have other axes, there can be multiple values in the result, so that it will always be an array like the argument. BQN can perform this operation as well: `⍪⌿` is written `∾¨˝` in BQN.
+
+        ∾¨˝ tab
+
+This kind of reduction has an interesting property that the other two lack: it always removes exacly one axis, so that the result's shape is the argument's major cell shape. When applied to a later axis using the Rank or Cells modifier, it removes that axis instead.
+
+        ≢ ∾¨˝ ↕4‿2‿3   # Reduce out the first axis
+        ≢ ∾¨˝˘ ↕4‿2‿3  # Reduce out the second
+
+When the operand is an arithmetic function, say `⌊`, APL2-style reduction is no different from Insert: `⌊¨˝` is the same as `⌊˝`, because `⌊¨` and `⌊` are the same on arrays. That means that Insert with an arithmetic operand also has this axis-removing property.

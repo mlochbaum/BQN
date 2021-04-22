@@ -144,3 +144,76 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IlNUT1AiIOKMveKKuOKIvsK0ICJBQkNERSLigL8iMDEyIuKAvyJhYmNkIg==">↗️</a><pre>    <span class='String'>&quot;STOP&quot;</span> <span class='Function'>⌽</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>´</span> <span class='String'>&quot;ABCDE&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;012&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;abcd&quot;</span>
 "EDCBA210dcbaSTOP"
 </pre>
+<h2 id="insert">Insert</h2>
+<p>Fold only works on lists. What if you want to, say, sum the columns of a table?</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHRhYiDihpAgKDIr4oaVNSkgfOKMnCA5K+KGlTMKCivLnSB0YWI=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>tab</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>+↕</span><span class='Number'>5</span><span class='Paren'>)</span> <span class='Function'>|</span><span class='Modifier'>⌜</span> <span class='Number'>9</span><span class='Function'>+↕</span><span class='Number'>3</span>
+┌─       
+╵ 1 0 1  
+  0 1 2  
+  1 2 3  
+  4 0 1  
+  3 4 5  
+        ┘
+
+    <span class='Function'>+</span><span class='Modifier'>˝</span> <span class='Value'>tab</span>
+⟨ 9 7 12 ⟩
+</pre>
+<p>The Insert (<code><span class='Modifier'>˝</span></code>) modifier will do this for you. Because it works on the <a href="leading.html">leading axis</a> of the argument, Insert can be applied to axes other than the first with Rank. Sum each row (second axis) with <code><span class='Modifier'>˘</span></code>, for example.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8udy5ggdGFi">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>˝˘</span> <span class='Value'>tab</span>
+⟨ 2 3 6 5 12 ⟩
+</pre>
+<p>This case is tricky, because <code><span class='Function'>+</span><span class='Modifier'>´˘</span> <span class='Value'>tab</span></code> yields the same result but is actually unsound—if <code><span class='Value'>tab</span></code> contains arrays then they will be merged together at the end. Remember that if you want to reduce along one axis of an array but get an array of results out, you should use Insert (possibly adding Each to work on elements instead of cells; see <a href="#apl2-reduction">APL2 reduction</a> below).</p>
+<p>A function with Insert <code><span class='Function'>𝔽</span><span class='Modifier'>˝</span></code> is nearly equivalent to <code><span class='Function'>𝔽</span><span class='Modifier'>´</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span></code> (and both fail on unit arguments, because there's no axis to apply along). Besides being more convenient, <code><span class='Function'>𝔽</span><span class='Modifier'>˝</span></code> is a little safer because it takes the argument shape into account when returning an identity value:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8K0PMuYIDDigL804qWKMAory50gICAw4oC/NOKlijA=">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>´</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊</span><span class='Number'>0</span>
+0
+    <span class='Function'>+</span><span class='Modifier'>˝</span>   <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊</span><span class='Number'>0</span>
+⟨ 0 0 0 0 ⟩
+</pre>
+<p>Just like Fold, Insert allows an initial element for the left argument, so that you don't need to rely on the interpreter knowing the identity. A more complete translation into Fold is therefore <code><span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Modifier'>´</span><span class='Function'>&lt;</span><span class='Modifier'>˘</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code>. The expression below shows that the operand function is called on the last major cell when the identity, then the next-to-last major cell and so on. In total there are <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code> calls, while there would be <code><span class='Number'>1</span><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Function'>≠</span><span class='Value'>𝕩</span></code> without the left argument.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImlkIiDiiY3il4s8y50gInJvdzAgIuKIviJyb3cxICLiiY0icm93MiAi">↗️</a><pre>    <span class='String'>&quot;id&quot;</span> <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span><span class='Modifier'>˝</span> <span class='String'>&quot;row0 &quot;</span><span class='Function'>∾</span><span class='String'>&quot;row1 &quot;</span><span class='Function'>≍</span><span class='String'>&quot;row2 &quot;</span>
+┌─                                      
+· "row0 " ⟨ "row1 " ⟨ "row2 " "id" ⟩ ⟩  
+                                       ┘
+</pre>
+<p>One trick involving Insert is <code><span class='Function'>∾</span><span class='Modifier'>˝</span></code>, which merges the first two axes of <code><span class='Value'>𝕩</span></code> into one long axis. It even works on empty arrays, because BQN knows that there's only one result shape that makes sense (in contrast to <code><span class='Function'>∾</span><span class='Modifier'>´</span><span class='Bracket'>⟨⟩</span></code>, where many results sometimes work but none of them always work).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGxldCDihpAgKCJBSFciLSdBJykgK+KMnCAiYUEiICvijJwg4oaVNAoK4oi+y50gbGV0CgriiaIg4oi+y50g4oaVM+KAvzLigL80CgriiaIg4oi+y50g4oaVMOKAvzLigL80ICAjIFRoZSBpZGVudGl0eSBpcyBhbiBlbXB0eSBjZWxs">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>let</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='String'>&quot;AHW&quot;</span><span class='Function'>-</span><span class='String'>'A'</span><span class='Paren'>)</span> <span class='Function'>+</span><span class='Modifier'>⌜</span> <span class='String'>&quot;aA&quot;</span> <span class='Function'>+</span><span class='Modifier'>⌜</span> <span class='Function'>↕</span><span class='Number'>4</span>
+┌─      
+╎"abcd  
+  ABCD  
+        
+ ·hijk  
+  HIJK  
+        
+ ·wxyz  
+  WXYZ" 
+       ┘
+
+    <span class='Function'>∾</span><span class='Modifier'>˝</span> <span class='Value'>let</span>
+┌─      
+╵"abcd  
+  ABCD  
+  hijk  
+  HIJK  
+  wxyz  
+  WXYZ" 
+       ┘
+
+    <span class='Function'>≢</span> <span class='Function'>∾</span><span class='Modifier'>˝</span> <span class='Function'>↕</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+⟨ 6 4 ⟩
+
+    <span class='Function'>≢</span> <span class='Function'>∾</span><span class='Modifier'>˝</span> <span class='Function'>↕</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span>  <span class='Comment'># The identity is an empty cell
+</span>⟨ 0 4 ⟩
+</pre>
+<p>As a historical note, Insert is named after J's adverb <code><span class='Function'>/</span></code>, which comes from SHARP APL's <code><span class='Value'>⌿</span></code>, reduce-down. In the original APL, only arithmetic reductions were defined, and nested arrays didn't exist—arrays were either all characters or all numbers. SHARP extended them by splitting the array into cells as we've shown. However, there's another interpretation, which is what you'll find in mainstream APLs today…</p>
+<h2 id="apl2-reduction">APL2 reduction?</h2>
+<p>If you try an expression like <code><span class='Value'>⍪⌿</span></code> in Dyalog APL, you'll get results very different from BQN's <code><span class='Function'>∾</span><span class='Modifier'>˝</span></code>. Instead of combining the cells like we see above, APL applies the function on pairs of <em>elements</em> much like Fold. The difference is that, because reduction happens only along one axis but an array might have other axes, there can be multiple values in the result, so that it will always be an array like the argument. BQN can perform this operation as well: <code><span class='Value'>⍪⌿</span></code> is written <code><span class='Function'>∾</span><span class='Modifier'>¨˝</span></code> in BQN.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oi+wqjLnSB0YWI=">↗️</a><pre>    <span class='Function'>∾</span><span class='Modifier'>¨˝</span> <span class='Value'>tab</span>
+⟨ ⟨ 1 0 1 4 3 ⟩ ⟨ 0 1 2 0 4 ⟩ ⟨ 1 2 3 1 5 ⟩ ⟩
+</pre>
+<p>This kind of reduction has an interesting property that the other two lack: it always removes exacly one axis, so that the result's shape is the argument's major cell shape. When applied to a later axis using the Rank or Cells modifier, it removes that axis instead.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omiIOKIvsKoy50g4oaVNOKAvzLigL8zICAgIyBSZWR1Y2Ugb3V0IHRoZSBmaXJzdCBheGlzCuKJoiDiiL7CqMudy5gg4oaVNOKAvzLigL8zICAjIFJlZHVjZSBvdXQgdGhlIHNlY29uZA==">↗️</a><pre>    <span class='Function'>≢</span> <span class='Function'>∾</span><span class='Modifier'>¨˝</span> <span class='Function'>↕</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>   <span class='Comment'># Reduce out the first axis
+</span>⟨ 2 3 ⟩
+    <span class='Function'>≢</span> <span class='Function'>∾</span><span class='Modifier'>¨˝˘</span> <span class='Function'>↕</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>  <span class='Comment'># Reduce out the second
+</span>⟨ 4 3 ⟩
+</pre>
+<p>When the operand is an arithmetic function, say <code><span class='Function'>⌊</span></code>, APL2-style reduction is no different from Insert: <code><span class='Function'>⌊</span><span class='Modifier'>¨˝</span></code> is the same as <code><span class='Function'>⌊</span><span class='Modifier'>˝</span></code>, because <code><span class='Function'>⌊</span><span class='Modifier'>¨</span></code> and <code><span class='Function'>⌊</span></code> are the same on arrays. That means that Insert with an arithmetic operand also has this axis-removing property.</p>
