@@ -542,12 +542,13 @@ idChars ← ⟨
 # (include will be all 1s).
 GetHighlights ← {
   # Characters used by BQN, and the HTML class they are associated with.
+  func‿mod1‿mod2 ← •Import "src/glyphs.bqn"
   classes‿chars ← <˘ ⍉ ∘‿2⥊⟨
     0             , " "∾@+9‿10  # Should never be highlighted
     "Value"       , ¯1⊏˘5‿2⥊"𝕨𝕩𝕗𝕘𝕤"# Hack around UTF-16
-    "Function"    , "+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!"∾¯1⊏˘5‿2⥊"𝕎𝕏𝔽𝔾𝕊"
-    "Modifier"    , "˙˜˘¨⌜⁼´˝`"
-    "Modifier2"   , "∘○⊸⟜⌾⊘◶⎉⚇⍟⎊"
+    "Function"    , func∾¯1⊏˘5‿2⥊"𝕎𝕏𝔽𝔾𝕊"
+    "Modifier"    , mod1
+    "Modifier2"   , mod2
     "Number"      , ∾idChars       # Will be classified among ↑↑ later
     "Gets"        , "←⇐↩→"
     "Paren"       , "()"
