@@ -700,11 +700,11 @@ _repeat_←{
   n←𝕨𝔾𝕩
   Multi←{
     l←u←0
-    {"⍟: Repetition numbers in 𝕨𝔾𝕩 must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
+    {"⍟: Repetition numbers in 𝕨𝔾𝕩 must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}_perv n
     i←⟨𝕩⟩⋄P←B⊸{𝕎`i∾↕𝕩}
     pos←f P u
     neg←f 0⊸<◶⟨i,Inverse⊸P⟩ -l
-    (|⊑<⟜0⊑pos‿neg˙)⚇0 n
+    (|⊑<⟜0⊑pos‿neg˙)_perv n
   }
   (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
 }
