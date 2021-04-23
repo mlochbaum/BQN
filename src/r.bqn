@@ -87,8 +87,32 @@ _perv←{ # Pervasion
   ⟩
 }
 
+# Sorting
 Cmp0 ← ≥-≤
 Cmp1 ← (0<1×´≢∘⊢)◶⟨1, IsArray∘⊢◶(1-2×≤)‿{𝕨Cmp1𝕩}⟜(0⊑⥊)⟩
+CmpLen ← {
+  e←𝕨-○(1×´0⊸<⌜)𝕩
+  𝕨(e=0)◶⟨0,e⟩‿{
+    SM←Cmp0 Pair ≥⊑Pair
+    c‿r←𝕨SM○≠𝕩
+    l←𝕨{
+      i←0+´×`𝕨=¨𝕩
+      m←1×´i↕⊸⊏𝕨
+      {k‿l←SM´𝕩⋄c↩k⋄m×↩l}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i
+      m
+    }○((((-1⊸+)⌜↕r)+¨≠)⊸⊏)𝕩
+    ⟨l,c⟩
+  }𝕩
+}
+_getCellCmp ← {
+  Ci←𝔽⋄l←𝕨⋄c←𝕩
+  Cc←{
+    a←𝕨⋄b←𝕩
+    S←(l⊸=)◶{S∘(1+𝕩)⍟(0⊸=)a Ci○(𝕩⊸+)b}‿c
+    S 0
+  }
+  (1-1=l)⊑(𝕩⍟(0⊸=)𝔽)‿Cc
+}
 Cmp ← +○IsArray◶⟨
   Cmp0
   IsArray∘⊣◶⟨Cmp1,-Cmp1˜⟩
@@ -98,6 +122,7 @@ Cmp ← +○IsArray◶⟨
     Cc˜0
   }
 ⟩
+
 _grade_←{
   "⍋𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   l←≠𝕩
@@ -140,6 +165,7 @@ _bins←{
   B←(1×´sw)⊸×⊸Cc≤0˙
   0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx)⊸×⌜ ⥊⟜(↕1×´⊢)⊑⟜(≢𝕩)⌜↕cx
 }
+
 ⍋ ← Cmp  _grade_ 0 ⊘ (Cmp  _bins)
 ⍒ ← Cmp˜ _grade_ 1 ⊘ (Cmp˜ _bins)
 
@@ -594,31 +620,6 @@ Pick1←{
 }
 Pickd←(0∨´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
 Pick←IsArray◶⥊‿⊢⊸Pickd
-
-# Sorting
-CmpLen ← {
-  e←𝕨-˜○(0∨´0⊸=)𝕩
-  𝕨(e=0)◶⟨0,e⟩‿{
-    c←×𝕨-○≠𝕩
-    r←𝕨⌊○≠𝕩
-    l←𝕨{
-      i←0+´∧`𝕨=𝕩
-      m←1×´⊑⟜𝕨⌜↕i
-      {c↩×-´𝕩⋄m↩m×⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i
-      m
-    }○(((-1+↕r)+≠)⊸{⊑⟜𝕩⌜𝕨})𝕩
-    ⟨l,c⟩
-  }𝕩
-}
-_getCellCmp ← {
-  Ci←𝔽⋄l←𝕨⋄c←𝕩
-  Cc←{
-    a←𝕨⋄b←𝕩
-    S←(l⊸=)◶{S∘(1+𝕩)⍟(0⊸=)a Ci○(𝕩⊸+)b}‿c
-    S 0
-  }
-  (1≠l)⊑(𝕩⍟(0⊸=)𝔽)‿Cc
-}
 
 ⚇ ← _depthOp_
 ⎉ ← _rankOp_
