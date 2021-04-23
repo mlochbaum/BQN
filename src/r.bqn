@@ -696,14 +696,17 @@ ProgressiveIndexOf ← 0 Fill {
 ⁼ ← {Inverse 𝕗}
 
 _repeat_←{
+  F←𝔽 ⋄ b←𝕨{𝕏⊣}˙⊘{𝕨˙{𝔽𝕏⊣}}0
   n←𝕨𝔾𝕩
-  l←u←0
-  {"⍟: Repetition numbers in 𝕨 must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
-  b←𝕨{𝕏⊣}˙⊘{𝕨˙{𝔽𝕏⊣}}0
-  i←⟨𝕩⟩⋄P←B⊸{𝕎`i∾↕𝕩}
-  pos←𝕗 P u
-  neg←𝕗 0⊸<◶⟨i,Inverse⊸P⟩ -l
-  (|⊑<⟜0⊑pos‿neg˙)⚇0 n
+  Multi←{
+    l←u←0
+    {"⍟: Repetition numbers in 𝕨𝔾𝕩 must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
+    i←⟨𝕩⟩⋄P←B⊸{𝕎`i∾↕𝕩}
+    pos←f P u
+    neg←f 0⊸<◶⟨i,Inverse⊸P⟩ -l
+    (|⊑<⟜0⊑pos‿neg˙)⚇0 n
+  }
+  (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
 }
 
 ⍟ ↩ _repeat_
