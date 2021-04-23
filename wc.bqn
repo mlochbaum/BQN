@@ -3,7 +3,7 @@
 # WebAssembly backend (very incomplete)
 
 i←"⟨cgl,charSet,Tokenize⟩"
-⟨cgl,charSet,Tokenize⟩ ← •BQN i∾˜•FChars"src/c.bqn"
+⟨cgl,charSet,Tokenize⟩ ← ⟨@,@,•Import"src/glyphs.bqn"⟩ •BQN i∾˜•FChars"src/c.bqn"
 chF←(⊑cgl)↑charSet
 bF‿bM‿bC‿bS‿bG‿bB‿bL‿bO‿bI‿bU‿bD‿bN‿bA‿bW←≍¨˜⟜(+`≠↑0∾⊢)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
@@ -47,7 +47,7 @@ fntab←⍉(0¨tab1)∾tab1≍tab2
 f64←127-3
 
 GenFn←{
-  ⟨t,r,k⟩←3↑Tokenize𝕩
+  ⟨t,r,k⟩←3↑{!∘0¨¨}Tokenize𝕩
   nVar←≠⊑k⋄lits←∾1↓k
   nLoc←nVar-𝕨⊢0
   t⊏˜↩⍋+`-˝(2‿3+⊑bB)=⌜t
