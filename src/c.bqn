@@ -114,7 +114,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
     Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
     0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
   }
-  _err_←{(0!˜(∧∘⍉(i≍e)⊏⎉1˜/⟜𝔾)≍○<𝔽)⍟(∨´⍟=)}
+  _err_←{(0!˜(∧∘⍉(i≍e˙)⊏⎉1˜/⟜𝔾)≍○<𝔽)⍟(∨´⍟=)}
 
   # Bracket and ligature validation and handling
   # Open brackets have role ¯1 and closed ones have role 0
