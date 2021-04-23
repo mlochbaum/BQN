@@ -463,6 +463,14 @@ _onAxes_←{
   }⟜ToArray
 }
 
+PermInv ← 1¨⊸GroupOrd
+_self←{
+  "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  g←⍋𝕩
+  0 Fill (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
+}
+SelfClas ← (PermInv∘⍋∘(Indices⊸⊏)˜⊏˜¯1+`⊢) _self
+
 ÷ ↩ ÷ _perv
 ⋆ ↩ ⋆ _perv
 √ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)
@@ -638,13 +646,6 @@ _search←{ # 0 for ∊˜, 1 for ⊐
     ⟩ ToArray𝕩
   }
 }
-PermInv ← 1¨⊸GroupOrd
-_self←{
-  "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  g←⍋𝕩
-  0 Fill (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
-}
-SelfClas ← (PermInv∘⍋∘/˜⊏˜1-˜+`∘⊢) _self
 Find←{
   r←=𝕨
   "⍷𝕩: Rank of 𝕨 cannot exceed rank of 𝕩" ! r≤=𝕩
