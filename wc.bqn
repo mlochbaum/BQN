@@ -86,4 +86,4 @@ WCompile←{
   Gen ⟨(≠¨f)/(1‿2‿0≍¨1)⥊¨¨f64 ⋄ 2 ⋄ ∾f⟩
 }
 
-•Out ∾((@+10)«·∾(" "∾⍕)¨)∘WCompile¨ •args
+•Out ∾((@+10)«·∾(" "∾•Fmt)¨)∘WCompile¨ •args
