@@ -119,6 +119,29 @@ _grade_←{
     }´(2⋆ni-1+⊢)⌜↕ni←⌈2 Log l+l=0
   }⟩𝕩
 }
+_binSearch ← {
+  B ← 𝔽
+  {
+    R←{𝕨{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×𝕨-2×h)R a⊑𝕩‿m}⍟(>⟜1)𝕩}
+    1+(𝕩+1)R ¯1
+  }⍟(0⊸<)
+}
+_bins←{
+  c←1-˜=𝕨
+  "⍋ or ⍒: Rank of 𝕨 must be at least 1" ! 0≤c
+  "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
+  𝕩↩ToArray 𝕩
+  lw←1×´sw←1 Cell 𝕨
+  cw←lw 𝔽○(⊑⟜(⥊𝕨)) _getCellCmp 0
+  "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1×´·(cw≤0˙)⟜(lw⊸+)∘(lw⊸×)⌜↕∘-⟜1⟩≠𝕨
+  cx←c-˜=𝕩
+  sx←cx Cell 𝕩 ⋄ lc←sw CmpLen sx
+  cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
+  B←(1×´sw)⊸×⊸Cc≤0˙
+  0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx)⊸×⌜ ⥊⟜(↕1×´⊢)⊑⟜(≢𝕩)⌜↕cx
+}
+⍋ ← Cmp  _grade_ 0 ⊘ (Cmp  _bins)
+⍒ ← Cmp˜ _grade_ 1 ⊘ (Cmp˜ _bins)
 
 Indices←{
   "/: Replication argument must have rank 1" ! 1==𝕩
@@ -597,31 +620,8 @@ _getCellCmp ← {
   (1≠l)⊑(𝕩⍟(0⊸=)𝔽)‿Cc
 }
 
-_binSearch ← {
-  B ← 𝔽
-  {
-    R←{𝕨{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×2|𝕨)R a⊑𝕩‿m}⍟(>⟜1)𝕩}
-    1+(𝕩+1)R ¯1
-  }⍟(0⊸<)
-}
-_bins←{
-  c←1-˜=𝕨
-  "⍋ or ⍒: Rank of 𝕨 must be at least 1" ! 0≤c
-  "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
-  lw←1×´sw←1 Cell 𝕨
-  cw←lw 𝔽○(⊑⟜(⥊𝕨)) _getCellCmp 0
-  "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1∧´0≤˜·cw⟜(lw⊸+)⌜lw×↕∘-⟜1⟩≠𝕨
-  cx←c-˜=𝕩
-  sx←cx Cell ToArray 𝕩 ⋄ lc←sw CmpLen sx
-  cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
-  B←(1×´sw)⊸×⊸Cc≤0˜
-  0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx) × ⥊⟜(↕1×´⊢)⊑⟜(≢𝕩)⌜↕cx
-}
-
 ⚇ ← _depthOp_
 ⎉ ← _rankOp_
-⍋ ← Cmp  _grade_ 0 ⊘ (Cmp  _bins)
-⍒ ← Cmp˜ _grade_ 1 ⊘ (Cmp˜ _bins)
 
 # Searching
 _search←{ # 0 for ∊˜, 1 for ⊐
