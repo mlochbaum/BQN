@@ -754,7 +754,7 @@ GroupInv ← {
 PrimInverse ← INF _lookup_ ⟨
   '+', +⊘(-˜)
   '-', -
-  '×', ⊢⊘(÷˜)
+  '×', ⊢_invChk_×⊘(÷˜)
   '÷', ÷
   '⋆', Log _perv
   '√', ×˜⊘(⋆˜)
