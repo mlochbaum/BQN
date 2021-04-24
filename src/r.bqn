@@ -658,8 +658,6 @@ Find←{
   0 Fill 𝕨 ≡⎉r ((1+r-⊸↑≢𝕩)⌊≢𝕨)⊸↕⎉r 𝕩
 }○ToArray
 
-≍ ← >∘Pair _fillBy_ (⊢⊘IF)
-∾ ↩ Join           ⊘ JoinTo
 ⊔ ← GroupInds      ⊘ GroupGen
 ⊐ ← SelfClas       ⊘ (1 _search)
 ∊ ← ⊢_self         ⊘ (0 _search˜)
@@ -692,7 +690,7 @@ ProgressiveIndexOf ← 0 Fill {
   c←1-˜=𝕨
   "⊒: Rank of 𝕨 must be at least 1" ! 0≤c
   "⊒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
-  𝕨⊐○(((≢∾2˙)⥊≍˘⟜OccurrenceCount⍟(0<≠)∘⥊) 𝕨⊸⊐)𝕩
+  𝕨⊐○(Pair¨⟜(≢⥊OccurrenceCount∘⥊) 𝕨⊸⊐)𝕩
 }
 
 _repeat_←{
@@ -711,7 +709,7 @@ _repeat_←{
 
 _lookup_ ← {
   s ← 2×↕(≠𝕘)÷2
-  (s⊏𝕘) _glyphLookup_ (((1+s)⊏𝕘)∾<𝕗)
+  (s⊏𝕘) _glyphLookup_ (((1+s)⊏𝕘)∾⟨𝕗⟩)
 }
 Identity ← {𝕏0} ("´: Identity not found"!0˙) _lookup_ ⟨
   '+',0 , '-',0
@@ -723,7 +721,7 @@ Identity ← {𝕏0} ("´: Identity not found"!0˙) _lookup_ ⟨
   '>',0 , '≥',1
 ⟩
 
-structPrimClass ← {(∾𝕩)_glyphLookup_((/∾≠)≠⌜𝕩)} ⥊⌜ ⟨
+structPrimClass ← {(Join1𝕩)_glyphLookup_((/∾⟜⥊≠)≠⌜𝕩)} ⥊⌜ ⟨
   '⊢'‿'⊣'‿'˜'‿'∘'‿'○'‿'⊸'‿'⟜'‿'⊘'‿'◶'
   '='‿'≠'‿'≢'
   '<'
@@ -736,6 +734,7 @@ structPrimClass ← {(∾𝕩)_glyphLookup_((/∾≠)≠⌜𝕩)} ⥊⌜ ⟨
 # ⚇
 ⟩
 
+∾ ↩ Join           ⊘ JoinTo
 IA ← "⁼: Inverse failed"⊸!
 IX ← "⁼: Inverse does not exist"⊸!
 INF← "⁼: Inverse not found"!0˙
@@ -840,6 +839,7 @@ Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot i
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 ⚇ ← _depthOp_
 ⥊ ↩ Deshape        ⊘ Reshape
+≍ ← >∘Pair _fillBy_ (⊢⊘IF)
 ⍉ ← Transpose      ⊘ ReorderAxes
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 ⍷ ← ∊⊸/            ⊘ Find
