@@ -636,7 +636,6 @@ Pick1←{
 Pickd←(0∨´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
 Pick←IsArray∘⊣◶Pick0‿Pickd
 
-⚇ ← _depthOp_
 ⎉ ← _rankOp_
 
 # Searching
@@ -687,7 +686,6 @@ ReorderAxesInv←{
   IA 1∧´(∊∧<⟜r)𝕨
   (PermInv 𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
 }
-⍉ ← Transpose      ⊘ ReorderAxes
 
 OccurrenceCount ← 0 Fill ⊐˜(⊢-⊏)⍋∘⍋
 ProgressiveIndexOf ← 0 Fill {
@@ -696,11 +694,6 @@ ProgressiveIndexOf ← 0 Fill {
   "⊒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
   𝕨⊐○(((≢∾2˙)⥊≍˘⟜OccurrenceCount⍟(0<≠)∘⥊) 𝕨⊸⊐)𝕩
 }
-
-⊏ ↩ FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1)) _fillBy_ ⊢
-⊑ ↩ First          ⊘ Pick
-◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
-⁼ ← {Inverse 𝕗}
 
 _repeat_←{
   F←𝔽 ⋄ b←𝕨{𝕏⊣}˙⊘{𝕨˙{𝔽𝕏⊣}}0
@@ -715,12 +708,6 @@ _repeat_←{
   }
   (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
 }
-
-⍟ ↩ _repeat_
-⥊ ↩ Deshape        ⊘ Reshape
-⌾ ← _under_
-⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
-⍷ ← ∊⊸/            ⊘ Find
 
 _lookup_ ← {
   s ← 2×↕(≠𝕘)÷2
@@ -771,6 +758,8 @@ GroupInv ← {
   IX i≡○(≠¨)𝕩
   i ⍋⊸⊏○∾ 𝕩
 }
+⊏ ↩ FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1)) _fillBy_ ⊢
+⊑ ↩ First          ⊘ Pick
 PrimInverse ← INF _lookup_ ⟨
   '+', +⊘(-˜)
   '-', -
@@ -794,7 +783,6 @@ PrimInverse ← INF _lookup_ ⟨
   '/', {IA 1==𝕩⋄IA 1∧´Nat⌜𝕩⋄IX(1∧´¯1⊸↓≤1⊸↓)𝕩⋄GroupLen𝕩}⊘(IA∘0)
   '⊔', GroupIndsInv ⊘ GroupInv
 ⟩
-⌜ ↩ {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
 _inv_ ← {𝕘⋄𝕨𝔽𝕩}
 AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
 SwapInverse ← INF _lookup_ ⟨
@@ -808,6 +796,8 @@ SwapInverse ← INF _lookup_ ⟨
   '∨', (¬√∘¬)⊘(-˜÷1-⊣)
   '¬', IA∘0⊘(+-1˙)
 ⟩
+⌜ ↩ {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
+⁼ ← {Inverse 𝕗}
 Mod1Inverse ← INF˙ _lookup_ ⟨
   '˜', SwapInverse
   '¨', {𝕏⁼¨                     ⊣·IX 0<≡∘⊢}
@@ -817,6 +807,8 @@ Mod1Inverse ← INF˙ _lookup_ ⟨
 ⟩ {
   0⊸⊑ {𝕏𝕨}⟜𝔽 1⊸⊑
 }
+⍟ ↩ _repeat_
+⌾ ← _under_
 IsConstant ← (3≤Type)◶⟨1 ⋄ ∧´ ⟨4⊸≡,'˙'_isGlyph⟩ {𝕎𝕩}¨ 0‿¯1⊏{Decompose𝕩}⟩
 Mod2Inverse ← INF˙ _lookup_ ⟨
   '∘', AtopInverse
@@ -844,3 +836,10 @@ FuncInverse ← (⊑ ⊣◶⟨
 ⟩ 1⊸↓) {Decompose𝕩}
 Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
 ⁼ ↩ {𝕗 (≢∧INF˙⊸≢)◶0‿(5‿_inv_≢0‿¯2⊏Decompose∘⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
+
+◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
+⚇ ← _depthOp_
+⥊ ↩ Deshape        ⊘ Reshape
+⍉ ← Transpose      ⊘ ReorderAxes
+⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
+⍷ ← ∊⊸/            ⊘ Find
