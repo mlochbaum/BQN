@@ -227,6 +227,14 @@ SelSub←{
 }
 First ← (0<≠)◶⟨Fill,0⊸⊑⟩ Deshape
 
+eRange←"𝕨⊑𝕩: Index out of range"
+ChkInd←"𝕨⊑𝕩: Indices in 𝕨 must consist of integers" ! Int
+Pick0←{
+  "𝕨⊑𝕩: 𝕩 must be a list when 𝕨 is a number" ! 1==𝕩
+  ChkInd 𝕨
+  𝕩⊑˜(≠𝕩)0⊸≤◶⟨(⊢⊣eRange!0⊸≤)+,⊢⊣eRange!>⟩𝕨
+}
+
 IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1(𝕊d⊑˜1⊸+)⊸×´·↕1-˜≠∘d⟩0⊑d}
 _fillByPure_←{
   𝕘 (3≤Type∘⊣)◶⟨{𝕨Fill𝕏},{(𝕨HomFil𝕩)_fillBy_𝕨}⍟(IsPure⊣)⟩ 𝕗
@@ -621,13 +629,12 @@ GroupGen←{
 Pick1←{
   "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
   "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
-  "𝕨⊑𝕩: Indices in 𝕨 must consist of integers" ! 1∧´Int⌜𝕨
-  "𝕨⊑𝕩: Index out of range" ! 1∧´𝕨(≥⟜-∧<)s
+  ChkInd⌜𝕨 ⋄ eRange ! 1∧´𝕨(≥⟜-∧<)s
   𝕨↩𝕨+s×𝕨<0
   (⥊𝕩)⊑˜0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨
 }
 Pickd←(0∨´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
-Pick←IsArray◶⥊‿⊢⊸Pickd
+Pick←IsArray∘⊣◶Pick0‿Pickd
 
 ⚇ ← _depthOp_
 ⎉ ← _rankOp_
