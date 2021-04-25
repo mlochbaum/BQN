@@ -734,6 +734,26 @@ structPrimClass ← {(Join1𝕩)_glyphLookup_((/∾⟜⥊≠)≠⌜𝕩)} ⥊⌜
 # ⚇
 ⟩
 
+⁼ ← {Inverse 𝕗}
+_inv_ ← {𝕘⋄𝕨𝔽𝕩}
+_undo ← {𝕗 (≢∧INF˙⊸≢)◶0‿((5=0⊸⊑)◶1‿(inv˙≢(≠-2˙)⊸⊑)∘Decompose⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
+IsConstant ← (3≤Type)◶⟨1 ⋄ (4=0⊸⊑)◶0‿('˙'_isGlyph(≠-1˙)⊸⊑)∘{Decompose𝕩}⊢⟩
+AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
+TrainInverse ← {
+  t‿f‿g‿h←𝕩
+  K←¬IsConstant
+  f K∘⊣◶⟨{𝕏⁼{𝕨𝔽𝔾𝕩}(𝕨G⁼⊢)},K∘⊢◶⟨{𝕎⁼𝕩G{SwapInverse𝕗}⊢},INF˙⟩⟩ h
+}
+FuncInverse ← (0⊸⊑ ⊣◶⟨
+  {PrimInverse𝕩} 1⊸⊑                     # 0 primitive
+  ("Cannot currently invert blocks"!0˙)˙ # 1 block
+  1⊸⊑ AtopInverse 2⊸⊑                    # 2-train
+  TrainInverse                           # 3-train
+  1⊸⊑    {𝕏𝕨}⟜{Mod1Inverse𝕩} 2⊸⊑         # 4 1-modifier
+  1‿3⊸⊏ {𝕏´𝕨}⟜{Mod2Inverse𝕩} 2⊸⊑         # 5 2-modifier
+⟩ ⊢) {Decompose𝕩}
+Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
+
 ∾ ↩ Join           ⊘ JoinTo
 IA ← "⁼: Inverse failed"⊸!
 IX ← "⁼: Inverse does not exist"⊸!
@@ -758,7 +778,6 @@ GroupInv ← {
   i ⍋⊸⊏○∾ 𝕩
 }
 ⊏ ↩ FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1)) _fillBy_ ⊢
-⊑ ↩ First          ⊘ Pick
 PrimInverse ← INF _lookup_ ⟨
   '+', +⊘(-˜)
   '-', -
@@ -769,21 +788,19 @@ PrimInverse ← INF _lookup_ ⟨
   '∧', ⊢_invChk_∧⊘(÷˜)
   '∨', ⊢_invChk_∨⊘(-˜÷1-⊣)
   '¬', ¬
-  '<', {IX IsArray𝕩⋄IX 0==𝕩⋄⊑𝕩}⊘(IA∘0)
+  '<', {IX IsArray𝕩⋄IX 0==𝕩⋄0⊑⥊𝕩}⊘(IA∘0)
   '⊢', ⊢
   '⊣', ⊢⊘(⊢⊣IX∘≡)
   '∾', IA∘0 ⊘ {d←𝕩-○=𝕨⋄IX(0⊸≤∧≤⟜1)d⋄l←d◶1‿≠𝕨⋄IX l≤≠𝕩⋄IX 𝕨≡d◶⟨⊏,l⊸↑⟩𝕩⋄l↓𝕩}
   '≍', {IX 1=≠𝕩⋄⊏𝕩} ⊘ {IX 2=≠𝕩⋄IX 𝕨≡⊏𝕩⋄1⊏𝕩}
   '↑', ¯1⊸⊑_invChk_↑ ⊘ (IA∘0)
-  '↓',    ⊑_invChk_↓ ⊘ (IA∘0)
+  '↓',  0⊸⊑_invChk_↓ ⊘ (IA∘0)
   '↕', ≢_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
   '⌽', ⌽ ⊘ (-⊸⌽)
   '⍉', TransposeInv ⊘ ReorderAxesInv
   '/', {IA 1==𝕩⋄IA 1∧´Nat⌜𝕩⋄IX(1∧´¯1⊸↓≤1⊸↓)𝕩⋄GroupLen𝕩}⊘(IA∘0)
   '⊔', GroupIndsInv ⊘ GroupInv
 ⟩
-_inv_ ← {𝕘⋄𝕨𝔽𝕩}
-AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
 SwapInverse ← INF _lookup_ ⟨
   '+', ÷⟜2⊘(-˜)
   '-', IA∘0⊘+
@@ -796,19 +813,15 @@ SwapInverse ← INF _lookup_ ⟨
   '¬', IA∘0⊘(+-1˙)
 ⟩
 ⌜ ↩ {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
-⁼ ← {Inverse 𝕗}
 Mod1Inverse ← INF˙ _lookup_ ⟨
   '˜', SwapInverse
   '¨', {𝕏⁼¨                     ⊣·IX 0<≡∘⊢}
   '⌜', {𝕏⁼⌜⊘(IA∘0)              ⊣·IX 0<≡∘⊢}
   '˘', {(IX∘IsArray⊸⊢𝕏⁼)˘       ⊣·IX 0<=∘⊢}
   '`', {(⊏∾¯1⊸↓𝕏1⊸↓)⍟(1<≠)⊘(»𝕏⊢)⊣·IX 0<=∘⊢}∘{𝕏⁼¨}
-⟩ {
-  0⊸⊑ {𝕏𝕨}⟜𝔽 1⊸⊑
-}
+⟩
 ⍟ ↩ _repeat_
 ⌾ ← _under_
-IsConstant ← (3≤Type)◶⟨1 ⋄ ∧´ ⟨4⊸≡,'˙'_isGlyph⟩ {𝕎𝕩}¨ 0‿¯1⊏{Decompose𝕩}⟩
 Mod2Inverse ← INF˙ _lookup_ ⟨
   '∘', AtopInverse
   '○', {Fi←𝕎⁼⋄𝕏⁼ Fi⊘(𝕏⊸Fi)}
@@ -817,25 +830,10 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
   '⊘', {(𝕎⁼)⊘(𝕏⁼)}
   '⊸', IsConstant∘⊣ ⊣◶{INF⊘𝕏}‿⊢ {𝕎⊸(𝕏⁼)}
   '⟜', {(𝕨IsConstant∘⊢◶⟨IA∘0˙,{𝕩𝕎{SwapInverse𝕗}⊢}⟩𝕩)⊘(𝕏⁼𝕎⁼)}
-⟩ { inv˙⊸=◶⟨𝔽,{𝕏_inv_𝕎}˙⟩ } {
-  0‿2⊸⊏ {𝕏´𝕨}⟜𝔽 1⊸⊑
-}
-TrainInverse ← {
-  f‿g‿h←𝕩
-  K←¬IsConstant
-  f K∘⊣◶⟨{𝕏⁼{𝕨𝔽𝔾𝕩}(𝕨G⁼⊢)},K∘⊢◶⟨{𝕎⁼𝕩G{SwapInverse𝕗}⊢},INF˙⟩⟩ h
-}
-FuncInverse ← (⊑ ⊣◶⟨
-  PrimInverse∘⊑⊢                         # 0 primitive
-  ("Cannot currently invert blocks"!0˙)˙ # 1 block
-  AtopInverse´⊢                          # 2-train
-  TrainInverse                           # 3-train
-  Mod1Inverse                            # 4 1-modifier
-  Mod2Inverse                            # 5 2-modifier
-⟩ 1⊸↓) {Decompose𝕩}
-Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
-⁼ ↩ {𝕗 (≢∧INF˙⊸≢)◶0‿(5‿_inv_≢0‿¯2⊏Decompose∘⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
+⟩ { inv˙⊸=◶⟨𝔽,{𝕏_inv_𝕎}˙⟩ }
 
+⁼ ↩ _undo
+⊑ ↩ First          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 ⚇ ← _depthOp_
 ⥊ ↩ Deshape        ⊘ Reshape
