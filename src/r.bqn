@@ -50,9 +50,9 @@ _glyphLookup_ ← {
 _isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
 IsJoin ← '∾'_isGlyph
 
-Cell←{(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}⟜≢
-
-∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩⌜↕k+≠𝕩}  # LIMITED to two vector arguments
+∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩⌜↕k+≠𝕩}  # LIMITED to two list arguments
+↓ ← {(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}             # LIMITED to number 𝕨 and list 𝕩
+Cell ← ↓⟜≢
 
 GetCells←(1==∘⊢)◶{
   c←1×´s←1 Cell 𝕩
@@ -334,11 +334,11 @@ _structural←{
     (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩
   ⟩˙
   StructFn ← (0⊸⊑ 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘⊣◶⟨
-    SE · StructPrim 0⊑⊢     #  0 primitive
-    E˙                      #  1 block
-    Recompose⟜{StructFn¨𝕩}  #    other operation
-    SE 0⊑⊢                  # ¯1 constant
-  ⟩ 1⊸Drop) Decompose
+    SE · StructPrim 1⊑⊢      #  0 primitive
+    E˙                       #  1 block
+    Recompose⟜{StructFn¨1↓𝕩} #    other operation
+    SE 1⊑⊢                   # ¯1 constant
+  ⟩ ⊢) Decompose
   IsStruct◶⟨0‿StructErr,1‿3⊏Decompose⟩ {𝕎𝕩}´ ⟨StructFn 𝕗, ¯1 _s_ 0⟩
 }
 
@@ -596,7 +596,7 @@ _insert←{
   "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
   F←𝔽
   Id ← {
-    s ← 1 Drop ≢𝕩
+    s ← 1↓≢𝕩
     JoinSh ← {"˝: Identity does not exist"!0<≠𝕨 ⋄ 𝕨×0<↕≠𝕨}
     s ¬∘IsJoin∘⊢◶⟨JoinSh⥊𝕩˙, Reshape⟜Identity⟩ f
   }
@@ -638,8 +638,8 @@ _repeat_←{
   (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
 }
 
-↑ ← Prefixes       ⊘ Take
-↓ ← Suffixes       ⊘ Drop
+↑ ↩ Prefixes       ⊘ Take
+↓ ↩ Suffixes       ⊘ Drop
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
