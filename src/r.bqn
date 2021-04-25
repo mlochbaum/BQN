@@ -38,7 +38,7 @@ _fold←{
   "´: 𝕩 must be a list" ! 1==𝕩
   l←≠v←𝕩 ⋄ F←𝔽
   r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
-  {r↩(𝕩⊑v)F r}⌜(l-1)⊸-⌜↕l
+  ({r↩𝕩 F r}(l-1)⊸-⊑𝕩˙)⌜↕l
   r
 }
 ´ ← _fold
@@ -158,6 +158,7 @@ _grade_←{
     }´(2⋆ni-1+⊢)⌜↕ni←⌈2 Log l+l=0
   }⟩𝕩
 }
+_sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ ⊏}
 _binSearch ← {
   B ← 𝔽
   {
@@ -225,8 +226,6 @@ Suffixes←{
   l⊸⊑⊸Fill {𝕩⊸+⌜↕l-𝕩}⊸⊏⟜𝕩⌜ ↕1+l
 }
 
-_sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ ⊏}
-
 FirstCell←{
   "⊏𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   "⊏𝕩: 𝕩 cannot have length 0" ! 0<≠𝕩
@@ -239,7 +238,7 @@ SelSub←{
   "𝕨⊏𝕩: Indices out of range" ! 1×´⥊ ((-l)⊸≤×l⊸>)⌜ 𝕨
   𝕨 (⊢+l×0>⊢)⌜⊸⊏ 𝕩
 }
-First ← (0<≠)◶⟨Fill,0⊸⊑⟩ Deshape
+First ← IsArray◶⟨⊢, (0<≠)◶⟨Fill,0⊸⊑⟩⥊⟩
 
 eRange←"𝕨⊑𝕩: Index out of range"
 ChkInd←"𝕨⊑𝕩: Indices in 𝕨 must consist of integers" ! Int
@@ -254,8 +253,6 @@ _fillByPure_←{
   𝕘 (3≤Type∘⊣)◶⟨{𝕨Fill𝕏},{(𝕨HomFil𝕩)_fillBy_𝕨}⍟(IsPure⊣)⟩ 𝕗
 }
 
-¨ ← {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
-
 StructErr←{𝕩}
 IsStructErr ← (3=Type)◶⟨0,StructErr˙⊸=⟩
 _under_←{
@@ -263,12 +260,12 @@ _under_←{
   # Traverse indices 𝕩 and values 𝕨.
   # Return a list of index‿value pairs, or structErr if 𝕨 doesn't capture 𝕩.
   GetInserts←{
-    conform ← {𝕨◶0‿𝕩}´⟨IsArray⊢, =○=, 1×´=¨○≢⟩
+    conform ← {𝕨◶0‿𝕩}´⟨IsArray⊢, =○=, MatchShape○≢⟩
     Fail←{𝕊‿0}
     # 𝕎 is parent traversal; 𝕩 is current components of ind and val
     Trav←(IsArray 0⊑⊢)◶⟨Pair, Conform´∘⊢◶Fail‿{
-      Parent←𝕎 ⋄ n←≠0⊑a←⥊¨𝕩 ⋄ j←¯1
-      Child←Trav⟜(⊑¨⟜a)
+      Parent←𝕎 ⋄ n←≠0⊑a←⥊⌜𝕩 ⋄ j←¯1
+      Child←Trav⟜(< ⊑_eachd a˙)
       { j+↩1 ⋄ f←n⊸≤◶⟨𝕊˙⊸Child,Parent˙⟩j ⋄ F 0 }
     }⟩
     count←0⋄{IsArray◶⟨{𝕩⋄count+↩1},𝕊⌜⟩𝕩}𝕩
@@ -291,7 +288,7 @@ _under_←{
         }⍟(e=⊢)P j↩1+j}0⋄r
       }⟩⌜↕l
     }
-    _at_ ← {(↕≠𝕩) 𝔽⍟((𝔾𝕩)=⊣)¨ 𝕩}
+    _at_ ← {𝔽⍟((𝔾𝕩)=⊣)⟜(⊑⟜𝕩)⌜ ↕≠𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
     IsArray∘root◶⟨1⊑0⊑𝕨˙, Set⟩ 𝕩
   } _fillBy_ ⊢
@@ -336,31 +333,34 @@ _structural←{
   StructFn ← (0⊸⊑ 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘⊣◶⟨
     SE · StructPrim 1⊑⊢      #  0 primitive
     E˙                       #  1 block
-    Recompose⟜{StructFn¨1↓𝕩} #    other operation
+    Recompose⟜{StructFn⌜1↓𝕩} #    other operation
     SE 1⊑⊢                   # ¯1 constant
   ⟩ ⊢) Decompose
   IsStruct◶⟨0‿StructErr,1‿3⊏Decompose⟩ {𝕎𝕩}´ ⟨StructFn 𝕗, ¯1 _s_ 0⟩
 }
 
+MatchS ← 1×´=_eachd
+MatchShape ← =○≠◶0‿MatchS
 match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨=○IsArray, 0⟩
   ⟨IsArray∘⊢, =⟩
   ⟨=○=      , 0⟩
-  ⟨1×´=¨○≢  , 0⟩
-  {1×´⥊𝕨Match¨𝕩}
+  ⟨MatchS○≢ , 0⟩
+  {1×´⥊𝕨 Match _eachd 𝕩}
 ⟩
 Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
 
 ≡ ← Depth          ⊘ Match
 ≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
+¨ ← {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
 
 IF ← ⊢⊣!∘≡  # Intersect fill
 IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
 _fillMerge_ ← {(0<≠∘⥊)◶⟨(𝔾○≢⥊⟨⟩˙)_fillBy_⊢⟜Fill, 𝔽 ⊣_fillBy_⊢ IEF⟩}
 Merge←{
   c←≢0⊑⥊𝕩
-  ">𝕩: Elements of 𝕩 must have matching shapes" ! 1×´(c≡≢)⌜⥊𝕩
-  𝕩⊑⟜Deshape˜⌜c⥊↕1×´c
+  (">𝕩: Elements of 𝕩 must have matching shapes" ! c MatchShape ≢)⌜⥊𝕩
+  (Deshape⌜𝕩)⊑˜⌜c⥊↕1×´c
 }_fillMerge_∾⍟IsArray
 
 Join1←{
@@ -608,7 +608,7 @@ JoinTo←∨○(1<=)◶(∾○⥊)‿{
   a←1⌈´k←≠⌜s
   "𝕨∾𝕩: Rank of 𝕨 and 𝕩 must differ by at most 1" ! 1∧´1≥a-k
   c←(k¬a)+⟜(↕a-1)⊸⊏¨s
-  "𝕨∾𝕩: Cell shapes of 𝕨 and 𝕩 must match" ! ≡´c
+  "𝕨∾𝕩: Cell shapes of 𝕨 and 𝕩 must match" ! MatchS´c
   l←0+´(a=k)⊣◶1‿(0⊑⊢)¨s
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
 } _fillBy_ IF
