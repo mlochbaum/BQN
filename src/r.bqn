@@ -43,13 +43,6 @@ _fold←{
 }
 ´ ← _fold
 
-_qSearch ← {+´·×`𝕗(1-=)⌜<}
-_glyphLookup_ ← {
-  {PrimInd𝕩} ⊑ ((𝕘⊑˜𝕗_qSearch)⌜glyphs)˙
-}
-_isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
-IsJoin ← '∾'_isGlyph
-
 ∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩⌜↕k+≠𝕩}  # LIMITED to two list arguments
 ↓ ← {(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}             # LIMITED to number 𝕨 and list 𝕩
 Cell ← ↓⟜≢
@@ -61,6 +54,13 @@ GetCells←(1==∘⊢)◶{
   ⊑⟜𝕩⌜𝕨
 } _fillBy_ ⊢
 ⊏ ← GetCells  # LIMITED to depth-1 natural number left argument
+
+_qSearch ← {+´·×`𝕗(1-=)⌜<}
+_glyphLookup_ ← {
+  {PrimInd𝕩} ⊑ ((𝕘⊑˜𝕗_qSearch)⌜glyphs)˙
+}
+_isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
+IsJoin ← '∾'_isGlyph
 
 _lookup_ ← {
   s ← 2⊸×⌜↕(≠𝕘)÷2
@@ -110,11 +110,11 @@ CmpLen ← {
     SM←Cmp0 Pair ≥⊑Pair
     c‿r←𝕨SM○≠𝕩
     l←𝕨{
-      i←0+´×`𝕨=¨𝕩
+      i←0+´×`𝕨=_eachd𝕩
       m←1×´i↕⊸⊏𝕨
-      {k‿l←SM´𝕩⋄c↩k⋄m×↩l}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i
+      {k‿l←SM´𝕩⋄c↩k⋄m×↩l}∘(<⊑⌜𝕨‿𝕩˙)⍟(r⊸>)i
       m
-    }○((((-1⊸+)⌜↕r)+¨≠)⊸⊏)𝕩
+    }○{(𝕩⊑˜(¯1+≠𝕩)⊸-)⌜↕r}𝕩
     ⟨l,c⟩
   }𝕩
 }
@@ -230,7 +230,7 @@ _sort ← {(𝕗⊑⟨Cmp,Cmp˜⟩)_grade_𝕗 ⊸ ⊏}
 FirstCell←{
   "⊏𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   "⊏𝕩: 𝕩 cannot have length 0" ! 0<≠𝕩
-  (<0) GetCells 𝕩
+  (<0) ⊏ 𝕩
 }
 SelSub←{
   "𝕨⊏𝕩: 𝕨 must be an array" ! IsArray 𝕨
@@ -254,7 +254,7 @@ _fillByPure_←{
   𝕘 (3≤Type∘⊣)◶⟨{𝕨Fill𝕏},{(𝕨HomFil𝕩)_fillBy_𝕨}⍟(IsPure⊣)⟩ 𝕗
 }
 
-¨ ↩ {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
+¨ ← {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
 
 StructErr←{𝕩}
 IsStructErr ← (3=Type)◶⟨0,StructErr˙⊸=⟩
