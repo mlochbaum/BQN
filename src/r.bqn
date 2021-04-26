@@ -126,7 +126,7 @@ _getCellCmp ← {
     S←(l⊸=)◶{S∘(1+𝕩)⍟(0⊸=)a Ci○(𝕩⊸+)b}‿c
     S 0
   }
-  (1-1=l)⊑(𝕩⍟(0⊸=)𝔽)‿Cc
+  (1=l)⊑Cc‿(𝕩⍟(0⊸=)𝔽)
 }
 Cmp ← +○IsArray◶⟨
   Cmp0
@@ -184,6 +184,30 @@ _bins←{
 
 ⍋ ← Cmp  _grade_ 0 ⊘ (Cmp  _bins)
 ⍒ ← Cmp˜ _grade_ 1 ⊘ (Cmp˜ _bins)
+
+# Searching
+_search←{ # 0 for ∊˜, 1 for ⊐
+  ind ← 𝕗
+  red ← 𝕗⊑⟨1-×´,+´×`⟩
+  0 Fill {
+    c←1-˜=𝕨
+    "p⊐𝕩 or 𝕨∊p: p must have rank at least 1" ! 0≤c
+    "p⊐n or n∊p: Rank of n must be at least cell rank of p" ! c≤=𝕩
+    n←≠𝕨 ⋄ k←1×´s←1 Cell 𝕨 ⋄ cx←c-˜=𝕩
+    lx←1×´sh←cx↑≢𝕩
+    sh ⥊ 𝕨 (0<n)◶⟨0,s MatchS cx⊸Cell⟩◶{𝕩⋄(ind×n)⌜↕lx}‿{
+      cc ← k (⊑⟜(⥊𝕨))⊸(1-Match)⟜(⊑⟜(⥊𝕩)) _getCellCmp 0
+      𝕨 ×○(8<≠∘⥊)◶{𝕩
+        i‿j←(k⊸×⌜↕)⌜n‿lx ⋄ {Red CC⟜𝕩⌜i}⌜j
+      }‿{
+        g←Reverse⍒𝕨
+        i←(g⊑˜0⌈-⟜1)⌜(g⊏𝕨)⍋𝕩
+        adj←ind⊑⟨1⊸-,⊣--⟜n⊸×⟩
+        ⊑⟜i⊸(⊣ Adj CC○(k⊸×))⌜↕lx
+      } 𝕩
+    } ToArray𝕩
+  }
+}
 
 Indices←{
   "/: Replication argument must have rank 1" ! 1==𝕩
@@ -690,20 +714,6 @@ GroupM←{
 ˝ ← _insert
 ⎉ ← _rankOp_
 
-# Searching
-_search←{ # 0 for ∊˜, 1 for ⊐
-  ind ← 𝕗
-  red ← 𝕗⊑⟨¬∧˝,+˝∧`⟩
-  0 Fill {
-    c←1-˜=𝕨
-    "p⊐𝕩 or 𝕨∊p: p must have rank at least 1" ! 0≤c
-    "p⊐n or n∊p: Rank of n must be at least cell rank of p" ! c≤=𝕩
-    𝕨 ∧○(8<≠∘⥊)◶⟨
-      (0<≠𝕨)◶⟨0⎉c∘⊢, Red≢⌜○((0<c)◶⟨⊢,<⎉c⟩)⟩
-      { g←⌽⍒𝕨 ⋄ i←g⊏˜0⌈1-˜(g⊏𝕨)⍋𝕩 ⋄ (≠𝕨)(⊣+i⊸-⊸×)⍟ind(i⊏𝕨)≡⎉c𝕩 }
-    ⟩ ToArray𝕩
-  }
-}
 Find←{
   r←=𝕨
   "⍷𝕩: Rank of 𝕨 cannot exceed rank of 𝕩" ! r≤=𝕩
