@@ -1,8 +1,10 @@
 # BQN hosted in dzaima/BQN
 # Result is a function that executes BQN code.
 
-⟨DRun,DCompile⟩ ← •Import "dc.bqn"
-⟨ref,glyphs⟩ ← •Import "src/pr.bqn"
+⟨ref,prims⟩ ← •Import "src/pr.bqn"
+⟨DRun⟩     ←       •Import "dc.bqn"
+⟨DCompile⟩ ← prims •Import "dc.bqn"
+glyphs ← ∾ •Import "src/glyphs.bqn"
 
 provide ← ⟨
   •Type           # Type
@@ -12,7 +14,7 @@ provide ← ⟨
   ∾⊔∘⊢            # GroupOrd
   !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,•_fillBy_,⊘,⎊
 ⟩
-rt‿SetPrims ← •COMP provide⊸(⊣»«)⌾(1⊸⊑) DCompile ref
+rt‿SetPrims ← •COMP provide DCompile ref
 PrimInd ← rt⊸⊐⌾<
 Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
 SetPrims ⟨ Decompose, PrimInd ⟩

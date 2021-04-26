@@ -4,20 +4,20 @@
 
 # All primitives
 chrs←•Import "glyphs.bqn"
-glyphs ⇐ ∾chrs
+glyphs ← ∾chrs
 
 # Provided values, to be passed in through the constants array
-def ← ⟨"Type","Fill","Log","GroupLen","GroupOrd","_fillBy_"⟩
+alias‿def ← (⊑¨ ≍○< 1⊸↓¨) ⟨"?Type","∩Fill","⍣Log",
+                           "$GroupLen","%GroupOrd","⍝_fillBy_"⟩
 keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘⎊"
-len ⇐ def+○≠keep
+
+type ← ((+´·∧`'_'=0‿¯1⊸⊏)¨def) ∾ chrs((+`≠¨)∘⊣⍋∾⊸⊐)keep
+prims ⇐ type ⊔ alias∾keep
 
 GetRepls ← {
   c‿n ← 𝕩
   ki ← (⊑¨c)⊐keep
-  dt ← ⊔⟜⊒ (+´·∧`'_'=0‿¯1⊸⊏)¨ def
-  ns ← » ne←+`≠¨chrs
-  kt ← ∾ (ns+≠¨dt) + ⊔⟜⊒ne⍋ki
-  ⟨c,(kt⊏c)⌾(ki⊸⊏)n⟩∾¨⟨def,(∾ns+dt)⊏c⟩
+  ⟨c,c⊣⌾(ki⊸⊏)n⟩∾¨⟨def,⥊¨alias⟩
 }
 
 ⟨E_proc⟩ ← chrs‿GetRepls •Import "pp.bqn"
