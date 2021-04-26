@@ -227,6 +227,26 @@ Suffixes←{
   l⊸⊑⊸Fill {𝕩⊸+⌜↕l-𝕩}⊸⊏⟜𝕩⌜ ↕1+l
 }
 
+NormIndP‿NormIndS←{
+  ei‿er←𝕩 ⋄ _cr←{⊢⊣er!𝔽}
+  0⊸≤◶⟨0⊸≤_cr+, >_cr⟩ ⊣ ei!Int∘⊢
+}⌜⟨
+  "𝕨⊑𝕩: Indices in 𝕨 must consist of integers"‿"𝕨⊑𝕩: Index out of range"
+  "𝕨⊏𝕩: Indices in 𝕨 must be integers"‿"𝕨⊏𝕩: Indices out of range"
+⟩
+Pick0←{
+  "𝕨⊑𝕩: 𝕩 must be a list when 𝕨 is a number" ! 1==𝕩
+  𝕩⊑˜(≠𝕩)NormIndP𝕨
+}
+Pick1←{
+  "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
+  "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
+  i←0⋄(⊑⟜𝕨{i↩(𝕩NormIndP𝕨)+𝕩×i}⊑⟜s)⌜↕≠𝕨
+  i⊑Deshape𝕩
+}⟜ToArray
+Pickd←(0<0+´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
+Pick←IsArray∘⊣◶Pick0‿Pickd
+
 FirstCell←{
   "⊏𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   "⊏𝕩: 𝕩 cannot have length 0" ! 0<≠𝕩
@@ -234,20 +254,9 @@ FirstCell←{
 }
 SelSub←{
   "𝕨⊏𝕩: 𝕨 must be an array" ! IsArray 𝕨
-  "𝕨⊏𝕩: Indices in 𝕨 must be integers" ! 1×´⥊Int⌜ 𝕨
-  l←≠𝕩
-  "𝕨⊏𝕩: Indices out of range" ! 1×´⥊ ((-l)⊸≤×l⊸>)⌜ 𝕨
-  𝕨 (⊢+l×0>⊢)⌜⊸⊏ 𝕩
+  𝕨 (≠𝕩)⊸NormIndS⌜⊸⊏ 𝕩
 }
 First ← IsArray◶⟨⊢, (0<≠)◶⟨Fill,0⊸⊑⟩⥊⟩
-
-eRange←"𝕨⊑𝕩: Index out of range"
-ChkInd←"𝕨⊑𝕩: Indices in 𝕨 must consist of integers" ! Int
-Pick0←{
-  "𝕨⊑𝕩: 𝕩 must be a list when 𝕨 is a number" ! 1==𝕩
-  ChkInd 𝕨
-  𝕩⊑˜(≠𝕩)0⊸≤◶⟨(⊢⊣eRange!0⊸≤)+,⊢⊣eRange!>⟩𝕨
-}
 
 IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1(𝕊d⊑˜1⊸+)⊸×´·↕1-˜≠∘d⟩0⊑d}
 _fillByPure_←{
@@ -583,16 +592,6 @@ GroupInds←{
 - ↩ - _perv
 ¬ ← 1+-
 HomFil ← {((𝕎0) Fill 𝕏)⊘𝕏}⍟(+´⟨=,≠,≡,≢⟩=⊣)
-
-Pick1←{
-  "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
-  "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
-  ChkInd⌜𝕨 ⋄ eRange ! 1∧´𝕨(≥⟜-∧<)s
-  𝕨↩𝕨+s×𝕨<0
-  (⥊𝕩)⊑˜0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨
-}
-Pickd←(0∨´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
-Pick←IsArray∘⊣◶Pick0‿Pickd
 
 ValidateRanks←{
   "⎉ or ⚇: 𝔽 result must have rank at most 1" ! 1≥=𝕩
