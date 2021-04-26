@@ -44,6 +44,7 @@ _fold←{
 ´ ← _fold
 
 ∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩⌜↕k+≠𝕩}  # LIMITED to two list arguments
+↑ ← {⊑⟜𝕩⌜↕𝕨}                       # LIMITED to number 𝕨 and list 𝕩
 ↓ ← {(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}             # LIMITED to number 𝕨 and list 𝕩
 Cell ← ↓⟜≢
 
@@ -470,6 +471,11 @@ FC←{ # Fill cell
   (Fill 𝕩)⌜ ⥊⟜(↕1×´⊢) 1 Cell 𝕩
 }
 
+Range←{
+  I←{"↕𝕩: 𝕩 must consist of natural numbers"!Nat𝕩⋄↕𝕩}
+  M←{"↕𝕩: 𝕩 must be a number or list"!1==𝕩⋄(0⌜𝕩)Fill(<⟨⟩)Pair⊸∾⌜´I⌜𝕩}
+  IsArray◶I‿M 𝕩
+}
 Windows←{
   "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   r←≠𝕨↩Deshape 𝕨
@@ -499,6 +505,17 @@ _onAxes_←{
   }⟜ToArray
 }
 
+Rep ← Indices⊸⊏
+Replicate ← (0<=∘⊣)◶{
+  𝕨↩(0⊑⥊)⍟IsArray𝕨
+  "/: Amounts to replicate must be natural numbers" ! Nat 𝕨
+  e←r←𝕨
+  ({e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×≠𝕩) ⊏ 𝕩
+}‿{
+  "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕨=○≠𝕩
+  𝕨 Rep 𝕩
+} _onAxes_ (1-0=≠) _fillBy_ ⊢
+
 PermInv ← 1¨⊸GroupOrd
 _self←{
   "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
@@ -506,6 +523,46 @@ _self←{
   0 Fill (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
 }
 SelfClas ← (PermInv∘⍋∘(Indices⊸⊏)˜⊏˜¯1+`⊢) _self
+
+ReshapeT ← "∘⌊⌽↑"_glyphLookup_(↕5)
+Reshape←{
+  "𝕨⥊𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
+  s←Deshape 𝕨
+  sp←0+´p←(1-Nat)⌜s
+  "𝕨⥊𝕩: 𝕨 must consist of natural numbers" ! 1≥sp
+  n←≠d←Deshape 𝕩
+  l←sp◶(1×´⊢)‿{
+    lp←1×´p⊣◶⊢‿1¨𝕩
+    "𝕨⥊𝕩: Can't compute axis length when rest of shape is empty" ! 0<lp
+    i←0+´⊑⟜p⊸×⌜↕≠p
+    t←ReshapeT i⊑s
+    "𝕨⥊𝕩: 𝕨 must consist of natural numbers or ∘ ⌊ ⌽ ↑" ! t<4
+    Chk ← ⊢ ⊣ "𝕨⥊𝕩: Shape must be exact when reshaping with ∘" ! ⌊⊸=
+    a←(2⌊t)◶⟨Chk,⌊,⌈⟩n÷lp
+    s↩p⊣◶⊢‿a¨s
+    {d∾↩(Fill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
+  } s
+  s⥊{
+    𝕩(0<n)◶⟨<∘Fill⊸(⊣⌜)⋄{i←¯1⋄m←n-1⋄{𝕩⋄(i+↩1-n×i=m)⊑d}⌜𝕩}⟩↕l
+  }_fillBy_⊢⍟(1-l=n)d
+}
+⥊ ↩ Deshape        ⊘ ⥊
+
+_group←{
+  "⊔: Grouping argument must consist of integers" ! 1×´Int⌜𝕩
+  "⊔: Grouping argument values cannot be less than ¯1" ! 1×´¯1⊸≤⌜𝕩
+  GL←GroupLen⋄𝕩↩𝕨(-˜⟜≠{GL↩(𝕨⊑𝕩)GL⊢⋄𝕨↑𝕩}⊢)⍟(0⊘⊣)𝕩
+  d←(l←GL𝕩)GroupOrd𝕩
+  i←0⋄(𝔽{𝕩⋄(i↩i+1)⊢i⊑d}⌜∘↕)⌜l
+}
+GroupInds←{
+  "⊔𝕩: 𝕩 must be a list" ! 1==𝕩
+  G←⊢_group
+  (1<≡)◶⟨
+    ↕∘0             Fill G
+    ((⊢Fill⥊⟜⟨⟩)0⌜) Fill (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊Range≢𝕩)⌜ G⥊𝕩}⌜
+  ⟩ 𝕩
+}
 
 ÷ ↩ ÷ _perv
 ⋆ ↩ ⋆ _perv
@@ -527,30 +584,6 @@ SelfClas ← (PermInv∘⍋∘(Indices⊸⊏)˜⊏˜¯1+`⊢) _self
 ¬ ← 1+-
 HomFil ← {((𝕎0) Fill 𝕏)⊘𝕏}⍟(+´⟨=,≠,≡,≢⟩=⊣)
 
-ReshapeT ← "∘⌊⌽↑"_glyphLookup_(↕5)
-Reshape←{
-  "𝕨⥊𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
-  s←Deshape 𝕨
-  sp←0+´p←¬Nat⌜s
-  "𝕨⥊𝕩: 𝕨 must consist of natural numbers" ! 1≥sp
-  n←≠d←Deshape 𝕩
-  l←sp◶(1×´⊢)‿{
-    lp←1×´p⊣◶⊢‿1¨𝕩
-    "𝕨⥊𝕩: Can't compute axis length when rest of shape is empty" ! 0<lp
-    i←0+´p×↕≠p
-    t←ReshapeT i⊑s
-    "𝕨⥊𝕩: 𝕨 must consist of natural numbers or ∘ ⌊ ⌽ ↑" ! t<4
-    Chk ← ⊢ ⊣ "𝕨⥊𝕩: Shape must be exact when reshaping with ∘" ! ⌊⊸=
-    a←(2⌊t)◶⟨Chk,⌊,⌈⟩n÷lp
-    s↩p⊣◶⊢‿a¨s
-    {d∾↩(Fill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
-  } s
-  s⥊{
-    𝕩(0<n)◶⟨<∘Fill⊸(⊣⌜)⋄{⊑⟜d⌜n|𝕩}⟩↕l
-  }_fillBy_⊢⍟(l≠n)d
-}
-⥊ ↩ Deshape        ⊘ ⥊
-
 Pick1←{
   "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
   "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
@@ -560,12 +593,6 @@ Pick1←{
 }
 Pickd←(0∨´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
 Pick←IsArray∘⊣◶Pick0‿Pickd
-
-Range←{
-  I←{"↕𝕩: 𝕩 must consist of natural numbers"!Nat𝕩⋄↕𝕩}
-  M←{"↕𝕩: 𝕩 must be a number or list"!1==𝕩⋄(0⌜𝕩)Fill(<⟨⟩)⥊⊸∾⌜´I⌜𝕩}
-  IsArray◶I‿M 𝕩
-}
 
 ValidateRanks←{
   "⎉ or ⚇: 𝔽 result must have rank at most 1" ! 1≥=𝕩
@@ -614,17 +641,6 @@ JoinTo←∨○(1<=)◶(∾○⥊)‿{
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
 } _fillBy_ IF
 
-Rep ← Indices⊸⊏
-Replicate ← (0<=∘⊣)◶{
-  𝕨↩(0⊑⥊)⍟IsArray𝕨
-  "/: Amounts to replicate must be natural numbers" ! Nat 𝕨
-  e←r←𝕨
-  ({e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×≠𝕩) ⊏ 𝕩
-}‿{
-  "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕨=○≠𝕩
-  𝕨 Rep 𝕩
-} _onAxes_ (1-0=≠) _fillBy_ ⊢
-
 _repeat_←{
   F←𝔽 ⋄ b←𝕨{𝕏⊣}˙⊘{𝕨˙{𝔽𝕏⊣}}0
   n←𝕨𝔾𝕩
@@ -647,21 +663,6 @@ _repeat_←{
 » ← FC⊸ShiftBefore ⊘ ShiftBefore _fillBy_ (⊢⊘IF)
 « ← FC⊸ShiftAfter  ⊘ ShiftAfter  _fillBy_ (⊢⊘IF)
 
-_group←{
-  "⊔: Grouping argument must consist of integers" ! 1∧´Int⌜𝕩
-  "⊔: Grouping argument values cannot be less than ¯1" ! 1∧´¯1≤𝕩
-  GL←GroupLen⋄𝕩↩𝕨(-˜⟜≠{GL↩(𝕨⊑𝕩)GL⊢⋄𝕨↑𝕩}⊢)⍟(0⊘⊣)𝕩
-  d←(l←GL𝕩)GroupOrd𝕩
-  i←0⋄(𝔽{𝕩⋄(i↩i+1)⊢i⊑d}⌜∘↕)⌜l
-}
-GroupInds←{
-  "⊔𝕩: 𝕩 must be a list" ! 1==𝕩
-  G←⊢_group
-  (1<≡)◶⟨
-    ↕∘0             Fill G
-    ((⊢Fill⥊⟜⟨⟩)0⌜) Fill (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊↕≢𝕩)⌜ G⥊𝕩}⌜
-  ⟩ 𝕩
-}
 GroupGen←{
   "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
   𝕨↩Pair∘ToArray⍟(2>≡)𝕨
