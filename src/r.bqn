@@ -572,6 +572,19 @@ GroupInds←{
     ((⊢Fill⥊⟜⟨⟩)0⌜) Fill (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊Range≢𝕩)⌜ G⥊𝕩}⌜
   ⟩ 𝕩
 }
+Group1←ToArray⊸{
+  n←=𝕨
+  "𝕨⊔𝕩: Rank of simple 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
+  ld←(≢𝕨)-¨n↑s←≢𝕩
+  dr←(1=n)◶⟨0,1=0⊸⊑⟩ld
+  "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! dr◶⟨1×´0⊸=⌜,1⟩ld
+  SX←((n==𝕩)◶{c←1×´t←n↓s⋄(𝕩⊑˜c⊸×⊸+)⌜⟜(t⥊↕c)}‿{⊑⟜𝕩⌜} ⥊𝕩)∘⊣ _fillBy_ ⊢⟜𝕩
+  (SX⟨⟩) Fill dr SX _group ⥊𝕨
+}
+GroupGen←{
+  "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
+  𝕨(2≤≡𝕨)◶Group1‿GroupM𝕩
+}
 
 ÷ ↩ ÷ _perv
 ⋆ ↩ ⋆ _perv
@@ -662,9 +675,7 @@ _repeat_←{
 » ← FC⊸ShiftBefore ⊘ ShiftBefore _fillBy_ (⊢⊘IF)
 « ← FC⊸ShiftAfter  ⊘ ShiftAfter  _fillBy_ (⊢⊘IF)
 
-GroupGen←{
-  "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
-  𝕨↩Pair∘ToArray⍟(2>≡)𝕨
+GroupM←{
   "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
   n←0+´r←=⌜𝕨
   "𝕨⊔𝕩: Total rank of 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
