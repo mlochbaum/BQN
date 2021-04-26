@@ -19,21 +19,24 @@ FP ← ∞⊸=◶⟨F,"Infinity"⟩       # Format positive number
 Num ← 0⊸≤◶⟨"-"∾FP∘|,FP⟩       # Format number
 
 glyphs ← •Import "glyphs.bqn"
-compile ← glyphs •Import "c.bqn"
+_getComp ← { (3+useInd) ↑ (𝕗 •Import "c.bqn"){𝔽} }
 useInd ← "-i"≡⊑args←•args ⋄ args↓˜↩useInd
-Comp ← (3+useInd) ↑ ((<"runtime" Ind F)¨↕62)⊸Compile
+Comp ← ((<"runtime" Ind F)¨↕62) glyphs _getComp ⊢
 J ← ∾∾⟜(@+10)¨
 Fconst ← ≡◶⟨@⊸≤◶Num‿Char, Str, ⊑⟩
 Fout ← (≠↑⟨F,Fconst,L F¨,F⟩˙) {L𝕎¨𝕩}¨ ⊢
-Frun ← "provide"⊸Cat⌾(1⊸⊑) Fout
 Long ← ∾ (≠↑1‿3/⟨"  "⊸∾⋄((@+10)∾" ,")⊸∾⟩˙) {𝕎𝕩}¨ ⊢
 LFC ← Long∘Fout∘Comp
 
-SVG ← {∾⟨"Modify←GetHighlights←⊢⋄"⟩∾ •FChars∘∾⟜".bqn"¨ "../svg"‿𝕩}
+RT ← {𝕩
+  prims‿ref←•Import"pr.bqn" ⋄ l←≠∾prims
+  Long "provide"⊸Cat⌾(1⊸⊑) Fout l⊸↓⌾(1⊸⊑) (↕l) prims _getComp ref
+}
 CArg ← {J (¯5⊸↓∾𝕩˙)⌾⊑ •FLines "c.bqn"}
+SVG ← {∾⟨"Modify←GetHighlights←⊢⋄"⟩∾ •FChars∘∾⟜".bqn"¨ "../svg"‿𝕩}
 
 •Out (⊑"r"‿"c"‿"cc"‿"f"‿"e"‿"p"⊐⊏)◶⟨
-  {𝕩⋄ref‿len←•Import"pr.bqn"⋄Long Frun len⊸↓⌾(1⊸⊑)Comp ref}
+  RT
   {𝕩⋄LFC CArg "⟨"∾"⟩"«∾","⊸∾¨'"'(⊣∾∾˜)¨glyphs}
   {𝕩⋄LFC "{"∾"}"∾˜CArg"𝕩"}
   {𝕩⋄LFC •FChars "f.bqn"}
