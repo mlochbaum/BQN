@@ -260,18 +260,19 @@ _under_←{
   # Traverse indices 𝕩 and values 𝕨.
   # Return a list of index‿value pairs, or structErr if 𝕨 doesn't capture 𝕩.
   GetInserts←{
-    conform ← {𝕨◶0‿𝕩}´⟨IsArray⊢, =○=, MatchShape○≢⟩
-    Fail←{𝕊‿0}
-    # 𝕎 is parent traversal; 𝕩 is current components of ind and val
-    Trav←(IsArray 0⊑⊢)◶⟨Pair, Conform´∘⊢◶Fail‿{
-      Parent←𝕎 ⋄ n←≠0⊑a←⥊⌜𝕩 ⋄ j←¯1
-      Child←Trav⟜(< ⊑_eachd a˙)
-      { j+↩1 ⋄ f←n⊸≤◶⟨𝕊˙⊸Child,Parent˙⟩j ⋄ F 0 }
-    }⟩
-    count←0⋄{IsArray◶⟨{𝕩⋄count+↩1},𝕊⌜⟩𝕩}𝕩
-    next ← 0 Trav 𝕩‿𝕨
-    res ← {n‿o←Next𝕩⋄next↩n⋄o}⌜ ↕count
-    StructErr˙⍟(next=fail) res
+    count←0⋄depth←{IsArray◶⟨{𝕩⋄count+↩1⋄0},1+0⌈´𝕊⌜∘⥊⟩𝕩}𝕩
+    𝕩 (2⌊depth)◶(Pair Pair)‿(StructConform◶⟨StructErr˙,Pair _eachd○⥊⟩)‿{
+      Fail←{𝕊‿0}
+      # 𝕎 is parent traversal; 𝕩 is current components of ind and val
+      Trav←(IsArray 0⊑⊢)◶⟨Pair, StructConform´∘⊢◶Fail‿{
+        Parent←𝕎 ⋄ n←≠0⊑a←⥊⌜𝕩 ⋄ j←¯1
+        Child←Trav⟜{𝕩⊸⊑⌜a}
+        { j+↩1 ⋄ f←n⊸≤◶⟨𝕊˙⊸Child,Parent˙⟩j ⋄ F 0 }
+      }⟩
+      next ← 0 Trav 𝕨‿𝕩
+      res ← {n‿o←Next𝕩⋄next↩n⋄o}⌜ ↕count
+      StructErr˙⍟(next=fail) res
+    } 𝕨
   }⍟(1-IsStructErr∘⊢)
   Struct←{
     Set1←𝕨⊸{
@@ -340,7 +341,6 @@ _structural←{
 }
 
 MatchS ← 1×´=_eachd
-MatchShape ← =○≠◶0‿MatchS
 match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨=○IsArray, 0⟩
   ⟨IsArray∘⊢, =⟩
@@ -348,7 +348,8 @@ match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨MatchS○≢ , 0⟩
   {1×´⥊𝕨 Match _eachd 𝕩}
 ⟩
-Depth←IsArray◶0‿{1+0(⊣-≤×-)´Depth⌜⥊𝕩}
+structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
+Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
 
 ≡ ← Depth          ⊘ Match
 ≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
@@ -359,7 +360,7 @@ IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
 _fillMerge_ ← {(0<≠∘⥊)◶⟨(𝔾○≢⥊⟨⟩˙)_fillBy_⊢⟜Fill, 𝔽 ⊣_fillBy_⊢ IEF⟩}
 Merge←{
   c←≢0⊑⥊𝕩
-  (">𝕩: Elements of 𝕩 must have matching shapes" ! c MatchShape ≢)⌜⥊𝕩
+  (">𝕩: Elements of 𝕩 must have matching shapes" ! c =○≠◶0‿MatchS ≢)⌜⥊𝕩
   (Deshape⌜𝕩)⊑˜⌜c⥊↕1×´c
 }_fillMerge_∾⍟IsArray
 
