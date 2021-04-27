@@ -63,9 +63,9 @@ _glyphLookup_ ← {
 _isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
 IsJoin ← '∾'_isGlyph
 
+Split2 ← { s←2⊸×⌜↕(≠𝕩)÷2 ⋄ ⟨s⊏𝕩,(1⊸+⌜s)⊏𝕩⟩ }
 _lookup_ ← {
-  s ← 2⊸×⌜↕(≠𝕘)÷2
-  (s⊏𝕘) _glyphLookup_ (((1⊸+⌜s)⊏𝕘)∾⟨𝕗⟩)
+  k‿v←Split2 𝕘 ⋄ k _glyphLookup_ (v∾⟨𝕗⟩)
 }
 Identity ← {𝕏0} ("´: Identity not found"!0˙) _lookup_ ⟨
   '+',0 , '-',0
@@ -221,6 +221,7 @@ Indices←{
     {{ei↩E i↩N𝕩+1⋄i}⍟(𝕩=ei)i}⌜↕E k
   }⍟(0<l)𝕩
 }
+Rep ← Indices⊸⊏
 
 Transpose←(0<=)◶⟨ToArray,{
   l←≠𝕩 ⋄ m←1×´c←1 Cell 𝕩
@@ -290,7 +291,19 @@ _fillByPure_←{
 StructErr←{𝕩}
 IsStructErr ← (3=Type)◶⟨0,StructErr˙⊸=⟩
 _under_←{
-  val←𝕨𝔽○𝔾𝕩 ⋄ root‿ind←𝔾_structural 𝕩
+  val←𝕨𝔽○𝔾𝕩
+  # Construct indices
+  Inds ← IsArray◶⟨0,⥊⟜(↕1×´⊢)≢⟩ 𝕩 ⊑⟜⥊⍟(IsArray⊢)´ Reverse
+  _s_ ← {
+    f←𝕗
+    st‿d‿o←𝕩
+    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩}⍟(d>IsArray) 𝕘
+    {f _s_ 𝕩}⍟o g
+  }
+  IsStruct ← (5=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ Decompose
+  sf ← isStruct StructFn 𝕘 ⋄ SR ← ¯1 _s_ 0
+  root‿ind ← IsStruct◶⟨0‿StructErr,1‿3⊏Decompose⟩ SF sr
+
   # Traverse indices 𝕩 and values 𝕨.
   # Return a list of index‿value pairs, or structErr if 𝕨 doesn't capture 𝕩.
   GetInserts←{
@@ -328,50 +341,6 @@ _under_←{
     IsArray∘root◶⟨1⊑0⊑𝕨˙, Set⟩ 𝕩
   } _fillBy_ ⊢
   IsStructErr◶⟨Struct⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val GetInserts ind
-}
-Recompose ← ⊣◶⟨
-  ⊢                  # 0 primitive
-  ⊢                  # 1 block
-  {𝕎𝕏}´⊢             # 2-train
-  {F‿G‿H←𝕩⋄F G H}    # 3-train
-  {F‿m←𝕩⋄F _m}       # 4 1-modifier
-  {F‿m‿G←𝕩⋄F _m_ G}  # 5 2-modifier
-⟩
-_structural←{
-  E←StructErr˙
-  Inds ← IsArray◶⟨0,⥊⟜(↕1×´⊢)≢⟩ 𝕩 ⊑⟜⥊⍟(IsArray⊢)´ Reverse
-  _s_ ← {
-    f←𝕗
-    st‿d‿o←𝕩
-    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩}⍟(d>IsArray) 𝕘
-    {f _s_ 𝕩}⍟o g
-  }
-  IsStruct ← (5=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ Decompose
-  _sfn ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕨‿𝕗{𝕨𝕏𝕗}⟩}
-  Depth←1 _sfn ⋄ Info←0 _sfn
-
-  Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
-  _errIf←{⊢⊘×○(1-𝔽)◶⟨E,𝕏⟩}
-  SE ← IsStructErr _errIf⍟(3≥Type)
-  NS ← IsStruct _errIf
-  StructPrim ← ⊢ {𝕏𝕨} StructPrimClass ⊑ ⟨
-    ⊢            # ⊢⊣˜∘○⊸⟜⊘◶
-    Mon 1⊸Info   # =≠≢
-    Mon 0⊸Depth  # <
-    Mon 1⊸Depth  # ≍         # Dyad combines
-    Dy  1⊸Depth  # ↕/»«⊔
-        1⊸Depth  # ⥊↑↓⌽⍉⊏⊑
-  # Mon 2⊸Depth  # >
-  # Mon 2⊸Depth  # ∾         # Dyad combines
-    (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩
-  ⟩˙
-  StructFn ← (0⊸⊑ 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘⊣◶⟨
-    SE · StructPrim 1⊑⊢      #  0 primitive
-    E˙                       #  1 block
-    Recompose⟜{StructFn⌜1↓𝕩} #    other operation
-    SE 1⊑⊢                   # ¯1 constant
-  ⟩ ⊢) Decompose
-  IsStruct◶⟨0‿StructErr,1‿3⊏Decompose⟩ {𝕎𝕩}´ ⟨StructFn 𝕗, ¯1 _s_ 0⟩
 }
 
 MatchS ← 1×´=_eachd
@@ -438,18 +407,46 @@ Join←(2⌊=)◶⟨
   (r≤⊣)◶⟨⊑⟜𝕨⊸×,⊢⟩⟜(⊑⟜𝕩)⌜↕d
 } ⊣ "∾𝕩: 𝕩 must be an array"!IsArray
 
-structPrimClass ← {(Join1𝕩)_glyphLookup_((Indices∾⟜Pair≠)≠⌜𝕩)} ⟨
-  "⊢⊣˜∘○⊸⟜⊘◶"
-  "=≠≢"
-  "<"
-  "≍"
-  "↕/»«⊔"
-  "⥊↑↓⌽⍉⊏⊑"
-# ">"
-# "∾"
-# "˘⎉¨⌜"
-# "⚇"
+Recompose ← ⊣◶⟨
+  ⊢                  # 0 primitive
+  ⊢                  # 1 block
+  {𝕎𝕏}´⊢             # 2-train
+  {F‿G‿H←𝕩⋄F G H}    # 3-train
+  {F‿m←𝕩⋄F _m}       # 4 1-modifier
+  {F‿m‿G←𝕩⋄F _m_ G}  # 5 2-modifier
 ⟩
+structFn ← {
+  E←StructErr˙
+  _errIf←{⊢⊘×○(1-𝔽)◶⟨StructErr˙,𝕏⟩}
+  SE ← IsStructErr _errIf⍟(3≥Type)
+
+  _sfn_ ← {(𝕎⊢)◶⟨𝕏, 𝕩‿𝕗‿𝕘{𝕨𝕏𝕗}⟩}
+  Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
+  k‿v ← Split2 ⟨
+    "⊢⊣˜∘○⊸⟜⊘◶",  ⊢
+    "=≠≢",        Mon 1 _sfn_ 0
+    "<",          Mon 0 _sfn_ 1
+    "≍",          Mon 1 _sfn_ 1  # Dyad combines
+    "↕/»«⊔",      Dy  1 _sfn_ 1
+    "⥊↑↓⌽⍉⊏⊑",        1 _sfn_ 1
+  # ">",          Mon 2 _sfn_ 1
+  # "∾",          Mon 2 _sfn_ 1  # Dyad combines
+  # "˘⎉¨⌜",
+  # "⚇",
+  ⟩
+  SP ← (Join1 k)_glyphLookup_((k≠⌜⊸Rep v)∾⟨{
+    NS ← 𝕎 _errIf
+    (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩ 𝕩
+  }⟩)
+  StructPrim ← {p←SP𝕩⋄𝕨P𝕩}
+
+  0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘(0⊑⊢)◶⟨
+    SE ⊣ StructPrim 1⊑⊢             #  0 primitive
+    StructErr˙˙                     #  1 block
+    0⊸⊑ Recompose {𝕨˙⊸StructFn⌜1↓𝕩} #    other operation
+    SE 1⊑⊢                          # ¯1 constant
+  ⟩⟜{Decompose𝕩}
+}
 
 _takeDrop←{
   ⟨gl,Noop,_inds⟩←𝕗
@@ -538,7 +535,6 @@ _onAxes_←{
   }⟜ToArray
 }
 
-Rep ← Indices⊸⊏
 Replicate ← (0<=∘⊣)◶{
   𝕨↩(0⊑⥊)⍟IsArray𝕨
   "/: Amounts to replicate must be natural numbers" ! Nat 𝕨
