@@ -107,7 +107,7 @@ Cmp0 ← ≥-≤
 Cmp1 ← (0<1×´≢∘⊢)◶⟨1, IsArray∘⊢◶(1-2×≤)‿{𝕨Cmp1𝕩}⟜(0⊑⥊)⟩
 CmpLen ← {
   e←𝕨-○(1×´0⊸<⌜)𝕩
-  𝕨(e=0)◶⟨0,e⟩‿{
+  𝕨(e=0)◶⟨e,0⟩‿{
     SM←Cmp0 Pair ≥⊑Pair
     c‿r←𝕨SM○≠𝕩
     l←𝕨{
@@ -116,17 +116,17 @@ CmpLen ← {
       {k‿l←SM´𝕩⋄c↩k⋄m×↩l}∘(<⊑⌜𝕨‿𝕩˙)⍟(r⊸>)i
       m
     }○{(𝕩⊑˜(¯1+≠𝕩)⊸-)⌜↕r}𝕩
-    ⟨l,c⟩
+    ⟨c,l⟩
   }𝕩
 }
 _getCellCmp ← {
-  Ci←𝔽⋄l←𝕨⋄c←𝕩
+  Ci←𝔽⋄c←𝕨⊣0⋄l←𝕩
   Cc←{
     a←𝕨⋄b←𝕩
     S←(l⊸=)◶{S∘(1+𝕩)⍟(0⊸=)a Ci○(𝕩⊸+)b}‿c
     S 0
   }
-  (1=l)⊑Cc‿(𝕩⍟(0⊸=)𝔽)
+  (𝕨 ⊢⊘{𝕨⍟(0⊸=)𝕏} ci˙)⍟(1=l) cc
 }
 Cmp ← +○IsArray◶⟨
   Cmp0
@@ -147,7 +147,7 @@ _grade_←{
   bl←bu←0⋄r←1-{((bu↩⌈´𝕩)-bl↩⌊´𝕩)≤2×l}⟜𝕩⍟⊢((m=1)×32<l)◶0‿(1×´Int⌜)d
   0 Fill r◶⟨GroupLen⊸GroupOrd (𝕘⊑⟨-⟜bl,bu⊸-⟩)⌜ ⋄ 𝔽{𝕩⋄
     # Merge sort
-    GT←(m 𝔽○(⊑⟜d) _getCellCmp 0)>0˜
+    GT←(𝔽○(⊑⟜d) _getCellCmp m)>0˜
     B←l⊸≤◶⊢‿l
     (↕l){
       i←-d←𝕨 ⋄ j←ei←ej←0
@@ -172,7 +172,7 @@ _bins←{
   "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
   𝕩↩ToArray 𝕩
   lw←1×´sw←1 Cell 𝕨
-  cw←lw 𝔽○(⊑⟜(⥊𝕨)) _getCellCmp 0
+  cw←𝔽○(⊑⟜(⥊𝕨)) _getCellCmp lw
   "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1×´·(cw≤0˙)⟜(lw⊸+)∘(lw⊸×)⌜↕∘-⟜1⟩≠𝕨
   cx←c-˜=𝕩
   sx←cx Cell 𝕩 ⋄ lc←sw CmpLen sx
@@ -195,7 +195,7 @@ _search←{ # 0 for ∊˜, 1 for ⊐
     n←≠𝕨 ⋄ k←1×´s←1 Cell 𝕨 ⋄ cx←c-˜=𝕩
     lx←1×´sh←cx↑≢𝕩
     sh ⥊ 𝕨 (0<n)◶⟨0,s MatchS cx⊸Cell⟩◶{𝕩⋄(ind×n)⌜↕lx}‿{
-      cc ← k (⊑⟜(⥊𝕨))⊸(1-Match)⟜(⊑⟜(⥊𝕩)) _getCellCmp 0
+      cc ← (⊑⟜(⥊𝕨))⊸(1-Match)⟜(⊑⟜(⥊𝕩)) _getCellCmp k
       𝕨 ×○(8<≠∘⥊)◶{𝕩
         i‿j←(k⊸×⌜↕)⌜n‿lx ⋄ {Red CC⟜𝕩⌜i}⌜j
       }‿{
