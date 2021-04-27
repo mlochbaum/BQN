@@ -323,18 +323,14 @@ _under_←{
   }⍟(1-IsStructErr∘⊢)
   Struct←{
     Set1←𝕨⊸{
-      𝕩↩<⍟(1-IsArray)𝕩
-      l←1×´s←≢𝕩
+      𝕩↩ToArray𝕩
+      s←≢𝕩⋄l←≠d←⥊𝕩
       i←0⊸⊑⌜𝕨
-      g←Cmp0 _grade_ 0 i
-      v←(1⊑⊑⟜𝕨)⌜g
-      P←(≠g)⊸≤◶⟨(⊑⟜g)⊑i˙,l⟩
-      e←P j←0
-      s⥊{e=𝕩}◶⟨⊑⟜(⥊𝕩),{𝕩
-        r←j⊑v⋄e↩{𝕊∘{𝕩
-          "⌾: Incompatible result elements in structural Under"!r Match j⊑v
-        }⍟(e=⊢)P j↩1+j}0⋄r
-      }⟩⌜↕l
+      gl←l GroupLen i ⋄ g←gl GroupOrd i
+      Sel←1⊑𝕨⊑˜⊑⟜g
+      j←0⋄Adv←Sel{(j+↩𝕩)-1}
+      CM←"⌾: Incompatible result elements in structural Under"!Match⟜Sel
+      s⥊2⊸⌊◶⟨⊑⟜d,Adv,Adv{(𝕨CM(j-𝕩)⊸+)⌜↕𝕩-1⋄𝕨}⊢⟩⟜(⊑⟜gl)⌜↕l
     }
     _at_ ← {𝔽⍟((𝔾𝕩)=⊣)⟜(⊑⟜𝕩)⌜ ↕≠𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
