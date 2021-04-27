@@ -138,26 +138,35 @@ Cmp ← +○IsArray◶⟨
   }
 ⟩
 
-_grade_←{
-  "⍋𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  l←≠𝕩
-  m←1×´1 Cell 𝕩
-  d←⥊𝕩
-  # Counting sort for small-range ints
-  bl←bu←0⋄r←1-{((bu↩⌈´𝕩)-bl↩⌊´𝕩)≤2×l}⟜𝕩⍟⊢((m=1)×32<l)◶0‿(1×´Int⌜)d
-  0 Fill r◶⟨GroupLen⊸GroupOrd (𝕘⊑⟨-⟜bl,bu⊸-⟩)⌜ ⋄ 𝔽{𝕩⋄
-    # Merge sort
-    GT←(𝔽○(⊑⟜d) _getCellCmp m)>0˜
-    B←l⊸≤◶⊢‿l
-    (↕l){
-      i←-d←𝕨 ⋄ j←ei←ej←0
-      e←3 ⋄ G←GT○(⊑⟜(m⊸×⌜⍟(1-m=1)𝕩)) ⋄ c←⟨G,0,1,2⟩
-      s←(8≤d)⊑⟨+,{(𝕩-1){𝕩⋄e↩2⋄j↩i⋄i↩𝕩}⍟(1-G)⍟(1-e)𝕩}⟩
-      N←{i↩d+𝕨⋄ej↩B d+ei↩B j↩d+𝕩⋄e↩l≤j⋄S ei⋄i R j}
-      R←{𝕨e◶c𝕩}◶{e+↩2×ei=i↩1+𝕨⋄𝕨}‿{e+↩ej=j↩1+𝕩⋄𝕩}‿N
-      {(i R j)⊑𝕩}⟜𝕩⌜𝕩
-    }´(2⋆ni-1+⊢)⌜↕ni←⌈2 Log l+l=0
-  }⟩𝕩
+_grade ← {
+  gt ← 𝕗
+  cmps ← {𝕏˜}⌜⍟𝕗⟨≤,Cmp≤0˙,Cmp0,Cmp⟩
+  GetLE ← {
+    m←1-1=𝕨 ⋄ a←0<0+´IsArray⌜𝕩
+    𝕨 {(𝕏 _getCellCmp 𝕨)≤0˙}⍟m 𝕩{𝕏○(⊑⟜𝕗)} (a+2×m)⊑cmps
+  }
+  {
+    "⍋𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+    l←≠𝕩
+    m←1×´1 Cell 𝕩
+    𝕩↩⥊𝕩
+    Merge ← { # Merge sort
+      le←m GetLE 𝕩
+      B←l⊸≤◶⊢‿l
+      (↕l){
+        i←-d←𝕨 ⋄ j←ei←ej←0
+        e←3 ⋄ G←LE○(⊑⟜(m⊸×⌜⍟(1-m=1)𝕩)) ⋄ c←⟨1-G,0,1,2⟩
+        s←(8≤d)⊑⟨+,{(𝕩-1){𝕩⋄e↩2⋄j↩i⋄i↩𝕩}⍟G⍟(1-e)𝕩}⟩
+        N←{i↩d+𝕨⋄ej↩B d+ei↩B j↩d+𝕩⋄e↩l≤j⋄S ei⋄i R j}
+        R←{𝕨e◶c𝕩}◶{e+↩2×ei=i↩1+𝕨⋄𝕨}‿{e+↩ej=j↩1+𝕩⋄𝕩}‿N
+        {(i R j)⊑𝕩}⟜𝕩⌜𝕩
+      }´(2⋆ni-1+⊢)⌜↕ni←⌈2 Log l+l=0
+    }
+    # Counting sort for small-range ints
+    bl←bu←0 ⋄ Count←{GroupLen⊸GroupOrd (gt⊑⟨-⟜bl,bu⊸-⟩)⌜𝕩}
+    sr←{((bu↩⌈´𝕩)-bl↩⌊´𝕩)≤2×l}∘𝕩⍟⊢((m=1)×32<l)◶0‿(1×´Int⌜)𝕩
+    0 Fill sr◶Merge‿Count 𝕩
+  }
 }
 _binSearch ← {
   B ← 𝔽
@@ -181,8 +190,8 @@ _bins←{
   0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx)⊸×⌜ ⥊⟜(↕1×´⊢)⊑⟜(≢𝕩)⌜↕cx
 }
 
-⍋ ← Cmp  _grade_ 0 ⊘ (Cmp  _bins)
-⍒ ← Cmp˜ _grade_ 1 ⊘ (Cmp˜ _bins)
+⍋ ← 0 _grade ⊘ (Cmp  _bins)
+⍒ ← 1 _grade ⊘ (Cmp˜ _bins)
 
 # Searching
 _search←{ # 0 for ∊˜, 1 for ⊐
