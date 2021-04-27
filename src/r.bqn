@@ -304,10 +304,10 @@ _under_←{
   root‿ind ← IsStruct◶⟨0‿StructErr,1‿3⊏Decompose⟩ SF sr
 
   # Traverse indices 𝕩 and values 𝕨.
-  # Return a list of index‿value pairs, or structErr if 𝕨 doesn't capture 𝕩.
+  # Return flat lists ⟨indices,values⟩, or structErr if 𝕨 doesn't capture 𝕩.
   GetInserts←{
     count←0⋄depth←{IsArray◶⟨{𝕩⋄count+↩1⋄0},1+0⌈´𝕊⌜∘⥊⟩𝕩}𝕩
-    𝕩 (2⌊depth)◶(Pair Pair)‿(StructConform◶⟨StructErr˙,Pair _eachd○⥊⟩)‿{
+    𝕩 (2⌊depth)◶(Pair○Pair)‿(StructConform◶⟨StructErr˙,Pair○⥊⟩)‿{
       Fail←{𝕊‿0}
       # 𝕎 is parent traversal; 𝕩 is current components of ind and val
       Trav←(IsArray 0⊑⊢)◶⟨Pair, StructConform´∘⊢◶Fail‿{
@@ -317,23 +317,23 @@ _under_←{
       }⟩
       next ← 0 Trav 𝕨‿𝕩
       res ← {n‿o←Next𝕩⋄next↩n⋄o}⌜ ↕count
-      StructErr˙⍟(next=fail) res
+      (next=fail)◶⟨0⊸⊑⌜ Pair 1⊸⊑⌜, StructErr˙⟩ res
     } 𝕨
   }⍟(1-IsStructErr∘⊢)
   Struct←{
+    i‿v←𝕨
     Set1←𝕨⊸{
       𝕩↩ToArray𝕩
       s←≢𝕩⋄l←≠d←⥊𝕩
-      i←0⊸⊑⌜𝕨
       gl←l GroupLen i ⋄ g←gl GroupOrd i
-      Sel←1⊑𝕨⊑˜⊑⟜g
+      Sel←v⊑˜⊑⟜g
       j←0⋄Adv←Sel{(j+↩𝕩)-1}
       CM←"⌾: Incompatible result elements in structural Under"!Match⟜Sel
       s⥊2⊸⌊◶⟨⊑⟜d,Adv,Adv{(𝕨CM(j-𝕩)⊸+)⌜↕𝕩-1⋄𝕨}⊢⟩⟜(⊑⟜gl)⌜↕l
     }
     _at_ ← {𝔽⍟((𝔾𝕩)=⊣)⟜(⊑⟜𝕩)⌜ ↕≠𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
-    IsArray∘root◶⟨1⊑0⊑𝕨˙, Set⟩ 𝕩
+    IsArray∘root◶⟨0⊑v˙, Set⟩ 𝕩
   } _fillBy_ ⊢
   IsStructErr◶⟨Struct⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val GetInserts ind
 }
