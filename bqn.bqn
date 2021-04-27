@@ -14,7 +14,7 @@ provide ← ⟨
   ∾⊔∘⊢            # GroupOrd
   !,+,-,×,÷,⋆,⌊,=,≤,≢,⥊,⊑,↕,⌜,`,•_fillBy_,⊘,⎊
 ⟩
-rt‿SetPrims ← •COMP provide DCompile ref
+rt‿SetPrims ← •COMP ⟨provide,(•BQN"•"⊸∾)¨⟩ DCompile ref
 PrimInd ← rt⊸⊐⌾<
 Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
 SetPrims ⟨ Decompose, PrimInd ⟩
