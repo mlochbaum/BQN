@@ -691,8 +691,6 @@ _repeat_←{
   (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
 }
 
-↑ ↩ Prefixes       ⊘ Take
-↓ ↩ Suffixes       ⊘ Drop
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
@@ -711,7 +709,11 @@ GroupM←{
   (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨S _group○(0⊸⊑), S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group¨⟩ 𝕨
 }
 
-˝ ← _insert
+↑ ↩ Prefixes       ⊘ Take
+↓ ↩ Suffixes       ⊘ Drop
+⊔ ← GroupInds      ⊘ GroupGen
+⊐ ← SelfClas       ⊘ (1 _search)
+∊ ← ⊢_self         ⊘ (0 _search˜)
 ⎉ ← _rankOp_
 
 Find←{
@@ -720,9 +722,13 @@ Find←{
   0 Fill 𝕨 ≡⎉r ((1+r-⊸↑≢𝕩)⌊≢𝕨)⊸↕⎉r 𝕩
 }○ToArray
 
-⊔ ← GroupInds      ⊘ GroupGen
-⊐ ← SelfClas       ⊘ (1 _search)
-∊ ← ⊢_self         ⊘ (0 _search˜)
+OccurrenceCount ← 0 Fill ⊐˜(⊢-⊏)⍋∘⍋
+ProgressiveIndexOf ← 0 Fill {
+  c←1-˜=𝕨
+  "⊒: Rank of 𝕨 must be at least 1" ! 0≤c
+  "⊒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
+  𝕨⊐○(Pair¨⟜(≢⥊OccurrenceCount∘⥊) 𝕨⊸⊐)𝕩
+}
 
 ReorderChk←{
   "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
@@ -745,14 +751,6 @@ ReorderAxesInv←{
   r←=𝕩
   IA 1∧´(∊∧<⟜r)𝕨
   (PermInv 𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
-}
-
-OccurrenceCount ← 0 Fill ⊐˜(⊢-⊏)⍋∘⍋
-ProgressiveIndexOf ← 0 Fill {
-  c←1-˜=𝕨
-  "⊒: Rank of 𝕨 must be at least 1" ! 0≤c
-  "⊒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
-  𝕨⊐○(Pair¨⟜(≢⥊OccurrenceCount∘⥊) 𝕨⊸⊐)𝕩
 }
 
 ⁼ ← {Inverse 𝕗}
@@ -853,6 +851,7 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
   '⟜', {(𝕨IsConstant∘⊢◶⟨IA∘0˙,{𝕩𝕎{SwapInverse𝕗}⊢}⟩𝕩)⊘(𝕏⁼𝕎⁼)}
 ⟩ { inv˙⊸=◶⟨𝔽,{𝕏_inv_𝕎}˙⟩ }
 
+˝ ← _insert
 ⁼ ↩ _undo
 ⊑ ↩ First          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
