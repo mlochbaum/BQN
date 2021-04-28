@@ -1,60 +1,20 @@
-# BQN runtime. Requires:
+# BQN runtime part 1. Requires:
 #   Type Fill Log GroupLen GroupOrd _fillBy_
-#   !+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘
+#   +-×÷⋆⌊⌈|<>=≠≤≥≢⊢⊣⥊∾↑↓↕⊏⊑!⌜˙˜´`∘○⊸⟜◶⊘⍟
 # Filled in by runtime: glyphs and default PrimInd
+# Provides: all BQN primitives
+
 Decompose ← {0‿𝕩}
 PrimInd ← {𝕩}
 SetPrims ← {Decompose‿PrimInd ↩ 𝕩}
 
-◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
-⊢ ← {𝕩}
-⊣ ← {𝕩}⊘{𝕨}
-˙ ← {𝕩⋄𝕗}
-˜ ← {𝕩𝔽𝕨⊣𝕩}
-∘ ← {𝔽𝕨𝔾𝕩}
-○ ← {(𝔾𝕨)𝔽𝔾𝕩}
-⊸ ← {(𝔽𝕨⊣𝕩)𝔾𝕩}
-⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
-⍟ ← {𝕨((𝕨𝔾𝕩)⊑⊢‿𝕗){𝔽}𝕩}   # LIMITED to boolean right operand result
-
-IsArray←0=Type
-Int←(1=Type)◶⟨0,⌊⊸=⟩
-Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
-Deshape←IsArray◶{𝕩Fill⟨𝕩⟩}‿⥊
+IsArray ← 0=Type
+Int ← (1=Type)◶⟨0,⌊⊸=⟩
+Nat ← (1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
+Deshape ← IsArray◶{𝕩Fill⟨𝕩⟩}‿⥊
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
-Box ← {𝕩Fill⟨⟩⥊⟨𝕩⟩}
-ToArray ← Box⍟(1-IsArray)
-
-# LIMITED to numeric arguments for arithmetic cases
-≥ ←            ≤˜
-< ← Box      ⊘ (1-≥)
-> ←            (1-≤)
-⌊ ↩ ⌊        ⊘ (⊣-≥×-)
-⌈ ← -∘⌊∘-    ⊘ (⊣-≤×-)
-| ← 0⊸≤◶-‿⊢
-≠ ← (0<=)◶⟨1⋄0⊑≢⟩  # LIMITED to monadic case
-
-_fold←{
-  "´: 𝕩 must be a list" ! 1==𝕩
-  l←≠v←𝕩 ⋄ F←𝔽
-  r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
-  ({r↩𝕩 F r}(l-1)⊸-⊑𝕩˙)⌜↕l
-  r
-}
-´ ← _fold
-
-∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩⌜↕k+≠𝕩}  # LIMITED to two list arguments
-↑ ← {⊑⟜𝕩⌜↕𝕨}                       # LIMITED to number 𝕨 and list 𝕩
-↓ ← {(𝕨⊸+⊑𝕩˙)⌜↕(≠𝕩)-𝕨}             # LIMITED to number 𝕨 and list 𝕩
+ToArray ← <⍟(1-IsArray)
 Cell ← ↓⟜≢
-
-GetCells←(1==∘⊢)◶{
-  c←1×´s←1 Cell 𝕩
-  (c⊸×⌜𝕨)(+⊑(⥊𝕩)˙)⌜s⥊↕c
-}‿{
-  ⊑⟜𝕩⌜𝕨
-} _fillBy_ ⊢
-⊏ ← GetCells  # LIMITED to depth-1 natural number left argument
 
 _qSearch ← {+´·×`𝕗(1-=)⌜<}
 _glyphLookup_ ← {
@@ -76,6 +36,11 @@ Identity ← {𝕏0} ("´: Identity not found"!0˙) _lookup_ ⟨
   '≠',0 , '=',1
   '>',0 , '≥',1
 ⟩
+
+_fold←{
+  "´: 𝕩 must be a list" ! 1==𝕩
+  𝕨 (0<≠)⊘1◶⟨Identity 𝕗˙, 𝔽´⟩ 𝕩
+}
 
 _eachd←{
   _d←{ # Equal ranks
@@ -618,7 +583,7 @@ GroupGen←{
 ∧ ← ⍋⊸⊏      ⊘ (× _perv)
 ∨ ← ⍒⊸⊏      ⊘ ((+-×) _perv)
 × ↩ (0⊸(<->) ⊘ ×) _perv
-< ↩ Box      ⊘ ((1-≥) _perv)
+< ↩ <        ⊘ ((1-≥) _perv)
 > ↩ Merge    ⊘ ((1-≤) _perv)
 ≠ ↩ ≠        ⊘ ((1-=) _perv)
 = ↩ =        ⊘ (= _perv)
@@ -850,6 +815,7 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
   '⟜', {(𝕨IsConstant∘⊢◶⟨IA∘0˙,{𝕩𝕎{SwapInverse𝕗}⊢}⟩𝕩)⊘(𝕏⁼𝕎⁼)}
 ⟩ { inv˙⊸=◶⟨𝔽,{𝕏_inv_𝕎}˙⟩ }
 
+´ ← _fold
 ˝ ← _insert
 ⁼ ↩ _undo
 ⊑ ↩ First          ⊘ Pick

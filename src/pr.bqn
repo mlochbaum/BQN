@@ -24,5 +24,6 @@ GetRepls ← {
 
 gd ← "glyphs←"""∾glyphs∾"%"""
 rslt ← "⟨"∾"⟩"«∾","⊸∾¨glyphs  # Output all primitives
-src ← ∾⟨⟨gd⟩,•FLines"r.bqn",⟨"{PrimInd↩⊑𝕩⊐<⋄𝕩‿SetPrims}"∾rslt⟩⟩
+rr ← •FLines¨ "r0.bqn"‿"r1.bqn"
+src ← ∾⟨⟨gd⟩,∾rr,⟨"{PrimInd↩⊑𝕩⊐<⋄𝕩‿SetPrims}"∾rslt⟩⟩
 ref ⇐ ∾∾⟜(@+10)¨ E_proc¨ src
