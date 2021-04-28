@@ -1,6 +1,6 @@
 # BQN runtime part 0. Requires:
 #   Fill _fillBy_
-#   +-×⌊=≤≢⥊⊑↕⌜
+#   +-×⌊=≤≢⥊⊑↕⌜⊘
 # Provides:
 #   ⌊⌈|<>≠≥⊢⊣∾↑↓⊏˙˜´∘○⊸⟜◶⍟
 #   ^^^^^^^  ^^^^  ^    ^^ are limited, suitable for r1
