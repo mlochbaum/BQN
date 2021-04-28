@@ -50,7 +50,7 @@ Cell ← ↓⟜≢
 
 GetCells←(1==∘⊢)◶{
   c←1×´s←1 Cell 𝕩
-  𝕨((⥊𝕩)⊑˜c⊸×⊸+)⌜s⥊↕c
+  (c⊸×⌜𝕨)(+⊑(⥊𝕩)˙)⌜s⥊↕c
 }‿{
   ⊑⟜𝕩⌜𝕨
 } _fillBy_ ⊢
@@ -182,7 +182,7 @@ _bins←{
   𝕩↩ToArray 𝕩
   lw←1×´sw←1 Cell 𝕨
   cw←𝔽○(⊑⟜(⥊𝕨)) _getCellCmp lw
-  "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1×´·(cw≤0˙)⟜(lw⊸+)∘(lw⊸×)⌜↕∘-⟜1⟩≠𝕨
+  "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1×´·(Cw≤0˙)⟜(lw⊸+)∘(lw⊸×)⌜↕∘-⟜1⟩≠𝕨
   cx←c-˜=𝕩
   sx←cx Cell 𝕩 ⋄ lc←sw CmpLen sx
   cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
@@ -236,7 +236,7 @@ Transpose←(0<=)◶⟨ToArray,{
   (c⥊↕m)(+⟜(m⊸×)⊑(⥊𝕩)˙)⌜↕l
 }_fillBy_⊢⟩
 TransposeInv←{
-  r←1-˜=𝕩 ⋄ s←≢𝕩 ⋄ l←r⊑s ⋄ c←⊑⟜s⌜↕r
+  r←1-˜=𝕩 ⋄ s←≢𝕩 ⋄ l←r⊑s ⋄ c←r↑s
   (↕l)(+⟜(l⊸×)⊑(⥊𝕩)˙)⌜c⥊↕1×´c
 }_fillBy_⊢⍟{IX IsArray𝕩⋄0<=𝕩}
 
@@ -291,7 +291,7 @@ SelSub←{
 }
 First ← IsArray◶⟨⊢, (0<≠)◶⟨Fill,0⊸⊑⟩⥊⟩
 
-IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1(𝕊d⊑˜1⊸+)⊸×´·↕1-˜≠∘d⟩0⊑d}
+IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1×´·𝕊⌜1↓d˙⟩0⊑d}
 _fillByPure_←{
   𝕘 (3≤Type∘⊣)◶⟨{𝕨Fill𝕏},{(𝕨HomFil𝕩)_fillBy_𝕨}⍟(IsPure⊣)⟩ 𝕗
 }
@@ -388,7 +388,7 @@ JoinM←{
     a←𝕩⊑sh
     m←𝕩⊸⊑⌜s
     l←(q⊸×⊑m˙)⌜↕a
-    "∾𝕩: 𝕩 element shapes must be compatible" ! 1×´m=¨⥊(↕p)⊢⌜l⊣⌜↕q
+    "∾𝕩: 𝕩 element shapes must be compatible" ! m MatchS ⥊(↕p)⊢⌜l⊣⌜↕q
     k ← Indices l
     c ← -⟜(⊑⟜(k ⊏ 0+_s0 l))⌜ ↕≠k
     i ↩ (i ×⟜(⊑⟜l)⌜ k) +¨ i⊢⌜c
@@ -397,9 +397,8 @@ JoinM←{
   }¨↕r
   G←(⥊⌜z){𝕨⊑𝕩⊑𝕗}¨
   i (r<d)◶G‿{
-    Dr←((r⊸+)⌜↕d-r)⊸⊏
-    t←Dr 0⊑s
-    "∾𝕩: 𝕩 element trailing shapes must match" ! 1×´(×´t=¨Dr)⌜s
+    t←r↓0⊑s
+    "∾𝕩: 𝕩 element trailing shapes must match" ! 1×´(t MatchS r⊸↓)⌜s
     ti←t⥊↕tp←×´t⋄(𝕨tp⊸×⊸+⌜ti)G𝕩⊣⌜ti
   } j
 }
@@ -468,7 +467,7 @@ _takeDrop←{
     doFil←0
     sh ← (⊑⟜s Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {𝕩⋄doFil↩1}_inds) ⊑⟜𝕨)⌜ ↕r
     (0<=i)◶(s⊸⥊)‿{
-      sh ∾↩ t ← (s⊑˜r⊸+)⌜↕(≠s)-r
+      sh ∾↩ t ← r↓s
       {i 𝕩_c↩ ↕𝕩}⍟(1-1⊸=) k×´t
       Sel ← ⊑⟜(⥊𝕩)
       𝕩{Sel↩0⊸≤◶⟨(Fill𝕨)˙,Sel⟩}⍟⊢doFil
@@ -485,7 +484,7 @@ ShiftCheck←{
   "« or »: 𝕨 must not have higher rank than 𝕩" ! 0≤d
   "« or »: Rank of 𝕨 must be at least rank of 𝕩 minus 1" ! 1≥d
   s←1 Cell 𝕩
-  "« or »: 𝕨 must share 𝕩's major cell shape" ! 1×´(⊑⟜s=+⟜(1-d)⊑(≢𝕨)˙)⌜↕≠s
+  "« or »: 𝕨 must share 𝕩's major cell shape" ! s MatchS (1-d)↓≢𝕨
   1×´s
 }
 ShiftBefore←{
@@ -519,7 +518,7 @@ Windows←{
     s←≢𝕩
     l←(1+⊑⟜s-⊑⟜𝕨)⌜↕r
     "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ×´0⊸≤⌜l
-    k←1×´t←(r⊸+⌜↕s≠⊸-r)⊏s
+    k←1×´t←r↓s
     str ← Reverse ×`⟨k⟩∾{(s⊑˜𝕩⊸-)⌜↕𝕩}r-1
     ⊑⟜(⥊𝕩)⌜ k +⌜⟜(t⥊↕)˜⍟(1-=⟜1) l +⌜○(+⌜´str{𝕨⊸×⌜↕𝕩}¨⊢) 𝕨
   }_fillBy_⊢⍟(0<r)𝕩
