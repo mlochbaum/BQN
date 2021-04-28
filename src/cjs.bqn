@@ -30,14 +30,14 @@ LFC ← Long∘Fout∘Comp
 
 RT ← {
   src‿need‿inputs←𝕩•Import"pr.bqn"
-  pr←"runtime_0"‿"provide"{(∾𝕨<⊸(<∘Ind⟜F¨)⟜(↕≠)¨𝕩)⊏˜(∾𝕩)⊐∾need}○((-1+0<𝕩)⊸↑)inputs
+  pr←"runtime_0"‿"provide"{(∾𝕨<⊸(<∘Ind⟜F¨)⟜(↕≠)¨𝕩)⊏˜(∾𝕩)⊐∾need}○((-1+1=𝕩)⊸↑)inputs
   Long Fout pr need _getComp src
 }
 CArg ← {J (¯5⊸↓∾𝕩˙)⌾⊑ •FLines "c.bqn"}
 SVG ← {∾⟨"Modify←GetHighlights←⊢⋄"⟩∾ •FChars∘∾⟜".bqn"¨ "../svg"‿𝕩}
 
 •Out (⊑"r"‿"r0"‿"r1"‿"c"‿"cc"‿"f"‿"e"‿"p"⊐⊏)◶⟨
-  RT∘⟨⟩, RT∘0, RT∘1
+  RT∘2, RT∘0, RT∘1
   {𝕩⋄LFC CArg "⟨"∾"⟩"«∾","⊸∾¨'"'(⊣∾∾˜)¨glyphs}
   {𝕩⋄LFC "{"∾"}"∾˜CArg"𝕩"}
   {𝕩⋄LFC •FChars "f.bqn"}
