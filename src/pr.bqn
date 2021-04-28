@@ -12,7 +12,7 @@ alias‿def ← (⊑¨ ≍○< 1⊸↓¨) ⟨"?Type","∩Fill","⍣Log",
 keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘⎊"
 
 type ← ((+´·∧`'_'=0‿¯1⊸⊏)¨def) ∾ chrs((+`≠¨)∘⊣⍋∾⊸⊐)keep
-prims ⇐ type ⊔ alias∾keep
+need ⇐ type ⊔ alias∾keep
 
 GetRepls ← {
   c‿n ← 𝕩
@@ -25,5 +25,5 @@ GetRepls ← {
 gd ← "glyphs←"""∾glyphs∾"%"""
 rslt ← "⟨"∾"⟩"«∾","⊸∾¨glyphs  # Output all primitives
 rr ← •FLines¨ "r0.bqn"‿"r1.bqn"
-src ← ∾⟨⟨gd⟩,∾rr,⟨"{PrimInd↩⊑𝕩⊐<⋄𝕩‿SetPrims}"∾rslt⟩⟩
-ref ⇐ ∾∾⟜(@+10)¨ E_proc¨ src
+raw ← ∾⟨⟨gd⟩,∾rr,⟨"{PrimInd↩⊑𝕩⊐<⋄𝕩‿SetPrims}"∾rslt⟩⟩
+src ⇐ ∾∾⟜(@+10)¨ E_proc¨ raw

@@ -29,8 +29,8 @@ Long ← ∾ (≠↑1‿3/⟨"  "⊸∾⋄((@+10)∾" ,")⊸∾⟩˙) {𝕎𝕩}
 LFC ← Long∘Fout∘Comp
 
 RT ← {𝕩
-  prims‿ref←•Import"pr.bqn" ⋄ l←≠∾prims
-  Long "provide"⊸Cat⌾(1⊸⊑) Fout l⊸↓⌾(1⊸⊑) (↕l) prims _getComp ref
+  src‿need←•Import"pr.bqn" ⋄ l←≠∾need
+  Long "provide"⊸Cat⌾(1⊸⊑) Fout l⊸↓⌾(1⊸⊑) (↕l) need _getComp src
 }
 CArg ← {J (¯5⊸↓∾𝕩˙)⌾⊑ •FLines "c.bqn"}
 SVG ← {∾⟨"Modify←GetHighlights←⊢⋄"⟩∾ •FChars∘∾⟜".bqn"¨ "../svg"‿𝕩}
