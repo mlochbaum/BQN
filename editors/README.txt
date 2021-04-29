@@ -3,6 +3,9 @@ performed with a backslash prefix by default, using the layout
 illustrated at the top of the file ./bqn . To type an actual backslash,
 hit the backslash key twice.
 
+External userscript for highlighting BQN code on GitHub:
+https://gist.github.com/dzaima/35ca0ce12b5e215a62460f00e693984f
+
 The file bqn is for configuring XKB on Linux. To use, copy it
 to /usr/share/X11/xkb/symbols/, then run
 $ setxkbmap -layout us,bqn -option grp:switch
