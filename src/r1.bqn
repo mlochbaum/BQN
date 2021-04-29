@@ -42,11 +42,14 @@ _fold←{
   𝕨 (0<≠)⊘1◶⟨Identity 𝕗˙, 𝔽´⟩ 𝕩
 }
 
+¨ ← { d←⥊𝕩⋄(≢𝕩)⥊(⊑⟜(⥊𝕨)𝔽⊑⟜d)⌜↕≠d }  # LIMITED to equal-shape array arguments
+MatchS ← 1×´=¨
+
 _eachd←{
   _d←{ # Equal ranks
     p←≢𝕨
-    "Mapping: Equal-rank argument shapes don't agree" ! 1(⊑⟜p=⊑⟜(≢𝕩))⊸×´↕=𝕨
-    p⥊ (⊑⟜(⥊𝕨)𝔽⊑⟜(⥊𝕩))⌜↕1×´p
+    "Mapping: Equal-rank argument shapes don't agree" ! p MatchS ≢𝕩
+    p⥊𝕨𝔽¨○⥊𝕩
   }
   _e←{ # 𝕨 has smaller or equal rank
     p←≢𝕨 ⋄ k←=𝕨 ⋄ q←≢𝕩
@@ -76,7 +79,7 @@ CmpLen ← {
     SM←Cmp0 Pair ≥⊑Pair
     c‿r←𝕨SM○≠𝕩
     l←𝕨{
-      i←0+´×`𝕨=_eachd𝕩
+      i←0+´×`𝕨=¨𝕩
       m←1×´i↕⊸⊏𝕨
       {k‿l←SM´𝕩⋄c↩k⋄m×↩l}∘(<⊑⌜𝕨‿𝕩˙)⍟(r⊸>)i
       m
@@ -176,7 +179,7 @@ _search←{ # 0 for ∊˜, 1 for ⊐
         g←Reverse⍒𝕨
         i←(g⊑˜0⌈-⟜1)⌜(g⊏𝕨)⍋𝕩
         adj←ind⊑⟨1⊸-,⊣--⟜n⊸×⟩
-        ⊑⟜i⊸(⊣ Adj CC○(k⊸×))⌜↕lx
+        i(⊣ Adj CC○(k⊸×))¨↕lx
       } 𝕩
     } ToArray𝕩
   }
@@ -239,7 +242,7 @@ Pick0←{
 Pick1←{
   "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
   "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
-  i←0⋄(⊑⟜𝕨{i↩(𝕩NormIndP𝕨)+𝕩×i}⊑⟜s)⌜↕≠𝕨
+  i←0⋄𝕨{i↩(𝕩NormIndP𝕨)+𝕩×i}¨s
   i⊑Deshape𝕩
 }⟜ToArray
 Pickd←(0<0+´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
@@ -303,29 +306,27 @@ _under_←{
       Sel←v⊑˜⊑⟜g
       j←0⋄Adv←Sel{(j+↩𝕩)-1}
       CM←"⌾: Incompatible result elements in structural Under"!Match⟜Sel
-      s⥊2⊸⌊◶⟨⊑⟜d,Adv,Adv{(𝕨CM(j-𝕩)⊸+)⌜↕𝕩-1⋄𝕨}⊢⟩⟜(⊑⟜gl)⌜↕l
+      s⥊(↕l)2⊸⌊◶⟨⊑⟜d,Adv,Adv{(𝕨CM(j-𝕩)⊸+)⌜↕𝕩-1⋄𝕨}⊢⟩¨gl
     }
-    _at_ ← {𝔽⍟((𝔾𝕩)=⊣)⟜(⊑⟜𝕩)⌜ ↕≠𝕩}
+    _at_ ← {(↕≠𝕩)𝔽⍟((𝔾𝕩)=⊣)¨𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
     IsArray∘root◶⟨0⊑v˙, Set⟩ 𝕩
   } _fillBy_ ⊢
   IsStructErr◶⟨Struct⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val GetInserts ind
 }
 
-MatchS ← 1×´=_eachd
 match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨=○IsArray, 0⟩
   ⟨IsArray∘⊢, =⟩
   ⟨=○=      , 0⟩
   ⟨MatchS○≢ , 0⟩
-  {1×´⥊𝕨 Match _eachd 𝕩}
+  {1×´𝕨Match¨○⥊𝕩}
 ⟩
 structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
 Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
 
 ≡ ← Depth          ⊘ Match
 ≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
-¨ ← {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
 
 IF ← ⊢⊣!∘≡  # Intersect fill
 IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
@@ -355,7 +356,7 @@ JoinM←{
     l←(q⊸×⊑m˙)⌜↕a
     "∾𝕩: 𝕩 element shapes must be compatible" ! m MatchS ⥊(↕p)⊢⌜l⊣⌜↕q
     k ← Indices l
-    c ← -⟜(⊑⟜(k ⊏ 0+_s0 l))⌜ ↕≠k
+    c ← (↕≠k)-¨k ⊏ 0+_s0 l
     i ↩ (i ×⟜(⊑⟜l)⌜ k) +¨ i⊢⌜c
     j ↩ j ×⟜a⊸+⌜ k
     p×↩a
@@ -372,7 +373,7 @@ Join←(2⌊=)◶⟨
 ⟩_fillMerge_{
   r←≠𝕨 ⋄ d←≠𝕩
   "∾𝕩: empty 𝕩 fill rank must be at least argument rank" ! d≥r
-  (r≤⊣)◶⟨⊑⟜𝕨⊸×,⊢⟩⟜(⊑⟜𝕩)⌜↕d
+  (↕d)(r≤⊣)◶⟨⊑⟜𝕨⊸×,⊢⟩¨𝕩
 } ⊣ "∾𝕩: 𝕩 must be an array"!IsArray
 
 Recompose ← ⊣◶⟨
@@ -430,7 +431,7 @@ _takeDrop←{
     _c ← { (×⟜𝕗⌜𝕨) +⌜ 𝕩 }
     i←<0 ⋄ k←1 ⋄ UIk←{ i (k×𝕨)_c↩ k ↕⊸(𝕨_c)⍟(1-=⟜1) 𝕩 ⋄ k↩1 ⋄ ≠𝕩 }
     doFil←0
-    sh ← (⊑⟜s Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {𝕩⋄doFil↩1}_inds) ⊑⟜𝕨)⌜ ↕r
+    sh ← s Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {𝕩⋄doFil↩1}_inds)¨ 𝕨
     (0<=i)◶(s⊸⥊)‿{
       sh ∾↩ t ← r↓s
       {i 𝕩_c↩ ↕𝕩}⍟(1-1⊸=) k×´t
@@ -481,7 +482,7 @@ Windows←{
     "𝕨↕𝕩: Length of 𝕨 must be at most rank of 𝕩" ! r≤=𝕩
     "𝕨↕𝕩: 𝕨 must consist of natural numbers" ! ×´Nat⌜𝕨
     s←≢𝕩
-    l←(1+⊑⟜s-⊑⟜𝕨)⌜↕r
+    l←s(1+-)¨𝕨
     "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ×´0⊸≤⌜l
     k←1×´t←r↓s
     str ← Reverse ×`⟨k⟩∾{(s⊑˜𝕩⊸-)⌜↕𝕩}r-1
@@ -513,7 +514,7 @@ Replicate ← (0<=∘⊣)◶{
   𝕨 Rep 𝕩
 } _onAxes_ (1-0=≠) _fillBy_ ⊢
 
-PermInv ← 1¨⊸GroupOrd
+PermInv ← 1⌜⊸GroupOrd
 _self←{
   "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   g←⍋𝕩
@@ -531,7 +532,7 @@ Reshape←{
   l←sp◶(1×´⊢)‿{
     lp←1×´p⊣◶⊢‿1¨𝕩
     "𝕨⥊𝕩: Can't compute axis length when rest of shape is empty" ! 0<lp
-    i←0+´⊑⟜p⊸×⌜↕≠p
+    i←0+´p×¨↕≠p
     t←ReshapeT i⊑s
     "𝕨⥊𝕩: 𝕨 must consist of natural numbers or ∘ ⌊ ⌽ ↑" ! t<4
     Chk ← ⊢ ⊣ "𝕨⥊𝕩: Shape must be exact when reshaping with ∘" ! ⌊⊸=
@@ -601,25 +602,6 @@ ValidateRanks←{
   "⎉ or ⚇: 𝔽 result must consist of integers" ! 1∧´Int⌜𝕩
   𝕩
 }
-_ranks ← {⟨2⟩⊘⟨1,0⟩ ((⊣-1+|)˜⟜≠⊑¨<∘⊢) ValidateRanks∘𝔽}
-_depthOp_←{
-  neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
-  _d←{
-    R←(𝕗+neg)_d
-    𝕨(×⟜2⊸+´2 Reshape (neg∧𝕗≥0)∨(0⌈𝕗)≥Pair○≡)◶⟨R¨⋄R⟜𝕩⌜∘⊣⋄(𝕨R⊢)⌜∘⊢⋄F⟩𝕩
-  }
-  𝕨 n _d 𝕩
-}
-_rankOp_←{
-  k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
-  Enc←{
-    f←(↕𝕨)⊏≢𝕩
-    c←1×´s←𝕨Cell𝕩⋄i←s⥊↕c
-    (f⥊((⥊𝕩)⊏˜i+c×⊢)⌜↕1×´f)˙_fillBy_{(<𝕩)⌜i} 𝕩
-  }
-  Enc↩(>⟜0×1+≥⟜=)◶⟨<⊢,Enc,<⌜⊢⟩
-  > ((0⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
-}
 _insert←{
   "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
   F←𝔽
@@ -671,6 +653,27 @@ GroupM←{
   l←dr-˜≠⌜𝕨↩⥊⌜𝕨 ⋄ LS←∾⟜(n Cell 𝕩) Reshape 𝕩˙
   S←⊏⟜(LS⟨1×´l⟩)
   (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨S _group○(0⊸⊑), S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group¨⟩ 𝕨
+}
+
+¨ ← {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
+_ranks ← {⟨2⟩⊘⟨1,0⟩ ((⊣-1+|)˜⟜≠⊑¨<∘⊢) ValidateRanks∘𝔽}
+_depthOp_←{
+  neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
+  _d←{
+    R←(𝕗+neg)_d
+    𝕨(×⟜2⊸+´2 Reshape (neg∧𝕗≥0)∨(0⌈𝕗)≥Pair○≡)◶⟨R¨⋄R⟜𝕩⌜∘⊣⋄(𝕨R⊢)⌜∘⊢⋄F⟩𝕩
+  }
+  𝕨 n _d 𝕩
+}
+_rankOp_←{
+  k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
+  Enc←{
+    f←(↕𝕨)⊏≢𝕩
+    c←1×´s←𝕨Cell𝕩⋄i←s⥊↕c
+    (f⥊((⥊𝕩)⊏˜i+c×⊢)⌜↕1×´f)˙_fillBy_{(<𝕩)⌜i} 𝕩
+  }
+  Enc↩(>⟜0×1+≥⟜=)◶⟨<⊢,Enc,<⌜⊢⟩
+  > ((0⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
 }
 
 ↑ ↩ Prefixes       ⊘ Take
