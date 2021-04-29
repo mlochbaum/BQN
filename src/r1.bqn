@@ -15,6 +15,7 @@ Deshape ← IsArray◶{𝕩Fill⟨𝕩⟩}‿⥊
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 ToArray ← <⍟(1-IsArray)
 Cell ← ↓⟜≢
+MatchS ← 1×´=¨
 
 _qSearch ← {+´·×`𝕗(1-=)⌜<}
 _glyphLookup_ ← {
@@ -41,9 +42,6 @@ _fold←{
   "´: 𝕩 must be a list" ! 1==𝕩
   𝕨 (0<≠)⊘1◶⟨Identity 𝕗˙, 𝔽´⟩ 𝕩
 }
-
-¨ ← { d←⥊𝕩⋄(≢𝕩)⥊(⊑⟜(⥊𝕨)𝔽⊑⟜d)⌜↕≠d }  # LIMITED to equal-shape array arguments
-MatchS ← 1×´=¨
 
 _eachd←{
   _d←{ # Equal ranks
@@ -431,7 +429,7 @@ _takeDrop←{
     _c ← { (×⟜𝕗⌜𝕨) +⌜ 𝕩 }
     i←<0 ⋄ k←1 ⋄ UIk←{ i (k×𝕨)_c↩ k ↕⊸(𝕨_c)⍟(1-=⟜1) 𝕩 ⋄ k↩1 ⋄ ≠𝕩 }
     doFil←0
-    sh ← s Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {𝕩⋄doFil↩1}_inds)¨ 𝕨
+    sh ← (r↑s) Noop◶{k×↩𝕨⋄𝕨}‿(⊣ UIk {𝕩⋄doFil↩1}_inds)¨ 𝕨
     (0<=i)◶(s⊸⥊)‿{
       sh ∾↩ t ← r↓s
       {i 𝕩_c↩ ↕𝕩}⍟(1-1⊸=) k×´t
@@ -482,7 +480,7 @@ Windows←{
     "𝕨↕𝕩: Length of 𝕨 must be at most rank of 𝕩" ! r≤=𝕩
     "𝕨↕𝕩: 𝕨 must consist of natural numbers" ! ×´Nat⌜𝕨
     s←≢𝕩
-    l←s(1+-)¨𝕨
+    l←(r↑s)(1+-)¨𝕨
     "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ×´0⊸≤⌜l
     k←1×´t←r↓s
     str ← Reverse ×`⟨k⟩∾s⊏˜{𝕩⊸-⌜↕𝕩}r-1
