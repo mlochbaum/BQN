@@ -13,7 +13,7 @@ keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘⎊"
 chrext ← glyphs ∾¨ ((+´·∧`'_'=0‿¯1⊸⊏)¨def) ⊔ alias
 Typ ← chrext⊸((+`≠¨)∘⊣⍋∾⊸⊐)
 
-in0‿out0 ← ⟨"∩⍝+-×⌊=≤≢⥊⊑↕⌜⊘", "⌊⌈|<>≠≥⊢⊣∾↑↓⊏˙˜´∘○⊸⟜◶⍟"⟩
+in0‿out0 ← ⟨"∩⍝+-×⌊=≤≢⥊⊑↕⌜⊘", "⌊⌈|<>≠≥⊢⊣∾↑↓⊏˙˜¨´∘○⊸⟜◶⍟"⟩
 in2 ← alias∾keep
 out2 ← ∾glyphs
 in‿out ← rtt ⊑ ⟨in0,out0⟩‿⟨⍷in2∾out0,out2⟩‿⟨in2,out2⟩
