@@ -83,7 +83,7 @@ CmpLen ← {
       m←1×´i↕⊸⊏𝕨
       {k‿l←SM´𝕩⋄c↩k⋄m×↩l}∘(<⊑⌜𝕨‿𝕩˙)⍟(r⊸>)i
       m
-    }○{(𝕩⊑˜(¯1+≠𝕩)⊸-)⌜↕r}𝕩
+    }○{𝕩⊏˜(¯1+≠𝕩)⊸-⌜↕r}𝕩
     ⟨c,l⟩
   }𝕩
 }
@@ -155,7 +155,7 @@ _bins←{
   sx←cx Cell 𝕩 ⋄ lc←sw CmpLen sx
   cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
   B←(1×´sw)⊸×⊸Cc≤0˙
-  0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx)⊸×⌜ ⥊⟜(↕1×´⊢)⊑⟜(≢𝕩)⌜↕cx
+  0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx)⊸×⌜ ⥊⟜(↕1×´⊢)cx↑≢𝕩
 }
 
 ⍋ ← 0 _grade ⊘ (Cmp  _bins)
@@ -177,7 +177,7 @@ _search←{ # 0 for ∊˜, 1 for ⊐
         i‿j←(k⊸×⌜↕)⌜n‿lx ⋄ {Red CC⟜𝕩⌜i}⌜j
       }‿{
         g←Reverse⍒𝕨
-        i←(g⊑˜0⌈-⟜1)⌜(g⊏𝕨)⍋𝕩
+        i←g⊏˜(0⌈-⟜1)⌜(g⊏𝕨)⍋𝕩
         adj←ind⊑⟨1⊸-,⊣--⟜n⊸×⟩
         i(⊣ Adj CC○(k⊸×))¨↕lx
       } 𝕩
@@ -201,11 +201,11 @@ Rep ← Indices⊸⊏
 
 Transpose←(0<=)◶⟨ToArray,{
   l←≠𝕩 ⋄ m←1×´c←1 Cell 𝕩
-  (c⥊↕m)(+⟜(m⊸×)⊑(⥊𝕩)˙)⌜↕l
+  (⥊𝕩)⊏˜(c⥊↕m)+⟜(m⊸×)⌜↕l
 }_fillBy_⊢⟩
 TransposeInv←{
   r←1-˜=𝕩 ⋄ s←≢𝕩 ⋄ l←r⊑s ⋄ c←r↑s
-  (↕l)(+⟜(l⊸×)⊑(⥊𝕩)˙)⌜c⥊↕1×´c
+  (⥊𝕩)⊏˜(↕l)+⟜(l⊸×)⌜c⥊↕1×´c
 }_fillBy_⊢⍟{IX IsArray𝕩⋄0<=𝕩}
 
 Reverse←{
@@ -283,7 +283,7 @@ _under_←{
   # Traverse indices 𝕩 and values 𝕨.
   # Return flat lists ⟨indices,values⟩, or structErr if 𝕨 doesn't capture 𝕩.
   GetInserts←{
-    count←0⋄depth←{IsArray◶⟨{𝕩⋄count+↩1⋄0},1+0⌈´𝕊⌜∘⥊⟩𝕩}𝕩
+    count←0⋄depth←{IsArray◶⟨{𝕩⋄count+↩1⋄0},1+0𝕊⊸⌈´⥊⟩𝕩}𝕩
     𝕩 (2⌊depth)◶(Pair○Pair)‿(StructConform◶⟨StructErr˙,Pair○⥊⟩)‿{
       Fail←{𝕊‿0}
       # 𝕎 is parent traversal; 𝕩 is current components of ind and val
@@ -353,11 +353,11 @@ JoinM←{
     q←𝕨
     a←𝕩⊑sh
     m←𝕩⊸⊑⌜s
-    l←(q⊸×⊑m˙)⌜↕a
+    l←m⊏˜q⊸×⌜↕a
     "∾𝕩: 𝕩 element shapes must be compatible" ! m MatchS ⥊(↕p)⊢⌜l⊣⌜↕q
     k ← Indices l
     c ← (↕≠k)-¨k ⊏ 0+_s0 l
-    i ↩ (i ×⟜(⊑⟜l)⌜ k) +¨ i⊢⌜c
+    i ↩ (i ×⌜ k⊏l) +¨ i⊢⌜c
     j ↩ j ×⟜a⊸+⌜ k
     p×↩a
   }¨↕r
@@ -485,8 +485,8 @@ Windows←{
     l←s(1+-)¨𝕨
     "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ×´0⊸≤⌜l
     k←1×´t←r↓s
-    str ← Reverse ×`⟨k⟩∾{(s⊑˜𝕩⊸-)⌜↕𝕩}r-1
-    ⊑⟜(⥊𝕩)⌜ k +⌜⟜(t⥊↕)˜⍟(1-=⟜1) l +⌜○(+⌜´str{𝕨⊸×⌜↕𝕩}¨⊢) 𝕨
+    str ← Reverse ×`⟨k⟩∾s⊏˜{𝕩⊸-⌜↕𝕩}r-1
+    (⥊𝕩) ⊏˜ k +⌜⟜(t⥊↕)˜⍟(1-=⟜1) l +⌜○(+⌜´str{𝕨⊸×⌜↕𝕩}¨⊢) 𝕨
   }_fillBy_⊢⍟(0<r)𝕩
 }
 
@@ -551,7 +551,7 @@ _group←{
   "⊔: Grouping argument values cannot be less than ¯1" ! 1×´¯1⊸≤⌜𝕩
   GL←GroupLen⋄𝕩↩𝕨(-˜⟜≠{GL↩(𝕨⊑𝕩)GL⊢⋄𝕨↑𝕩}⊢)⍟(0⊘⊣)𝕩
   d←(l←GL𝕩)GroupOrd𝕩
-  i←0⋄(𝔽{𝕩⋄(i↩i+1)⊢i⊑d}⌜∘↕)⌜l
+  i←0⋄(𝔽d⊏˜{(i+↩𝕩)⊢i⊸+⌜↕𝕩})⌜l
 }
 GroupInds←{
   "⊔𝕩: 𝕩 must be a list" ! 1==𝕩
@@ -567,7 +567,7 @@ Group1←ToArray⊸{
   ld←(≢𝕨)-¨n↑s←≢𝕩
   dr←(1=n)◶⟨0,1=0⊸⊑⟩ld
   "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! dr◶⟨1×´0⊸=⌜,1⟩ld
-  SX←((n==𝕩)◶{c←1×´t←n↓s⋄(𝕩⊑˜c⊸×⊸+)⌜⟜(t⥊↕c)}‿{⊑⟜𝕩⌜} ⥊𝕩)∘⊣ _fillBy_ ⊢⟜𝕩
+  SX←((n==𝕩)◶{c←1×´t←n↓s⋄𝕩⊏˜(c⊸×⊸+)⌜⟜(t⥊↕c)}‿{⊏⟜𝕩} ⥊𝕩)∘⊣ _fillBy_ ⊢⟜𝕩
   (SX⟨⟩) Fill dr SX _group ⥊𝕨
 }
 GroupGen←{
