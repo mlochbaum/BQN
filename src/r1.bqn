@@ -332,7 +332,7 @@ structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
 Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
 
 ≡ ← Depth          ⊘ Match
-≢ ↩ IsArray◶⟨⟩‿≢   ⊘ (1-Match)
+≢ ↩ IsArray◶(↕0)‿≢ ⊘ (1-Match)
 
 IF ← ⊢⊣!∘≡  # Intersect fill
 IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
