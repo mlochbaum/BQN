@@ -193,15 +193,8 @@ _self←{
 
 Indices←{
   "/: Replication argument must have rank 1" ! 1==𝕩
-  l←≠𝕩
-  0 Fill {
-    "/: Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
-    k←l-1
-    N ← ((⊢+-×0=𝕩⊑˜⊢)`k⊸-⌜↕l)⊑˜k-⊢  # Next nonzero
-    E ← ⊑⟜(+`𝕩)
-    ei←E i←N 0
-    {{ei↩E i↩N𝕩+1⋄i}⍟(𝕩=ei)i}⌜↕E k
-  }⍟(0<l)𝕩
+  "/: Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
+  0 Fill +`(0⌈≠-1˙)⊸↑GroupLen+`𝕩
 }
 Rep ← Indices⊸⊏
 SelfClas ← (PermInv∘⍋∘Rep˜⊏˜¯1+`⊢) _self
