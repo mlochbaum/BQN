@@ -267,6 +267,7 @@ SelSub←{
 First ← IsArray◶⟨⊢, (0<≠)◶⟨Fill,0⊸⊑⟩⥊⟩
 
 IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1×´·𝕊⌜1↓d˙⟩0⊑d}
+HomFil ← {((𝕎0) Fill 𝕏)⊘𝕏}⍟("=≠≡≢"_glyphLookup_(<⟜4⌜↕5)∘⊣)
 _fillByPure_←{
   𝕘 (3≤Type∘⊣)◶⟨{𝕨Fill𝕏},{(𝕨HomFil𝕩)_fillBy_𝕨}⍟(IsPure⊣)⟩ 𝕗
 }
@@ -614,7 +615,6 @@ GroupGen←{
 + ↩ + _perv
 - ↩ - _perv
 ¬ ← 1+-
-HomFil ← {((𝕎0) Fill 𝕏)⊘𝕏}⍟(+´⟨=,≠,≡,≢⟩=⊣)
 
 ValidateRanks←{
   "⎉ or ⚇: 𝔽 result must have rank at most 1" ! 1≥=𝕩
