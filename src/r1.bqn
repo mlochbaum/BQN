@@ -500,6 +500,16 @@ EncCell ← {
   D←{ "˘: Argument lengths don't agree" ! 𝕩=○≠𝕨 ⋄ 𝕨 F _m 𝕩 }
   Merge 𝕨 2⊸×⊸+○(0<=)◶⟨ToArray F,{𝕨⊸F _m𝕩},{F⟜𝕩_m𝕨},D⟩ 𝕩
 }
+_insert←{
+  "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  F←𝔽
+  Id ← {
+    s ← 1↓≢𝕩
+    JoinSh ← {"˝: Identity does not exist"!0<≠𝕨 ⋄ 𝕨×⟜(0⊸<)¨↕≠𝕨}
+    s (1-IsJoin∘⊢)◶⟨JoinSh⥊𝕩˙, Reshape⟜Identity⟩ f
+  }
+  𝕨 (0<≠)⊘1◶Id‿{𝕨F´1 EncCell 𝕩} 𝕩
+}
 
 _onAxes_←{
   F←𝔽
@@ -612,15 +622,21 @@ ValidateRanks←{
   "⎉ or ⚇: 𝔽 result must consist of integers" ! 1∧´Int⌜𝕩
   𝕩
 }
-_insert←{
-  "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  F←𝔽
-  Id ← {
-    s ← 1↓≢𝕩
-    JoinSh ← {"˝: Identity does not exist"!0<≠𝕨 ⋄ 𝕨×0<↕≠𝕨}
-    s ¬∘IsJoin∘⊢◶⟨JoinSh⥊𝕩˙, Reshape⟜Identity⟩ f
+_ranks ← {⟨2⟩⊘⟨1,0⟩ ((⊣-1+|)˜⟜≠⊑⌜<∘⊢) ValidateRanks∘𝔽}
+_depthOp_←{
+  neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
+  _d←{
+    R←(𝕗+neg)_d
+    𝕨(×⟜2⊸+´2 Reshape (neg∧𝕗≥0)∨(0⌈𝕗)≥Pair○≡)◶⟨
+      R _each, R⟜𝕩_table∘⊣, (𝕨R⊢)_table∘⊢, F
+    ⟩𝕩
   }
-  𝕨 (0<≠)⊘1◶Id‿{𝕨F´<˘𝕩} 𝕩
+  𝕨 n _d 𝕩
+}
+_rankOp_←{
+  k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
+  Enc←(>⟜0×1+≥⟜=)◶⟨<⊢,EncCell,<_table⊢⟩
+  > ((0⊑k)Enc𝕨) 𝔽_each ((1-˜≠)⊸⊑k)Enc𝕩
 }
 
 JoinTo←∨○(1<=)◶(∾○⥊)‿{
@@ -664,24 +680,6 @@ GroupM←{
   S←⊏⟜(LS⟨1×´l⟩)
   (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨S _group○(0⊸⊑), S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group¨⟩ 𝕨
 }
-
-_ranks ← {⟨2⟩⊘⟨1,0⟩ ((⊣-1+|)˜⟜≠⊑⌜<∘⊢) ValidateRanks∘𝔽}
-_depthOp_←{
-  neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
-  _d←{
-    R←(𝕗+neg)_d
-    𝕨(×⟜2⊸+´2 Reshape (neg∧𝕗≥0)∨(0⌈𝕗)≥Pair○≡)◶⟨
-      R _each, R⟜𝕩_table∘⊣, (𝕨R⊢)_table∘⊢, F
-    ⟩𝕩
-  }
-  𝕨 n _d 𝕩
-}
-_rankOp_←{
-  k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
-  Enc←(>⟜0×1+≥⟜=)◶⟨<⊢,EncCell,<_table⊢⟩
-  > ((0⊑k)Enc𝕨) 𝔽_each ((1-˜≠)⊸⊑k)Enc𝕩
-}
-¨ ↩ _each
 
 ↑ ↩ Prefixes       ⊘ Take
 ↓ ↩ Suffixes       ⊘ Drop
@@ -757,17 +755,17 @@ GroupIndsInv ← {
   IX 1∧´1==⌜𝕩
   j←∾𝕩
   IX 1∧´Nat⌜j
-  IX 1∧´j>∾¯1»¨𝕩
+  IX 1∧´j>∾¯1⊸»⌜𝕩
   g←GroupLen j
   IX 1∧´g≤1
   o←/¬g
-  (⍋j∾o)⊏(/≠¨𝕩)∾¯1¨o
+  (⍋j∾o)⊏(/≠⌜𝕩)∾¯1⌜o
 }
 GroupInv ← {
   IA 1==𝕨
   IA 1∧´Nat⌜𝕨
   i←⊔𝕨
-  IX i≡○(≠¨)𝕩
+  IX i≡○(≠⌜)𝕩
   i ⍋⊸⊏○∾ 𝕩
 }
 ⊏ ↩ FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1)) _fillBy_ ⊢
@@ -806,6 +804,7 @@ SwapInverse ← INF _lookup_ ⟨
   '¬', IA∘0⊘(+-1˙)
 ⟩
 ⌜ ↩ _table
+¨ ↩ _each
 Mod1Inverse ← INF˙ _lookup_ ⟨
   '˜', SwapInverse
   '¨', {𝕏⁼¨                     ⊣·IX 0<≡∘⊢}
