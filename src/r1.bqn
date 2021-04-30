@@ -16,6 +16,7 @@ Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 ToArray ← <⍟(1-IsArray)
 Cell ← ↓⟜≢
 MatchS ← 1×´=¨
+PermInv ← 1⌜⊸GroupOrd
 
 _qSearch ← {+´·×`𝕗(1-=)⌜<}
 _glyphLookup_ ← {
@@ -182,6 +183,13 @@ _search←{ # 0 for ∊˜, 1 for ⊐
     } ToArray𝕩
   }
 }
+_self←{
+  "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  g←⍋𝕩
+  k←1×´1 Cell 𝕩
+  cc ← (1-Match)○(⊑⟜(⥊𝕩)) _getCellCmp k
+  0 Fill (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1, -⟜1 CC○(⊑⟜(k⊸×⌜g)) ⊢⟩⌜↕≠𝕩
+}
 
 Indices←{
   "/: Replication argument must have rank 1" ! 1==𝕩
@@ -196,6 +204,7 @@ Indices←{
   }⍟(0<l)𝕩
 }
 Rep ← Indices⊸⊏
+SelfClas ← (PermInv∘⍋∘Rep˜⊏˜¯1+`⊢) _self
 
 Transpose←(0<=)◶⟨ToArray,{
   l←≠𝕩 ⋄ m←1×´c←1 Cell 𝕩
@@ -495,7 +504,7 @@ EncCell ← {
   i←s⥊↕c
   (f⥊{d⊏˜(c×𝕩)⊸+⌜i}⌜↕1×´f)˙_fillBy_{(<𝕩)⌜i} 𝕩
 }
-˘ ← {
+_cells ← {
   F←𝔽 ⋄ _m←{𝔽⌜⊘(𝔽¨)_fillByPure_𝔽○(1⊸EncCell)}
   D←{ "˘: Argument lengths don't agree" ! 𝕩=○≠𝕨 ⋄ 𝕨 F _m 𝕩 }
   Merge 𝕨 2⊸×⊸+○(0<=)◶⟨ToArray F,{𝕨⊸F _m𝕩},{F⟜𝕩_m𝕨},D⟩ 𝕩
@@ -533,14 +542,6 @@ Replicate ← (0<=∘⊣)◶{
   "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕨=○≠𝕩
   𝕨 Rep 𝕩
 } _onAxes_ (1-0=≠) _fillBy_ ⊢
-
-PermInv ← 1⌜⊸GroupOrd
-_self←{
-  "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  g←⍋𝕩
-  0 Fill (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1,-⟜1≢○(⊑⟜(g⊏<˘⍟(1<=)𝕩))⊢⟩⌜↕≠𝕩
-}
-SelfClas ← (PermInv∘⍋∘(Indices⊸⊏)˜⊏˜¯1+`⊢) _self
 
 ReshapeT ← "∘⌊⌽↑"_glyphLookup_(↕5)
 Reshape←{
@@ -827,6 +828,7 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
 ´ ← _fold
 ˝ ← _insert
 ⁼ ↩ _undo
+˘ ← _cells
 ⊑ ↩ First          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 ⚇ ← _depthOp_
