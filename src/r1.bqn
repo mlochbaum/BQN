@@ -306,11 +306,10 @@ _under_←{
     Set1←𝕨⊸{
       𝕩↩ToArray𝕩
       s←≢𝕩⋄l←≠d←⥊𝕩
-      gl←l GroupLen i ⋄ g←gl GroupOrd i
-      Sel←v⊑˜⊑⟜g
-      j←0⋄Adv←Sel{(j+↩𝕩)-1}
-      CM←"⌾: Incompatible result elements in structural Under"!Match⟜Sel
-      s⥊(↕l)2⊸⌊◶⟨⊑⟜d,Adv,Adv{(𝕨CM(j-𝕩)⊸+)⌜↕𝕩-1⋄𝕨}⊢⟩¨gl
+      gl←l GroupLen i ⋄ v⊏˜↩gl GroupOrd i
+      j←0⋄Adv←{(j+↩𝕩)-1}⊑v˙
+      CM←"⌾: Incompatible result elements in structural Under"!Match
+      s⥊(↕l)2⊸⌊◶⟨⊑⟜d,Adv,Adv{(𝕨CM(j-𝕩)⊸+⊑v˙)⌜↕𝕩-1⋄𝕨}⊢⟩¨gl
     }
     _at_ ← {(↕≠𝕩)𝔽⍟((𝔾𝕩)=⊣)¨𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
@@ -473,29 +472,27 @@ Drop ← 1 _takeDrop
 
 ShiftCheck←{
   "« or »: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  d←𝕩-○=𝕨
-  "« or »: 𝕨 must not have higher rank than 𝕩" ! 0≤d
-  "« or »: Rank of 𝕨 must be at least rank of 𝕩 minus 1" ! 1≥d
   s←1 Cell 𝕩
-  "« or »: 𝕨 must share 𝕩's major cell shape" ! s MatchS (1-d)↓≢𝕨
+  𝕨 {  # Only if called with two arguments
+    "« or »: 𝕨 must not have higher rank than 𝕩" ! 0≤𝕩
+    "« or »: Rank of 𝕨 must be at least rank of 𝕩 minus 1" ! 1≥𝕩
+    "« or »: 𝕨 must share 𝕩's major cell shape" ! s MatchS (1-𝕩)↓≢𝕨
+  } 𝕩-○=𝕨
   1×´s
 }
+ShiftLen←1⊘{(𝕩≤○=⊢)◶1‿≠𝕨}
 ShiftBefore←{
   c←𝕨 ShiftCheck 𝕩
-  n←c×(𝕩≤○=⊢)◶1‿≠𝕨
-  (≢𝕩)⥊n⊸≤◶⟨⊑⟜(Deshape𝕨),-⟜n⊑(⥊𝕩)˙⟩⌜↕c×≠𝕩
-}
+  n←c×𝕨 ShiftLen 𝕩
+  (≢𝕩)⥊n⊸≤◶⟨𝕨Fill⊘{⊑⟜(Deshape𝕨)}𝕩, -⟜n⊑(⥊𝕩)˙⟩⌜ ↕c×≠𝕩
+} _fillBy_ (⊢⊘IF)
 ShiftAfter←{
   c←𝕨 ShiftCheck 𝕩
   l←c×≠𝕩
-  n←c×(𝕩≤○=⊢)◶1‿≠𝕨
+  n←c×𝕨 ShiftLen 𝕩
   m←l-n
-  (≢𝕩)⥊m⊸≤◶⟨+⟜n⊑(⥊𝕩)˙,-⟜m⊑(Deshape𝕨)˙⟩⌜↕l
-}
-FC←{ # Fill cell
-  "« or »: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  (Fill 𝕩)⌜ ⥊⟜(↕1×´⊢) 1 Cell 𝕩
-}
+  (≢𝕩)⥊m⊸≤◶⟨+⟜n⊑(⥊𝕩)˙, 𝕨Fill⊘{-⟜m⊑(Deshape𝕨)˙}𝕩⟩⌜ ↕l
+} _fillBy_ (⊢⊘IF)
 
 Range←{
   I←{"↕𝕩: 𝕩 must consist of natural numbers"!Nat𝕩⋄↕𝕩}
@@ -674,8 +671,8 @@ _repeat_←{
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
-» ← FC⊸ShiftBefore ⊘ ShiftBefore _fillBy_ (⊢⊘IF)
-« ← FC⊸ShiftAfter  ⊘ ShiftAfter  _fillBy_ (⊢⊘IF)
+» ← ShiftBefore
+« ← ShiftAfter  _fillBy_ (⊢⊘IF)
 
 GroupM←{
   "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
