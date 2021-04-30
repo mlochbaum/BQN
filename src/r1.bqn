@@ -434,8 +434,8 @@ structFn ← {
 _takeDrop←{
   ⟨gl,Noop,_inds⟩←𝕗
   pre ← "𝕨"∾gl∾"𝕩: 𝕨 must "
-  ernk ← "have rank at most 1"
-  eint ← "consist of integers"
+  ernk ← pre∾"have rank at most 1"
+  eint ← pre∾"consist of integers"
   {
     ernk ! 1≥=𝕨
     𝕨 ↩ Deshape 𝕨
