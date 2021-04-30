@@ -198,6 +198,7 @@ Indices←{
 }
 Rep ← Indices⊸⊏
 SelfClas ← (PermInv∘⍋∘Rep˜⊏˜¯1+`⊢) _self
+OccurrenceCount ← ↕∘≠⊸(⊣-¨·⌈`×¨) _self
 
 Transpose←(0<=)◶⟨ToArray,{
   l←≠𝕩 ⋄ m←1×´c←1 Cell 𝕩
@@ -688,7 +689,6 @@ Find←{
   0 Fill 𝕨 ≡⎉r ((1+r-⊸↑≢𝕩)⌊≢𝕨)⊸↕⎉r 𝕩
 }○ToArray
 
-OccurrenceCount ← 0 Fill ⊐˜(⊢-⊏)⍋∘⍋
 ProgressiveIndexOf ← 0 Fill {
   c←1-˜=𝕨
   "⊒: Rank of 𝕨 must be at least 1" ! 0≤c
