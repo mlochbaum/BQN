@@ -105,9 +105,18 @@ Cmp ← +○IsArray◶⟨
   }
 ⟩
 
+_binSearch ← {
+  B ← 𝔽
+  {
+    R←{𝕨{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×𝕨-2×h)R a⊑𝕩‿m}⍟(>⟜1)𝕩}
+    1+(𝕩+1)R ¯1
+  }⍟(0⊸<)
+}
 _grade ← {
   gt ← 𝕗
   cmps ← {𝕏˜}⌜⍟𝕗⟨Cmp,Cmp0,Cmp≤0˙,≤⟩
+  _getC_ ← { 𝕨 𝕘{(𝕨 𝕏 _getCellCmp 𝕗)≤0˙}⍟(𝕩≤1) 𝔽 𝕩⊑cmps }
+  AllNum ← 0=1+´(1=Type)⌜
   0 Fill {
     "⍋𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
     l←≠𝕩
@@ -117,7 +126,7 @@ _grade ← {
       a0←1⋄ts←0⋄{a0×↩1≤𝕩⋄ts+↩𝕩}∘Type⌜𝕩
       cs←a0+2×m1
       Merge ← { # Merge sort
-        le ← m {(𝕏 _getCellCmp m)≤0˙}⍟(1-m1) 𝕩{𝕏○(⊑⟜𝕗)} cs⊑cmps
+        le ← 𝕩{𝕏○(⊑⟜𝕗)} _getC_ m cs
         B←l⊸≤◶⊢‿l
         (↕l){
           i←-d←𝕨 ⋄ j←ei←ej←0
@@ -133,32 +142,26 @@ _grade ← {
       sr←((3=cs)×ts=l)◶⟨0,(1×´⌊⊸=⌜)◶0‿{((bu↩⌈´𝕩)-bl↩⌊´𝕩)≤2×l}⟩𝕩
       sr◶Merge‿Count 𝕩
     }⟩𝕩
+  }⊘{
+    c←1-˜=𝕨
+    "⍋ or ⍒: Rank of 𝕨 must be at least 1" ! 0≤c
+    "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
+    lw←1×´sw←1 Cell 𝕨 ⋄ nw←≠𝕨 ⋄ 𝕨↩⥊𝕨 ⋄ Gw←⊑⟜𝕨 ⋄ a0w←AllNum𝕨
+    lew←{𝕏○Gw} _getC_ lw a0w+2×1=lw
+    "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1×´·LEw⟜(lw⊸+)∘(lw⊸×)⌜↕∘-⟜1⟩nw
+    𝕩↩ToArray𝕩
+    cx←c-˜=𝕩
+    sx←cx Cell 𝕩 ⋄ sz←cx↑≢𝕩 ⋄ 𝕩↩⥊𝕩 ⋄ Gx←⊑⟜𝕩
+    a0←AllNum∘𝕩⊸×⍟⊢a0w
+    cd‿lc←sw CmpLen sx
+    le ← cd {GW⊸𝕏⟜GX}_getC_ lc a0+2×1=lc
+    B←(1×´sw)⊸×⊸LE
+    0 Fill nw⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx)⊸×⌜ ⥊⟜(↕1×´⊢)sz
   }
 }
-_binSearch ← {
-  B ← 𝔽
-  {
-    R←{𝕨{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×𝕨-2×h)R a⊑𝕩‿m}⍟(>⟜1)𝕩}
-    1+(𝕩+1)R ¯1
-  }⍟(0⊸<)
-}
-_bins←{
-  c←1-˜=𝕨
-  "⍋ or ⍒: Rank of 𝕨 must be at least 1" ! 0≤c
-  "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
-  𝕩↩ToArray 𝕩
-  lw←1×´sw←1 Cell 𝕨
-  cw←𝔽○(⊑⟜(⥊𝕨)) _getCellCmp lw
-  "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1×´·(Cw≤0˙)⟜(lw⊸+)∘(lw⊸×)⌜↕∘-⟜1⟩≠𝕨
-  cx←c-˜=𝕩
-  sx←cx Cell 𝕩 ⋄ lc←sw CmpLen sx
-  cc ← (⊑⟜(⥊𝕨))⊸𝔽⟜(⊑⟜(⥊𝕩)) _getCellCmp´ lc
-  B←(1×´sw)⊸×⊸Cc≤0˙
-  0 Fill (≠𝕨)⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx)⊸×⌜ ⥊⟜(↕1×´⊢)cx↑≢𝕩
-}
 
-⍋ ← 0 _grade ⊘ (Cmp  _bins)
-⍒ ← 1 _grade ⊘ (Cmp˜ _bins)
+⍋ ← 0 _grade
+⍒ ← 1 _grade
 
 # Searching
 _search←{ # 0 for ∊˜, 1 for ⊐
@@ -672,7 +675,7 @@ _repeat_←{
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
 » ← ShiftBefore
-« ← ShiftAfter  _fillBy_ (⊢⊘IF)
+« ← ShiftAfter
 
 GroupM←{
   "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
