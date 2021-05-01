@@ -489,20 +489,17 @@ ShiftCheck←{
     "« or »: Rank of 𝕨 must be at least rank of 𝕩 minus 1" ! 1≥𝕩
     "« or »: 𝕨 must share 𝕩's major cell shape" ! s MatchS (1-𝕩)↓≢𝕨
   } 𝕩-○=𝕨
-  1×´s
+  (𝕨1⊘{(𝕩≤○=⊢)◶1‿≠𝕨}𝕩) ×´ s
 }
-ShiftLen←1⊘{(𝕩≤○=⊢)◶1‿≠𝕨}
 ShiftBefore←{
-  c←𝕨 ShiftCheck 𝕩
-  n←c×𝕨 ShiftLen 𝕩
-  (≢𝕩)⥊n⊸≤◶⟨𝕨Fill⊘{⊑⟜(Deshape𝕨)}𝕩, -⟜n⊑(⥊𝕩)˙⟩⌜ ↕c×≠𝕩
+  n←𝕨 ShiftCheck 𝕩
+  m←n⌊l←≠d←⥊𝕩
+  (≢𝕩) ⥊ (𝕨{(Fill𝕩)⌜↕𝕨}⟜𝕩⊘(↑⟜Deshape˜)m) ∾ (l-m)↑d
 } _fillBy_ (⊢⊘IF)
 ShiftAfter←{
-  c←𝕨 ShiftCheck 𝕩
-  l←c×≠𝕩
-  n←c×𝕨 ShiftLen 𝕩
-  m←l-n
-  (≢𝕩)⥊m⊸≤◶⟨+⟜n⊑(⥊𝕩)˙, 𝕨Fill⊘{-⟜m⊑(Deshape𝕨)˙}𝕩⟩⌜ ↕l
+  n←𝕨 ShiftCheck 𝕩
+  m←n⌊≠d←⥊𝕩
+  (≢𝕩) ⥊ (m↓d) ∾ 𝕨{(Fill𝕩)⌜↕𝕨}⟜𝕩⊘(n⊸-⊸↓⟜Deshape˜)m
 } _fillBy_ (⊢⊘IF)
 
 Range←{
