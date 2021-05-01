@@ -194,6 +194,14 @@ _self←{
   0 Fill (PermInv g) ⊏ g 𝔽 0⊸<◶⟨1, -⟜1 CC○(⊑⟜(k⊸×⌜g)) ⊢⟩⌜↕≠𝕩
 }
 
+Find←{
+  r←=𝕨 ⋄ d←(=𝕩)-r
+  "⍷𝕩: Rank of 𝕨 cannot exceed rank of 𝕩" ! 0≤d
+  i←<0 ⋄ j←⥊⟜(↕1×´⊢)d↑s←≢𝕩
+  (≢𝕨) { A←×⟜𝕩⌜⊸(+⌜)⟜↕ ⋄ i A↩𝕨 ⋄ j A↩0⌈1+𝕩-𝕨 }¨ d↓s
+  0 Fill (𝕨 Match (⥊𝕩)⊏˜i+⌜<)⌜ j
+}○ToArray
+
 Indices←{
   "/: Replication argument must have rank 1" ! 1==𝕩
   "/: Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
@@ -694,13 +702,6 @@ GroupM←{
 ⊔ ← GroupInds      ⊘ GroupGen
 ⊐ ← SelfClas       ⊘ (1 _search)
 ∊ ← ⊢_self         ⊘ (0 _search˜)
-⎉ ← _rankOp_
-
-Find←{
-  r←=𝕨
-  "⍷𝕩: Rank of 𝕨 cannot exceed rank of 𝕩" ! r≤=𝕩
-  0 Fill 𝕨 ≡⎉r ((1+r-⊸↑≢𝕩)⌊≢𝕨)⊸↕⎉r 𝕩
-}○ToArray
 
 ProgressiveIndexOf ← 0 Fill {
   c←1-˜=𝕨
@@ -838,6 +839,7 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
 ⊑ ↩ First          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
 ⚇ ← _depthOp_
+⎉ ← _rankOp_
 ⥊ ↩ Deshape        ⊘ Reshape
 ≍ ← >∘Pair _fillBy_ (⊢⊘IF)
 ⍉ ← Transpose      ⊘ ReorderAxes
