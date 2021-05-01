@@ -184,8 +184,8 @@ _search←{ # 0 for ∊˜, 1 for ⊐
         adj←ind⊑⟨1⊸-,⊣--⟜n⊸×⟩
         i(⊣ Adj CC○(k⊸×))¨↕lx
       } 𝕩
-    } ToArray𝕩
-  }
+    } 𝕩
+  }⟜ToArray
 }
 _self←{
   "∊𝕩 or ⊐𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
