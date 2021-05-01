@@ -17,7 +17,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "•"∾(¯1↓"𝕨")∾" "∾@+9  # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
-bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(+`»)cgl
+bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
 Pl←∾⟜("s"/˜1<≠)   # Pluralize
