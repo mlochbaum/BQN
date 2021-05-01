@@ -116,7 +116,7 @@ _grade ← {
   gt ← 𝕗
   cmps ← {𝕏˜}⌜⍟𝕗⟨Cmp,Cmp0,Cmp≤0˙,≤⟩
   _getC_ ← { 𝕨 𝕘{(𝕨 𝕏 _getCellCmp 𝕗)≤0˙}⍟(𝕩≤1) 𝔽 𝕩⊑cmps }
-  AllNum ← 0=1+´(1=Type)⌜
+  IsSimple ← 1×´(0<Type)⌜
   0 Fill {
     "⍋𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
     l←≠𝕩
@@ -146,13 +146,13 @@ _grade ← {
     c←1-˜=𝕨
     "⍋ or ⍒: Rank of 𝕨 must be at least 1" ! 0≤c
     "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
-    lw←1×´sw←1 Cell 𝕨 ⋄ nw←≠𝕨 ⋄ 𝕨↩⥊𝕨 ⋄ Gw←⊑⟜𝕨 ⋄ a0w←AllNum𝕨
+    lw←1×´sw←1 Cell 𝕨 ⋄ nw←≠𝕨 ⋄ 𝕨↩⥊𝕨 ⋄ Gw←⊑⟜𝕨 ⋄ a0w←IsSimple𝕨
     lew←{𝕏○Gw} _getC_ lw a0w+2×1=lw
     "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1×´·LEw⟜(lw⊸+)∘(lw⊸×)⌜↕∘-⟜1⟩nw
     𝕩↩ToArray𝕩
     cx←c-˜=𝕩
     sx←cx Cell 𝕩 ⋄ sz←cx↑≢𝕩 ⋄ 𝕩↩⥊𝕩 ⋄ Gx←⊑⟜𝕩
-    a0←AllNum∘𝕩⊸×⍟⊢a0w
+    a0←IsSimple∘𝕩⊸×⍟⊢a0w
     cd‿lc←sw CmpLen sx
     le ← cd {GW⊸𝕏⟜GX}_getC_ lc a0+2×1=lc
     B←(1×´sw)⊸×⊸LE
