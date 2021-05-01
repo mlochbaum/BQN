@@ -9,11 +9,13 @@ PrimInd ← {𝕩}
 SetPrims ← {Decompose‿PrimInd ↩ 𝕩}
 
 IsArray ← 0=Type
+IsAtom  ← 1≤Type
 Int ← (1=Type)◶⟨0,⌊⊸=⟩
 Nat ← (1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
+ToArray ← <⍟IsAtom
+IsSimple ← 1×´IsAtom⌜
 Deshape ← IsArray◶{𝕩Fill⟨𝕩⟩}‿⥊
 Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
-ToArray ← <⍟(1-IsArray)
 Cell ← ↓⟜≢
 MatchS ← 1×´=¨
 PermInv ← 1⌜⊸GroupOrd
@@ -52,8 +54,8 @@ _eachd←{
   }
   _e←{ # 𝕨 has smaller or equal rank
     p←≢𝕨 ⋄ k←=𝕨 ⋄ q←≢𝕩
-    "Mapping: Argument shape prefixes don't agree" ! 1(⊑⟜p=⊑⟜q)⊸×´↕k
-    l←1(q⊑˜k⊸+)⊸×´↕(=𝕩)-k
+    "Mapping: Argument shape prefixes don't agree" ! p MatchS k↑q
+    l←1×´k↓q
     a←⥊𝕨 ⋄ b←⥊𝕩
     q⥊⥊(≠a) (⊑⟜a𝔽l⊸×⊸+⊑b˙)⌜○↕ l
   }
@@ -108,7 +110,7 @@ Cmp ← +○IsArray◶⟨
 _binSearch ← {
   B ← 𝔽
   {
-    R←{𝕨{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×𝕨-2×h)R a⊑𝕩‿m}⍟(>⟜1)𝕩}
+    R←{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×𝕨-2×h)R a⊑𝕩‿m}⍟(>⟜1)
     1+(𝕩+1)R ¯1
   }⍟(0⊸<)
 }
@@ -116,7 +118,6 @@ _grade ← {
   gt ← 𝕗
   cmps ← {𝕏˜}⌜⍟𝕗⟨Cmp,Cmp0,Cmp≤0˙,≤⟩
   _getC_ ← { 𝕨 𝕘{(𝕨 𝕏 _getCellCmp 𝕗)≤0˙}⍟(𝕩≤1) 𝔽 𝕩⊑cmps }
-  IsSimple ← 1×´(0<Type)⌜
   0 Fill {
     "⍋𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
     l←≠𝕩
@@ -130,8 +131,8 @@ _grade ← {
         B←l⊸≤◶⊢‿l
         (↕l){
           i←-d←𝕨 ⋄ j←ei←ej←0
-          e←3 ⋄ G←LE○(⊑⟜(m⊸×⌜⍟(1-m=1)𝕩)) ⋄ c←⟨1-G,0,1,2⟩
-          s←(8≤d)⊑⟨+,{(𝕩-1){𝕩⋄e↩2⋄j↩i⋄i↩𝕩}⍟G⍟(1-e)𝕩}⟩
+          e←3 ⋄ G←LE○(⊑⟜(m⊸×⌜⍟(1-m1)𝕩)) ⋄ c←⟨1-G,0,1,2⟩
+          s←(8≤d)⊑⟨+,{(𝕩-1){e↩2⋄j↩i⋄i↩𝕩}⍟G⍟(1-e)𝕩}⟩
           N←{i↩d+𝕨⋄ej↩B d+ei↩B j↩d+𝕩⋄e↩l≤j⋄S ei⋄i R j}
           R←{𝕨e◶c𝕩}◶{e+↩2×ei=i↩1+𝕨⋄𝕨}‿{e+↩ej=j↩1+𝕩⋄𝕩}‿N
           {(i R j)⊑𝕩}⟜𝕩⌜𝕩
@@ -255,9 +256,9 @@ Pick1←{
   "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
   "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
   i←0⋄𝕨{i↩(𝕩NormIndP𝕨)+𝕩×i}¨s
-  i⊑Deshape𝕩
+  i⊑⥊𝕩
 }⟜ToArray
-Pickd←(0<0+´IsArray⌜∘⥊∘⊣)◶Pick1‿{Pickd⟜𝕩⌜𝕨}
+Pickd←(IsSimple⥊∘⊣)◶{Pickd⟜𝕩⌜𝕨}‿Pick1
 Pick←IsArray∘⊣◶Pick0‿Pickd
 
 FirstCell←{
@@ -281,6 +282,7 @@ _table ← {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
 
 StructErr←{𝕩}
 IsStructErr ← (3=Type)◶⟨0,StructErr˙⊸=⟩
+structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
 _under_←{
   val←𝕨𝔽○𝔾𝕩
   # Construct indices
@@ -298,7 +300,7 @@ _under_←{
   # Traverse indices 𝕩 and values 𝕨.
   # Return flat lists ⟨indices,values⟩, or structErr if 𝕨 doesn't capture 𝕩.
   GetInserts←{
-    count←0⋄depth←{IsArray◶⟨{𝕩⋄count+↩1⋄0},1+0𝕊⊸⌈´⥊⟩𝕩}𝕩
+    count←1⋄DC←IsArray◶⟨0,1+0⌈´{count+↩¯1+≠d←⥊𝕩⋄DC⌜d}⟩⋄depth←DC𝕩
     𝕩 (2⌊depth)◶(Pair○Pair)‿(StructConform◶⟨StructErr˙,Pair○⥊⟩)‿{
       Fail←{𝕊‿0}
       # 𝕎 is parent traversal; 𝕩 is current components of ind and val
@@ -336,7 +338,6 @@ match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨MatchS○≢ , 0⟩
   {1×´𝕨Match¨○⥊𝕩}
 ⟩
-structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
 Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
 
 ≡ ← Depth          ⊘ Match
