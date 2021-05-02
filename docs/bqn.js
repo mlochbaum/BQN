@@ -218,7 +218,9 @@ let fill_by = (f,g) => (x,w) => {
              : !w.sh ? a2fill(w)
              : has(w.fill) ? w.fill : runtime[42];
       r.fill=tofill(g(xf,wf));
-    } catch(e){}
+    } catch(e){
+      r.fill=undefined;
+    }
   }
   return r;
 }
