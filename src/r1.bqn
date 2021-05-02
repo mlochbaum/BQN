@@ -106,13 +106,6 @@ Cmp ← +○IsArray◶⟨
   }
 ⟩
 
-_binSearch ← {
-  B ← 𝔽
-  {
-    R←{a←B m←𝕩+h←⌊𝕨÷2⋄(h+a×𝕨-2×h)R a⊑𝕩‿m}⍟(>⟜1)
-    1+(𝕩+1)R ¯1
-  }⍟(0⊸<)
-}
 _grade ← {
   gt ← 𝕗
   cmps ← {𝕏˜}⌜⍟𝕗⟨Cmp,Cmp0,Cmp≤0˙,≤⟩
@@ -143,20 +136,26 @@ _grade ← {
       sr◶Merge‿Count 𝕩
     }⟩𝕩
   }⊘{
-    c←1-˜=𝕨
+    cx←(=𝕩)-c←1-˜=𝕨
     "⍋ or ⍒: Rank of 𝕨 must be at least 1" ! 0≤c
-    "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
-    lw←1×´sw←1 Cell 𝕨 ⋄ nw←≠𝕨 ⋄ 𝕨↩⥊𝕨 ⋄ Gw←⊑⟜𝕨 ⋄ a0w←IsSimple𝕨
-    lew←{𝕏○Gw} _getC_ lw a0w+2×1=lw
-    "⍋ or ⍒: 𝕨 must be sorted" ! 0⊸<◶⟨1,1×´·LEw⟜(lw⊸+)∘(lw⊸×)⌜↕∘-⟜1⟩nw
-    𝕩↩ToArray𝕩
-    cx←c-˜=𝕩
-    sx←cx Cell 𝕩 ⋄ sz←cx↑≢𝕩 ⋄ 𝕩↩⥊𝕩 ⋄ Gx←⊑⟜𝕩
-    a0←IsSimple∘𝕩⊸×⍟⊢a0w
-    cd‿lc←sw CmpLen sx
-    le ← cd {GW⊸𝕏⟜GX}_getC_ lc a0+2×1=lc
-    B←(1×´sw)⊸×⊸LE
-    0 Fill nw⊸{B⟜𝕩 _binSearch 𝕨}⌜ (1×´sx)⊸×⌜ ⥊⟜(↕1×´⊢)sz
+    "⍋ or ⍒: Rank of 𝕩 must be at least cell rank of 𝕨" ! 0≤cx
+    sw←1 Cell 𝕨 ⋄ nw←≠𝕨
+    𝕩↩ToArray𝕩 ⋄ sx←cx Cell 𝕩 ⋄ lz←1×´sz←cx↑≢𝕩
+    sz ⥊ 𝕨 (0<nw)◶{𝕩⋄0⌜↕lz}‿{
+      a0w←IsSimple𝕨 ⋄ Gw←⊑⟜𝕨 ⋄ lw←1×´sw
+      lew←{𝕏○Gw} _getC_ lw a0w+2×1=lw
+      "⍋ or ⍒: 𝕨 must be sorted" ! 1×´LEw⟜(lw⊸+)∘(lw⊸×)⌜↕nw-1
+      a0←IsSimple∘𝕩⊸×⍟⊢a0w ⋄ Gx←⊑⟜𝕩
+      cd‿lc←sw CmpLen sx
+      le ← cd {Gw⊸𝕏⟜Gx}_getC_ lc a0+2×1=lc
+      B←lw⊸×⊸LE
+      BinSearch ← {
+        Bx ← B⟜𝕩
+        R ← {a←Bx m←𝕩+h←⌊𝕨÷2⋄(h+a×𝕨-2×h)R a⊑𝕩‿m}⍟(>⟜1)
+        1 + (nw+1) R ¯1
+      }
+      (BinSearch (1×´sx)⊸×)⌜ ↕lz
+    }○⥊ 𝕩
   }
 }
 
