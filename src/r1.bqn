@@ -63,11 +63,10 @@ _eachd←{
 }
 
 _perv←{ # Pervasion
-  R←𝔽{𝕨𝔽_perv𝕩}
-  +○IsArray◶⟨
+  R←+○IsArray◶⟨
     𝔽
-    R⌜⊘(>○IsArray◶{𝕨{𝕗R𝕩}⌜𝕩}‿{𝕩{𝕩R𝕗}⌜𝕨}) _fillBy_ R
-    R _eachd _fillBy_ R
+    {R⌜𝕩}⊘(>○IsArray◶{𝕨⊸R⌜𝕩}‿{R⟜𝕩⌜𝕨}) _fillBy_ {𝕨R𝕩}
+    {𝕨R _eachd𝕩} _fillBy_ {𝕨R𝕩}
   ⟩
 }
 
