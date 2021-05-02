@@ -48,9 +48,8 @@ _fold←{
 
 _eachd←{
   _d←{ # Equal ranks
-    p←≢𝕨
-    "Mapping: Equal-rank argument shapes don't agree" ! p MatchS ≢𝕩
-    p⥊𝕨𝔽¨○⥊𝕩
+    "Mapping: Equal-rank argument shapes don't agree" ! 𝕨 MatchS○≢ 𝕩
+    𝕨𝔽¨𝕩
   }
   _e←{ # 𝕨 has smaller or equal rank
     p←≢𝕨 ⋄ k←=𝕨 ⋄ q←≢𝕩
@@ -334,7 +333,7 @@ match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨IsArray∘⊢, =⟩
   ⟨=○=      , 0⟩
   ⟨MatchS○≢ , 0⟩
-  {1×´𝕨Match¨○⥊𝕩}
+  {1×´⥊𝕨Match¨𝕩}
 ⟩
 Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
 
@@ -587,7 +586,6 @@ Reshape←{
     𝕩(0<n)◶⟨<∘Fill⊸(⊣⌜)⋄{i←¯1⋄m←n-1⋄{𝕩⋄(i+↩1-n×i=m)⊑d}⌜𝕩}⟩↕l
   }_fillBy_⊢⍟(1-l=n)d
 }
-⥊ ↩ Deshape        ⊘ ⥊
 
 _group←{
   "⊔: Grouping argument must consist of integers" ! 1×´Int⌜𝕩
@@ -601,10 +599,10 @@ GroupInds←{
   G←⊢_group
   (1<≡)◶⟨
     ↕∘0             Fill G
-    ((⊢Fill⥊⟜⟨⟩)0⌜) Fill (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊Range≢𝕩)⌜ G⥊𝕩}⌜
+    ((⊢Fill⥊⟜⟨⟩)0⌜) Fill (<<⟨⟩) ∾⌜⌜´ {⊏⟜(⥊Range≢𝕩)⌜ G⥊𝕩}∘ToArray⌜
   ⟩ 𝕩
 }
-Group1←ToArray⊸{
+Group1←{
   n←=𝕨
   "𝕨⊔𝕩: Rank of simple 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
   ld←(≢𝕨)-¨n↑s←≢𝕩
@@ -612,10 +610,49 @@ Group1←ToArray⊸{
   "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! dr◶⟨1×´0⊸=⌜,1⟩ld
   SX←((n==𝕩)◶{c←1×´t←n↓s⋄𝕩⊏˜(c⊸×⊸+)⌜⟜(t⥊↕c)}‿{⊏⟜𝕩} ⥊𝕩)∘⊣ _fillBy_ ⊢⟜𝕩
   (SX⟨⟩) Fill dr SX _group ⥊𝕨
-}
+}○ToArray
 GroupGen←{
   "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
   𝕨(2≤≡𝕨)◶Group1‿GroupM𝕩
+}
+
+ValidateRanks←{
+  "⎉ or ⚇: 𝔽 result must have rank at most 1" ! 1≥=𝕩
+  𝕩↩Deshape𝕩
+  "⎉ or ⚇: 𝔽 result must have 1 to 3 elements" ! (1⊸≤×≤⟜3)≠𝕩
+  "⎉ or ⚇: 𝔽 result must consist of integers" ! 1×´Int⌜𝕩
+  𝕩 ⊏˜ (≠𝕩)⊸(-+1-˜⌊∘÷˜×⊣)⌜ 𝕨
+}
+_ranks ← {⟨2⟩⊘⟨1,0⟩ ValidateRanks 𝔽}
+_depthOp_←{
+  neg←0⊸>⌜n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
+  _d←{
+    r←0 ⋄ GR←𝕗{𝕩⋄gr↩0⋄R↩(𝕗+¨neg)_d}
+    Tw‿Tx←⟨1⟩⊸∾⍟(2>≠)neg{(𝕨×0≤𝕩)⊑⟨(0⌈𝕩)≥≡,1⟩}¨𝕗
+    (2×Tw)⊸+⟜Tx◶⟨
+      {GR 0⋄𝕨R _each𝕩}, {GR 0⋄R⟜𝕩_table𝕨}, {GR 0⋄(𝕨R⊢)_table𝕩}, F
+    ⟩
+  }
+  𝕨 n _d 𝕩
+}
+_rankOp_←{
+  k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
+  Enc←(>⟜0×1+≥⟜=)◶⟨<⊢,EncCell,<_table⊢⟩
+  Merge ((0⊑k)Enc𝕨) 𝔽_each ((1-˜≠)⊸⊑k)Enc𝕩
+}
+
+_repeat_←{
+  F←𝔽 ⋄ b←𝕨{𝕏⊣}˙⊘{𝕨˙{𝔽𝕏⊣}}0
+  n←𝕨𝔾𝕩
+  Multi←{
+    l←u←0
+    {"⍟: Repetition numbers in 𝕨𝔾𝕩 must be integers"!Int𝕩⋄l⌊↩𝕩⋄u⌈↩𝕩}_perv n
+    i←⟨𝕩⟩⋄P←B⊸{𝕎`i∾↕𝕩}
+    pos←f P u
+    neg←f 0⊸<◶⟨i,Inverse⊸P⟩ -l
+    (|⊑<⟜0⊑pos‿neg˙)_perv n
+  }
+  (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
 }
 
 ÷ ↩ ÷ _perv
@@ -637,44 +674,7 @@ GroupGen←{
 - ↩ - _perv
 ¬ ← 1+-
 
-ValidateRanks←{
-  "⎉ or ⚇: 𝔽 result must have rank at most 1" ! 1≥=𝕩
-  𝕩↩⥊𝕩
-  "⎉ or ⚇: 𝔽 result must have 1 to 3 elements" ! (1⊸≤∧≤⟜3)≠𝕩
-  "⎉ or ⚇: 𝔽 result must consist of integers" ! 1∧´Int⌜𝕩
-  𝕩
-}
-_ranks ← {⟨2⟩⊘⟨1,0⟩ ((⊣-1+|)˜⟜≠⊑⌜<∘⊢) ValidateRanks∘𝔽}
-_depthOp_←{
-  neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽
-  _d←{
-    R←(𝕗+neg)_d
-    𝕨(×⟜2⊸+´2 Reshape (neg∧𝕗≥0)∨(0⌈𝕗)≥Pair○≡)◶⟨
-      R _each, R⟜𝕩_table∘⊣, (𝕨R⊢)_table∘⊢, F
-    ⟩𝕩
-  }
-  𝕨 n _d 𝕩
-}
-_rankOp_←{
-  k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
-  Enc←(>⟜0×1+≥⟜=)◶⟨<⊢,EncCell,<_table⊢⟩
-  > ((0⊑k)Enc𝕨) 𝔽_each ((1-˜≠)⊸⊑k)Enc𝕩
-}
-
-_repeat_←{
-  F←𝔽 ⋄ b←𝕨{𝕏⊣}˙⊘{𝕨˙{𝔽𝕏⊣}}0
-  n←𝕨𝔾𝕩
-  Multi←{
-    l←u←0
-    {"⍟: Repetition numbers in 𝕨𝔾𝕩 must be integers"!Int𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}_perv n
-    i←⟨𝕩⟩⋄P←B⊸{𝕎`i∾↕𝕩}
-    pos←f P u
-    neg←f 0⊸<◶⟨i,Inverse⊸P⟩ -l
-    (|⊑<⟜0⊑pos‿neg˙)_perv n
-  }
-  (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
-}
-
+⥊ ↩ Deshape        ⊘ ⥊
 ↕ ↩ Range          ⊘ Windows
 ⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
 / ← Indices        ⊘ Replicate
