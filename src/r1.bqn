@@ -218,16 +218,6 @@ TransposeInv←{
   (⥊𝕩)⊏˜(↕l)+⟜(l⊸×)⌜c⥊↕1×´c
 }_fillBy_⊢⍟{IX IsArray𝕩⋄0<=𝕩}
 
-Reverse←{
-  "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
-  l←≠𝕩
-  ((l-1)⊸-⌜↕l) ⊏ 𝕩
-}
-Rot←{
-  "𝕨⌽𝕩: 𝕨 must consist of integers" ! Int𝕨
-  l←≠𝕩 ⋄ 𝕨-↩l×⌊𝕨÷l+l=0 ⋄ ((𝕨+⊢-l×(l-𝕨)≤⊢)⌜↕l) ⊏ 𝕩
-}
-
 Prefixes←{
   "↑𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   0⊸⊑⊸Fill ↕⊸⊏⟜𝕩⌜ ↕1+≠𝕩
@@ -258,23 +248,50 @@ Pick1←{
 Pickd←(IsSimple⥊∘⊣)◶{Pickd⟜𝕩⌜𝕨}‿Pick1
 Pick←IsArray∘⊣◶Pick0‿Pickd
 
+_multiInd_←{
+  I ← 𝔾
+  pre ← "𝕨"∾𝕗∾"𝕩: "
+  er ← pre∾"Compound 𝕨 must have rank at most 1"
+  el ← pre∾"Length of compound 𝕨 must be at most rank of 𝕩"
+  {
+    er ! 1≥=𝕨
+    l←≠𝕨↩⥊𝕨 ⋄ el ! l≤=𝕩
+    j←<0 ⋄ 𝕨 { j↩(×⟜𝕩⌜j)+⌜𝕨I𝕩 }¨ p←l↑s←≢𝕩
+    j ⊏ (⟨1×´p⟩∾l↓s)⥊𝕩
+  }
+}
+
 FirstCell←{
   "⊏𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   "⊏𝕩: 𝕩 cannot have length 0" ! 0<≠𝕩
   (<0) ⊏ 𝕩
 }
+SelMulti ← "⊏"_multiInd_{𝕩⊸NormIndS⌜𝕨}
 Select ← (1×´·(1=Type)⌜⥊∘⊣)◶{
-  l←≠i←⥊𝕨
-  "𝕨⊏𝕩: 𝕨 must be an array of numbers or list of such arrays"!1×´IsArray⌜i
-  "𝕨⊏𝕩: Compound 𝕨 must have rank at most 1" ! 1≥=𝕨
-  "𝕨⊏𝕩: Length of compound 𝕨 must be at most rank of 𝕩" ! l≤=𝕩
-  j←<0 ⋄ i { j↩(×⟜𝕩⌜j)+⌜𝕩⊸NormIndS⌜𝕨 }¨ p←l↑s←≢𝕩
-  j ⊏ (⟨1×´p⟩∾l↓s)⥊𝕩
+  "𝕨⊏𝕩: 𝕨 must be an array of numbers or list of such arrays"!1×´⥊IsArray⌜𝕨
+  𝕨 SelMulti 𝕩
 }‿{
   "𝕨⊏𝕩: 𝕩 must have rank at least 1 for simple 𝕨" ! 1≤=𝕩
   ((≠𝕩)⊸NormIndS⌜𝕨) ⊏ 𝕩
 }○ToArray
 First ← IsArray◶⟨⊢, (0<≠)◶⟨Fill,0⊸⊑⟩⥊⟩
+
+Reverse←{
+  "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
+  l←≠𝕩
+  ((l-1)⊸-⌜↕l) ⊏ 𝕩
+}
+RotReduce ← {
+  "𝕨⌽𝕩: 𝕨 must consist of integers" ! Int𝕨
+  𝕨-𝕩×⌊𝕨÷𝕩+0=𝕩
+}
+RotL ← ↓∾↑
+Rot ← (1==∘⊢)◶⟨RotL⟜(↕≠)⊏⊢,RotL⟩
+RotMulti ← "⌽"_multiInd_(RotReduce RotL ·↕⊢)
+Rotate ← IsAtom∘⊣◶RotMulti‿{
+  "𝕨⌽𝕩: 𝕩 must have rank at least 1 for number 𝕨" ! 1≤=𝕩
+  𝕨 (RotReduce⟜≠ Rot ⊢)⍟(0<≠𝕩) 𝕩
+}⟜ToArray _fillBy_ ⊢
 
 IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1×´·𝕊⌜1↓d˙⟩0⊑d}
 HomFil ← ("=≠≡≢"_glyphLookup_(1‿1‿2‿2‿0)∘⊣)◶⊢‿{((𝕎0) Fill 𝕏)⊘𝕏}‿{(𝕎0)⊘0 Fill 𝕏}
@@ -548,28 +565,20 @@ _insert←{
   𝕨 (0<≠)⊘1◶Id‿{𝕨F´1 EncCell 𝕩} 𝕩
 }
 
-_onAxes_←{
-  F←𝔽
-  (𝔾<≡)∘⊣◶{ # One axis
-    "First-axis primitive: 𝕩 must have rank at least 1" ! 1≤=𝕩
-    𝕨F𝕩
-  }‿{ # Multiple axes
-    "Multi-axis primitive: 𝕨 must have rank at most 1" ! 1≥=𝕨
-    "Multi-axis primitive: Length of 𝕨 must be at most rank of 𝕩" ! 𝕨≤○≠≢𝕩
-    l←≠𝕨 ⋄ W←⊑⟜(⥊𝕨)
-    0{(W𝕨)F(1+𝕨)⊸𝕊˘⍟(𝕨<l-1)𝕩}⍟(0<l)𝕩
-  }⟜ToArray
-}
-
-Replicate ← (0<=∘⊣)◶{
+RepInd←(0<=∘⊣)◶{
   𝕨↩(0⊑⥊)⍟IsArray𝕨
-  "/: Amounts to replicate must be natural numbers" ! Nat 𝕨
+  "𝕨/𝕩: Amounts to replicate must be natural numbers" ! Nat 𝕨
   e←r←𝕨
-  ({e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×≠𝕩) ⊏ 𝕩
+  {e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×𝕩
 }‿{
-  "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕨=○≠𝕩
-  𝕨 Rep 𝕩
-} _onAxes_ (1-0=≠) _fillBy_ ⊢
+  "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕩=≠𝕨
+  Indices 𝕨
+}
+RepMulti ← "/" _multiInd_ RepInd
+Replicate←((0<≠)×´(1=Type)⌜)∘⥊∘⊣◶RepMulti‿{
+  "𝕨/𝕩: 𝕩 must have rank at least 1 for simple 𝕨" ! 1≤=𝕩
+  (𝕨 RepInd ≠𝕩) ⊏ 𝕩
+}○ToArray _fillBy_ ⊢
 
 ReshapeT ← "∘⌊⌽↑"_glyphLookup_(↕5)
 Reshape←{
@@ -683,7 +692,7 @@ _repeat_←{
 
 ⥊ ↩ Deshape        ⊘ ⥊
 ↕ ↩ Range          ⊘ Windows
-⌽ ← Reverse        ⊘ (Rot _onAxes_ 0)
+⌽ ← Reverse        ⊘ Rotate
 / ← Indices        ⊘ Replicate
 » ← ShiftBefore
 « ← ShiftAfter
