@@ -169,9 +169,9 @@ if (location.hash) {
     if (s.slice(0,7)==='explain') ee=1;
   });
   if (code!==undefined) {
-    let b=atob(code);
-    b=new Uint8Array([...b].map(c=>c.charCodeAt(0)));
-    setcount(doc.code.value = (new TextDecoder()).decode(b));
+    let b=new Uint8Array([...atob(code)].map(c=>c.charCodeAt(0)));
+    let c=doc.code.value=(new TextDecoder()).decode(b);
+    setcount(c); doc.code.rows = Math.max(doc.code.rows, 1+c.split("\n").length);
     if (ee && doc.doexplain) doc.doexplain.onclick();
     nojs = () => { throw Error("Possible script injection; press Run to confirm"); }
     if (run) { sysvals.js=nojs; repl(); }
