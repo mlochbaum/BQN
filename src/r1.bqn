@@ -239,11 +239,11 @@ Suffixes←{
 }
 
 NormIndP‿NormIndS←{
-  ei‿er←𝕩 ⋄ _cr←{⊢⊣er!𝔽}
-  0⊸≤◶⟨0⊸≤_cr+, >_cr⟩ ⊣ ei!Int∘⊢
+  EI‿er←𝕩 ⋄ _cr←{⊢⊣er!𝔽}
+  0⊸≤◶⟨0⊸≤_cr+, >_cr⟩ ⊣ EI∘⊢
 }⌜⟨
-  "𝕨⊑𝕩: Indices in 𝕨 must consist of integers"‿"𝕨⊑𝕩: Index out of range"
-  "𝕨⊏𝕩: Indices in 𝕨 must be integers"‿"𝕨⊏𝕩: Indices out of range"
+  ⟨"𝕨⊑𝕩: Indices in 𝕨 must consist of integers"!Int,"𝕨⊑𝕩: Index out of range"⟩
+  ⟨"𝕨⊏𝕩: Indices in 𝕨 must be integers"!⌊⊸=,"𝕨⊏𝕩: Indices out of range"⟩
 ⟩
 Pick0←{
   "𝕨⊑𝕩: 𝕩 must be a list when 𝕨 is a number" ! 1==𝕩
@@ -263,10 +263,17 @@ FirstCell←{
   "⊏𝕩: 𝕩 cannot have length 0" ! 0<≠𝕩
   (<0) ⊏ 𝕩
 }
-SelSub←{
-  "𝕨⊏𝕩: 𝕨 must be an array" ! IsArray 𝕨
-  𝕨 (≠𝕩)⊸NormIndS⌜⊸⊏ 𝕩
-}
+Select ← (1×´·(1=Type)⌜⥊∘⊣)◶{
+  l←≠i←⥊𝕨
+  "𝕨⊏𝕩: 𝕨 must be an array of numbers or list of such arrays"!1×´IsArray⌜i
+  "𝕨⊏𝕩: Compound 𝕨 must have rank at most 1" ! 1≥=𝕨
+  "𝕨⊏𝕩: Length of compound 𝕨 must be at most rank of 𝕩" ! l≤=𝕩
+  j←<0 ⋄ i { j↩(×⟜𝕩⌜j)+⌜𝕩⊸NormIndS⌜𝕨 }¨ p←l↑s←≢𝕩
+  j ⊏ (⟨1×´p⟩∾l↓s)⥊𝕩
+}‿{
+  "𝕨⊏𝕩: 𝕩 must have rank at least 1 for simple 𝕨" ! 1≤=𝕩
+  ((≠𝕩)⊸NormIndS⌜𝕨) ⊏ 𝕩
+}○ToArray
 First ← IsArray◶⟨⊢, (0<≠)◶⟨Fill,0⊸⊑⟩⥊⟩
 
 IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1×´·𝕊⌜1↓d˙⟩0⊑d}
@@ -772,7 +779,7 @@ GroupInv ← {
   IX i≡○(≠⌜)𝕩
   i ⍋⊸⊏○∾ 𝕩
 }
-⊏ ↩ FirstCell      ⊘ (ToArray⊸(SelSub _onAxes_ 1)) _fillBy_ ⊢
+⊏ ↩ FirstCell      ⊘ Select _fillBy_ ⊢
 PrimInverse ← INF _lookup_ ⟨
   '+', +⊘(-˜)
   '-', -
