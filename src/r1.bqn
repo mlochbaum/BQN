@@ -299,15 +299,15 @@ Rotate ← ⟨"⌽"
 
 RepInd←(2⌊=∘⊣)◶{
   𝕨↩(0⊑⥊)⍟IsArray𝕨
-  "𝕨/𝕩: Amounts to replicate must be natural numbers" ! Nat 𝕨
+  "𝕨/𝕩: 𝕨 must consist of natural numbers" ! Nat 𝕨
   e←r←𝕨
   {e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×𝕩
 }‿{
   "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕩=≠𝕨
-  "𝕨/𝕩: Amounts to replicate must be natural numbers" ! 1×´|∘⌊⊸=⌜𝕨
+  "𝕨/𝕩: 𝕨 must consist of natural numbers" ! 1×´|∘⌊⊸=⌜𝕨
   Ind 𝕨
 }‿{
-  "𝕨/𝕩: Replication argument must have rank 0 or 1" ! 0˙
+  "𝕨/𝕩: Components of 𝕨 must have rank 0 or 1" ! 0˙
 }
 Replicate←⟨"/"
   ((0<≠)×´(1=Type)⌜)∘⥊, 1,1
