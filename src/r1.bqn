@@ -200,12 +200,13 @@ Find←{
   0 Fill (𝕨 Match (⥊𝕩)⊏˜i+⌜<)⌜ j
 }○ToArray
 
+Ind ← { 0 Fill +`(0⌈≠-1˙)⊸↑GroupLen+`𝕩 }
+Rep ← Ind⊸⊏
 Indices←{
-  "/: Replication argument must have rank 1" ! 1==𝕩
-  "/: Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
-  0 Fill +`(0⌈≠-1˙)⊸↑GroupLen+`𝕩
+  "/𝕩: Replication argument must have rank 1" ! 1==𝕩
+  "/𝕩: Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
+  Ind 𝕩
 }
-Rep ← Indices⊸⊏
 SelfClas ← (PermInv∘⍋∘Rep˜⊏˜¯1+`⊢) _self
 OccurrenceCount ← ↕∘≠⊸(⊣-¨·⌈`×¨) _self
 
@@ -248,16 +249,22 @@ Pick1←{
 Pickd←(IsSimple⥊∘⊣)◶{Pickd⟜𝕩⌜𝕨}‿Pick1
 Pick←IsArray∘⊣◶Pick0‿Pickd
 
-_multiInd_←{
-  I ← 𝔾
-  pre ← "𝕨"∾𝕗∾"𝕩: "
+_multiAxis←{
+  gl‿Test‿d1‿aa‿Single‿Ind ← 𝕗
+  pre ← "𝕨"∾gl∾"𝕩: "
+  es ← pre∾"𝕩 must have rank at least 1 for simple 𝕨"
   er ← pre∾"Compound 𝕨 must have rank at most 1"
   el ← pre∾"Length of compound 𝕨 must be at most rank of 𝕩"
-  {
-    er ! 1≥=𝕨
+  et ← pre∾"𝕨 must be an array of numbers or list of such arrays"
+  tt ← d1 ⊑ ⟨⊢ , et ! 1×´·⥊IsArray◶⟨aa,1×´·⥊(1=Type)⌜⟩⌜ ⟩
+  Test∘⊣◶{ # Multiple axes
+    er ! 1≥=𝕨 ⋄ TT 𝕨
     l←≠𝕨↩⥊𝕨 ⋄ el ! l≤=𝕩
-    j←<0 ⋄ 𝕨 { j↩(×⟜𝕩⌜j)+⌜𝕨I𝕩 }¨ p←l↑s←≢𝕩
+    j←<0 ⋄ 𝕨 { j↩(×⟜𝕩⌜j)+⌜𝕨Ind𝕩 }¨ p←l↑s←≢𝕩
     j ⊏ (⟨1×´p⟩∾l↓s)⥊𝕩
+  }‿{
+    es ! 1≤=𝕩
+    𝕨 Single 𝕩
   }
 }
 
@@ -266,14 +273,11 @@ FirstCell←{
   "⊏𝕩: 𝕩 cannot have length 0" ! 0<≠𝕩
   (<0) ⊏ 𝕩
 }
-SelMulti ← "⊏"_multiInd_{𝕩⊸NormIndS⌜𝕨}
-Select ← (1×´·(1=Type)⌜⥊∘⊣)◶{
-  "𝕨⊏𝕩: 𝕨 must be an array of numbers or list of such arrays"!1×´⥊IsArray⌜𝕨
-  𝕨 SelMulti 𝕩
-}‿{
-  "𝕨⊏𝕩: 𝕩 must have rank at least 1 for simple 𝕨" ! 1≤=𝕩
-  ((≠𝕩)⊸NormIndS⌜𝕨) ⊏ 𝕩
-}○ToArray
+Select ← ⟨"⊏"
+  1×´·(1=Type)⌜⥊ ⋄ 1,0
+  {(≠𝕩)⊸NormIndS⌜𝕨} ⊏ ⊢
+  {𝕩⊸NormIndS⌜𝕨}
+⟩_multiAxis○ToArray
 First ← IsArray◶⟨⊢, (0<≠)◶⟨Fill,0⊸⊑⟩⥊⟩
 
 Reverse←{
@@ -287,11 +291,29 @@ RotReduce ← {
 }
 RotL ← ↓∾↑
 Rot ← (1==∘⊢)◶⟨RotL⟜(↕≠)⊏⊢,RotL⟩
-RotMulti ← "⌽"_multiInd_(RotReduce RotL ·↕⊢)
-Rotate ← IsAtom∘⊣◶RotMulti‿{
-  "𝕨⌽𝕩: 𝕩 must have rank at least 1 for number 𝕨" ! 1≤=𝕩
-  𝕨 (RotReduce⟜≠ Rot ⊢)⍟(0<≠𝕩) 𝕩
-}⟜ToArray _fillBy_ ⊢
+Rotate ← ⟨"⌽"
+  IsAtom, 0,0
+  (RotReduce⟜≠ Rot ⊢)⍟(0<≠∘⊢)
+  (RotReduce RotL ·↕⊢)
+⟩_multiAxis⟜ToArray _fillBy_ ⊢
+
+RepInd←(2⌊=∘⊣)◶{
+  𝕨↩(0⊑⥊)⍟IsArray𝕨
+  "𝕨/𝕩: Amounts to replicate must be natural numbers" ! Nat 𝕨
+  e←r←𝕨
+  {e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×𝕩
+}‿{
+  "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕩=≠𝕨
+  "𝕨/𝕩: Amounts to replicate must be natural numbers" ! 1×´(0⊸≤×⌊⊸=)⌜𝕨
+  Ind 𝕨
+}‿{
+  "𝕨/𝕩: Replication argument must have rank 0 or 1" ! 0˙
+}
+Replicate←⟨"/"
+  ((0<≠)×´(1=Type)⌜)∘⥊, 1,1
+  RepInd⟜≠ ⊏ ⊢
+  RepInd
+⟩_multiAxis○ToArray _fillBy_ ⊢
 
 IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1×´·𝕊⌜1↓d˙⟩0⊑d}
 HomFil ← ("=≠≡≢"_glyphLookup_(1‿1‿2‿2‿0)∘⊣)◶⊢‿{((𝕎0) Fill 𝕏)⊘𝕏}‿{(𝕎0)⊘0 Fill 𝕏}
@@ -564,21 +586,6 @@ _insert←{
   }
   𝕨 (0<≠)⊘1◶Id‿{𝕨F´1 EncCell 𝕩} 𝕩
 }
-
-RepInd←(0<=∘⊣)◶{
-  𝕨↩(0⊑⥊)⍟IsArray𝕨
-  "𝕨/𝕩: Amounts to replicate must be natural numbers" ! Nat 𝕨
-  e←r←𝕨
-  {e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×𝕩
-}‿{
-  "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕩=≠𝕨
-  Indices 𝕨
-}
-RepMulti ← "/" _multiInd_ RepInd
-Replicate←((0<≠)×´(1=Type)⌜)∘⥊∘⊣◶RepMulti‿{
-  "𝕨/𝕩: 𝕩 must have rank at least 1 for simple 𝕨" ! 1≤=𝕩
-  (𝕨 RepInd ≠𝕩) ⊏ 𝕩
-}○ToArray _fillBy_ ⊢
 
 ReshapeT ← "∘⌊⌽↑"_glyphLookup_(↕5)
 Reshape←{
