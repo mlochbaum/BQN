@@ -2,17 +2,19 @@
 
 # How to run BQN
 
-There are currently two active BQN implementations: the self-hosted one in this repository, and the independent dzaima/BQN. Neither is entirely complete but they are quite capable for pure programming tasks (say, implementing a compiler). dzaima/BQN has good performance while self-hosted is about a thousand times slower. I tend to develop parts of applications in the online REPL and move to dzaima/BQN scripts in order to run them.
+There are currently two active BQN implementations: the self-hosted one in this repository, and the independent dzaima/BQN. Neither is entirely complete but they are quite capable for pure programming tasks (say, implementing a compiler). dzaima/BQN has good performance while self-hosted is a few hundred times slower. I tend to develop parts of applications in the online REPL and move to dzaima/BQN scripts in order to run them.
 
-### BQN
+### Self-hosted BQN
 
 The online REPL is [here](https://mlochbaum.github.io/BQN/try.html). The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script [bqn.js](bqn.js), passing a file and `•args`, or `-e` to execute all remaining arguments directly and print the results. [This notebook](https://observablehq.com/@lsh/bqn) shows how to run it in an Observable notebook.
 
-The version of BQN in this repository is implemented mainly in BQN itself—the compiler is entirely self-hosted, while the runtime is built from a small number of starting functions using preprocessed BQN. It completely supports the core language except for block headers and multiple body syntax, and a few cases of structural Under (`⌾`). The Javascript-based compiler is also slow, taking about 0.01 seconds plus 0.3 seconds per kilobyte of source (this is purely due to the slow runtime, as dzaima+reference achieves 1ms/kB with the same compiler once warmed up).
+Fully supports all primitives except a few cases of structural Under (`⌾`), but still missing some advanced features: namespaces, block headers and multiple body syntax, derived 1-modifiers, and block returns.
 
-Because self-hosted BQN requires only a simple virtual machine to run, it is [fairly easy](implementation/vm.md) to embed it in another programming language by implementing this virtual machine. The way data is represented is part of the VM implementation: it can use native arrays or a custom data structure, depending on what the language supports. An initial implementation will be very slow, but can be improved by replacing functions from the BQN-based runtime with native code. As the VM system can be hard to work with if you're not familiar with it, I advise you to contact me to discuss this option it you are interested.
-
-In progress VMs are [CBQN](https://github.com/dzaima/CBQN) in C, and [ebqn](https://github.com/cannadayr/ebqn) in Erlang. Although both of these execute BQN just like the JS version, neither is considered useful for any purpose yet. CBQN is likely to become the main high-performance BQN implementation but is currently only a few times faster than Javascript and has an interface that's only useful for testing. ebqn is extremely slow—hours to compile.
+This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. Support in the following languages has been implemented:
+- Javascript; see above. Slow (compiles at ~5kB/s) but usable.
+- dzaima/BQN ([bqn.bqn](bqn.bqn)), mainly for testing.
+- [C](https://github.com/dzaima/CBQN), for an eventual high-performace implementation. Currently slower than dzaima/BQN and missing usability features.
+- [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical yet: minutes to compile short programs.
 
 ### dzaima/BQN
 
