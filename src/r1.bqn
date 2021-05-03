@@ -11,7 +11,7 @@ SetPrims ← {Decompose‿PrimInd ↩ 𝕩}
 IsArray ← 0=Type
 IsAtom  ← 1≤Type
 Int ← (1=Type)◶⟨0,⌊⊸=⟩
-Nat ← (1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
+Nat ← (1=Type)◶⟨0,|∘⌊⊸=⟩
 ToArray ← <⍟IsAtom
 IsSimple ← 1×´IsAtom⌜
 Deshape ← IsArray◶{𝕩Fill⟨𝕩⟩}‿⥊
@@ -304,7 +304,7 @@ RepInd←(2⌊=∘⊣)◶{
   {e+↩r⋄1+𝕩}⍟{e=𝕨}˜`↕r×𝕩
 }‿{
   "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕩=≠𝕨
-  "𝕨/𝕩: Amounts to replicate must be natural numbers" ! 1×´(0⊸≤×⌊⊸=)⌜𝕨
+  "𝕨/𝕩: Amounts to replicate must be natural numbers" ! 1×´|∘⌊⊸=⌜𝕨
   Ind 𝕨
 }‿{
   "𝕨/𝕩: Replication argument must have rank 0 or 1" ! 0˙
