@@ -81,13 +81,13 @@
 
   # Format part of a compound operation; return precedence‿string
   FmtOp ← {
-    tn ← '*'(∾∾⊣)¨"array"‿"function"‿"1-modifier"‿"2-modifier"
+    tn ← '*'(∾∾⊣)¨"array"‿"function"‿"1-modifier"‿"2-modifier"‿"namespace"
     FmtComp ← Type (3≤⊣)◶⟨0≍○<(1=≠)◶⟨⊑tn,⊏⟩∘FmtDat∘⊢, FmtOp⟩ ⊢
     k ← ⊑ d ← Decomp 𝕩
     p ← k ⊑ "00321111"-'0'
     Paren ← "("∾∾⟜")"
     FromComp ← ∾(⌽⍟(p>1)·-0=↕∘≠)(+⟜⊑Paren∘⊢⍟((2⌊p)≤⊣)1⊸⊑)⟜FmtComp¨⊢
-    s ← (2⌊k)◶⟨⥊∘FF𝕩˙,(𝕨-2)◶tn,FromComp⟩ 1↓d
+    s ← (2⌊|k)◶⟨⥊∘FF𝕩˙,(𝕨-2)◶tn,FromComp⟩ 1↓d
     s ↩ ∾⟜"{𝔽}"⍟(3>·Type ¯1⊑d˙)⍟(2≤p) s
     p‿s
   }
