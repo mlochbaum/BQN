@@ -24,7 +24,7 @@ useInd ← "-i"≡⊑args←•args ⋄ args↓˜↩useInd
 Comp ← ((<"runtime" Ind F)¨↕62) glyphs _getComp ⊢
 J ← ∾∾⟜(@+10)¨
 Fconst ← ≡◶⟨@⊸≤◶Num‿Char, Str, ⊑⟩
-Fout ← (≠↑⟨F,Fconst,L F¨,F⟩˙) {L𝕎¨𝕩}¨ ⊢
+Fout ← (≠↑⟨F,Fconst,L ·F¨4⊸↑,F⟩˙) {L𝕎¨𝕩}¨ ⊢
 Long ← ∾ (≠↑1‿3/⟨"  "⊸∾⋄((@+10)∾" ,")⊸∾⟩˙) {𝕎𝕩}¨ ⊢
 LFC ← Long∘Fout∘Comp
 

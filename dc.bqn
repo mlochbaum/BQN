@@ -9,11 +9,12 @@ compile ← glyphs •Import "src/c.bqn"
 
 special←<˘∘‿2⥊"𝕤𝕩𝕨𝕣𝕗𝕘"
 DCompile⇐{
-  ⟨bc,o,fblk,ind⟩ ← 4 ↑ (𝕨 •BQN∘⥊¨∘∾⊘⊣ glyphs) Compile 𝕩
+  ⟨bc,o,fblk,ind,tok⟩ ← 5 ↑ (𝕨 •BQN∘⥊¨∘∾⊘⊣ glyphs) Compile 𝕩
+  name ← ⊑2⊑tok
   blk‿bdy ← <˘⍉>(↕≠fblk){
-    ⟨t,i,l,n⟩←𝕩
+    ⟨t,i,l,n,d,e⟩←𝕩
     s←(3×i)↓(t⊑3‿5‿6)↑special
-    ⟨⟨t,i,𝕨,𝕨⟩ ⋄ ⟨l, s∾⥊¨'a'+↕n-≠s⟩⟩
+    ⟨⟨t,i,𝕨,𝕨⟩ ⋄ ⟨l, s∾d⊏name, (0¨s)∾e⟩⟩
   }¨fblk
   ⟨bc,o,blk,⊑blk,bdy,⊑ind,1⊑ind,𝕩⟩
 }

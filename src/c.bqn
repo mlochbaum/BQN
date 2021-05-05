@@ -67,12 +67,12 @@ Tokenize←{
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
   ws←1=wi/wt⋄ig←1-˜(i>us)×+`w>n             # Identifier groups
   {⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/(¯1»⌈`)⊸<ig
-  id←ws(¬⊸/≍○</)ig⊔t                        # ⟨Identifiers, system values⟩
+  id←(ws∾2)⊔ig⊔t⊏charSet                    # ⟨Identifiers, system values⟩
 
   # Deduplicate literals and identifiers; other cleanup
   ki←(wt⍒⊸⊏/w)∾(ci∾/si)⊏+`»f                # Indices in t
   k←id∾num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
-  k↩(𝕎⊏⟜charSet¨)⌾(1⊸⊑)k                    # System value lookup
+  k↩𝕎⌾(1⊸⊑)k                                # System value lookup
   wf←¬l∨t M bW⋄ie/˜↩wf∨>⟜«l                 # Index management for...
   t↩(w∨wf)Fs(∾j++`vi»kk←≠¨k)⌾(ki⊸⊏)t        # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
@@ -144,8 +144,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   sn←(0‿3‿4‿5+5+⊑bI)⍋𝕩⋄sp←/𝕩 M bI           # Special name index
   fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn   # Block immediacy ¬fx and type ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
-  nf←(⊑bG)H𝕩                                # Block has exports (is namespace)
-  "Can't export from a non-immediate block"_err_(/{(fi⊏0≠fr)∧𝕩=⊑bG}∘𝕩) ∨´nf>fr=0
+  nf←(⊑bG)H𝕩                                # Namespace blocks
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
 
   # Propagate roles through parentheses
@@ -159,7 +158,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   ir(×⟜¬-⊢)↩nr                              # Include nothingness (doesn't handle 𝕎)
 
   # Prep for lexical resolution before reordering 𝕩
-  idx←𝕩⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi
+  idv←𝕩⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi
 
   # Parsing part 1
   p-↩br⋄g↩⍋+`p⋄gr←g⊏rev                     # Order by non-brace bracket depth
@@ -168,9 +167,10 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
-  ni←1+(1↓nf)/bk←c⊏gi                       # Indices of module assignment (import) arrows
-  "Modules must be immediately assigned"_err_(ni⊏G)∘(∨˝¯3‿0‿¯1≠r∾⟜¯1‿1⊸(⊏˜)(↕3)+⌜⊢)⍟(0<≠)ni
-  "Modules must be destructured"_err_(ni⊏G) (⊏⟜idm>⊏⟜rev⊏sr˙)(ni+1)⊏g
+  ni←1+nf/¯1∾bk←c⊏gi                        # Indices of import arrows
+  nm←(nf/fr=0)∧(¯3=ni⊏r)∧0=(ni+1)⊏r         # Namespace is module: immediately assigned,
+  nm∧↩(⊏⟜idm≤⊏⟜rev⊏sr˙)(ni+1)⊏g             # ...and destructured
+  nf∧↩nf+`⊸⊏0∾¬nm                           # Don't treat module as namespace
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps         # er: expression role; tr: train or modifier expression
   no←ir<0⋄ne←er<0                           # Nothing value; expression
   "Nothing (·) cannot be assigned"_err_(G) a∧ne
@@ -183,24 +183,26 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Role of the two sides in assignment must match"_err_(at⊏G) (0⌈at⊏er)≠ar←at⊏r
   aid←(¯10⊸≤∧<⟜nv)𝕩-vi                      # Assignable identifer
   "Function or modifier assignment to a non-name"_err_(at⊏G) ¬(ar=0)∨at⊏aid
-  ak←1+af+(ai∊ni)+2×(⊑bG)-˜ai⊏𝕩             # Class of assignment: 1⇐ 2⇐? 3⇐{⇐} 4←? 5←{⇐} 6↩? 7↩{⇐}
+  ak←1+af+(ai∊nm/ni)+2×(⊑bG)-˜ai⊏𝕩          # Class of assignment: 1⇐ 2⇐? 3⇐{⇐} 4←? 5←{⇐} 6↩? 7↩{⇐}
   aa←×g⊏ac←»+`gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩            # ac broadcasts it to the entire target
   "Assignment target must be a name or list of targets"_err_(G) ((𝕩=3+⊑bB)<(aid∧r≤0)∨ps∨𝕩 M bB)<aa∧0≥er
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
 
   # Lexical resolution (independent of parsing part 2 below)
-  ip←id⊏ac⋄d←ip M 2‿4                       # Assignment classes; which are definitions
+  ip←id⊏ac⋄d←ip M 2‿4⋄xm←ip M 1‿3           # Assignment classes; which are definitions, exports
+  idn←(idg←(d/id⊏+`b)∾≠fsc)⊔vi-˜d/idv       # Numbers for each identifier, per-block
   zic←0¨ic←id/˜icf←2(<∧|)ip⋄II←∾⟜(icf⊸/)∘id # Imports have class 3, 5, or 7
   il←ic⊏+`br<0⋄ex←il⊏(/∾≠)b                 # Block for each import and its end index
   # Order every referenced identifier, an extraction for each import, and an undeclaration for each declaration
   ixf←(((1=ip)+⊏⟜(¯1∾b/gf))∾(il∾d⊸/)⊏((≠𝕩)∾c⊏gf)˜)id⊏fi # First order by block index, open for real and closed for virtual
-  d∾↩zic⋄idx∾↩icf/idx                       # Add in imports
-  ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idx))⊸⊏⍋ixf            # Then order by name
+  d∾↩zic⋄idv∾↩icf/idv                       # Add in imports
+  ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idv))⊸⊏⍋ixf            # Then order by name
   {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)II) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
   ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig           # Last order by declaration depth
-  d⊏˜↩ig⋄idx⊏˜↩ig⋄II↩ig⊏II
-  ("Undefined identifier"Pl/)_err_(II) d<»⊸≠idx
-  {"Imports must have been exported"_err_(f/II) 2≤-⟜»(f←d∨×𝕩)/𝕩} ig⊏(ip M 1‿3)∾2¨ic
+  d⊏˜↩ig⋄idv⊏˜↩ig⋄II↩ig⊏II
+  ("Undefined identifier"Pl/)_err_(II) d<»⊸≠idv
+  idx←idg⊔(⍋d/ig)⊏d(/≥1↓PN)0<xs←ig⊏xm∾2¨zic # Exported identifier mask
+  {"Imports must have been exported"_err_(f/II) 2≤-⟜»(f←d∨×𝕩)/𝕩} ig⊏xm∾2¨zic
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex                   # Index of definition (⊐ for identifiers)
   lc←(1«b)/dn←b(⊢-T)+`idm∧ac M 2‿4          # Locals Count
   idd←(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp          # Identifier frame depth
@@ -230,12 +232,12 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   # Bytecode generation: numbers bc ordered by source location (after rev) oi
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,oa+1⌈oa⊏os,fl,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,14¨dr
-               11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,25¨rt⟩
+               11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,¯1↓rc←25+4×nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   # Function metadata and overall output
-  ⟨bc∾25,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,lc+fsc⟩,ind⟩
+  ⟨bc∾¯1⊑rc,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,lc+fsc,idn,idx⟩,ind⟩
 }
 
 Compile←{
