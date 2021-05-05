@@ -11,15 +11,16 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "·"                   # nOthing
   # Use last character in case of UTF-16 (like dzaima/BQN)
   ¯1⊏˘10‿∘⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘" # Input (𝕣 pending; ℝ not allowed)
+  ".¯π∞"                # Numeric
   '0'+↕10               # Digit
-  "π∞¯."                # Numeric
   "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
   "•"∾(¯1↓"𝕨")∾" "∾@+9  # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
-bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bI‿bD‿bN‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
+bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
+bI←5≍⟜-⊸+bX
 Pl←∾⟜("s"/˜1<≠)   # Pluralize
 _tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
 # Convert characters to numbers, mostly the same as tokens
@@ -29,8 +30,8 @@ CharCode←charSet{
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
 
-vi←⊑bD  # Start of identifier numbering
-charRole←∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯3,¯1‿0,¯2,0,5/⌽↕2⟩ # For first vi chars
+vd←1+vi←⊑bN  # Start of identifier numbering (plus dot)
+charRole←¯4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯3,¯1‿0,¯2,0,5/⌽↕2⟩ # For first vd chars
 T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
@@ -55,7 +56,8 @@ Tokenize←{
   ie←/f⋄is←ie≠⊸↑/1»f⋄Fs←{is/˜↩𝕨⋄𝕨/𝕩}        # Token start and end
   is-↩is(-×⊏⟜c)ie                           # Comment → ending newline only
   t←CharCode ie⊏𝕩
-  w←»⊸<l←t M bD(⊣≍-˜)○⊑bW                   # Word chars l, start w
+  nd←(t=⊑bN)>«t M bD                        # Namespace dot
+  w←»⊸<l←nd<t M bN(⊣≍-˜)○⊑bW                # Word chars l, start w
   us←t=¯1++´bA⋄sy←t=⊑bW                     # Underscore, system dot
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
@@ -74,13 +76,14 @@ Tokenize←{
   k←id∾num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
   k↩𝕎⌾(1⊸⊑)k                                # System value lookup
   wf←¬l∨t M bW⋄ie/˜↩wf∨>⟜«l                 # Index management for...
-  t↩(w∨wf)Fs(∾j++`vi»kk←≠¨k)⌾(ki⊸⊏)t        # Add IDs; remove words/whitespace
+  t↩(w∨wf)Fs(∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t        # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
   t{ie/˜↩𝕨⋄𝕨Fs𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep            # Remove the rest
-  r←ir⌾((t M vi≍+´2↑kk)⊸/)(vi⌊t)⊏charRole∾0 # Role
-  t+↩5×t M⟨⊑bI,5⟩                           # Case-insensitive special names
+  r←ir⌾((t M vd≍+´2↑kk)⊸/)(vd⌊t)⊏charRole∾0 # Role
+  t+↩5×t M⟨⊑bX,5⟩                           # Case-insensitive special names
+  t-↩vi(<+10×=)t                            # Shift . to bX and variables back one
   ⟨t,r,k,is,ie⟩
 }
 
@@ -89,7 +92,7 @@ Tokenize←{
 ReadNums←{
   _err_←{(0!˜/⟜𝔾≍○<𝔽)⍟(∨´)}
   EChars←⟨"Letter"⊸Pl," """,⊏⟜charSet,""" not allowed in numbers"⟩_tmpl
-  e‿p‿i‿n‿d←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for eπ∞¯.
+  e‿d‿n‿p‿i←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for e.¯π∞
   EChars∘(/⟜𝕩)_err_𝕨 ¬e∨𝕩<⊑bA
   s←d∨c←e∨z←0=𝕩⋄m←¬n∨c
   "Negative sign in the middle of a number"_err_𝕨 n>»c
@@ -97,7 +100,7 @@ ReadNums←{
   "Ill-formed decimal or exponent use"_err_(s/𝕎) ¬(0⊸=∨»⊸<)s/𝕩
   "π and ∞ must occur alone"_err_𝕨 (p∨i)>1(»∧(p∧«e)∨«)z∨n>»e
   f←(17≥¬(⊢-T)+`)⊸∧g←(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m # No leading 0s; max 17 digits
-  l←(¯1∾π‿1∾˜↕10)⊏˜(¬d)/f×𝕩-1-˜⊑bD          # Digit lookup, with ∞ as 1 to avoid ∞×0
+  l←(¯1∾π‿1∾↕10)⊏˜(¬d)/f×𝕩-1+⊑bN            # Digit lookup, with ∞ as 1 to avoid ∞×0
   v←(>⟜«0≤l)/0(0⊸≤××⟜10⊸+)`l                # Numeric values—mantissas and exponents
   v×↩1‿¯1⊏˜(r←>⟜»m)/»n                      # Negate if ¯
   vm←c/z                                    # Mask of mantissas in l
@@ -141,7 +144,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 
   # Block properties
   PN←1(∾/∾˜)(∨/⊣)⋄H←b¬∘PN=                  # Which blocks have a property
-  sn←(0‿3‿4‿5+5+⊑bI)⍋𝕩⋄sp←/𝕩 M bI           # Special name index
+  sn←(0‿3‿4‿5+⊑bI)⍋𝕩⋄sp←/𝕩 M bI             # Special name index
   fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn   # Block immediacy ¬fx and type ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   nf←(⊑bG)H𝕩                                # Namespace blocks
@@ -181,7 +184,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r               # Assignment target; af for actual (non-export) assignment
   "Role of the two sides in assignment must match"_err_(at⊏G) (0⌈at⊏er)≠ar←at⊏r
-  aid←(¯10⊸≤∧<⟜nv)𝕩-vi                      # Assignable identifer
+  aid←(¯5⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   "Function or modifier assignment to a non-name"_err_(at⊏G) ¬(ar=0)∨at⊏aid
   ak←1+af+(ai∊nm/ni)+2×(⊑bG)-˜ai⊏𝕩          # Class of assignment: 1⇐ 2⇐? 3⇐{⇐} 4←? 5←{⇐} 6↩? 7↩{⇐}
   aa←×g⊏ac←»+`gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩            # ac broadcasts it to the entire target
