@@ -168,7 +168,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
   ni←1+nf/¯1∾bk←c⊏gi                        # Indices of import arrows
-  nm←(nf/fr=0)∧(¯3=ni⊏r)∧0=(ni+1)⊏r         # Namespace is module: immediately assigned,
+  nm←(nf/fr=0)∧∧˝¯3‿0‿¯1=(r∾¯1‿1)⊏˜(↕3)+⌜ni # Namespace is module: immediately assigned,
   nm∧↩(⊏⟜idm≤⊏⟜rev⊏sr˙)(ni+1)⊏g             # ...and destructured
   nf∧↩nf+`⊸⊏0∾¬nm                           # Don't treat module as namespace
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps         # er: expression role; tr: train or modifier expression
