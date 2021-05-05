@@ -10,6 +10,20 @@ let call = (f,x,w) => {
   return f(x, w);
 }
 
+let findkey = (ns, names, i) => {
+  let nn=ns.names, ni;
+  if (nn===names) {
+    return ns[i];
+  } else {
+    if (!has(nn.rev)) { let m=nn.rev={}; nn.forEach((s,i)=>m[s]=i); }
+    return ns[nn.rev[names[i]]];
+  }
+}
+let readns = (v, vid, i) => {
+  let ni = findkey(v.ns, vid.names, vid[i])
+  if (!has(ni)) throw Error("← or ↩: Unknown namespace key");
+  return v[ni];
+}
 let getv= (a,i) => { let v=a[i]; if (v===null) throw Error("Runtime: Variable referenced before definition"); return v; }
 let get = x => x.e ? getv(x.e,x.p) : arr(x.map(c=>get(c)), x.sh);
 let set = (d, id, v) => {
@@ -24,9 +38,7 @@ let set = (d, id, v) => {
     } else if (v.ns) {
       id.map(n=>{
         if (!n.e) throw Error("← or ↩: Cannot extract non-name from namespace");
-        let ni = v.ns[n.e.vid[n.p]];
-        if (!has(ni)) throw Error("← or ↩: Unknown namespace key");
-        set(d,n,v[ni]);
+        set(d,n,readns(v, n.e.vid, n.p));
       });
     } else {
       throw Error("← or ↩: Multiple targets but atomic value");
@@ -71,7 +83,7 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   }
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r+fin;
 }
-let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks, Locations
+let run = (B,O,S,L,T) => { // Bytecode, Objects, Sections/blocks, Locations, Tokenization
   let train2=(  g,h)=>{                              let t=(x,w)=>call(g,call(h,x,w));            t.repr=()=>[2,  g,h];return t;}
   let train3=(f,g,h)=>{if(!has(f))return train2(g,h);let t=(x,w)=>call(g,call(h,x,w),call(f,x,w));t.repr=()=>[3,f,g,h];return t;}
   let D = S.map(([type,imm,pos,varam,vid,vex],i) => {
@@ -80,6 +92,7 @@ let run = (B,O,S,L) => { // Bytecode, Objects, Sections/blocks, Locations
     let def = new Array(sp + varam).fill(null);
     let ns = {}; if (vex) vex.forEach((e,j)=>{if(e)ns[vid[j]]=j+sp;});
     vid = (new Array(sp).fill(null)).concat(vid);
+    if (T) ns.names = vid.names = T[2][0];
     let c = genjs(B, pos, L);
     let repdf = ["","4,f,mod","5,f,mod,g"].map(s=>s?"fn.repr=()=>["+s+"];":s);
     if (imm) c =               "const e=[...e2];e.vid=vid;e.p=oe;"+c;
