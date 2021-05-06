@@ -74,6 +74,4 @@ There's a BQN channel on [Matrix](https://matrix.org/) (#bqn:matrix.org), which 
 
 BQNBot will run your code from chat! Begin your message with `bqn)` and our friend (designation B-QN) will evaluate the rest and show the output. While putting your code in blocks `` `like this` `` is easier to read, the bot just operates on plain text and doesn't require it.
 
-Asking programming questions in chat won't make it easy for future BQN users to find them. Especially if you have a general question about how the language or its environment works, consider asking at [topanswers.xyz/apl](https://topanswers.xyz/apl) with the "bqn" tag.
-
 In addition to these forums, you can contact me personally via Github issues or with the email address shown in my Github profile.
