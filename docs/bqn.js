@@ -24,6 +24,12 @@ let readns = (v, vid, i) => {
   if (!has(ni)) throw Error("← or ↩: Unknown namespace key");
   return v[ni];
 }
+let makens = (keys, vals) => {
+  let n = Array(keys.length).fill().map((_,i)=>i);
+  n.names=keys.map(k=>k.toLowerCase()); vals.ns=n; return vals;
+}
+let obj2ns = (obj, keys) => makens(keys, keys.map(k=>obj[k]));
+
 let getv= (a,i) => { let v=a[i]; if (v===null) throw Error("Runtime: Variable referenced before definition"); return v; }
 let get = x => x.e ? getv(x.e,x.p) : arr(x.map(c=>get(c)), x.sh);
 let set = (d, id, v) => {
@@ -92,7 +98,7 @@ let run = (B,O,S,L,T) => { // Bytecode, Objects, Sections/blocks, Locations, Tok
     let def = new Array(sp + varam).fill(null);
     let ns = {}; if (vex) vex.forEach((e,j)=>{if(e)ns[vid[j]]=j+sp;});
     vid = (new Array(sp).fill(null)).concat(vid);
-    if (T) ns.names = vid.names = T[2][0];
+    if (T) ns.names = vid.names = T[2][0].map(s=>s.join(""));
     let c = genjs(B, pos, L);
     let repdf = ["","4,f,mod","5,f,mod,g"].map(s=>s?"fn.repr=()=>["+s+"];":s);
     if (imm) c =               "const e=[...e2];e.vid=vid;e.p=oe;"+c;
@@ -428,11 +434,13 @@ let extendedbqn = (x,w) => {
   let bqn = bqngen(compgen(list(pr)),list([rt,system]));
   return (x,w)=>bqn(req1str("•BQN extension",x,w));
 }
+let trig = "cos cosh sin sinh tan tanh";
 let dynsys = f => { f.dynamic=1; return f; }
 let sysvals = {
   bqn:(x,w)=> bqn(req1str("•BQN",x,w)), js:dojs, extendedbqn,
   type, glyph, decompose, fmt:fmt1, unixtime,
-  listsys: dynsys(() => list(Object.keys(sysvals).map(str).sort()))
+  listsys: dynsys(() => list(Object.keys(sysvals).map(str).sort())),
+  math: obj2ns(Math,("E LN10 LN2 LOG10E LOG2E PI SQRT1_2 SQRT2 cbrt expm1 hypot log10 log1p log2 round trunc atan2 "+trig).split(" "))
 };
 
 let make_timed = tfn => {
