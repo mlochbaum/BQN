@@ -59,6 +59,7 @@ Tokenize←{
   nd←(t=⊑bN)>«t M bD                        # Namespace dot
   w←»⊸<l←nd<t M bN(⊣≍-˜)○⊑bW                # Word chars l, start w
   us←t=¯1++´bA⋄sy←t=⊑bW                     # Underscore, system dot
+  {⟨/us∧w+`⊸⊏0∾𝕩,"Words can't only have underscores"⟩!0}⍟(∨´)w(/<1(⊢/«)(∨/⊣))l>us
   wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
   {⟨𝕩/is,"System dot with no name"⟩!0}⍟(∨´)sy>«l
