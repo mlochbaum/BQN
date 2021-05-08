@@ -160,6 +160,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir # ...and function roles
   r+↩pt×»ir                                 # Roles at pt were 0; set them now
   ir(×⟜¬-⊢)↩nr                              # Include nothingness (doesn't handle 𝕎)
+  r-↩(r=¯4)∧1»r=¯1                          # Lone ⇐ to role ¯5
 
   # Prep for lexical resolution before reordering 𝕩
   idv←xv⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi
@@ -171,7 +172,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
-  a←r≤¯3⋄ps←a<r<0                           # a: assignment, ps: part separator
+  a←(¯5⊸<∧≤⟜¯3)r⋄ps←a<r<0                   # a: assignment, ps: part separator
   tr←1≤er←ir⊏˜IT»ps                         # er: expression role; tr: train or modifier expression
   no←ir<0⋄ne←er<0                           # Nothing value; expression
   "Nothing (·) cannot be assigned"_err_(G) ne∧a
@@ -192,19 +193,19 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   ip←id⊏ac⋄d←id⊏dd←ac M 2‿2⋄xm←ip M 1‿2     # Assignment classes; which are definitions, exports
   "Can't define special name"_err_(SP) sp⊏dd
   idn←(idg←(d/id⊏fi)∾≠fsc)⊔d/idv            # Numbers for each identifier, per-block
-  # Order every referenced identifier, an extraction for each import, and an undeclaration for each declaration
+  # Order every referenced identifier, and an undeclaration for each declaration
   ixf←(((1=ip)+⊏⟜(¯1∾b/gf))∾d⊸/⊏((≠𝕩)∾c⊏gf)˙)id⊏fi # First order by block index, open for real and closed for virtual
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idv))⊸⊏⍋ixf            # Then order by name
   {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
   ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig           # Last order by declaration depth
-  d⊏˜↩ig⋄idv⊏˜↩ig
-  ("Undefined identifier"Pl/)_err_(ig⊏ID) d<¯1⊸»⊸≠idv
-  idx←idg⊔(⍋d/ig)⊏d(/≥1↓PN)0<ig⊏xm          # Exported identifier mask
+  d⊏˜↩ig
+  ("Undefined identifier"Pl/)_err_(ig⊏ID) d<¯1⊸»⊸≠ig⊏idv
+  idx←idg⊔(⍋d/ig)⊏d(/≥1↓PN)ig⊏xm            # Exported identifier mask
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id                      # Index of definition (⊐ for identifiers)
   lc←(1«b)/dn←b(⊢-T)+`idm∧dd                # Locals Count
   idd←(id-○(⊏⟜fd)ui)∾0¨sp                   # Identifier frame depth
   "Can't export from surrounding scope"_err_(ID) xm∧0<id≠⊸↑idd
-  idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv # Slot within frame
+  idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv # Slot within frame
   uu←ip(((1«d)∧0=⊣)∧d(⊣+`⊸⊏PN)0<⊢)⌾(ig⊸⊏)idd# Unused marker
   idor←∾3⥊<id∾sp                            # Identifier bytecode ordering
   idbc←⟨21+(10×uu)+0<ip∾sp⊏ac,idd,idi⟩      # Identifier bytecode: instruction, depth, slot
@@ -220,7 +221,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
   "Can't use Nothing (·) in lists"_err_(G) (»lo∨ls)∧ne
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
-  dr←/ne<ls<s⋄rt←/fo                        # Drop (block separator) and return
+  dr←/(ne∨»r=¯5)<ls<s⋄rt←/fo                # Drop (block separator) and return
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←fa⊏ne)/fl                  # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄dy/˜↩fn⋄fl/˜↩fn            # And remove them
