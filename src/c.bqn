@@ -172,21 +172,22 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
   bk←c⊏gi                                   # Block loads
-  a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps         # er: expression role; tr: train or modifier expression
+  a←r≤¯3⋄ps←a<r<0                           # a: assignment, ps: part separator
+  tr←1≤er←(ir-ex←¯4=r)⊏˜IT»ps               # er: expression role; tr: train or modifier expression
   no←ir<0⋄ne←er<0                           # Nothing value; expression
-  "Nothing (·) cannot be assigned"_err_(G) a∧ne
+  "Nothing (·) cannot be assigned"_err_(G) ne∧a>ex
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3       # op: active modifiers; ro: mod or right operand
   "Missing operand"_err_(G) op>(«∧m2≤»)no<m2<ro∨r∊↕2
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1                     # Modified assignment
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r               # Assignment target; af for actual (non-export) assignment
-  "Role of the two sides in assignment must match"_err_(at⊏G) (0⌈at⊏er)≠ar←at⊏r
+  "Role of the two sides in assignment must match"_err_(at⊏G) af∧(0⌈at⊏er)≠ar←at⊏r
   aid←(¯5⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
-  "Function or modifier assignment to a non-name"_err_(at⊏G) ¬(ar=0)∨at⊏aid
-  ak←1+af+(⊑bG)-˜ai⊏𝕩                       # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
+  "Function or modifier assignment to a non-name"_err_(at⊏G) ¬(ar≤0)∨at⊏aid
+  ak←(0≤ar)+af+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
   aa←×g⊏ac←»+`gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩            # ac broadcasts it to the entire target
-  "Assignment target must be a name or list of targets"_err_(G) ((𝕩=3+⊑bB)<(aid∧r≤0)∨ps∨𝕩 M bB)<aa∧0≥er
+  "Assignment target must be a name or list of targets"_err_(G) ((𝕩=3+⊑bB)<(aid∧r≤0)∨ps∨𝕩 M bB)<aa∧0=er
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
 
   # Lexical resolution (independent of parsing part 2 below)
