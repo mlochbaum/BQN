@@ -171,10 +171,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
-  ni←1+nf/¯1∾bk←c⊏gi                        # Indices of import arrows
-  nm←(nf/fr=0)∧∧˝¯3‿0‿¯1=(r∾¯1‿1)⊏˜(↕3)+⌜ni # Namespace is module: immediately assigned,
-  nm∧↩(⊏⟜idm≤⊏⟜rev⊏sr˙)(ni+1)⊏g             # ...and destructured
-  nf∧↩nf+`⊸⊏0∾¬nm                           # Don't treat module as namespace
+  bk←c⊏gi                                   # Block loads
   a←r≤¯3⋄ps←a<r<0⋄tr←1≤er←ir⊏˜IT»ps         # er: expression role; tr: train or modifier expression
   no←ir<0⋄ne←er<0                           # Nothing value; expression
   "Nothing (·) cannot be assigned"_err_(G) a∧ne
@@ -187,36 +184,29 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Role of the two sides in assignment must match"_err_(at⊏G) (0⌈at⊏er)≠ar←at⊏r
   aid←(¯5⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   "Function or modifier assignment to a non-name"_err_(at⊏G) ¬(ar=0)∨at⊏aid
-  ak←1+af+(ai∊nm/ni)+2×(⊑bG)-˜ai⊏𝕩          # Class of assignment: 1⇐ 2⇐? 3⇐{⇐} 4←? 5←{⇐} 6↩? 7↩{⇐}
+  ak←1+af+(⊑bG)-˜ai⊏𝕩                       # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
   aa←×g⊏ac←»+`gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩            # ac broadcasts it to the entire target
   "Assignment target must be a name or list of targets"_err_(G) ((𝕩=3+⊑bB)<(aid∧r≤0)∨ps∨𝕩 M bB)<aa∧0≥er
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
 
   # Lexical resolution (independent of parsing part 2 below)
-  ip←id⊏ac⋄d←ip M 2‿4⋄xm←ip M 1‿3           # Assignment classes; which are definitions, exports
+  ip←id⊏ac⋄d←ip M 2‿2⋄xm←ip M 1‿2           # Assignment classes; which are definitions, exports
   idn←(idg←(d/id⊏fi)∾≠fsc)⊔vi-˜d/idv        # Numbers for each identifier, per-block
-  zic←0¨ic←id/˜icf←2(<∧|)ip⋄II←∾⟜(icf⊸/)∘id # Imports have class 3, 5, or 7
-  il←ic⊏+`br<0⋄ex←il⊏(/∾≠)b                 # Block for each import and its end index
   # Order every referenced identifier, an extraction for each import, and an undeclaration for each declaration
-  ixf←(((1=ip)+⊏⟜(¯1∾b/gf))∾(il∾d⊸/)⊏((≠𝕩)∾c⊏gf)˜)id⊏fi # First order by block index, open for real and closed for virtual
-  d∾↩zic⋄idv∾↩icf/idv                       # Add in imports
+  ixf←(((1=ip)+⊏⟜(¯1∾b/gf))∾d⊸/⊏((≠𝕩)∾c⊏gf)˙)id⊏fi # First order by block index, open for real and closed for virtual
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idv))⊸⊏⍋ixf            # Then order by name
-  {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)II) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
+  {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
   ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig           # Last order by declaration depth
-  d⊏˜↩ig⋄idv⊏˜↩ig⋄II↩ig⊏II
-  ("Undefined identifier"Pl/)_err_(II) d<»⊸≠idv
-  idx←idg⊔(⍋d/ig)⊏d(/≥1↓PN)0<xs←ig⊏xm∾2¨zic # Exported identifier mask
-  {"Imports must have been exported"_err_(f/II) 2≤-⟜»(f←d∨×𝕩)/𝕩} ig⊏xm∾2¨zic
-  ui←(IT d)⊸⊏⌾(ig⊸⊏)id∾ex                   # Index of definition (⊐ for identifiers)
-  lc←(1«b)/dn←b(⊢-T)+`idm∧ac M 2‿4          # Locals Count
-  idd←(id-○(⊏⟜fd)id≠⊸↑ui)∾zic∾0¨sp          # Identifier frame depth
+  d⊏˜↩ig⋄idv⊏˜↩ig
+  ("Undefined identifier"Pl/)_err_(ig⊏ID) d<»⊸≠idv
+  idx←idg⊔(⍋d/ig)⊏d(/≥1↓PN)0<ig⊏xm          # Exported identifier mask
+  ui←(IT d)⊸⊏⌾(ig⊸⊏)id                      # Index of definition (⊐ for identifiers)
+  lc←(1«b)/dn←b(⊢-T)+`idm∧ac M 2‿2          # Locals Count
+  idd←(id-○(⊏⟜fd)id≠⊸↑ui)∾0¨sp              # Identifier frame depth
   idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv # Slot within frame
-  uu←(ip∾zic)(((1«d)∧0=⊣)∧d(⊣+`⊸⊏PN)0<⊢)⌾(ig⊸⊏)idd # Unused marker
-  # Generate code to load identifiers and list each module's extracted exports
-  ib←⟨(10×uu)+21+0<ip∾zic∾sp⊏ac,idd,idi⟩    # Identifier bytecode: instruction, depth, slot
-  ed←/¯1⊸»⊸<ex                              # Select first export in each module
-  idor←∾¯1⌽1‿3/⟨3/id∾ex∾sp,ed⊏ex⟩           # Identifier bytecode ordering
-  idbc←¯1⌽⟨⥊⍉>ib,3¨ed,ex≠⊸(«-⊢)ed,14¨ed⟩    # and bytecode
+  uu←ip(((1«d)∧0=⊣)∧d(⊣+`⊸⊏PN)0<⊢)⌾(ig⊸⊏)idd# Unused marker
+  idor←∾3⥊<id∾sp                            # Identifier bytecode ordering
+  idbc←⟨21+(10×uu)+0<ip∾sp⊏ac,idd,idi⟩      # Identifier bytecode: instruction, depth, slot
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
