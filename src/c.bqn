@@ -203,7 +203,8 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   idx←idg⊔(⍋d/ig)⊏d(/≥1↓PN)0<ig⊏xm          # Exported identifier mask
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id                      # Index of definition (⊐ for identifiers)
   lc←(1«b)/dn←b(⊢-T)+`idm∧ac M 2‿2          # Locals Count
-  idd←(id-○(⊏⟜fd)id≠⊸↑ui)∾0¨sp              # Identifier frame depth
+  idd←(id-○(⊏⟜fd)ui)∾0¨sp                   # Identifier frame depth
+  "Can't export from surrounding scope"_err_(ID) xm∧0<id≠⊸↑idd
   idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)++⟜(0⊸≤)2+sp⊏xv # Slot within frame
   uu←ip(((1«d)∧0=⊣)∧d(⊣+`⊸⊏PN)0<⊢)⌾(ig⊸⊏)idd# Unused marker
   idor←∾3⥊<id∾sp                            # Identifier bytecode ordering
