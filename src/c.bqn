@@ -134,7 +134,6 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   cp←𝕩=1+⊑bB                                # Closed paren
   nr←(IT¬cp)⊏𝕩=⊑bO                          # Nothingness role: 1 for · (handle 𝕨 later?)
   "Can't strand Nothing (·)"_err_(↕∘≠) ns<nr
-  "Can't return Nothing (·)"_err_(↕∘≠) nr∧1«𝕩=3+⊑bB
   g⊏˜↩⍋g⊏sl                                 # Avoid reordering strands in rev
   # Permutation to reverse each expression: *more* complicated than it looks
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sl∨r=¯1
@@ -149,6 +148,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn   # Block immediacy ¬fx and type ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   nf←(⊑bG)H𝕩                                # Namespace blocks
+  {"Can't return Nothing (·)"_err_𝕩 𝕩⊏nr} 1-˜nf¬⊸/0∾c⊏rev
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
 
   # Propagate roles through parentheses
@@ -194,7 +194,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 
   # Lexical resolution (independent of parsing part 2 below)
   ip←id⊏ac⋄d←ip M 2‿4⋄xm←ip M 1‿3           # Assignment classes; which are definitions, exports
-  idn←(idg←(d/id⊏+`b)∾≠fsc)⊔vi-˜d/idv       # Numbers for each identifier, per-block
+  idn←(idg←(d/id⊏fi)∾≠fsc)⊔vi-˜d/idv        # Numbers for each identifier, per-block
   zic←0¨ic←id/˜icf←2(<∧|)ip⋄II←∾⟜(icf⊸/)∘id # Imports have class 3, 5, or 7
   il←ic⊏+`br<0⋄ex←il⊏(/∾≠)b                 # Block for each import and its end index
   # Order every referenced identifier, an extraction for each import, and an undeclaration for each declaration
