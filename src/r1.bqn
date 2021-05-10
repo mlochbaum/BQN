@@ -203,8 +203,8 @@ Find←{
 Ind ← { 0 Fill +`(0⌈≠-1˙)⊸↑GroupLen+`𝕩 }
 Rep ← Ind⊸⊏
 Indices←{
-  "/𝕩: Replication argument must have rank 1" ! 1==𝕩
-  "/𝕩: Amounts to replicate must be natural numbers" ! 1×´Nat⌜𝕩
+  "/𝕩: 𝕩 must have rank 1" ! 1==𝕩
+  "/𝕩: 𝕩 must consist of natural numbers" ! 1×´Nat⌜𝕩
   Ind 𝕩
 }
 SelfClas ← (PermInv∘⍋∘Rep˜⊏˜¯1+`⊢) _self
@@ -409,7 +409,7 @@ JoinTo←(1<⌈○=)◶(∾○⥊)‿{
 Join1←{
   # List of lists
   i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
-  {{e↩a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜Indices≠⌜𝕩
+  {{e↩a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜Ind≠⌜𝕩
 }
 JoinM←{
   # Multidimensional
@@ -424,7 +424,7 @@ JoinM←{
     m←𝕩⊸⊑⌜s
     l←m⊏˜q⊸×⌜↕a
     "∾𝕩: 𝕩 element shapes must be compatible" ! m MatchS ⥊(↕p)⊢⌜l⊣⌜↕q
-    k ← Indices l
+    k ← Ind l
     c ← (↕≠k)-¨k ⊏ 0+_s0 l
     i ↩ (i ×⌜ k⊏l) +¨ i⊢⌜c
     j ↩ j ×⟜a⊸+⌜ k
@@ -673,7 +673,7 @@ _repeat_←{
   n←𝕨𝔾𝕩
   Multi←{
     l←u←0
-    {"⍟: Repetition numbers in 𝕨𝔾𝕩 must be integers"!Int𝕩⋄l⌊↩𝕩⋄u⌈↩𝕩}_perv n
+    {"⍟: 𝕨𝔾𝕩 must consist of integers"!Int𝕩⋄l⌊↩𝕩⋄u⌈↩𝕩}_perv n
     i←⟨𝕩⟩⋄P←B⊸{𝕎`i∾↕𝕩}
     pos←f P u
     neg←f 0⊸<◶⟨i,Inverse⊸P⟩ -l
@@ -695,8 +695,8 @@ _repeat_←{
 > ↩ Merge    ⊘ ((1-≤) _perv)
 ≠ ↩ ≠        ⊘ ((1-=) _perv)
 = ↩ =        ⊘ (= _perv)
-≥ ← ("≥: No monadic form"!0˙) ⊘ (≥ _perv)
-≤ ↩ ("≤: No monadic form"!0˙) ⊘ (≤ _perv)
+≥ ← ("≥: Needs two arguments"!0˙) ⊘ (≥ _perv)
+≤ ↩ ("≤: Needs two arguments"!0˙) ⊘ (≤ _perv)
 + ↩ + _perv
 - ↩ - _perv
 ¬ ← 1+-
