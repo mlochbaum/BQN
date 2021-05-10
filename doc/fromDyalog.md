@@ -115,7 +115,7 @@ The tables below give approximate implementations of Dyalog primitives for the o
 <tr><td> <code>⍎</code> </td><td colspan=2><code>•Eval</code></td>                                  </tr>
 <tr><td> <code>⍕</code> </td><td colspan=2><code>•Fmt</code></td>                                   </tr>
 <tr><td> <code>⊥</code> </td><td>                              </td><td> <code>{+⟜(𝕨⊸×)´⌽𝕩}</code>    </td> </tr>
-<tr><td> <code>⊤</code> </td><td>                              </td><td> <code>{𝕨|1↓⌊∘÷`⌾⌽𝕨∾<𝕩}</code></td> </tr>
+<tr><td> <code>⊤</code> </td><td>                              </td><td> <code>{>𝕨|⌊∘÷`⌾⌽𝕨«˜<𝕩}</code></td> </tr>
 <tr><td> <code>⌹</code> </td><td colspan=2><code>+˝∘×⎉1‿∞⁼</code> I guess</td>                      </tr>
 <tr><td> <code>⌷</code> </td><td> N/A                          </td><td> <code>⊏</code></td>        </tr>
 </table>
