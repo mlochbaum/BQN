@@ -29,6 +29,10 @@ let makens = (keys, vals) => {
   n.names=keys.map(k=>k.toLowerCase()); vals.ns=n; return vals;
 }
 let obj2ns = (obj, keys, f) => makens(keys, keys.map(k=>(f?f:(v=>v))(obj[k])));
+let listkeys = (x,w) => {
+  let s=x.ns, k=Object.keys(s).filter(n=>!isNaN(n));
+  return list(k.map(n=>s.names[+n]).sort().map(str));
+}
 
 let getv= (a,i) => { let v=a[i]; if (v===null) throw Error("Runtime: Variable referenced before definition"); return v; }
 let get = x => x.e ? getv(x.e,x.p) : arr(x.map(c=>get(c)), x.sh);
@@ -437,8 +441,8 @@ let extendedbqn = (x,w) => {
 let dynsys = f => { f.dynamic=1; return f; }
 let sysvals = {
   bqn:(x,w)=> bqn(req1str("•BQN",x,w)), js:dojs, extendedbqn,
-  type, glyph, decompose, fmt:fmt1, unixtime,
-  listsys: dynsys(() => list(Object.keys(sysvals).map(str).sort())),
+  type, glyph, decompose, fmt:fmt1, unixtime, listkeys,
+  listsys: dynsys(() => list(Object.keys(sysvals).sort().map(str))),
   math: obj2ns(Math,("LN10 LN2 LOG10E LOG2E cbrt expm1 hypot log10 log1p log2 round trunc atan2 cos cosh sin sinh tan tanh").split(" "), f=>typeof f==="function"?runtime[60](f,0):f)
 };
 
