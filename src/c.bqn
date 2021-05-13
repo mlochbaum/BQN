@@ -31,7 +31,7 @@ CharCode←charSet{
 }
 
 vd←1+vi←⊑bN  # Start of identifier numbering (plus dot)
-charRole←¯4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯3,¯1‿0,¯2,0,5/⌽↕2⟩ # For first vd chars
+charRole←4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯3,¯1‿0,¯2,0,5/⌽↕2⟩ # For first vd chars
 T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
@@ -130,13 +130,15 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
   r-↩(𝕩=⊑bG)>ec←«0≤r+p                      # Role ¯4 for exports: ⊑bG is ⇐
   "Invalid assignment or stranding use"_err_(↕∘≠) ((¯4⊸<∧≤⟜¯2)r)>ec∧»0≤r
-  sr←»⌾(g⊸⊏)sl←«⊸∨r=¯2⋄ns←¬sl∨sr            # Strand right and left; not stranded
+  "Dot must be followed by a name"_err_(↕∘≠) (r=4)>«𝕩 M vi‿nv
+  dl←«⊸∨dc←r=4                              # Dot left
+  sr←»⌾(((⍋⊏⟜dl)⊸⊏g)⊸⊏)sl←«⊸∨r=¯2⋄ns←¬sl∨sr # Strand right and left; not stranded
   cp←𝕩=1+⊑bB                                # Closed paren
   nr←(IT¬cp)⊏𝕩=⊑bO                          # Nothingness role: 1 for · (handle 𝕨 later?)
   "Can't strand Nothing (·)"_err_(↕∘≠) ns<nr
-  g⊏˜↩⍋g⊏sl                                 # Avoid reordering strands in rev
+  g⊏˜↩⍋g⊏sdl←sl∨dl                          # Avoid reordering strands and dots in rev
   # Permutation to reverse each expression: *more* complicated than it looks
-  rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sl∨r=¯1
+  rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sdl∨r=¯1
   gf←⍋fd←+`br←rev⊏p×𝕩M⟨2+⊑bB,2⟩             # Order by brace depth fd to de-nest blocks
   rev⊏˜↩gf⋄fd⊏˜↩gf⋄br⊏˜↩gf
   𝕩⊏˜↩rev⋄p⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev
@@ -161,12 +163,15 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   r+↩pt×»ir                                 # Roles at pt were 0; set them now
   ir(×⟜¬-⊢)↩nr                              # Include nothingness (doesn't handle 𝕎)
   r-↩(r=¯4)∧1»r=¯1                          # Lone ⇐ to role ¯5
+  "Dot must be preceded by a subject"_err_(⍋∘rev) dc>»r=0
+  r(×⟜¬-⊢)↩dl⋄dc⊏˜↩rev                      # Namespace and dot to ¯1
 
   # Prep for lexical resolution before reordering 𝕩
-  idv←xv⊏˜id←/idm←(0⊸≤∧<⟜nv)xv←𝕩-vi
+  di←/dm←»dc                                # Dots aren't scoped
+  idv←xv⊏˜id←/idm←dm<(0⊸≤∧<⟜nv)xv←𝕩-vi
 
   # Parsing part 1
-  p-↩br⋄g↩⍋+`p⋄gr←g⊏rev                     # Order by non-brace bracket depth
+  p-↩br⋄g↩⍋+`p⋄g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev        # Order by non-brace bracket depth, then dots
   sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB    # Strand length; list starts
   bp←⟨/b,c⟩∾¨0(<≍○(</⟜g)>)g⊏p               # Bracket pairs
   {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
@@ -207,8 +212,9 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Can't export from surrounding scope"_err_(ID) xm∧0<id≠⊸↑idd
   idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv # Slot within frame
   uu←ip(((1«d)∧0=⊣)∧d(⊣+`⊸⊏PN)0<⊢)⌾(ig⊸⊏)idd# Unused marker
-  idor←∾3⥊<id∾sp                            # Identifier bytecode ordering
-  idbc←⟨21+(10×uu)+0<ip∾sp⊏ac,idd,idi⟩      # Identifier bytecode: instruction, depth, slot
+  idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
+  idbc←⟨26¨di,di⊏xv
+        21+(10×uu)+0<ip∾sp⊏ac,idd,idi⟩      # Identifier bytecode: instruction, depth, slot
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
