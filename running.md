@@ -8,7 +8,7 @@ There are currently two active BQN implementations: the self-hosted one in this 
 
 The online REPL is [here](https://mlochbaum.github.io/BQN/try.html). The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script [bqn.js](bqn.js), passing a file and `•args`, or `-e` to execute all remaining arguments directly and print the results. [This notebook](https://observablehq.com/@lsh/bqn) shows how to run it in an Observable notebook.
 
-Fully supports all primitives except a few cases of structural Under (`⌾`), but still missing some advanced features: namespaces, block headers and multiple body syntax, derived 1-modifiers, and block returns.
+Fully supports all primitives except a few cases of structural Under (`⌾`), but still missing some advanced features: block headers and multiple body syntax, derived 1-modifiers, and block returns.
 
 This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. Support in the following languages has been implemented:
 - Javascript; see above. Slow (compiles at ~5kB/s) but usable.
