@@ -19,10 +19,15 @@ let findkey = (ns, names, i) => {
     return ns[nn.rev[names[i]]];
   }
 }
-let readns = (v, vid, i) => {
-  let ni = findkey(v.ns, vid.names, i)
-  if (!has(ni)) throw Error("← or ↩: Unknown namespace key");
+let readns_sub = (v, names, i) => {
+  let ni = findkey(v.ns, names, i);
+  if (!has(ni)) throw Error("Unknown namespace key: "+names[i]);
   return v[ni];
+}
+let readns_assign = (v, vid, i) => readns_sub(v, vid.names, vid[i]);
+let readns = (v, vid, i) => {
+  if (!v.ns) throw Error("Key lookup in non-namespace");
+  return readns_sub(v, vid.names, i);
 }
 let makens = (keys, vals) => {
   let n = Array(keys.length).fill().map((_,i)=>i);
@@ -48,7 +53,7 @@ let set = (d, id, v) => {
     } else if (v.ns) {
       id.map(n=>{
         if (!n.e) throw Error("← or ↩: Cannot extract non-name from namespace");
-        let vid=n.e.vid; set(d,n,readns(v, vid, vid[n.p]));
+        let vid=n.e.vid; set(d,n,readns_assign(v, vid, n.p));
       });
     } else {
       throw Error("← or ↩: Multiple targets but atomic value");
