@@ -84,9 +84,7 @@ Assignment can be used inline in an expression, and its result is always the val
 
 ### Exports
 
-See [namespaces](namespace.md): this section is a little out of date.
-
-The double arrow `⇐` is used to export variables from an immediate block or file. It can only be used in these contexts, and not in function or modifier blocks. There are two ways to export variables. First, `←` in the variable definition can be replaced with `⇐` to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by `⇐` with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.
+The double arrow `⇐` is used to export variables from a block or program, causing the result to be a [namespace](namespace.md). There are two ways to export variables. First, `←` in the variable definition can be replaced with `⇐` to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by `⇐` with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.
 
     ⟨alias⇐a, b, c0‿c1⇐c, b2⇐b⟩←{
       b‿c⇐   # Non-definition exports can go anywhere
@@ -95,7 +93,7 @@ The double arrow `⇐` is used to export variables from an immediate block or fi
       c←b‿"str"
     }
 
-A block with exports is a *namespace block*, and in versions of BQN without first-class namespaces it can only be used as part of a destructuring assignment. This assignment's target is a list where each element specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name (such as `b` above), which gives both, or a combination of the assignment target, then `⇐`, then a name. If `⇐` is never used, the names can be given as a strand with `‿`. To use `⇐` for aliases, bracket syntax `⟨⟩` is needed. Imported names can be repeated and can be spelled with any role (the role is ignored).
+Fields of the resulting namespace can be accessed either directly using `namespace.field` syntax, or with a destructuring assignment as shown above. This assignment's target is a list where each element specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name (such as `b` above), which gives both, or a combination of the assignment target, then `⇐`, then a name. If `⇐` is never used, the names can be given as a strand with `‿`. To use `⇐` for aliases, bracket syntax `⟨⟩` is needed. Imported names can be repeated and can be spelled with any role (the role is ignored).
 
 ## Lists and blocks
 
