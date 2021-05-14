@@ -10,31 +10,32 @@ BQN supports the following fundamental types:
 - [Function](#functions)
 - 1-[Modifier](#modifiers)
 - 2-[Modifier](#modifiers)
+- [Namespace](#namespaces)
 
-The first three types are called *data types*, and the rest are *operation types*. The array is the only *compound type*; the other types are *atomic types* and values of these types are called *atoms*. The fact that an array is only one type of many is common in modern programming languages but a novelty in the APL family. This decision is discussed in the page on [based array theory](based.md).
+The first three types, called *data types*, are immutable; the others are mutable. Functions and modifiers together are the *operation types*. Types other than the array are *atomic types* and values of these types are called *atoms*. The fact that an array is only one type of many is common in modern programming languages but a novelty in the APL family. This decision is discussed in the page on [based array theory](based.md).
 
 <!--GEN
-types ← ⍉"Number"‿"Character"‿"Array"≍"Function"‿"1-modifier"‿"2-modifier"
-sh ← ≢ types
+types ← ⟨"Number"‿"Character"‿"Array","Function"‿"1-modifier"‿"2-modifier"‿"Namespace"⟩
+sh ← 4‿2
 p ← 64‿38
-dim ← (2×p) + sh × d1 ← 128‿64
+dim ← (2×p) + sh × d1 ← 128‿68
 rp ← 8÷d1
 Pos ↩ Pos d1⊸×
 Size ← "width"‿"height" ≍˘ ·FmtNum d1×⊢
-cl ← {"class"‿𝕩}¨ "purple"‿"bluegreen"‿"yellow"
+cl ← {"class"‿𝕩}¨ "purple"‿"green"‿"bluegreen"‿"yellow"
 
-TP ← "text" Attr "dy"‿"0.32em"∾˜Pos⊘(∾⟜Pos)
-t ← (≍⌜´0.5+↕¨sh) TP⊸Enc¨ types
-l ← (cl TP¨ (0.75≍¨1(-≍+)1.2)∾<2.2‿2.3) Enc¨ "Data"‿"Operation"‿"Atom"
-RD← (Size ⟨⊑sh,1⟩-2×rp)∾Pos
-r ← (2↑cl) {"rect" Elt 𝕩∾"rx"‿"10px"≍𝕨}⟜RD¨ 0(rp+≍)¨↕1⊑sh
+TP ← "text" Attr "dy"‿"0.35em"∾˜Pos⊘(∾⟜Pos)
+t ← ∾(0.5+↕2) (TP∘≍˜¨⟜((4÷≠)×0.5+↕∘≠)Enc¨⊢)¨ types
+l ← (cl TP¨ ⟨2.75‿¯0.15,3‿2.2,1.5‿2.2,1.1‿¯0.3⟩) Enc¨ "Data"‿"Mutable"‿"Operation"‿"Atom"
+rd← (÷⟜2⌾(⊑¯1⊸⊑)2‿1.5‿3×<(¯1≍÷2)×⌜rp) + (4‿4‿3≍¨1) ≍¨ 1‿2/0≍¨↕2
+r ← (3↑cl) ("rect" Elt ∾˜)¨ (FmtNum 9‿10‿8) {𝕩∾⟨"rx",𝕨∾"px"⟩}¨ Size⊸∾⟜Pos˝¨ rd
 
 Round ← {
   v ← (𝕨⊸×÷+´⌾(×˜))¨ ¯1⊸⌽⊸- 𝕩
   or← 0< v +´∘×⟜(⌽-⌾⊑)¨ 1⌽v
   "Z"∾˜ 'M'⌾⊑ ∾ ⥊ (('L'∾Fmt)¨ v+𝕩) ≍˘ or ('A'∾·Fmt(𝕨‿𝕨∾0‿0)∾∾)¨ (1⌽-v)+𝕩
 }
-a ← "path" Elt >⟨"d"‿(12 Round d1⊸×¨ ⥊ ((⊢≍˘1⊸⌽) 0‿2‿3) ≍¨ ↕3),¯1⊑cl⟩
+a ← "path" Elt >⟨"d"‿(12 Round d1⊸×¨ ⥊ ((⊢≍˘1⊸⌽) 0‿2.6‿4) ≍¨ ↕3),¯1⊑cl⟩
 
 FS ← {𝕩 Enc˜ "g"Attr⟨"font-size",(Fmt𝕨)∾"px"⟩}
 ((0‿2-p)∾dim) SVG ⟨
@@ -43,9 +44,9 @@ FS ← {𝕩 Enc˜ "g"Attr⟨"font-size",(Fmt𝕨)∾"px"⟩}
 ⟩
 -->
 
-All of these types are immutable, meaning that a particular copy of a value will never change (to go further, with immutable types it doesn't really make sense to talk about a "copy" of a value: values just exist and nothing you do will affect them). The only form of mutability BQN has is the ability to change the value of a particular variable, that is, make the variable refer to a different value. Such a change can also change the behavior of a function or modifier that has the variable in its scope, and in this sense operation types are mutable—in fact it is possible to implement typical mutable data structures as functions that act on enclosed state.
+The reason operations and namespaces are called "mutable" is that the values obtained from them—by calling an operation on particular arguments or reading a field from a namespace—may change over the course of the program. This property is caused by variable modification `↩`, which can directly change a namespace field, or change the behavior of an operation that uses the modified variable. This means that a program that doesn't include `↩` won't have such changes in behavior. However, there will still be an observable difference between immutable data and the mutable types: code that creates a mutable value (for example, a block function `{𝕩}`) creates a different one each time, so that two different instances don't match (`≡`) each other. Data values created at different times may match, but mutable values never will.
 
-It is likely that in the future [namespaces](extensions.md#namespaces-and-symbols), or references to enclosed scopes, will be added as a more directly manipulable mutable data type.
+An array is considered immutable because its shape, and what elements it contains, cannot change. An array has no identity outside these properties (and possibly its fill element), so an array with a different shape or different elements would simply be a different array. However, any element of an array could be mutable, in which case the behavior of the array would change with respect to the operation of selecting that element and calling it or accessing a field.
 
 ## Data types
 
@@ -87,3 +88,7 @@ A function is called with one or two arguments. A data value (number, character,
 ### Modifiers
 
 A 1-modifier is called with one operand, while a 2-modifier is called with two. In contrast to functions, these are distinct types, and it is impossible to have a value that can be called with either one or two operands. Also in contrast to functions, data values cannot be called as modifiers: they will cause an error if called this way.
+
+## Namespaces
+
+Functions and modifiers have internal scopes which they can manipulate (by defining and modifying variables) to save and update information. Namespaces let the programmer to expose this state more directly: identifiers in a namespace may be exported, allowing code outside the namespace to read their values. They are described in detail [here](namespace.md).
