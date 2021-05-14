@@ -189,7 +189,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
   aa←×g⊏ac←»+`(»⊸∨0=+`)⊸×gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩 # ac broadcasts it to the entire target
   nf←b¬∘PN ac<xv=vi-˜⊑bG                    # Namespace blocks
-  {"Can't return Nothing (·)"_err_𝕩 𝕩⊏nr} 1-˜nf¬⊸/0∾c⊏rev
+  {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 𝕩⊏nr} 1-˜nf¬⊸/0∾c⊏rev
   "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
