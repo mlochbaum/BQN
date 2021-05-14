@@ -149,8 +149,6 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   sn←(0‿3‿4‿5+⊑bI)⍋𝕩⋄sp←/𝕩 M bI             # Special name index
   fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn   # Block immediacy ¬fx and type ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
-  nf←(⊑bG)H𝕩                                # Namespace blocks
-  {"Can't return Nothing (·)"_err_𝕩 𝕩⊏nr} 1-˜nf¬⊸/0∾c⊏rev
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
 
   # Propagate roles through parentheses
@@ -167,8 +165,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   r(×⟜¬-⊢)↩dl⋄dc⊏˜↩rev                      # Namespace and dot to ¯1
 
   # Prep for lexical resolution before reordering 𝕩
-  di←/dm←»dc                                # Dots aren't scoped
-  idv←xv⊏˜id←/idm←dm<(0⊸≤∧<⟜nv)xv←𝕩-vi
+  xv←𝕩-vi
 
   # Parsing part 1
   p-↩br⋄g↩⍋+`p⋄g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev        # Order by non-brace bracket depth, then dots
@@ -186,18 +183,24 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1                     # Modified assignment
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
-  at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r               # Assignment target; af for actual (non-export) assignment
-  "Role of the two sides in assignment must match"_err_(at⊏G) af∧(0⌈at⊏er)≠ar←at⊏r
+  at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r⋄ar←at⊏r       # Assignment target; af for actual (non-export) assignment
+  "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
   aid←(¯5⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
-  ak←(0≤ar)+af+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
-  aa←×g⊏ac←»+`gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩            # ac broadcasts it to the entire target
-  "Assignment target must be a name or list of targets"_err_(G) (aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
+  ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
+  aa←×g⊏ac←»+`(»⊸∨0=+`)⊸×gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩 # ac broadcasts it to the entire target
+  nf←b¬∘PN ac<xv=vi-˜⊑bG                    # Namespace blocks
+  {"Can't return Nothing (·)"_err_𝕩 𝕩⊏nr} 1-˜nf¬⊸/0∾c⊏rev
+  "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
+  "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
+  af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
 
   # Lexical resolution (independent of parsing part 2 below)
+  di←/dm←»dc                                # Dots aren't scoped
+  id←/idm←(gi⊏«aa∧a)<dm<(0⊸≤∧<⟜nv)xv
   ip←id⊏ac⋄d←id⊏dd←ac M 2‿2⋄xm←ip M 1‿2     # Assignment classes; which are definitions, exports
   "Can't define special name"_err_(SP) sp⊏dd
-  idn←(idg←(d/id⊏fi)∾≠fsc)⊔d/idv            # Numbers for each identifier, per-block
+  idn←(idg←(d/id⊏fi)∾≠fsc)⊔d/idv←id⊏xv      # Numbers for each identifier, per-block
   # Order every referenced identifier, and an undeclaration for each declaration
   ixf←(((1=ip)+⊏⟜(¯1∾b/gf))∾d⊸/⊏((≠𝕩)∾c⊏gf)˙)id⊏fi # First order by block index, open for real and closed for virtual
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idv))⊸⊏⍋ixf            # Then order by name
@@ -233,9 +236,10 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   fn↩¬fn⋄fa/˜↩fn⋄dy/˜↩fn⋄fl/˜↩fn            # And remove them
 
   # Bytecode generation: numbers bc ordered by source location (after rev) oi
-  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,oa+1⌈oa⊏os,fl,rt⟩
+  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,14¨dr
-               11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,¯1↓rc←25+4×nf⟩
+               11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,28¨al,vi-˜(al-1)⊏𝕩
+               5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,¯1↓rc←25+4×nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
