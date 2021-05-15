@@ -14,7 +14,7 @@ Esc←{
 }⍟(0<≠)
 Str ← "str("""∾Esc∾""")"˜     # A BQN string
 Char ← "'"(∾∾⊣)Esc∘⥊          # A BQN character
-F ← ⍕ #•Fmt                   # Native format
+F ← •Repr                     # Native format
 FP ← ∞⊸=◶⟨F,"Infinity"⟩       # Format positive number
 Num ← 0⊸≤◶⟨"-"∾FP∘|,FP⟩       # Format number
 
