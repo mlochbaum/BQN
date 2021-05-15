@@ -34,7 +34,7 @@ E_nodef ⇐ {
   f←(𝕩=@+10)≥○((1+↕∘≠)⊸(⌈`×))q<𝕩='#'       # Comments
   w←('•'⊸=(∨»⊸∧⊢)∊⟜idChars) f/𝕩            # Group words
   t←(¯1+`·¬(»f/q)∨w)⊸⊔ f/𝕩                 # Tokenize
-  ∾ (in⊸⊐ ⊑⟜out⍟(<⟜(≠in))¨ ⊢) t            # Replace
+  ∾ (in⊸⊐ ⊑⟜out⍟(<⟜(≠in))¨ ⊢)⍟(0<≠) t      # Replace
 }
 # Process expression, possibly redefining a primitive
 E_proc ⇐ E_isdef◶E_nodef‿{
