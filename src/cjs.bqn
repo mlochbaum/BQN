@@ -11,7 +11,7 @@ Esc←{
   i ← in⊐𝕩
   𝕩 ↩ i ⊏⟜out⌾((i<≠out)⊸/) 𝕩  # Replace
   ∾(i<≠in) /⟜"\"⊸∾¨ 𝕩         # Insert \
-}
+}⍟(0<≠)
 Str ← "str("""∾Esc∾""")"˜     # A BQN string
 Char ← "'"(∾∾⊣)Esc∘⥊          # A BQN character
 F ← ⍕ #•Fmt                   # Native format
