@@ -6,15 +6,23 @@ There are currently two active BQN implementations: the self-hosted one in this 
 
 ### Self-hosted BQN
 
+See the subsections below for instructions on specific implementations.
+
+This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all primitives except a few cases of structural Under (`⌾`), but is still missing some advanced features: block headers and multiple body syntax, derived 1-modifiers, and block returns.
+
+Support in the following languages has been implemented:
+- Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
+- dzaima/BQN ([bqn.bqn](bqn.bqn)), mainly for testing.
+- [C](https://github.com/dzaima/CBQN), targetting high performance. A few times slower than dzaima/BQN, but improving quickly.
+- [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical yet: minutes to compile short programs.
+
+#### Javascript
+
 The online REPL is [here](https://mlochbaum.github.io/BQN/try.html). The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script [bqn.js](bqn.js), passing a file and `•args`, or `-e` to execute all remaining arguments directly and print the results. [This notebook](https://observablehq.com/@lsh/bqn) shows how to run it in an Observable notebook.
 
-Fully supports all primitives except a few cases of structural Under (`⌾`), but still missing some advanced features: block headers and multiple body syntax, derived 1-modifiers, and block returns.
+#### CBQN
 
-This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. Support in the following languages has been implemented:
-- Javascript; see above. Slow (compiles at ~5kB/s) but usable.
-- dzaima/BQN ([bqn.bqn](bqn.bqn)), mainly for testing.
-- [C](https://github.com/dzaima/CBQN), for an eventual high-performace implementation. Currently slower than dzaima/BQN and missing usability features.
-- [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical yet: minutes to compile short programs.
+C sources are kept in the [CBQN](https://github.com/dzaima/CBQN) repository, but they also require the self-hosted bytecode to be built using cc.bqn in that repository. Although cc.bqn is typically run with dzaima/BQN, this can be changed by modifying the `#!` line at the beginning, or linking `dbqn` to a different executable. To use only the BQN and CBQN repositories, avoiding dzaima/BQN, first build with bqn.js—this is slow, but should take under a minute even on low-end hardware—then switch to CBQN itself afterwards for faster builds.
 
 ### dzaima/BQN
 
