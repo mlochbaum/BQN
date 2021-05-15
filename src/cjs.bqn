@@ -1,4 +1,4 @@
-#! /usr/bin/env dbqn
+#! /usr/bin/env bqn
 
 # Javascript/JSON formatting
 L ← "["∾"]"∾˜1↓·∾","⊸∾¨       # Native list/array
