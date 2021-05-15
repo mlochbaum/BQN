@@ -26,7 +26,7 @@ Shadow ← {
 }
 
 # Does the expression define a primitive?
-E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩∊˜¨3⊸↑⟩
+E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩⊑∘∊˜¨3⊸↑⟩
 # Process ordinary expression
 E_nodef ⇐ {
   idChars ← "_¯.π∞"∾∾"0aA"+⟜↕¨10‿26‿26
