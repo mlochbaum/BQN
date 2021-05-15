@@ -133,9 +133,12 @@ The following short names can also be provided for file access. They can be prov
 |---------|----------------------
 | `•Out`  | Print argument string
 | `•Show` | Print argument value
+| `•Repr` | String representation of `𝕩`, if possible
 | `•Fmt`  | Format value for printing
 
 `•Out` prints a string to stdout, with a trailing newline. `•Show` displays a BQN value to the programmer (the representation is not specified, and does not need to be plain text). `•Fmt` returns a string (not a character table: lines are separated by linefeeds) indicating how `𝕩` would be printed by the interactive environment. Both `•Show` and `•Fmt` may take a left argument configuring how the value should be formatted.
+
+`•Repr` attempts to return a string so that `•BQN •Repr 𝕩` matches `𝕩`. If `𝕩` contains any mutable values (operations or namespaces), this is not possible. However, if such a values is stateless, in the sense that they don't access variables outside of their own scopes, it is permissible for `•Repr` to return source code that would create a value with identical behavior.
 
 ## Operation properties
 
