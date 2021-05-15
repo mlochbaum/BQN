@@ -1,4 +1,4 @@
-#!/usr/bin/env dbqn
+#!/usr/bin/env bqn
 
 # Process BQN runtime
 rtt ← ('0'-˜⊑)⍟= ⊑ •args∾2   # Runtime type: 0, 1, or all

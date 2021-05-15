@@ -4,6 +4,8 @@
 
 There are currently two active BQN implementations: the self-hosted one in this repository, and the independent dzaima/BQN. Neither is entirely complete but they are quite capable for pure programming tasks (say, implementing a compiler). dzaima/BQN has good performance while self-hosted is a few hundred times slower. I tend to develop parts of applications in the online REPL and move to dzaima/BQN scripts in order to run them.
 
+Scripts in this repository use `bqn` in the `#!` line if self-hosted or dzaima/BQN can run them, and `dbqn` if only dzaima/BQN works.
+
 ### Self-hosted BQN
 
 See the subsections below for instructions on specific implementations.
