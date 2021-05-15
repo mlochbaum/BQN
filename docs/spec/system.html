@@ -274,12 +274,17 @@
 <td>Print argument value</td>
 </tr>
 <tr>
+<td><code><span class='Function'>•Repr</span></code></td>
+<td>String representation of <code><span class='Value'>𝕩</span></code>, if possible</td>
+</tr>
+<tr>
 <td><code><span class='Function'>•Fmt</span></code></td>
 <td>Format value for printing</td>
 </tr>
 </tbody>
 </table>
 <p><code><span class='Function'>•Out</span></code> prints a string to stdout, with a trailing newline. <code><span class='Function'>•Show</span></code> displays a BQN value to the programmer (the representation is not specified, and does not need to be plain text). <code><span class='Function'>•Fmt</span></code> returns a string (not a character table: lines are separated by linefeeds) indicating how <code><span class='Value'>𝕩</span></code> would be printed by the interactive environment. Both <code><span class='Function'>•Show</span></code> and <code><span class='Function'>•Fmt</span></code> may take a left argument configuring how the value should be formatted.</p>
+<p><code><span class='Function'>•Repr</span></code> attempts to return a string so that <code><span class='Function'>•BQN</span> <span class='Function'>•Repr</span> <span class='Value'>𝕩</span></code> matches <code><span class='Value'>𝕩</span></code>. If <code><span class='Value'>𝕩</span></code> contains any mutable values (operations or namespaces), this is not possible. However, if such a values is stateless, in the sense that they don't access variables outside of their own scopes, it is permissible for <code><span class='Function'>•Repr</span></code> to return source code that would create a value with identical behavior.</p>
 <h2 id="operation-properties">Operation properties</h2>
 <table>
 <thead>
