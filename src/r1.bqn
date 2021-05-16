@@ -478,11 +478,13 @@ structFn ← {
   }⟩)
   StructPrim ← {p←SP𝕩⋄𝕨P𝕩}
 
+  Recomp ← (E˙=≥⟜3⊸⊑)◶⟨Recompose,E˙⟩
+
   0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘(0⊑⊢)◶⟨
-    SE ⊣ StructPrim 1⊑⊢             #  0 primitive
-    StructErr˙˙                     #  1 block
-    0⊸⊑ Recompose {𝕨˙⊸StructFn⌜1↓𝕩} #    other operation
-    SE 1⊑⊢                          # ¯1 constant
+    SE ⊣ StructPrim 1⊑⊢           #  0 primitive
+    E˙                            #  1 block
+    0⊸⊑ Recomp {𝕨˙⊸StructFn⌜1↓𝕩}  #    other operation
+    SE 1⊑⊢                        # ¯1 constant
   ⟩⟜{Decompose𝕩}
 }
 
