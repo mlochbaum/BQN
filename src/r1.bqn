@@ -330,7 +330,7 @@ structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
 _under_←{
   val←𝕨𝔽○𝔾𝕩
   # Construct indices
-  Inds ← IsArray◶⟨0,⥊⟜(↕1×´⊢)≢⟩ 𝕩 ⊑⟜⥊⍟(IsArray⊢)´ Reverse
+  Inds ← IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩ 𝕩 ⊑⟜⥊⍟(IsArray⊢)´ Reverse
   _s_ ← {
     f←𝕗
     st‿d‿o←𝕩
@@ -363,6 +363,7 @@ _under_←{
     Set1←𝕨⊸{
       𝕩↩ToArray𝕩
       s←≢𝕩⋄l←≠d←⥊𝕩
+      "Cannot modify fill with Structural Under"!1∧´@⊸>⌜i
       gl←l GroupLen i ⋄ v⊏˜↩gl GroupOrd i
       j←0⋄Adv←{(j+↩𝕩)-1}⊑v˙
       CM←"⌾: Incompatible result elements in structural Under"!Match
