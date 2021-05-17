@@ -44,7 +44,7 @@ Functions that have significant differences from APL functions are marked with a
 | `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](windows.md)*
 | `»`   | [Nudge](shift.md)*                                  | [Shift Before](shift.md)*
 | `«`   | [Nudge Back](shift.md)*                             | [Shift After](shift.md)*
-| `⌽`   | [Reverse](https://aplwiki.com/wiki/Reverse)         | [Rotate](https://aplwiki.com/wiki/Rotate)
+| `⌽`   | [Reverse](reverse.md)                               | [Rotate](reverse.md#rotate)
 | `⍉`   | [Transpose](transpose.md)*                          | [Reorder axes](transpose.md)*
 | `/`   | [Indices](https://aplwiki.com/wiki/Indices)         | [Replicate](https://aplwiki.com/wiki/Replicate)
 | `⍋`   | [Grade Up](order.md#grade)                          | [Bins Up](order.md#bins)
