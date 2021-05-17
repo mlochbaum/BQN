@@ -33,6 +33,7 @@ Primitives:
 - [Match](match.md) (`≡≢`)
 - [Ordering functions](order.md) (`∧∨⍋⍒`)
 - [Prefixes and Suffixes](prefixes.md) (`↑↓`)
+- [Reverse and Rotate](reverse.md) (`⌽`)
 - [Self-comparison functions](selfcmp.md) (`⊐⊒∊⍷`)
 - [Shift functions](shift.md) (`»«`)
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
