@@ -218,7 +218,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   spi←((spf←sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv       # Special name index
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
-  ido←21+(10×uu)+0<ip∾sp⊏ac                 # Opcode
+  ido←21+uu(⊢+10×>)0<ip∾sp⊏ac               # Opcode
   idbc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
 
   # Parsing part 2
