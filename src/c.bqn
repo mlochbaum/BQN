@@ -211,13 +211,15 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   idx←idg⊔(⍋d/ig)⊏d(/≥1↓PN)ig⊏xm            # Exported identifier mask
   ui←(IT d)⊸⊏⌾(ig⊸⊏)id                      # Index of definition (⊐ for identifiers)
   lc←(1«b)/dn←b(⊢-T)+`idm∧dd                # Locals Count
-  idd←(id-○(⊏⟜fd)ui)∾0¨sp                   # Identifier frame depth
-  "Can't export from surrounding scope"_err_(ID) xm∧0<id≠⊸↑idd
-  idi←(ui⊏(fi⊏fsc)+dn-1)∾((sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv # Slot within frame
+  idd←id-○(⊏⟜fd)ui                          # Identifier frame depth
+  "Can't export from surrounding scope"_err_(ID) xm∧0<idd
+  idi←ui⊏(fi⊏fsc)+dn-1                      # Slot within frame
   uu←ip(((1«d)∧0=⊣)∧d(⊣+`⊸⊏PN)0<⊢)⌾(ig⊸⊏)idd# Unused marker
+  spi←((spf←sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv       # Special name index
+  uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
-  idbc←⟨26¨di,di⊏xv
-        21+(10×uu)+0<ip∾sp⊏ac,idd,idi⟩      # Identifier bytecode: instruction, depth, slot
+  ido←21+(10×uu)+0<ip∾sp⊏ac                 # Opcode
+  idbc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
