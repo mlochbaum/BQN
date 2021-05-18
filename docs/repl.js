@@ -27,13 +27,13 @@ let repl = ()=>{
   setTimeout(() => {
     try {
       let out=[]; sysvals.show = (x,w) => { out.push(x); return x; }
-      let c=compile(src,rt_sys);
+      let c=wrapcomp(compile)(src,rt_sys);
       setExplain(src,c);
       out.push(run.apply(null,c));
       doc.rslt.textContent=out.map(fmt).join('\n');
     } catch(e) {
       doc.rslt.classList.add('err');
-      doc.rslt.textContent=fmtErr(src,e);
+      doc.rslt.textContent=fmtErr(e);
     }
     sysvals.js=dojs; // In case it was disabled by fragment loading
   }, 0);

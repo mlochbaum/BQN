@@ -54,7 +54,7 @@ if (!module.parent) {
     try {
       fn(src);
     } catch(e) {
-      console.error('[31m'+fmtErr(Array.from(src),e)+'[39m');
+      console.error('[31m'+fmtErr(e)+'[39m');
     }
   }
   if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
