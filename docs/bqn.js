@@ -71,7 +71,7 @@ let chkM = (v,m) => { if (m.m!==v) throw Error("Runtime: Only a "+v+"-modifier c
 let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   let rD = 0;
   let r = L?"let l=0;try{":"";
-  let fin = L?"}catch(e){let s=L.map(p=>p[l]);s.sh=[1,2];let m=[s,e.message];m.loc=true;m.sh=[2];e.message=m;throw e;}":"";
+  let fin = L?"}catch(e){let s=L.map(p=>p[l]);s.sh=[1,2];let m=[s,e.message];m.src=vid.src;m.sh=[2];e.message=m;throw e;}":"";
   let szM = 1;
   let rV = n => { szM=Math.max(szM,n+1); return 'v'+n; };
   let rP = val => rV(rD++) + "="+val+";";
@@ -105,7 +105,7 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   }
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r+fin;
 }
-let run = (B,O,S,L,T) => { // Bytecode, Objects, Sections/blocks, Locations, Tokenization
+let run = (B,O,S,L,T,src) => { // Bytecode, Objects, Sections/blocks, Locations, Tokenization, source
   let train2=(  g,h)=>{                              let t=(x,w)=>call(g,call(h,x,w));            t.repr=()=>[2,  g,h];return t;}
   let train3=(f,g,h)=>{if(!has(f))return train2(g,h);let t=(x,w)=>call(g,call(h,x,w),call(f,x,w));t.repr=()=>[3,f,g,h];return t;}
   let D = S.map(([type,imm,pos,varam,vid,vex],i) => {
@@ -113,7 +113,7 @@ let run = (B,O,S,L,T) => { // Bytecode, Objects, Sections/blocks, Locations, Tok
     let sp = (type===0?0:type+1) + I;
     let def = new Array(sp + varam).fill(null);
     let ns = {}; if (vex) vex.forEach((e,j)=>{if(e)ns[vid[j]]=j+sp;});
-    vid = (new Array(sp).fill(null)).concat(vid);
+    vid = (new Array(sp).fill(null)).concat(vid); vid.src=src;
     if (T) ns.names = vid.names = T[2][0].map(s=>s.join(""));
     let c = genjs(B, pos, L);
     let repdf = ["","4,f,mod","5,f,mod,g"].map(s=>s?"fn.repr=()=>["+s+"];":s);
@@ -132,7 +132,7 @@ let run = (B,O,S,L,T) => { // Bytecode, Objects, Sections/blocks, Locations, Tok
 
 // Runtime
 let assertFn = pre => (x,w) => {
-  if (x!==1) throw {src:pre, message:w}; return x;
+  if (x!==1) throw {kind:pre, message:w}; return x;
 }
 let arr = (r,sh,fill) => {r.sh=sh;r.fill=fill;return r;}
 let list = (l,fill) => arr(l,[l.length],fill);
@@ -378,8 +378,13 @@ let system = (x,w) => {
   }
   return table(v=>v.dynamic?v():v)(r);
 }
+let wrapcomp = comp => (src, rt) => {
+  let s=str(src), c;
+  try { c=comp(s,rt); } catch(e) { e.message.src=s; throw e; }
+  c.push(s); return c;
+}
+let bqngen = (comp, rt) => src => run.apply(null,wrapcomp(comp)(str(src),rt));
 let rt_sys = list([runtime, system]);
-let bqngen = (comp, rt) => src => run.apply(null,comp(str(src),rt));
 let bqn = bqngen(compile, rt_sys);
 
 // Formatter
@@ -392,10 +397,10 @@ let fmt1 = run(
 )(list([type, decompose, glyph, fmtnum]));
 let fmt = x => unstr(fmt1(x));
 
-let fmtErr = (s,e) => {
-  let r=e.src, w=e.message, loc=[];
-  while (w&&w.loc||(r!=='!'&&w.sh&&w.sh[0]===2)) {
-    let is; [is,w]=w;
+let fmtErr = (e) => {
+  let r=e.kind, w=e.message, loc=[];
+  while (w&&w.src||(r!=='!'&&w.sh&&w.sh[0]===2)) {
+    let s=w.src, is; [is,w]=w;
     let n=is.sh?is.sh[0]:0, i=n?is[0]:is;
     let pair=n&&is.sh.length>1; if (pair) n*=2;
     let to=i=>s.slice(0,i).join('').split('\n').map(l=>Array.from(l));
