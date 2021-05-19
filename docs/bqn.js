@@ -380,7 +380,7 @@ let system = (x,w) => {
 }
 let wrapcomp = comp => (src, rt) => {
   let s=str(src), c;
-  try { c=comp(s,rt); } catch(e) { e.message.src=s; throw e; }
+  try { c=comp(s,rt); } catch(e) { if (typeof e.message!=="string") e.message.src=s; throw e; }
   c.push(s); return c;
 }
 let bqngen = (comp, rt) => src => run.apply(null,wrapcomp(comp)(str(src),rt));
