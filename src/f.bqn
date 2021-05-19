@@ -103,9 +103,9 @@
     1↓·∾("‿"∾ReprAtom)¨
     "⟨"∾"⟩"«·∾(","∾RR)¨
   ⟩
-  ReprArr ← (2⌊=)◶⟨"<"∾RR∘⊑,ReprList,≢∾○ReprList⊢⟩
+  ReprArr ← (2⌊=)◶⟨"<"∾RR∘⊑,ReprList,≢∾⟜"⥊"⊸∾○ReprList⥊⟩
   ReprDat ← (0=Type)◶⟨ReprAtom,ReprArr⟩
-  ReprOp ← 1⊑ RR _dispOp_ ("Can't format block"!0˙)
+  ReprOp ← 1⊑ RR _dispOp_ ("Can't represent block"!0˙)
   Repr ← Type (3≤⊣)◶⟨ReprDat⊢,ReprOp⟩ ⊢
 
   # Convert Fmt from matrix to string
