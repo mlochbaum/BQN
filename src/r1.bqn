@@ -578,7 +578,7 @@ EncCell ← {
 _cells ← {
   F←𝔽 ⋄ _m←{𝔽⌜⊘(𝔽¨)_fillByPure_𝔽○(1⊸EncCell)}
   D←{ "˘: Argument lengths don't agree" ! 𝕩=○≠𝕨 ⋄ 𝕨 F _m 𝕩 }
-  Merge 𝕨 2⊸×⊸+○(0<=)◶⟨ToArray F,{𝕨⊸F _m𝕩},{F⟜𝕩_m𝕨},D⟩ 𝕩
+  Merge 𝕨 2⊸×⊸+○(0<=)◶⟨<F,{𝕨⊸F _m𝕩},{F⟜𝕩_m𝕨},D⟩ 𝕩
 }
 _insert←{
   "˝: 𝕩 must have rank at least 1" ! 1≤=𝕩
