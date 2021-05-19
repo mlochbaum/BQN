@@ -1,7 +1,7 @@
 # Format an array to a string including newlines
 {
-  ⟨Type,Decomp,FF,FN⟩←𝕗  # Format a number or operation to a string
-  FmtAtom ← ≍ <⟜@◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,FN⟩
+  ⟨Type,Decomp,FF,FN⟩←𝕩
+  ReprAtom ← <⟜@◶⟨@⊸≠◶⟨"@","'"⊸(∾∾⊣)⟩,FN⟩
 
   # Vertical padding for arrays of rank greater than 2
   PadCount ← {
@@ -77,24 +77,37 @@
   }
 
   # Format data type
-  FmtDat ← (2⌊≡)◶⟨FmtAtom,(∨´∘⥊3≤Type⌜)◶FmtSimple‿FmtMixed,FmtMixed⟩
+  FmtDat ← (2⌊≡)◶⟨≍ReprAtom,(∨´∘⥊3≤Type⌜)◶FmtSimple‿FmtMixed,FmtMixed⟩
 
   # Format part of a compound operation; return precedence‿string
-  FmtOp ← {
-    tn ← '*'(∾∾⊣)¨"array"‿"function"‿"1-modifier"‿"2-modifier"‿"namespace"
-    FmtComp ← Type (3≤⊣)◶⟨0≍○<(1=≠)◶⟨⊑tn,⊏⟩∘FmtDat∘⊢, FmtOp⟩ ⊢
+  _dispOp_ ← {
+    FmtComp ← Type (3≤⊣)◶⟨0≍○<·𝔽⊢, 𝕊⟩ ⊢
     k ← ⊑ d ← Decomp 𝕩
     p ← k ⊑ "00321111"-'0'
     Paren ← "("∾∾⟜")"
     FromComp ← ∾(⌽⍟(p>1)·-0=↕∘≠)(+⟜⊑Paren∘⊢⍟((2⌊p)≤⊣)1⊸⊑)⟜FmtComp¨⊢
-    s ← (2⌊|k)◶⟨⥊∘FF𝕩˙,(𝕨-2)◶tn,FromComp⟩ 1↓d
+    s ← (2⌊|k)◶⟨⥊∘FF𝕩˙,𝕨𝔾⊢,FromComp⟩ 1↓d
     s ↩ ∾⟜"{𝔽}"⍟(3>·Type ¯1⊑d˙)⍟(2≤p) s
     p‿s
   }
+  tn ← '*'(∾∾⊣)¨"array"‿"function"‿"1-modifier"‿"2-modifier"‿"namespace"
+  FmtOp ← ≍1⊑ (1=≠)◶⟨⊑tn,⊏⟩∘FmtDat _dispOp_ (tn⊑˜-⟜2)
 
   # Format any value to character matrix
-  Fmt ← Type (3≤⊣)◶⟨FmtDat⊢,≍1⊑FmtOp⟩ ⊢
+  Fmt ← Type (3≤⊣)◶⟨FmtDat⊢,FmtOp⟩ ⊢
 
-  # Convert to string
-  ¯1↓·⥊ ∾⟜(@+10)˘∘Fmt
+  # Represent as string
+  RR ← {Repr𝕩}
+  ReprList ← (⌈´(2‿1‿0»7⥊2)⊏˜Type⌜)◶⟨
+    '"' (⊣∾((1+=)/⊢)∾⊣) ⊢
+    1↓·∾("‿"∾ReprAtom)¨
+    "⟨"∾"⟩"«·∾(","∾RR)¨
+  ⟩
+  ReprArr ← (2⌊=)◶⟨"<"∾RR∘⊑,ReprList,≢∾○ReprList⊢⟩
+  ReprDat ← (0=Type)◶⟨ReprAtom,ReprArr⟩
+  ReprOp ← 1⊑ RR _dispOp_ ("Can't format block"!0˙)
+  Repr ← Type (3≤⊣)◶⟨ReprDat⊢,ReprOp⟩ ⊢
+
+  # Convert Fmt from matrix to string
+  ⟨¯1↓·⥊ ∾⟜(@+10)˘∘Fmt, Repr⟩
 }
