@@ -207,6 +207,12 @@ Indices←{
   "/𝕩: 𝕩 must consist of natural numbers" ! 1×´Nat⌜𝕩
   Ind 𝕩
 }
+IndicesInv←{
+  IA 1==𝕩
+  IA 1×´Nat⌜𝕩
+  IX (0⊸≤)◶⟨1,1×´(⊢≤○(⊑⟜𝕩)1⊸+)⌜∘↕⟩-˜≠𝕩
+  GroupLen 𝕩
+}
 SelfClas ← (PermInv∘⍋∘Rep˜⊏˜¯1+`⊢) _self
 OccurrenceCount ← ↕∘≠⊸(⊣-¨·⌈`×¨) _self
 
@@ -823,7 +829,7 @@ PrimInverse ← INF _lookup_ ⟨
   '↕', ≢_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
   '⌽', ⌽ ⊘ (-⊸⌽)
   '⍉', TransposeInv ⊘ ReorderAxesInv
-  '/', {IA 1==𝕩⋄IA 1∧´Nat⌜𝕩⋄IX(1∧´¯1⊸↓≤1⊸↓)𝕩⋄GroupLen𝕩}⊘(IA∘0)
+  '/', IndicesInv ⊘ (IA∘0)
   '⊔', GroupIndsInv ⊘ GroupInv
 ⟩
 SwapInverse ← INF _lookup_ ⟨
