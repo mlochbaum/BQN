@@ -26,7 +26,7 @@ GetRepls ← { c‿n←𝕩 ⋄ ⟨c,c⊣⌾((c∊⥊¨in)⊸/)n⟩∾¨⟨def,�
 ⟨E_proc⟩ ← glyphs‿GetRepls •Import "pp.bqn"
 
 rslt ← "⟨"∾"⟩"«∾","⊸∾¨out  # Output all primitives
-raw ← ∾ (•FLines "r"∾'0'⊸+∾".bqn"˙)¨ rtn
+raw ← (•FChars "r"∾'0'⊸+∾".bqn"˙)¨ rtn
 {𝕤⋄ raw∾˜↩⟨"glyphs←"""∾out∾"%"""⟩ ⋄ rslt∾˜↩"{PrimInd↩⊑𝕩⊐<⋄𝕩‿SetPrims}"}⍟⊢ ∨´1=rtn
 raw ∾↩ ⟨rslt⟩
-src ⇐ ∾∾⟜(@+10)¨ E_proc¨ raw
+src ⇐ E_proc ∾∾⟜(@+10)¨ raw
