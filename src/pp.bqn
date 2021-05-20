@@ -17,28 +17,41 @@ pn ← init∾¨'0'∾¨post
 # All replacements: input and output
 ⟨in,out⟩ ← GetReplacements ⟨⥊¨chr,pn⟩
 
-# Make a new name for primitive 𝕩
-itr ← ¯1⥊˜≠chr
-Shadow ← {
-  i←⊑chr⊐𝕩
-  n←0 ⋄ itr↩{n↩1+𝕩}⌾(i⊑⊢)itr
-  out↩((i⊑init)∾('0'+n)∾i⊑post)⌾(i⊑⊢)out
+# Number of redefinitions so far, minus one
+itr ← ¯1⥊˜≠in
+
+lf←@+10
+Tokenize←{
+  wc←"_¯.π∞"∾∾"0aA"+⟜↕¨10‿26‿26             # Word characters
+
+  # Resolve comments and strings
+  s‿d←/¨2↑sm‿dm‿c‿n←𝕩⊸=¨"'""#"∾lf
+  g←⍋q←∾⟨  s⋄¯1↓d⋄/c⟩ ⋄q↩g⊏q                # Open indices
+  e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`c)⊸//n∾1⟩      # Matching close indices
+  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
+  ab←∨´((≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/)¨q‿e  # Open/close masks
+
+  k←»≠`ab                                   # Token continuation mask
+  k∨↩»⊸∧k<𝕩∊wc                              # Group words
+  k∨↩»𝕩='•'
+  (¯1+`¬k)⊔𝕩
 }
 
-# Does the expression define a primitive?
-E_isdef ← (3≤≠)◶⟨0,∧´⟨chr," ","←↩"⟩⊑∘∊˜¨3⊸↑⟩
-# Process ordinary expression
-E_nodef ⇐ {
-  idChars ← "_¯.π∞"∾∾"0aA"+⟜↕¨10‿26‿26
-  q←≠`𝕩='"' ⋄ q∨↩≠`q<𝕩='''                 # Quotes
-  f←(𝕩=@+10)≥○((1+↕∘≠)⊸(⌈`×))q<𝕩='#'       # Comments
-  w←('•'⊸=(∨»⊸∧⊢)∊⟜idChars) f/𝕩            # Group words
-  t←(¯1+`·¬(»f/q)∨w)⊸⊔ f/𝕩                 # Tokenize
-  ∾ (in⊸⊐ ⊑⟜out⍟(<⟜(≠in))¨ ⊢)⍟(0<≠) t      # Replace
+E_proc_sub ← {tok←𝕩
+  spec ← ⟨in, ⥊¨lf∾",⋄", ⥊¨"←↩"⟩
+  tt ← spec (+`≠¨)⊸⍋ ti ← spec ∾⊸⊐ tok
+  nextSep ← (≠-(⌈`⊢×1+↕∘≠)⌾⌽) sep ← 1=tt
+
+  isChr ← 0=tt
+  asgn ← 𝕨 × isChr / ((1»1⊸=)∧·«2⊸=) tt
+  c ← isChr / ti
+  ord ← ⍋ +⟜(asgn×⊏⟜nextSep⊸-) /isChr
+  cind ← c {n←𝕩/𝕨⋄(-≠n)↓+`⌾((⍋𝕨∾n)⊸⊏)𝕩∾¯1¨n}⌾(ord⊸⊏) asgn
+  rplc ← c 0⊸≤◶⟨⊑⟜out,⊑⟜init∾'0'⊸+∾⊑⟜post⟩¨ cind + c⊏itr
+  itr +↩ +´¨ (c∾≠in)⊔asgn
+  "←"¨⌾((1+asgn//isChr)⊸⊏) rplc⌾(isChr⊸/) tok
 }
-# Process expression, possibly redefining a primitive
-E_proc ⇐ E_isdef◶E_nodef‿{
-  tail ← E_proc 3↓𝕩                        # RHS
-  Shadow ⊑𝕩                                # New name
-  (E_proc 1↑𝕩) ∾ "←" ∾ tail                # LHS
+E_proc ⇐ {
+  tok ← Tokenize 𝕩
+  ∾ (𝕨⊣1)⊸E_proc_sub⌾((" "⊸≢¨tok)⊸/) tok
 }

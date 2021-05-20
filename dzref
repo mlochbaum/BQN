@@ -85,16 +85,14 @@ _withRef ← ˙
     ⟨c,(⥊¨k)⌾(((⊑¨c)⊐k)⊸⊏)n⟩ ∾⟜<¨ ⟨"•Eval","(•Eval _withRef)"⟩
   }
 
-  ⟨E_proc,E_nodef⟩ ← chrs‿GetRepls •Import "src/pp.bqn"
+  ⟨E_proc⟩ ← chrs‿GetRepls •Import "src/pp.bqn"
+  E_nodef ← 0⊸E_proc
 
-  lf ← @+10
-  pre ← E_proc¨ lf((⊢-˜¬×+`)∘=⊔⊢)impl
   ExecFile←{
-    src ← E_nodef¨ •FLines 𝕩
-    ((•path⊸∾⌾⊑(2∾˜∧`⌾⌽'/'≠𝕩)⊔𝕩)∾⟨𝕨⟩) Raw ∾ ∾⟜lf¨ src
+    ((•path⊸∾⌾⊑(2∾˜∧`⌾⌽'/'≠𝕩)⊔𝕩)∾⟨𝕨⟩) Raw E_nodef •FChars 𝕩
   }
   _withRef ↩ {𝔽∘E_nodef⊘(𝔽⟜E_nodef)}
   X↩Raw _withRef
-  Raw ∾ ∾⟜lf¨ pre
+  Raw E_proc impl
   (1⊸↓ ExecFile ⊑) •args
 }
