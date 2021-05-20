@@ -2,9 +2,9 @@
 
 # How to run BQN
 
-There are currently two active BQN implementations: the self-hosted one in this repository, and the independent dzaima/BQN. Neither is entirely complete but they are quite capable for pure programming tasks (say, implementing a compiler). dzaima/BQN has good performance while self-hosted is a few hundred times slower. I tend to develop parts of applications in the online REPL and move to dzaima/BQN scripts in order to run them.
+We are currently working quickly to make [CBQN](https://github.com/dzaima/CBQN) into the definitive offline implementation. Compilation speed (self-hosted) is good, the only significant core language feature missing is block headers and multiple bodies, and the essential system functions are there. Unless you need to start heavy number crunching right away, I recommend that you use CBQN and make system function or performance requests on Github or the BQN forums.
 
-Scripts in this repository use `bqn` in the `#!` line if self-hosted or dzaima/BQN can run them, and `dbqn` if only dzaima/BQN works.
+A lot of development to date has been done in dzaima/BQN and uses features (mainly headers) that aren't in CBQN yet. Scripts in this repository use `bqn` in the `#!` line if self-hosted or dzaima/BQN can run them, and `dbqn` if only dzaima/BQN works.
 
 ### Self-hosted BQN
 
@@ -14,8 +14,8 @@ This version of BQN is [implemented](implementation/README.md) mainly in BQN its
 
 Support in the following languages has been implemented:
 - Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
+- [C](https://github.com/dzaima/CBQN), targetting high performance. Some parts are fast, some are not.
 - dzaima/BQN ([bqn.bqn](bqn.bqn)), mainly for testing.
-- [C](https://github.com/dzaima/CBQN), targetting high performance. A few times slower than dzaima/BQN, but improving quickly.
 - [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical yet: minutes to compile short programs.
 
 #### Javascript
@@ -24,11 +24,15 @@ The online REPL is [here](https://mlochbaum.github.io/BQN/try.html). The file [d
 
 #### CBQN
 
-C sources are kept in the [CBQN](https://github.com/dzaima/CBQN) repository, but they also require the self-hosted bytecode to be built using cc.bqn in that repository. Although cc.bqn is typically run with dzaima/BQN, this can be changed by modifying the `#!` line at the beginning, or linking `dbqn` to a different executable. To use only the BQN and CBQN repositories, avoiding dzaima/BQN, first build with bqn.js—this is slow, but should take under a minute even on low-end hardware—then switch to CBQN itself afterwards for faster builds.
+C sources are kept in the [CBQN](https://github.com/dzaima/CBQN) repository, but they also require the self-hosted bytecode to be built using `genRuntime` in that repository. The script uses `bqn` (whatever that is) by default, but can be run with another BQN executable: bqn.js or dzaima/BQN will work. For example, run `$ path/BQN/bqn.js genRuntime path/BQN/` to bootstrap using Node.js (slow but should be under a minute even on cheap hardware). Once bootstrapped CBQN itself is the fastest option.
+
+Options are configured at the top of `src/main.c`. I uncomment `#define FORMATTER` to get array formatting like this site uses.
+
+CBQN uses the self-hosted runtime to achieve full primitive coverage, and implements specific primitives or parts of primitives natively to speed them up. This means primitives with native support—including everything used by the compiler—are fairly fast while others are much slower.
 
 ### dzaima/BQN
 
-[dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL. It should be easy to run on desktop Linux and Android. It is still in development and has almost complete syntax support but incomplete primitive support: major missing functionality is dyadic Depth (`⚇`), Windows (`↕`), and many cases of set functions (`⊐⊒∊⍷`, mostly with rank >1).
+[dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL, and should be easy to run on desktop Linux and Android. It may be abandoned as dzaima is now working on CBQN. It has almost complete syntax support but incomplete primitive support: major missing functionality is dyadic Depth (`⚇`), Windows (`↕`), and many cases of set functions (`⊐⊒∊⍷`, mostly with rank >1).
 
 In this repository and elsewhere, dzaima/BQN scripts are called with `#! /usr/bin/env dbqn`. This requires an executable file `dbqn` somewhere in your path with the following contents:
 
