@@ -7,15 +7,13 @@
 
 ⟨chrs, GetReplacements⟩ ← •args
 nc ← ≠¨chrs
-chr ← ∾chrs
 
-# Initial primitive replacement names
+# Scheme for primitive replacement names
 init ← (nc/(' '∾¨1‿2/↑"_")∾¨"FMD")∾¨('A'+nc+´⊸↑⥊3∾⌜○↕26)
 post ← nc/(2‿1/↑"_")∾¨' '
-pn ← init∾¨'0'∾¨post
 
 # All replacements: input and output
-⟨in,out⟩ ← GetReplacements ⟨⥊¨chr,pn⟩
+⟨in,out⟩ ← GetReplacements ⟨⥊¨∾chrs, init∾¨'0'∾¨post⟩
 
 # Number of redefinitions so far, minus one
 itr ← ¯1⥊˜≠in
@@ -29,29 +27,24 @@ Tokenize←{
   g←⍋q←∾⟨  s⋄¯1↓d⋄/c⟩ ⋄q↩g⊏q                # Open indices
   e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`c)⊸//n∾1⟩      # Matching close indices
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
-  ab←∨´((≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/)¨q‿e  # Open/close masks
+  ab←(≠𝕩)↑/⁼⥊((≠↑∾⟜≠Se 1∾0¨)q⍋e)/⍉q≍e       # Open/close masks
 
-  k←»≠`ab                                   # Token continuation mask
-  k∨↩»⊸∧k<𝕩∊wc                              # Group words
-  k∨↩»𝕩='•'
+  k←(n∧ab)<»(𝕩='•')∨(∧⟜«𝕩∊wc)∨≠`ab          # Token continuation mask
   (¯1+`¬k)⊔𝕩
 }
 
 E_proc_sub ← {tok←𝕩
   spec ← ⟨in, ⥊¨lf∾",⋄", ⥊¨"←↩"⟩
   tt ← spec (+`≠¨)⊸⍋ ti ← spec ∾⊸⊐ tok
-  nextSep ← (≠-(⌈`⊢×1+↕∘≠)⌾⌽) sep ← 1=tt
+  nextSep ← ⌊`⌾⌽ (≠-⊢×≠-↕∘≠) sep ← 1=tt
 
-  isChr ← 0=tt
-  asgn ← 𝕨 × isChr / ((1»1⊸=)∧·«2⊸=) tt
-  c ← isChr / ti
-  ord ← ⍋ +⟜(asgn×⊏⟜nextSep⊸-) /isChr
-  cind ← c {n←𝕩/𝕨⋄(-≠n)↓+`⌾((⍋𝕨∾n)⊸⊏)𝕩∾¯1¨n}⌾(ord⊸⊏) asgn
-  rplc ← c 0⊸≤◶⟨⊑⟜out,⊑⟜init∾'0'⊸+∾⊑⟜post⟩¨ cind + c⊏itr
+  ri ← / 0=tt                               # Replacement indices
+  asgn ← 𝕨 × ri ⊏ (1»sep) ∧ «2=tt           # and which are assignments
+  c ← ri ⊏ ti
+  ord ← ⍋ +⟜(asgn×⊏⟜nextSep⊸-) ri           # Put LHS after RHS
+  cinc ← c {n←𝕩/𝕨⋄(-≠n)↓+`⌾((⍋𝕨∾n)⊸⊏)𝕩∾¯1¨n}⌾(ord⊸⊏) asgn
+  rplc ← c 0⊸≤◶⟨⊑⟜out,⊑⟜init∾'0'⊸+∾⊑⟜post⟩¨ cinc + c⊏itr
   itr +↩ +´¨ (c∾≠in)⊔asgn
-  "←"¨⌾((1+asgn//isChr)⊸⊏) rplc⌾(isChr⊸/) tok
+  "←"¨⌾((1+asgn/ri)⊸⊏) rplc⌾(ri⊸⊏) tok
 }
-E_proc ⇐ {
-  tok ← Tokenize 𝕩
-  ∾ (𝕨⊣1)⊸E_proc_sub⌾((" "⊸≢¨tok)⊸/) tok
-}
+E_proc ⇐ ∾ 1⊘⊣ { 𝕨⊸E_proc_sub⌾((" "⊸≢¨𝕩)⊸/) 𝕩 } Tokenize∘⊢
