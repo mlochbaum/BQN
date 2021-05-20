@@ -98,11 +98,11 @@
 
   # Represent as string
   RR ← {Repr𝕩}
-  ReprList ← (⌈´(2‿1‿0»7⥊2)⊏˜Type⌜)◶⟨
+  ReprList ← (0<≠)◶⟨"⟨⟩",(⌈´(2‿1‿0»7⥊2)⊏˜Type⌜)◶⟨
     '"' (⊣∾((1+=)/⊢)∾⊣) ⊢
     1↓·∾("‿"∾ReprAtom)¨
     "⟨"∾"⟩"«·∾(","∾RR)¨
-  ⟩
+  ⟩⟩
   ReprArr ← (2⌊=)◶⟨"<"∾RR∘⊑,ReprList,≢∾⟜"⥊"⊸∾○ReprList⥊⟩
   ReprDat ← (0=Type)◶⟨ReprAtom,ReprArr⟩
   ReprOp ← 1⊑ RR _dispOp_ ("Can't represent block"!0˙)
