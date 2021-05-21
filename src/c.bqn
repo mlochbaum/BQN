@@ -197,27 +197,28 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
 
   # Lexical resolution (independent of parsing part 2 below)
   di←/dm←»dc                                # Dots aren't scoped
-  id←/idm←(gi⊏«aa∧a)<dm<(0⊸≤∧<⟜nv)xv
-  d←id⊏dd←ac M 2‿2                          # Which accesses are definitions
-  "Can't define special name"_err_(SP) sp⊏dd
-  idn←(idg←(d/idf←id⊏fi)∾≠fsc)⊔d/idv←id⊏xv  # Numbers for each identifier, per-block
+  id←/(gi⊏«aa∧a)<dm<(0⊸≤∧<⟜nv)xv            # Identifier indices in xv
+  sa←0<sc←sp⊏ac⋄d←(ic←id⊏ac)M 2‿2           # Which accesses are definitions
+  "Can't define special name"_err_(SP) sa∧sc<4
+  df←d/idf←id⊏fi                            # Function index
+  idn←(idg←df∾≠fsc)⊔dv←d/idv←id⊏xv          # Identifier name ID, per-block
   # Order every referenced identifier, and an undeclaration for each declaration
-  ixf←(((1=id⊏ac)+⊏⟜(¯1∾b/gf))∾d⊸/⊏((≠𝕩)∾c⊏gf)˙)idf # First order by block index, open for real and closed for virtual
-  ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idv))⊸⊏⍋ixf            # Then order by name
+  ixf←((1=ic)+idf⊏¯1∾b/gf)∾df⊏(≠𝕩)∾c⊏gf     # First order by block index, open for real and closed for virtual
+  ig←(⍋⊏⟜(ixx←idv∾dv))⊸⊏⍋ixf                # Then order by name
   {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
-  ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig           # Last order by declaration depth
-  d⊏˜↩ig⋄id⊏˜↩ig
-  ip←id⊏ac⋄xm←ip M 1‿2                      # Assignment class; which are exports
+  ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾¯1¨dv))⊸⊏ig          # Last order by declaration depth
+  d⊏˜↩ig⋄id⊏˜↩ig⋄ic⊏˜↩ig
+  ix←(ic<3)∧ia←0<ic                         # Which are exports, assignments
   ("Undefined identifier"Pl/)_err_(ID) d<¯1⊸»⊸≠ig⊏idv
   idd←(⊢-(IT d)⊸⊏)id⊏fd                     # Identifier frame depth
-  "Can't export from surrounding scope"_err_(ID) xm∧0<idd
-  idx←idg⊔(dig←⍋d/ig)⊏d(/≥1↓PN)xm           # Exported identifier mask
-  idi←(¯1+`d)⊏dig⍋⊸⊏(⊏⟜fsc+⊒)¯1↓idg         # Slot within frame
-  uu←((1«d)∧0=ip)∧d(⊣+`⊸⊏PN)0<idd           # Unused marker
+  "Can't export from surrounding scope"_err_(ID) ix∧0<idd
+  idx←idg⊔(dig←⍋d/ig)⊏d(/≥1↓PN)ix           # Exported identifier mask
+  idi←(¯1+`d)⊏dig⍋⊸⊏(⊏⟜fsc+⊒)df             # Slot within frame
+  uu←(ia<1«d)∧d(⊣+`⊸⊏PN)0<idd               # Unused marker
   spi←((spf←sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv       # Special name index
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
-  ido←21+uu(⊢+10×>)0<ip∾sp⊏ac               # Opcode
+  ido←21+uu(⊢+10×>)ia∾sa                    # Opcode
   idbc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
 
   # Parsing part 2
