@@ -200,20 +200,18 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   id←/idm←(gi⊏«aa∧a)<dm<(0⊸≤∧<⟜nv)xv
   ip←id⊏ac⋄d←id⊏dd←ac M 2‿2⋄xm←ip M 1‿2     # Assignment classes; which are definitions, exports
   "Can't define special name"_err_(SP) sp⊏dd
-  idn←(idg←(d/id⊏fi)∾≠fsc)⊔d/idv←id⊏xv      # Numbers for each identifier, per-block
+  idn←(idg←(d/idf←id⊏fi)∾≠fsc)⊔d/idv←id⊏xv  # Numbers for each identifier, per-block
   # Order every referenced identifier, and an undeclaration for each declaration
-  ixf←(((1=ip)+⊏⟜(¯1∾b/gf))∾d⊸/⊏((≠𝕩)∾c⊏gf)˙)id⊏fi # First order by block index, open for real and closed for virtual
+  ixf←(((1=ip)+⊏⟜(¯1∾b/gf))∾d⊸/⊏((≠𝕩)∾c⊏gf)˙)idf # First order by block index, open for real and closed for virtual
   ig←(⍋⊏⟜(ixx←∾⟜(d⊸/)idv))⊸⊏⍋ixf            # Then order by name
   {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
   ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾-/˜d))⊸⊏ig           # Last order by declaration depth
   d⊏˜↩ig
   ("Undefined identifier"Pl/)_err_(ig⊏ID) d<¯1⊸»⊸≠ig⊏idv
-  idx←idg⊔(⍋d/ig)⊏d(/≥1↓PN)ig⊏xm            # Exported identifier mask
-  ui←(IT d)⊸⊏⌾(ig⊸⊏)id                      # Index of definition (⊐ for identifiers)
-  lc←(1«b)/dn←b(⊢-T)+`idm∧dd                # Locals Count
-  idd←id-○(⊏⟜fd)ui                          # Identifier frame depth
+  idx←idg⊔(dig←⍋d/ig)⊏d(/≥1↓PN)ig⊏xm        # Exported identifier mask
+  idd←(⊢-(IT d)⊸⊏)⌾(ig⊸⊏)id⊏fd              # Identifier frame depth
   "Can't export from surrounding scope"_err_(ID) xm∧0<idd
-  idi←ui⊏(fi⊏fsc)+dn-1                      # Slot within frame
+  idi←ig⍋⊸⊏(¯1+`d)⊏dig⍋⊸⊏(⊏⟜fsc+⊒)¯1↓idg    # Slot within frame
   uu←ip(((1«d)∧0=⊣)∧d(⊣+`⊸⊏PN)0<⊢)⌾(ig⊸⊏)idd# Unused marker
   spi←((spf←sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv       # Special name index
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
@@ -246,7 +244,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   # Function metadata and overall output
-  ⟨bc∾¯1⊑rc,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,lc+fsc,idn,idx⟩,ind⟩
+  ⟨bc∾¯1⊑rc,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,fsc+≠¨idn,idn,idx⟩,ind⟩
 }
 
 Compile←{
