@@ -71,7 +71,7 @@ let chkM = (v,m) => { if (m.m!==v) throw Error("Runtime: Only a "+v+"-modifier c
 let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
   let rD = 0;
   let r = L?"let l=0;try{":"";
-  let fin = L?"}catch(e){let s=L.map(p=>p[l]);s.sh=[1,2];let m=[s,e.message];m.src=vid.src;m.sh=[2];e.message=m;throw e;}":"";
+  let fin = L?"}catch(e){let s=L.map(p=>p[l]);s.sh=[1,2];let m=[s,e.message];m.loc=1;m.src=vid.src;m.sh=[2];e.message=m;throw e;}":"";
   let szM = 1;
   let rV = n => { szM=Math.max(szM,n+1); return 'v'+n; };
   let rP = val => rV(rD++) + "="+val+";";
@@ -397,9 +397,9 @@ let [fmt1,repr] = run(
 )(list([type, decompose, glyph, fmtnum]));
 let fmt = x => unstr(fmt1(x));
 
-let fmtErr = (e) => {
+let fmtErr = e => {
   let r=e.kind, w=e.message, loc=[];
-  while (w&&w.src||(r!=='!'&&w.sh&&w.sh[0]===2)) {
+  while (w&&w.loc||(r!=='!'&&w.sh&&w.sh[0]===2)) {
     let s=w.src, is; [is,w]=w;
     let n=is.sh?is.sh[0]:0, i=n?is[0]:is;
     let pair=n&&is.sh.length>1; if (pair) n*=2;
