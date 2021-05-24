@@ -70,7 +70,8 @@ _perv←{ # Pervasion
 }
 
 # Sorting
-Cmp0 ← ≥-≤
+CLE ← (≤⟜∞≤·=˜⊢)≤≤  # Place NaNs after other numbers
+Cmp0 ← CLE˜-CLE
 Cmp1 ← (0<1×´≢∘⊢)◶⟨1, IsArray∘⊢◶(1-2×≤)‿{𝕨Cmp1𝕩}⟜(0⊑⥊)⟩
 CmpLen ← {
   e←𝕨-○(1×´0⊸<⌜)𝕩
@@ -107,7 +108,7 @@ Cmp ← +○IsArray◶⟨
 
 _grade ← {
   gt ← 𝕗
-  cmps ← {𝕏˜}⌜⍟𝕗⟨Cmp,Cmp0,Cmp≤0˙,≤⟩
+  cmps ← {𝕏˜}⌜⍟𝕗⟨Cmp,Cmp0,Cmp≤0˙,CLE⟩
   _getC_ ← { 𝕨 𝕘{(𝕨 𝕏 _getCellCmp 𝕗)≤0˙}⍟(𝕩≤1) 𝔽 𝕩⊑cmps }
   0 Fill {
     "⍋𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
