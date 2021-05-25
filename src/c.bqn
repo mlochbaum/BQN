@@ -204,12 +204,12 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   idn←(idg←df∾≠fsc)⊔dv←d/idv←id⊏xv          # Identifier name ID, per-block
   # Order every referenced identifier, and an undeclaration for each declaration
   ixf←((1=ic)+idf⊏¯1∾b/gf)∾df⊏(≠𝕩)∾c⊏gf     # First order by block index, open for real and closed for virtual
-  ig←(⍋⊏⟜(ixx←idv∾dv))⊸⊏⍋ixf                # Then order by name
-  {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
-  ig↩<⟜(≠d)⊸/(⍋+`∘⊏⟜(d∾¯1¨dv))⊸⊏ig          # Last order by declaration depth
+  ig←(⍋⊏⟜(ixx←idv∾dv))⊸⊏⍋ixf⋄igf←ig<≠d      # Then order by name
+  {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} igf¬⊸/ig
+  ig↩(do←⊏⟜igf⊸/⍋ds←+`ig⊏d∾¯1¨dv)⊏ig        # Last order by declaration depth
   d⊏˜↩ig⋄id⊏˜↩ig⋄ic⊏˜↩ig
+  ("Undefined identifier"Pl/)_err_(ID) 0=do⊏ds
   ix←(ic<3)∧ia←0<ic                         # Which are exports, assignments
-  ("Undefined identifier"Pl/)_err_(ID) d<¯1⊸»⊸≠ig⊏idv
   idd←(⊢-(IT d)⊸⊏)id⊏fd                     # Identifier frame depth
   "Can't export from surrounding scope"_err_(ID) ix∧0<idd
   idx←idg⊔(dig←⍋d/ig)⊏d(/≥1↓PN)ix           # Exported identifier mask
