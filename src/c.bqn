@@ -208,7 +208,7 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} igf¬⊸/ig
   ig↩(do←⊏⟜igf⊸/⍋ds←+`ig⊏d∾¯1¨dv)⊏ig        # Last order by declaration depth
   d⊏˜↩ig⋄id⊏˜↩ig⋄ic⊏˜↩ig
-  ("Undefined identifier"Pl/)_err_(ID) 0=do⊏ds
+  ("Undefined identifier"Pl·⍷xv⊏˜/⟜id)_err_(ID) 0=do⊏ds
   ix←(ic<3)∧ia←0<ic                         # Which are exports, assignments
   idd←(⊢-(IT d)⊸⊏)id⊏fd                     # Identifier frame depth
   "Can't export from surrounding scope"_err_(ID) ix∧0<idd
