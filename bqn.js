@@ -57,7 +57,14 @@ if (!module.parent) {
       console.error('[31m'+fmtErr(e)+'[39m');
     }
   }
-  if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
+  if (!has(arg0) || arg0==='-r') {
+    let stdin = process.stdin, repl = sysvals.makerepl();
+    let e = exec(s=>show(repl(str(s))));
+    stdin.on('end', () => { process.exit(); });
+    stdin.on('readable', () => {
+      let inp; while ((inp=stdin.read())!==null) { e(inp.toString()); }
+    });
+  } else if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
     let f=arg0, a=list(args.slice(1).map(str));
     exec(s=>bqn_file(f,s,a))(fs.readFileSync(f,'utf-8'));
   } else if (arg0 === '-e') {
