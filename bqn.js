@@ -31,6 +31,7 @@ let bqn_state = sysvals.bqn = (x,w) => {
   sysvals.path=w[0]; sysvals.name=w[1]; sysvals.args=w[2];
   return bqn(x);
 }
+sysvals.exit = (x,w) => process.exit(Number.isInteger(x)?x:0);
 sysvals.bqn = (x,w) => bqn_state(req1str("•BQN",x), w);
 let bqn_file = (f,t,w) => bqn_state(
   t, [ str(path.resolve(f,'..')+'/'), str(path.basename(f)), w ]
