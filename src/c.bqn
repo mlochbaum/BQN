@@ -36,7 +36,7 @@ T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
 # Identifiers then literal tokens are numbered starting at vi
-Tokenize←{
+Tokenize←{System‿vars←𝕨
   # Resolve comments and strings
   c←𝕩='#'⋄s←/0‿0⊸«⊸∧sm←𝕩='''⋄d←/dm←𝕩='"'
   g←⍋q←∾⟨  s⋄¯1↓d⋄/c⟩ ⋄q↩g⊏q                # Open indices
@@ -70,14 +70,14 @@ Tokenize←{
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
   ws←1=wi/wt⋄ig←1-˜(i>us)×+`w>n             # Identifier groups
   {⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/(¯1»⌈`)⊸<ig
-  id←(ws∾2)⊔ig⊔t⊏charSet                    # ⟨Identifiers, system values⟩
+  id←vars⊸∾⌾⊑(ws∾2)⊔ig⊔t⊏charSet            # ⟨Identifiers, system values⟩
 
   # Deduplicate literals and identifiers; other cleanup
   ki←(wt⍒⊸⊏/w)∾(ci∾/si)⊏+`»f                # Indices in t
   k←id∾num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
-  k↩𝕎⌾(1⊸⊑)k                                # System value lookup
+  k↩System⌾(1⊸⊑)k                           # System value lookup
   wf←¬l∨t M bW⋄ie/˜↩wf∨>⟜«l                 # Index management for...
-  t↩(w∨wf)Fs(∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t        # Add IDs; remove words/whitespace
+  t↩(w∨wf)Fs(vars≠⊸↓∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
@@ -111,7 +111,7 @@ ReadNums←{
 }
 
 
-Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
+Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ErrMismatchedBrackets←{
     Lcs ← ∧○(0<≠)◶⟨0, ¯1 ⊑ 0¨∘⊢ {𝕩⌈⌈`𝕨+»𝕩}˝ =⌜⟜⌽⟩
     _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
@@ -200,21 +200,25 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   id←/(gi⊏«aa∧a)<dm<(0⊸≤∧<⟜nv)xv            # Identifier indices in xv
   sa←0<sc←sp⊏ac⋄d←(ic←id⊏ac)M 2‿2           # Which accesses are definitions
   "Can't define special name"_err_(SP) sa∧sc<4
-  df←d/idf←id⊏fi                            # Function index
-  idn←(idg←df∾≠fsc)⊔dv←d/idv←id⊏xv          # Identifier name ID, per-block
+  idf←id⊏fi⋄idv←id⊏xv                       # Function index and name ID
+  dp←d∧(0=idf)∧idv<≠def                     # Definitions of vars in def
+  "Redefinition"_err_(dp/ID) 0=dpf←(dp/idv)⊏def
+  d↩(0≤dpf)⌾(dp⊸/)d⋄zda←0¨da←/def≤0         # Turn def ¯1 ← into ↩
+  dn←(dg←zda∾(df←d/idf)∾≠fsc)⊔da∾dv←d/idv   # Identifier name ID, per-block
   # Order every referenced identifier, and an undeclaration for each declaration
   ixf←((1=ic)+idf⊏¯1∾b/gf)∾df⊏(≠𝕩)∾c⊏gf     # First order by block index, open for real and closed for virtual
-  ig←(⍋⊏⟜(ixx←idv∾dv))⊸⊏⍋ixf⋄igf←ig<≠d      # Then order by name
-  {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} igf¬⊸/ig
-  ig↩(do←⊏⟜igf⊸/⍋ds←+`ig⊏d∾¯1¨dv)⊏ig        # Last order by declaration depth
+  ig←(⍋⊏⟜(ixx←idv∾dv))⊸⊏⍋ixf                # Then order by name
+  {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
+  ig↩<⟜(≠d)⊸/(⍋ds←+`ig⊏d∾¯1¨dv)⊏ig          # Last order by declaration depth
   d⊏˜↩ig⋄id⊏˜↩ig⋄ic⊏˜↩ig
-  ("Undefined identifier"Pl·⍷xv⊏˜/⟜id)_err_(ID) 0=do⊏ds
+  du←+´¬»⊸∨0<ds⋄uv←(du↑ig)⊏idv              # Number undefined (always sorted to front)
+  ("Undefined identifier"Pl·⍷/⟜uv)_err_(du↑ID) uv≥≠def
   ix←(ic<3)∧ia←0<ic                         # Which are exports, assignments
-  idd←(⊢-(IT d)⊸⊏)id⊏fd                     # Identifier frame depth
+  idd←(⊢-(uv⊏-0⌈def)∾(du↓IT d)⊸⊏)id⊏fd      # Identifier frame depth
   "Can't export from surrounding scope"_err_(ID) ix∧0<idd
-  idx←idg⊔(dig←⍋d/ig)⊏d(/≥1↓PN)ix           # Exported identifier mask
-  idi←(¯1+`d)⊏dig⍋⊸⊏(⊏⟜fsc+⊒)df             # Slot within frame
-  uu←(ia<1«d)∧d(⊣+`⊸⊏PN)0<idd               # Unused marker
+  dx←dg⊔zda∾(dig←⍋d/ig)⊏d(/≥1↓PN)ix         # Exported identifier mask
+  idi←(da⊐uv)∾(¯1+`du↓d)⊏dig⍋⊸⊏da≠⊸↓(⊏⟜fsc+⊒)¯1↓dg # Slot within frame
+  uu←(ia<1«d)∧d(⊣+`⊸⊏·0⌾⊑PN)0<idd           # Unused marker
   spi←((spf←sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv       # Special name index
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
@@ -246,12 +250,13 @@ Parse ← {r‿vn‿i‿e←𝕨⋄nv←≠vn
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   # Function metadata and overall output
-  ⟨bc∾¯1⊑rc,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,fsc+≠¨idn,idn,idx⟩,ind⟩
+  ⟨bc∾¯1⊑rc,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,fsc+≠¨dn,dn,dx⟩,ind⟩
 }
 
 Compile←{
-  prims‿Sys←{⟨𝕩,("System values not supported"!0˙)¨¨⟩}⍟(2≠≠)𝕨
-  ⟨tok,role,val,t0,t1⟩←tx←sys Tokenize 𝕩
-  ⟨bc,prim,blk,oi⟩←⟨role,⊑val,t0,t1⟩ Parse tok
+  defaults←⟨⟩‿(("System values not supported"!0˙)¨)‿⟨⟩‿⟨⟩
+  prims‿Sys‿vars‿redef ← ∾⟜(≠↓defaults˙) ≍○<⍟(4<≠)𝕨
+  ⟨tok,role,val,t0,t1⟩←tx←sys‿vars Tokenize 𝕩
+  ⟨bc,prim,blk,oi⟩←⟨role,⊑val,t0,t1,redef»0¨vars⟩ Parse tok
   ⟨bc, ∾⟨prim⊏prims⟩∾1↓val, <˘⍉>blk, oi, tx⟩
 }
