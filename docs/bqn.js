@@ -468,7 +468,7 @@ let makerepl = (x,w) => {
     let newv = c[2][0][4].slice(vars.length);
     names.push(...newv.map(i=>pnames[i]));
     redef.push(...newv.map(i=>-1));
-    vars .push(...newv.map(i=>undefined));
+    vars .push(...newv.map(i=>null));
     c.push(vars);
     return run.apply(null, c);
   }
