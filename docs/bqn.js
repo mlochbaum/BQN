@@ -506,6 +506,6 @@ if (typeof process!=='undefined') {
 
 if (typeof module!=='undefined') {  // Node.js
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;
-  bqn.sysvals=sysvals; bqn.util={has,list,str,unstr,dynsys,req1str};
+  bqn.sysvals=sysvals; bqn.util={has,list,str,unstr,dynsys,req1str,makens};
   module.exports=bqn;
 }
