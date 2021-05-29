@@ -13,19 +13,24 @@ sysvals.show = (x,w) => { show(x); return x; };
 sysvals.out = (x,w) => { console.log(req1str("•Out",x,w)); return x; };
 
 let getres = e => {
-  let p = sysvals.path;
-  if (p) { p=unstr(p); return f=>path.resolve(p,f); }
-  return f => { if (!path.isAbsolute(f)) throw Error(e+": Paths must be absolute when not running from a file"); return f; };
+  let p = sysvals.path; let res;
+  if (p) { p=unstr(p); res = f=>path.resolve(p,f); }
+  else { res = f => { if (!path.isAbsolute(f)) throw Error(e+": Paths must be absolute when not running from a file"); return f; }; }
+  return x => res(req1str(e,x));
 }
 let withres = (e,fn) => dynsys(() => fn(getres(e)));
-let ff = (e,fr,fw,o) => withres(e, resolve => (x,w) => {
-  let f = resolve(req1str(e,has(w)?w:x));
+let ff = (fr,fw,o) => resolve => (x,w) => {
+  let f = resolve(has(w)?w:x);
   if (has(w)) { fs.writeFileSync(f,fw(x),o); return str(f); }
   else { return fr(fs.readFileSync(f,o)); }
-});
-sysvals.fchars = ff("•FChars",str,unstr,"utf-8");
-sysvals.flines = ff("•FLines",s=>list(s.split('\n').map(str)),s=>s.map(unstr).join('\n'),"utf-8");
-sysvals.fbytes = ff("•FBytes",s=>list(Array.from(s).map(c=>String.fromCodePoint(c))),s=>Buffer.from(s.map(c=>c.codePointAt(0))));
+};
+let fchars = ff(str,unstr,"utf-8");
+let flines = ff(s=>list(s.split('\n').map(str)),s=>s.map(unstr).join('\n'),"utf-8");
+let fbytes = ff(s=>list(Array.from(s).map(c=>String.fromCodePoint(c))),s=>Buffer.from(s.map(c=>c.codePointAt(0))));
+sysvals.fchars = withres("•FChars",fchars);
+sysvals.flines = withres("•FLines",flines);
+sysvals.fbytes = withres("•FBytes",fbytes);
+
 let bqn_state = sysvals.bqn = (x,w) => {
   w = w||[];
   sysvals.path=w[0]; sysvals.name=w[1]; sysvals.args=w[2];
@@ -38,7 +43,7 @@ let bqn_file = (f,t,w) => bqn_state(
 );
 let imports = {};
 sysvals.import = withres("•Import", resolve => (x,w) => {
-  let f = resolve(req1str("•Import",x));
+  let f = resolve(x);
   let save = r=>r;
   if (!has(w)) {
     let c=imports[f]; if (has(c)) return c;
