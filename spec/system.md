@@ -109,7 +109,7 @@ File access functions read or write files, either by manipulating files as a who
 
 `Rename`, `Copy`, and `CreateDir` return the path of the new file. `Remove` and `RemoveDir` return `1` to indicate successful removal (and error otherwise).
 
-`List` returns filenames only, without extensions. It lists all files and directories including hidden ones, but not the current and parent directory names `.` and `..`.
+`List` returns filenames only, without full paths. It lists all files and directories including hidden ones, but not the current and parent directory names `.` and `..`.
 
 Functions `Chars`, `Lines`, and `Bytes` are all ambivalent. If only `𝕩` is given, then it is a filename, and the result is the contents of the file in the appropriate format. If there are two arguments, then `𝕨` is the filename and `𝕩` is the desired contents. These are written to the file, overwriting its contents, and the absolute filename `𝕨` is returned. The three formats are:
 
