@@ -31,11 +31,11 @@ sysvals.fchars = withres("•FChars",fchars);
 sysvals.flines = withres("•FLines",flines);
 sysvals.fbytes = withres("•FBytes",fbytes);
 
-let bqn_state = sysvals.bqn = (x,w) => {
-  w = w||[];
+let set_state = w => {
+  w = w||[]; sysvals.state=list(w);
   sysvals.path=w[0]; sysvals.name=w[1]; sysvals.args=w[2];
-  return bqn(x);
 }
+let bqn_state = sysvals.bqn = (x,w) => { set_state(w); return bqn(x); }
 sysvals.exit = (x,w) => process.exit(Number.isInteger(x)?x:0);
 sysvals.bqn = (x,w) => bqn_state(req1str("•BQN",x), w);
 let bqn_file = (f,t,w) => bqn_state(
@@ -56,6 +56,10 @@ sysvals.import = withres("•Import", resolve => (x,w) => {
 if (!module.parent) {
   let args = process.argv.slice(2);
   let arg0 = args[0];
+  let cl_state = () => {
+    let s = str("");
+    return [str(path.resolve(__dirname)+'/'), s, list([],s)];
+  }
   let exec = fn => src => {
     try {
       fn(src);
@@ -64,6 +68,7 @@ if (!module.parent) {
     }
   }
   if (!has(arg0) || arg0==='-r') {
+    set_state(cl_state());
     let stdin = process.stdin, repl = sysvals.makerepl();
     let e = exec(s=>show(repl(str(s))));
     stdin.on('end', () => { process.exit(); });
@@ -74,6 +79,7 @@ if (!module.parent) {
     let f=arg0, a=list(args.slice(1).map(str));
     exec(s=>bqn_file(f,s,a))(fs.readFileSync(f,'utf-8'));
   } else if (arg0 === '-e') {
-    args.slice(1).map(exec(s=>show(bqn_state(s))));
+    let st=cl_state();
+    args.slice(1).map(exec(s=>show(bqn_state(s,st))));
   }
 }
