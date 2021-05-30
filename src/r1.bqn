@@ -651,10 +651,10 @@ GroupGen←{
 }
 
 ValidateRanks←{
-  "⎉ or ⚇: 𝔽 result must have rank at most 1" ! 1≥=𝕩
+  "⎉ or ⚇: 𝔾 result must have rank at most 1" ! 1≥=𝕩
   𝕩↩Deshape𝕩
-  "⎉ or ⚇: 𝔽 result must have 1 to 3 elements" ! (1⊸≤×≤⟜3)≠𝕩
-  "⎉ or ⚇: 𝔽 result must consist of integers" ! 1×´Int⌜𝕩
+  "⎉ or ⚇: 𝔾 result must have 1 to 3 elements" ! (1⊸≤×≤⟜3)≠𝕩
+  "⎉ or ⚇: 𝔾 result must consist of integers" ! 1×´Int⌜𝕩
   𝕩 ⊏˜ (≠𝕩)⊸(-+1-˜⌊∘÷˜×⊣)⌜ 𝕨
 }
 _ranks ← {⟨2⟩⊘⟨1,0⟩ ValidateRanks 𝔽}
