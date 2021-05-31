@@ -1,14 +1,7 @@
 # Tester that checks primitives on random arguments
 
-# Linear congruential RNG; result in ↕2⋆16
-rr ← 2⋆16 # Random range
-_makeRand ← {st←𝕗
-  d‿m←2⋆15‿31
-  {𝕤⋄ d ⌊∘÷˜ st ↩ m|2531011+214013×st }
-}
-RandGen ← 1234 _makeRand
-RandSh ← ⊢ ⥊ ·RandGen¨ (↕×´∘⥊)
-Rand ← { 𝕩⌈↩1 ⋄ 𝕨 ⊢⊘⥊ 𝕩 | 0 rr⊸×⊸+˜´ (𝕨RandGen⊘(RandSh∘⊣)⊢)¨↕⌈rr⋆⁼𝕩 }
+Range ← (•MakeRand 2).Range
+Rand ← {𝕨 Range 1⌈𝕩}
 _randChoose ← { Rand∘(≠𝕗)◶𝕗 }
 _randUnbounded ← { 𝕊⊸+⍟(1=-)⟜Rand 𝕗 }
 RandRank ← 4 _randUnbounded
@@ -50,7 +43,7 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
 ⟨RandTyped,RandArith⟩ ← {
-  RandTyped ⇐ { (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆2⋆𝕨 }
+  RandTyped ⇐ { (1⊸<⊸×m÷2) -˜ 𝕩 Range m←(𝕨<6)×2⋆2⋆𝕨 }
 
   RN ← (0⌈-⟜1) ⌊ 1‿RandRank‿RandBound _randChoose
   RandSplit ← ⌽⍟(Rand∘2) (-≍⊢)⟜RN
