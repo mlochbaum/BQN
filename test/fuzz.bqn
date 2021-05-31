@@ -7,10 +7,11 @@ _makeRand ← {st←𝕗
   {𝕤⋄ d ⌊∘÷˜ st ↩ m|2531011+214013×st }
 }
 RandGen ← 1234 _makeRand
-RandSh ← ⊢ ⥊ ·RandGen¨ (↕×´)
+RandSh ← ⊢ ⥊ ·RandGen¨ (↕×´∘⥊)
 Rand ← { 𝕩⌈↩1 ⋄ 𝕨 ⊢⊘⥊ 𝕩 | 0 rr⊸×⊸+˜´ (𝕨RandGen⊘(RandSh∘⊣)⊢)¨↕⌈rr⋆⁼𝕩 }
 _randChoose ← { Rand∘(≠𝕗)◶𝕗 }
 _randUnbounded ← { 𝕊⊸+⍟(1=-)⟜Rand 𝕗 }
+RandRank ← 4 _randUnbounded
 
 # Prime factorization
 ⟨Factor⟩ ← {
@@ -27,12 +28,10 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 # 𝕩 is maximum bound plus 1 for both functions
 ⟨RandBound,RandShape⟩ ← {
   RandBound ⇐ ⟨
-    Rand                                     # Uniform
-    Rand 128⊸⌊                               # Small
-    -⟜1 ⌊ Rand∘(1⌈⌈)⌾((2⋆3+⊢)⁼) + ¯7+Rand∘15 # Near power of two
+    Rand                                         # Uniform
+    Rand 128⊸⌊                                   # Small
+    (0⌈-⟜1) ⌊ Rand∘(1⌈⌈)⌾((2⋆3+⊢)⁼) + ¯7+Rand∘15 # Near power of two
   ⟩_randChoose
-
-  RandRank ← 4 _randUnbounded
 
   Augment ← {
     d ← 1+⌊𝕨÷1⌈×´𝕩         # Maximum bound that can be added, plus 1
@@ -50,9 +49,23 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 }
 
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
-RandArith ← {
-  •internal.Squeeze (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆𝕨
+⟨RandTyped,RandArith⟩ ← {
+  RandTyped ⇐ { (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆2⋆𝕨 }
+
+  RN ← (0⌈-⟜1) ⌊ 1‿RandRank‿RandBound _randChoose
+  RandSplit ← ⌽⍟(Rand∘2) (-≍⊢)⟜RN
+  Combine ← (⍋Rand˜∘≠)⊸⊏⍟(Rand∘2) ∾
+
+  RL ← {𝕨RandList𝕩}
+  RandList ⇐ ⟨
+    RandTyped                               # Random
+    ∧‿∨_randChoose RandTyped                # Sort
+    ⊢ ⥊ RL⟜(1⌈RN)                           # Repeat
+    Combine Rand‿⊢_randChoose⊸RL¨⟜RandSplit # Partition
+  ⟩{ 8⊸≤◶⟨0,Rand∘(≠𝕗)⟩◶𝕗 }
+  RandArith ⇐ •internal.Squeeze ⊢ ⥊ RandList⟜(×´)
 }
+
 # 𝕩 is bound
 RandMonArith ← RandArith⟜RandShape
 RandDyArith ← {
