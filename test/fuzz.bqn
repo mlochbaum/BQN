@@ -7,8 +7,10 @@ _makeRand ← {st←𝕗
   {𝕤⋄ d ⌊∘÷˜ st ↩ m|2531011+214013×st }
 }
 RandGen ← 1234 _makeRand
-Rand ← { 𝕩 | 0 rr⊸×⊸+˜´ RandGen¨↕⌈rr⋆⁼𝕩 }∘(1⊸⌈)⚇0
+RandSh ← ⊢ ⥊ ·RandGen¨ (↕×´)
+Rand ← { 𝕩⌈↩1 ⋄ 𝕨 ⊢⊘⥊ 𝕩 | 0 rr⊸×⊸+˜´ (𝕨RandGen⊘(RandSh∘⊣)⊢)¨↕⌈rr⋆⁼𝕩 }
 _randChoose ← { Rand∘(≠𝕗)◶𝕗 }
+_randUnbounded ← { 𝕊⊸+⍟(1=-)⟜Rand 𝕗 }
 
 # Prime factorization
 ⟨Factor⟩ ← {
@@ -30,7 +32,7 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
     -⟜1 ⌊ Rand∘(1⌈⌈)⌾((2⋆3+⊢)⁼) + ¯7+Rand∘15 # Near power of two
   ⟩_randChoose
 
-  RandRank ← { 𝕊⊸+⍟(1=-)⟜Rand 4 }
+  RandRank ← 4 _randUnbounded
 
   Augment ← {
     d ← 1+⌊𝕨÷1⌈×´𝕩         # Maximum bound that can be added, plus 1
@@ -39,7 +41,7 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
   }
   Combine ← ⟨
     Rand∘≠⊸⌽ (2+Rand∘≠)⊸{×´¨𝕨↑(𝕨|↕∘≠)⊸⊔𝕩}∘⊢ # Random number of groups
-    ×´¨ (⊐·Rand⥊˜∘≠)⊸⊔∘⊢                    # Distribute randomly
+    ×´¨ (⊐·Rand¨⥊˜∘≠)⊸⊔∘⊢                   # Distribute randomly
   ⟩_randChoose
   RandShape ⇐ ⊢ Augment ⟨
     ⊢ (⊢ ⌊∘× ⊢ ≠⊸√ (Sigmoid⊸÷1⌈×´⊸÷˜)) · Rand¨ (RandRank⌈√<Rand)⊸⥊
@@ -49,7 +51,7 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
 RandArith ← {
-  •internal.Squeeze (1⊸<⊸×m÷2) -˜ Rand 𝕩⥊m←2⋆𝕨
+  •internal.Squeeze (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆𝕨
 }
 # 𝕩 is bound
 RandMonArith ← RandArith⟜RandShape
