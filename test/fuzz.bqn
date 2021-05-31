@@ -55,7 +55,10 @@ RandArith ← {
 }
 # 𝕩 is bound
 RandMonArith ← RandArith⟜RandShape
-RandDyArith ← { 𝕨⊸RandArith¨ (Rand 2) ⌽ (Rand 1+≠)⊸(⊢≍○<↑) RandShape 𝕩 }
+RandDyArith ← {
+  Prefix ← (∨`⌾⌽ 𝕩 ≥ ×`)⊸/ (Rand 1+≠)⊸↑
+  𝕨⊸RandArith¨ (Rand 2) ⌽ ≍○<⟜Prefix RandShape 𝕩
+}
 
 types ← 0‿3‿4‿5‿6
 types { ! (𝕨+𝕩)≡𝕨--𝕩 }´∘RandDyArith⌜ 100⥊1e3
