@@ -39,10 +39,10 @@ escchars ← """&<>" ⋄ escapes ← ("&"∾∾⟜";")¨"quot"‿"amp"‿"lt"‿
 Explain ← {
   b‿const‿blk‿(i‿e)‿tok ← 𝕨
   ba‿bc‿bo‿bp ← '0'-˜⟨ # For each instruction, number of:
-    "11111000000000010000022000"  # Arguments
-    "000//232323223102303200121"  # Stack values consumed
-    "11111111111111011101111110"  # Stack values output
-    "00000110111001001101000100"  # Position determiner
+    "11111000000000010000022000111012"  # Arguments
+    "000//232323223102303200121111100"  # Stack values consumed
+    "11111111111111011101111110111011"  # Stack values output
+    "00000110111001001101000100000000"  # Position determiner
   ⟩
   m ← { # Mask of instruction starts
     n ← (↕≠b)+1+ba(⊣⊏˜≠⊸>×⊢)b
