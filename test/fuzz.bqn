@@ -42,8 +42,16 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 }
 
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
-⟨RandTyped,RandArith⟩ ← {
-  RandTyped ⇐ { (1⊸<⊸×m÷2) -˜ 𝕩 Range m←(𝕨<6)×2⋆2⋆𝕨 }
+⟨RandArith⟩ ← {
+  RandInt ← { (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆2⋆𝕨 }
+
+  floats ← ⟨2⋆¯1074,2⋆¯1022,(2-2⋆¯52)×2⋆1023⟩
+  RandFloat ← ⟨
+    (floats∾2⋆0‿8‿32‿100)_randChoose × Range⟜0 - 2÷˜Rand∘3
+    ⊢ (Rand⟜≠⊏⊢) (Rand(⊣≥⌈´⊸⌊)3+Rand∘+)˜∘≠⊸/∘(∾⟜-0∾floats∾∞)
+  ⟩_randChoose
+
+  RandTyped ← =⟜6◶⟨RandInt,RandFloat⊣⟩
 
   RN ← (0⌈-⟜1) ⌊ 1‿RandRank‿RandBound _randChoose
   RandSplit ← ⌽⍟(Rand∘2) (-≍⊢)⟜RN
@@ -67,4 +75,4 @@ RandDyArith ← {
 }
 
 types ← 0‿3‿4‿5‿6
-types { ! (𝕨+𝕩)≡𝕨--𝕩 }´∘RandDyArith⌜ 100⥊1e3
+types { ! (𝕨+𝕩)≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩𝕨--𝕩 }´∘RandDyArith⌜ 100⥊1e3
