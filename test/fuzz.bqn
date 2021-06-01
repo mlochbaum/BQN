@@ -1,4 +1,26 @@
 # Tester that checks primitives on random arguments
+
+opts ← {
+help ← 1↓"
+Fuzz testing. Options:
+  -h, --help: Print this message and exit
+  -b: Maximum bound (1e3)
+  -n: Number of iterations (100)
+  -t: Element type (0 3 4 5 6)
+
+Any number of types or bounds can be given; all combinations are tested."
+
+  o ← "-h"‿"--help"‿"-b"‿"-n"‿"-t"
+  oo ← (≠o) = oi ← o ⊐ a←•args
+  •Exit∘•Out∘help⍟(∨´2⊸>) oi
+
+  bounds‿num‿types ⇐ •BQN¨¨ 3↑2↓ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
+  "Only one iteration number can be given" ! 1≥≠num
+  num ↩ ≠◶⟨100,+´⟩ num
+  types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
+  bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
+}
+
 Squeeze‿ListVariations‿Variation‿ClearRefs ← •internal
 
 Range ← (•MakeRand 2).Range
@@ -81,7 +103,18 @@ _testConsistent_ ← {Match←𝔾
 }
 
 FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
-types ← 0‿3‿4‿5‿6
+monArith← +‿-‿×‿÷‿⋆‿√‿⌊‿⌈‿    ¬‿|
 dyArith ← +‿-‿×‿÷‿⋆‿√‿⌊‿⌈‿∧‿∨‿¬‿|‿≤‿<‿>‿≥‿=‿≠
-Test ← { 0○•Show˜⍟{ ¬ 𝕎 _testConsistent_ FlatMatch´ 𝕩 }⟜𝕩¨ dyArith }
-types Test∘RandDyArith⌜ 10⥊100
+
+TestMonArith ← {
+  t ← 𝕨 RandMonArith 𝕩
+  { ! 𝕏 _testConsistent_ FlatMatch t }¨ monArith
+}
+TestDyArith ← {
+  t ← 𝕨 RandDyArith 𝕩
+  { ! 𝕏 _testConsistent_ FlatMatch´ t }¨ dyArith
+}
+
+t←opts.types ⋄ b←opts.num/opts.bounds
+t TestMonArith⌜ b
+t TestDyArith ⌜ b
