@@ -1,4 +1,5 @@
 # Tester that checks primitives on random arguments
+Squeeze‿ListVariations‿Variation‿ClearRefs ← •internal
 
 Range ← (•MakeRand 2).Range
 Rand ← {𝕨 Range 1⌈𝕩}
@@ -64,7 +65,7 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
     ⊢ ⥊ RL⟜(1⌈RN)                           # Repeat
     Combine Rand‿⊢_randChoose⊸RL¨⟜RandSplit # Partition
   ⟩{ 8⊸≤◶⟨0,Rand∘(≠𝕗)⟩◶𝕗 }
-  RandArith ⇐ •internal.Squeeze ⊢ ⥊ RandList⟜(×´)
+  RandArith ⇐ Squeeze ⊢ ⥊ RandList⟜(×´)
 }
 
 # 𝕩 is bound
@@ -74,5 +75,13 @@ RandDyArith ← {
   𝕨⊸RandArith¨ (Rand 2) ⌽ ≍○<⟜Prefix RandShape 𝕩
 }
 
+_testConsistent_ ← {Match←𝔾
+  v ← <˘⍉> (5⌊´≠¨)⊸((Rand⟜≠⊏⊢)¨) ListVariations¨ a←𝕨≍○<𝕩
+  (ClearRefs@) ⊢ (∧´ ⊏ Match¨ 1⊸↓) (𝕨 (𝔽⊑∘⊢)⊘(𝔽´⊢) Variation¨⟜a)¨ v
+}
+
+FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
 types ← 0‿3‿4‿5‿6
-types { ! (𝕨+𝕩)≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩𝕨--𝕩 }´∘RandDyArith⌜ 100⥊1e3
+dyArith ← +‿-‿×‿÷‿⋆‿√‿⌊‿⌈‿∧‿∨‿¬‿|‿≤‿<‿>‿≥‿=‿≠
+Test ← { 0○•Show˜⍟{ ¬ 𝕎 _testConsistent_ FlatMatch´ 𝕩 }⟜𝕩¨ dyArith }
+types Test∘RandDyArith⌜ 10⥊100
