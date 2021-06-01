@@ -55,8 +55,8 @@ _eachd←{
     p←≢𝕨 ⋄ k←=𝕨 ⋄ q←≢𝕩
     "Mapping: Argument shape prefixes don't agree" ! p MatchS k↑q
     l←1×´k↓q
-    a←⥊𝕨 ⋄ b←⥊𝕩
-    q⥊⥊(≠a) (⊑⟜a𝔽l⊸×⊸+⊑b˙)⌜○↕ l
+    m←≠a←⥊𝕨 ⋄ b←⥊𝕩
+    q⥊m (⊑⟜a𝔽l⊸×⊸+⊑b˙)⌜○↕ l×m>0
   }
   =○=◶⟨>○=◶⟨𝔽_e⋄𝔽˜_e˜⟩⋄𝔽_d⟩
 }
