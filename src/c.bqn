@@ -10,7 +10,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "‿"                   # Ligature
   "·"                   # nOthing
   # Use last character in case of UTF-16 (like dzaima/BQN)
-  ¯1⊏˘10‿∘⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘" # Input (𝕣 pending; ℝ not allowed)
+  ¯1⊏˘11‿∘⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕣𝕗𝕘"# Input
   ".¯π∞"                # Numeric
   '0'+↕10               # Digit
   "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
@@ -20,7 +20,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
 bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
-bI←5≍⟜-⊸+bX
+bI←bX+≍⟜-5
 Pl←∾⟜("s"/˜1<≠)   # Pluralize
 _tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
 # Convert characters to numbers, mostly the same as tokens
@@ -31,7 +31,7 @@ CharCode←charSet{
 }
 
 vd←1+vi←⊑bN  # Start of identifier numbering (plus dot)
-charRole←4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯3,¯1‿0,¯2,0,5/⌽↕2⟩ # For first vd chars
+charRole←4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯3,¯1‿0,¯2,0,¬/5‿6⟩ # For first vd chars
 T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
@@ -83,7 +83,7 @@ Tokenize←{System‿vars←𝕨
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
   t{ie/˜↩𝕨⋄𝕨Fs𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep            # Remove the rest
   r←ir⌾((t M vd≍+´2↑kk)⊸/)(vd⌊t)⊏charRole∾0 # Role
-  t+↩5×t M⟨⊑bX,5⟩                           # Case-insensitive special names
+  t+↩(⊑bX)((⊢M≍⟜5)×5+3⊸+⊸≤)t                # Case-insensitive special names
   t-↩vi(<+10×=)t                            # Shift . to bX and variables back one
   ⟨t,r,k,is,ie⟩
 }
@@ -146,7 +146,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Block properties
   PN←1(∾/∾˜)(∨/⊣)⋄H←b¬∘PN=                  # Which blocks have a property
-  sn←(0‿3‿4‿5+⊑bI)⍋𝕩⋄sp←/𝕩 M bI             # Special name index
+  sn←(0‿3‿5‿6+⊑bI)⍋𝕩⋄sp←/𝕩 M bI             # Special name index
   fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn   # Block immediacy ¬fx and type ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
@@ -185,7 +185,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r⋄ar←at⊏r       # Assignment target; af for actual (non-export) assignment
   "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
-  aid←(¯5⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
+  aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
   aa←×g⊏ac←»+`(»⊸∨0=+`)⊸×gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩 # ac broadcasts it to the entire target
   nf←b¬∘PN ac<xv=vi-˜⊑bG                    # Namespace blocks
@@ -219,7 +219,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   dx←dg⊔zda∾(dig←⍋d/ig)⊏d(/≥1↓PN)ix         # Exported identifier mask
   idi←(uv⊸⊏∾(¯1+`du↓d)⊏dig⍋⊸⊏da≠⊸↓⊢)(⊏⟜fsc+⊒)ded∾df # Slot within frame
   uu←(ia<1«d)∧d(⊣+`⊸⊏·0⌾⊑PN)0<idd           # Unused marker
-  spi←((spf←sp⊏fi)⊏3×fx)+0⊸≤⊸+2+sp⊏xv       # Special name index
+  spi←((spf←sp⊏fi)⊏3×fx)+3+sp⊏xv            # Special name index
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
   ido←21+uu(⊢+10×>)ia∾sa                    # Opcode
