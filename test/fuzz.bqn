@@ -7,18 +7,30 @@ Fuzz testing. Options:
   -b: Maximum bound (1e3)
   -n: Number of iterations (100)
   -t: Element type (0 3 4 5 6)
+  -p: Primitives: both | mon%dy | mon%dy%both
 
 Any number of types or bounds can be given; all combinations are tested."
 
-  o ← "-h"‿"--help"‿"-b"‿"-n"‿"-t"
+  o ← "-h"‿"--help"‿"-b"‿"-n"‿"-t"‿"-p"
   oo ← (≠o) = oi ← o ⊐ a←•args
   •Exit∘•Out∘help⍟(∨´2⊸>) oi
 
-  bounds‿num‿types ⇐ •BQN¨¨ 3↑2↓ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
+  opts ← 2↓o≠⊸↑ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
+  bounds‿num‿types‿prims ⇐ •BQN¨¨⌾(¯1⊸↓) opts
   "Only one iteration number can be given" ! 1≥≠num
   num ↩ ≠◶⟨100,+´⟩ num
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
   bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
+
+  prims ↩ ((⊢-˜¬×+`+2×·¬∨´)'%'⊸=)¨⊸(⊔○∾) prims
+  "At most three %-separated primitive groups allowed" ! 3≥≠prims
+  arith ← ∾`"+-×÷⋆√⌊⌈¬|"‿"∧∨≤<>≥=≠"
+  Pr ← {
+    𝕩 ↩ 2 (↑((¬∘∊/⊣)∾⊢)¨⊏) 3 ↑ 𝕩
+    "Only arithmetic primitives supported" ! ∧´∾𝕩∊¨arith
+    𝕩
+  }
+  monArith‿dyArith ⇐ •BQN∘⥊¨¨ prims ↩ (0<≠)◶arith‿Pr prims
 }
 
 Squeeze‿ListVariations‿Variation‿ClearRefs ← •internal
@@ -103,16 +115,14 @@ _testConsistent_ ← {Match←𝔾
 }
 
 FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
-monArith← +‿-‿×‿÷‿⋆‿√‿⌊‿⌈‿    ¬‿|
-dyArith ← +‿-‿×‿÷‿⋆‿√‿⌊‿⌈‿∧‿∨‿¬‿|‿≤‿<‿>‿≥‿=‿≠
 
 TestMonArith ← {
   t ← 𝕨 RandMonArith 𝕩
-  { ! 𝕏 _testConsistent_ FlatMatch t }¨ monArith
+  { ! 𝕏 _testConsistent_ FlatMatch t }¨ opts.monArith
 }
 TestDyArith ← {
   t ← 𝕨 RandDyArith 𝕩
-  { ! 𝕏 _testConsistent_ FlatMatch´ t }¨ dyArith
+  { ! 𝕏 _testConsistent_ FlatMatch´ t }¨ opts.dyArith
 }
 
 t←opts.types ⋄ b←opts.num/opts.bounds
