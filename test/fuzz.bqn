@@ -114,13 +114,6 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
   RandChar ⇐ Squeeze @ + ·(1≠surr⊸⍋)⊸× (0≍ch_end⌊2⋆2⋆⊣)⊸RandInterval
 }
 
-# 𝕩 is bound
-RandMonArith ← RandArith⟜RandShape
-RandDyArith ← {
-  Prefix ← (∨`⌾⌽ 𝕩 ≥ ×`)⊸/ (Rand 1+≠)⊸↑
-  𝕨⊸RandArith¨ (Rand 2) ⌽ ≍○<⟜Prefix RandShape 𝕩
-}
-
 _testConsistent_ ← {Match←𝔾
   v ← <˘⍉> (5⌊´≠¨)⊸((Rand⟜≠⊏⊢)¨) ListVariations¨ a←𝕨≍○<𝕩
   (ClearRefs@) ⊢ (∧´ ⊏ Match¨ 1⊸↓) (𝕨 (𝔽⊑∘⊢)⊘(𝔽´⊢) Variation¨⟜a)¨ v
@@ -128,13 +121,27 @@ _testConsistent_ ← {Match←𝔾
 
 FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
 
-TestMonArith ← {
-  t ← 𝕨 RandMonArith 𝕩
-  { ! 𝕏 _testConsistent_ FlatMatch t }¨ opts.monArith
+TestMonArith ← opts.monArith{
+  (0<≠f←𝕗) ⊑ 1‿{
+    _t ← { ! 𝕏 _testConsistent_ FlatMatch 𝕗 }
+    (𝕨 RandArith RandShape 𝕩)_t¨ f
+  }
 }
-TestDyArith ← {
-  t ← 𝕨 RandDyArith 𝕩
-  { ! 𝕏 _testConsistent_ FlatMatch´ t }¨ opts.dyArith
+
+RandDyShape ← {
+  Prefix ← (∨`⌾⌽ 𝕩 ≥ ×`)⊸/ (Rand 1+≠)⊸↑
+  (Rand 2) ⌽ ≍○<⟜Prefix RandShape 𝕩
+}
+TestDyArith ← opts.dyArith{
+  (0<≠f←𝕗) ⊑ 1‿{
+    k ← 𝕨 ⋄ sh ← RandDyShape 𝕩
+    _t ← { ! 𝕏 _testConsistent_ FlatMatch´ 𝕗 }
+    (𝕨⊸RandArith¨ sh)_t¨ f
+    p‿m ← (∊/⊣)⟜f¨ ⟨+⟩‿⟨-⟩
+    rca ← ⟨RandChar,RandArith⟩
+    { ((⌽ ⍟(Rand∘2)rca){k𝕎𝕩}¨sh)_t 𝕩 }⎊1¨ p
+    { ((⊣`⍟(Rand∘2)rca){k𝕎𝕩}¨sh)_t 𝕩 }⎊1¨ m
+  }
 }
 
 t←opts.types ⋄ b←opts.num/opts.bounds
