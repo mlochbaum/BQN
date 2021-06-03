@@ -4,6 +4,7 @@
 
 Commentary on the best methods I know for implementing various primitives. Often there are many algorithms that are viable in different situations, and in these cases I try to discuss the tradeoffs.
 
+- [Replicate](replicate.md)
 - [Sorting](sort.md)
 
 Raw speed is of course the most important factor; I also consider predictability and memory usage to be important. Predictability mostly for the benefit of the programmer, but it's also important when there are multiple algorithms to be able to compute which one will be fastest. In some cases an algorithm is best on some subset of inputs, but is effectively useless because it's too difficult to tell if the input falls in that set. Whitney and other K users sometimes profess that binary size is critically important; I don't believe this.
