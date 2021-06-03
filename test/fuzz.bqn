@@ -77,7 +77,7 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 }
 
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
-⟨RandArith⟩ ← {
+⟨RandArith,RandChar,RandIndex⟩ ← {
   RandInt ← { (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆2⋆𝕨 }
 
   floats ← ⟨2⋆¯1074,2⋆¯1022,(2-2⋆¯52)×2⋆1023⟩
@@ -92,14 +92,26 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
   RandSplit ← ⌽⍟(Rand∘2) (-≍⊢)⟜RN
   Combine ← (⍋Rand˜∘≠)⊸⊏⍟(Rand∘2) ∾
 
-  RL ← {𝕨RandList𝕩}
-  RandList ⇐ ⟨
-    RandTyped                               # Random
-    ∧‿∨_randChoose RandTyped                # Sort
-    ⊢ ⥊ RL⟜(1⌈RN)                           # Repeat
-    Combine Rand‿⊢_randChoose⊸RL¨⟜RandSplit # Partition
-  ⟩{ 8⊸≤◶⟨0,Rand∘(≠𝕗)⟩◶𝕗 }
-  RandArith ⇐ Squeeze ⊢ ⥊ RandList⟜(×´)
+  _Rec_ ← {
+    S ← {𝕨R𝕩}
+    R ← ⟨
+      𝔽                                       # Random
+      ∧‿∨_randChoose 𝔽                        # Sort
+      ⊢ ⥊ S⟜(1⌈RN)                            # Repeat
+      Combine <⊸(𝔾‿⊢_randChoose⊸S¨)⟜RandSplit # Partition
+    ⟩{ 8⊸≤◶⟨0,Rand∘(≠𝕗)⟩◶𝕗 }
+    ⊢ ⥊ R⟜(×´⥊)
+  }
+
+  RandArith ⇐ Squeeze RandTyped _Rec_ Rand
+
+  ContractRange ← (⟨≍⟜0,0≍-⟩_randChoose·RN-˜´)⊸+
+  RandInterval ← (⊑∘⊣ + -˜´⊸(Rand˜)) _Rec_ ContractRange
+
+  RandIndex ⇐ Squeeze (0⊸≍ ⊣ ·!0⊸<)⊸RandInterval
+
+  ch_end ← 17×2⋆16 ⋄ surr ← (2⋆11)×27+↕2
+  RandChar ⇐ Squeeze @ + ·(1≠surr⊸⍋)⊸× (0≍ch_end⌊2⋆2⋆⊣)⊸RandInterval
 }
 
 # 𝕩 is bound
