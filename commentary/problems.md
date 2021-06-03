@@ -187,6 +187,9 @@ Select chooses whether the left argument maps to right argument axes or selects 
 ### Unclear primitive names
 Blanket issue for names that I don't find informative: "Solo", "Bins", "Find", and "Group".
 
+### Modifiers look looser than trains without spaces
+Consider `⋆∘-×˜`. It's just a sequence of three functions so the use of `∘` rather than `·` is to highlight structure: `⋆∘-` is more tightly bound so the suggestion is to consider this composition as a single entity. But in fact `-` is closer to `×˜` than to `⋆`, intuitively suggesting the opposite. Adding a space fixes it: `⋆∘- ×˜` visually connects `⋆∘-`. It's unfortunate that this is something the writer must do rather than something the notation encourages.
+
 ### Tacit exports can leak data
 One of the nice facets of BQN's module system is that it provides perfect encapsulation: if you have variables `a` and `b` in a namespace (or closure) initialized so that `a≤b`, and all exported operations maintain the property that `a≤b`, then that property will always be true. Well, not quite: if you define, say `Inc ⇐ IncA ⊣ IncB` to increase the values of both `a` and `b` by `𝕩`, then `Inc` maintains `a≤b`, but `IncA` doesn't—and it can be extracted with `•Decompose`. This isn't too serious because it sounds impossible to do accidentally, and it's easy to protect against.
 
