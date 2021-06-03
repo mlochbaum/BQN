@@ -12,7 +12,7 @@ Merge sort is better. It is deterministic, stable, and has optimal worst-case pe
 
 But that doesn't mean merge sort is always faster. Quicksort seems to work a little better branchlessly. For sorting, quicksort's partitioning can reduce the range of the data enough to use an extremely quick counting sort. Partitioning is also a natural fit for binary search, where it's mandatory for sensible cache behavior with large enough arguments. So it can be useful. But it doesn't merge, and can't easily be made to merge, and that's a shame.
 
-The same applies to the general categories of partitioning sorts (quicksort, radix sort, samplesort) and merging sorts (mergesort, timsort, multimerges). Radix sorts are definitely the best for some types and lengths, although the scattered accesses make their performance unpredictable and I think overall they're not worth it.
+The same applies to the general categories of partitioning sorts (quicksort, radix sort, samplesort) and merging sorts (mergesort, timsort, multimerges). Radix sorts are definitely the best for some types and lengths, although the scattered accesses make their performance unpredictable and I think overall they're not worth it. A million uniformly random 4-byte integers is nearly the best possible case for radix sort, so the fact that this seems to be the go-to sorting benchmarks means radix sorting looks better than it is.
 
 ## On binary search
 
@@ -30,6 +30,16 @@ For **Bins**, use a branching binary search: see [On binary search](#on-binary-s
 
 The name of the game here is "branchless".
 
-Sorting algorithms of interest are counting/bucket sort, [pdqsort](https://github.com/orlp/pdqsort) (some improvements of my own to be described here later), and [quadsort](https://github.com/scandum/quadsort) (good benchmarks but I haven't properly looked into it).
+Sorting algorithms of interest are counting sort and [pdqsort](https://github.com/orlp/pdqsort) (some improvements of my own to be described here later). However, these are both unusable for Grade.
+
+For small-range Grade, counting sort must be replaced with bucket sort, at a significant performance cost. I don't have any method I'm happy with for other data. Stabilizing pdqsort by sorting the indices at the end is possible but slow. [Wolfsort](https://github.com/scandum/wolfsort) is a hybrid radix/merge sort that might be better.
+
+[IPS⁴o](https://github.com/ips4o/ips4o) is a horrifyingly complicated samplesort thing. Stable, I think. For very large arrays it probably has the best memory access patterns, so a few samplesort passes could be useful.
 
 Vector binary search described in "Sub-nanosecond Searches" ([video](https://dyalog.tv/Dyalog18/?v=paxIkKBzqBU), [slides](https://www.dyalog.com/user-meetings/uploads/conference/dyalog18/presentations/D15_The_Interpretive_Advantage.zip)).
+
+### Counting and bucket sort
+
+Both counting and bucket sort are small-range algorithms that begin by counting the number of each possible value. Bucket sort, as used here, means that the counts are then used to place values in the appropriate position in the result in another pass. Counting sort does not read from the initial values again and instead reconstructs them from the counts. It might be written `(/≠¨∘⊔)⌾(-⟜min)` in BQN, with `≠¨∘⊔` as a single efficient operation.
+
+Bucket sort can be used for Grade or sort-by (`⍋⊸⊏`), but counting sort only works for sorting itself. It's not-even-unstable: there's no connection between result values and the input values except that they are constructed to be equal. But with [fast Indices](replicate.md#non-booleans-to-indices), Counting sort is vastly more powerful, and is effective with a range four to eight times the argument length. This is large enough that it might pose a memory usage problem, but the memory use can be made arbitrarily low by partitioning.
