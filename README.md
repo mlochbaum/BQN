@@ -58,6 +58,16 @@ Right at the beginning, you can use the bar above the online REPL to enter BQN c
 
 The [font comparison page](https://mlochbaum.github.io/BQN/fonts.html) shows several fonts that support BQN (including the one used on this site, BQN386). Most other monospace fonts are missing some BQN characters, such as double-struck letters `𝕨`, `𝕩` and so on, which will cause these characters to be rendered with a fallback font and possibly have the wrong width or look inconsistent.
 
+## Why would I use it?
+
+There are plenty of clean, modern languages out there, and a good number of array languages. I don't think any other language fits both descriptions quite so well as BQN, and I find the combination lets me write powerful and reliable programs quickly. What you find in the language will depend on your background.
+
+If you haven't yet used an array language, BQN will present you with new ways of thinking that can streamline the way you work with data and algorithms. There's no denying that array programming has begun to creep into the mainstream, and you might be wondering if BQN has anything to offer when you can hack reduces and filters with the best of them. It does: real array programming is different in character, with more and better array operations on immutable multidimensional arrays, and syntax better suited to them. Performance that resembles a low-level compiled language more than a high-level dynamic one. Primitives flow together and compose better—one aspect that sets BQN apart from other array languages is a set of combinators that's more intuitive than previous attempts. I also happen to think BQN's [character arithmetic](tutorial/expression.md#character-arithmetic) system would improve just about any language.
+
+If your favorite language is J, you are missing out even more! Array programmers never seem willing to accept that good ideas can come from people other than Iverson and that legends like John McCarthy and Barbara Liskov advanced human knowledge of how to express computation. They did, and being able to casually pass around first-class functions and mutable closures, with namespaces keeping everything organized, is a huge quality of life improvement. Writing APL again is claustrophobic, the syntax worries and constraints in functionality suddenly rushing back. BQN's mutable objects make methods such as graph algorithms that just don't have a good array implementation (no, your O(n³) matrix method doesn't scale) possible, even natural. Bytecode compilation, and NaN-boxing enabled by the based array model, mean it evaluates that scalar code many times faster than APL or J. The Unix-oriented scripting system stretches seamlessly from quick sketch to multi-file program.
+
+BQN has no intention of being the last word in programming, but could be a practical and elegant tool in your kit—even if only used to organize your thoughts and not to execute them. Give it a try!
+
 ## How do I get started?
 
 *Writing good learning material for a programming language is a pretty huge task, so neither the tutorials nor the documentation are complete. With some willingness to experiment and possibly outside knowledge of array programming, it's enough to get by, just not smooth sailing.*
@@ -75,3 +85,15 @@ There's a BQN channel on [Matrix](https://matrix.org/) (#bqn:matrix.org), which 
 BQNBot will run your code from chat! Begin your message with `bqn)` and our friend (designation B-QN) will evaluate the rest and show the output. While putting your code in blocks `` `like this` `` is easier to read, the bot just operates on plain text and doesn't require it.
 
 In addition to these forums, you can contact me personally via Github issues or with the email address shown in my Github profile.
+
+## Can I help out?
+
+Certainly! There are never enough hours in the day and contributors from beginner to advanced programmers are all welcome. If you're interested I recommend you ask on the forums first to get a feel for what exactly is needed.
+
+You will certainly feel an urge to skip this paragraph and get to the fun stuff, but the most important resource for implementing a language is **testing** and the most valuable one for building a language community is accessible introductions to the language and **learning materials**. These are both very demanding, but if you're willing to put in the work to advance BQN in the most effective way then this is it. One form of documentation that many users would appreciate is short descriptions—a sentence or two with examples—of the primitives for each glyph that can be displayed as help in the REPL. To be honest I'm lousy and making these and would prefer for someone else to do it.
+
+Work on BQN's **implementation** generally requires a high level of programming skill. We are focusing development effort on [CBQN](https://github.com/dzaima/CBQN). It's true that the entire compiler and a (decreasing) portion of the runtime is written in BQN, but it would be hard to do much with these as they are very nearly complete and performing satisfactorily. But there is a lot that needs to be written in C, including [system values](spec/system.md) and higher-performance [primitives](implementation/primitive/README.md). But there's no need to work on *our* implementation. BQN's [specification](spec/README.md) and [tests](test/README.txt) are there to enable you to write a conforming implementation, and it's also possible to take advantage of the self-hosted BQN sources by writing a [virtual machine](implementation/vm.md) that allows you to embed BQN in the language of your choice.
+
+Building **libraries** for BQN users can make writing programs in the language much more approachable. You are a better judge of which libraries are needed than I. Port some code from another language, implement some useful functionality in a field you specialize in, or try something new that interests you. A library should be structured as a file (which might load other files) that loads a namespace. This isn't too well-documented now, but see the [namespace documentation](doc/namespace.md) for hints.
+
+Those are possibilities, not limitations. The best way to contribute might be fixing something I never knew was wrong.
