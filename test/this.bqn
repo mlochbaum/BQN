@@ -4,7 +4,7 @@ files ↩ (0<≠)◶⟨1,∨´"all"⊸≡¨⟩◶⟨∾⟜".bqn"¨, •file.List
 
 Native ← Exec ← •BQN
 
-c ← ∾ ((0<≠)◶0‿('#'≠⊑)¨⊸/ · •FLines "cases/"⊸∾)¨ files
+c ← ∾ ((0<≠)◶0‿('#'≠⊑)¨⊸/ · •file.Lines "cases/"⊸∾)¨ files
 c ↩ ('!'≠⊑)¨⊸/⍟noerr c
 •Out 1↓∾' '⊸∾¨∾⟨
   ⟨"Running",•Repr≠c,"tests:"⟩
