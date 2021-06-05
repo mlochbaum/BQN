@@ -322,7 +322,7 @@ Replicate←⟨"/"
   RepInd
 ⟩_multiAxis○ToArray _fillBy_ ⊢
 
-IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1×´·𝕊⌜1↓d˙⟩0⊑d}
+IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, DNotInv◶⟨1,1×´·𝕊⌜1↓⊢⟩d˙⟩0⊑d}
 hfils ← {𝕏´{0 Fill 𝕏}‿⊢}⌜(⊢∾{𝕏˜}⌜)⊢‿{𝕎{𝕎⊘𝕏}𝕏}
 HomFil ← "=≠≡≢"_glyphLookup_(1‿1‿2‿3‿0⊏hfils)⊸{𝕎𝕩}
 _fillByPure_←{
@@ -768,7 +768,8 @@ ReorderAxesInv←{
 
 ⁼ ← {Inverse 𝕗}
 _inv_ ← {𝕘⋄𝕨𝔽𝕩}
-_undo ← {𝕗 (≢∧INF˙⊸≢)◶0‿((5=0⊸⊑)◶1‿(inv˙≢(≠-2˙)⊸⊑)∘Decompose⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
+DNotInv ← (5=0⊸⊑)◶1‿(inv˙≢(≠-2˙)⊸⊑)
+_undo ← {𝕗 (≢∧INF˙⊸≢)◶0‿(DNotInv∘Decompose⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
 IsConstant ← (3≤Type)◶⟨1 ⋄ (4=0⊸⊑)◶0‿('˙'_isGlyph(≠-1˙)⊸⊑)∘{Decompose𝕩}⊢⟩
 AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
 TrainInverse ← {
