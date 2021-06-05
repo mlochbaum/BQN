@@ -254,7 +254,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 }
 
 Compile←{
-  defaults←⟨⟩‿(("System values not supported"!0˙)¨)‿⟨⟩‿⟨⟩
+  defaults←⟨⟩‿(("System values not supported"!0˙)¨)‿⟨⟩‿(↕0)
   prims‿Sys‿vars‿redef ← ∾⟜(≠↓defaults˙) ≍○<⍟(4<≠)𝕨
   ⟨tok,role,val,t0,t1⟩←tx←sys‿vars Tokenize 𝕩
   ⟨bc,prim,blk,oi⟩←⟨role,⊑val,t0,t1,redef»0¨vars⟩ Parse tok
