@@ -580,7 +580,7 @@ Windows←{
 EncCell ← {
   f←𝕨↑≢𝕩 ⋄ c←1×´s←𝕨Cell𝕩 ⋄ d←⥊𝕩
   i←s⥊↕c
-  (f⥊{d⊏˜(c×𝕩)⊸+⌜i}⌜↕1×´f)˙_fillBy_{(<𝕩)⌜i} 𝕩
+  (f⥊{d⊏˜(c×𝕩)⊸+⌜i}⌜↕1×´f)˙_fillBy_{𝕩˙⌜i} 𝕩
 }
 _cells ← {
   F←𝔽 ⋄ _m←{𝔽⌜⊘(𝔽¨)_fillByPure_𝔽○(1⊸EncCell)}
