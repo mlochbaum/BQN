@@ -240,7 +240,7 @@ Glyph | 1 arg                        | 2 args
 `∾`   | [Join](../doc/join.md)       | [Join To](../doc/join.md)
 `≍`   | [Solo](../doc/couple.md)     | [Couple](../doc/couple.md)
 `⌽`   | [Reverse](../doc/reverse.md) | [Rotate](../doc/reverse.md#rotate)
-`↕`   |                              | Range
+`↕`   | Range                        |
 `¨`   | Each                         | Each
 `´`   | [Fold](../doc/fold.md#fold)
 
