@@ -9,7 +9,7 @@
 <p>Primitives have no side effects other than errors, and can't perform infinite computations, except in the case that the operand to a primitive modifier is a function that has side effects or never returns (primitive modifiers never perform computation when passed operands—they always bind the operands and act when called on arguments). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function with no side effects always returns the same result if passed the same arguments. Trains and list notation have the same properties, so that tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.</p>
 <p>Recursion is the primary way to perform potentially infinite computations in BQN, and it can be packaged into <a href="control.html">control structures</a> like <code><span class='Function'>While</span></code> for ease of use. A given BQN implementation might also provide <a href="../spec/system.html">system values</a> for &quot;impure&quot; tasks like file access or other I/O.</p>
 <h2 id="functions">Functions</h2>
-<p>Functions that have significant differences from APL functions are marked with an asterisk. Links for these entries go to dedicated BQN documentation while other links go to the APL Wiki.</p>
+<p>Functions that have significant differences from APL functions are marked with an asterisk. Primitives without an asterisk don't all have documentation; those without it link to the APL Wiki.</p>
 <table>
 <thead>
 <tr>
@@ -21,43 +21,43 @@
 <tbody>
 <tr>
 <td><code><span class='Function'>+</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Conjugate">Conjugate</a></td>
-<td><a href="https://aplwiki.com/wiki/Add">Add</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Conjugate</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Add</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>-</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Negate">Negate</a></td>
-<td><a href="https://aplwiki.com/wiki/Subtract">Subtract</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Negate</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Subtract</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>×</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Signum">Sign</a></td>
-<td><a href="https://aplwiki.com/wiki/Times">Multiply</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Sign</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Multiply</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>÷</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Reciprocal">Reciprocal</a></td>
-<td><a href="https://aplwiki.com/wiki/Divide">Divide</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Reciprocal</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Divide</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⋆</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Exponential">Exponential</a></td>
-<td><a href="https://aplwiki.com/wiki/Power_(function)">Power</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Exponential</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Power</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>√</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Square_Root">Square Root</a></td>
-<td><a href="https://aplwiki.com/wiki/Root">Root</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Square Root</a></td>
+<td><a href="arithmetic.html#basic-arithmetic">Root</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⌊</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Floor">Floor</a></td>
-<td><a href="https://aplwiki.com/wiki/Minimum">Minimum</a></td>
+<td><a href="arithmetic.html#additional-arithmetic">Floor</a></td>
+<td><a href="arithmetic.html#additional-arithmetic">Minimum</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⌈</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Ceiling">Ceiling</a></td>
-<td><a href="https://aplwiki.com/wiki/Maximum">Maximum</a></td>
+<td><a href="arithmetic.html#additional-arithmetic">Ceiling</a></td>
+<td><a href="arithmetic.html#additional-arithmetic">Maximum</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>∧</span></code></td>
@@ -76,8 +76,8 @@
 </tr>
 <tr>
 <td><code><span class='Function'>|</span></code></td>
-<td><a href="https://aplwiki.com/wiki/Magnitude">Absolute Value</a></td>
-<td><a href="https://aplwiki.com/wiki/Residue">Modulus</a></td>
+<td><a href="arithmetic.html#additional-arithmetic">Absolute Value</a></td>
+<td><a href="arithmetic.html#additional-arithmetic">Modulus</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>≤</span></code></td>

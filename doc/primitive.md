@@ -10,22 +10,22 @@ Recursion is the primary way to perform potentially infinite computations in BQN
 
 ## Functions
 
-Functions that have significant differences from APL functions are marked with an asterisk. Links for these entries go to dedicated BQN documentation while other links go to the APL Wiki.
+Functions that have significant differences from APL functions are marked with an asterisk. Primitives without an asterisk don't all have documentation; those without it link to the APL Wiki.
 
 | Glyph | Monadic                                             | Dyadic
 |-------|-----------------------------------------------------|---------
-| `+`   | [Conjugate](https://aplwiki.com/wiki/Conjugate)     | [Add](https://aplwiki.com/wiki/Add)
-| `-`   | [Negate](https://aplwiki.com/wiki/Negate)           | [Subtract](https://aplwiki.com/wiki/Subtract)
-| `×`   | [Sign](https://aplwiki.com/wiki/Signum)             | [Multiply](https://aplwiki.com/wiki/Times)
-| `÷`   | [Reciprocal](https://aplwiki.com/wiki/Reciprocal)   | [Divide](https://aplwiki.com/wiki/Divide)
-| `⋆`   | [Exponential](https://aplwiki.com/wiki/Exponential) | [Power](https://aplwiki.com/wiki/Power_(function))
-| `√`   | [Square Root](https://aplwiki.com/wiki/Square_Root) | [Root](https://aplwiki.com/wiki/Root)
-| `⌊`   | [Floor](https://aplwiki.com/wiki/Floor)             | [Minimum](https://aplwiki.com/wiki/Minimum)
-| `⌈`   | [Ceiling](https://aplwiki.com/wiki/Ceiling)         | [Maximum](https://aplwiki.com/wiki/Maximum)
+| `+`   | [Conjugate](arithmetic.md#basic-arithmetic)         | [Add](arithmetic.md#basic-arithmetic)
+| `-`   | [Negate](arithmetic.md#basic-arithmetic)            | [Subtract](arithmetic.md#basic-arithmetic)
+| `×`   | [Sign](arithmetic.md#basic-arithmetic)              | [Multiply](arithmetic.md#basic-arithmetic)
+| `÷`   | [Reciprocal](arithmetic.md#basic-arithmetic)        | [Divide](arithmetic.md#basic-arithmetic)
+| `⋆`   | [Exponential](arithmetic.md#basic-arithmetic)       | [Power](arithmetic.md#basic-arithmetic)
+| `√`   | [Square Root](arithmetic.md#basic-arithmetic)       | [Root](arithmetic.md#basic-arithmetic)
+| `⌊`   | [Floor](arithmetic.md#additional-arithmetic)        | [Minimum](arithmetic.md#additional-arithmetic)
+| `⌈`   | [Ceiling](arithmetic.md#additional-arithmetic)      | [Maximum](arithmetic.md#additional-arithmetic)
 | `∧`   | [Sort Up](order.md#sort)                            | [And](logic.md)*
 | `∨`   | [Sort Down](order.md#sort)                          | [Or](logic.md)*
 | `¬`   | [Not](logic.md)*                                    | [Span](logic.md)*
-| `\|`  | [Absolute Value](https://aplwiki.com/wiki/Magnitude)| [Modulus](https://aplwiki.com/wiki/Residue)
+| `\|`  | [Absolute Value](arithmetic.md#additional-arithmetic)| [Modulus](arithmetic.md#additional-arithmetic)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
 | `<`   | [Enclose](https://aplwiki.com/wiki/Enclose)         | [Less Than](https://aplwiki.com/wiki/Less_than)
 | `>`   | [Merge](couple.md)*                                 | [Greater Than](https://aplwiki.com/wiki/Greater_than)
