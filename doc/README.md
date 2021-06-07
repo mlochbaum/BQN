@@ -2,13 +2,18 @@
 
 # BQN documentation
 
-Here is the documentation for BQN, describing what features BQN has, how to use them (with examples), and why they were chosen. As it is considerably more in-depth than the [specification](../spec/README.md), the documentation is much less complete. The following pages are present now:
+BQN's documentation describes what features it has, how to use them (with examples), and why they were chosen. For a linear introduction to the language, see the [tutorials](../tutorial/README.md). While the core language [specification](../spec/README.md) is complete, the documentation still has some gaps.
 
 Overview:
 - [Syntax](syntax.md)
 - [Types](types.md)
 - [Primitives](primitive.md)
 - [Paradigms](paradigms.md)
+
+References:
+- [Glossary](glossary.md)
+- [BQN-Dyalog dictionary](fromDyalog.md)
+- [BQN-J dictionary](fromJ.md)
 
 Concepts:
 - [Based array theory](based.md)
@@ -40,11 +45,6 @@ Primitives:
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
 - [Transpose](transpose.md) (`⍉`)
 - [Windows](windows.md) (`↕`)
-
-References:
-- [Glossary](glossary.md)
-- [BQN-Dyalog dictionary](fromDyalog.md)
-- [BQN-J dictionary](fromJ.md)
 
 Environment:
 - [Embedded BQN](embed.md)
