@@ -2,9 +2,9 @@
 
 # BQN in programming paradigms
 
-It hangs onto weakly positive connotations somehow, but the term "multi-paradigm" should not really impress you. Let's dig into exactly which paradigms BQN supports and how.
+It hangs onto weakly positive connotations somehow, but the term "multi-paradigm" shouldn't impress you. Let's dig into exactly which paradigms BQN supports and how.
 
-This information won't really tell you what tasks BQN is good for: after all, it turns out you can write an efficient compiler entirely using array programming, something many people assumed was impossible. Instead, it tells you what approaches you can take to writing programs, and how comfortable you'll find it to work with BQN—or how much you can use it to stretch your brain in new directions.
+This information doesn't tell you what tasks BQN is good for: after all, it turns out you can write an efficient compiler entirely using array programming, something many people assumed was impossible. Instead, it tells you what approaches you can take to writing programs, and how comfortable you'll find it to start using BQN—or how much you can use it to stretch your brain in new directions.
 
 When programming in BQN, I almost always use array, tacit, and (slightly impure) functional styles, and encapsulate code in medium or large projects using namespaces. I sometimes use object-oriented or imperative programming in addition to these.
 
