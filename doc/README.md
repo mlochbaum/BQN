@@ -23,6 +23,7 @@ Concepts:
 - [Function trains](train.md)
 
 Primitives:
+- [Arithmetic](arithmetic.md) (`+-×÷⋆√⌊⌈|`)
 - [Array depth](depth.md) (`≡` and `⚇`)
 - [Assert](assert.md) (`!`)
 - [Deshape and Reshape](reshape.md) (`⥊`)
