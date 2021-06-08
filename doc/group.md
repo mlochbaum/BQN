@@ -4,6 +4,47 @@
 
 BQN replaces the [Key](https://aplwiki.com/wiki/Key) operator from J or Dyalog APL, and [many forms of partitioning](https://aplwiki.com/wiki/Partition_representations), with a single (ambivalent) Group function `⊔`. This function is somewhat related to the K function `=` of the same name, but results in an array rather than a dictionary.
 
+<!--GEN
+Num ← ·Highlight •Repr
+Str ← ·Highlight '"'(∾∾⊣)⊢
+wf ← Num¨ wv ← 0‿¯1‿¯1‿2‿0
+xf ← Str¨ xv ← "zero"‿"one"‿"two"‿"three"‿"four"
+zi ← ↕≠ zf ← wv⊔xf
+d ← 80‿28
+Pos ↩ Pos d⊸×
+dim ← 7‿7.3
+sh  ← 0.6‿0
+
+rc ← At "class=code|stroke-width=1|rx=12"
+g  ← "g"At"text-anchor=middle|font-family=BQN,monospace"
+tg ← "g"At"font-size=18px"
+cg ← "g"At"text-anchor=end|font-size=16px"
+lg ← "g"At"class=yellow|stroke-width=1"
+bg ← "g"At"class=green|stroke-width=1|style=fill:none"
+
+C ← (↕-2÷˜-⟜1)∘≠
+zgp ← (2÷˜»⊸+-⊢´)+`0.6+≠¨zf
+zp ← zgp + C¨ zf
+
+Text ← ("text" Attr Pos)⊸Enc
+ty‿txf‿tt ← ⟨
+  +`¯2.6‿1‿3‿1.5
+  ⟨C,  C,  ∾zp, zgp⟩
+  ⟨wf, xf, ∾zf, Num¨zi⟩
+⟩
+tp ← (tx←txf{𝕎𝕩}¨tt)≍¨¨ty
+lp ← (∾wv⊸⊔)⊸(((0.2‿¯0.5×⌜0‿1)+≍)¨)´1‿2⊏tp
+b ← (0.4⌈0.2+≠¨zf) {∾"M vhv"∾¨FmtNum (0‿1‿1‿0‿1⊏d)×(⟨𝕨÷¯2,¯2⟩+𝕩)∾⟨1,𝕨,¯1⟩}¨ 3⊑tp
+
+((∾˜d)×(¯2÷˜sh⊸+)⊸∾1‿0.2+dim) SVG g Enc ⟨
+  "rect" Elt rc ∾ (Pos -dim÷2)∾"width"‿"height"≍˘FmtNum d×dim-sh
+  tg Enc ∾tp Text¨○∾ tt
+  cg Enc ((¯0.8+⊑⊑tx)≍¨3↑ty) Text⟜Highlight¨ "𝕨"‿"𝕩"‿"𝕨⊔𝕩"
+  lg Enc (<"xy"≍⌜"12") ("line" Elt ≍˘○⥊)⟜(FmtNum d×⍉)¨ lp
+  bg Enc ("path" Elt "d"≍○<⊢)¨ b
+⟩
+-->
+
 ## Definition
 
 Group operates on a list of atomic-number [indices](indices.md) `𝕨` and an array `𝕩`, treated as a list of its major cells, to produce a list of groups, each containing some of the cells from `𝕩`. The two arguments have the same length, and each cell in `𝕩` is paired with the index in `𝕨` at the same position, which indicates which result group should include that cell.
