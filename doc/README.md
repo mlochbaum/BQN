@@ -30,6 +30,7 @@ Concepts:
 Primitives:
 - [Arithmetic](arithmetic.md) (`+-×÷⋆√⌊⌈|`)
 - [Array depth](depth.md) (`≡` and `⚇`)
+- [Array dimensions](shape.md) (`≢=≠`)
 - [Assert](assert.md) (`!`)
 - [Deshape and Reshape](reshape.md) (`⥊`)
 - [Fold and Insert](fold.md) (`´˝`)
