@@ -218,7 +218,7 @@ svg tspan {
 .bluegreen { fill:#55cbcb; stroke:#1c4e4e; } text.bluegreen { fill:#113939; stroke:none; }
 .yellow    { fill:#e2d17f; stroke:#a28237; } text.yellow    { fill:#7a5a0e; stroke:none; }
 .red       { fill:#ce8379; stroke:#861d17; } text.red       { fill:#510d09; stroke:none; }
-.green     { fill:#6fb360; stroke:#1c4622; } text.green     { fill:#14401a; stroke:none; }
+.green     { fill:#6fb360; stroke:#1b6720; } text.green     { fill:#14401a; stroke:none; }
 @media (prefers-color-scheme: dark) {
 .purple    { fill:#241922; stroke:#612d86; } text.purple    { fill:#6e2ca0; stroke:none; }
 .bluegreen { fill:#0e2525; stroke:#297f7f; } text.bluegreen { fill:#578d8d; stroke:none; }
