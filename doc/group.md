@@ -16,11 +16,13 @@ dim ← 7‿7.3
 sh  ← 0.6‿0
 
 rc ← At "class=code|stroke-width=1|rx=12"
-g  ← "g"At"text-anchor=middle|font-family=BQN,monospace"
-tg ← "g"At"font-size=18px"
-cg ← "g"At"text-anchor=end|font-size=16px"
-lg ← "g"At"class=yellow|stroke-width=1"
-bg ← "g"At"class=green|stroke-width=1|style=fill:none"
+Ge ← "g"⊸At⊸Enc
+g  ← "text-anchor=middle|font-family=BQN,monospace"
+dg ← "font-size=24px|text-anchor=start|fill=currentColor|opacity=0.9"
+tg ← "font-size=18px"
+cg ← "font-size=16px|text-anchor=end"
+lg ← "class=yellow|stroke-width=2"
+bg ← "class=green|stroke-width=1.5|style=fill:none"
 
 C ← (↕-2÷˜-⟜1)∘≠
 zgp ← (2÷˜»⊸+-⊢´)+`0.6+≠¨zf
@@ -28,20 +30,21 @@ zp ← zgp + C¨ zf
 
 Text ← ("text" Attr Pos)⊸Enc
 ty‿txf‿tt ← ⟨
-  +`¯2.6‿1‿3‿1.5
+  +`¯2.3‿1‿3‿1.3
   ⟨C,  C,  ∾zp, zgp⟩
   ⟨wf, xf, ∾zf, Num¨zi⟩
 ⟩
 tp ← (tx←txf{𝕎𝕩}¨tt)≍¨¨ty
 lp ← (∾wv⊸⊔)⊸(((0.2‿¯0.5×⌜0‿1)+≍)¨)´1‿2⊏tp
-b ← (0.4⌈0.2+≠¨zf) {∾"M vhv"∾¨FmtNum (0‿1‿1‿0‿1⊏d)×(⟨𝕨÷¯2,¯2⟩+𝕩)∾⟨1,𝕨,¯1⟩}¨ 3⊑tp
+b ← (0.4⌈0.2+≠¨zf) {∾"M vhv"∾¨FmtNum (0‿1‿1‿0‿1⊏d)×(⟨𝕨÷¯2,¯1.8⟩+𝕩)∾⟨1,𝕨,¯1⟩}¨ 3⊑tp
 
-((∾˜d)×(¯2÷˜sh⊸+)⊸∾1‿0.2+dim) SVG g Enc ⟨
+((∾˜d)×(-⊸∾0‿0.6)+(¯2÷˜sh⊸+)⊸∾1‿0.2+dim) SVG g Ge ⟨
   "rect" Elt rc ∾ (Pos -dim÷2)∾"width"‿"height"≍˘FmtNum d×dim-sh
-  tg Enc ∾tp Text¨○∾ tt
-  cg Enc ((¯0.8+⊑⊑tx)≍¨3↑ty) Text⟜Highlight¨ "𝕨"‿"𝕩"‿"𝕨⊔𝕩"
-  lg Enc (<"xy"≍⌜"12") ("line" Elt ≍˘○⥊)⟜(FmtNum d×⍉)¨ lp
-  bg Enc ("path" Elt "d"≍○<⊢)¨ b
+  dg Ge (¯1.2+⊑⊑tp) Text "Group"
+  tg Ge ∾tp Text¨○∾ tt
+  cg Ge ((¯0.8+⊑⊑tx)≍¨3↑ty) Text⟜Highlight¨ "𝕨"‿"𝕩"‿"𝕨⊔𝕩"
+  lg Ge (<"xy"≍⌜"12") ("line" Elt ≍˘○⥊)⟜(FmtNum d×⍉)¨ lp
+  bg Ge ("path" Elt "d"≍○<⊢)¨ b
 ⟩
 -->
 
