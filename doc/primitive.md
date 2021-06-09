@@ -2,15 +2,15 @@
 
 # BQN primitives
 
-*Primitives* are functions and modifiers that are built into the language and written with individual glyphs. The role of a primitive when written always matches its type (but you can use its value in other roles by assigning it or various other methods).
+*Primitives* are the basic functions and modifiers built into the language, written with individual glyphs. The role of a primitive when written always matches its type (but you can use its value in other roles by assigning it, or other methods).
 
-Primitives have no side effects other than errors, and can't perform infinite computations, except in the case that the operand to a primitive modifier is a function that has side effects or never returns (primitive modifiers never perform computation when passed operands—they always bind the operands and act when called on arguments). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function with no side effects always returns the same result if passed the same arguments. Trains and list notation have the same properties, so that tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.
+Primitives have no side effects other than errors, and can't perform infinite computations, except when a primitive modifier calls an operand function that does one of these things (this can only happen when arguments are passed, as primitive modifiers are always deferred). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function without them always returns the same result if passed the same arguments. Since trains and list notation have the same nice properties, tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.
 
 Recursion is the primary way to perform potentially infinite computations in BQN, and it can be packaged into [control structures](control.md) like `While` for ease of use. A given BQN implementation might also provide [system values](../spec/system.md) for "impure" tasks like file access or other I/O.
 
 ## Functions
 
-Functions that have significant differences from APL functions are marked with an asterisk. Primitives without an asterisk don't all have documentation; those without it link to the APL Wiki.
+Functions that have significant differences from APL functions are marked with an asterisk. A few of the non-asterisk links go the the APL Wiki currently.
 
 | Glyph | Monadic                                             | Dyadic
 |-------|-----------------------------------------------------|---------
@@ -83,7 +83,7 @@ Other modifiers control array traversal and iteration. In three cases a simpler 
 1-Modifier | Name                                  | 2-Modifier | Name
 -----------|---------------------------------------|------------|--------
 `˘`        | Cells                                 | `⎉`        | [Rank](https://aplwiki.com/wiki/Rank_(operator))
-`¨`        | [Each](https://aplwiki.com/wiki/Each) | `⚇`        | Depth
+`¨`        | [Each](https://aplwiki.com/wiki/Each) | `⚇`        | [Depth](depth.md#the-depth-modifier)
 `⌜`        | Table                                 |
 `⁼`        | Undo                                  | `⍟`        | Repeat
 `´`        | [Fold](fold.md)                       |
