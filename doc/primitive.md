@@ -34,8 +34,8 @@ Functions that have significant differences from APL functions are marked with a
 | `≠`   | [Length](shape.md)                                  | [Not Equals](https://aplwiki.com/wiki/Not_Equal_to)
 | `≡`   | [Depth](depth.md)*                                  | [Match](match.md)
 | `≢`   | [Shape](shape.md)                                   | [Not Match](match.md)
-| `⊣`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Left](https://aplwiki.com/wiki/Identity)
-| `⊢`   | [Identity](https://aplwiki.com/wiki/Identity)       | [Right](https://aplwiki.com/wiki/Identity)
+| `⊣`   | [Identity](identity.md)                             | [Left](identity.md)
+| `⊢`   | [Identity](identity.md)                             | [Right](identity.md)
 | `⥊`   | [Deshape](reshape.md)                               | [Reshape](reshape.md)*
 | `∾`   | [Join](join.md)*                                    | [Join to](join.md)
 | `≍`   | [Solo](couple.md)*                                  | [Couple](couple.md)*

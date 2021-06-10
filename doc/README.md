@@ -35,6 +35,7 @@ Primitives:
 - [Deshape and Reshape](reshape.md) (`⥊`)
 - [Fold and Insert](fold.md) (`´˝`)
 - [Group](group.md) (`⊔`)
+- [Identity functions](identity.md) (`⊢⊣`)
 - [Join and Join To](join.md) (`∾`)
 - [Logical functions](logic.md) (`∧∨¬`)
 - [Match](match.md) (`≡≢`)
