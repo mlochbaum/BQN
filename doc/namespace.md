@@ -2,7 +2,7 @@
 
 # Namespaces
 
-A namespace is a type of value that groups together several values (fields) from the same scope. A block or file returns a namespace if it contains any export arrows `⇐` at the top level, and fields from namespaces can be accessed with either dot syntax or destructuring assignment. A namespace that contains `↩` is mutable, so that its fields might change in value.
+A namespace is a type of value that groups together several values (fields) from the same scope. A block or file returns a namespace if it contains any export arrows `⇐` at the top level, and fields from namespaces can be accessed with either dot syntax or destructuring assignment. A namespace can be mutable only if any of the code in it uses `↩` to change the value of a field.
 
 The following quick example shows a few ways to use a namespace returned by `•Import`:
 
