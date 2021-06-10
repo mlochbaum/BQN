@@ -5,7 +5,7 @@
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
 <h1 id="namespaces">Namespaces</h1>
-<p>A namespace is a type of value that groups together several values (fields) from the same scope. A block or file returns a namespace if it contains any export arrows <code><span class='Gets'>⇐</span></code> at the top level, and fields from namespaces can be accessed with either dot syntax or destructuring assignment. A namespace that contains <code><span class='Gets'>↩</span></code> is mutable, so that its fields might change in value.</p>
+<p>A namespace is a type of value that groups together several values (fields) from the same scope. A block or file returns a namespace if it contains any export arrows <code><span class='Gets'>⇐</span></code> at the top level, and fields from namespaces can be accessed with either dot syntax or destructuring assignment. A namespace can be mutable only if any of the code in it uses <code><span class='Gets'>↩</span></code> to change the value of a field.</p>
 <p>The following quick example shows a few ways to use a namespace returned by <code><span class='Function'>•Import</span></code>:</p>
 <pre><span class='Value'>ns</span> <span class='Gets'>←</span> <span class='Function'>•Import</span> <span class='String'>&quot;file.bqn&quot;</span>
 <span class='Bracket'>⟨</span><span class='Value'>something</span><span class='Separator'>,</span> <span class='Value'>abbr</span><span class='Gets'>⇐</span><span class='Value'>abbreviation</span><span class='Bracket'>⟩</span> <span class='Gets'>←</span> <span class='Value'>ns</span>  <span class='Comment'># Destructure
