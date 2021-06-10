@@ -10,7 +10,7 @@ When programming in BQN, I almost always use array, tacit, and (slightly impure)
 
 ## Typing
 
-BQN is a **dynamically typed** language with a coarse [type system](types.md) that only distinguishes types when the difference is blindingly obvious. There is a single numeric type and a single unicode character type. A fast implementation such as dzaima/BQN will check to see when it can represent the data with a smaller type than the one offered by the language. BQN usually avoids implicit type conversion, with the exception that many primitives automatically convert atoms to unit arrays. The fact that a data value can be applied as a function to return itself could also be considered an implicit conversion.
+BQN is a **dynamically typed** language with a coarse [type system](types.md) that only distinguishes types when the difference is blindingly obvious. There is a single numeric type and a single unicode character type. A fast implementation such as CBQN will check to see when it can represent the data with a smaller type than the one offered by the language. BQN usually avoids implicit type conversion, with the exception that many primitives automatically convert atoms to unit arrays. The fact that a data value can be applied as a function to return itself could also be considered an implicit conversion.
 
 BQN has no "pointer" or "reference" type, and uses **automatic memory management**. Its data types are **immutable** while operations and namespaces are mutable; mutable data can create reference loops, which the implementation must account for in garbage collection but the programmer doesn't have to worry about.
 
@@ -18,7 +18,7 @@ Dynamic types and garbage collection introduce overhead relative to a statically
 
 ## Styles
 
-BQN is designed for **array** programming. The array is its only built-in collection type and is has many primitives designed to work with arrays.
+BQN is designed for **array** programming. The array is its only built-in collection type and it has many primitives designed to work with arrays.
 
 BQN is okay for **imperative** programming. Blocks are lists of statements. Variables can be modified with `↩`, and while there are no truly global variables, lexical scoping allows variables at the top level of a file, which are similar (`•Import` with no left argument saves and reuses results, so that data can be shared between files by loading the same namespace-defining file in each). BQN doesn't directly support **structured** programming (which refers to a particular way to structure programs; it also doesn't have a Goto statement, the "unstructured" alternative when the term was coined). However, its first-class functions allow a reasonably similar [imitation](control.md) of control structures.
 
