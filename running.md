@@ -24,7 +24,9 @@ The online REPL is [here](https://mlochbaum.github.io/BQN/try.html). The file [d
 
 #### CBQN
 
-C sources are kept in the [CBQN](https://github.com/dzaima/CBQN) repository, but it also depends on bytecode from the BQN sources here. Just running `make` will fetch saved bytecode from git; to use the latest bytecode, call `genRuntime` with this repository's path and run `make` again. `genRuntime` is pure BQN and could be run with another implementation (for example `$ path/BQN/bqn.js genRuntime path/BQN/` to use BQN on Node.js, which takes almost a minute) but there should be no need to do this.
+C sources are kept in the [CBQN](https://github.com/dzaima/CBQN) repository, but it also depends on bytecode from the BQN sources here. Running `make` gets a working copy right away with saved bytecode. Then to use the latest bytecode, call `$ ./BQN genRuntime …/BQN`, where `…/BQN` points to this repository, and run `make` again.
+
+`genRuntime` can also be run with another BQN implementation (the Node.js one works but takes up to a minute), and plain `./genRuntime` uses your system's `bqn` executable. I symlink `…/CBQN/BQN` to `~/bin/bqn` so I can easily use CBQN for scripting.
 
 CBQN uses the self-hosted runtime to achieve full primitive coverage, and implements specific primitives or parts of primitives natively to speed them up. This means primitives with native support—including everything used by the compiler—are fairly fast while others are much slower.
 
