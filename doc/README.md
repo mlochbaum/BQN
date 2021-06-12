@@ -39,6 +39,7 @@ Primitives:
 - [Join and Join To](join.md) (`∾`)
 - [Logical functions](logic.md) (`∧∨¬`)
 - [Match](match.md) (`≡≢`)
+- [Mapping](map.md) (`¨⌜`)
 - [Ordering functions](order.md) (`∧∨⍋⍒`)
 - [Prefixes and Suffixes](prefixes.md) (`↑↓`)
 - [Reverse and Rotate](reverse.md) (`⌽`)
