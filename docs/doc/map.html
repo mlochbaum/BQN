@@ -1,0 +1,239 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Mapping modifiers</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="mapping-modifiers">Mapping modifiers</h1>
+<p>Mapping a function over an array means to call it on each element of that array, creating an array of results. It's also possible to map over two arrays, applying the function to various choices of one element from each, but there's no longer a single correct way to iterate over these elements.</p>
+<p>BQN has two 1-modifiers to map over arrays: Each (<code><span class='Modifier'>¨</span></code>) and Table (<code><span class='Modifier'>⌜</span></code>). On two arguments, Table applies its operand to all combinations of elements while Each creates a one-to-one or one-to-many matching. Since they apply to elements, these modifiers are different from Cells (<code><span class='Modifier'>˘</span></code>) or its generalization Rank (<code><span class='Modifier2'>⎉</span></code>), which apply the function to array cells. The modifier <a href="depth.html#the-depth-modifier">Depth</a> (<code><span class='Modifier2'>⚇</span></code>) is a generalization of Each, so that <code><span class='Modifier'>¨</span></code> is <code><span class='Modifier2'>⚇</span><span class='Number'>¯1</span></code>; however, it can't be used to implement Table without some additional array operations.</p>
+<h2 id="one-argument-mapping">One-argument mapping</h2>
+<svg viewBox='-224 -21.6 680 187.2'>
+  <g fill='currentColor' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-184' y='0' width='600' height='158.4'/>
+    <g font-size='24px' fill='currentColor' opacity='0.9'><text x='-168' y='7.2'>Each/Table</text></g>
+    <g stroke='#7f651c' stroke-width='8' opacity='0.1'>
+      <line x1='0' x2='0' y1='14.4' y2='144'/>
+      <line x1='80' x2='80' y1='14.4' y2='144'/>
+      <line x1='160' x2='160' y1='14.4' y2='144'/>
+      <line x1='240' x2='240' y1='14.4' y2='144'/>
+      <line x1='320' x2='320' y1='14.4' y2='144'/>
+    </g>
+    <g font-size='18px' text-anchor='middle'>
+      <text x='0' y='50.4'>x0</text>
+      <text x='80' y='50.4'>x1</text>
+      <text x='160' y='50.4'>x2</text>
+      <text x='240' y='50.4'>x3</text>
+      <text x='320' y='50.4'>x4</text>
+      <text x='0' y='122.4'><tspan class='Function'>𝔽</tspan>x0</text>
+      <text x='80' y='122.4'><tspan class='Function'>𝔽</tspan>x1</text>
+      <text x='160' y='122.4'><tspan class='Function'>𝔽</tspan>x2</text>
+      <text x='240' y='122.4'><tspan class='Function'>𝔽</tspan>x3</text>
+      <text x='320' y='122.4'><tspan class='Function'>𝔽</tspan>x4</text>
+    </g>
+    <g font-size='22px' text-anchor='end' dy='0.2'>
+      <text x='-88' y='50.4'><tspan class='Value'>𝕩</tspan></text>
+      <text x='-88' y='122.4'><tspan class='Function'>𝔽</tspan><tspan class='Modifier'>¨</tspan><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g class='bluegreen' stroke-width='3' stroke-linecap='round' style='fill:none' opacity='0.7'>
+      <path d='M-32 30.24l-6.667 14.4l6.667 14.4'/>
+      <path d='M352 30.24l6.667 14.4l-6.667 14.4'/>
+      <path d='M-32 102.24l-6.667 14.4l6.667 14.4'/>
+      <path d='M352 102.24l6.667 14.4l-6.667 14.4'/>
+    </g>
+  </g>
+</svg>
+
+<p>On one argument, Each and Table are identical. They apply the function <code><span class='Function'>𝔽</span></code> to every element of <code><span class='Value'>𝕩</span></code>, and return an array with the same shape that contains each result.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaV4oycIDPigL804oC/MgoK4oaVwqggMuKAvzLipYoz4oC/NOKAvzI=">↗️</a><pre>    <span class='Function'>↕</span><span class='Modifier'>⌜</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+⟨ ⟨ 0 1 2 ⟩ ⟨ 0 1 2 3 ⟩ ⟨ 0 1 ⟩ ⟩
+
+    <span class='Function'>↕</span><span class='Modifier'>¨</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+┌─                       
+╵ ⟨ 0 1 2 ⟩ ⟨ 0 1 2 3 ⟩  
+  ⟨ 0 1 ⟩   ⟨ 0 1 2 ⟩    
+                        ┘
+</pre>
+<p>A nice way to examine what's being applied here is to make an argument where each element is a string describing itself, and an operand that describes its own application: <code><span class='String'>&quot;𝔽&quot;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span></code> will place an <code><span class='Function'>𝔽</span></code> in front of the argument, which is how functions are applied.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IvCdlL0i4oq44oi+wqggIjDiipHwnZWpIuKAvyIx4oqR8J2VqSLigL8iMuKKkfCdlakiCgp7KCcwJyvwnZWpKeKIviLiipHwnZWpIn3ijJwg4oaVMyAgIyBNYWtpbmcg8J2VqSB3aXRoIG1hcHBpbmcgaW5zdGVhZA==">↗️</a><pre>    <span class='String'>&quot;𝔽&quot;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>¨</span> <span class='String'>&quot;0⊑𝕩&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;1⊑𝕩&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;2⊑𝕩&quot;</span>
+⟨ "𝔽0⊑𝕩" "𝔽1⊑𝕩" "𝔽2⊑𝕩" ⟩
+
+    <span class='Brace'>{</span><span class='Paren'>(</span><span class='String'>'0'</span><span class='Function'>+</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>∾</span><span class='String'>&quot;⊑𝕩&quot;</span><span class='Brace'>}</span><span class='Modifier'>⌜</span> <span class='Function'>↕</span><span class='Number'>3</span>  <span class='Comment'># Making 𝕩 with mapping instead
+</span>⟨ "0⊑𝕩" "1⊑𝕩" "2⊑𝕩" ⟩
+</pre>
+<p>The applications are performed in index order: index <code><span class='Value'>…</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span></code>, then <code><span class='Value'>…</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span></code>, <code><span class='Value'>…</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span></code> and so on, until <code><span class='Value'>…</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span></code>. This can affect a program where the operand has side effects, such as the following one that appends its argument to <code><span class='Value'>o</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=b+KGkOKfqOKfqSDii4Qge2/iiL7in5w84oap8J2VqX3CqCAiaW5kZXgi4omNIm9yZGVyIiDii4Qgbw==">↗️</a><pre>    <span class='Value'>o</span><span class='Gets'>←</span><span class='Bracket'>⟨⟩</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span><span class='Value'>o</span><span class='Function'>∾</span><span class='Modifier2'>⟜</span><span class='Function'>&lt;</span><span class='Gets'>↩</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='String'>&quot;index&quot;</span><span class='Function'>≍</span><span class='String'>&quot;order&quot;</span> <span class='Separator'>⋄</span> <span class='Value'>o</span>
+"indexorder"
+</pre>
+<p>When an array is displayed, index order is the same as the top-to-bottom, left-to-right reading order of English. It's also the same as the ordering of <a href="reshape.html#deshape">Deshape</a>'s result, so that here <code><span class='Value'>o</span></code> ends up being <code><span class='Function'>⥊</span><span class='Value'>𝕩</span></code>. The dyadic cases described in the following sections will also have a defined evaluation order, but it's not easy to describe it in terms of the arguments: instead, the <em>result</em> elements are produced in index order.</p>
+<h2 id="table">Table</h2>
+<svg viewBox='-206.4 -21.6 696 345.6'>
+  <g fill='currentColor' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-126.4' y='0' width='536' height='316.8'/>
+    <g font-size='24px' fill='currentColor' opacity='0.9'><text x='-112' y='7.2'>Table</text></g>
+    <g stroke='#521f5e' stroke-width='8' opacity='0.1'>
+      <line x1='-105.6' x2='388.8' y1='125.28' y2='125.28'/>
+      <line x1='-105.6' x2='388.8' y1='197.28' y2='197.28'/>
+      <line x1='-105.6' x2='388.8' y1='269.28' y2='269.28'/>
+    </g>
+    <g stroke='#7f651c' stroke-width='8' opacity='0.1'>
+      <line x1='20' x2='20' y1='21.6' y2='295.2'/>
+      <line x1='100' x2='100' y1='21.6' y2='295.2'/>
+      <line x1='180' x2='180' y1='21.6' y2='295.2'/>
+      <line x1='260' x2='260' y1='21.6' y2='295.2'/>
+      <line x1='340' x2='340' y1='21.6' y2='295.2'/>
+    </g>
+    <g font-size='18px' text-anchor='middle'>
+      <text x='-72' y='57.6'></text>
+      <text x='20' y='57.6'>x0</text>
+      <text x='100' y='57.6'>x1</text>
+      <text x='180' y='57.6'>x2</text>
+      <text x='260' y='57.6'>x3</text>
+      <text x='340' y='57.6'>x4</text>
+      <text x='-72' y='129.6'>w0</text>
+      <text x='20' y='129.6'>w0<tspan class='Function'>𝔽</tspan>x0</text>
+      <text x='100' y='129.6'>w0<tspan class='Function'>𝔽</tspan>x1</text>
+      <text x='180' y='129.6'>w0<tspan class='Function'>𝔽</tspan>x2</text>
+      <text x='260' y='129.6'>w0<tspan class='Function'>𝔽</tspan>x3</text>
+      <text x='340' y='129.6'>w0<tspan class='Function'>𝔽</tspan>x4</text>
+      <text x='-72' y='201.6'>w1</text>
+      <text x='20' y='201.6'>w1<tspan class='Function'>𝔽</tspan>x0</text>
+      <text x='100' y='201.6'>w1<tspan class='Function'>𝔽</tspan>x1</text>
+      <text x='180' y='201.6'>w1<tspan class='Function'>𝔽</tspan>x2</text>
+      <text x='260' y='201.6'>w1<tspan class='Function'>𝔽</tspan>x3</text>
+      <text x='340' y='201.6'>w1<tspan class='Function'>𝔽</tspan>x4</text>
+      <text x='-72' y='273.6'>w2</text>
+      <text x='20' y='273.6'>w2<tspan class='Function'>𝔽</tspan>x0</text>
+      <text x='100' y='273.6'>w2<tspan class='Function'>𝔽</tspan>x1</text>
+      <text x='180' y='273.6'>w2<tspan class='Function'>𝔽</tspan>x2</text>
+      <text x='260' y='273.6'>w2<tspan class='Function'>𝔽</tspan>x3</text>
+      <text x='340' y='273.6'>w2<tspan class='Function'>𝔽</tspan>x4</text>
+    </g>
+    <g font-size='19px' text-anchor='middle'>
+      <text x='-104' y='100.8'>𝕨</text>
+      <text x='-24' y='28.8'>𝕩</text>
+    </g>
+    <Text x='-85.333' y='62.1' font-size='26px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier'>⌜</tspan></Text>
+    <g class='bluegreen' stroke-width='3' stroke-linecap='round' style='fill:none' opacity='0.7'>
+      <path d='M-12 37.44l-6.667 14.4l6.667 14.4'/>
+      <path d='M372 37.44l6.667 14.4l-6.667 14.4'/>
+      <path d='M-88 102.24l16 -6l16 6'/>
+      <path d='M-88 289.44l16 6l16 -6'/>
+      <path d='M7 98.4h-27v27'/>
+      <path d='M362 297.6h18v-18'/>
+    </g>
+  </g>
+</svg>
+
+<p>The Table modifier applies its operand function to every possible combination of one element from <code><span class='Value'>𝕨</span></code> and one from <code><span class='Value'>𝕩</span></code>, sort of like a structure-preserving and function-applying <a href="https://en.wikipedia.org/wiki/Cartesian_product">Cartesian product</a>. Below, it combines a length-3 list and a length-5 list into a shape <code><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>5</span></code> table.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IkFCQyIg4omN4oycICIwMTIzNCI=">↗️</a><pre>    <span class='String'>&quot;ABC&quot;</span> <span class='Function'>≍</span><span class='Modifier'>⌜</span> <span class='String'>&quot;01234&quot;</span>
+┌─                          
+╵ "A0" "A1" "A2" "A3" "A4"  
+  "B0" "B1" "B2" "B3" "B4"  
+  "C0" "C1" "C2" "C3" "C4"  
+                           ┘
+</pre>
+<p>Its name comes from the &quot;multiplication table&quot; or &quot;times table&quot; often used to teach arithmetic, and with it you can easily make such a table, by repeating the same argument with Self (<code><span class='Modifier'>˜</span></code>):</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w5fijJzLnCAxK+KGlTY=">↗️</a><pre>    <span class='Function'>×</span><span class='Modifier'>⌜˜</span> <span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>6</span>
+┌─                  
+╵ 1  2  3  4  5  6  
+  2  4  6  8 10 12  
+  3  6  9 12 15 18  
+  4  8 12 16 20 24  
+  5 10 15 20 25 30  
+  6 12 18 24 30 36  
+                   ┘
+</pre>
+<p>The arguments don't have to be lists (that is, rank 1). There's no restriction on their shapes at all! Much like the result shape is <code><span class='Value'>m</span><span class='Ligature'>‿</span><span class='Value'>n</span></code> if <code><span class='Value'>𝕨</span></code> is a list of length <code><span class='Value'>m</span></code> and <code><span class='Value'>𝕩</span></code> is a list of length <code><span class='Value'>n</span></code>, the result shape for an array <code><span class='Value'>𝕨</span></code> of shape <code><span class='Value'>r</span></code> and <code><span class='Value'>𝕩</span></code> of shape <code><span class='Value'>s</span></code> is <code><span class='Value'>r</span><span class='Function'>∾</span><span class='Value'>s</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IkEgIuKAvyJCICIg4oi+4oycICJ0aGUi4oC/ImZpcnN0IuKAvyJyb3ci4omNImFuZCLigL8idGhlIuKAvyJzZWNvbmQiCgriiaIgIkEgIuKAvyJCICIg4oi+4oycICJ0aGUi4oC/ImZpcnN0IuKAvyJyb3ci4omNImFuZCLigL8idGhlIuKAvyJzZWNvbmQi">↗️</a><pre>    <span class='String'>&quot;A &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;B &quot;</span> <span class='Function'>∾</span><span class='Modifier'>⌜</span> <span class='String'>&quot;the&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;first&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;row&quot;</span><span class='Function'>≍</span><span class='String'>&quot;and&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;the&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;second&quot;</span>
+┌─                              
+╎ "A the" "A first" "A row"     
+  "A and" "A the"   "A second"  
+                                
+  "B the" "B first" "B row"     
+  "B and" "B the"   "B second"  
+                               ┘
+
+    <span class='Function'>≢</span> <span class='String'>&quot;A &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;B &quot;</span> <span class='Function'>∾</span><span class='Modifier'>⌜</span> <span class='String'>&quot;the&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;first&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;row&quot;</span><span class='Function'>≍</span><span class='String'>&quot;and&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;the&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;second&quot;</span>
+⟨ 2 2 3 ⟩
+</pre>
+<p>Except for the more sophisticated shape, this result is exactly what you'd get if you deshaped each argument to a list. In each case, every element of <code><span class='Value'>𝕨</span></code> is visited in turn, and each time the element is paired with every element of <code><span class='Value'>𝕩</span></code>.</p>
+<h2 id="each">Each</h2>
+<svg viewBox='-224 -21.6 680 259.2'>
+  <defs>
+    <linearGradient id='gr' gradientUnits='userSpaceOnUse' x1='0' x2='0' y1='14.4' y2='216'>
+      <stop offset='0%' stop-color='#521f5e'/>
+      <stop offset='70%' stop-color='#7f651c'/>
+    </linearGradient>
+  </defs>
+  <g fill='currentColor' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-184' y='0' width='600' height='230.4'/>
+    <g font-size='24px' fill='currentColor' opacity='0.9'><text x='-160' y='7.2'>Each</text></g>
+    <g stroke='url(#gr)' stroke-width='8' opacity='0.1'>
+      <line x1='0' x2='0' y1='14.4' y2='216'/>
+      <line x1='80' x2='80' y1='14.4' y2='216'/>
+      <line x1='160' x2='160' y1='14.4' y2='216'/>
+      <line x1='240' x2='240' y1='14.4' y2='216'/>
+      <line x1='320' x2='320' y1='14.4' y2='216'/>
+    </g>
+    <g font-size='18px' text-anchor='middle'>
+      <text x='0' y='50.4'>w0</text>
+      <text x='80' y='50.4'>w1</text>
+      <text x='160' y='50.4'>w2</text>
+      <text x='240' y='50.4'>w3</text>
+      <text x='320' y='50.4'>w4</text>
+      <text x='0' y='122.4'>x0</text>
+      <text x='80' y='122.4'>x1</text>
+      <text x='160' y='122.4'>x2</text>
+      <text x='240' y='122.4'>x3</text>
+      <text x='320' y='122.4'>x4</text>
+      <text x='0' y='194.4'>w0<tspan class='Function'>𝔽</tspan>x0</text>
+      <text x='80' y='194.4'>w1<tspan class='Function'>𝔽</tspan>x1</text>
+      <text x='160' y='194.4'>w2<tspan class='Function'>𝔽</tspan>x2</text>
+      <text x='240' y='194.4'>w3<tspan class='Function'>𝔽</tspan>x3</text>
+      <text x='320' y='194.4'>w4<tspan class='Function'>𝔽</tspan>x4</text>
+    </g>
+    <g font-size='22px' text-anchor='end' dy='0.2'>
+      <text x='-88' y='50.4'><tspan class='Value'>𝕨</tspan>   </text>
+      <text x='-88' y='122.4'><tspan class='Value'>𝕩</tspan></text>
+      <text x='-88' y='194.4'><tspan class='Value'>𝕨</tspan><tspan class='Function'>𝔽</tspan><tspan class='Modifier'>¨</tspan><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g class='bluegreen' stroke-width='3' stroke-linecap='round' style='fill:none' opacity='0.7'>
+      <path d='M-32 30.24l-6.667 14.4l6.667 14.4'/>
+      <path d='M352 30.24l6.667 14.4l-6.667 14.4'/>
+      <path d='M-32 102.24l-6.667 14.4l6.667 14.4'/>
+      <path d='M352 102.24l6.667 14.4l-6.667 14.4'/>
+      <path d='M-32 174.24l-6.667 14.4l6.667 14.4'/>
+      <path d='M352 174.24l6.667 14.4l-6.667 14.4'/>
+    </g>
+  </g>
+</svg>
+
+<p>Given two arguments of matching shapes, Each performs what's sometimes called a &quot;zip&quot;, matching each element of <code><span class='Value'>𝕨</span></code> to the corresponding element of <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IkFCQ0QiIOKJjcKoICIwMTIzIg==">↗️</a><pre>    <span class='String'>&quot;ABCD&quot;</span> <span class='Function'>≍</span><span class='Modifier'>¨</span> <span class='String'>&quot;0123&quot;</span>
+⟨ "A0" "B1" "C2" "D3" ⟩
+</pre>
+<p>This makes for a lot fewer applications than Table. Only the diagonal elements from Table's result are seen, as we can check with <a href="transpose.html">Transpose</a>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MOKAvzAg4o2JICJBQkNEIiDiiY3ijJwgIjAxMjMi">↗️</a><pre>    <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span> <span class='Function'>⍉</span> <span class='String'>&quot;ABCD&quot;</span> <span class='Function'>≍</span><span class='Modifier'>⌜</span> <span class='String'>&quot;0123&quot;</span>
+⟨ "A0" "B1" "C2" "D3" ⟩
+</pre>
+<p>If the argument lengths don't match then Each gives an error. This contrasts with zip in many languages, which drops elements from the longer argument. This is rarely wanted in BQN, and having an error right away saves debugging time.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IkFCQyIg4omNwqggIjAxMjM0Ig==">↗️</a><pre>    <span class='String'>&quot;ABC&quot;</span> <span class='Function'>≍</span><span class='Modifier'>¨</span> <span class='String'>&quot;01234&quot;</span>
+ERROR
+</pre>
+<p>Arguments can have any shape as long as the axis lengths match up. As with Table, the result elements don't depend on this shape but the result shape does.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KD7in6gyMOKAvzMw4oC/MTAsNTDigL80MOKAvzYw4p+pKSAr4p+c4oaVwqggMuKAvzHigL8w4omNM+KAvzLigL8x">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>&gt;</span><span class='Bracket'>⟨</span><span class='Number'>20</span><span class='Ligature'>‿</span><span class='Number'>30</span><span class='Ligature'>‿</span><span class='Number'>10</span><span class='Separator'>,</span><span class='Number'>50</span><span class='Ligature'>‿</span><span class='Number'>40</span><span class='Ligature'>‿</span><span class='Number'>60</span><span class='Bracket'>⟩</span><span class='Paren'>)</span> <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Function'>↕</span><span class='Modifier'>¨</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Function'>≍</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+┌─                               
+╵ ⟨ 20 21 ⟩    ⟨ 30 ⟩    ⟨⟩      
+  ⟨ 50 51 52 ⟩ ⟨ 40 41 ⟩ ⟨ 60 ⟩  
+                                ┘
+</pre>
+<p>But arguments don't have to have exactly the same shape: just the same length along corresponding axes. These axes are matched up according to the <a href="leading.html">leading axis convention</a>, so that one argument's shape has to be a prefix of the other's. With equal ranks, the shapes do have to match as we've seen above.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omiICgw4oC/MuKAvzbipYpAKSDiiY3CqCAw4oC/MeKlijAgICMgVG9vIHNtYWxsCuKJoiAoMOKAvzLigL824qWKQCkg4omNwqggMOKAvzLipYowICAjIEp1c3QgcmlnaHQK4omiICgw4oC/MuKAvzbipYpAKSDiiY3CqCAw4oC/M+KlijAgICMgVG9vIGxhcmdl">↗️</a><pre>    <span class='Function'>≢</span> <span class='Paren'>(</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Function'>⥊</span><span class='String'>@</span><span class='Paren'>)</span> <span class='Function'>≍</span><span class='Modifier'>¨</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Function'>⥊</span><span class='Number'>0</span>  <span class='Comment'># Too small
+</span>ERROR
+    <span class='Function'>≢</span> <span class='Paren'>(</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Function'>⥊</span><span class='String'>@</span><span class='Paren'>)</span> <span class='Function'>≍</span><span class='Modifier'>¨</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='Number'>0</span>  <span class='Comment'># Just right
+</span>⟨ 0 2 6 ⟩
+    <span class='Function'>≢</span> <span class='Paren'>(</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Function'>⥊</span><span class='String'>@</span><span class='Paren'>)</span> <span class='Function'>≍</span><span class='Modifier'>¨</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Function'>⥊</span><span class='Number'>0</span>  <span class='Comment'># Too large
+</span>ERROR
+</pre>
+<p>Leading axis agreement is described further <a href="leading.html#leading-axis-agreement">here</a>.</p>
