@@ -138,6 +138,33 @@ Modulus (`|`) is similar to the modular division operation written `%` in C-like
 
 Unlike in APL, a left argument of 0 fails or returns a not-a-number result. Set `𝕨` to `∞` to keep `𝕩` intact, but do note that if `𝕩<0` this will return `∞`.
 
+## Comparisons
+
+BQN uses the six standard comparison functions of mathematics. For each pair of atoms the result is 1 if the comparison is true and 0 if it's false. These functions do the obvious thing with numeric arguments, but are extended to other types as well.
+     
+| Name                     | Glyph | < | = | > | Domain
+|--------------------------|:-----:|---|---|---|-------
+| Equals                   | `=`   | 0 | 1 | 0 | Any
+| Not Equals               | `≠`   | 1 | 0 | 1 | Any
+| Less Than or Equal to    | `≤`   | 1 | 1 | 0 | Data
+| Less Than                | `<`   | 1 | 0 | 0 | Data
+| Greater Than             | `>`   | 0 | 0 | 1 | Data
+| Greater Than or Equal to | `≥`   | 0 | 1 | 1 | Data
+
+The *ordered* comparisons `≤<>≥` are defined on numbers and characters (and arrays, by pervasion); they give an error for operation or namespace arguments. They order numbers as you'd expect, and characters by their code points. A character is considered greater than any number, even if it's `∞`.
+
+        3‿4‿5‿6 ≤ 5
+
+        'c' < "acbz"
+
+        ¯∞‿π‿∞ ≥ @‿'0'‿'?'
+
+Equals and Not Equals are the two *equality* comparisons. Equals tests for [atomic equality](match.md#atomic-equality) between each pair of atoms, as described in the Match documentation. Essentially, it returns `1` only if the two values are indistinguishable to BQN and `0` otherwise. Values of different types can never be equal, and characters are equal when they have the same code point.
+
+        +‿-‿×‿÷ = ⊑⟨-⟩
+
+        'b' ≠ "abacba"
+
 ## Pervasion
 
 Arithmetic primitives act as though they are given [depth](depth.md#the-depth-modifier) 0, so that with array arguments they treat each atom independently. While the examples above use only numbers or lists of them, arithmetic applies to nested and high-rank arrays just as easily.
