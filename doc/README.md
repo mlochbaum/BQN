@@ -43,6 +43,7 @@ Primitives:
 - [Mapping](map.md) (`¨⌜`)
 - [Ordering functions](order.md) (`∧∨⍋⍒`)
 - [Prefixes and Suffixes](prefixes.md) (`↑↓`)
+- [Range](range.md) (`↕`)
 - [Reverse and Rotate](reverse.md) (`⌽`)
 - [Self-comparison functions](selfcmp.md) (`⊐⊒∊⍷`)
 - [Shift functions](shift.md) (`»«`)

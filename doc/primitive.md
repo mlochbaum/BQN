@@ -41,7 +41,7 @@ Functions that have significant differences from APL functions are marked with a
 | `≍`   | [Solo](couple.md)*                                  | [Couple](couple.md)*
 | `↑`   | [Prefixes](prefixes.md)*                            | [Take](https://aplwiki.com/wiki/Take)
 | `↓`   | [Suffixes](prefixes.md)*                            | [Drop](https://aplwiki.com/wiki/Drop)
-| `↕`   | [Range](https://aplwiki.com/wiki/Index_Generator)   | [Windows](windows.md)*
+| `↕`   | [Range](range.md)                                   | [Windows](windows.md)*
 | `»`   | [Nudge](shift.md)*                                  | [Shift Before](shift.md)*
 | `«`   | [Nudge Back](shift.md)*                             | [Shift After](shift.md)*
 | `⌽`   | [Reverse](reverse.md)                               | [Rotate](reverse.md#rotate)
