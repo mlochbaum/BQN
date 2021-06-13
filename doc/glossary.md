@@ -7,7 +7,7 @@ Below are short, and sometimes vague, definitions of terms used to describe BQN 
 ## Types
 
 * **Value**: Something that can be stored in variables and manipulated by a BQN programmer.
-* [**Type**](types.md): One of six possible kinds of value.
+* [**Type**](types.md): One of seven possible kinds of value.
 
 The possible types are:
 * [**Number**](types.md#numbers): Like some caveman was counting but then forty thousand years of math happened to it.
@@ -16,6 +16,7 @@ The possible types are:
 * [**Function**](types.md#functions): An operation that is called on one or two arguments.
 * [**1-modifier**](types.md#modifiers): An operation that is called on one operand.
 * [**2-modifier**](types.md#modifiers): An operation that is called on two operands.
+* [**Namespace**](namespace.md): A container for variables, some of which are exposed as fields.
 
 A few terms refer to multiple types collectively:
 * **Atom**: A value that's not an array.

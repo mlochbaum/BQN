@@ -25,7 +25,7 @@
 <p>Match compares arrays based on their fundamental properties—shape and elements—and not the <a href="../spec/inferred.html#fill-elements">fill element</a>, which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for <code><span class='String'>'a'</span><span class='Ligature'>‿</span><span class='String'>'b'</span><span class='Ligature'>‿</span><span class='String'>'c'</span></code>, it should still be considered to match <code><span class='String'>&quot;abc&quot;</span></code>.</p>
 <p>To give a precise definition, two arrays are considered to match if they have the same shape and all corresponding elements from the two arrays match. Every array has a finite <a href="depth.html">depth</a> so this recursive definition always ends up comparing non-arrays, or atoms. An array never matches an atom, so the result if only one argument is an atom is <code><span class='Number'>0</span></code>. The interesting case is when both arguments are atoms, discussed below.</p>
 <h2 id="atomic-equality">Atomic equality</h2>
-<p>Atoms in BQN have five possible <a href="types.html">types</a>: number, character, function, 1-modifier, and 2-modifier. Equality is not allowed to fail for any two arguments, so it needs to be defined on all of these types.</p>
+<p>Atoms in BQN have six possible <a href="types.html">types</a>: number, character, function, 1-modifier, 2-modifier, and namespace. Equality is not allowed to fail for any two arguments, so it needs to be defined on all of these types.</p>
 <p>Starting with the easiest rules, values with different types are never equal to each other.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oJ2EnLCArLCAz4p+pID0g4p+oLeKfnMK7LCAnKycsIDPLmeKfqQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='String'>'a'</span><span class='Separator'>,</span> <span class='Function'>+</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span><span class='Separator'>,</span> <span class='String'>'+'</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Modifier'>˙</span><span class='Bracket'>⟩</span>
 ⟨ 0 0 0 ⟩
@@ -36,11 +36,11 @@
     <span class='Number'>1.25</span> <span class='Function'>=</span> <span class='Number'>1</span> <span class='Function'>+</span> <span class='Number'>0.25</span>
 1
 </pre>
-<p>Operations are more difficult. Here there are three cases:</p>
+<p>Mutable types are more difficult. Here there are three cases:</p>
 <ul>
 <li>Primitives are equal if they have the same glyph.</li>
 <li>Compound functions or modifiers are split into components.</li>
-<li>Block instances are equal if they are the same instance.</li>
+<li>Block instances or namespaces are equal if they are the same instance.</li>
 </ul>
 <p>The first two are fairly similar to how numbers and arrays work. Primitives and compounds like trains, or modifiers with bound operands, are immutable, so they are defined purely by what components they contain.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oKywtLMOX4p+pID0g4p+oKywtLMO34p+pCuKfqCsgLSDDl+KfqSA9IOKfqCsgLSDDt+KfqSAgIyBDb21wYXJlIHR3byB0aHJlZS10cmFpbnMgY29tcG9uZW50LXdpc2UK4p+oKyAtIMO34p+pID0g4p+oKyAtIMO34p+p">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Function'>×</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Function'>÷</span><span class='Bracket'>⟩</span>

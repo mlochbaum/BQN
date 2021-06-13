@@ -21,7 +21,7 @@ To give a precise definition, two arrays are considered to match if they have th
 
 ## Atomic equality
 
-Atoms in BQN have five possible [types](types.md): number, character, function, 1-modifier, and 2-modifier. Equality is not allowed to fail for any two arguments, so it needs to be defined on all of these types.
+Atoms in BQN have six possible [types](types.md): number, character, function, 1-modifier, 2-modifier, and namespace. Equality is not allowed to fail for any two arguments, so it needs to be defined on all of these types.
 
 Starting with the easiest rules, values with different types are never equal to each other.
 
@@ -32,10 +32,10 @@ Two characters are equal when they have the same code point. Numeric equality de
         'x' = "wxyz"
         1.25 = 1 + 0.25
 
-Operations are more difficult. Here there are three cases:
+Mutable types are more difficult. Here there are three cases:
 - Primitives are equal if they have the same glyph.
 - Compound functions or modifiers are split into components.
-- Block instances are equal if they are the same instance.
+- Block instances or namespaces are equal if they are the same instance.
 
 The first two are fairly similar to how numbers and arrays work. Primitives and compounds like trains, or modifiers with bound operands, are immutable, so they are defined purely by what components they contain.
 
