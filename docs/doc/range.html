@@ -1,0 +1,139 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Range</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="range">Range</h1>
+<p>Range (<code><span class='Function'>↕</span></code>) is a monadic function that creates arrays of <a href="indices.html">indices</a> (like APL's famous <a href="https://aplwiki.com/wiki/Index_Generator">iota</a> function). Each element in the result is its own index.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVIDYKCuKGlSAy4oC/Mw==">↗️</a><pre>    <span class='Function'>↕</span> <span class='Number'>6</span>
+⟨ 0 1 2 3 4 5 ⟩
+
+    <span class='Function'>↕</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+┌─                         
+╵ ⟨ 0 0 ⟩ ⟨ 0 1 ⟩ ⟨ 0 2 ⟩  
+  ⟨ 1 0 ⟩ ⟨ 1 1 ⟩ ⟨ 1 2 ⟩  
+                          ┘
+</pre>
+<p>It's really two different functions packed together: if <code><span class='Value'>𝕩</span></code> is a natural number—a length—then it returns a list of numeric indices, but if it's a list of numbers, then it returns an array of list indices. This means the result always has <a href="depth.html">depth</a> one more than the argument.</p>
+<p>The two kinds of index correspond to BQN's two selection functions: Select (<code><span class='Function'>⊏</span></code>) works with indices along an axis, which are numbers, and Pick (<code><span class='Function'>⊑</span></code>) works with element indices, which are lists. The examples below would fail if we swapped these around. Each result from Range is a length-6 list, but their elements are different.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVNgoKKOKGlTYpIOKKjyAic2VsZWN0IgoK4oaV4p+oNuKfqQoKKOKGleKfqDbin6kpIOKKkSAiIHBpY2sgIg==">↗️</a><pre>    <span class='Function'>↕</span><span class='Number'>6</span>
+⟨ 0 1 2 3 4 5 ⟩
+
+    <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>6</span><span class='Paren'>)</span> <span class='Function'>⊏</span> <span class='String'>&quot;select&quot;</span>
+"select"
+
+    <span class='Function'>↕</span><span class='Bracket'>⟨</span><span class='Number'>6</span><span class='Bracket'>⟩</span>
+⟨ ⟨ 0 ⟩ ⟨ 1 ⟩ ⟨ 2 ⟩ ⟨ 3 ⟩ ⟨ 4 ⟩ ⟨ 5 ⟩ ⟩
+
+    <span class='Paren'>(</span><span class='Function'>↕</span><span class='Bracket'>⟨</span><span class='Number'>6</span><span class='Bracket'>⟩</span><span class='Paren'>)</span> <span class='Function'>⊑</span> <span class='String'>&quot; pick &quot;</span>
+" pick "
+</pre>
+<p>They also correspond to Length (<code><span class='Function'>≠</span></code>) and Shape (<code><span class='Function'>≢</span></code>): for an array <code><span class='Value'>a</span></code>, <code><span class='Function'>↕≠</span><span class='Value'>a</span></code> gives the indices of major cells, while <code><span class='Function'>↕≢</span><span class='Value'>a</span></code> gives the indices of all elements.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNOKAvzLipYpACgrihpUg4omgIGEKCuKGlSDiiaIgYQ==">↗️</a><pre>    <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>@</span>
+
+    <span class='Function'>↕</span> <span class='Function'>≠</span> <span class='Value'>a</span>
+⟨ 0 1 2 3 ⟩
+
+    <span class='Function'>↕</span> <span class='Function'>≢</span> <span class='Value'>a</span>
+┌─                 
+╵ ⟨ 0 0 ⟩ ⟨ 0 1 ⟩  
+  ⟨ 1 0 ⟩ ⟨ 1 1 ⟩  
+  ⟨ 2 0 ⟩ ⟨ 2 1 ⟩  
+  ⟨ 3 0 ⟩ ⟨ 3 1 ⟩  
+                  ┘
+</pre>
+<h2 id="number-range">Number range</h2>
+<p>Calling <code><span class='Function'>↕</span></code> on an atom, which must be a natural number, is the more common case. This gives us the list of natural numbers less than <code><span class='Value'>𝕩</span></code> (and starting at <code><span class='Number'>0</span></code>, the first natural number as BQN defines it). You can also get the first <code><span class='Value'>b</span></code> integers starting at <code><span class='Value'>a</span></code> with <code><span class='Value'>a</span><span class='Function'>+↕</span><span class='Value'>b</span></code>, or the natural numbers from <code><span class='Value'>a</span></code> to <code><span class='Value'>b</span></code> with <code><span class='Value'>a</span><span class='Function'>↓↕</span><span class='Value'>b</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVNAoKNSArIOKGlTQKCjIg4oaTIOKGlTQ=">↗️</a><pre>    <span class='Function'>↕</span><span class='Number'>4</span>
+⟨ 0 1 2 3 ⟩
+
+    <span class='Number'>5</span> <span class='Function'>+</span> <span class='Function'>↕</span><span class='Number'>4</span>
+⟨ 5 6 7 8 ⟩
+
+    <span class='Number'>2</span> <span class='Function'>↓</span> <span class='Function'>↕</span><span class='Number'>4</span>
+⟨ 2 3 ⟩
+</pre>
+<p>The result of <code><span class='Function'>↕</span><span class='Value'>𝕩</span></code> is a list of length <code><span class='Value'>𝕩</span></code>, but doesn't include <code><span class='Value'>𝕩</span></code> itself. That's just how counting starting at 0 works. It does mean we can create a length-0 list easily:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVIDA=">↗️</a><pre>    <span class='Function'>↕</span> <span class='Number'>0</span>
+⟨⟩
+</pre>
+<p>Like all other results of <code><span class='Function'>↕</span></code> on a number, <code><span class='Function'>↕</span><span class='Number'>0</span></code> has a fill of 0.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NCDihpEg4oaVMAoKNCDihpEg4oaVMw==">↗️</a><pre>    <span class='Number'>4</span> <span class='Function'>↑</span> <span class='Function'>↕</span><span class='Number'>0</span>
+⟨ 0 0 0 0 ⟩
+
+    <span class='Number'>4</span> <span class='Function'>↑</span> <span class='Function'>↕</span><span class='Number'>3</span>
+⟨ 0 1 2 0 ⟩
+</pre>
+<p>Adding a character to a range produces a character range, with space as the fill.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2InICsg4oaVOAoKwrvijZ8zICdiJyvihpU4">↗️</a><pre>    <span class='String'>'b'</span> <span class='Function'>+</span> <span class='Function'>↕</span><span class='Number'>8</span>
+"bcdefghi"
+
+    <span class='Function'>»</span><span class='Modifier2'>⍟</span><span class='Number'>3</span> <span class='String'>'b'</span><span class='Function'>+↕</span><span class='Number'>8</span>
+"   bcdef"
+</pre>
+<p>One interesting use of Range is to find, at each position in a boolean list, the most recent index that has a 1. To do this, first get the array of indices for <code><span class='Value'>b</span></code>, <code><span class='Function'>↕≠</span><span class='Value'>b</span></code>. Then multiply <code><span class='Value'>b</span></code>, reducing indices where a <code><span class='Number'>0</span></code> is found to 0.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGIg4oaQIDDigL8x4oC/MeKAvzDigL8w4oC/MOKAvzHigL8wCgpiIOKJjSDihpXiiaBiCgpiIMOXIOKGleKJoGI=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>b</span> <span class='Gets'>←</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+⟨ 0 1 1 0 0 0 1 0 ⟩
+
+    <span class='Value'>b</span> <span class='Function'>≍</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
+┌─                 
+╵ 0 1 1 0 0 0 1 0  
+  0 1 2 3 4 5 6 7  
+                  ┘
+
+    <span class='Value'>b</span> <span class='Function'>×</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
+⟨ 0 1 2 0 0 0 6 0 ⟩
+</pre>
+<p>Now at any given position the index of the last 1, if there is any, is the maximum of all the adjusted indices so far. That's a scan <code><span class='Function'>⌈</span><span class='Modifier'>`</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oyIYCBiIMOXIOKGleKJoGIKCijijIhgIOKKoiDDlyDihpXiiJjiiaApIGIgICAjIEFzIGEgdGFjaXQgZnVuY3Rpb24=">↗️</a><pre>    <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Value'>b</span> <span class='Function'>×</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
+⟨ 0 1 2 2 2 2 6 6 ⟩
+
+    <span class='Paren'>(</span><span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Function'>⊢</span> <span class='Function'>×</span> <span class='Function'>↕</span><span class='Modifier2'>∘</span><span class='Function'>≠</span><span class='Paren'>)</span> <span class='Value'>b</span>   <span class='Comment'># As a tacit function
+</span>⟨ 0 1 2 2 2 2 6 6 ⟩
+</pre>
+<p>Where there aren't any previous 1s, this returns an index of 0, which is the same as the result where there is a 1 at index 0. If it's important to distinguish these possibilities, the indices can be increased by one, so that the result is 0 if there are no 1s, and 1 for a 1 at the start. To bring it back into alignment with the argument, either this result can be decreased by 1 or an initial element can be added to the argument.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oyIYCBiIMOXIDEgKyDihpXiiaBi">↗️</a><pre>    <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Value'>b</span> <span class='Function'>×</span> <span class='Number'>1</span> <span class='Function'>+</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
+⟨ 0 2 3 3 3 3 7 7 ⟩
+</pre>
+<h2 id="list-range">List range</h2>
+<p>When the argument is a list of numbers, the result is an array of lists.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVIDLigL8z4oC/NA==">↗️</a><pre>    <span class='Function'>↕</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+┌─                                         
+╎ ⟨ 0 0 0 ⟩ ⟨ 0 0 1 ⟩ ⟨ 0 0 2 ⟩ ⟨ 0 0 3 ⟩  
+  ⟨ 0 1 0 ⟩ ⟨ 0 1 1 ⟩ ⟨ 0 1 2 ⟩ ⟨ 0 1 3 ⟩  
+  ⟨ 0 2 0 ⟩ ⟨ 0 2 1 ⟩ ⟨ 0 2 2 ⟩ ⟨ 0 2 3 ⟩  
+                                           
+  ⟨ 1 0 0 ⟩ ⟨ 1 0 1 ⟩ ⟨ 1 0 2 ⟩ ⟨ 1 0 3 ⟩  
+  ⟨ 1 1 0 ⟩ ⟨ 1 1 1 ⟩ ⟨ 1 1 2 ⟩ ⟨ 1 1 3 ⟩  
+  ⟨ 1 2 0 ⟩ ⟨ 1 2 1 ⟩ ⟨ 1 2 2 ⟩ ⟨ 1 2 3 ⟩  
+                                          ┘
+</pre>
+<p>This array, which contains all possible choices of one natural number less than each element of <code><span class='Value'>𝕩</span></code>, can also be produced using Range on numbers only, along with <a href="map.html#table">Table</a> (<code><span class='Modifier'>⌜</span></code>).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDzin6jin6kpIOKIvuKMnMK0IOKGlcKoIDLigL8z4oC/NA==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Bracket'>⟨⟩</span><span class='Paren'>)</span> <span class='Function'>∾</span><span class='Modifier'>⌜´</span> <span class='Function'>↕</span><span class='Modifier'>¨</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+┌─                                         
+╎ ⟨ 0 0 0 ⟩ ⟨ 0 0 1 ⟩ ⟨ 0 0 2 ⟩ ⟨ 0 0 3 ⟩  
+  ⟨ 0 1 0 ⟩ ⟨ 0 1 1 ⟩ ⟨ 0 1 2 ⟩ ⟨ 0 1 3 ⟩  
+  ⟨ 0 2 0 ⟩ ⟨ 0 2 1 ⟩ ⟨ 0 2 2 ⟩ ⟨ 0 2 3 ⟩  
+                                           
+  ⟨ 1 0 0 ⟩ ⟨ 1 0 1 ⟩ ⟨ 1 0 2 ⟩ ⟨ 1 0 3 ⟩  
+  ⟨ 1 1 0 ⟩ ⟨ 1 1 1 ⟩ ⟨ 1 1 2 ⟩ ⟨ 1 1 3 ⟩  
+  ⟨ 1 2 0 ⟩ ⟨ 1 2 1 ⟩ ⟨ 1 2 2 ⟩ ⟨ 1 2 3 ⟩  
+                                          ┘
+</pre>
+<p>The initial element for the <a href="fold.html">fold</a> above is the result of <code><span class='Function'>↕</span><span class='Bracket'>⟨⟩</span></code>, which contains the one possible list of no natural numbers.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVIOKfqOKfqQ==">↗️</a><pre>    <span class='Function'>↕</span> <span class='Bracket'>⟨⟩</span>
+┌·    
+· ⟨⟩  
+     ┘
+</pre>
+<p>The result of Range can also be thought of as representing all possible numbers in a mixed-base system: for example, the argument <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span></code> indicates three-digit numbers where the lowest digit works in base 4, the next in base 3, and the highest in base 2. Of course, fixed bases are used more often than mixed ones. Here are all the 3-digit binary numbers:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVIDPipYoy">↗️</a><pre>    <span class='Function'>↕</span> <span class='Number'>3</span><span class='Function'>⥊</span><span class='Number'>2</span>
+┌─                     
+╎ ⟨ 0 0 0 ⟩ ⟨ 0 0 1 ⟩  
+  ⟨ 0 1 0 ⟩ ⟨ 0 1 1 ⟩  
+                       
+  ⟨ 1 0 0 ⟩ ⟨ 1 0 1 ⟩  
+  ⟨ 1 1 0 ⟩ ⟨ 1 1 1 ⟩  
+                      ┘
+</pre>
