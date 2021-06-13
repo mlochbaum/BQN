@@ -26,12 +26,12 @@ Functions that have significant differences from APL functions are marked with a
 | `∨`   | [Sort Down](order.md#sort)                          | [Or](logic.md)*
 | `¬`   | [Not](logic.md)*                                    | [Span](logic.md)*
 | `\|`  | [Absolute Value](arithmetic.md#additional-arithmetic)| [Modulus](arithmetic.md#additional-arithmetic)
-| `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
-| `<`   | [Enclose](enclose.md)                               | [Less Than](https://aplwiki.com/wiki/Less_than)
-| `>`   | [Merge](couple.md)*                                 | [Greater Than](https://aplwiki.com/wiki/Greater_than)
-| `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
-| `=`   | [Rank](shape.md)*                                   | [Equals](https://aplwiki.com/wiki/Equal_to)
-| `≠`   | [Length](shape.md)                                  | [Not Equals](https://aplwiki.com/wiki/Not_Equal_to)
+| `≤`   |                                                     | [Less Than or Equal to](arithmetic.md#comparisons)
+| `<`   | [Enclose](enclose.md)                               | [Less Than](arithmetic.md#comparisons)
+| `>`   | [Merge](couple.md)*                                 | [Greater Than](arithmetic.md#comparisons)
+| `≥`   |                                                     | [Greater Than or Equal to](arithmetic.md#comparisons)
+| `=`   | [Rank](shape.md)*                                   | [Equals](arithmetic.md#comparisons)
+| `≠`   | [Length](shape.md)                                  | [Not Equals](arithmetic.md#comparisons)
 | `≡`   | [Depth](depth.md)*                                  | [Match](match.md)
 | `≢`   | [Shape](shape.md)                                   | [Not Match](match.md)
 | `⊣`   | [Identity](identity.md)                             | [Left](identity.md)
