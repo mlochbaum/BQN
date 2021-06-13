@@ -559,7 +559,7 @@ ShiftAfter←{
 
 Range←{
   I←{"↕𝕩: 𝕩 must consist of natural numbers"!Nat𝕩⋄↕𝕩}
-  M←{"↕𝕩: 𝕩 must be a number or list"!1==𝕩⋄(0⌜𝕩)Fill(<⟨⟩)Pair⊸∾⌜´I⌜𝕩}
+  M←{"↕𝕩: 𝕩 must be a number or list"!1==𝕩⋄(0⌜𝕩)Fill 0⊸Fill⌜(<⟨⟩)Pair⊸∾⌜´I⌜𝕩}
   IsArray◶I‿M 𝕩
 }
 Windows←{
