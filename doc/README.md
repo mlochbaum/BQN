@@ -33,6 +33,7 @@ Primitives:
 - [Array dimensions](shape.md) (`≢=≠`)
 - [Assert](assert.md) (`!`)
 - [Deshape and Reshape](reshape.md) (`⥊`)
+- [Enclose](enclose.md) (`<`)
 - [Fold and Insert](fold.md) (`´˝`)
 - [Group](group.md) (`⊔`)
 - [Identity functions](identity.md) (`⊢⊣`)

@@ -12,7 +12,7 @@ If you're an array programmer then I have bad news for you. My thesis here is th
 
 APL tends to define its data by starting with the array and then looking downwards in depth at what it contains. The based array model, as the name suggests, starts at the foundations, which in BQN are called "atoms". There are five types of atom, which together with the array type give the six types a value can have in BQN. Based means being yourself, and an atom's *not* an array.
 
-An atom has [depth](depth.md) 0, and doesn't inherently have a shape. However, primitives that expect an array promote atoms by enclosing them to get a rank-0, or *unit*, array that contains the atom (any value can be enclosed in this way, giving a unit array with higher depth, but it only happens automatically for atoms). Rank and shape both do this, so an atom can be considered to have the same dimensions as a unit array: rank 0 and shape `⟨⟩`. An atom is also considered a kind of unit, but it's not a unit array.
+An atom has [depth](depth.md) 0, and doesn't inherently have a shape. However, primitives that expect an array promote atoms by [enclosing](enclose.md) them to get a rank-0, or *unit*, array that contains the atom (any value can be enclosed in this way, giving a unit array with higher depth, but it only happens automatically for atoms). Rank and shape both do this, so an atom can be considered to have the same dimensions as a unit array: rank 0 and shape `⟨⟩`. An atom is also considered a kind of unit, but it's not a unit array.
 
 Atoms are displayed as plain values, while enclosed atoms, that is, depth-1 unit arrays, are shown with an array display.
 

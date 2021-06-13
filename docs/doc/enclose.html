@@ -1,0 +1,131 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Enclose</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="enclose">Enclose</h1>
+<p>The function enclose creates a unit array whose only element is <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PCAieHl6Ig==">↗️</a><pre>    <span class='Function'>&lt;</span> <span class='String'>&quot;xyz&quot;</span>
+┌·       
+· "xyz"  
+        ┘
+</pre>
+<p>If you understand the concept of a unit array, then that definition almost certainly made sense to you. Therefore the remainder of this document will explain what a unit array is, what it isn't, and why you would use it.</p>
+<p>If you're familiar with the Enclose or Box function from APL or J (but particularly APL), then it's possible you understand the concept of a unit array wrongly, or at least, not in the same way BQN uses it. A difference from APL is that <code><span class='Function'>&lt;</span><span class='Value'>𝕩</span></code> is never the same as <code><span class='Value'>𝕩</span></code>. I recommend reading about <a href="based.html">based array theory</a> if you haven't already.</p>
+<h2 id="whats-a-unit">What's a unit?</h2>
+<p>A <strong>unit array</strong> is an array with no axes: that is, it has rank 0 and its shape is the empty list. The array itself isn't empty though. The number of elements is the product of the shape, which is 1.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAg4omiIDwiYW55dGhpbmciICAgIyBlbXB0eSBzaGFwZQrDl8K0IOKJoiA8ImFueXRoaW5nIiAgICMgYW5kIG9uZSBlbGVtZW50">↗️</a><pre>       <span class='Function'>≢</span> <span class='Function'>&lt;</span><span class='String'>&quot;anything&quot;</span>   <span class='Comment'># empty shape
+</span>⟨⟩
+    <span class='Function'>×</span><span class='Modifier'>´</span> <span class='Function'>≢</span> <span class='Function'>&lt;</span><span class='String'>&quot;anything&quot;</span>   <span class='Comment'># and one element
+</span>1
+</pre>
+<p>If there are no axes, what use is an array? Rank 0 certainly qualifies as an edge case, as there's no rank -1 below it. Most often when a unit array is used it's because there <em>are</em> relevant axes, but we want an array that doesn't include them (sound cryptic? Just keep reading…).</p>
+<p>This contrasts with an atom like <code><span class='Number'>137</span></code>, which is considered a unit but not a unit <em>array</em>. An atom has no axes just because it doesn't have axes. But because it has no axes, it has the same shape <code><span class='Bracket'>⟨⟩</span></code> as a unit array, by convention.</p>
+<p>Some unit arrays are made by removing an axis from an existing array. First Cell (<code><span class='Function'>⊏</span></code>) or <a href="fold.html">Insert</a> (<code><span class='Modifier'>˝</span></code>) might do this:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=bCDihpAgMuKAvzfigL8x4oC/OOKAvzLigL84CuKKjyBsCivLnSBs">↗️</a><pre>    <span class='Value'>l</span> <span class='Gets'>←</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span>
+    <span class='Function'>⊏</span> <span class='Value'>l</span>
+┌·   
+· 2  
+    ┘
+    <span class='Function'>+</span><span class='Modifier'>˝</span> <span class='Value'>l</span>
+┌·    
+· 28  
+     ┘
+</pre>
+<p>Usually this is unwanted. You'd prefer to use <code><span class='Function'>⊑</span></code> or <code><span class='Function'>+</span><span class='Modifier'>´</span></code> in order to get an atom result. But consider the following function to sum the rows of a table:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8udy5ggM+KAvzTipYrihpUxMg==">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>˝˘</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊↕</span><span class='Number'>12</span>
+⟨ 6 22 38 ⟩
+</pre>
+<p>In this case each call to <code><span class='Function'>+</span><span class='Modifier'>˝</span></code> returns a cell of the result. The result is a list, so its cells are units! Here, Cells (<code><span class='Modifier'>˘</span></code>) &quot;hides&quot; one axis from its operand, and the operand <code><span class='Function'>+</span><span class='Modifier'>˝</span></code> reduces out an axis, leaving zero axes—until Cells assembles the results, putting its axis back. In this case, <code><span class='Function'>+</span><span class='Modifier'>´</span></code> would also be tolerated. But it's wrong, because each result really should be a zero-axis array. We can reveal this by making an array whose elements aren't atoms.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8K0y5gg4p+o4oaVMiwiYWIi4p+p4omN4p+o4oaVMywiQUJDIuKfqQory53LmCDin6jihpUyLCJhYiLin6niiY3in6jihpUzLCJBQkMi4p+p">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>´˘</span> <span class='Bracket'>⟨</span><span class='Function'>↕</span><span class='Number'>2</span><span class='Separator'>,</span><span class='String'>&quot;ab&quot;</span><span class='Bracket'>⟩</span><span class='Function'>≍</span><span class='Bracket'>⟨</span><span class='Function'>↕</span><span class='Number'>3</span><span class='Separator'>,</span><span class='String'>&quot;ABC&quot;</span><span class='Bracket'>⟩</span>
+ERROR
+    <span class='Function'>+</span><span class='Modifier'>˝˘</span> <span class='Bracket'>⟨</span><span class='Function'>↕</span><span class='Number'>2</span><span class='Separator'>,</span><span class='String'>&quot;ab&quot;</span><span class='Bracket'>⟩</span><span class='Function'>≍</span><span class='Bracket'>⟨</span><span class='Function'>↕</span><span class='Number'>3</span><span class='Separator'>,</span><span class='String'>&quot;ABC&quot;</span><span class='Bracket'>⟩</span>
+⟨ "ac" "ACE" ⟩
+</pre>
+<p>The function <code><span class='Function'>+</span><span class='Modifier'>´˘</span></code> tries to mix together the result elements into one big array, causing an error because they have different lengths, but <code><span class='Function'>+</span><span class='Modifier'>˝˘</span></code> keeps them as elements.</p>
+<p>One strained example probably isn't all that compelling. And it doesn't explain why you'd use Enclose, which doesn't remove an axis from an existing array but creates a whole new unit array. So…</p>
+<h2 id="why-create-a-unit">Why create a unit?</h2>
+<p>Why indeed?</p>
+<h3 id="table-of-combinations">Table of combinations</h3>
+<p>Let's take a look at the following program, which uses <a href="map.html#table">Table</a> (<code><span class='Modifier'>⌜</span></code>) to create an array of combinations—every possibility from three sets of choices. It uses Enclose not once but twice.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDzin6jin6kpIDziirjiiL7ijJzCtCDin6giIuKAvyJhbnRpIiwgInJlZCLigL8iYmx1ZSLigL8iZ3JlZW4iLCAidXAi4oC/ImRvd24i4p+p">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Bracket'>⟨⟩</span><span class='Paren'>)</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>⌜´</span> <span class='Bracket'>⟨</span><span class='String'>&quot;&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;anti&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;red&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;blue&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;green&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;up&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;down&quot;</span><span class='Bracket'>⟩</span>
+┌─                                                   
+╎ ⟨ ⟨⟩ "red" "up" ⟩       ⟨ ⟨⟩ "red" "down" ⟩        
+  ⟨ ⟨⟩ "blue" "up" ⟩      ⟨ ⟨⟩ "blue" "down" ⟩       
+  ⟨ ⟨⟩ "green" "up" ⟩     ⟨ ⟨⟩ "green" "down" ⟩      
+                                                     
+  ⟨ "anti" "red" "up" ⟩   ⟨ "anti" "red" "down" ⟩    
+  ⟨ "anti" "blue" "up" ⟩  ⟨ "anti" "blue" "down" ⟩   
+  ⟨ "anti" "green" "up" ⟩ ⟨ "anti" "green" "down" ⟩  
+                                                    ┘
+</pre>
+<p>One use is in the function <code><span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span></code>, which encloses the left argument before (<code><span class='Modifier2'>⊸</span></code>) <a href="join.html">joining</a> (<code><span class='Function'>∾</span></code>) it to the right argument. This is different from Join on its own because it treats the left argument as a single element.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InN0YXJ0IiDiiL4gIm1pZGRsZSLigL8iZW5kIgoKInN0YXJ0IiA84oq44oi+ICJtaWRkbGUi4oC/ImVuZCI=">↗️</a><pre>    <span class='String'>&quot;start&quot;</span> <span class='Function'>∾</span> <span class='String'>&quot;middle&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;end&quot;</span>
+⟨ 's' 't' 'a' 'r' 't' "middle" "end" ⟩
+
+    <span class='String'>&quot;start&quot;</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span> <span class='String'>&quot;middle&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;end&quot;</span>
+⟨ "start" "middle" "end" ⟩
+</pre>
+<p>For this purpose <code><span class='Brace'>{</span><span class='Bracket'>⟨</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span><span class='Brace'>}</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span></code>, which turns the left argument into a 1-element list, also works. But maybe it doesn't really capture the intended meaning: it makes <code><span class='Value'>𝕨</span></code> into a whole new list to be added when all that's needed is to add one cell. This cell will be placed along the first axis, but it doesn't have an axis of its own. A similar example, showing how units are used as part of a computation, is to join each row of a matrix to the corresponding item of a list.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KD3ijJzLnOKGlTQpIOKIvsuYIOKGlTQ=">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>=</span><span class='Modifier'>⌜˜</span><span class='Function'>↕</span><span class='Number'>4</span><span class='Paren'>)</span> <span class='Function'>∾</span><span class='Modifier'>˘</span> <span class='Function'>↕</span><span class='Number'>4</span>
+┌─           
+╵ 1 0 0 0 0  
+  0 1 0 0 1  
+  0 0 1 0 2  
+  0 0 0 1 3  
+            ┘
+</pre>
+<p>Now Cells (<code><span class='Modifier'>˘</span></code>) splits both arguments into cells. For the <code><span class='Value'>𝕨</span></code>, a rank-2 array, these cells are lists; for the list <code><span class='Value'>𝕩</span></code> they have to be units. Treating them as elements would work in this case, because <code><span class='Function'>∾</span></code> would automatically enclose them, but would fail if <code><span class='Value'>𝕩</span></code> contained non-atom elements such as strings.</p>
+<p>The other use of <code><span class='Function'>&lt;</span></code> in the original example is <code><span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Bracket'>⟨⟩</span><span class='Paren'>)</span></code>, which is the left argument to the function <code><span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>⌜´</span></code>. Let's break that function down. We said <code><span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span></code> joins <code><span class='Value'>𝕨</span></code> as an element to the front of <code><span class='Value'>𝕩</span></code>. With <a href="map.html#table">Table</a> we have <code><span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>⌜</span></code>, which takes two array arguments and does this for every pair of elements from them.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InJlZCLigL8iYmx1ZSLigL8iZ3JlZW4iIDziirjiiL7ijJwg4p+oInVwIuKfqeKAv+KfqCJkb3duIuKfqQ==">↗️</a><pre>    <span class='String'>&quot;red&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;blue&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;green&quot;</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>⌜</span> <span class='Bracket'>⟨</span><span class='String'>&quot;up&quot;</span><span class='Bracket'>⟩</span><span class='Ligature'>‿</span><span class='Bracket'>⟨</span><span class='String'>&quot;down&quot;</span><span class='Bracket'>⟩</span>
+┌─                                     
+╵ ⟨ "red" "up" ⟩   ⟨ "red" "down" ⟩    
+  ⟨ "blue" "up" ⟩  ⟨ "blue" "down" ⟩   
+  ⟨ "green" "up" ⟩ ⟨ "green" "down" ⟩  
+                                      ┘
+</pre>
+<p><a href="fold.html">Fold</a> (<code><span class='Modifier'>´</span></code>) changes this from a function of two arrays to a function of any number of arrays. And <code><span class='Function'>&lt;</span><span class='Bracket'>⟨⟩</span></code>, the enclosed empty array, is the initial value for the fold. Why do we need an initial value? To start with, consider applying to only one input array. With no initial value Fold just returns it without modification.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=POKKuOKIvuKMnMK0IOKfqCJ1cCLigL8iZG93biLin6k=">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>⌜´</span> <span class='Bracket'>⟨</span><span class='String'>&quot;up&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;down&quot;</span><span class='Bracket'>⟩</span>
+⟨ "up" "down" ⟩
+</pre>
+<p>But this is only an array of strings, and not an array of lists of strings: the right result is <code><span class='Bracket'>⟨⟨</span><span class='String'>&quot;up&quot;</span><span class='Bracket'>⟩</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='String'>&quot;down&quot;</span><span class='Bracket'>⟩⟩</span></code>. And that's not the extend of our troubles: without an initial value we'll get the wrong result on longer arguments too, because the elements of the rightmost array get joined to the result lists as lists, not as elements.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=POKKuOKIvuKMnMK0IOKfqCJyZWQi4oC/ImJsdWUi4oC/ImdyZWVuIiwgInVwIuKAvyJkb3duIuKfqQ==">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>⌜´</span> <span class='Bracket'>⟨</span><span class='String'>&quot;red&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;blue&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;green&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;up&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;down&quot;</span><span class='Bracket'>⟩</span>
+┌─                                                 
+╵ ⟨ "red" 'u' 'p' ⟩   ⟨ "red" 'd' 'o' 'w' 'n' ⟩    
+  ⟨ "blue" 'u' 'p' ⟩  ⟨ "blue" 'd' 'o' 'w' 'n' ⟩   
+  ⟨ "green" 'u' 'p' ⟩ ⟨ "green" 'd' 'o' 'w' 'n' ⟩  
+                                                  ┘
+</pre>
+<p>To make things right, we need an array of lists for an initial value. Since it shouldn't add anything to the result, any lists it contains need to be empty. But what should its shape be? The result shape from Table is always the argument shapes joined together (<code><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Function'>≢</span><span class='Value'>𝕩</span></code>). The initial value shouldn't contribute the result shape, so it needs to have empty shape, or rank 0! We use Enclose to create the array <code><span class='Function'>&lt;</span><span class='Bracket'>⟨⟩</span></code> with no axes, because the result <em>will</em> have axes but the initial element needs to start without any. All the axes come from the list of choices.</p>
+<p>It goes deeper! The following (pretty tough) example uses arrays with various ranks in the argument, and they're handled quite well. The last one isn't really a choice, so it has no axes. If it were a one-element list then the result would have a meaningless length-1 axis. But not enclosing it would cause each character to be treated as an option, with unpleasant results.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Zmxhdm9yIOKGkCDijYkg4oiY4oC/MiDipYogInVwIuKAvyJkb3duIuKAvyJjaGFybSLigL8ic3RyYW5nZSLigL8idG9wIuKAvyJib3R0b20iCig84p+o4p+pKSA84oq44oi+4oycwrQg4p+oInJlZCLigL8iYmx1ZSLigL8iZ3JlZW4iLCBmbGF2b3IsIDwicXVhcmsi4p+p">↗️</a><pre>    <span class='Value'>flavor</span> <span class='Gets'>←</span> <span class='Function'>⍉</span> <span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⥊</span> <span class='String'>&quot;up&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;down&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;charm&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;strange&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;top&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;bottom&quot;</span>
+    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Bracket'>⟨⟩</span><span class='Paren'>)</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>⌜´</span> <span class='Bracket'>⟨</span><span class='String'>&quot;red&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;blue&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;green&quot;</span><span class='Separator'>,</span> <span class='Value'>flavor</span><span class='Separator'>,</span> <span class='Function'>&lt;</span><span class='String'>&quot;quark&quot;</span><span class='Bracket'>⟩</span>
+┌─                                                                                       
+╎ ⟨ "red" "up" "quark" ⟩     ⟨ "red" "charm" "quark" ⟩     ⟨ "red" "top" "quark" ⟩       
+  ⟨ "red" "down" "quark" ⟩   ⟨ "red" "strange" "quark" ⟩   ⟨ "red" "bottom" "quark" ⟩    
+                                                                                         
+  ⟨ "blue" "up" "quark" ⟩    ⟨ "blue" "charm" "quark" ⟩    ⟨ "blue" "top" "quark" ⟩      
+  ⟨ "blue" "down" "quark" ⟩  ⟨ "blue" "strange" "quark" ⟩  ⟨ "blue" "bottom" "quark" ⟩   
+                                                                                         
+  ⟨ "green" "up" "quark" ⟩   ⟨ "green" "charm" "quark" ⟩   ⟨ "green" "top" "quark" ⟩     
+  ⟨ "green" "down" "quark" ⟩ ⟨ "green" "strange" "quark" ⟩ ⟨ "green" "bottom" "quark" ⟩  
+                                                                                        ┘
+</pre>
+<h3 id="broadcasting">Broadcasting</h3>
+<p>Table isn't the only mapping function that gets along well with units. Here's an example with Each (<code><span class='Modifier'>¨</span></code>).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PeKAv+KJoOKAv+KJoeKAv+KJoiB78J2VjvCdlal9wqggPCAz4oC/MuKliiJhYmNkZWYi">↗️</a><pre>    <span class='Function'>=</span><span class='Ligature'>‿</span><span class='Function'>≠</span><span class='Ligature'>‿</span><span class='Function'>≡</span><span class='Ligature'>‿</span><span class='Function'>≢</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>&lt;</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;abcdef&quot;</span>
+⟨ 2 3 1 ⟨ 3 2 ⟩ ⟩
+</pre>
+<p>The function <code><span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> applies its left argument as a function to its right; we want to apply the four functions Rank, Length, <a href="depth.html">Depth</a>, and <a href="shape.html">Shape</a> to a single array. Each normally matches up elements from its two arguments, but it will also copy the elements of a lower-rank argument to fill in any missing trailing axes and match the higher-rank argument's shape. To copy a single argument for every function call, it should have no axes, so we enclose it into a unit.</p>
+<p>This example would work just as well with Table (<code><span class='Modifier'>⌜</span></code>), although maybe the interpretation is a little different. The reason it matters that Each accepts unit arrays is that arithmetic primitives (as well as the Depth modifier <code><span class='Modifier2'>⚇</span></code>) use Each to match their arguments up. Want to add a point (two numbers) to each point in an array? Just enclose it first.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDwxMOKAv8KvMTApICsg4p+oMuKAvzMsMeKAvzfin6niiY3in6g04oC/MSw14oC/NOKfqQ==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Number'>10</span><span class='Ligature'>‿</span><span class='Number'>¯10</span><span class='Paren'>)</span> <span class='Function'>+</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Bracket'>⟩</span><span class='Function'>≍</span><span class='Bracket'>⟨</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Bracket'>⟩</span>
+┌─                     
+╵ ⟨ 12 ¯7 ⟩ ⟨ 11 ¯3 ⟩  
+  ⟨ 14 ¯9 ⟩ ⟨ 15 ¯6 ⟩  
+                      ┘
+</pre>
+<h2 id="coda">Coda</h2>
+<p>Perhaps you feel bludgeoned rather than convinced at this point. Unit arrays are useful, sure, but aren't they ugly? Aren't they a hack?</p>
+<p>The practical answer is that I think you should use them anyway. You'll probably come to appreciate the use of Enclose and how it can help you produce working, reliable code, making you a more effective BQN programmer.</p>
+<p>On the theoretical side, it's important to realize that units are just a consequence of having multidimensional arrays. Array languages come with units be default, so that &quot;adding&quot; them is not really a complication, it's a simplification. It's natural to not feel quite right around these sorts of non-things, because zero is a pretty special number—being among other things the only number of paddles you can have and still not be able to go anywhere in your canoe. In my opinion the right response is to understand why they are special but also why they fit in as part of the system, so you can be in control instead of worrying.</p>
