@@ -87,7 +87,7 @@ Table isn't the only mapping function that gets along well with units. Here's an
 
         =‿≠‿≡‿≢ {𝕎𝕩}¨ < 3‿2⥊"abcdef"
 
-The function `{𝕎𝕩}` applies its left argument as a function to its right; we want to apply the four functions Rank, Length, [Depth](depth.md), and [Shape](shape.md) to a single array. Each normally matches up elements from its two arguments, but it will also copy the elements of a lower-rank argument to fill in any missing trailing axes and match the higher-rank argument's shape. To copy a single argument for every function call, it should have no axes, so we enclose it into a unit.
+The function `{𝕎𝕩}` applies its left argument as a function to its right; we want to apply the four functions Rank, Length, [Depth](depth.md), and [Shape](shape.md) to a single array. Normally Each matches up elements from its two arguments, but it will also copy the elements of a lower-rank argument to fill in any missing trailing axes and match the higher-rank argument's shape. To copy a single argument for every function call, it should have no axes, so we enclose it into a unit.
 
 This example would work just as well with Table (`⌜`), although maybe the interpretation is a little different. The reason it matters that Each accepts unit arrays is that arithmetic primitives (as well as the Depth modifier `⚇`) use Each to match their arguments up. Want to add a point (two numbers) to each point in an array? Just enclose it first.
 

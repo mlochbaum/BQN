@@ -151,7 +151,7 @@ BQN uses the six standard comparison functions of mathematics. For each pair of 
 | Greater Than             | `>`   | 0 | 0 | 1 | Data
 | Greater Than or Equal to | `≥`   | 0 | 1 | 1 | Data
 
-The *ordered* comparisons `≤<>≥` are defined on numbers and characters (and arrays, by pervasion); they give an error for operation or namespace arguments. They order numbers as you'd expect, and characters by their code points. A character is considered greater than any number, even if it's `∞`.
+The *ordered* comparisons `≤<>≥` are defined on numbers and characters (and arrays, by pervasion); they give an error for operation or namespace arguments. They order numbers as you'd expect, and characters by their code points. A character is considered greater than any number, even `∞`.
 
         3‿4‿5‿6 ≤ 5
 
