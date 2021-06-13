@@ -27,7 +27,7 @@ Functions that have significant differences from APL functions are marked with a
 | `¬`   | [Not](logic.md)*                                    | [Span](logic.md)*
 | `\|`  | [Absolute Value](arithmetic.md#additional-arithmetic)| [Modulus](arithmetic.md#additional-arithmetic)
 | `≤`   |                                                     | [Less Than or Equal to](https://aplwiki.com/wiki/Less_than_or_Equal_to)
-| `<`   | [Enclose](https://aplwiki.com/wiki/Enclose)         | [Less Than](https://aplwiki.com/wiki/Less_than)
+| `<`   | [Enclose](enclose.md)                               | [Less Than](https://aplwiki.com/wiki/Less_than)
 | `>`   | [Merge](couple.md)*                                 | [Greater Than](https://aplwiki.com/wiki/Greater_than)
 | `≥`   |                                                     | [Greater Than or Equal to](https://aplwiki.com/wiki/Greater_than_or_Equal_to)
 | `=`   | [Rank](shape.md)*                                   | [Equals](https://aplwiki.com/wiki/Equal_to)
