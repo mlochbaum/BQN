@@ -2,6 +2,43 @@
 
 # Self-comparison functions
 
+<!--GEN
+d ← 48‿22
+
+rc ← At "class=code|stroke-width=1.5|rx=12"
+Ge ← "g"⊸At⊸Enc
+g  ← "font-family=BQN,monospace|font-size=18px|text-anchor=middle"
+hg ← "class=purple|stroke-width=0|opacity=0.5"
+cg ← "font-size=24px"
+lg ← "stroke-width=0.5|stroke=currentColor|fill=none"
+
+xl ← ≠ xc ← ⊐ xt ← '''(Highlight∾∾⊣)¨"mississippi"
+xn ← ≠ xu ← xt /˜ xf ← 0= xo ← ⊒ xt
+
+Text ← ("text" Attr "dy"‿"0.32em"∾(Pos d⊸×))⊸Enc
+Path ← "path" Elt "d"≍○<·∾⊣∾¨·FmtNums(d⊏˜∊⟜" Vv")⊸×
+Rp ← Pos⊸∾⟜("width"‿"height"≍˘FmtNum)○(d⊸×)
+
+tx ← ↕xl ⋄ y ← » yd ← +`0.6+1.2‿1‿xn‿1.8‿1.8
+dim ← ⟨1.5+xl,¯1⊑yd⟩ ⋄ sh ← ¯1.6‿¯1.1
+tp ← (⥊tx≍¨⎉1((¯1↓y)+0‿0‿1‿0×⌜xc))∾(↕≠xu)≍¨¯1⊑y
+hp ← 0.2‿¯0.7(+⟜(1‿0×sh)≍¯2⊸×⊸+)1‿0×dim
+Pp ← "M VL M H" Path {⟨𝕩,⊑y,0.3+3⊑y,𝕨,0.5-˜4⊑y,𝕩,𝕨+2⊑y,xl-0.6⟩}
+
+defs ← "defs" Enc ("mask"At"id=m") Enc ⟨
+  "rect" Elt "fill"‿"white" ∾ sh Rp dim
+  "fill=black" Ge ("rect" Elt (- Rp 2×⊢)⟜(7‿10÷d))¨ 0‿0.1⊸+¨⌾(xl⊸↑)tp
+⟩
+
+((∾˜d)×((-∾+˜)0.8‿0.4)+sh∾dim) SVG defs ∾ g Ge ⟨
+  "rect" Elt rc ∾ sh Rp dim
+  hg Ge ("rect" Elt ·Rp˝ {𝕩⊸+⌾(1⊑⊏)hp})¨ 1‿3⊏y
+  (lg∾"|mask=url(#m)") Ge (↕≠xu) Pp¨ xf / tx
+  tp Text¨ xu ∾˜ ⥊ xt ∾ Highlight∘•Repr¨ >xc‿xo‿xf
+  cg Ge (¯0.05+¯1≍¨(2÷˜xn-1)⊸+⌾(2⊸⊑)y) Text⟜Highlight¨ "𝕩"<⊸∾⥊¨"⊐⊒∊⍷"
+⟩
+-->
+
 BQN has four self-comparison functions, Classify (`⊐`), Occurrence Count (`⊒`), Mark Firsts (`∊`), and Deduplicate (`⍷`). Each of these is a monadic function that obtains its result by comparing each major cell of the argument (which must have rank at least 1) to the earlier major cells with [match](match.md). For example, Mark Firsts indicates the cells that don't match any earlier cell, making them the first of their kind.
 
         ∊ "abaacb"
