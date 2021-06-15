@@ -46,7 +46,7 @@ Functions that have significant differences from APL functions are marked with a
 | `«`   | [Nudge Back](shift.md)*                             | [Shift After](shift.md)*
 | `⌽`   | [Reverse](reverse.md)                               | [Rotate](reverse.md#rotate)
 | `⍉`   | [Transpose](transpose.md)*                          | [Reorder axes](transpose.md)*
-| `/`   | [Indices](https://aplwiki.com/wiki/Indices)         | [Replicate](https://aplwiki.com/wiki/Replicate)
+| `/`   | [Indices](replicate.md#indices)                     | [Replicate](replicate.md)
 | `⍋`   | [Grade Up](order.md#grade)                          | [Bins Up](order.md#bins)
 | `⍒`   | [Grade Down](order.md#grade)                        | [Bins Down](order.md#bins)
 | `⊏`   | First Cell*                                         | Select*

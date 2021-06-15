@@ -37,6 +37,7 @@ Primitives:
 - [Fold and Insert](fold.md) (`´˝`)
 - [Group](group.md) (`⊔`)
 - [Identity functions](identity.md) (`⊢⊣`)
+- [Indices and Replicate](replicate.md) (`/`)
 - [Join and Join To](join.md) (`∾`)
 - [Logical functions](logic.md) (`∧∨¬`)
 - [Match](match.md) (`≡≢`)
