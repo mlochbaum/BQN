@@ -91,7 +91,7 @@ This is somewhat unsatisfying because it is external to the function being defin
 
 For modifiers, `𝕣` refers to the containing modifier. `𝕊` makes the modifier a deferred modifier like `𝕨` and `𝕩` do, and refers to the derived function. For example, this tail-recursive factorial function uses the operand to accumulate a result, a task that is usually done with a second `factorial_helper` function in elementary Scheme.
 
-        Fact_mod ← 1 { (0⊸<)◶⟨1, (𝕨×𝕩)_𝕣⟩ 𝕩-1 }
+        Fact_mod ← 1 { (0⊸<)◶⟨𝕗, (𝕗×𝕩)_𝕣⟩ 𝕩-1 }
         Fact_mod 7
 
 Because `𝕣` only ever refers to a 1-modifier or 2-modifer, it can never make sense to refer to it as a function, and the uppercase letter `ℝ` is not recognized by BQN. In order to allow `𝕣` to be spelled as a 1-modifier `_𝕣` or 2-modifier `_𝕣_`, it is treated as an ordinary identifier character, so it must be separated from letters or numbers by spaces.
