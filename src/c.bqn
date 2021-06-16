@@ -20,7 +20,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
 bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
-bI←bX+≍⟜-5
+bI←bX+≍⟜-5⋄bR←8+⊑bX
 Pl←∾⟜("s"/˜1<≠)   # Pluralize
 _tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
 # Convert characters to numbers, mostly the same as tokens
@@ -56,11 +56,11 @@ Tokenize←{System‿vars←𝕨
   ie←/f⋄is←ie≠⊸↑/1»f⋄Fs←{is/˜↩𝕨⋄𝕨/𝕩}        # Token start and end
   is-↩is(-×⊏⟜c)ie                           # Comment → ending newline only
   t←CharCode ie⊏𝕩
-  nd←(t=⊑bN)>«t M bD                        # Namespace dot
-  w←»⊸<l←nd<t M bN(⊣≍-˜)○⊑bW                # Word chars l, start w
+  nd←(t=⊑bN)>«t M bD⋄rr←t=bR                # Namespace dot; 𝕣
+  w←»⊸<l←rr∨nd<t M bN(⊣≍-˜)○⊑bW             # Word chars l, start w
   us←t=¯1++´bA⋄sy←t=⊑bW                     # Underscore, system dot
   {⟨/us∧w+`⊸⊏0∾𝕩,"Words can't only have underscores"⟩!0}⍟(∨´)w(/<1(⊢/«)(∨/⊣))l>us
-  wk←na⌊∘÷˜(⊑bA)-˜w/t                       # Kind of word from first char
+  wk←(¬w/rr)×na⌊∘÷˜(⊑bA)-˜w/t               # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
   {⟨𝕩/is,"System dot with no name"⟩!0}⍟(∨´)sy>«l
   w≠↩»⊸∨sy                                  # Start system word at dot
@@ -68,12 +68,15 @@ Tokenize←{System‿vars←𝕨
   i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
-  ws←1=wi/wt⋄ig←1-˜(i>us)×+`w>n             # Identifier groups
-  {⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/(¯1»⌈`)⊸<ig
+  fr←rr/˜if←(»⌈`)⊸<ig←(i>us)×+`w>n          # Identifier groups and first character
+  w↩if∨n∧w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr             # Don't produce an identifier for 𝕣
+  {⟨𝕩/is,"𝕣 can't be used with other word characters"⟩!0}⍟(∨´)(i>us)∧(rr⊸≠∨if⊸<)ig⊏0∾fr
+  {⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/rr<if
+  ig⊏↩1-˜0∾+`⊸×¬fr
   id←vars⊸∾⌾⊑(ws∾2)⊔ig⊔t⊏charSet            # ⟨Identifiers, system values⟩
 
   # Deduplicate literals and identifiers; other cleanup
-  ki←(wt⍒⊸⊏/w)∾(ci∾/si)⊏+`»f                # Indices in t
+  ki←(wt⍒⊸⊏/w>rr)∾(ci∾/si)⊏+`»f             # Indices in t
   k←id∾num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
   k↩System⌾(1⊸⊑)k                           # System value lookup
   wf←¬l∨t M bW⋄ie/˜↩wf∨>⟜«l                 # Index management for...
@@ -82,7 +85,8 @@ Tokenize←{System‿vars←𝕨
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
   t{ie/˜↩𝕨⋄𝕨Fs𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep            # Remove the rest
-  r←ir⌾((t M vd≍+´2↑kk)⊸/)(vd⌊t)⊏charRole∾0 # Role
+  im←(t=bR)∨t M vd≍+´2↑kk                   # Identifier (or 𝕣) mask
+  r←ir⌾(im⊸/)(vd⌊t)⊏charRole∾0              # Role
   t+↩(⊑bX)((⊢M≍⟜5)×5+3⊸+⊸≤)t                # Case-insensitive special names
   t-↩vi(<+10×=)t                            # Shift . to bX and variables back one
   ⟨t,r,k,is,ie⟩
@@ -94,7 +98,7 @@ ReadNums←{
   _err_←{(0!˜/⟜𝔾≍○<𝔽)⍟(∨´)}
   EChars←⟨"Letter"⊸Pl," """,⊏⟜charSet,""" not allowed in numbers"⟩_tmpl
   e‿d‿n‿p‿i←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for e.¯π∞
-  EChars∘(/⟜𝕩)_err_𝕨 ¬e∨𝕩<⊑bA
+  EChars∘(/⟜𝕩)_err_𝕨 (𝕩=bR)∨¬e∨𝕩<⊑bA
   s←d∨c←e∨z←0=𝕩⋄m←¬n∨c
   "Negative sign in the middle of a number"_err_𝕨 n>»c
   "Portion of a number is empty"_err_𝕨 (1«s)∧n∨s
