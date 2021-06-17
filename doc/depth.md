@@ -3,13 +3,21 @@
 # Depth
 
 <!--GEN
-d ← 48‿40
+d ← 48‿38
 a ← ⟨⟨@,⟨@,@,@⟩⟩,@,⟨@,@⟩⟩
 
 g ← "g"At"font-family=BQN,monospace|font-size=16px|text-anchor=middle|fill=currentColor|stroke-width=0|stroke=currentColor|stroke-linecap=round"
 rc ← At "class=code|stroke-width=1.5|rx=12"
 lc ← "line"At"class=lilac|stroke-width=2"
 tc ← "text"At"dy=-0.2em|class=Number"
+bc ← "path"At"class=bluegreen|stroke-width=2|style=fill:none|opacity=0.4"
+dc ← "text"At"font-size=18px|text-anchor=start|opacity=0.9"
+
+Path ← bc Elt "d"≍○<⊢
+Brak ← {
+  P ← ∾"M l l "∾¨ ·FmtNum∘⥊ ∾
+  Path (d×⟨0.6×𝕩-0.75,0.4⟩) (-⌾⊑⊸P ∾ P⟜⌽) -⌾⊑⊸≍5‿13
+}
 
 TN←tc Enc FmtNum
 TL←lc Elt"x2"‿"y2"≍˘·FmtNum 0‿18-˜d×≍⟜1
@@ -19,14 +27,16 @@ Tree←{
   d←1+0⌈´ds
   ww←1⌈+´ws
   p←2÷˜(-ww)+`»⊸+ws
-  ⟨d,ww,⟨TN d⟩∾(TL¨p)∾∾p≍⟜1⊸Gtr¨e⟩
+  ⟨d,ww,⟨TN d,Brak ww⟩∾(TL¨p)∾∾p≍⟜1⊸Gtr¨e⟩
 }
-dp‿wd‿tr ← {@⊸≢◶⟨0‿1‿⟨TN 0⟩, Tree𝕊¨⟩𝕩} a
+n0 ← 0‿1‿⟨TN 0, Path"M h"(∾∾¨)⟜FmtNum (-∾4∾+˜)5.6⟩
+dp‿wd‿tr ← {@⊸≢◶⟨n0, Tree𝕊¨⟩𝕩} a
 
-dim ← ⟨1+wd,1.3+dp⟩ ⋄ sh ← ⟨-2÷˜⊑dim,¯0.8⟩
+dim ← ⟨1.2+wd,1.3+dp⟩ ⋄ sh ← ⟨-2÷˜⊑dim,¯0.8⟩
 
-((∾˜d)×((-∾+˜)1.8‿0.4)+sh∾dim) SVG g Enc ⟨
+((∾˜d)×((-∾+˜)1.7‿0.4)+sh∾dim) SVG g Enc ⟨
   "rect" Elt rc∾(Pos d×sh) ∾ "width"‿"height"≍˘FmtNum d×dim
+  (dc Attr Pos d×sh+0.4‿0.1) Enc "List depth"
   tr
 ⟩
 -->
