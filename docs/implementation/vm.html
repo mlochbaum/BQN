@@ -5,7 +5,7 @@
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">implementation</a></div>
 <h1 id="the-bqn-virtual-machine-and-runtime">The BQN virtual machine and runtime</h1>
-<p>BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. For example, the <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../docs/bqn.js">Javascript environment</a> requires about 300 lines of Javascript code even though it compiles BQN bytecode to Javascript, a more complex strategy than interpreting it directly. This makes it fairly easy to port BQN to new platforms, allowing BQN to be <a href="../doc/embed.html">embedded</a> within other programming languages and interact with arrays or functions in those languages.</p>
+<p>BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. The <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../docs/bqn.js">Javascript environment</a> requires about 500 lines of Javascript code including system functions and performance improvements; probably around 250 would be required just to run the core language. This makes it fairly easy to port BQN to new platforms, allowing BQN to be <a href="../doc/embed.html">embedded</a> within other programming languages and interact with arrays or functions in those languages.</p>
 <p>The way data is represented is part of the VM implementation: it can use native arrays or a custom data structure, depending on what the language supports. An initial implementation will be very slow, but can be improved by replacing functions from the BQN-based runtime with native code. As the VM system can be hard to work with if you're not familiar with it, I advise you to contact me to discuss implementing a VM if you are interested.</p>
 <h2 id="bytecode">Bytecode</h2>
 <p>The BQN implementation here and dzaima/BQN share a stack-based object code format used to represent compiled code. This format is a list of numbers of unspecified precision (small precision will limit the length of list literals and number of locals per block, blocks, and constants). Previously it was encoded as bytes with the <a href="https://en.wikipedia.org/wiki/LEB128">LEB128</a> format; while it no longer has anything to do with bytes it's called a &quot;bytecode&quot; because this is shorter than &quot;object code&quot;.</p>
@@ -27,11 +27,14 @@
 <li>Block immediateness: (1) immediate or (0) deferred</li>
 <li>Block starting index in <code><span class='Value'>code</span></code></li>
 <li>Number of variables the block needs to allocate</li>
+<li>Variable names, as indices into the program's symbol list</li>
+<li>A mask indicating which variables are exported</li>
 </ul>
 <p>Compilation separates blocks so that they are not nested in bytecode. All compiled code is contained in some block. The self-hosted compiler compiles the entire program into an immediate block, and the program is run by evaluating this block. Blocks are terminated with the RETN instruction.</p>
 <p>The starting index refers to the position where execution starts in order to evaluate the block. When the block is evaluated depends on its type and immediateness. An immediate block (0,1) is evaluated as soon as it is pushed; a function (0,0) is evaluated when called on arguments, an immediate modifier (1 or 2, 1) is evaluated when called on operands, and a deferred modifier (1 or 2, 0) creates a derived function when called on operands and is evaluated when this derived function is called on arguments.</p>
+<p>The program's symbol list is included in the tokenization information <code><span class='Value'>t</span></code>: it is <code><span class='Number'>0</span><span class='Function'>⊑</span><span class='Number'>2</span><span class='Function'>⊑</span><span class='Value'>t</span></code>. Since the entire program (the source code passed in one compiler call) uses this list, namespace field accesses can be performed with indices alone within a program. The symbol list is needed for cross-program access, for example if <code><span class='Function'>•BQN</span></code> returns a namespace.</p>
 <h3 id="instructions">Instructions</h3>
-<p>The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the &quot;used&quot; column.</p>
+<p>The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the &quot;used&quot; column. Instructions marked <code><span class='Function'>NS</span></code> are used only in programs with namespaces, and so are not needed to support the compiler or self-hosted runtime.</p>
 <table>
 <thead>
 <tr>
@@ -253,6 +256,46 @@
 <td>Returns top of stack</td>
 </tr>
 <tr>
+<td align="right">26</td>
+<td>FLDO</td>
+<td align="center">NS</td>
+<td align="right"></td>
+<td align="left"><code><span class='Function'>I</span></code></td>
+<td>Read field <code><span class='Function'>I</span></code> from namespace</td>
+</tr>
+<tr>
+<td align="right">27</td>
+<td>FLDM</td>
+<td align="center"></td>
+<td align="right">26</td>
+<td align="left"><code><span class='Function'>I</span></code></td>
+<td>Push mutable field <code><span class='Function'>I</span></code> from namespace</td>
+</tr>
+<tr>
+<td align="right">28</td>
+<td>NSPM</td>
+<td align="center">NS</td>
+<td align="right"></td>
+<td align="left"><code><span class='Function'>I</span></code></td>
+<td>Mutable target aliases field <code><span class='Function'>I</span></code></td>
+</tr>
+<tr>
+<td align="right">29</td>
+<td>RETD</td>
+<td align="center">NS</td>
+<td align="right">25</td>
+<td align="left"></td>
+<td>Return the running scope's namespace</td>
+</tr>
+<tr>
+<td align="right">30</td>
+<td>SYSV</td>
+<td align="center"></td>
+<td align="right">0</td>
+<td align="left"><code><span class='Function'>I</span></code></td>
+<td>Push dynamic system value <code><span class='Function'>I</span></code></td>
+</tr>
+<tr>
 <td align="right">31</td>
 <td>LOCU</td>
 <td align="center">X</td>
@@ -375,11 +418,29 @@
 <td><code><span class='Value'>x</span> <span class='Gets'>→</span> <span class='Value'>x</span></code></td>
 <td>Returns from current block</td>
 </tr>
+<tr>
+<td align="right">26</td>
+<td>FLDO</td>
+<td><code><span class='Value'>n</span> <span class='Gets'>→</span> <span class='Value'>n.i</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">28</td>
+<td>NSPM</td>
+<td><code><span class='Value'>r</span> <span class='Gets'>→</span> <span class='Value'>s</span></code></td>
+<td>Reference <code><span class='Value'>s</span></code> gets field <code><span class='Value'>i</span></code> and puts in <code><span class='Value'>r</span></code></td>
+</tr>
+<tr>
+<td align="right">29</td>
+<td>RETD</td>
+<td><code><span class='Value'>x?</span> <span class='Gets'>→</span> <span class='Value'>n</span></code></td>
+<td>Clears stack, dropping 0 or 1 value</td>
+</tr>
 </tbody>
 </table>
 <p>Many instructions just call functions or modifiers or otherwise have fairly obvious implementations. Instructions to handle variables and blocks are more complicated (although very typical of bytecode representations for lexically-scoped languages) and are described in more detail below.</p>
 <h3 id="local-variables-dfnd-loco-locu-locm-retn">Local variables: DFND LOCO LOCU LOCM RETN</h3>
-<p>The bytecode representation is designed with the assumption that variables will be stored in frames, one for each instance of a block. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see <a href="#blocks">#blocks</a>) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.</p>
+<p>The bytecode representation is designed with the assumption that variables will be stored in frames, one for each time an instance of a block is run. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see <a href="#blocks">#blocks</a>) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.</p>
 <p>A frame is a mutable list of <em>slots</em> for variable values. It has slots for any special names that are available during the blocks execution followed by the local variables it defines. Special names use the ordering <code><span class='Value'>𝕤𝕩𝕨𝕣𝕗𝕘</span></code>; the first three of these are available in non-immediate blocks while <code><span class='Value'>𝕣</span></code> and <code><span class='Value'>𝕗</span></code> are available in modifiers and <code><span class='Value'>𝕘</span></code> in 2-modifiers specifically.</p>
 <p>When a block is pushed with <strong>DFND</strong>, an instance of the block is created, with its <em>parent frame</em> set to be the frame of the currently-executing block. Setting the parent frame when the block is first seen, instead of when it's evaluated, is what distinguishes lexical from dynamic scoping. If it's an immediate block, it's evaluated immediately, and otherwise it's pushed onto the stack. When the block is evaluated, its frame is initialized using any arguments passed to it, the next instruction's index is pushed onto the return stack, and execution moves to the first instruction in the block. When the RETN instruction is encountered, an index is popped from the return stack and execution returns to this location. As an alternative to maintaining an explicit return stack, a block can be implemented as a native function that creates a new execution stack and returns the value in it when the <strong>RETN</strong> instruction is reached. This approach uses the implementation language's call stack for the return stack.</p>
 <p>Local variables are manipulated with the <strong>LOCO</strong> (or <strong>LOCU</strong>) and <strong>LOCM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
@@ -389,6 +450,11 @@
 <p>A <em>reference list</em> is a list of variable references or reference lists. It's created with the <strong>ARRM</strong> instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.</p>
 <p>The <strong>SETN</strong>, <strong>SETU</strong>, and <strong>SETM</strong> instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.</p>
 <p><strong>SETM</strong> additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.</p>
+<h3 id="namespaces-fldo-fldm-nspm-retd">Namespaces: FLDO FLDM NSPM RETD</h3>
+<p>A <em>namespace</em> is the collection of variables in a particular scope, along with an association mapping some exported <em>symbols</em> (case- and underscore-normalized strings) to a subset of these. It can be represented using a frame for the variables, plus the variable name list and mask of exported variables from that block's properties in the bytecode. <strong>RETD</strong> finishes executing the block and returns the namespace for that execution.</p>
+<p>The variable name list is split into a program-level list of names and a list of indices into these names: within-program field accesses can be done with the indices only while cross-program ones must use names. One way to check whether an access is cross-program is to compare the accessor's program-level name list with the one for the accessed namespace as references or pointers. Then a lookup should be performed as appropriate. A persistent lookup table is needed to make this efficient.</p>
+<p><strong>FLDO</strong> reads a field from a namespace. The parameter <code><span class='Function'>I</span></code> is a program-level identifier index for this field. The VM must ensure that the field is exported, possibly by leaving unexported identifiers out of the namespace's lookup table. <strong>FLDM</strong> does the same but pushes a reference to the field, to be modified by assignment.</p>
+<p><strong>NSPM</strong> is used for aliased assignment such as <code><span class='Bracket'>⟨</span><span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span><span class='Gets'>⇐</span><span class='Value'>c</span><span class='Bracket'>⟩</span><span class='Gets'>←</span><span class='Value'>ns</span></code>. It tags a reference with a namespace field, identified with a program-level index. A value assigned to the tagged reference must be a namespace. The relevant field is extracted, and then stored in the original reference.</p>
 <h2 id="runtime">Runtime</h2>
 <p>Primitive functions and modifiers used in a program are stored in its <code><span class='Value'>consts</span></code> array. The compiler needs to be passed a <em>runtime</em> with the value of every primitive so that these functions and modifiers are available.</p>
 <p>While it's perfectly possible to implement the runtime from scratch, the pseudo-BQN files <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r0.bqn">r0.bqn</a> and <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r1.bqn">r1.bqn</a> implement the full runtime in terms of a <em>core runtime</em> consisting of a smaller number of much simpler functions. <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/pr.bqn">pr.bqn</a> converts this file so that it can be compiled. It changes values in the core runtime to primitives and primitives to generated identifiers, so that the first 22 values in the output's <code><span class='Value'>consts</span></code> array are exactly the core runtime, and no other primitives are required. The result is a list of two elements: first the list of all primitive values, and then a function that can be called to pass in two additional core functions used for inferred properties.</p>

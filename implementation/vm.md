@@ -2,7 +2,7 @@
 
 # The BQN virtual machine and runtime
 
-BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. For example, the [Javascript environment](../docs/bqn.js) requires about 300 lines of Javascript code even though it compiles BQN bytecode to Javascript, a more complex strategy than interpreting it directly. This makes it fairly easy to port BQN to new platforms, allowing BQN to be [embedded](../doc/embed.md) within other programming languages and interact with arrays or functions in those languages.
+BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. The [Javascript environment](../docs/bqn.js) requires about 500 lines of Javascript code including system functions and performance improvements; probably around 250 would be required just to run the core language. This makes it fairly easy to port BQN to new platforms, allowing BQN to be [embedded](../doc/embed.md) within other programming languages and interact with arrays or functions in those languages.
 
 The way data is represented is part of the VM implementation: it can use native arrays or a custom data structure, depending on what the language supports. An initial implementation will be very slow, but can be improved by replacing functions from the BQN-based runtime with native code. As the VM system can be hard to work with if you're not familiar with it, I advise you to contact me to discuss implementing a VM if you are interested.
 
@@ -30,14 +30,18 @@ Each block in `blocks` is a list of the following properties:
 * Block immediateness: (1) immediate or (0) deferred
 * Block starting index in `code`
 * Number of variables the block needs to allocate
+* Variable names, as indices into the program's symbol list
+* A mask indicating which variables are exported
 
 Compilation separates blocks so that they are not nested in bytecode. All compiled code is contained in some block. The self-hosted compiler compiles the entire program into an immediate block, and the program is run by evaluating this block. Blocks are terminated with the RETN instruction.
 
 The starting index refers to the position where execution starts in order to evaluate the block. When the block is evaluated depends on its type and immediateness. An immediate block (0,1) is evaluated as soon as it is pushed; a function (0,0) is evaluated when called on arguments, an immediate modifier (1 or 2, 1) is evaluated when called on operands, and a deferred modifier (1 or 2, 0) creates a derived function when called on operands and is evaluated when this derived function is called on arguments.
 
+The program's symbol list is included in the tokenization information `t`: it is `0⊑2⊑t`. Since the entire program (the source code passed in one compiler call) uses this list, namespace field accesses can be performed with indices alone within a program. The symbol list is needed for cross-program access, for example if `•BQN` returns a namespace.
+
 ### Instructions
 
-The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the "used" column.
+The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the "used" column. Instructions marked `NS` are used only in programs with namespaces, and so are not needed to support the compiler or self-hosted runtime.
 
 |  B | Name | Used | Like | Args     | Description
 |---:|------|:----:|-----:|:---------|------------
@@ -67,6 +71,11 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 23 | VFYM |      |      |          | Convert to matcher (for header tests)
 | 24 | SETH |      |      |          | Test header
 | 25 | RETN |  X   |      |          | Returns top of stack
+| 26 | FLDO |  NS  |      | `I`      | Read field `I` from namespace
+| 27 | FLDM |      |  26  | `I`      | Push mutable field `I` from namespace
+| 28 | NSPM |  NS  |      | `I`      | Mutable target aliases field `I`
+| 29 | RETD |  NS  |  25  |          | Return the running scope's namespace
+| 30 | SYSV |      |   0  | `I`      | Push dynamic system value `I`
 | 31 | LOCU |  X   |  21  | `D`, `I` | Push and clear local variable `I` from `D` frames up
 
 Stack effects for most instructions are given below. Instructions 16, 17, and 19 are identical to 5, 6, and 10 except that the indicated values in the higher-numbered instructions may be `·`. Instruction 31 is identical to 21 but indicates that the local variable's value will never be used again, which may be useful for optimization. The lower-numbered instructions are not yet emitted by the self-hosted compiler and can be implemented simply by making them identical to the higher-numbered ones; however, it may be possible to make them faster by not checking for Nothing.
@@ -90,12 +99,15 @@ Stack effects for most instructions are given below. Instructions 16, 17, and 19
 | 21 | LOCO | `→ x`                 | Local variable value
 | 22 | LOCM | `→ r`                 | Local variable reference
 | 25 | RETN | `x → x`               | Returns from current block
+| 26 | FLDO | `n → n.i`             |
+| 28 | NSPM | `r → s`               | Reference `s` gets field `i` and puts in `r`
+| 29 | RETD | `x? → n`              | Clears stack, dropping 0 or 1 value
 
 Many instructions just call functions or modifiers or otherwise have fairly obvious implementations. Instructions to handle variables and blocks are more complicated (although very typical of bytecode representations for lexically-scoped languages) and are described in more detail below.
 
 ### Local variables: DFND LOCO LOCU LOCM RETN
 
-The bytecode representation is designed with the assumption that variables will be stored in frames, one for each instance of a block. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see [#blocks](#blocks)) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.
+The bytecode representation is designed with the assumption that variables will be stored in frames, one for each time an instance of a block is run. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see [#blocks](#blocks)) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.
 
 A frame is a mutable list of *slots* for variable values. It has slots for any special names that are available during the blocks execution followed by the local variables it defines. Special names use the ordering `𝕤𝕩𝕨𝕣𝕗𝕘`; the first three of these are available in non-immediate blocks while `𝕣` and `𝕗` are available in modifiers and `𝕘` in 2-modifiers specifically.
 
@@ -114,6 +126,16 @@ A *reference list* is a list of variable references or reference lists. It's cre
 The **SETN**, **SETU**, and **SETM** instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.
 
 **SETM** additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.
+
+### Namespaces: FLDO FLDM NSPM RETD
+
+A *namespace* is the collection of variables in a particular scope, along with an association mapping some exported *symbols* (case- and underscore-normalized strings) to a subset of these. It can be represented using a frame for the variables, plus the variable name list and mask of exported variables from that block's properties in the bytecode. **RETD** finishes executing the block and returns the namespace for that execution.
+
+The variable name list is split into a program-level list of names and a list of indices into these names: within-program field accesses can be done with the indices only while cross-program ones must use names. One way to check whether an access is cross-program is to compare the accessor's program-level name list with the one for the accessed namespace as references or pointers. Then a lookup should be performed as appropriate. A persistent lookup table is needed to make this efficient.
+
+**FLDO** reads a field from a namespace. The parameter `I` is a program-level identifier index for this field. The VM must ensure that the field is exported, possibly by leaving unexported identifiers out of the namespace's lookup table. **FLDM** does the same but pushes a reference to the field, to be modified by assignment.
+
+**NSPM** is used for aliased assignment such as `⟨a‿b⇐c⟩←ns`. It tags a reference with a namespace field, identified with a program-level index. A value assigned to the tagged reference must be a namespace. The relevant field is extracted, and then stored in the original reference.
 
 ## Runtime
 
