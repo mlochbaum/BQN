@@ -5,6 +5,53 @@
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
 <h1 id="depth">Depth</h1>
+<svg viewBox='-278.4 -48 556.8 204'>
+  <g font-family='BQN,monospace' font-size='16px' text-anchor='middle' fill='currentColor' stroke-width='0' stroke='currentColor' stroke-linecap='round'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-192' y='-32' width='384' height='172'/>
+    <text dy='-0.2em' class='Number'>3</text>
+    <line stroke-width='2' class='purple' opacity='0.8' x2='-72' y2='22'/>
+    <line stroke-width='2' class='purple' opacity='0.8' x2='48' y2='22'/>
+    <line stroke-width='2' class='purple' opacity='0.8' x2='120' y2='22'/>
+    <g transform='translate(-72 40)'>
+      <text dy='-0.2em' class='Number'>2</text>
+      <line stroke-width='2' class='purple' opacity='0.8' x2='-72' y2='22'/>
+      <line stroke-width='2' class='purple' opacity='0.8' x2='24' y2='22'/>
+      <g transform='translate(-72 40)'>
+        <text dy='-0.2em' class='Number'>0</text>
+      </g>
+      <g transform='translate(24 40)'>
+        <text dy='-0.2em' class='Number'>1</text>
+        <line stroke-width='2' class='purple' opacity='0.8' x2='-48' y2='22'/>
+        <line stroke-width='2' class='purple' opacity='0.8' x2='0' y2='22'/>
+        <line stroke-width='2' class='purple' opacity='0.8' x2='48' y2='22'/>
+        <g transform='translate(-48 40)'>
+          <text dy='-0.2em' class='Number'>0</text>
+        </g>
+        <g transform='translate(0 40)'>
+          <text dy='-0.2em' class='Number'>0</text>
+        </g>
+        <g transform='translate(48 40)'>
+          <text dy='-0.2em' class='Number'>0</text>
+        </g>
+      </g>
+    </g>
+    <g transform='translate(48 40)'>
+      <text dy='-0.2em' class='Number'>0</text>
+    </g>
+    <g transform='translate(120 40)'>
+      <text dy='-0.2em' class='Number'>1</text>
+      <line stroke-width='2' class='purple' opacity='0.8' x2='-24' y2='22'/>
+      <line stroke-width='2' class='purple' opacity='0.8' x2='24' y2='22'/>
+      <g transform='translate(-24 40)'>
+        <text dy='-0.2em' class='Number'>0</text>
+      </g>
+      <g transform='translate(24 40)'>
+        <text dy='-0.2em' class='Number'>0</text>
+      </g>
+    </g>
+  </g>
+</svg>
+
 <p>The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (<code><span class='Function'>≡</span></code>) returns the depth of its argument, while the 2-modifier Depth (<code><span class='Modifier2'>⚇</span></code>) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.</p>
 <h2 id="the-depth-function">The Depth function</h2>
 <p>To find the depth of an array, use Depth (<code><span class='Function'>≡</span></code>). For example, the depth of a list of numbers or characters is 1:</p>

@@ -2,6 +2,35 @@
 
 # Depth
 
+<!--GEN
+d ← 48‿40
+a ← ⟨⟨@,⟨@,@,@⟩⟩,@,⟨@,@⟩⟩
+
+g ← "g"At"font-family=BQN,monospace|font-size=16px|text-anchor=middle|fill=currentColor|stroke-width=0|stroke=currentColor|stroke-linecap=round"
+rc ← At "class=code|stroke-width=1.5|rx=12"
+lc ← "line"At"stroke-width=2|class=purple|opacity=0.8"
+tc ← "text"At"dy=-0.2em|class=Number"
+
+TN←tc Enc FmtNum
+TL←lc Elt"x2"‿"y2"≍˘·FmtNum 0‿18-˜d×≍⟜1
+GTr←{("g"Attr⟨"transform","translate("∾(Fmt d×𝕨)∾")"⟩) Enc 𝕩}
+Tree←{
+  ds‿ws‿e←<˘⍉>𝕩
+  d←1+0⌈´ds
+  ww←1⌈+´ws
+  p←2÷˜(-ww)+`»⊸+ws
+  ⟨d,ww,⟨TN d⟩∾(TL¨p)∾∾p≍⟜1⊸Gtr¨e⟩
+}
+dp‿wd‿tr ← {@⊸≢◶⟨0‿1‿⟨TN 0⟩, Tree𝕊¨⟩𝕩} a
+
+dim ← ⟨1+wd,1.3+dp⟩ ⋄ sh ← ⟨-2÷˜⊑dim,¯0.8⟩
+
+((∾˜d)×((-∾+˜)1.8‿0.4)+sh∾dim) SVG g Enc ⟨
+  "rect" Elt rc∾(Pos d×sh) ∾ "width"‿"height"≍˘FmtNum d×dim
+  tr
+⟩
+-->
+
 The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (`≡`) returns the depth of its argument, while the 2-modifier Depth (`⚇`) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.
 
 ## The Depth function
