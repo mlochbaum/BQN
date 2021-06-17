@@ -10,7 +10,7 @@ Ge ← "g"⊸At⊸Enc
 g  ← "font-family=BQN,monospace|font-size=18px|text-anchor=middle"
 hg ← "class=bluegreen|stroke-width=0|opacity=0.2"
 cg ← "font-size=24px|text-anchor=end"
-lg ← "stroke-linecap=round|stroke=currentColor|opacity=0.7"
+lg ← "class=lilac|stroke-linecap=round"
 
 wv ← 0‿1‿1‿0‿3‿2‿0‿0‿0
 xl ← ≠ xc ← ⊐ xt ← '''(Highlight∾∾⊣)¨"replicate"
@@ -31,8 +31,8 @@ Ll ← Line∘⍉ ≍ + (0≍0.05×-○⊑)≍˘0.45‿¯0.55˙
   cg Ge (¯0.7≍¨y) Text⟜Highlight¨ "𝕨"‿"𝕩"‿"𝕨/𝕩"‿"/𝕨"
   tp Text¨○∾ Highlight∘•Repr¨¨⌾(1‿3⊸⊏) xt‿wv‿(wv/xt)‿(/wv)
   lg Ge ⟨
-    "stroke-width=0.4" Ge   Ll¨ ´ (0=wv)⊸/¨  2⊸↑ tp
-    "stroke-width=1.5" Ge > Ll¨¨˝˘ 2↕ wv⊸/¨⌾(2⊸↑)tp
+    "stroke-width=0.6" Ge   Ll¨ ´ (0=wv)⊸/¨  2⊸↑ tp
+    "stroke-width=1.8" Ge > Ll¨¨˝˘ 2↕ wv⊸/¨⌾(2⊸↑)tp
   ⟩
 ⟩
 -->
