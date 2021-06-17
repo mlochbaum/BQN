@@ -8,7 +8,7 @@ a ← ⟨⟨@,⟨@,@,@⟩⟩,@,⟨@,@⟩⟩
 
 g ← "g"At"font-family=BQN,monospace|font-size=16px|text-anchor=middle|fill=currentColor|stroke-width=0|stroke=currentColor|stroke-linecap=round"
 rc ← At "class=code|stroke-width=1.5|rx=12"
-lc ← "line"At"stroke-width=2|class=purple|opacity=0.8"
+lc ← "line"At"class=lilac|stroke-width=2"
 tc ← "text"At"dy=-0.2em|class=Number"
 
 TN←tc Enc FmtNum
