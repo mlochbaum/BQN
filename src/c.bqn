@@ -138,8 +138,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   dl←«⊸∨dc←r=4                              # Dot left
   sr←»⌾(((⍋⊏⟜dl)⊸⊏g)⊸⊏)sl←«⊸∨r=¯2⋄ns←¬sl∨sr # Strand right and left; not stranded
   cp←𝕩=1+⊑bB                                # Closed paren
-  nr←(IT¬cp)⊏𝕩=⊑bO                          # Nothingness role: 1 for · (handle 𝕨 later?)
-  "Can't strand Nothing (·)"_err_(↕∘≠) ns<nr
+  nr←(IT¬cp)⊏(𝕩=2+⊑bI)+2×𝕩=⊑bO              # Nothingness role: 1 for 𝕨, 2 for ·
+  nx←0 ⋄ nei←↕≠nr ⋄ _nerr←{𝕗 _err_ nei 2=nx⌈↩𝕩}
+  "Can't strand Nothing (·)"_nerr nr×¬ns
   g⊏˜↩⍋g⊏sdl←sl∨dl                          # Avoid reordering strands and dots in rev
   # Permutation to reverse each expression: *more* complicated than it looks
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sdl∨r=¯1
@@ -163,7 +164,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ir←((»⌾(g⊸⊏)(1+es)×3=⊢)⌈⊢-es<2≤⊢)r+pp×(IT¬pp)⊏r # Propagate modifier roles
   ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir # ...and function roles
   r+↩pt×»ir                                 # Roles at pt were 0; set them now
-  ir(×⟜¬-⊢)↩nr                              # Include nothingness (doesn't handle 𝕎)
+  nr×↩¬nx∨↩(0≠ir)∧1=nr                      # Assume 𝕎 can't be Nothing
+  ir-↩nr                                    # Include nothingness
   r-↩(r=¯4)∧1»r=¯1                          # Lone ⇐ to role ¯5
   "Dot must be preceded by a subject"_err_(⍋∘rev) dc>»r=0
   r(×⟜¬-⊢)↩dl⋄dc⊏˜↩rev                      # Namespace and dot to ¯1
@@ -180,10 +182,12 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
   a←(¯5⊸<∧≤⟜¯3)r⋄ps←a<r<0                   # a: assignment, ps: part separator
   tr←1≤er←ir⊏˜IT»ps                         # er: expression role; tr: train or modifier expression
-  no←ir<0⋄ne←er<0                           # Nothing value; expression
-  "Nothing (·) cannot be assigned"_err_(G) ne∧a
+  no←0⌈-ir⋄ne←0⌈-er⋄nei↩g⋄nx⊏˜↩gr           # Nothing value; expression
+  "Nothing (·) cannot be assigned"_nerr ne×a
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3       # op: active modifiers; ro: mod or right operand
-  "Missing operand"_err_(G) op>(«∧m2≤»)no<m2<ro∨r∊↕2
+  "Missing operand"_nerr op×2(«⌈m2×»)(no⌈m2)×¬ro∨r∊↕2
+  s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
+  "Can't use Nothing (·) in lists"_nerr ne×»lo∨ls
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1                     # Modified assignment
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
@@ -193,7 +197,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
   aa←×g⊏ac←»+`(»⊸∨0=+`)⊸×gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩 # ac broadcasts it to the entire target
   nf←b¬∘PN ac<xv=vi-˜⊑bG                    # Namespace blocks
-  {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 𝕩⊏nr} 1-˜nf¬⊸/0∾c⊏rev
+  fw←b¬∘PN gi⊏nx                            # Blocks where 𝕨 must be defined
+  {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾c⊏rev
   "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
@@ -233,23 +238,21 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
   fa←/(fe←ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op      # Active functions: cases fe are excluded
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
-  dy←fa⊏«no<(tr∧r≥0)∨ro<r=0                 # Dyadic
+  dy←fa⊏«(2=no)<(tr∧r≥0)∨ro<r=0                 # Dyadic
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
   cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
-  s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
-  "Can't use Nothing (·) in lists"_err_(G) (»lo∨ls)∧ne
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
-  dr←/(ne∨»r=¯5)<ls<s⋄rt←/fo                # Drop (block separator) and return
+  dr←/((2=ne)∨»r=¯5)<ls<s⋄rt←/fo                # Drop (block separator) and return
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
-  dr∾↩((1+dy)×fn←fa⊏ne)/fl                  # Turn function applications on · to drops
+  dr∾↩((1+dy)×fn←fa⊏(2=ne))/fl                  # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄dy/˜↩fn⋄fl/˜↩fn            # And remove them
 
   # Bytecode generation: numbers bc ordered by source location (after rev) oi
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,14¨dr
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,28¨al,vi-˜(al-1)⊏𝕩
-               5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er,¯1↓rc←25+4×nf⟩
+               5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er+er<0,¯1↓rc←25+4×nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
