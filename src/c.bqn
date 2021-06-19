@@ -238,21 +238,21 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
   fa←/(fe←ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op      # Active functions: cases fe are excluded
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
-  dy←fa⊏«(2=no)<(tr∧r≥0)∨ro<r=0                 # Dyadic
+  dy←2≠ny←fa⊏2«no⌈2×¬(tr∧r≥0)∨ro<r=0        # Dyadic
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
   cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
-  dr←/((2=ne)∨»r=¯5)<ls<s⋄rt←/fo                # Drop (block separator) and return
+  dr←/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo              # Drop (block separator) and return
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
-  dr∾↩((1+dy)×fn←fa⊏(2=ne))/fl                  # Turn function applications on · to drops
-  fn↩¬fn⋄fa/˜↩fn⋄dy/˜↩fn⋄fl/˜↩fn            # And remove them
+  dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
+  fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
 
   # Bytecode generation: numbers bc ordered by source location (after rev) oi
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
   bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,14¨dr
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,28¨al,vi-˜(al-1)⊏𝕩
-               5+oa⊏r,(⊢+9×10⊸=)16+dy-7×fa⊏er+er<0,¯1↓rc←25+4×nf⟩
+               5+oa⊏r,19⌊5+(fn/dy+11×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←25+4×nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
