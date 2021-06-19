@@ -50,12 +50,12 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 |  2 | VARM |      |      | `I`      | Push named variable `I` reference
 |  3 | ARRO |  X   |      | `N`      | Create length-`N` list
 |  4 | ARRM |  X   |   3  | `N`      | Create length-`N` reference list
-|  5 | FN1C |      |      |          | Monadic function call
-|  6 | FN2C |      |      |          | Dyadic function call
+|  5 | FN1C |  X   |      |          | Monadic function call
+|  6 | FN2C |  X   |      |          | Dyadic function call
 |  7 | OP1D |  X   |      |          | 1-modifier call
 |  8 | OP2D |  X   |      |          | 2-modifier call
 |  9 | TR2D |  X   |      |          | Create 2-train
-| 10 | TR3D |      |      |          | Create 3-train
+| 10 | TR3D |  X   |      |          | Create 3-train
 | 11 | SETN |  X   |      |          | Define variable
 | 12 | SETU |  X   |      |          | Change variable
 | 13 | SETM |  X   |      |          | Modify variable
@@ -63,7 +63,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 15 | DFND |  X   |      | `I`      | Localize and push block `I`
 | 16 | FN1O |  X   |   5  |          | Monadic call, checking for `·`
 | 17 | FN2O |  X   |   6  |          | Dyadic call, checking for `·`
-| 18 | CHKV |      |      |          | Error if top of stack is `·`
+| 18 | CHKV |  X   |      |          | Error if top of stack is `·`
 | 19 | TR3O |  X   |  10  |          | Create 3-train, checking for `·`
 | 20 | OP2H |      |      |          | Bind right operand to 2-modifier
 | 21 | LOCO |  X   |      | `D`, `I` | Push local variable `I` from `D` frames up
