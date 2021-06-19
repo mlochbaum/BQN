@@ -247,6 +247,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
+  idor∾˜↩5/1+g⊏˜fw/¯1∾rt
+  idbc∾˜↩(+´fw)⥊⟨21‿0‿2‿18‿14⟩
 
   # Bytecode generation: numbers bc ordered by source location (after rev) oi
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
