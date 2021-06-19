@@ -199,6 +199,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   nf←b¬∘PN ac<xv=vi-˜⊑bG                    # Namespace blocks
   fw←b¬∘PN gi⊏nx                            # Blocks where 𝕨 must be defined
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾c⊏rev
+  nn←fo+`⊸⊏fw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn         # fw indicates 𝕨 is never Nothing
   "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
