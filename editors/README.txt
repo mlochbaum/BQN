@@ -17,6 +17,9 @@ depends on your desktop environment. For further discussion, see:
 - https://en.wikipedia.org/wiki/X_keyboard_extension
 - https://aplwiki.com/wiki/Typing_glyphs_on_Linux
 
+For Android, the following fork adds APL and BQN to Hacker's Keyboard:
+https://github.com/dzaima/hackerskeyboard/releases/tag/2.0arr
+
 The file inputrc can be copied or appended to ~/.inputrc to enable
 backslash input in bash, command-line dzaima/BQN, and other software
 that uses GNU Readline.
