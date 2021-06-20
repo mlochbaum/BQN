@@ -53,7 +53,7 @@ Tokenize←{System‿vars←𝕨
   str←𝕩⊔˜1-˜(si←a>»qe)(⊣+`⊸×○(∾⟜1)<)≠`dm∧ab # Strings (indices /si)
 
   # Extract words: identifiers and numbers
-  ie←/f⋄is←ie≠⊸↑/1»f⋄Fs←{is/˜↩𝕨⋄𝕨/𝕩}        # Token start and end
+  ie←/f⋄is←ie≠⊸↑/1»f                        # Token start and end
   is-↩is(-×⊏⟜c)ie                           # Comment → ending newline only
   t←CharCode ie⊏𝕩
   nd←(t=⊑bN)>«t M bD⋄rr←t=bR                # Namespace dot; 𝕣
@@ -69,7 +69,7 @@ Tokenize←{System‿vars←𝕨
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
   fr←rr/˜if←(»⌈`)⊸<ig←(i>us)×+`w>n          # Identifier groups and first character
-  w↩if∨n∧w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr             # Don't produce an identifier for 𝕣
+  w↩if∨n∧w0←w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr          # Don't produce an identifier for 𝕣
   {⟨𝕩/is,"𝕣 can't be used with other word characters"⟩!0}⍟(∨´)(i>us)∧(rr⊸≠∨if⊸<)ig⊏0∾fr
   {⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/rr<if
   ig⊏↩1-˜0∾+`⊸×¬fr
@@ -79,12 +79,12 @@ Tokenize←{System‿vars←𝕨
   ki←(wt⍒⊸⊏/w>rr)∾(ci∾/si)⊏+`»f             # Indices in t
   k←id∾num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
   k↩System⌾(1⊸⊑)k                           # System value lookup
-  wf←¬l∨t M bW⋄ie/˜↩wf∨>⟜«l                 # Index management for...
-  t↩(w∨wf)Fs(vars≠⊸↓∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t # Add IDs; remove words/whitespace
+  wf←¬l∨t M bW⋄is/˜↩wf∨w0⋄ie/˜↩wf∨>⟜«l      # Index management for...
+  t↩(w∨wf)/(vars≠⊸↓∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t  # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
-  t{ie/˜↩𝕨⋄𝕨Fs𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep            # Remove the rest
+  t{is/˜↩𝕨⋄ie/˜↩𝕨⋄𝕨/𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep      # Remove the rest
   im←(t=bR)∨t M vd≍+´2↑kk                   # Identifier (or 𝕣) mask
   r←ir⌾(im⊸/)(vd⌊t)⊏charRole∾0              # Role
   t+↩(⊑bX)((⊢M≍⟜5)×5+3⊸+⊸≤)t                # Case-insensitive special names
