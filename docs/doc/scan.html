@@ -1,0 +1,144 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Scan</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="scan">Scan</h1>
+<svg viewBox='-184.8 -12.6 588 285.6'>
+  <g fill='currentColor' stroke-linecap='round' text-anchor='middle' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-128.8' y='0' width='476' height='260.4'/>
+    <g class='lilac' stroke-width='2'>
+      <line x1='0' x2='0' y1='44.1' y2='216.3'/>
+      <line x1='56' x2='56' y1='44.1' y2='54.6'/>
+      <line x1='56' x2='56' y1='79.8' y2='216.3'/>
+      <line x1='112' x2='112' y1='44.1' y2='86.1'/>
+      <line x1='112' x2='112' y1='111.3' y2='216.3'/>
+      <line x1='168' x2='168' y1='44.1' y2='117.6'/>
+      <line x1='168' x2='168' y1='142.8' y2='216.3'/>
+      <line x1='224' x2='224' y1='44.1' y2='149.1'/>
+      <line x1='224' x2='224' y1='174.3' y2='216.3'/>
+      <line x1='280' x2='280' y1='44.1' y2='180.6'/>
+      <line x1='280' x2='280' y1='205.8' y2='216.3'/>
+      <line x1='0' x2='48.16' y1='54.6' y2='64.26'/>
+      <line x1='56' x2='104.16' y1='86.1' y2='95.76'/>
+      <line x1='112' x2='160.16' y1='117.6' y2='127.26'/>
+      <line x1='168' x2='216.16' y1='149.1' y2='158.76'/>
+      <line x1='224' x2='272.16' y1='180.6' y2='190.26'/>
+    </g>
+    <g font-size='18px' text-anchor='end'>
+      <text dy='0.32em' x='-61.6' y='31.5'>𝕩</text>
+      <text dy='0.32em' x='-61.6' y='228.9'><tspan class='Function'>⌈</tspan><tspan class='Modifier'>`</tspan>𝕩</text>
+    </g>
+    <g font-size='21px'>
+      <text dy='0.32em' x='0' y='31.5'><tspan class='Number'>2</tspan></text>
+      <text dy='0.32em' x='56' y='31.5'><tspan class='Number'>0</tspan></text>
+      <text dy='0.32em' x='112' y='31.5'><tspan class='Number'>0</tspan></text>
+      <text dy='0.32em' x='168' y='31.5'><tspan class='Number'>3</tspan></text>
+      <text dy='0.32em' x='224' y='31.5'><tspan class='Number'>5</tspan></text>
+      <text dy='0.32em' x='280' y='31.5'><tspan class='Number'>1</tspan></text>
+      <text dy='0.32em' x='0' y='228.9'><tspan class='Number'>2</tspan></text>
+      <text dy='0.32em' x='56' y='228.9'><tspan class='Number'>2</tspan></text>
+      <text dy='0.32em' x='112' y='228.9'><tspan class='Number'>2</tspan></text>
+      <text dy='0.32em' x='168' y='228.9'><tspan class='Number'>3</tspan></text>
+      <text dy='0.32em' x='224' y='228.9'><tspan class='Number'>5</tspan></text>
+      <text dy='0.32em' x='280' y='228.9'><tspan class='Number'>5</tspan></text>
+    </g>
+    <g font-size='19px'>
+      <text dy='0.32em' x='56' y='67.2'><tspan class='Function'>⌈</tspan></text>
+      <text dy='0.32em' x='112' y='98.7'><tspan class='Function'>⌈</tspan></text>
+      <text dy='0.32em' x='168' y='130.2'><tspan class='Function'>⌈</tspan></text>
+      <text dy='0.32em' x='224' y='161.7'><tspan class='Function'>⌈</tspan></text>
+      <text dy='0.32em' x='280' y='193.2'><tspan class='Function'>⌈</tspan></text>
+    </g>
+    <g class='bluegreen' stroke-width='3' style='fill:none' opacity='0.6'>
+      <path d='M-22.4 16.5l-6 15l6 15M302.4 16.5l6 15l-6 15'/>
+      <path d='M-22.4 213.9l-6 15l6 15M302.4 213.9l6 15l-6 15'/>
+    </g>
+  </g>
+</svg>
+
+<p>The 1-modifier Scan (<code><span class='Modifier'>`</span></code>) moves along the first axis of the array <code><span class='Value'>𝕩</span></code>, building up an array of results by applying <code><span class='Function'>𝔽</span></code> repeatedly beginning with <code><span class='Value'>𝕨</span></code> or <code><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>. It's related to the fold modifiers, and most closely resembles the <a href="fold.html#apl2-reduction">APL2-style reduction</a> <code><span class='Modifier'>¨˝</span></code>, but it traverses the array in forward rather than reverse index order, and includes all intermediate results of <code><span class='Function'>𝔽</span></code> in its output instead of just the final one.</p>
+<p>BQN's Scan is ordered differently from Scan in APL. Both include one result for each non-empty prefix of <code><span class='Value'>𝕩</span></code>. In BQN this is a left-to-right fold, so that each new result requires one application of <code><span class='Function'>𝔽</span></code>. APL uses a right-to-left ordering, which matches with reduction, but requires starting over at the end for each new prefix, except in special cases. If needed, this definition can be obtained with a fold on each <a href="prefixes.html">prefix</a> except the first (which is empty). In the particular case of <code><span class='Function'>-</span><span class='Value'>⍀</span></code>, that nested solution isn't needed: negate odd-indexed elements and then apply <code><span class='Function'>+</span><span class='Modifier'>`</span></code>.</p>
+<p>Scan also differs from Fold or Insert in that it never depends on <code><span class='Function'>𝔽</span></code>'s identity element, because scanning over an empty array simply returns that array.</p>
+<h2 id="examples">Examples</h2>
+<p>The best-known use of Scan is the <a href="https://en.wikipedia.org/wiki/Prefix_sum">prefix sum</a> of a list, in which each element of the result is the sum of that element and all the ones before it. With a <a href="shift.html">shift</a> this can be modified to sum the previous elements only.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K2AgMuKAvzTigL8z4oC/MQoKK2DCuzLigL804oC/M+KAvzEgICMgRXhjbHVzaXZlIHByZWZpeCBzdW0=">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>`</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 2 6 9 10 ⟩
+
+    <span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>»</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span>  <span class='Comment'># Exclusive prefix sum
+</span>⟨ 0 2 6 9 ⟩
+</pre>
+<p>The pattern is generalized to any function <code><span class='Function'>𝔽</span></code>. With an operand of <code><span class='Function'>×</span></code>, it can find the first <em>n</em> factorials. With <code><span class='Function'>⌈</span></code>, it returns the largest element so far.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w5dgIDEr4oaVNgoK4oyIYCDCrzHigL/CrzLigL8w4oC/NOKAvzLigL8x4oC/NeKAv8KvMg==">↗️</a><pre>    <span class='Function'>×</span><span class='Modifier'>`</span> <span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>6</span>
+⟨ 1 2 6 24 120 720 ⟩
+
+    <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Number'>¯1</span><span class='Ligature'>‿</span><span class='Number'>¯2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>¯2</span>
+⟨ ¯1 ¯1 0 4 4 4 5 5 ⟩
+</pre>
+<p>If provided, <code><span class='Value'>𝕨</span></code> gives a starting element for Scan (actually a starting <em>cell</em>, so a single element should be <a href="enclose.html">enclosed</a>). Below it ensures that all results of <code><span class='Function'>⌈</span><span class='Modifier'>`</span></code> are at least <code><span class='Number'>0</span></code>. In either valence, the shape of the result is always the same as the shape of <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MCDijIhgIMKvMeKAv8KvMuKAvzDigL804oC/MuKAvzHigL814oC/wq8y">↗️</a><pre>    <span class='Number'>0</span> <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Number'>¯1</span><span class='Ligature'>‿</span><span class='Number'>¯2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>¯2</span>
+⟨ 0 0 0 4 4 4 5 5 ⟩
+</pre>
+<p>To see the structure of the computation, it can be helpful to use a symbolic operand <code><span class='Function'>𝔽</span></code> that returns a string describing its own application.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyIoIuKIvvCdlajiiL4iKfCdlL0i4oi+8J2VqX1gICJhIuKAvyJiIuKAvyJjIuKAvyJkIgoKKDwidyIpIHsiKCLiiL7wnZWo4oi+IinwnZS9IuKIvvCdlal9YCAiYSLigL8iYiLigL8iYyLigL8iZCI=">↗️</a><pre>    <span class='Brace'>{</span><span class='String'>&quot;(&quot;</span><span class='Function'>∾</span><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='String'>&quot;)𝔽&quot;</span><span class='Function'>∾</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>`</span> <span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;b&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;c&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;d&quot;</span>
+⟨ "a" "(a)𝔽b" "((a)𝔽b)𝔽c" "(((a)𝔽b)𝔽c)𝔽d" ⟩
+
+    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='String'>&quot;w&quot;</span><span class='Paren'>)</span> <span class='Brace'>{</span><span class='String'>&quot;(&quot;</span><span class='Function'>∾</span><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='String'>&quot;)𝔽&quot;</span><span class='Function'>∾</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>`</span> <span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;b&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;c&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;d&quot;</span>
+⟨ "(w)𝔽a" "((w)𝔽a)𝔽b" "(((w)𝔽a)𝔽b)𝔽c" "((((w)𝔽a)𝔽b)𝔽c)𝔽d" ⟩
+</pre>
+<p>The left argument in each result element is always the previous element, if there is one. Result elements are produced in index order and this element will be reused, rather than computing it again. This can be confirmed by adding a counter to <code><span class='Function'>𝔽</span></code>, which shows here that scanning a 10-element list makes 9 calls (supplying an initial value would make it 10).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Y+KGkDAKe2Mr4oapMeKLhPCdlagr8J2VqX1gIOKGlTEwCmM=">↗️</a><pre>    <span class='Value'>c</span><span class='Gets'>←</span><span class='Number'>0</span>
+    <span class='Brace'>{</span><span class='Value'>c</span><span class='Function'>+</span><span class='Gets'>↩</span><span class='Number'>1</span><span class='Separator'>⋄</span><span class='Value'>𝕨</span><span class='Function'>+</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>`</span> <span class='Function'>↕</span><span class='Number'>10</span>
+⟨ 0 1 3 6 10 15 21 28 36 45 ⟩
+    <span class='Value'>c</span>
+9
+</pre>
+<p>Some other useful scans apply to boolean lists. The function <code><span class='Function'>∨</span><span class='Modifier'>`</span></code> tests whether this or any previous element is 1, so that the result starts at 0 but permanently switches to 1 as soon as the first 1 is found. Similarly, <code><span class='Function'>∧</span><span class='Modifier'>`</span></code> turns all instances of 1 after the first 0 to 0.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oioYCAw4oC/MOKAvzHigL8w4oC/MOKAvzHigL8w4oC/MQoK4oinYCAx4oC/MeKAvzHigL8w4oC/MOKAvzHigL8w4oC/MQ==">↗️</a><pre>    <span class='Function'>∨</span><span class='Modifier'>`</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 0 0 1 1 1 1 1 1 ⟩
+
+    <span class='Function'>∧</span><span class='Modifier'>`</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 1 1 1 0 0 0 0 0 ⟩
+</pre>
+<p>A more complicated boolean scan, which depends on the left-to-right ordering, is <code><span class='Function'>&lt;</span><span class='Modifier'>`</span></code>. It turns off every other 1 in a group of them—can you see why? One use is to resolve questions regarding backslash escaping: the simple example below removes backslashes except those that are escaped by more backslashes.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PGAgMOKAvzDigL8x4oC/MeKAvzHigL8w4oC/MOKAvzHigL8x4oC/MeKAvzEKCnvCrDxgJ1wnPfCdlal94oq4LyAiYWJcXFxyc1xcXFwi">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier'>`</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 0 0 1 0 1 0 0 1 0 1 0 ⟩
+
+    <span class='Brace'>{</span><span class='Function'>¬&lt;</span><span class='Modifier'>`</span><span class='String'>'\'</span><span class='Function'>=</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier2'>⊸</span><span class='Function'>/</span> <span class='String'>&quot;ab\\\rs\\\\&quot;</span>
+"ab\rs\\"
+</pre>
+<h3 id="reverse-scan">Reverse scan</h3>
+<p>We've discussed how the scan moves forward along <code><span class='Value'>𝕩</span></code>, so that each time <code><span class='Function'>𝔽</span></code> takes an old result as <code><span class='Value'>𝕨</span></code> and a new value as <code><span class='Value'>𝕩</span></code>. This means that results correspond to prefixes and go left to right on each one. Since the most important scans have associative, commutative operands, the left-to-right ordering often doesn't make a difference. But sometimes a suffix rather than prefix scan is wanted. For these cases, Scan Under <a href="reverse.html">Reverse</a> (<code><span class='Modifier'>`</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span></code>) does the trick.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oioYCAgIDDigL8w4oC/MeKAvzDigL8w4oC/MeKAvzAKCuKIqGDijL7ijL0gMOKAvzDigL8x4oC/MOKAvzDigL8x4oC/MA==">↗️</a><pre>    <span class='Function'>∨</span><span class='Modifier'>`</span>   <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+⟨ 0 0 1 1 1 1 1 ⟩
+
+    <span class='Function'>∨</span><span class='Modifier'>`</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+⟨ 1 1 1 1 1 1 0 ⟩
+</pre>
+<p>This function reverses the input, does the scan, and reverses the output. Perhaps not so easy to visualize, but a symbolic operand will again show what it's doing:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyIoIuKIvvCdlajiiL4iKfCdlL0i4oi+8J2VqX1g4oy+4oy9ICJhIuKAvyJiIuKAvyJjIuKAvyJkIg==">↗️</a><pre>    <span class='Brace'>{</span><span class='String'>&quot;(&quot;</span><span class='Function'>∾</span><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='String'>&quot;)𝔽&quot;</span><span class='Function'>∾</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>`</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span> <span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;b&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;c&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;d&quot;</span>
+⟨ "(((d)𝔽c)𝔽b)𝔽a" "((d)𝔽c)𝔽b" "(d)𝔽c" "d" ⟩
+</pre>
+<p>The new value is still the right argument to <code><span class='Function'>𝔽</span></code>, even though with the reversal it's to the left of any values previously seen. If <code><span class='Function'>𝔽</span></code> isn't commutative, and this is the wrong order, then <code><span class='Function'>𝔽</span><span class='Modifier'>˜`</span></code> will switch it around.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyIoIuKIvvCdlajiiL4iKfCdlL0i4oi+8J2VqX3LnGDijL7ijL0gImEi4oC/ImIi4oC/ImMi4oC/ImQi">↗️</a><pre>    <span class='Brace'>{</span><span class='String'>&quot;(&quot;</span><span class='Function'>∾</span><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='String'>&quot;)𝔽&quot;</span><span class='Function'>∾</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>˜`</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span> <span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;b&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;c&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;d&quot;</span>
+⟨ "(a)𝔽(b)𝔽(c)𝔽d" "(b)𝔽(c)𝔽d" "(c)𝔽d" "d" ⟩
+</pre>
+<h3 id="higher-ranks">Higher ranks</h3>
+<p>Scan moves along the <a href="leading.html">leading axis</a> of <code><span class='Value'>𝕩</span></code>. Results are produced in index order.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQIMKvMuKAvzAuMjXigL8nYSfigL/iiJ4g4oi+IDPigL804qWKwq8x4oC/MOKAvzEKCitgIGE=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>¯2</span><span class='Ligature'>‿</span><span class='Number'>0.25</span><span class='Ligature'>‿</span><span class='String'>'a'</span><span class='Ligature'>‿</span><span class='Number'>∞</span> <span class='Function'>∾</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊</span><span class='Number'>¯1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+┌─                
+╵ ¯2 0.25 'a' ∞   
+  ¯1 0    1   ¯1  
+  0  1    ¯1  0   
+  1  ¯1   0   1   
+                 ┘
+
+    <span class='Function'>+</span><span class='Modifier'>`</span> <span class='Value'>a</span>
+┌─               
+╵ ¯2 0.25 'a' ∞  
+  ¯3 0.25 'b' ∞  
+  ¯3 1.25 'a' ∞  
+  ¯2 0.25 'a' ∞  
+                ┘
+</pre>

@@ -88,4 +88,4 @@ Other modifiers control array traversal and iteration. In three cases a simpler 
 `⁼`        | Undo                                  | `⍟`        | Repeat
 `´`        | [Fold](fold.md)                       |
 `˝`        | [Insert](fold.md)                     |
-`` ` ``    | Scan                                  |
+`` ` ``    | [Scan](scan.md)                       |
