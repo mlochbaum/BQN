@@ -46,6 +46,7 @@ Primitives:
 - [Prefixes and Suffixes](prefixes.md) (`↑↓`)
 - [Range](range.md) (`↕`)
 - [Reverse and Rotate](reverse.md) (`⌽`)
+- [Scan](scan.md) (`` ` ``)
 - [Self-comparison functions](selfcmp.md) (`⊐⊒∊⍷`)
 - [Shift functions](shift.md) (`»«`)
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
