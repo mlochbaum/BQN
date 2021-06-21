@@ -5,6 +5,42 @@
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
 <h1 id="fold-and-insert">Fold and Insert</h1>
+<svg viewBox='-184.8 -12 588 288'>
+  <g font-size='21px' fill='currentColor' stroke-linecap='round' text-anchor='middle' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-128.8' y='0' width='476' height='264'/>
+    <g class='lilac' stroke-width='2'>
+      <line x1='1.225' y1='46' x2='12.775' y2='178'/>
+      <line x1='57.508' y1='46' x2='68.492' y2='148'/>
+      <line x1='113.96' y1='46' x2='124.04' y2='118'/>
+      <line x1='170.8' y1='46' x2='179.2' y2='88'/>
+      <line x1='228.9' y1='46' x2='233.1' y2='58'/>
+      <line x1='275.1' y1='46' x2='270.9' y2='58'/>
+      <line x1='74.2' y1='176' x2='51.52' y2='185'/>
+      <line x1='130.2' y1='146' x2='107.52' y2='155'/>
+      <line x1='186.2' y1='116' x2='163.52' y2='125'/>
+      <line x1='242.2' y1='86' x2='219.52' y2='95'/>
+      <line x1='28' y1='206' x2='28' y2='218'/>
+    </g>
+    <g text-anchor='end'>
+      <text dy='0.32em' x='-61.6' y='32'>𝕩</text>
+      <text dy='0.32em' x='-61.6' y='232'><tspan class='Function'>-</tspan><tspan class='Modifier'>´</tspan>𝕩</text>
+    </g>
+    <text dy='0.32em' x='0' y='32'><tspan class='Number'>2</tspan></text>
+    <text dy='0.32em' x='56' y='32'><tspan class='Number'>0</tspan></text>
+    <text dy='0.32em' x='112' y='32'><tspan class='Number'>5</tspan></text>
+    <text dy='0.32em' x='168' y='32'><tspan class='Number'>3</tspan></text>
+    <text dy='0.32em' x='224' y='32'><tspan class='Number'>4</tspan></text>
+    <text dy='0.32em' x='280' y='32'><tspan class='Number'>2</tspan></text>
+    <text dy='0.32em' x='28' y='232'><tspan class='Number'>6</tspan></text>
+    <text dy='0.32em' x='28' y='192'><tspan class='Number'>2</tspan><tspan class='Function'>-</tspan><tspan class='Number'>¯4</tspan></text>
+    <text dy='0.32em' x='84' y='162'><tspan class='Number'>0</tspan><tspan class='Function'>-</tspan><tspan class='Number'>4</tspan></text>
+    <text dy='0.32em' x='140' y='132'><tspan class='Number'>5</tspan><tspan class='Function'>-</tspan><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='196' y='102'><tspan class='Number'>3</tspan><tspan class='Function'>-</tspan><tspan class='Number'>2</tspan></text>
+    <text dy='0.32em' x='252' y='72'><tspan class='Number'>4</tspan><tspan class='Function'>-</tspan><tspan class='Number'>2</tspan></text>
+    <g class='bluegreen' stroke-width='3' style='fill:none' opacity='0.7'><path d='M-22.4 17l-6 15l6 15M302.4 17l6 15l-6 15'/></g>
+  </g>
+</svg>
+
 <p>The closely related 1-modifiers Fold (<code><span class='Modifier'>´</span></code>) and Insert (<code><span class='Modifier'>˝</span></code>) apply a dyadic operand function <code><span class='Function'>𝔽</span></code> repeatedly between elements or major cells of <code><span class='Value'>𝕩</span></code>. Neither is quite like the APL2-style Reduce operator (<code><span class='Function'>/</span></code> or <code><span class='Value'>⌿</span></code> in APL), although I sometimes use the term &quot;reduction&quot; to mean either Fold or Insert. There are a bunch of other names like &quot;accumulate&quot; and &quot;aggregate&quot; for this class of calculations—I don't know which is best but I know &quot;catamorphism&quot; is worst.</p>
 <p>A distinguishing feature of APL-family reductions is that they don't use an initial value, and try to derive an &quot;identity element&quot; from the operand if the argument array is empty. BQN retains this capability but also allows the programmer to supply an initial value as <code><span class='Value'>𝕨</span></code>.</p>
 <h2 id="fold">Fold</h2>
