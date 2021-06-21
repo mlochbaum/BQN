@@ -2,6 +2,49 @@
 
 # Fold and Insert
 
+<!--GEN
+f ← •BQN fn ← "-" ⋄ ft ← Highlight fn
+xt ← Highlight∘•Repr¨ xv ← 2‿0‿5‿3‿4‿2
+zt ← Highlight∘•Repr¨ F˜`⌾⌽ xv
+d ← 56‿40
+
+rc ← At "class=code|stroke-width=1.5|rx=12"
+Ge ← "g"⊸At⊸Enc
+g  ← "font-size=21px|fill=currentColor|stroke-linecap=round|text-anchor=middle|font-family=BQN,monospace"
+bg ← "class=bluegreen|stroke-width=3|style=fill:none|opacity=0.7"
+lg ← "class=lilac|stroke-width=2"
+
+Text ← ("text" Attr "dy"‿"0.32em"∾ ·Pos d⊸×)⊸Enc
+Path ← "path" Elt "d"≍○<⊢
+Line ← "line" Elt (⍉"xy"≍⌜"12")≍˘○⥊ ·FmtNum ·d⊸×˘⊢
+
+Brak ← {
+  l ← 6‿15
+  P ← ∾"M l l "∾¨ ·FmtNum∘⥊ ∾
+  Path ∾ (((-⊸≍0.4)+0‿¯1⊏𝕨)((0‿¯1×l)+d×≍)⌜𝕩) P¨ ≍○<⟜⌽ -⌾⊑⊸≍l
+}
+
+_pair ← {1(↓𝔽-⊸↓)⊢}
+tx ← ↕≠xt ⋄ ty ← 0.8+5×↕2
+sy ← (2÷˜+´ty)-3×0.5-˜(↕÷-⟜1) ≠sx←2÷˜+_pair tx
+tp ← tx≍¨⊑ty ⋄ sp ← sx≍¨sy
+dim ← ⟨2.5+≠tx,0.8+1⊑ty⟩ ⋄ sh ← ¯2.3‿0
+lp ← 0.35
+
+((∾˜d)×((-∾+˜)1‿0.3)+sh∾dim) SVG g Ge ⟨
+  "rect" Elt rc ∾ (Pos d×sh)∾"width"‿"height"≍˘FmtNum d×dim
+  lg Ge Line¨ ∾⟨
+    tp (≍+·≍⟜-·(⊢×lp÷1⊸⊑)-)¨ ¯0.25‿0<⊸(+ ∾ ⊣-˜¯1⊏⊢)sp
+    ((lp×¯0.5‿1≍1.2‿¯0.5)+≍)¨_pair sp
+    ⟨sx {⍉(≍˜𝕨)≍(≍⟜-lp)+𝕩≍1⊑ty}○⊑ sy⟩
+  ⟩
+  "text-anchor=end" Ge (¯1.1≍¨ty) Text¨ ≍○<⟜(ft∾(Highlight"´")∾⊢) "𝕩"
+  (tp∾<(⊑sx)≍1⊑ty) Text¨ xt∾⊏zt
+  sp Text¨ (¯1↓xt) ∾⟜ft⊸∾¨ 1↓zt
+  bg Ge tx Brak ⊑ty
+⟩
+-->
+
 The closely related 1-modifiers Fold (`´`) and Insert (`˝`) apply a dyadic operand function `𝔽` repeatedly between elements or major cells of `𝕩`. Neither is quite like the APL2-style Reduce operator (`/` or `⌿` in APL), although I sometimes use the term "reduction" to mean either Fold or Insert. There are a bunch of other names like "accumulate" and "aggregate" for this class of calculations—I don't know which is best but I know "catamorphism" is worst.
 
 A distinguishing feature of APL-family reductions is that they don't use an initial value, and try to derive an "identity element" from the operand if the argument array is empty. BQN retains this capability but also allows the programmer to supply an initial value as `𝕨`.
