@@ -2,6 +2,40 @@
 
 # Deshape and Reshape
 
+<!--GEN
+xt ← Highlight∘•Repr¨ 100‿0‿200+⌜0‿50+⌜↕7
+d ← 64‿36
+
+rc ← At "class=code|stroke-width=1.5|rx=12"
+Ge ← "g"⊸At⊸Enc
+g  ← "fill=currentColor|stroke-linecap=round|font-family=BQN,monospace"
+dg ← "font-size=22px|fill=currentColor|opacity=0.9"
+tg ← "font-size=18px|text-anchor=end"
+bg ← "class=bluegreen|stroke-width=3|style=fill:none|opacity=0.7"
+lg ← "stroke=#104409|fill=none|stroke-width=4|stroke-linejoin=round|opacity=0.4"
+
+Text ← ("text" Attr "dy"‿"0.33em"∾Pos)⊸Enc
+Pd ← ·∾∾¨⟜FmtNum
+Path ← ("path"At⊣) Elt "d"≍○<⊢
+
+pad ← 48‿51 ⋄ sh ← 0‿0
+dim ← (pad-0‿7) + ¯1⊑¨ tx‿ty ← pad+d× ¯1(⊑{⟨↕𝕨,⥊+⌜´(↕¨×·×`⌾⌽1+«)𝕩⟩}↓)≢xt
+tb ← >0‿¯1⊸⊏¨tx‿ty
+cg ← "font-size=19px|text-anchor=middle"
+bp ← ⥊⌽(20×1.5‿¯1) (+⌾⊑ ≍ -⊸≍∘⊣)˘ 29‿21-⊸≍⊸+⍉tb
+
+(((-∾+˜)64‿15)+sh∾dim) SVG g Ge ⟨
+  "rect" Elt rc ∾ (Pos sh)∾"width"‿"height"≍˘FmtNum dim
+  dg Ge 23‿¯2 Text "Index order"
+  lg Path ∾⟨
+    ('M'⌾⊑"L "⥊˜≠)⊸Pd ∾⥊ty≍˜⌜(-⊸≍20)+⊏tb
+    (≠⥊"M l l "˙)⊸Pd ⥊ 24‿12⊸(-˜∾⊣∾-⌾⊑∘⊣)˘ ⍉>44‿0+0‿2‿5⊸⊏¨tx‿ty
+  ⟩
+  bg Path ("M hv" ∾˜⊸Pd bp) ∾ "m v" Pd 0‿16‿12
+  tg Ge (⍉(tx+16)≍⌜ty) Text¨ ∾˝xt
+⟩
+-->
+
 The glyph `⥊` indicates BQN's facilities to reflow the data in an array, giving it a different shape. Its monadic form, Deshape, simply removes all shape information, returning a list of all the elements from the array in reading order. With a left argument, `⥊` is called Reshape and is a more versatile tool for rearranging the data in an array into the desired shape.
 
 Because of its dependence on the reading order of an array, Reshape is less fundamental than other array operations. Using Reshape in the central computations of a program can be a sign of imperfect usage of arrays. For example, it may be useful to use Reshape to create a constant array or repeat a sequence of values several times, but the same task might also be accomplished more simply with Table `⌜`, or by taking advantage of leading axis agreement in arithmetic primitives.

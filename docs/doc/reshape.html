@@ -5,6 +5,59 @@
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
 <h1 id="deshape-and-reshape">Deshape and Reshape</h1>
+<svg viewBox='-64 -15 608 377'>
+  <g fill='currentColor' stroke-linecap='round' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='0' y='0' width='480' height='347'/>
+    <g font-size='22px' fill='currentColor' opacity='0.9'><text dy='0.33em' x='23' y='-2'>Index order</text></g>
+    <path stroke='#104409' fill='none' stroke-width='4' stroke-linejoin='round' opacity='0.4' d='M28 51L452 51L28 87L452 87L28 159L452 159L28 195L452 195L28 267L452 267L28 303L452 303M68 39l24 12l-24 12M196 147l24 12l-24 12M388 291l24 12l-24 12'/>
+    <path class='bluegreen' stroke-width='3' style='fill:none' opacity='0.7' d='M441 324h20v-20M49 30h-30v30m0 16v12'/>
+    <g font-size='18px' text-anchor='end'>
+      <text dy='0.33em' x='64' y='51'><tspan class='Number'>100</tspan></text>
+      <text dy='0.33em' x='128' y='51'><tspan class='Number'>101</tspan></text>
+      <text dy='0.33em' x='192' y='51'><tspan class='Number'>102</tspan></text>
+      <text dy='0.33em' x='256' y='51'><tspan class='Number'>103</tspan></text>
+      <text dy='0.33em' x='320' y='51'><tspan class='Number'>104</tspan></text>
+      <text dy='0.33em' x='384' y='51'><tspan class='Number'>105</tspan></text>
+      <text dy='0.33em' x='448' y='51'><tspan class='Number'>106</tspan></text>
+      <text dy='0.33em' x='64' y='87'><tspan class='Number'>150</tspan></text>
+      <text dy='0.33em' x='128' y='87'><tspan class='Number'>151</tspan></text>
+      <text dy='0.33em' x='192' y='87'><tspan class='Number'>152</tspan></text>
+      <text dy='0.33em' x='256' y='87'><tspan class='Number'>153</tspan></text>
+      <text dy='0.33em' x='320' y='87'><tspan class='Number'>154</tspan></text>
+      <text dy='0.33em' x='384' y='87'><tspan class='Number'>155</tspan></text>
+      <text dy='0.33em' x='448' y='87'><tspan class='Number'>156</tspan></text>
+      <text dy='0.33em' x='64' y='159'><tspan class='Number'>0</tspan></text>
+      <text dy='0.33em' x='128' y='159'><tspan class='Number'>1</tspan></text>
+      <text dy='0.33em' x='192' y='159'><tspan class='Number'>2</tspan></text>
+      <text dy='0.33em' x='256' y='159'><tspan class='Number'>3</tspan></text>
+      <text dy='0.33em' x='320' y='159'><tspan class='Number'>4</tspan></text>
+      <text dy='0.33em' x='384' y='159'><tspan class='Number'>5</tspan></text>
+      <text dy='0.33em' x='448' y='159'><tspan class='Number'>6</tspan></text>
+      <text dy='0.33em' x='64' y='195'><tspan class='Number'>50</tspan></text>
+      <text dy='0.33em' x='128' y='195'><tspan class='Number'>51</tspan></text>
+      <text dy='0.33em' x='192' y='195'><tspan class='Number'>52</tspan></text>
+      <text dy='0.33em' x='256' y='195'><tspan class='Number'>53</tspan></text>
+      <text dy='0.33em' x='320' y='195'><tspan class='Number'>54</tspan></text>
+      <text dy='0.33em' x='384' y='195'><tspan class='Number'>55</tspan></text>
+      <text dy='0.33em' x='448' y='195'><tspan class='Number'>56</tspan></text>
+      <text dy='0.33em' x='64' y='267'><tspan class='Number'>200</tspan></text>
+      <text dy='0.33em' x='128' y='267'><tspan class='Number'>201</tspan></text>
+      <text dy='0.33em' x='192' y='267'><tspan class='Number'>202</tspan></text>
+      <text dy='0.33em' x='256' y='267'><tspan class='Number'>203</tspan></text>
+      <text dy='0.33em' x='320' y='267'><tspan class='Number'>204</tspan></text>
+      <text dy='0.33em' x='384' y='267'><tspan class='Number'>205</tspan></text>
+      <text dy='0.33em' x='448' y='267'><tspan class='Number'>206</tspan></text>
+      <text dy='0.33em' x='64' y='303'><tspan class='Number'>250</tspan></text>
+      <text dy='0.33em' x='128' y='303'><tspan class='Number'>251</tspan></text>
+      <text dy='0.33em' x='192' y='303'><tspan class='Number'>252</tspan></text>
+      <text dy='0.33em' x='256' y='303'><tspan class='Number'>253</tspan></text>
+      <text dy='0.33em' x='320' y='303'><tspan class='Number'>254</tspan></text>
+      <text dy='0.33em' x='384' y='303'><tspan class='Number'>255</tspan></text>
+      <text dy='0.33em' x='448' y='303'><tspan class='Number'>256</tspan></text>
+    </g>
+  </g>
+</svg>
+
 <p>The glyph <code><span class='Function'>⥊</span></code> indicates BQN's facilities to reflow the data in an array, giving it a different shape. Its monadic form, Deshape, simply removes all shape information, returning a list of all the elements from the array in reading order. With a left argument, <code><span class='Function'>⥊</span></code> is called Reshape and is a more versatile tool for rearranging the data in an array into the desired shape.</p>
 <p>Because of its dependence on the reading order of an array, Reshape is less fundamental than other array operations. Using Reshape in the central computations of a program can be a sign of imperfect usage of arrays. For example, it may be useful to use Reshape to create a constant array or repeat a sequence of values several times, but the same task might also be accomplished more simply with Table <code><span class='Modifier'>⌜</span></code>, or by taking advantage of leading axis agreement in arithmetic primitives.</p>
 <h2 id="deshape">Deshape</h2>
