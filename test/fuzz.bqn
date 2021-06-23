@@ -53,6 +53,46 @@ RandRank ← 4 _randUnbounded
 
 Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 
+# Generate 𝕨 positive (not zero) integers summing to 𝕩
+RandPart ← {k←𝕨 ⋄ n←𝕩
+  RU ← Range∘0  # Random float in [0,1]
+  # Vitter, "An Efficient Algorithm for Sequential Random Sampling"
+  vPrime ← @
+
+  # Add or reject each possibility individually
+  MethodA ← {k←𝕩
+    v ← RU@
+    1 { (𝕨×-⟜k⊸÷n-𝕩) (⊣𝕊1+⊢)⍟(v<⊣) 𝕩 } 0
+  }
+
+  # Compute number of skipped possibilities
+  MethodD ← {k←𝕩
+    RvP ← k√RU  # Generate new vPrime
+    kn ← k-1    # k for next iteration
+    qu1 ← n-kn
+    Sk ← {vP←𝕩
+      s ← ⌊ x ← { 𝕊∘RvP⍟(qu1⊸≤) n×¬𝕩 } vP
+      y1 ← kn √ (n ÷ qu1) × RU@
+      vPrime ↩ y1 × (1-x÷n) × qu1 (⊣÷-) s
+      Cont ← {
+        y2 ← ×´ kn (((n-1)-↕∘⌊) (⊣÷-) ⌈) 𝕩
+        (n(⊣÷-)x)  <  y1 × kn√y2
+      }
+      Cont◶⟨{ vPrime↩@ ⋄ 𝕩 }, 𝕊 RvP⟩⍟(1<vPrime) s
+    }
+    Sk RvP⍟(@⊸≡) vPrime
+  }
+
+  Gen ← {𝕤
+    alphaInv ← 13  # Used to choose A or D
+    M ← {n≤alphaInv×𝕩}◶MethodD‿{vPrime↩@ ⋄ (M↩MethodA)𝕩}
+    seq ← { n-↩1+s←M𝕩 ⋄ s }¨ k-↕k-1
+    last ← ⌊n×RU⍟(@⊸≡)vPrime
+    1 + seq ∾ last
+  }
+  0⊸<◶↕‿Gen k
+}
+
 # 𝕩 is maximum bound plus 1 for both functions
 ⟨RandBound,RandShape⟩ ← {
   RandBound ⇐ ⟨
@@ -97,7 +137,7 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
     R ← ⟨
       𝔽                                       # Random
       ∧‿∨_randChoose 𝔽                        # Sort
-      ⊢ ⥊ S⟜(1⌈RN)                            # Repeat
+      ⊢ ⟨⥊,RandPart˜⟜≠/⊢⟩_randChoose S⟜(1⌈RN) # Repeat
       Combine <⊸(𝔾‿⊢_randChoose⊸S¨)⟜RandSplit # Partition
     ⟩{ 8⊸≤◶⟨0,Rand∘(≠𝕗)⟩◶𝕗 }
     ⊢ ⥊ R⟜(×´⥊)
