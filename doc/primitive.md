@@ -2,7 +2,7 @@
 
 # BQN primitives
 
-*Primitives* are the basic functions and modifiers built into the language, written with individual glyphs. The role of a primitive when written always matches its type (but you can use its value in other roles by assigning it, or other methods).
+*Primitives* are the basic functions and modifiers built into the language, written with individual glyphs (more about the concept [here](../commentary/primitive.md)). The role of a primitive when written always matches its type (but you can use its value in other roles by assigning it, or other methods).
 
 Primitives have no side effects other than errors, and can't perform infinite computations, except when a primitive modifier calls an operand function that does one of these things (this can only happen when arguments are passed, as primitive modifiers are always deferred). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function without them always returns the same result if passed the same arguments. Since trains and list notation have the same nice properties, tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.
 
