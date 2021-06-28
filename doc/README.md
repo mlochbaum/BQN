@@ -45,6 +45,7 @@ Primitives:
 - [Ordering functions](order.md) (`∧∨⍋⍒`)
 - [Prefixes and Suffixes](prefixes.md) (`↑↓`)
 - [Range](range.md) (`↕`)
+- [Repeat](repeat.md) (`⍟`)
 - [Reverse and Rotate](reverse.md) (`⌽`)
 - [Scan](scan.md) (`` ` ``)
 - [Self-comparison functions](selfcmp.md) (`⊐⊒∊⍷`)
