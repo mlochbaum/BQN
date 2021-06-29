@@ -89,7 +89,7 @@ RandPart ← { ¬⟜» (𝕨-1) (∧∘Rand∾1-˜⊢) 𝕩¬𝕨 }
     ⊢ (Rand⟜≠⊏⊢) (Rand(⊣≥⌈´⊸⌊)3+Rand∘+)˜∘≠⊸/∘(∾⟜-0∾floats∾∞)
   ⟩_randChoose
 
-  RandTyped ← =⟜6◶⟨RandInt,RandFloat⊣⟩
+  RandTyped ← =⟜6◶⟨RandInt,RandFloat⊢⟩
 
   RN ← (0⌈-⟜1) ⌊ 1‿RandRank‿RandBound _randChoose
   RandSplit ← ⌽⍟(Rand∘2) (-≍⊢)⟜RN
