@@ -24,13 +24,7 @@ Any number of types or bounds can be given; all combinations are tested."
 
   prims ↩ ((⊢-˜¬×+`+2×·¬∨´)'%'⊸=)¨⊸(⊔○∾) prims
   "At most three %-separated primitive groups allowed" ! 3≥≠prims
-  arith ← ∾`"+-×÷⋆√⌊⌈¬|"‿"∧∨≤<>≥=≠"
-  Pr ← {
-    𝕩 ↩ 2 (↑((¬∘∊/⊣)∾⊢)¨⊏) 3 ↑ 𝕩
-    "Only arithmetic primitives supported" ! ∧´∾𝕩∊¨arith
-    𝕩
-  }
-  monArith‿dyArith ⇐ •BQN∘⥊¨¨ prims ↩ (0<≠)◶arith‿Pr prims
+  prims ↩ 2 (↑((¬∘∊/⊣)∾⊢)¨⊏) 3 ↑ prims
 }
 
 Squeeze‿ListVariations‿Variation‿ClearRefs ← •internal
@@ -124,20 +118,18 @@ _testConsistent_ ← {Match←𝔾
 
 FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
 
-TestMonArith ← opts.monArith{
-  (0<≠f←𝕗) ⊑ 1‿{
-    _t ← { ! 𝕏 _testConsistent_ FlatMatch 𝕗 }
-    (𝕨 RandArith RandShape 𝕩)_t¨ f
-  }
+_testMonArith ← {
+  _t ← { ! 𝕏 _testConsistent_ FlatMatch 𝕗 }
+  (𝕨 RandArith RandShape 𝕩)_t¨ 𝕗
 }
 
 RandDyShape ← {
   Prefix ← (∨`⌾⌽ 𝕩 ≥ ×`)⊸/ (Rand 1+≠)⊸↑
   (Rand 2) ⌽ ≍○<⟜Prefix RandShape 𝕩
 }
-TestDyArith ← opts.dyArith{
-  ch ← 0<+´≠¨ pmn ← (∊⟜𝕗⥊¨⊢) +‿-‿¬
-  (0<≠f←𝕗) ⊑ 1‿{
+_testDyArith ← {f←𝕗
+  ch ← 0<+´≠¨ pmn ← (∊⟜f⥊¨⊢) +‿-‿¬
+  {
     sh ← RandDyShape 𝕩
     _t ← { ! 𝕏 _testConsistent_ FlatMatch´ 𝕗 }
     (𝕨⊸RandArith¨ sh)_t¨ f
@@ -151,6 +143,17 @@ TestDyArith ← opts.dyArith{
   }
 }
 
-t←opts.types ⋄ b←opts.num/opts.bounds
-t TestMonArith⌜ b
-t TestDyArith ⌜ b
+cases ← ⟨
+  ⟨∾`"+-×÷⋆√⌊⌈¬|"‿"∧∨≤<>≥=≠", testMonArith‿testDyArith⟩
+⟩
+MakeTests ← {
+  prim‿test ← <∘>˘ ⍉> 𝕨
+  m ← 𝕩 ∊¨⎉1 prim
+  ((∾"Unsupported primitives: "‿"%"∾¨/¨⟜𝕩) ! 0˙)⍟(∨´∨´¨) ¬∨˝m
+  p ← •BQN∘⥊¨¨ 𝕩
+  t ← <∘{t←2⊑𝕩⋄(/´2↑𝕩)_t}˘ (∨´¨⊏˘)⊸/ ⍉>⥊¨⟨m,p˙˘m,test⟩
+  {𝕎⊣𝕏}´ t
+}
+
+pr ← (⊑⊑cases)⍟(0=·+´≠¨) opts.prims
+opts.types (cases MakeTests pr)⌜ opts.num/opts.bounds
