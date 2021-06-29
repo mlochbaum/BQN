@@ -136,19 +136,18 @@ RandDyShape ← {
   (Rand 2) ⌽ ≍○<⟜Prefix RandShape 𝕩
 }
 TestDyArith ← opts.dyArith{
+  ch ← 0<+´≠¨ pmn ← (∊⟜𝕗⥊¨⊢) +‿-‿¬
   (0<≠f←𝕗) ⊑ 1‿{
     sh ← RandDyShape 𝕩
     _t ← { ! 𝕏 _testConsistent_ FlatMatch´ 𝕗 }
     (𝕨⊸RandArith¨ sh)_t¨ f
     {
       k←𝕩
-      p‿m‿n ← (∊/⊣)⟜f¨ ⟨+⟩‿⟨-⟩‿⟨¬⟩
-      rca ← ⟨RandChar,RandArith⟩
+      rca ← ⟨RandChar,RandArith⟩{k𝕎𝕩}¨sh
       Fit ← -⟜(@+1-˜17×2⋆16)⌈-⟜@⌊⊢
-      {     (⌽⍟(Rand 2) -∘Fit⟜-` rca{k𝕎𝕩}¨sh)_t 𝕩 }¨ p
-      { s←Rand 2⋄(Fit`⍟s(⊣`⍟(¬s)rca){k𝕎𝕩}¨sh)_t 𝕩 }¨ m
-      { s←Rand 2⋄((1+Fit)`⍟s(⊣`⍟(¬s)rca){k𝕎𝕩}¨sh)_t 𝕩 }¨ n
-    }⍟(0⊸<∧≤⟜5) 𝕨
+      ⟨⌽⍟(Rand 2)-∘Fit⟜-`,Fit`,(1+Fit)`⟩ { (𝕎rca)_t 𝕩 }¨¨ pmn
+      { (sh (k RandChar ⊣)⌾(1⊸⊑) rca)_t¨ 𝕩 }⍟(0<≠) ∾1↓pmn
+    }⍟(ch∧0⊸<∧≤⟜5) 𝕨
   }
 }
 
