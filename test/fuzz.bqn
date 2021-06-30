@@ -74,7 +74,7 @@ RandPart ← { ¬⟜» (𝕨-1) (∧∘Rand∾1-˜⊢) 𝕩¬𝕨 }
 }
 
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
-⟨RandArith,RandChar,RandIndex⟩ ← {
+gen ← {
   RandInt ← { (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆2⋆𝕨 }
 
   floats ← ⟨2⋆¯1074,2⋆¯1022,(2-2⋆¯52)×2⋆1023⟩
@@ -100,15 +100,17 @@ RandPart ← { ¬⟜» (𝕨-1) (∧∘Rand∾1-˜⊢) 𝕩¬𝕨 }
     ⊢ ⥊ R⟜(×´⥊)
   }
 
-  RandArith ⇐ Squeeze RandTyped _Rec_ Rand
+  Arith ⇐ Squeeze RandTyped _Rec_ Rand
 
   ContractRange ← (⟨≍⟜0,0≍-⟩_randChoose·RN-˜´)⊸+
   RandInterval ← (⊑∘⊣ + -˜´⊸(Rand˜)) _Rec_ ContractRange
 
-  RandIndex ⇐ Squeeze (0⊸≍ ⊣ ·!0⊸<)⊸RandInterval
+  Index ⇐ Squeeze (0⊸≍ ⊣ ·!0⊸<)⊸RandInterval
 
   ch_end ← 17×2⋆16 ⋄ surr ← (2⋆11)×27+↕2
-  RandChar ⇐ Squeeze @ + ·(1≠surr⊸⍋)⊸× (0≍ch_end⌊2⋆2⋆⊣)⊸RandInterval
+  Char ⇐ Squeeze @ + ·(1≠surr⊸⍋)⊸× (0≍ch_end⌊2⋆2⋆⊣)⊸RandInterval
+
+  Struct ⇐ ⊢ ⥊ =⟜6◶⟨RandInt‿(@+(ch_end⌊2⋆2⋆⊣)⊸Rand˜)_randChoose,RandFloat⊢⟩⟜(×´⥊)
 }
 
 _testConsistent_ ← {Match←𝔾
@@ -120,7 +122,7 @@ FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
 
 _testMonArith ← {
   _t ← { ! 𝕏 _testConsistent_ FlatMatch 𝕗 }
-  (𝕨 RandArith RandShape 𝕩)_t¨ 𝕗
+  (𝕨 gen.Arith RandShape 𝕩)_t¨ 𝕗
 }
 
 RandDyShape ← {
@@ -132,19 +134,36 @@ _testDyArith ← {f←𝕗
   {
     sh ← RandDyShape 𝕩
     _t ← { ! 𝕏 _testConsistent_ FlatMatch´ 𝕗 }
-    (𝕨⊸RandArith¨ sh)_t¨ f
+    (𝕨⊸gen.Arith¨ sh)_t¨ f
     {
       k←𝕩
-      rca ← ⟨RandChar,RandArith⟩{k𝕎𝕩}¨sh
+      rca ← ⟨gen.Char,gen.Arith⟩{k𝕎𝕩}¨sh
       Fit ← -⟜(@+1-˜17×2⋆16)⌈-⟜@⌊⊢
       ⟨⌽⍟(Rand 2)-∘Fit⟜-`,Fit`,(1+Fit)`⟩ { (𝕎rca)_t 𝕩 }¨¨ pmn
-      { (sh (k RandChar ⊣)⌾(1⊸⊑) rca)_t¨ 𝕩 }⍟(0<≠) ∾1↓pmn
+      { (sh (k gen.Char ⊣)⌾(1⊸⊑) rca)_t¨ 𝕩 }⍟(0<≠) ∾1↓pmn
     }⍟(ch∧0⊸<∧≤⟜5) 𝕨
   }
 }
 
+_testMonStruct ← { # ⥊≍⌽⍉⊏
+  k ← 3|1+ ⌽‿⊏ ⊐ 𝕗
+  sh ← k ⊏ {𝕏𝕨}` (1+⌈´k) ↑ ⟨RandShape 𝕩, 1⊸∾⍟(0=≠), 1⊸⌈⌾⊑⟩
+  ((⊐sh) ⊏ 𝕨⊸gen.Struct¨ ⍷sh) { ! 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
+}
+
+_testDyStruct ← { # ⥊↑↓↕⌽⍉ (no overtake)
+  d ← 𝕨 gen.Struct sh ← RandShape 𝕩
+  l ← RandShape 𝕩
+  RR ← ≍ ⟨⊑⊸+,⊢´⊸-⟩_randChoose RandBound∘¬˜
+  RT ← -RR¨⊢
+  p‿r ← <˘⍉> ⟨⟨⥊,(0∾1⊸↓)⍟(sh>○(0=×´)⊢)∘l⟩, ⟨↓,l‿RT _randChoose⟩
+              ⟨⌽,RT+˜⟩, ⟨↑,RT⟩, ⟨↕,0 RR¨ 1⊸+⟩, ⟨⍉,(⍋⊏⊐)Rand˜∘≠⟩⟩
+  (r⊏˜p⊐𝕗) { ! (𝕎sh) 𝕏 _testConsistent_ FlatMatch d }¨ 𝕗
+}
+
 cases ← ⟨
   ⟨∾`"+-×÷⋆√⌊⌈¬|"‿"∧∨≤<>≥=≠", testMonArith‿testDyArith⟩
+  ⟨"⥊≍⌽⍉⊏"‿"⥊↑↓↕⌽⍉", testMonStruct‿testDyStruct⟩  # Monadic «» hard to test
 ⟩
 MakeTests ← {
   prim‿test ← <∘>˘ ⍉> 𝕨
@@ -152,7 +171,7 @@ MakeTests ← {
   ((∾"Unsupported primitives: "‿"%"∾¨/¨⟜𝕩) ! 0˙)⍟(∨´∨´¨) ¬∨˝m
   p ← •BQN∘⥊¨¨ 𝕩
   t ← <∘{t←2⊑𝕩⋄(/´2↑𝕩)_t}˘ (∨´¨⊏˘)⊸/ ⍉>⥊¨⟨m,p˙˘m,test⟩
-  {𝕎⊣𝕏}´ t
+  1 {𝕎⊢𝕏}´ t
 }
 
 pr ← (⊑⊑cases)⍟(0=·+´≠¨) opts.prims
