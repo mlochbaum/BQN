@@ -73,6 +73,8 @@ RandPart ← { ¬⟜» (𝕨-1) (∧∘Rand∾1-˜⊢) 𝕩¬𝕨 }
   ⟩_randChoose
 }
 
+RandShape1 ← 1⊸∾⍟(0=≠) RandShape
+
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
 gen ← {
   RandInt ← { (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆2⋆𝕨 }
@@ -121,8 +123,7 @@ _testConsistent_ ← {Match←𝔾
 FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
 
 _testMonArith ← {
-  _t ← { ! 𝕏 _testConsistent_ FlatMatch 𝕗 }
-  (𝕨 gen.Arith RandShape 𝕩)_t¨ 𝕗
+  (𝕨 gen.Arith RandShape 𝕩)⊸{ ! 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
 }
 
 RandDyShape ← {
@@ -161,9 +162,34 @@ _testDyStruct ← { # ⥊↑↓↕⌽⍉ (no overtake)
   (r⊏˜p⊐𝕗) { ! (𝕎sh) 𝕏 _testConsistent_ FlatMatch d }¨ 𝕗
 }
 
+_testDim ← { # ≠=≢
+  (𝕨 gen.Struct RandShape 𝕩)⊸{ ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
+}
+
+_testCombine ← { # ≍∾«»
+  a ← 𝕨 gen.Struct sh ← RandShape1 𝕩
+  bs ← (RandBound 1⊸+)⌾⊑⍟({≍}≠𝕗) sh
+  swap ← (Rand 2)⊑{𝔽}‿˜
+  ((⊐bs) ⊏ 𝕨⊸gen.Struct¨ ⍷bs) { ! a 𝕏 _testConsistent_ FlatMatch _swap 𝕨 }¨ 𝕗
+}
+
+_testMonSearch ← { # ⊐⊒∊⍷∧∨⍋⍒
+  (𝕨 gen.Arith RandShape1 𝕩)⊸{ ! 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
+}
+_testDySearch ← { # ⊐⊒∊⍋⍒
+  sh ← RandShape1 𝕩
+  k ← ⍋‿⍒⊐𝕗
+  a‿b ← 𝕨⊸gen.Arith¨ ⟨sh, (RandShape·⌊𝕩÷×´)⊸∾ 1↓sh⟩
+  as ← (⊐k) ⊏ {𝕏a}¨(⍷k)⊏∧‿∨‿⊢
+  as { ! 𝕨 𝕏 _testConsistent_ FlatMatch b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
+}
+
 cases ← ⟨
   ⟨∾`"+-×÷⋆√⌊⌈¬|"‿"∧∨≤<>≥=≠", testMonArith‿testDyArith⟩
   ⟨"⥊≍⌽⍉⊏"‿"⥊↑↓↕⌽⍉", testMonStruct‿testDyStruct⟩  # Monadic «» hard to test
+  ⟨"≠=≢"‿"", testDim‿@⟩
+  ⟨""‿"≍∾«»", @‿testCombine⟩
+  ⟨"⊐⊒∊⍷∧∨⍋⍒"‿"⊐⊒∊⍋⍒", testMonSearch‿testDySearch⟩
 ⟩
 MakeTests ← {
   prim‿test ← <∘>˘ ⍉> 𝕨
