@@ -178,7 +178,7 @@ _search←{ # 0 for ∊˜, 1 for ⊐
         i‿j←(k⊸×⌜↕)⌜n‿lx ⋄ {Red CC⟜𝕩⌜i}⌜j
       }‿{
         g←Reverse⍒𝕨
-        i←g⊏˜(0⌈-⟜1)⌜(g⊏𝕨)⍋𝕩
+        i←g⊏˜(0⌈-⟜1)⌜⥊(g⊏𝕨)⍋𝕩
         adj←ind⊑⟨1⊸-,⊣--⟜n⊸×⟩
         i(⊣ Adj CC○(k⊸×))¨↕lx
       } 𝕩
