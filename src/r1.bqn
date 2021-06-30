@@ -557,10 +557,10 @@ ShiftAfter←{
   (≢𝕩) ⥊ (m↓d) ∾ 𝕨{(Fill𝕩)⌜↕𝕨}⟜𝕩⊘(n⊸-⊸↓⟜Deshape˜)m
 } _fillBy_ (⊢⊘IF)
 
-Range←{
-  I←{"↕𝕩: 𝕩 must consist of natural numbers"!Nat𝕩⋄↕𝕩}
-  M←{"↕𝕩: 𝕩 must be a number or list"!1==𝕩⋄(0⌜𝕩)Fill 0⊸Fill⌜(<⟨⟩)Pair⊸∾⌜´I⌜𝕩}
-  IsArray◶I‿M 𝕩
+RangeCheck ← "↕𝕩: 𝕩 must consist of natural numbers"!Nat
+Range ← IsArray◶(↕⊣RangeCheck)‿{
+  "↕𝕩: 𝕩 must be a number or list"!1==𝕩 ⋄ RangeCheck⌜𝕩
+  (0⌜𝕩)Fill 0⊸Fill⌜(0<1×´⊢)◶⟨⥊⟜⟨⟩,(<⟨⟩)Pair⊸∾⌜´↕⌜⟩𝕩
 }
 Windows←{
   "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
@@ -572,8 +572,11 @@ Windows←{
     l←(r↑s)(1+-)¨𝕨
     "𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one" ! ×´0⊸≤⌜l
     k←1×´t←r↓s
-    str ← Reverse ×`⟨k⟩∾s⊏˜{𝕩⊸-⌜↕𝕩}r-1
-    (⥊𝕩) ⊏˜ k +⌜⟜(t⥊↕)˜⍟(1-=⟜1) l +⌜○(+⌜´str{𝕨⊸×⌜↕𝕩}¨⊢) 𝕨
+    Win ← {
+      str ← Reverse ×`⟨k⟩∾s⊏˜{𝕩⊸-⌜↕𝕩}r-1
+      (⥊𝕩) ⊏˜ k +⌜⟜(t⥊↕)˜⍟(1-=⟜1) l +⌜○(+⌜´str{𝕨⊸×⌜↕𝕩}¨⊢) 𝕨
+    }
+    𝕨 (0<(k×´l)×´⊣)◶⟨{⟨⟩⥊˜l∾𝕨∾t},Win⟩ 𝕩
   }_fillBy_⊢⍟(0<r)𝕩
 }
 
