@@ -179,7 +179,7 @@ _testMonSearch ← { # ⊐⊒∊⍷∧∨⍋⍒
 _testDySearch ← { # ⊐⊒∊⍋⍒
   sh ← RandShape1 𝕩
   k ← ⍋‿⍒⊐𝕗
-  a‿b ← 𝕨⊸gen.Arith¨ ⟨sh, (RandShape·⌊𝕩÷×´)⊸∾ 1↓sh⟩
+  a‿b ← 𝕨⊸gen.Arith¨ ⟨sh, (0⊸<◶⟨-⟜⌊RandShape∘𝕩,RandShape⟩·⌊𝕩÷1⌈×´)⊸∾ 1↓sh⟩
   as ← (⊐k) ⊏ {𝕏a}¨(⍷k)⊏∧‿∨‿⊢
   as { ! 𝕨 𝕏 _testConsistent_ FlatMatch b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
 }
