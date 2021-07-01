@@ -172,7 +172,7 @@ _search←{ # 0 for ∊˜, 1 for ⊐
     "p⊐n or n∊p: Rank of n must be at least cell rank of p" ! c≤=𝕩
     n←≠𝕨 ⋄ k←1×´s←1 Cell 𝕨 ⋄ cx←c-˜=𝕩
     lx←1×´sh←cx↑≢𝕩
-    sh ⥊ 𝕨 (0<n)◶⟨0,s MatchS cx⊸Cell⟩◶{𝕩⋄(ind×n)⌜↕lx}‿{
+    sh ⥊ 𝕨 (e←0<n×k)◶⟨0,s MatchS cx⊸Cell⟩◶{𝕩⋄(ind◶⟨n⊸>,⊢⟩ n×e)⌜↕lx}‿{
       cc ← (⊑⟜(⥊𝕨))⊸(1-Match)⟜(⊑⟜(⥊𝕩)) _getCellCmp k
       𝕨 ×○(8<≠∘⥊)◶{𝕩
         i‿j←(k⊸×⌜↕)⌜n‿lx ⋄ {Red CC⟜𝕩⌜i}⌜j
