@@ -48,6 +48,7 @@ Primitives:
 - [Repeat](repeat.md) (`⍟`)
 - [Reverse and Rotate](reverse.md) (`⌽`)
 - [Scan](scan.md) (`` ` ``)
+- [Select](select.md) (`⊏`)
 - [Self-comparison functions](selfcmp.md) (`⊐⊒∊⍷`)
 - [Shift functions](shift.md) (`»«`)
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
