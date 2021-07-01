@@ -49,7 +49,7 @@ Functions that have significant differences from APL functions are marked with a
 | `/`   | [Indices](replicate.md#indices)                     | [Replicate](replicate.md)
 | `⍋`   | [Grade Up](order.md#grade)                          | [Bins Up](order.md#bins)
 | `⍒`   | [Grade Down](order.md#grade)                        | [Bins Down](order.md#bins)
-| `⊏`   | First Cell*                                         | Select*
+| `⊏`   | [First Cell](select.md)*                            | [Select](select.md)*
 | `⊑`   | [First](https://aplwiki.com/wiki/First)             | Pick*
 | `⊐`   | [Classify](selfcmp.md#classify)* (`⍷⊸⊐`)            | [Index of](https://aplwiki.com/wiki/Index_Of)
 | `⊒`   | [Occurrence Count](selfcmp.md#occurrence-count)*    | Progressive Index of*

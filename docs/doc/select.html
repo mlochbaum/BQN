@@ -1,0 +1,163 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Select</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="select">Select</h1>
+<svg viewBox='-148.8 -17.4 480 208.8'>
+  <g font-family='BQN,monospace' font-size='22px' text-anchor='middle'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-96' y='0' width='374.4' height='174'/>
+    <g class='lilac' stroke-width='2' stroke-linecap='round'>
+      <line x1='88.32' x2='7.68' y1='46.4' y2='81.2'/>
+      <line x1='48' x2='48' y1='46.4' y2='81.2'/>
+      <line x1='51.84' x2='92.16' y1='46.4' y2='81.2'/>
+      <line x1='232.32' x2='151.68' y1='46.4' y2='81.2'/>
+      <line x1='0' x2='0' y1='104.4' y2='139.2'/>
+      <line x1='48' x2='48' y1='104.4' y2='139.2'/>
+      <line x1='96' x2='96' y1='104.4' y2='139.2'/>
+      <line x1='144' x2='144' y1='104.4' y2='139.2'/>
+    </g>
+    <text dy='0.32em' x='0' y='34.8'><tspan class='String'>'s'</tspan></text>
+    <text dy='0.32em' x='48' y='34.8'><tspan class='String'>'e'</tspan></text>
+    <text dy='0.32em' x='96' y='34.8'><tspan class='String'>'l'</tspan></text>
+    <text dy='0.32em' x='144' y='34.8'><tspan class='String'>'e'</tspan></text>
+    <text dy='0.32em' x='192' y='34.8'><tspan class='String'>'c'</tspan></text>
+    <text dy='0.32em' x='240' y='34.8'><tspan class='String'>'t'</tspan></text>
+    <text dy='0.32em' x='0' y='92.8'><tspan class='Number'>2</tspan></text>
+    <text dy='0.32em' x='48' y='92.8'><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='96' y='92.8'><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='144' y='92.8'><tspan class='Number'>5</tspan></text>
+    <text dy='0.32em' x='0' y='150.8'><tspan class='String'>'l'</tspan></text>
+    <text dy='0.32em' x='48' y='150.8'><tspan class='String'>'e'</tspan></text>
+    <text dy='0.32em' x='96' y='150.8'><tspan class='String'>'e'</tspan></text>
+    <text dy='0.32em' x='144' y='150.8'><tspan class='String'>'t'</tspan></text>
+    <g fill='currentColor' font-size='12' opacity='0.75'>
+      <text dy='0.32em' x='0' y='15.66'>0</text>
+      <text dy='0.32em' x='48' y='15.66'>1</text>
+      <text dy='0.32em' x='96' y='15.66'>2</text>
+      <text dy='0.32em' x='144' y='15.66'>3</text>
+      <text dy='0.32em' x='192' y='15.66'>4</text>
+      <text dy='0.32em' x='240' y='15.66'>5</text>
+    </g>
+    <g font-size='18px' text-anchor='end'>
+      <text dy='0.32em' x='-38.4' y='34.8'><tspan class='Value'>𝕩</tspan></text>
+      <text dy='0.32em' x='-38.4' y='92.8'><tspan class='Value'>𝕨</tspan>  </text>
+      <text dy='0.32em' x='-38.4' y='150.8'><tspan class='Value'>𝕨</tspan><tspan class='Function'>⊏</tspan><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<p>The function Select (<code><span class='Function'>⊏</span></code>) reorganizes the array <code><span class='Value'>𝕩</span></code> along one or more axes based on <a href="indices.html">indices</a> given by <code><span class='Value'>𝕨</span></code>. The result has the same <a href="depth.html">depth</a> as <code><span class='Value'>𝕩</span></code>, since its elements are always elements of <code><span class='Value'>𝕩</span></code>. This means it differs from Pick (<code><span class='Function'>⊑</span></code>), which takes elements from <code><span class='Value'>𝕩</span></code> but can arrange them in any nested structure, including returning an element directly.</p>
+<p>The monadic form First Cell (<code><span class='Function'>⊏</span></code>) gets the major cell with index 0, so that <code><span class='Function'>⊏</span><span class='Value'>𝕩</span></code> is identical to <code><span class='Number'>0</span><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>.</p>
+<h2 id="single-selection">Single selection</h2>
+<p>Each axis of a BQN array is numbered starting at zero. Major cells are arranged along the first axis; in accordance with the <a href="leading.html">leading axis</a> principle, Select returns a major cell of <code><span class='Value'>𝕩</span></code> when <code><span class='Value'>𝕨</span></code> is an atom.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDiio8gImFiY2RlZiIgICMgQW4gZW5jbG9zZWQgZWxlbWVudAoKMiDiipEgImFiY2RlZiIgICMgUGljayBnZXRzIGEgbm9uLWVuY2xvc2VkIGVsZW1lbnQKCjIg4oqPID4ibnVsIuKAvyJvbmUi4oC/InR3byLigL8idHJlIuKAvyJmb3IiCgowIOKKjyA8NSAgIyBObyBmaXJzdCBheGlzIHRvIHNlbGVjdCBmcm9t">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⊏</span> <span class='String'>&quot;abcdef&quot;</span>  <span class='Comment'># An enclosed element
+</span>┌·   
+·'c' 
+    ┘
+
+    <span class='Number'>2</span> <span class='Function'>⊑</span> <span class='String'>&quot;abcdef&quot;</span>  <span class='Comment'># Pick gets a non-enclosed element
+</span>'c'
+
+    <span class='Number'>2</span> <span class='Function'>⊏</span> <span class='Function'>&gt;</span><span class='String'>&quot;nul&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;one&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;two&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;tre&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;for&quot;</span>
+"two"
+
+    <span class='Number'>0</span> <span class='Function'>⊏</span> <span class='Function'>&lt;</span><span class='Number'>5</span>  <span class='Comment'># No first axis to select from
+</span>ERROR
+</pre>
+<p>As a major cell of <code><span class='Value'>𝕩</span></code>, the result has rank one less than it and its shape is <code><span class='Number'>1</span><span class='Function'>↓≢</span><span class='Value'>𝕩</span></code>. <code><span class='Value'>𝕩</span></code> must have rank one or more.</p>
+<p>The index <code><span class='Value'>𝕨</span></code> has to be an integer less than <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code>. It can be negative, in which case it must be greater than or equal to <code><span class='Function'>-≠</span><span class='Value'>𝕩</span></code>. Negative indices select from the end of <code><span class='Value'>𝕩</span></code>, in that <code><span class='Number'>¯1</span></code> indicates the last major cell and <code><span class='Function'>-≠</span><span class='Value'>𝕩</span></code> indicates the first. If <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code> is 0, then no index is valid.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wq8yIOKKjyAiYWJjZGVmIgoKMCDiio8gIiI=">↗️</a><pre>    <span class='Number'>¯2</span> <span class='Function'>⊏</span> <span class='String'>&quot;abcdef&quot;</span>
+┌·   
+·'e' 
+    ┘
+
+    <span class='Number'>0</span> <span class='Function'>⊏</span> <span class='String'>&quot;&quot;</span>
+ERROR
+</pre>
+<p>The monadic case First Cell (<code><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>) is identical to <code><span class='Number'>0</span><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>. It has the same restrictions: <code><span class='Value'>𝕩</span></code> must have rank 1 or more, and length 1 or more (this differs from First (<code><span class='Function'>⊑</span></code>), which removes the length requirement to return a fill element).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqPICJhYmMiCgriio8gImFiYyLiiY0iZGVmIgoK4oqPIOKJjSAiYWJjIgoK4oqPICdhJw==">↗️</a><pre>    <span class='Function'>⊏</span> <span class='String'>&quot;abc&quot;</span>
+┌·   
+·'a' 
+    ┘
+
+    <span class='Function'>⊏</span> <span class='String'>&quot;abc&quot;</span><span class='Function'>≍</span><span class='String'>&quot;def&quot;</span>
+"abc"
+
+    <span class='Function'>⊏</span> <span class='Function'>≍</span> <span class='String'>&quot;abc&quot;</span>
+"abc"
+
+    <span class='Function'>⊏</span> <span class='String'>'a'</span>
+ERROR
+</pre>
+<h2 id="first-axis-selection">First-axis selection</h2>
+<p>If <code><span class='Value'>𝕨</span></code> is an array of numbers (including any empty array), then each number indicates a major cell of <code><span class='Value'>𝕩</span></code>. In the simplest case, a list of numbers gives a result with the same rank as <code><span class='Value'>𝕩</span></code> but maybe not the same length.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAvzPigL8z4oC/MOKAvzTigL8xIOKKjyAiT2xaRXQiCgrin6jin6kg4oqPICJPbFpFdCI=">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span> <span class='Function'>⊏</span> <span class='String'>&quot;OlZEt&quot;</span>
+"ZEEOtl"
+
+    <span class='Bracket'>⟨⟩</span> <span class='Function'>⊏</span> <span class='String'>&quot;OlZEt&quot;</span>
+⟨⟩
+</pre>
+<p>To find the first and last cells of <code><span class='Value'>𝕩</span></code>, use <code><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>¯1</span></code> for the left argument.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIG0g4oaQIDPigL814oC/N+KAvzExIHzijJwgw5fLnOKGlTcKCjDigL/CrzEg4oqPIG0=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>m</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>11</span> <span class='Function'>|</span><span class='Modifier'>⌜</span> <span class='Function'>×</span><span class='Modifier'>˜</span><span class='Function'>↕</span><span class='Number'>7</span>
+┌─               
+╵ 0 1 1 0 1 1 0  
+  0 1 4 4 1 0 1  
+  0 1 4 2 2 4 1  
+  0 1 4 9 5 3 3  
+                ┘
+
+    <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>¯1</span> <span class='Function'>⊏</span> <span class='Value'>m</span>
+┌─               
+╵ 0 1 1 0 1 1 0  
+  0 1 4 9 5 3 3  
+                ┘
+</pre>
+<p>More generally, <code><span class='Value'>𝕨</span></code> can be an array of any rank. Each of its 0-cells—containing a single number—is replaced with a cell of <code><span class='Value'>𝕩</span></code> in the result. The result's shape is then made up of the shape of <code><span class='Value'>𝕨</span></code> and the major cell shape of <code><span class='Value'>𝕩</span></code>: it's <code><span class='Paren'>(</span><span class='Function'>≢</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>∾</span><span class='Number'>1</span><span class='Function'>↓≢</span><span class='Value'>𝕩</span></code>. When <code><span class='Value'>𝕩</span></code> is a list, the result has the same shape as <code><span class='Value'>𝕨</span></code>. Elements of <code><span class='Value'>𝕨</span></code> are replaced one-for-one with elements of <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MnxtCgooMnxtKSDiio8gIiAqIg==">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>|</span><span class='Value'>m</span>
+┌─               
+╵ 0 1 1 0 1 1 0  
+  0 1 0 0 1 0 1  
+  0 1 0 0 0 0 1  
+  0 1 0 1 1 1 1  
+                ┘
+
+    <span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>|</span><span class='Value'>m</span><span class='Paren'>)</span> <span class='Function'>⊏</span> <span class='String'>&quot; *&quot;</span>
+┌─         
+╵" ** **   
+   *  * *  
+   *    *  
+   * ****" 
+          ┘
+</pre>
+<p>Another special case is when <code><span class='Value'>𝕨</span></code> is a unit. Now the result shape will be the major cell shape of <code><span class='Value'>𝕩</span></code>. In fact it's the same as the atom case above, that is, for a number <code><span class='Value'>n</span></code>, <code><span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Value'>n</span><span class='Paren'>)</span><span class='Function'>⊏</span><span class='Value'>𝕩</span></code> is the same as <code><span class='Value'>n</span><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>.</p>
+<p>The general case can result in a complicated array. Remember that the initial axes come from <code><span class='Value'>𝕨</span></code> while later ones come from <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImF3QTAiICvijJwg4oaVNAoKMiDihpUg4oaVNAoKKDIg4oaVIOKGlTQpIOKKjyAiYXdBMCIgK+KMnCDihpU0">↗️</a><pre>    <span class='String'>&quot;awA0&quot;</span> <span class='Function'>+</span><span class='Modifier'>⌜</span> <span class='Function'>↕</span><span class='Number'>4</span>
+┌─      
+╵"abcd  
+  wxyz  
+  ABCD  
+  0123" 
+       ┘
+
+    <span class='Number'>2</span> <span class='Function'>↕</span> <span class='Function'>↕</span><span class='Number'>4</span>
+┌─     
+╵ 0 1  
+  1 2  
+  2 3  
+      ┘
+
+    <span class='Paren'>(</span><span class='Number'>2</span> <span class='Function'>↕</span> <span class='Function'>↕</span><span class='Number'>4</span><span class='Paren'>)</span> <span class='Function'>⊏</span> <span class='String'>&quot;awA0&quot;</span> <span class='Function'>+</span><span class='Modifier'>⌜</span> <span class='Function'>↕</span><span class='Number'>4</span>
+┌─      
+╎"abcd  
+  wxyz  
+        
+ ·wxyz  
+  ABCD  
+        
+ ·ABCD  
+  0123" 
+       ┘
+</pre>
+<h2 id="multi-axis-selection">Multi-axis selection</h2>
