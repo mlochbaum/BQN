@@ -62,7 +62,7 @@
     # All characters
     r ← =𝕩 ⋄ 𝕩 ↩ 0↓𝕩⌾⊢""
     k ← ∞⍟(0⊸=) -≠ c ← ¯1↓≢𝕩
-    q ← '"'
+    q ← "'"""⊑˜0<r
     # Escape quotes in strings (rank 1) and substitute control chars
     # with control pictures for other ranks.
     CSub ← { 𝕩 + (𝕩(=×'␡'-⊢)@+127) + ('␀'-@)×𝕩<@+32 }
