@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>BQN keymap</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="style.css" rel="stylesheet"/>
+  <style>
+    body { max-width:50em; }
+    pre { display:inline-block; }
+    div.center { display:flex; justify-content:center; }
+  </style>
+</head>
+<body>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="index.html">main</a></div>
+<h1 id="keymap">BQN keymap</h1>
+<p>The standard BQN keymap is shown below. Note that characters <code>⍎⍕↙↖⍳</code>, included for historical or speculative reasons, are not used by BQN. And don't miss spacebar for <code class='Ligature'>‿</code> at the bottom!</p>
+<div class="center"><pre>┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬─────────┐
+│~ <span class='Function'>¬</span> │<span class='Function'>!</span> <span class='Modifier2'>⎉</span> │<span class='String'>@</span> <span class='Modifier2'>⚇</span> │<span class='Comment'>#</span> <span class='Modifier2'>⍟</span> │$ <span class='Modifier2'>◶</span> │% <span class='Modifier2'>⊘</span> │^ <span class='Modifier2'>⎊</span> │&amp; ⍎ │* ⍕ │<span class='Paren'>(</span> <span class='Bracket'>⟨</span> │<span class='Paren'>)</span> <span class='Bracket'>⟩</span> │_ <span class='Function'>√</span> │<span class='Function'>+</span> <span class='Function'>⋆</span> │Backspace│
+│<span class='Modifier'>`</span> <span class='Modifier'>˜</span> │1 <span class='Modifier'>˘</span> │2 <span class='Modifier'>¨</span> │3 <span class='Modifier'>⁼</span> │4 <span class='Modifier'>⌜</span> │5 <span class='Modifier'>´</span> │6 <span class='Modifier'>˝</span> │7   │8 <span class='Number'>∞</span> │9 <span class='Number'>¯</span> │0 • │<span class='Function'>-</span> <span class='Function'>÷</span> │<span class='Function'>=</span> <span class='Function'>×</span> │         │
+├────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬──────┤
+│Tab    │Q ↙ │W <span class='Function'>𝕎</span> │E <span class='Function'>⍷</span> │R 𝕣 │T <span class='Function'>⍋</span> │Y   │U   │I <span class='Function'>⊑</span> │O <span class='Function'>⊒</span> │P ⍳ │<span class='Brace'>{</span> <span class='Function'>⊣</span> │<span class='Brace'>}</span> <span class='Function'>⊢</span> │<span class='Function'>|</span>     │
+│       │q <span class='Function'>⌽</span> │w 𝕨 │e <span class='Function'>∊</span> │r <span class='Function'>↑</span> │t <span class='Function'>∧</span> │y   │u <span class='Function'>⊔</span> │i <span class='Function'>⊏</span> │o <span class='Function'>⊐</span> │p <span class='Number'>π</span> │[ <span class='Gets'>←</span> │] <span class='Gets'>→</span> │\     │
+├───────┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴──────┤
+│Caps    │A ↖ │S <span class='Function'>𝕊</span> │D   │F <span class='Function'>𝔽</span> │G <span class='Function'>𝔾</span> │H <span class='Function'>«</span> │J   │K <span class='Modifier2'>⌾</span> │L <span class='Function'>»</span> │: <span class='Nothing'>·</span> │<span class='String'>&quot;</span> <span class='Modifier'>˙</span> │Enter     │
+│lock    │a <span class='Function'>⍉</span> │s 𝕤 │d <span class='Function'>↕</span> │f 𝕗 │g 𝕘 │h <span class='Modifier2'>⊸</span> │j <span class='Modifier2'>∘</span> │k <span class='Modifier2'>○</span> │l <span class='Modifier2'>⟜</span> │; <span class='Separator'>⋄</span> │<span class='String'>'</span> <span class='Gets'>↩</span> │          │
+├────────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──────────┤
+│Shift      │Z   │X <span class='Function'>𝕏</span> │C   │V <span class='Function'>⍒</span> │B <span class='Function'>⌈</span> │N   │M <span class='Function'>≢</span> │<span class='Function'>&lt;</span> <span class='Function'>≤</span> │<span class='Function'>&gt;</span> <span class='Function'>≥</span> │? <span class='Gets'>⇐</span> │Shift       │
+│           │z <span class='Function'>⥊</span> │x 𝕩 │c <span class='Function'>↓</span> │v <span class='Function'>∨</span> │b <span class='Function'>⌊</span> │n   │m <span class='Function'>≡</span> │<span class='Separator'>,</span> <span class='Function'>∾</span> │. <span class='Function'>≍</span> │<span class='Function'>/</span> <span class='Function'>≠</span> │            │
+└───────────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────────────┘
+                             Space: <span class='Ligature'>‿</span>
+</pre></div>
+<p>See also the <a href="https://github.com/mlochbaum/BQN/tree/master/editors">editor plugins</a> (and other input methods) and <a href="doc/primitive.html">primitive</a> documentation.</p>
