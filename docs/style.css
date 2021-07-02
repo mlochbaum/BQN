@@ -116,6 +116,10 @@ textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
   cursor: default;
   padding: 1px;
 }
+.kb a {
+  margin-left: 0.8em;
+  font-size: 0.8em; vertical-align: 0.08em; opacity: 0.8;
+}
 .kb select {
   position: absolute; bottom: 0.4em; right: 0.1em;
   color: currentColor; opacity: 0.5;

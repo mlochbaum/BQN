@@ -116,7 +116,7 @@ doc.kb.innerHTML = keydesc.map(d=>{
   let k = revkeys[c]; if (k) t += '\n\\ '+(k==='"'?'&quot;':k);
   primhelp[c] = t;
   return '<span title="'+t+'" class="'+s+'">'+c+'</span>'
-}).join("&#8203;"); // zero-width space
+}).concat(['<a href="keymap.html" target="_blank">map</span>']).join("&#8203;"); // zero-width space
 doc.kb.onmousedown = ev => {
   let t = ev.target;
   if (t.nodeName === 'SPAN') {
