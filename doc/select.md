@@ -97,3 +97,22 @@ The general case can result in a complicated array. Remember that the initial ax
         (2 ↕ ↕4) ⊏ "awA0" +⌜ ↕4
 
 ## Multi-axis selection
+
+Select also allows `𝕨` to apply to multiple axes of `𝕩` simultaneously. For this case, `𝕨` must be a non-empty list (or unit array) where every element is an array of indices.
+
+        ⟨2‿1, 3‿0‿0⟩ ⊏ ↕3‿4
+
+Using a [range](range.md) for `𝕩` shows the structure of the selected elements more clearly, because each element is its own index. Each element of `𝕨` acts independently, giving a structure like the Table modifier.
+
+While `𝕨` must have rank one or less, its elements can have any rank. When the elements are units, the corresponding axis of `𝕩` disappears from the result. We can select a 0-cell of `𝕩` in this way, although the more common case or selecting an element is handled by Pick.
+
+        ⟨<4,<5,<1⟩ ⊏ (3⥊10)⥊↕1e3
+        ⟨ 4, 5, 1⟩ ⊑ (3⥊10)⥊↕1e3
+
+However, the `<¨⊸⊏` construct can select a cell of any rank from `𝕩`, because `≠𝕨` can be smaller than `=𝕩` (okay, not quite: an empty list is always interpreted as a list of indices, so it's impossible to select the full-rank cell `𝕩`). Below, `𝕨` is missing one axis and the result is a 1-cell, or row, of `𝕩`.
+
+        ⟨4,5⟩ <¨⊸⊏ (3⥊10)⥊↕1e3
+
+If an element of `𝕨` has rank more than 1, it increases the rank of `𝕩` rather than decreasing it. The general rule is that in the result, one axis of `𝕩` is replaced by all the axes of the corresponding element of `𝕨` (trailing axes are unchanged). So the final shape `≢𝕨⊏𝕩` is `(∾≢¨𝕨)∾𝕨≠⊸↓≢𝕩`. But this shape doesn't affect the elements retrieved from `𝕩`. In all cases, using `⥊¨𝕨` for the left argument and then [reshaping](reshape.md) the result would yield the same value.
+
+Selection only ever applies to leading axes of `𝕩`. But you can skip some leading axes using `˘` or `⎉`, to select on any contiguous set of axes. In particular, use the one-axis case `𝕨⊸⊏⎉(-k) 𝕩` to select along axis `k` of `𝕩`.
