@@ -17,6 +17,9 @@ depends on your desktop environment. For further discussion, see:
 - https://en.wikipedia.org/wiki/X_keyboard_extension
 - https://aplwiki.com/wiki/Typing_glyphs_on_Linux
 
+Another XKB option, if you have a compose key enabled, is to place
+XCompose (possibly with adjustments) in ~/.XCompose .
+
 For Android, the following fork adds APL and BQN to Hacker's Keyboard:
 https://github.com/dzaima/hackerskeyboard/releases/tag/2.0arr
 
