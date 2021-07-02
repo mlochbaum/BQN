@@ -184,12 +184,29 @@ _testDySearch ← { # ⊐⊒∊⍋⍒
   as { ! 𝕨 𝕏 _testConsistent_ FlatMatch b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
 }
 
+RandRep ← -⟜»∘∧ 1⊸+⊸gen.Index⟜⥊
+_testIndices ← { # /
+  (RandRep○RandBound˜ 𝕩)⊸{ ! 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
+}
+_testSelect ← { # /⊏
+  l‿sh ← (⍋≠¨)⊸⊏ RandShape¨ 𝕩‿𝕩
+  n ← RandBound 𝕩
+  d ← 𝕨 gen.Struct sh
+  RandInd ← 0⊸≠◶⟨⟨⟩,gen.Index⟜(⥊‿RandShape _randChoose)˜⟩
+  g ← (/‿⊏ ⊐ 𝕗) ⊏ RandRep‿RandInd
+  g { ! (n𝕎    ⊑sh) 𝕏 _testConsistent_ FlatMatch d }¨ 𝕗
+  g { ! (l𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ FlatMatch d }¨ 𝕗
+}
+
 cases ← ⟨
   ⟨∾`"+-×÷⋆√⌊⌈¬|"‿"∧∨≤<>≥=≠", testMonArith‿testDyArith⟩
   ⟨"⥊≍⌽⍉⊏"‿"⥊↑↓↕⌽⍉", testMonStruct‿testDyStruct⟩  # Monadic «» hard to test
   ⟨"≠=≢"‿"", testDim‿@⟩
   ⟨""‿"≍∾«»", @‿testCombine⟩
   ⟨"⊐⊒∊⍷∧∨⍋⍒"‿"⊐⊒∊⍋⍒", testMonSearch‿testDySearch⟩
+  ⟨"/"‿"/⊏", testIndices‿testSelect⟩  # ⊔ has nested result
+# ↕<∾↑↓≡>⊑ % ⊑⍷
+# ˘⎉¨⚇⌜⁼⍟´˝`
 ⟩
 MakeTests ← {
   prim‿test ← <∘>˘ ⍉> 𝕨
