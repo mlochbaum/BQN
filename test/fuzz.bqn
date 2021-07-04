@@ -193,9 +193,9 @@ _testSelect ← { # /⊏
   n ← RandBound 𝕩
   d ← 𝕨 gen.Struct sh
   RandInd ← 0⊸≠◶⟨⟨⟩,gen.Index⟜(⥊‿RandShape _randChoose)˜⟩
-  g ← (/‿⊏ ⊐ 𝕗) ⊏ RandRep‿RandInd
+  g ← ({⊏} = 𝕗) ⊏ RandRep‿RandInd
   g { ! (n𝕎    ⊑sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
-  g { ! (l𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
+  g { ! (l𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
 }
 
 cases ← ⟨
@@ -204,7 +204,7 @@ cases ← ⟨
   ⟨"≠=≢"‿"", testDim‿@⟩
   ⟨""‿"≍∾«»", @‿testCombine⟩
   ⟨"⊐⊒∊⍷∧∨⍋⍒"‿"⊐⊒∊⍋⍒", testMonSearch‿testDySearch⟩
-  ⟨"/"‿"/⊏", testIndices‿testSelect⟩  # ⊔ has nested result
+  ⟨"/⊔"‿"/⊏⊔", testIndices‿testSelect⟩
 # ↕<∾↑↓≡>⊑ % ⊑⍷
 # ˘⎉¨⚇⌜⁼⍟´˝`
 ⟩
