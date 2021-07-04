@@ -149,7 +149,7 @@ _testDyArith ← {f←𝕗
 _testMonStruct ← { # ⥊≍⌽⍉⊏
   k ← 3|1+ ⌽‿⊏ ⊐ 𝕗
   sh ← k ⊏ {𝕏𝕨}` (1+⌈´k) ↑ ⟨RandShape 𝕩, 1⊸∾⍟(0=≠), 1⊸⌈⌾⊑⟩
-  ((⊐sh) ⊏ 𝕨⊸gen.Struct¨ ⍷sh) { ! 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
+  ((⊐sh) ⊏ 𝕨⊸gen.Struct¨ ⍷sh) { ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 
 _testDyStruct ← { # ⥊↑↓↕⌽⍉ (no overtake)
@@ -159,7 +159,7 @@ _testDyStruct ← { # ⥊↑↓↕⌽⍉ (no overtake)
   RT ← -RR¨⊢
   p‿r ← <˘⍉> ⟨⟨⥊,(0∾1⊸↓)⍟(sh>○(0=×´)⊢)∘l⟩, ⟨↓,l‿RT _randChoose⟩
               ⟨⌽,RT+˜⟩, ⟨↑,RT⟩, ⟨↕,0 RR¨ 1⊸+⟩, ⟨⍉,(⍋⊏⊐)Rand˜∘≠⟩⟩
-  (r⊏˜p⊐𝕗) { ! (𝕎sh) 𝕏 _testConsistent_ FlatMatch d }¨ 𝕗
+  (r⊏˜p⊐𝕗) { ! (𝕎sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
 }
 
 _testDim ← { # ≠=≢
@@ -170,23 +170,23 @@ _testCombine ← { # ≍∾«»
   a ← 𝕨 gen.Struct sh ← RandShape1 𝕩
   bs ← (RandBound 1⊸+)⌾⊑⍟({≍}≠𝕗) sh
   swap ← (Rand 2)⊑{𝔽}‿˜
-  ((⊐bs) ⊏ 𝕨⊸gen.Struct¨ ⍷bs) { ! a 𝕏 _testConsistent_ FlatMatch _swap 𝕨 }¨ 𝕗
+  ((⊐bs) ⊏ 𝕨⊸gen.Struct¨ ⍷bs) { ! a 𝕏 _testConsistent_ ≡ _swap 𝕨 }¨ 𝕗
 }
 
 _testMonSearch ← { # ⊐⊒∊⍷∧∨⍋⍒
-  (𝕨 gen.Arith RandShape1 𝕩)⊸{ ! 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
+  (𝕨 gen.Arith RandShape1 𝕩)⊸{ ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 _testDySearch ← { # ⊐⊒∊⍋⍒
   sh ← RandShape1 𝕩
   k ← ⍋‿⍒⊐𝕗
   a‿b ← 𝕨⊸gen.Arith¨ ⟨sh, (0⊸<◶⟨-⟜⌊RandShape∘𝕩,RandShape⟩·⌊𝕩÷1⌈×´)⊸∾ 1↓sh⟩
   as ← (⊐k) ⊏ {𝕏a}¨(⍷k)⊏∧‿∨‿⊢
-  as { ! 𝕨 𝕏 _testConsistent_ FlatMatch b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
+  as { ! 𝕨 𝕏 _testConsistent_ ≡ b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
 }
 
 RandRep ← -⟜»∘∧ 1⊸+⊸gen.Index⟜⥊
 _testIndices ← { # /
-  (RandRep○RandBound˜ 𝕩)⊸{ ! 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
+  (RandRep○RandBound˜ 𝕩)⊸{ ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 _testSelect ← { # /⊏
   l‿sh ← (⍋≠¨)⊸⊏ RandShape¨ 𝕩‿𝕩
@@ -194,8 +194,8 @@ _testSelect ← { # /⊏
   d ← 𝕨 gen.Struct sh
   RandInd ← 0⊸≠◶⟨⟨⟩,gen.Index⟜(⥊‿RandShape _randChoose)˜⟩
   g ← (/‿⊏ ⊐ 𝕗) ⊏ RandRep‿RandInd
-  g { ! (n𝕎    ⊑sh) 𝕏 _testConsistent_ FlatMatch d }¨ 𝕗
-  g { ! (l𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ FlatMatch d }¨ 𝕗
+  g { ! (n𝕎    ⊑sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
+  g { ! (l𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
 }
 
 cases ← ⟨
