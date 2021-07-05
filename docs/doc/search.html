@@ -1,0 +1,126 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Search functions</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="search-functions">Search functions</h1>
+<svg viewBox='-124.8 -46.8 532.8 280.8'>
+  <g font-family='BQN,monospace' font-size='19px' text-anchor='middle'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-86.4' y='-36' width='456' height='259.2'/>
+    <g class='purple' stroke-width='0' opacity='0.5'>
+      <rect x='-76.8' y='106.2' width='436.8' height='32.4'/>
+      <rect x='-76.8' y='178.2' width='436.8' height='32.4'/>
+    </g>
+    <g class='lilac' stroke-linecap='round'>
+      <g stroke-width='1' stroke-dasharray='6,7'>
+        <line x1='99.84' x2='332.16' y1='60.48' y2='11.52'/>
+        <line x1='243.84' x2='380.16' y1='60.48' y2='11.52'/>
+      </g>
+      <g stroke-width='1.5'>
+        <line x1='92.16' x2='3.84' y1='60.48' y2='11.52'/>
+        <line x1='236.16' x2='3.84' y1='60.48' y2='11.52'/>
+      </g>
+      <g stroke-width='3'>
+        <line x1='3.84' x2='44.16' y1='60.48' y2='11.52'/>
+        <line x1='44.16' x2='3.84' y1='60.48' y2='11.52'/>
+        <line x1='140.16' x2='99.84' y1='60.48' y2='11.52'/>
+        <line x1='195.84' x2='380.16' y1='60.48' y2='11.52'/>
+      </g>
+    </g>
+    <g fill='currentColor' font-size='12' opacity='0.75'>
+      <text dy='0.32em' x='0' y='-17.28'>0</text>
+      <text dy='0.32em' x='48' y='-17.28'>1</text>
+      <text dy='0.32em' x='96' y='-17.28'>2</text>
+      <text dy='0.32em' x='144' y='-17.28'>3</text>
+      <text dy='0.32em' x='192' y='-17.28'>4</text>
+      <text dy='0.32em' x='240' y='-17.28'>5</text>
+      <text dy='0.32em' x='288' y='-17.28'>6</text>
+      <text dy='0.32em' x='336' y='-17.28'>7</text>
+    </g>
+    <text dy='0.32em' x='0' y='0'><tspan class='String'>'s'</tspan></text>
+    <text dy='0.32em' x='48' y='0'><tspan class='String'>'e'</tspan></text>
+    <text dy='0.32em' x='96' y='0'><tspan class='String'>'a'</tspan></text>
+    <text dy='0.32em' x='144' y='0'><tspan class='String'>'r'</tspan></text>
+    <text dy='0.32em' x='192' y='0'><tspan class='String'>'c'</tspan></text>
+    <text dy='0.32em' x='240' y='0'><tspan class='String'>'h'</tspan></text>
+    <text dy='0.32em' x='288' y='0'><tspan class='String'>'e'</tspan></text>
+    <text dy='0.32em' x='336' y='0'><tspan class='String'>'s'</tspan></text>
+    <text dy='0.32em' x='0' y='72'><tspan class='String'>'e'</tspan></text>
+    <text dy='0.32em' x='48' y='72'><tspan class='String'>'s'</tspan></text>
+    <text dy='0.32em' x='96' y='72'><tspan class='String'>'s'</tspan></text>
+    <text dy='0.32em' x='144' y='72'><tspan class='String'>'a'</tspan></text>
+    <text dy='0.32em' x='192' y='72'><tspan class='String'>'y'</tspan></text>
+    <text dy='0.32em' x='240' y='72'><tspan class='String'>'s'</tspan></text>
+    <text dy='0.32em' x='0' y='122.4'><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='48' y='122.4'><tspan class='Number'>0</tspan></text>
+    <text dy='0.32em' x='96' y='122.4'><tspan class='Number'>0</tspan></text>
+    <text dy='0.32em' x='144' y='122.4'><tspan class='Number'>2</tspan></text>
+    <text dy='0.32em' x='192' y='122.4'><tspan class='Number'>8</tspan></text>
+    <text dy='0.32em' x='240' y='122.4'><tspan class='Number'>0</tspan></text>
+    <text dy='0.32em' x='0' y='158.4'><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='48' y='158.4'><tspan class='Number'>0</tspan></text>
+    <text dy='0.32em' x='96' y='158.4'><tspan class='Number'>7</tspan></text>
+    <text dy='0.32em' x='144' y='158.4'><tspan class='Number'>2</tspan></text>
+    <text dy='0.32em' x='192' y='158.4'><tspan class='Number'>8</tspan></text>
+    <text dy='0.32em' x='240' y='158.4'><tspan class='Number'>8</tspan></text>
+    <text dy='0.32em' x='0' y='194.4'><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='48' y='194.4'><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='96' y='194.4'><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='144' y='194.4'><tspan class='Number'>1</tspan></text>
+    <text dy='0.32em' x='192' y='194.4'><tspan class='Number'>0</tspan></text>
+    <text dy='0.32em' x='240' y='194.4'><tspan class='Number'>1</tspan></text>
+    <g text-anchor='end'>
+      <text dy='0.32em' x='-33.6' y='0'><tspan class='Value'>in</tspan></text>
+      <text dy='0.32em' x='-33.6' y='72'><tspan class='Value'>for</tspan></text>
+      <text dy='0.32em' x='-33.6' y='122.4'><tspan class='Function'>⊐</tspan></text>
+      <text dy='0.32em' x='-33.6' y='158.4'><tspan class='Function'>⊒</tspan></text>
+      <text dy='0.32em' x='-33.6' y='194.4'><tspan class='Function'>∊</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<p>The three search functions are Index of (<code><span class='Function'>⊐</span></code>), Progressive Index of (<code><span class='Function'>⊒</span></code>), and Member of (<code><span class='Function'>∊</span></code>). These are dyadic functions that search one argument (&quot;searched-in&quot;) for major cells <a href="match.html">matching</a> cells from the other (&quot;searched-for&quot;). For example, Index of returns, for each cell in <code><span class='Value'>𝕩</span></code>, the index of the first cell in <code><span class='Value'>𝕨</span></code> that matches it.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th>Name</th>
+<th align="center">for</th>
+<th align="center">in</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code><span class='Function'>⊐</span></code></td>
+<td>Index of</td>
+<td align="center"><code><span class='Value'>𝕩</span></code></td>
+<td align="center"><code><span class='Value'>𝕨</span></code></td>
+<td>Index of first match</td>
+</tr>
+<tr>
+<td align="center"><code><span class='Function'>⊒</span></code></td>
+<td>Progressive Index of</td>
+<td align="center"><code><span class='Value'>𝕩</span></code></td>
+<td align="center"><code><span class='Value'>𝕨</span></code></td>
+<td>Index of first unused match</td>
+</tr>
+<tr>
+<td align="center"><code><span class='Function'>∊</span></code></td>
+<td>Member of</td>
+<td align="center"><code><span class='Value'>𝕨</span></code></td>
+<td align="center"><code><span class='Value'>𝕩</span></code></td>
+<td><code><span class='Number'>1</span></code> if found, <code><span class='Number'>0</span></code> if not</td>
+</tr>
+<tr>
+<td align="center"><code><span class='Function'>⍋⍒</span></code></td>
+<td><a href="order.html#bins">Bins</a></td>
+<td align="center"><code><span class='Value'>𝕩</span></code></td>
+<td align="center"><code><span class='Value'>𝕨</span></code></td>
+<td>Predecessor index</td>
+</tr>
+</tbody>
+</table>
+<p>The searched-for argument is <code><span class='Value'>𝕩</span></code> in Index-of functions (<code><span class='Function'>⊐⊒</span></code>) and <code><span class='Value'>𝕨</span></code> in Member of (<code><span class='Function'>∊</span></code>). <a href="order.html#bins">Bins</a> Up and Down (<code><span class='Function'>⍋⍒</span></code>) are ordering functions but follow the same pattern as Index-of. It's split into cells, but not necessarily <em>major</em> cells: instead, the cells used match the rank of a major cell of the other (searched-in) argument. In the most common case, when the searched-in argument is a list, 0-cells are used for the search (we might also say elements, as it gives the same result).</p>
+<p>The result is always an array containing one number for each searched-for cell. For Index of and Member of, every result is computed independently; for Progressive Index of the result for a cell can depend on earlier cells, in index order.</p>
