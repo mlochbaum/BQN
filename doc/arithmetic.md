@@ -49,7 +49,7 @@ Each of these functions also has a meaning with only one argument, although in m
 
         √ 0‿1‿2‿4
 
-Take note of the difference between the function `-`, and the "high minus" character `¯`, which is a part of numeric notation. Also shown is the number `∞`, which BQN supports along with `¯∞` (but depending on implementation BQN may or may not keep track of `¯0`. Integer optimization loses the distinction so it's best not to rely on it).
+Take note of the difference between the function `-`, and the "high minus" character `¯`, which is a part of [numeric notation](syntax.md#constants). Also shown is the number `∞`, which BQN supports along with `¯∞` (but depending on implementation BQN may or may not keep track of `¯0`. Integer optimization loses the distinction so it's best not to rely on it).
 
 The logarithm is written with Undo: `⋆⁼`. As with Power, the default base is *e*, giving a natural logarithm.
 
@@ -114,7 +114,7 @@ Symbol | Monad          | Dyad
 `⌈`    | Ceiling        | Maximum
 `\|`   | Absolute Value | Modulus
 
-Now the monadic function symbols resemble those used in mathematics. In the case of Floor and Ceiling, this is because Ken Iverson invented them! As with other functions, he adapted them to work like other functions in order to create APL\360, in this case by removing the paired closing version of each one.
+Now the monadic function symbols resemble those used in mathematics. In the case of Floor and Ceiling, this is because Ken Iverson invented them! As with other functions, he adapted them to use more uniform syntax in order to create APL\360, in this case by removing the paired closing version of each one.
 
         ⌊ π
 
@@ -159,7 +159,7 @@ The *ordered* comparisons `≤<>≥` are defined on numbers and characters (and 
 
         ¯∞‿π‿∞ ≥ @‿'0'‿'?'
 
-Equals and Not Equals are the two *equality* comparisons. Equals tests for [atomic equality](match.md#atomic-equality) between each pair of atoms, as described in the Match documentation. Essentially, it returns `1` only if the two values are indistinguishable to BQN and `0` otherwise. Values of different types can never be equal, and characters are equal when they have the same code point.
+Equals and Not Equals are the two *equality* comparisons. Equals tests for atomic equality between each pair of atoms, as [described](match.md#atomic-equality) in the Match documentation. Essentially, it returns `1` only if the two values are indistinguishable to BQN and `0` otherwise. Values of different types can never be equal, and characters are equal when they have the same code point.
 
         +‿-‿×‿÷ = ⊑⟨-⟩
 
