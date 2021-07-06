@@ -50,7 +50,7 @@ To find the depth of an array, use Depth (`≡`). For example, the depth of a li
         ≡ 2‿3‿4
         ≡ "a string is a list of characters"
 
-Depth is somewhat analogous to an array's rank `=𝕩`, and in fact rank can be "converted" to depth by splitting rows with `<⎉1`, reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:
+Depth is somewhat analogous to an array's [rank](shape.md) `=𝕩`, and in fact rank can be "converted" to depth by splitting rows with `<⎉1`, reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:
 
         ≡ 3‿4⥊"characters"
         ≡ (1+↕10)⥊"characters"
@@ -86,12 +86,12 @@ Several primitive functions use the left argument to manipulate the right argume
 | 0                 | `↑↓↕⌽⍉`
 | 1                 | `/⊏⊔`
 
-Functions such as Take and Drop use a single number per axis. When the left argument is a list of numbers, they apply to initial axes. But for convenience, a single number is also accepted, and applied to the first axis only. This is equivalent to ravelling the left argument before applying the function.
+Functions such as [Take and Drop](take.md) use a single number per axis. When the left argument is a list of numbers, they apply to initial axes. But for convenience, a single number is also accepted, and applied to the first axis only. This is equivalent to [deshaping](reshape.md) the left argument before applying the function.
 
         ≢2↑7‿7‿7‿7⥊"abc"
         ≢2‿1‿1↑7‿7‿7‿7⥊"abc"
 
-In these cases the flexibility seems trivial because the left argument has depth 1 or 0: it is an array or isn't, and it's obvious what a plain number should do. But for the second row in the table, the left argument is always an array. The general case is that the left argument is a vector and its elements correspond to right argument axes:
+In these cases the flexibility seems trivial because the left argument has depth 1 or 0: it is an array or isn't, and it's obvious what a plain number should do. But for the second row in the table, the left argument is always an array. The general case ([Select](select.md) below) is that the left argument is a list and its elements correspond to right argument axes:
 
         ⟨3‿2,1‿4‿1⟩ ⊏ ↕6‿7
 
@@ -99,7 +99,7 @@ This means the left argument is homogeneous of depth 2. What should an argument 
 
         ⟨3‿2,1⟩ <⍟(0=≡)¨⊸⊏ ↕6‿7
 
-While very consistent, this extension represents a small convenience and makes it difficult to act on a single axis, which for Replicate and [Group](group.md) is probably the most common way the primitive is used:
+While very consistent, this extension represents a small convenience and makes it difficult to act on a single axis, which for [Replicate](replicate.md) and [Group](group.md) is probably the most common way the primitive is used:
 
         3‿2‿1‿2‿3 / "abcde"
 
@@ -111,24 +111,24 @@ For Select, the depth-1 case is still quite useful, but it may also be desirable
 
 ## The Depth modifier
 
-The Depth 2-modifier (`⚇`) is a generalization of Each that allows diving deeper into an array. To illustrate it we'll use a shape `4‿3` array of lists of lists.
+The Depth 2-modifier (`⚇`) is a generalization of [Each](map.md) that allows diving deeper into an array. To illustrate it we'll use a shape `4‿3` array of lists of lists.
 
         ⊢ n ← <⎉1⍟2 4‿3‿2‿2⥊↕48
         ≡ n
 
-Reversing n swaps all the rows:
+Reversing `n` swaps all the rows:
 
         ⌽ n
 
-Depth `¯1` is equivalent to Each, and reverses the larger vectors, while depth `¯2` applies Each twice to reverse the smaller vectors:
+Depth `¯1` is equivalent to Each, and reverses the larger lists, while depth `¯2` applies Each twice to reverse the smaller lists:
 
         ⌽⚇¯1 n
         ⌽⚇¯2 n
 
-While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth `2` is equivalent to `¯1` and depth `1` is equivalent to `¯2`. A depth of `0` means to descend all the way to the level of atoms, that is, apply [pervasively](https://aplwiki.com/wiki/Pervasion), like an arithmetic function.
+While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth `2` is equivalent to `¯1` and depth `1` is equivalent to `¯2`. A depth of `0` means to descend all the way to the level of atoms, that is, apply [pervasively](arithmetic.md#pervasion), like an arithmetic function.
 
         ⟨'a',"bc"⟩ ≍⚇0 ⟨2‿3,4⟩
 
-With a positive operand, Depth doesn't have to use the same depth everywhere. Here, Length is applied as soon as the depth for a particular element is 1 or less, including if the argument has depth 0. For example, it maps over `⟨2,⟨3,4⟩⟩`, but not over `⟨11,12⟩`, even though these are elements of the same array.
+With a positive operand, Depth doesn't have to use the same depth everywhere. Here, [Length](shape.md) is applied as soon as the depth for a particular element is 1 or less, including if the argument has depth 0. For example, it maps over `⟨2,⟨3,4⟩⟩`, but not over `⟨11,12⟩`, even though these are elements of the same array.
 
         ≠⚇1 ⟨1,⟨2,⟨3,4⟩⟩,⟨5,⟨6,7⟩,⟨8,9,10⟩⟩,⟨11,12⟩⟩

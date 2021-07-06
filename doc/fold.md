@@ -74,7 +74,7 @@ Folding over a list of length 1 never calls the operand function: it returns the
 
         !´ ⟨⎊⟩
 
-Folding over a list of two values applies `𝔽` once, since `𝔽` is always called on two arguments. But what about zero values? Should `𝔽` be applied minus one times? Sort of. BQN checks to see if it knows an *identity value* for the operand function, and returns that, never calling the function. This works for the arithmetic functions we showed above, always returning a single number.
+Folding over a list of two values applies `𝔽` once, since `𝔽` is always called on two arguments. But what about zero values? Should `𝔽` be applied minus one times? Sort of. BQN checks to see if it knows an *identity value* for the operand function, and returns that, never calling the function. This works for the [arithmetic functions](arithmetic.md) we showed above, always returning a single number.
 
         +´ ⟨⟩  # Add nothing up, get zero
         ⌈´ ⟨⟩  # The smallest number
@@ -94,15 +94,15 @@ The full list of identity values Fold has to use is shown below.
 
 ### Right-to-left
 
-The functions we've shown so far are associative (ignoring floating point imprecision), meaning it's equally valid to combine elements of the argument list in any order. But it can be useful to fold using a non-associative function. In this case you must know that Fold performs a *right fold*, starting from the array and working towards the beginning.
+The functions we've shown so far are associative (ignoring floating point imprecision), meaning it's equally valid to combine elements of the argument list in any order. But it can be useful to fold using a non-associative function. In this case you must know that Fold performs a *right fold*, starting from the end of the array and working towards the beginning.
 
         ≍○<´ "abcd"
 
         'a' ≍○< 'b' ≍○< 'c' ≍○< 'd'  # Expanded form
 
-Using the pair function `≍○<` as an operand shows the structure nicely. This fold first pairs the final two characters `'c'` and `'d'`, then pairs `'b'` with that and so on. This matches BQN's right-to-left order of evaluation. More declaratively we might say that each character is paired with the result of folding over everything to its right.
+Using the [pair](couple.md#coupling-units) function `≍○<` as an operand shows the structure nicely. This fold first pairs the final two characters `'c'` and `'d'`, then pairs `'b'` with that and so on. This matches BQN's right-to-left order of evaluation. More declaratively we might say that each character is paired with the result of folding over everything to its right.
 
-BQN doesn't provide a left Fold (`` ` `` is Scan). However, you can fold from the left by reversing (`⌽`) the argument list and also reversing (`˜`) the operand function's argument order.
+BQN doesn't provide a left Fold (`` ` `` is [Scan](scan.md)). However, you can fold from the left by [reversing](reverse.md#reverse) (`⌽`) the argument list and also reversing (`˜`) the operand function's argument order.
 
         ≍○<˜´ ⌽ "abcd"
 

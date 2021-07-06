@@ -10,9 +10,9 @@ If you're an array programmer then I have bad news for you. My thesis here is th
 
 ## Starting from atoms
 
-APL tends to define its data by starting with the array and then looking downwards in depth at what it contains. The based array model, as the name suggests, starts at the foundations, which in BQN are called "atoms". There are five types of atom, which together with the array type give the six types a value can have in BQN. Based means being yourself, and an atom's *not* an array.
+APL tends to define its data by starting with the array and then looking downwards in depth at what it contains. The based array model, as the name suggests, starts at the foundations, which in BQN are called "atoms". There are six [types](types.md) of atom, which together with the array type give the seven types a value can have in BQN. Based means being yourself, and an atom's *not* an array.
 
-An atom has [depth](depth.md) 0, and doesn't inherently have a shape. However, primitives that expect an array promote atoms by [enclosing](enclose.md) them to get a rank-0, or *unit*, array that contains the atom (any value can be enclosed in this way, giving a unit array with higher depth, but it only happens automatically for atoms). Rank and shape both do this, so an atom can be considered to have the same dimensions as a unit array: rank 0 and shape `⟨⟩`. An atom is also considered a kind of unit, but it's not a unit array.
+An atom has [depth](depth.md) 0, and doesn't inherently have a shape. However, primitives that expect an array promote atoms by [enclosing](enclose.md) them to get a rank-0, or *unit*, array that contains the atom (any value can be enclosed in this way, giving a unit array with higher depth, but it only happens automatically for atoms). [Rank and shape](shape.md) both do this, so an atom can be considered to have the same dimensions as a unit array: rank 0 and shape `⟨⟩`. An atom is also considered a kind of unit, but it's not a unit array.
 
 Atoms are displayed as plain values, while enclosed atoms, that is, depth-1 unit arrays, are shown with an array display.
 
@@ -25,7 +25,7 @@ In addition to numbers and characters, functions, 1-modifiers, and 2-modifiers a
         Plus ← +
         ≡ plus
 
-The primitives that return a single number, like Rank (`=`), Length (`≠`), and Match (`≡`), give it as an atom, not an array.
+The primitives that return a single number, like Rank (`=`), Length (`≠`), and [Match](match.md) (`≡`), give it as an atom, not an array.
 
         ≡ "abc"
         ≡ ≡ "abc"  # The result was an atom
