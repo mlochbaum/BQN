@@ -1,0 +1,129 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Pick</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="pick">Pick</h1>
+<p>Pick (<code><span class='Function'>⊑</span></code>) chooses elements from <code><span class='Value'>𝕩</span></code> based on <a href="indices.html">index</a> lists from <code><span class='Value'>𝕨</span></code>. <code><span class='Value'>𝕨</span></code> can be a plain list, or even one number if <code><span class='Value'>𝕩</span></code> is a list, in order to get one element from <code><span class='Value'>𝕩</span></code>. It can also be an array of index lists, or have deeper array structure: each index list will be replaced with the element of <code><span class='Value'>𝕩</span></code> at that index, effectively applying to <code><span class='Value'>𝕨</span></code> at <a href="depth.html#the-depth-modifier">depth</a> 1.</p>
+<p>With no <code><span class='Value'>𝕨</span></code>, monadic <code><span class='Function'>⊑</span><span class='Value'>𝕩</span></code> takes the first element of <code><span class='Value'>𝕩</span></code> in index order, or its fill element if <code><span class='Value'>𝕩</span></code> is empty (causing an error if no fill is known).</p>
+<p>While sometimes &quot;scatter-point&quot; indexing is necessary, using Pick to select multiple elements from <code><span class='Value'>𝕩</span></code> is less array-oriented than <a href="select.html">Select</a> (<code><span class='Function'>⊏</span></code>), and probably slower. Consider rearranging your data so that you can select along axes instead of picking out elements.</p>
+<h2 id="one-element">One element</h2>
+<p>When the left argument is a number, Pick gets an element from a list:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDiipEgMOKAvzHigL8y4oC/M+KAvzQKMiDiipEgImFiYyIKMiDiipEg4p+oQCwgMOKAvzHigL8y4oC/MywgImFiYyLin6k=">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⊑</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+2
+    <span class='Number'>2</span> <span class='Function'>⊑</span> <span class='String'>&quot;abc&quot;</span>
+'c'
+    <span class='Number'>2</span> <span class='Function'>⊑</span> <span class='Bracket'>⟨</span><span class='String'>@</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='String'>&quot;abc&quot;</span><span class='Bracket'>⟩</span>
+"abc"
+</pre>
+<p>A negative number <code><span class='Value'>𝕨</span></code> behaves like <code><span class='Value'>𝕨</span><span class='Function'>+≠</span><span class='Value'>𝕩</span></code>, so that <code><span class='Number'>¯1</span></code> will select the last element, and <code><span class='Function'>-≠</span><span class='Value'>𝕩</span></code> the first. A number in <code><span class='Value'>𝕨</span></code> must be an integer less than <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code> but not less than <code><span class='Function'>-≠</span><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wq8yIOKKkSAw4oC/MeKAvzLigL8z4oC/NArCrzIg4oqRICJhYmMi">↗️</a><pre>    <span class='Number'>¯2</span> <span class='Function'>⊑</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+3
+    <span class='Number'>¯2</span> <span class='Function'>⊑</span> <span class='String'>&quot;abc&quot;</span>
+'b'
+</pre>
+<p>Making <code><span class='Value'>𝕩</span></code> a list is only a special case. In general <code><span class='Value'>𝕨</span></code> can be a list of numbers whose length is <code><span class='Value'>𝕩</span></code>'s rank. So when <code><span class='Function'>=</span><span class='Value'>𝕩</span></code> is 1, <code><span class='Value'>𝕨</span></code> can be length-1 list. For convenience, a number is also allowed, but not an enclosed number (which could be confused with the nested case).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMiww4p+pIOKKkSDihpU04oC/NQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Bracket'>⟩</span> <span class='Function'>⊑</span> <span class='Function'>↕</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span>
+⟨ 2 0 ⟩
+</pre>
+<p>Above we see that picking from the result of <a href="range.html">Range</a> gives the index. For something slightly more interesting, here's a character array:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQICdhJyArIOKliuKfnCjihpXDl8K0KSA04oC/NQoy4oC/MCDiipEgYQox4oC/wq8xIOKKkSBh">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='String'>'a'</span> <span class='Function'>+</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>↕×</span><span class='Modifier'>´</span><span class='Paren'>)</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span>
+┌─       
+╵"abcde  
+  fghij  
+  klmno  
+  pqrst" 
+        ┘
+    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span> <span class='Function'>⊑</span> <span class='Value'>a</span>
+'k'
+    <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span> <span class='Function'>⊑</span> <span class='Value'>a</span>
+'j'
+</pre>
+<p>This applies even if <code><span class='Value'>𝕩</span></code> is a unit. By definition it has rank 0, so the only possible value for <code><span class='Value'>𝕨</span></code> is the empty list. This extracts an <a href="enclose.html">enclosed</a> element, and returns an atom unchanged—the atom is promoted to an array by enclosing it, then the action of Pick undoes this. But there's rarely a reason to use this case, because the monadic form First accomplishes the same thing.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+o4p+pIOKKkSA8J2EnCuKfqOKfqSDiipEgJ2En">↗️</a><pre>    <span class='Bracket'>⟨⟩</span> <span class='Function'>⊑</span> <span class='Function'>&lt;</span><span class='String'>'a'</span>
+'a'
+    <span class='Bracket'>⟨⟩</span> <span class='Function'>⊑</span> <span class='String'>'a'</span>
+'a'
+</pre>
+<h3 id="first">First</h3>
+<p>With no left argument, <code><span class='Function'>⊑</span></code> is called First, and performs a slight generalization of Pick with a default left argument <code><span class='Number'>0</span><span class='Modifier'>¨</span><span class='Function'>≢</span><span class='Value'>𝕩</span></code>. For a non-empty array it returns the first element in index order.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRIDwnYScK4oqRICJGaXJzdCIK4oqRIOKGlTTigL8y4oC/NeKAvzE=">↗️</a><pre>    <span class='Function'>⊑</span> <span class='Function'>&lt;</span><span class='String'>'a'</span>
+'a'
+    <span class='Function'>⊑</span> <span class='String'>&quot;First&quot;</span>
+'F'
+    <span class='Function'>⊑</span> <span class='Function'>↕</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 0 0 0 0 ⟩
+</pre>
+<p>If <code><span class='Value'>𝕩</span></code> is empty then Pick always results in an error. First never gives an error: instead it returns the fill element for <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRICIiCuKKkSDiiaLPgAriipEgMOKGkTzin6giICAiLOKGlTTin6k=">↗️</a><pre>    <span class='Function'>⊑</span> <span class='String'>&quot;&quot;</span>
+' '
+    <span class='Function'>⊑</span> <span class='Function'>≢</span><span class='Number'>π</span>
+0
+    <span class='Function'>⊑</span> <span class='Number'>0</span><span class='Function'>↑&lt;</span><span class='Bracket'>⟨</span><span class='String'>&quot;  &quot;</span><span class='Separator'>,</span><span class='Function'>↕</span><span class='Number'>4</span><span class='Bracket'>⟩</span>
+⟨ "  " ⟨ 0 0 0 0 ⟩ ⟩
+</pre>
+<p>So one way to find the fill element for an array <code><span class='Value'>𝕩</span></code> of any shape is <code><span class='Function'>⊑</span><span class='Number'>0</span><span class='Function'>⥊</span><span class='Value'>𝕩</span></code>.</p>
+<p>In APL it's common to get the last element of a list with an idiom that translates to <code><span class='Function'>⊑⌽</span></code>, or First-<a href="reverse.html">Reverse</a>. I prefer to use <a href="fold.html">Fold</a> with the Right <a href="identity.html">identity function</a>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqR4oy9ICJsYXN0IgriiqLCtCAibGFzdCI=">↗️</a><pre>    <span class='Function'>⊑⌽</span> <span class='String'>&quot;last&quot;</span>
+'t'
+    <span class='Function'>⊢</span><span class='Modifier'>´</span> <span class='String'>&quot;last&quot;</span>
+'t'
+</pre>
+<h2 id="many-elements">Many elements</h2>
+<p>Pick also accepts a list of indices:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSAgIyBEZWZpbmVkIGFib3ZlCgrin6gy4oC/MCwgMeKAv8KvMSwgM+KAvzEsIMKvMeKAv8KvMeKfqSDiipEgYQ==">↗️</a><pre>    <span class='Value'>a</span>  <span class='Comment'># Defined above
+</span>┌─       
+╵"abcde  
+  fghij  
+  klmno  
+  pqrst" 
+        ┘
+
+    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Separator'>,</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>¯1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span> <span class='Function'>⊑</span> <span class='Value'>a</span>
+"kjqt"
+</pre>
+<p>These indices have to be lists, since if they're numbers it just looks like <code><span class='Value'>𝕨</span></code> is one list index.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMiwxLDAswq8x4p+pIOKKkSAiYWJjIiAgIyDwnZWpIGRvZXNuJ3QgaGF2ZSByYW5rIDQhCgrin6gyLDEsMCzCrzHin6kg4qWKwqjiirjiipEgImFiYyIKCuKfqDIsMSwwLMKvMeKfqSDiio8gImFiYyIgICMgQmV0dGVyIHdheQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span> <span class='Function'>⊑</span> <span class='String'>&quot;abc&quot;</span>  <span class='Comment'># 𝕩 doesn't have rank 4!
+</span>ERROR
+
+    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span> <span class='Function'>⥊</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span> <span class='String'>&quot;abc&quot;</span>
+"cbac"
+
+    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span> <span class='Function'>⊏</span> <span class='String'>&quot;abc&quot;</span>  <span class='Comment'># Better way
+</span>"cbac"
+</pre>
+<p>It's much more general than just a list of indices though. As long as your indices are lists, you can arrange them in any array structure with arbitrary nesting.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMuKAvzAsIOKfqOKfqDHigL/CrzEsIDPigL8x4p+pLCDCrzHigL/CrzHin6nin6kg4oqRIGEKCijin6gy4oC/MCwgMeKAv8KvMeKfqeKJjeKfqDPigL8xLCDCrzHigL/CrzHin6kpIOKKkSBhCgoo4p+oMuKAvzAsIDwx4oC/wq8x4p+p4omN4p+oPDPigL8xLCDCrzHigL/CrzHin6kpIOKKkSBh">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Separator'>,</span> <span class='Bracket'>⟨⟨</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Bracket'>⟩</span><span class='Separator'>,</span> <span class='Number'>¯1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Bracket'>⟩⟩</span> <span class='Function'>⊑</span> <span class='Value'>a</span>
+⟨ 'k' ⟨ "jq" 't' ⟩ ⟩
+
+    <span class='Paren'>(</span><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Separator'>,</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span><span class='Function'>≍</span><span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>¯1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span><span class='Paren'>)</span> <span class='Function'>⊑</span> <span class='Value'>a</span>
+┌─    
+╵"kj  
+  qt" 
+     ┘
+
+    <span class='Paren'>(</span><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Separator'>,</span> <span class='Function'>&lt;</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span><span class='Function'>≍</span><span class='Bracket'>⟨</span><span class='Function'>&lt;</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>¯1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span><span class='Paren'>)</span> <span class='Function'>⊑</span> <span class='Value'>a</span>
+┌─             
+╵ 'k'   ┌·     
+        ·'j'   
+            ┘  
+  ┌·    't'    
+  ·'q'         
+      ┘        
+              ┘
+</pre>
+<p>This option is easily described using the <a href="depth.html#the-depth-modifier">Depth modifier</a>. Pick applies to depth-1 components of the left argument and the entire right argument, which corresponds to a depth operand of <code><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>∞</span></code>. The left argument components have to be lists of numbers, or Pick gives an error.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKfqDLigL8wLCA8MeKAv8KvMeKfqeKJjeKfqDwz4oC/MSwgwq8x4oC/wq8x4p+pKSDiipHimocx4oC/4oieIGEKCuKfqOKfqDIsM+KfqSwx4p+pIOKKkSBhICAjIDEgaXNuJ3QgYSB2YWxpZCBpbmRleA==">↗️</a><pre>    <span class='Paren'>(</span><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Separator'>,</span> <span class='Function'>&lt;</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span><span class='Function'>≍</span><span class='Bracket'>⟨</span><span class='Function'>&lt;</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>¯1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span><span class='Paren'>)</span> <span class='Function'>⊑</span><span class='Modifier2'>⚇</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>∞</span> <span class='Value'>a</span>
+┌─             
+╵ 'k'   ┌·     
+        ·'j'   
+            ┘  
+  ┌·    't'    
+  ·'q'         
+      ┘        
+              ┘
+
+    <span class='Bracket'>⟨⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Bracket'>⟩</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>⊑</span> <span class='Value'>a</span>  <span class='Comment'># 1 isn't a valid index
+</span>ERROR
+</pre>
