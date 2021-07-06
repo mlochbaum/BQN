@@ -14,7 +14,7 @@ A program is a list of statements. Almost all statements are expressions. Namesp
     EXPR     = subExpr | FuncExpr | _m1Expr | _m2Expr_
     EXPORT   = LHS_ELT? "⇐"
 
-Here we define the "atomic" forms of functions and modifiers, which are either single tokens or enclosed in paired symbols. Stranded vectors with `‿`, which binds more tightly than any form of execution, are also included.
+Here we define the "atomic" forms of functions and modifiers, which are either single tokens or enclosed in paired symbols. Stranded lists with `‿`, which binds more tightly than any form of execution, are also included.
 
     ANY      = atom | Func | _mod1 | _mod2_
     _mod2_   = ( atom "." )? _c_ | _cl_ | "(" _m1Expr_ ")" | _brMod2_
