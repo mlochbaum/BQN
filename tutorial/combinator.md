@@ -295,16 +295,16 @@ With the still-mysterious trains, this function could even be cleaned up more, r
 
 BQN has a full complement of comparison functions, which are pervasive (work on atoms only) like arithmetic functions. The non-pervasive functions Match (`≡`) and Not Match (`≢`) compare entire arrays. Comparison functions return `1` if the comparison holds and `0` if it doesn't; these two numbers make up the "booleans".
 
-Glyph | 1 arg                    | 2 args
-------|--------------------------|--------
-`<`   |                          | Less Than
-`>`   |                          | Greater Than
-`≠`   | Length                   | Not Equals
-`=`   | Rank                     | Equals
-`≤`   |                          | Less Than or Equal to
-`≥`   |                          | Greater Than or Equal to
-`≡`   | [Depth](../doc/depth.md) | [Match](../doc/match.md)
-`≢`   |                          | [Not Match](../doc/match.md)
+Glyph | 1 arg                     | 2 args
+------|---------------------------|--------
+`<`   |                           | [Less Than](../doc/arithmetic.md#comparisons)
+`>`   |                           | [Greater Than](../doc/arithmetic.md#comparisons)
+`≠`   | [Length](../doc/shape.md) | [Not Equals](../doc/arithmetic.md#comparisons)
+`=`   | [Rank](../doc/shape.md)   | [Equals](../doc/arithmetic.md#comparisons)
+`≤`   |                           | [Less Than or Equal to](../doc/arithmetic.md#comparisons)
+`≥`   |                           | [Greater Than or Equal to](../doc/arithmetic.md#comparisons)
+`≡`   | [Depth](../doc/depth.md)  | [Match](../doc/match.md)
+`≢`   |                           | [Not Match](../doc/match.md)
 
 A combinator is a function or modifier that produces its result from its inputs purely by applying functions to arguments, without introducing any external values. BQN's combinators can all be described with diagrams showing how arguments are passed through operands, with the result emerging at the top. The diagrams below define six combinators in BQN.
 
