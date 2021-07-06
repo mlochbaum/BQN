@@ -215,7 +215,7 @@ The objects we've seen so far are:
 |-------------|----------|---------
 | Numbers     | `1.2e3`, `π`
 | Characters  | `'c'`, `@`
-| Functions   | `+`      | Plus
+| Functions   | `+`      | Plus ([arithmetic docs](../doc/arithmetic.md))
 |             | `-`      | Minus, Negate
 |             | `×`      | Times
 |             | `÷`      | Divide, Reciprocal

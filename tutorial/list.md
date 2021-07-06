@@ -240,8 +240,8 @@ Glyph | 1 arg                        | 2 args
 `∾`   | [Join](../doc/join.md)       | [Join To](../doc/join.md)
 `≍`   | [Solo](../doc/couple.md)     | [Couple](../doc/couple.md)
 `⌽`   | [Reverse](../doc/reverse.md) | [Rotate](../doc/reverse.md#rotate)
-`↕`   | Range                        |
-`¨`   | Each                         | Each
+`↕`   | [Range](../doc/range.md)     |
+`¨`   | [Each](../doc/map.md)        | [Each](../doc/map.md#each)
 `´`   | [Fold](../doc/fold.md#fold)
 
 Additionally, we saw that the arithmetic functions work naturally on lists, automatically applying to every element of a single list argument or pairing up the elements of two list arguments.
