@@ -18,11 +18,11 @@ Of course, it's easy to write block functions `{𝕩}` and `{𝕨}` that return 
 
 ## Filling arrays
 
-What's the easiest way to create a matrix with 0 on the first row, 1 on the second, and so on? Probably this one, with [table](map.md):
+What's the easiest way to create a matrix with 0 on the first row, 1 on the second, and so on? Probably this one, with [table](map.md#table):
 
         (↕4) ⊣⌜ ↕5
 
-The right argument `↕5` could be any length-5 list, as its values aren't used. With `5⥊0`, we could use `+⌜` instead, but requiring a specific argument seems artificial. A similar pattern applies with Each:
+The right argument `↕5` could be any length-5 list, as its values aren't used. With `5⥊0`, we could use `+⌜` instead, but requiring a specific argument seems artificial. A similar pattern applies with [Each](map.md#each):
 
         (⌽↕4) ⊣¨ ↕4‿5
 

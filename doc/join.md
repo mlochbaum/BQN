@@ -2,7 +2,7 @@
 
 # Join and Join To
 
-The glyph `∾` combines arrays along an existing axis, a concept that other languages might call "concatenation" or "catenation" but BQN names "Join". The one-argument form Join and two-argument form Join To are parallel to the [functions that combine arrays along a new axis](couple.md), Merge (`>`) and Couple (`≍`).
+The glyph `∾` combines arrays along an existing axis, a concept that other languages might call "concatenation" or "catenation" but BQN names "Join". The one-argument form Join and two-argument form Join To are parallel to [the functions](couple.md) that combine arrays along a new axis, Merge (`>`) and Couple (`≍`).
 
 ## Join To
 
@@ -18,7 +18,7 @@ If the arguments have the same rank, then they are combined along the first axis
 
 For this definition to work, major cells of `𝕨` and `𝕩` have to have the same shape. That means that `𝕨≡○(1↓≢)𝕩`, and the shape of the result is the sum of the lengths of `𝕨` and `𝕩` followed by their shared major cell shape: to use a self-referential definition, the final shape is given by `+○≠ ∾ ⊣⁼○(1↓≢)` for arguments of equal rank.
 
-        a ∾ 2‿5⥊b
+        a ∾ 2‿5⥊b  # Shapes don't fit
 
 Join To will also allow arguments with ranks that are one apart. In this case, the smaller-rank argument is treated as a major cell in its entirety. If for example `𝕨<○=𝕩`, then we must have `(≢𝕨)≡1↓≢𝕩`, and the result shape is `1⊸+⌾⊑≢𝕩`.
 

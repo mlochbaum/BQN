@@ -23,6 +23,7 @@ A few terms refer to multiple types collectively:
 * **Modifier**: A 1-modifier or 2-modifier.
 * **Data type**: Number, character, or array.
 * **Operation type**: Function, 1-modifier, or 2-modifier.
+* **Mutable type**: Operation or namespace.
 
 BQN uses standard terminology for particular sets of numbers, with natural numbers starting at 0.
 * **Boolean**: 0 or 1.
@@ -47,7 +48,7 @@ The possible roles are:
 * **Element**: One of the values contained in an array.
 * **Axis**: One dimension or direction in an array.
 * **Rank**: The number of dimensions an array has.
-* **Shape**: The number of elements an array has along each dimension.
+* [**Shape**](shape.md): The number of elements an array has along each dimension.
 * **Length**: The number of elements an array has along the first dimension, or 1 if it has rank 0.
 * [**Depth**](depth.md): The greatest number of times an element can be selected from a value before reaching an atom.
 * **Fill**: A "prototypical" array element used in certain operations; it's an inferred property of an array.
@@ -60,7 +61,7 @@ The possible roles are:
 * **Frame**: A prefix of an array's shape, used for agreement with the Rank modifier.
 
 * **Unit**: An array of rank 0, or an atom.
-* **Unit array**: An array of rank 0 other than an atom.
+* [**Unit array**](enclose.md#whats-a-unit): An array of rank 0 other than an atom.
 * **List**: An array of rank 1.
 * **String**: A list of characters.
 * **Table**: An array of rank 2.
@@ -92,7 +93,7 @@ The possible roles are:
 * **Token formation** or tokenization: Splitting source code into a sequence of tokens.
 * **Token**: A name, literal, primitive, or other syntactic element.
 * **Literal**: A token that indicates a fixed value of a data type.
-* **Primitive**: One of several fixed operations defined by the language, denoted by a single-character token.
+* [**Primitive**](primitive.md): One of several fixed operations defined by the language, denoted by a single-character token.
 * **Word**: A sequence of alphabetic or numeric characters.
 * **Name**: A word that starts with an alphabetic character. Names are compared case-insensitively and ignoring underscores `_`.
 * **Numeric literal**: A word that starts with a numeric character, indicating a number.
