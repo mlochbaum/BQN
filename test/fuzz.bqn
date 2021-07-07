@@ -29,7 +29,7 @@ Any number of types or bounds can be given; all combinations are tested."
 
 Squeeze‿ListVariations‿Variation‿ClearRefs ← •internal
 
-Range ← (•MakeRand 2).Range
+⟨Range,Deal⟩ ← •MakeRand 2
 Rand ← {𝕨 Range 1⌈𝕩}
 _randChoose ← { Rand∘(≠𝕗)◶𝕗 }
 _randUnbounded ← { 𝕊⊸+⍟(1=-)⟜Rand 𝕗 }
@@ -48,7 +48,7 @@ RandRank ← 4 _randUnbounded
 Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 
 # 𝕨 positive (not zero) integers summing to 𝕩
-RandPart ← { ¬⟜» (𝕨-1) (∧∘Rand∾1-˜⊢) 𝕩¬𝕨 }
+RandPart ← ¯1 (⊢-») (∧∘Deal∾⊢)○(-⟜1)
 
 # 𝕩 is maximum bound plus 1 for both functions
 ⟨RandBound,RandShape⟩ ← {
