@@ -64,8 +64,10 @@
 ⟨ "  " ⟨ 0 0 0 0 ⟩ ⟩
 </pre>
 <p>So one way to find the fill element for an array <code><span class='Value'>𝕩</span></code> of any shape is <code><span class='Function'>⊑</span><span class='Number'>0</span><span class='Function'>⥊</span><span class='Value'>𝕩</span></code>.</p>
-<p>In APL it's common to get the last element of a list with an idiom that translates to <code><span class='Function'>⊑⌽</span></code>, or First-<a href="reverse.html">Reverse</a>. I prefer to use <a href="fold.html">Fold</a> with the Right <a href="identity.html">identity function</a>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqR4oy9ICJsYXN0IgriiqLCtCAibGFzdCI=">↗️</a><pre>    <span class='Function'>⊑⌽</span> <span class='String'>&quot;last&quot;</span>
+<p>In APL it's common to get the last element of a list with an idiom that translates to <code><span class='Function'>⊑⌽</span></code>, or First-<a href="reverse.html">Reverse</a>. In BQN the most straightforward way is to select with index <code><span class='Number'>¯1</span></code> instead. I also sometimes use <a href="fold.html">Fold</a> with the Right <a href="identity.html">identity function</a>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqR4oy9ICJsYXN0IgrCrzHiipEgImxhc3QiCuKKosK0ICJsYXN0Ig==">↗️</a><pre>    <span class='Function'>⊑⌽</span> <span class='String'>&quot;last&quot;</span>
+'t'
+    <span class='Number'>¯1</span><span class='Function'>⊑</span> <span class='String'>&quot;last&quot;</span>
 't'
     <span class='Function'>⊢</span><span class='Modifier'>´</span> <span class='String'>&quot;last&quot;</span>
 't'

@@ -52,9 +52,10 @@ If `𝕩` is empty then Pick always results in an error. First never gives an er
 
 So one way to find the fill element for an array `𝕩` of any shape is `⊑0⥊𝕩`.
 
-In APL it's common to get the last element of a list with an idiom that translates to `⊑⌽`, or First-[Reverse](reverse.md). I prefer to use [Fold](fold.md) with the Right [identity function](identity.md).
+In APL it's common to get the last element of a list with an idiom that translates to `⊑⌽`, or First-[Reverse](reverse.md). In BQN the most straightforward way is to select with index `¯1` instead. I also sometimes use [Fold](fold.md) with the Right [identity function](identity.md).
 
         ⊑⌽ "last"
+        ¯1⊑ "last"
         ⊢´ "last"
 
 ## Many elements
