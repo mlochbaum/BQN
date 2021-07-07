@@ -16,7 +16,7 @@
                           ┘
 </pre>
 <p>It's really two different functions packed together: if <code><span class='Value'>𝕩</span></code> is a natural number—a length—then it returns a list of numeric indices, but if it's a list of numbers, then it returns an array of list indices. This means the result always has <a href="depth.html">depth</a> one more than the argument.</p>
-<p>The two kinds of index correspond to BQN's two selection functions: Select (<code><span class='Function'>⊏</span></code>) works with indices along an axis, which are numbers, and Pick (<code><span class='Function'>⊑</span></code>) works with element indices, which are lists. The examples below would fail if we swapped these around. Each result from Range is a length-6 list, but their elements are different.</p>
+<p>The two kinds of index correspond to BQN's two selection functions: <a href="select.html">Select</a> (<code><span class='Function'>⊏</span></code>) works with indices along an axis, which are numbers, and <a href="pick.html">Pick</a> (<code><span class='Function'>⊑</span></code>) works with element indices, which are lists. The examples below would fail if we swapped these around. Each result from Range is a length-6 list, but their elements are different.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVNgoKKOKGlTYpIOKKjyAic2VsZWN0IgoK4oaV4p+oNuKfqQoKKOKGleKfqDbin6kpIOKKkSAiIHBpY2sgIg==">↗️</a><pre>    <span class='Function'>↕</span><span class='Number'>6</span>
 ⟨ 0 1 2 3 4 5 ⟩
 
@@ -29,7 +29,7 @@
     <span class='Paren'>(</span><span class='Function'>↕</span><span class='Bracket'>⟨</span><span class='Number'>6</span><span class='Bracket'>⟩</span><span class='Paren'>)</span> <span class='Function'>⊑</span> <span class='String'>&quot; pick &quot;</span>
 " pick "
 </pre>
-<p>They also correspond to Length (<code><span class='Function'>≠</span></code>) and Shape (<code><span class='Function'>≢</span></code>): for an array <code><span class='Value'>a</span></code>, <code><span class='Function'>↕≠</span><span class='Value'>a</span></code> gives the indices of major cells, while <code><span class='Function'>↕≢</span><span class='Value'>a</span></code> gives the indices of all elements.</p>
+<p>They also correspond to Length (<code><span class='Function'>≠</span></code>) and <a href="shape.html">Shape</a> (<code><span class='Function'>≢</span></code>): for an array <code><span class='Value'>a</span></code>, <code><span class='Function'>↕≠</span><span class='Value'>a</span></code> gives the indices of major cells, while <code><span class='Function'>↕≢</span><span class='Value'>a</span></code> gives the indices of all elements.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNOKAvzLipYpACgrihpUg4omgIGEKCuKGlSDiiaIgYQ==">↗️</a><pre>    <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>@</span>
 
     <span class='Function'>↕</span> <span class='Function'>≠</span> <span class='Value'>a</span>
@@ -85,7 +85,7 @@
     <span class='Value'>b</span> <span class='Function'>×</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
 ⟨ 0 1 2 0 0 0 6 0 ⟩
 </pre>
-<p>Now at any given position the index of the last 1, if there is any, is the maximum of all the adjusted indices so far. That's a scan <code><span class='Function'>⌈</span><span class='Modifier'>`</span></code>.</p>
+<p>Now at any given position the index of the last 1, if there is any, is the <a href="arithmetic.html#additional-arithmetic">maximum</a> of all the adjusted indices so far. That's a <a href="scan.html">scan</a> <code><span class='Function'>⌈</span><span class='Modifier'>`</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oyIYCBiIMOXIOKGleKJoGIKCijijIhgIOKKoiDDlyDihpXiiJjiiaApIGIgICAjIEFzIGEgdGFjaXQgZnVuY3Rpb24=">↗️</a><pre>    <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Value'>b</span> <span class='Function'>×</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
 ⟨ 0 1 2 2 2 2 6 6 ⟩
 

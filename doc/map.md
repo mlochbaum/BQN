@@ -66,7 +66,7 @@ The applications are performed in index order: index `…0‿0`, then `…0‿1`
 
         o←⟨⟩ ⋄ {o∾⟜<↩𝕩}¨ "index"≍"order" ⋄ o
 
-When an array is displayed, index order is the same as the top-to-bottom, left-to-right reading order of English. It's also the same as the ordering of [Deshape](reshape.md#deshape)'s result, so that here `o` ends up being `⥊𝕩`. The dyadic cases described in the following sections will also have a defined evaluation order, but it's not easy to describe it in terms of the arguments: instead, the *result* elements are produced in index order.
+When an array is displayed, index order is the same as the top-to-bottom, left-to-right reading order of English. It's also the same as the ordering of [Deshape](reshape.md#deshape)'s result, so that here `o` ends up being `⥊𝕩`. The dyadic cases described in the following sections will also have a defined evaluation order, but it's not as easy to describe it in terms of the arguments: instead, the *result* elements are produced in index order.
 
 ## Table
 
@@ -148,11 +148,11 @@ This makes for a lot fewer applications than Table. Only the diagonal elements f
 
         0‿0 ⍉ "ABCD" ≍⌜ "0123"
 
-If the argument lengths don't match then Each gives an error. This contrasts with zip in many languages, which drops elements from the longer argument. This is rarely wanted in BQN, and having an error right away saves debugging time.
+If the argument lengths don't match then Each gives an error. This contrasts with zip in many languages, which drops elements from the longer argument (this is natural for linked lists). This flexibility is rarely wanted in BQN, and having an error right away saves debugging time.
 
         "ABC" ≍¨ "01234"
 
-Arguments can have any shape as long as the axis lengths match up. As with Table, the result elements don't depend on this shape but the result shape does.
+Arguments can have any shape as long as the axis lengths match up. As with Table, the result elements don't depend on these shapes but the result shape does.
 
         (>⟨20‿30‿10,50‿40‿60⟩) +⟜↕¨ 2‿1‿0≍3‿2‿1
 

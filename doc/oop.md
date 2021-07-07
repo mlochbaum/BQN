@@ -46,12 +46,16 @@ Here are the results of a few applications of these functions.
         t ← towerOfHanoi
         t.View@
     ⟨ ⟨ 0 1 2 3 4 ⟩ ⟨⟩ ⟨⟩ ⟩
+
         t.Move 0‿2
     ⟨ ⟨ 1 2 3 4 ⟩ ⟨⟩ ⟨ 0 ⟩ ⟩
+
         t.Move 1‿2
     ! "No disk to move"
+
         t.Move 0‿1
     ⟨ ⟨ 2 3 4 ⟩ ⟨ 1 ⟩ ⟨ 0 ⟩ ⟩
+
         t.Move 2‿1
     ⟨ ⟨ 2 3 4 ⟩ ⟨ 0 1 ⟩ ⟨⟩ ⟩
 
@@ -78,7 +82,7 @@ A stack is a particularly simple class to make because its state can be represen
 
 ## Mutability
 
-An object is one way to transform *variable mutation* `↩` into *mutable data*. These are two different concepts: `↩` changes which value is attached to a *name* in a scope, while mutable data means that the behavior of a particular *value* can change. But if a value is linked to a scope (for an object, the scope that contains its fields), then variable mutation in that scope can chang the value's behavior. In fact, in BQN this is the only way to create mutable data. Which doesn't mean it's rare: functions, modifiers, and namespaces are all potentially mutable. The difference between objects and the operations is just a matter of syntax. Mutability in operations can only be observed by calling them. For instance `F 10` or `-_m` could return a different result even if the variables involved don't change value. Mutability in an object can be observed by accessing a member, meaning that `obj.field` or `⟨field⟩←obj` can yield different values over the course of a program even if `obj` is still the same object.
+An object is one way to transform *variable mutation* `↩` into *mutable data*. These are two different concepts: `↩` changes which value is attached to a *name* in a scope, while mutable data means that the behavior of a particular *value* can change. But if a value is linked to a scope (for an object, the scope that contains its fields), then variable mutation in that scope can change the value's behavior. In fact, in BQN this is the only way to create mutable data. Which doesn't mean it's rare: functions, modifiers, and namespaces are all potentially mutable. The difference between objects and the operations is just a matter of syntax. Mutability in operations can only be observed by calling them. For instance `F 10` or `-_m` could return a different result even if the variables involved don't change value. Mutability in an object can only be observed by accessing a member, meaning that `obj.field` or `⟨field⟩←obj` can yield different values over the course of a program even if `obj` is still the same object.
 
 Let's look at how mutability plays out in an example class for a single-ended queue. This queue works by linking new nodes to the tail `t` of the queue, and detaching nodes from the head `h` when requested (a detached node will still point to `h`, but nothing in the queue points to *it*, so it's unreachable and will eventually be garbage collected). Each node has some data `v` and a single node reference `n` directed tailwards; in a double-ended queue or more complicated structure it would have more references. You can find every mutable variable in the queue by searching for `↩`, which shows that `t` and `h` in the queue, and `n` in a node, may be mutated. It's impossible for the other variables to change value once they're assigned.
 

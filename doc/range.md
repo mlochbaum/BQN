@@ -10,7 +10,7 @@ Range (`↕`) is a monadic function that creates arrays of [indices](indices.md)
 
 It's really two different functions packed together: if `𝕩` is a natural number—a length—then it returns a list of numeric indices, but if it's a list of numbers, then it returns an array of list indices. This means the result always has [depth](depth.md) one more than the argument.
 
-The two kinds of index correspond to BQN's two selection functions: Select (`⊏`) works with indices along an axis, which are numbers, and Pick (`⊑`) works with element indices, which are lists. The examples below would fail if we swapped these around. Each result from Range is a length-6 list, but their elements are different.
+The two kinds of index correspond to BQN's two selection functions: [Select](select.md) (`⊏`) works with indices along an axis, which are numbers, and [Pick](pick.md) (`⊑`) works with element indices, which are lists. The examples below would fail if we swapped these around. Each result from Range is a length-6 list, but their elements are different.
 
         ↕6
 
@@ -20,7 +20,7 @@ The two kinds of index correspond to BQN's two selection functions: Select (`⊏
 
         (↕⟨6⟩) ⊑ " pick "
 
-They also correspond to Length (`≠`) and Shape (`≢`): for an array `a`, `↕≠a` gives the indices of major cells, while `↕≢a` gives the indices of all elements.
+They also correspond to Length (`≠`) and [Shape](shape.md) (`≢`): for an array `a`, `↕≠a` gives the indices of major cells, while `↕≢a` gives the indices of all elements.
 
         a ← 4‿2⥊@
 
@@ -62,7 +62,7 @@ One interesting use of Range is to find, at each position in a boolean list, the
 
         b × ↕≠b
 
-Now at any given position the index of the last 1, if there is any, is the maximum of all the adjusted indices so far. That's a scan `` ⌈` ``.
+Now at any given position the index of the last 1, if there is any, is the [maximum](arithmetic.md#additional-arithmetic) of all the adjusted indices so far. That's a [scan](scan.md) `` ⌈` ``.
 
         ⌈` b × ↕≠b
 

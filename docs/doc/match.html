@@ -11,7 +11,7 @@
     <span class='Number'>4</span> <span class='Function'>≢</span> <span class='Function'>&lt;</span><span class='Number'>4</span>
 1
 </pre>
-<p>Match always gives the same result as Equals (<code><span class='Function'>=</span></code>) when both arguments are atoms, but the two functions are extended to arrays differently: while Equals maps over array arguments to return an array of results, Match compares them in totality and always returns one boolean (it never gives an error). Match is the basis for BQN's search and self-comparison functions.</p>
+<p>Match always gives the same result as <a href="arithmetic.html#comparisons">Equals</a> (<code><span class='Function'>=</span></code>) when both arguments are atoms, but the two functions are extended to arrays differently: while the pervasive Equals maps over array arguments to return an array of results, Match compares them in totality and always returns one boolean (it never gives an error). Match is the basis for BQN's <a href="search.html">search</a> and <a href="selfcmp.html">self-comparison</a> functions.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiYyIgPSAiYWNjIgoiYWJjIiDiiaEgImFjYyIKCiJhYmMiID0gImFiIiAgIyBNaXNtYXRjaGVkIHNoYXBlcwoiYWJjIiDiiaEgImFiIg==">↗️</a><pre>    <span class='String'>&quot;abc&quot;</span> <span class='Function'>=</span> <span class='String'>&quot;acc&quot;</span>
 ⟨ 1 0 1 ⟩
     <span class='String'>&quot;abc&quot;</span> <span class='Function'>≡</span> <span class='String'>&quot;acc&quot;</span>
@@ -22,7 +22,7 @@
     <span class='String'>&quot;abc&quot;</span> <span class='Function'>≡</span> <span class='String'>&quot;ab&quot;</span>
 0
 </pre>
-<p>Match compares arrays based on their fundamental properties—shape and elements—and not the <a href="../spec/inferred.html#fill-elements">fill element</a>, which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for <code><span class='String'>'a'</span><span class='Ligature'>‿</span><span class='String'>'b'</span><span class='Ligature'>‿</span><span class='String'>'c'</span></code>, it should still be considered to match <code><span class='String'>&quot;abc&quot;</span></code>.</p>
+<p>Match compares arrays based on their fundamental properties—<a href="shape.html">shape</a> and elements—and not the <a href="../spec/inferred.html#fill-elements">fill element</a>, which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for <code><span class='String'>'a'</span><span class='Ligature'>‿</span><span class='String'>'b'</span><span class='Ligature'>‿</span><span class='String'>'c'</span></code>, it should still be considered to match <code><span class='String'>&quot;abc&quot;</span></code>.</p>
 <p>To give a precise definition, two arrays are considered to match if they have the same shape and all corresponding elements from the two arrays match. Every array has a finite <a href="depth.html">depth</a> so this recursive definition always ends up comparing non-arrays, or atoms. An array never matches an atom, so the result if only one argument is an atom is <code><span class='Number'>0</span></code>. The interesting case is when both arguments are atoms, discussed below.</p>
 <h2 id="atomic-equality">Atomic equality</h2>
 <p>Atoms in BQN have six possible <a href="types.html">types</a>: number, character, function, 1-modifier, 2-modifier, and namespace. Equality is not allowed to fail for any two arguments, so it needs to be defined on all of these types.</p>
@@ -31,8 +31,9 @@
 ⟨ 0 0 0 ⟩
 </pre>
 <p>Two characters are equal when they have the same code point. Numeric equality depends on the number system in use, but probably works about how you expect. If you're coming from APL, note that current BQN implementations don't employ comparison tolerance. To see if two floats are roughly equal you'll need to write a tolerant comparison yourself, but how often do you really need to do this?</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J3gnID0gInd4eXoiCjEuMjUgPSAxICsgMC4yNQ==">↗️</a><pre>    <span class='String'>'x'</span> <span class='Function'>=</span> <span class='String'>&quot;wxyz&quot;</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J3gnID0gInd4eXoiCgoxLjI1ID0gMSArIDAuMjU=">↗️</a><pre>    <span class='String'>'x'</span> <span class='Function'>=</span> <span class='String'>&quot;wxyz&quot;</span>
 ⟨ 0 1 0 0 ⟩
+
     <span class='Number'>1.25</span> <span class='Function'>=</span> <span class='Number'>1</span> <span class='Function'>+</span> <span class='Number'>0.25</span>
 1
 </pre>
@@ -43,18 +44,21 @@
 <li>Block instances or namespaces are equal if they are the same instance.</li>
 </ul>
 <p>The first two are fairly similar to how numbers and arrays work. Primitives and compounds like trains, or modifiers with bound operands, are immutable, so they are defined purely by what components they contain.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oKywtLMOX4p+pID0g4p+oKywtLMO34p+pCuKfqCsgLSDDl+KfqSA9IOKfqCsgLSDDt+KfqSAgIyBDb21wYXJlIHR3byB0aHJlZS10cmFpbnMgY29tcG9uZW50LXdpc2UK4p+oKyAtIMO34p+pID0g4p+oKyAtIMO34p+p">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Function'>×</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Function'>÷</span><span class='Bracket'>⟩</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oKywtLMOX4p+pID0g4p+oKywtLMO34p+pCgrin6grIC0gw5fin6kgPSDin6grIC0gw7fin6kgICMgQ29tcGFyZSB0d28gdGhyZWUtdHJhaW5zIGNvbXBvbmVudC13aXNlCgrin6grIC0gw7fin6kgPSDin6grIC0gw7fin6k=">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Function'>×</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Function'>÷</span><span class='Bracket'>⟩</span>
 ⟨ 1 1 0 ⟩
+
     <span class='Bracket'>⟨</span><span class='Function'>+</span> <span class='Function'>-</span> <span class='Function'>×</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>+</span> <span class='Function'>-</span> <span class='Function'>÷</span><span class='Bracket'>⟩</span>  <span class='Comment'># Compare two three-trains component-wise
 </span>⟨ 0 ⟩
+
     <span class='Bracket'>⟨</span><span class='Function'>+</span> <span class='Function'>-</span> <span class='Function'>÷</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>+</span> <span class='Function'>-</span> <span class='Function'>÷</span><span class='Bracket'>⟩</span>
 ⟨ 1 ⟩
 </pre>
 <p>This approach can't tell you whether two functions are mathematically different—that is, whether they ever return different results given the same arguments (this is an undecidable problem, and also gets confusing since &quot;different&quot; is included in its own definition). However, if two functions compare equal, then they will always return the same results.</p>
 <h3 id="block-equality">Block equality</h3>
 <p>The final point above about block instances is subtler. An instance of a block function or modifier is mutable, meaning that its behavior can change over the course of a program. Consider the following two functions:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RuKAv0cg4oaQIHsgYeKGkDEwIOKLhCB7YSvwnZWpfeKAv3th4oap8J2VqX0gfQpGIDUgICAjIE9uZSByZXN1bHQKRyA4CkYgNSAgICMgQW5vdGhlciByZXN1bHTigJR0aGUgZGVmaW5pdGlvbiBvZiBpbnNhbml0eSE=">↗️</a><pre>    <span class='Function'>F</span><span class='Ligature'>‿</span><span class='Function'>G</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>a</span><span class='Gets'>←</span><span class='Number'>10</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span><span class='Value'>a</span><span class='Function'>+</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Ligature'>‿</span><span class='Brace'>{</span><span class='Value'>a</span><span class='Gets'>↩</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Brace'>}</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RuKAv0cg4oaQIHsgYeKGkDEwIOKLhCB7YSvwnZWpfeKAv3th4oap8J2VqX0gfQoKRiA1ICAgIyBPbmUgcmVzdWx0CkcgOApGIDUgICAjIEFub3RoZXIgcmVzdWx04oCUdGhlIGRlZmluaXRpb24gb2YgaW5zYW5pdHkh">↗️</a><pre>    <span class='Function'>F</span><span class='Ligature'>‿</span><span class='Function'>G</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>a</span><span class='Gets'>←</span><span class='Number'>10</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span><span class='Value'>a</span><span class='Function'>+</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Ligature'>‿</span><span class='Brace'>{</span><span class='Value'>a</span><span class='Gets'>↩</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Brace'>}</span>
 ⟨ *function* *function* ⟩
+
     <span class='Function'>F</span> <span class='Number'>5</span>   <span class='Comment'># One result
 </span>15
     <span class='Function'>G</span> <span class='Number'>8</span>
@@ -63,9 +67,10 @@
 </span>13
 </pre>
 <p>(A side note is that BQN restricts what can cause these side effects: they can only happen by calling a block function or modifier, and never a primitive or purely tacit operation). Now suppose we share the value of <code><span class='Function'>F</span></code> with another variable. When we apply <code><span class='Function'>G</span></code>, the result of <code><span class='Function'>F</span></code> might change, but so does <code><span class='Function'>F1</span></code>! This effect is called <a href="https://en.wikipedia.org/wiki/Aliasing_(computing)">aliasing</a>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RjEg4oaQIEYKe/CdlY8gNn3CqCBG4oC/RjEKRyAzCnvwnZWPIDZ9wqggRuKAv0Yx">↗️</a><pre>    <span class='Function'>F1</span> <span class='Gets'>←</span> <span class='Function'>F</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RjEg4oaQIEYKe/CdlY8gNn3CqCBG4oC/RjEKCkcgMwp78J2VjyA2fcKoIEbigL9GMQ==">↗️</a><pre>    <span class='Function'>F1</span> <span class='Gets'>←</span> <span class='Function'>F</span>
     <span class='Brace'>{</span><span class='Function'>𝕏</span> <span class='Number'>6</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>F</span><span class='Ligature'>‿</span><span class='Function'>F1</span>
 ⟨ 14 14 ⟩
+
     <span class='Function'>G</span> <span class='Number'>3</span>
 3
     <span class='Brace'>{</span><span class='Function'>𝕏</span> <span class='Number'>6</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>F</span><span class='Ligature'>‿</span><span class='Function'>F1</span>
