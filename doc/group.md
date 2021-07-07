@@ -2,7 +2,7 @@
 
 # Group
 
-BQN replaces the [Key](https://aplwiki.com/wiki/Key) operator from J or Dyalog APL, and [many forms of partitioning](https://aplwiki.com/wiki/Partition_representations), with a single (ambivalent) Group function `⊔`. This function is somewhat related to the K function `=` of the same name, but results in an array rather than a dictionary.
+BQN replaces the Key operator from J or Dyalog APL, and [many forms of partitioning](https://aplwiki.com/wiki/Partition_representations), with a single (ambivalent) Group function `⊔`. This function is somewhat related to the K function `=` of the same name, but results in an array rather than a dictionary.
 
 <!--GEN
 Num ← ·Highlight •Repr
@@ -89,7 +89,7 @@ Here, the index 2 appears at indices 0 and 3 while the index 3 appears at index 
 
 ### Multidimensional grouping
 
-Dyadic Group allows the right argument to be grouped along multiple axes by using a nested left argument. In this case, the left argument must be a list of numeric lists, and the result has rank `≠𝕨` while its elements—as always—have the same rank as `𝕩`. The result shape is `1+⌈´¨𝕨`, while the shape of element `i⊑𝕨⊔𝕩` is `i+´∘=¨𝕨`. If every element of `𝕨` is sorted ascending and contains only non-negative numbers, we have `𝕩≡∾𝕨⊔𝕩`, that is, Join is the inverse of Partition.
+Dyadic Group allows the right argument to be grouped along multiple axes by using a nested left argument. In this case, the left argument must be a list of numeric lists, and the result has rank `≠𝕨` while its elements—as always—have the same rank as `𝕩`. The result shape is `1+⌈´¨𝕨`, while the shape of element `i⊑𝕨⊔𝕩` is `i+´∘=¨𝕨`. If every element of `𝕨` is sorted ascending and contains only non-negative numbers, we have `𝕩≡∾𝕨⊔𝕩`, that is, [Join](join.md#join) is the inverse of Partition.
 
 Here we split up a rank-2 array into a rank-2 array of rank-2 arrays. Along the first axis we simply separate the first pair and second pair of rows—a partition. Along the second axis we separate odd from even indices.
 
@@ -101,31 +101,31 @@ The monadic case works similarly: Group Indices always satisfies `⊔𝕩 ←→
 
 ## Properties
 
-Group is closely related to the inverse of Indices, `/⁼`. In fact, inverse Indices called on the index argument gives the length of each group:
+Group is closely related to the [inverse of Indices](replicate.md#inverse), `/⁼`. In fact, inverse Indices called on the index argument gives the length of each group:
 
         ≠¨⊔ 2‿3‿1‿2
         /⁼∧ 2‿3‿1‿2
 
-A related fact is that calling Indices on the result of Group sorts all the indices passed to Group (removing any ¯1s). This is a kind of counting sort.
+A related fact is that calling Indices on the result lengths of Group sorts all the indices passed to Group (removing any ¯1s). This is a kind of counting sort.
 
         /≠¨⊔ 2‿3‿1‿¯1‿2
 
-Called dyadically, Group sorts the right argument according to the left and adds some extra structure. If this structure is removed with Join, Group can be thought of as a kind of sorting.
+Called dyadically, Group sorts the right argument according to the left and adds some extra structure. If this structure is removed with [Join](join.md#join), Group can be thought of as a kind of sorting.
 
         ∾ 2‿3‿1‿¯1‿2 ⊔ "abcde"
         2‿3‿1‿¯1‿2 {F←(0≤𝕨)⊸/ ⋄ 𝕨⍋⊸⊏○F𝕩} "abcde"
 
-Group can even be implemented with the same techniques as a bucket sort, which can be branchless and fast.
+Group can even be implemented with the same [techniques](../implementation/primitive/sort.md#counting-and-bucket-sort) as a bucket sort, making it branchless and fast.
 
 ## Applications
 
-The obvious application of Group is to group some values according to a known or computed property. If this property isn't an integer, it can be turned into one using Classify (monadic `⊐`, identical to `⍷⊸⊐`). Classify numbers the unique values in its argument by first occurrence.
+The obvious application of Group is to group some values according to a known or computed property. If this property isn't a natural number, it can be turned into one using [Classify](selfcmp.md#classify) (`⊐`), which numbers the unique values in its argument by first occurrence.
 
         ln ← "Phelps"‿"Latynina"‿"Bjørgen"‿"Andrianov"‿"Bjørndalen"
         co ← "US"    ‿"SU"      ‿"NO"     ‿"SU"       ‿"NO"
         ≍˘ co ⊐⊸⊔ ln
 
-If we would like a particular index to key correspondence, we can use a fixed left argument to Index Of.
+If we would like a particular index to key correspondence, we can use a fixed left argument to [Index Of](search.md#index-of).
 
         countries ← "IT"‿"JP"‿"NO"‿"SU"‿"US"
         countries ≍˘ co countries⊸⊐⊸⊔ ln
@@ -137,7 +137,7 @@ However, this solution will fail if there are trailing keys with no values. To f
 
 ### Partitioning
 
-In examples we have been using a list of strings stranded together. Often it's more convenient to write the string with spaces, and split it up as part of the code. In this case, the index corresponding to each word (that is, each letter in the word) is the number of spaces before it. We can get this number of spaces from a prefix sum on the boolean list which is 1 at each space.
+In examples we have been using a list of strings stranded together. Often it's more convenient to write the string with spaces, and split it up as part of the code. In this case, the index corresponding to each word (that is, each letter in the word) is the number of spaces before it. We can get this number of spaces from a Plus-[Scan](scan.md) on the boolean list which is 1 at each space.
 
         ' '(+`∘=⊔⊢)"BQN uses notation as a tool of thought"
 
@@ -151,7 +151,7 @@ In other cases, we might want to split on spaces, so that words are separated by
 
         ' '((⊢-˜¬×+`)∘=⊔⊢)"  string with  spaces   "
 
-Trailing spaces are ignored because Group with equal-length arguments never produces trailing empty groups—to intentionally include them you'd replace `=` with `(=∾0˙)`. But in string processing we probably want to avoid empty words anywhere. To make this happen, we should increase the word index only once per group of spaces. We can do this by taking the prefix sum of a list that is 1 only for a space with no space before it. To make such a list, we can use the [Shift Before](shift.md) function, giving a list of previous elements. To treat the first element as if it's before a space (so that leading spaces have no effect rather than creating an initial empty group), we shift in a 1.
+Trailing spaces are ignored because Group with equal-length arguments never produces trailing empty groups—to intentionally include them you'd replace `=` with `(=∾0˙)`. But in string processing we probably want to avoid empty words anywhere. To make this happen, we should increase the word index only once per group of spaces. We can do this by applying Plus Scan to a list that is 1 only for a space with no space before it. This list is produced using [Shift Before](shift.md) to get a list of previous elements. To treat the first element as though it's before a space (so that leading spaces have no effect rather than creating an initial empty group), we shift in a 1.
 
         (⊢≍1⊸»<⊢) ' '="  string with  spaces   "  # All, then filtered, spaces
         ≍⟜(⊢-˜¬×·+`1⊸»<⊢)' '="  string with  spaces   "  # More processing
