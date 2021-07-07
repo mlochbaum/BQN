@@ -83,7 +83,7 @@ Here the `2‿0` indicates that the first row of `b` is copied twice and the sec
 
         ⟨<2,<3⟩ / b
 
-Above, both elements of `𝕨` are enclosed numbers. An individual element doesn't have to be enclosed, but I don't recommend this, since if *none* of them are enclosed, then `𝕨` will have depth 1 and it will be interpreted as replicating along the first axis only.
+Above, both elements of `𝕨` are [enclosed](enclose.md) numbers. An individual element doesn't have to be enclosed, but I don't recommend this, since if *none* of them are enclosed, then `𝕨` will have depth 1 and it will be interpreted as replicating along the first axis only.
 
         ⟨2,3⟩ / b
 
@@ -95,7 +95,7 @@ If `𝕨` is `⟨⟩`, then it has depth 1, but is handled with the multidimensi
 
 ## Indices
 
-The monadic form of `/` is much simpler than the dyadic one, with no multidimensional case or mismatched argument ranks. `𝕩` must be a list of natural numbers, and `/𝕩` is the list `𝕩/↕≠𝕩`. Its elements are the indices for `𝕩`, with index `i` repeated `i⊑𝕩` times.
+The monadic form of `/` is much simpler than the dyadic one, with no multidimensional case or mismatched argument ranks. `𝕩` must be a list of natural numbers, and `/𝕩` is the list `𝕩/↕≠𝕩`. Its elements are the [indices](indices.md) for `𝕩`, with index `i` repeated `i⊑𝕩` times.
 
         / 3‿0‿1‿2
 
@@ -107,13 +107,13 @@ When `𝕨` has rank 1, `𝕨/𝕩` is equivalent to `𝕨/⊸⊏𝕩`. Of cours
 
 This function will fail to include trailing empty arrays; the modification `(/∾⟜1)⊸⊔` fixes this and ensures the result always has as many elements as `𝕨`.
 
-If `𝕩` is boolean then `/𝕩` contains all the indices where a 1 appears in `𝕩`. Applying `-⟜»` to the result gives the distance from each 1 to the previous, or to the start of the list, another potentially useful function.
+If `𝕩` is boolean then `/𝕩` contains all the indices where a 1 appears in `𝕩`. Applying `-⟜»` to the result gives the distance from each 1 to the [previous](shift.md), or to the start of the list, another potentially useful function.
 
         / 0‿1‿0‿1‿0‿0‿0‿0‿1‿0
 
         -⟜» / 0‿1‿0‿1‿0‿0‿0‿0‿1‿0
 
-With more effort we can also use `/` to analyze groups of 1s in the argument (and of course all these methods can be applied to 0s instead, by first flipping the values with `¬`). First we highlight the start and end of each group by comparing the list with a shifted copy of itself. Or rather, we'll first place a 0 at the front and then at the end, in order to detect when a group starts at the beginning of the list or ends at the end (there's also a [shift](shift.md)-based version, `≠⟜«0∾𝕩`).
+With more effort we can also use `/` to analyze groups of 1s in the argument (and of course all these methods can be applied to 0s instead, by first flipping the values with `¬`). First we highlight the start and end of each group by comparing the list with a shifted copy of itself. Or rather, we'll first place a 0 at the front and then at the end, in order to detect when a group starts at the beginning of the list or ends at the end (there's also a shift-based version, `≠⟜«0∾𝕩`).
 
         0 (∾≍∾˜) 0‿1‿1‿1‿0‿0‿1‿0‿1‿1‿0
 

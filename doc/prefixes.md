@@ -7,7 +7,7 @@ The Prefixes (`↑`) function gives a list of all prefixes of its argument array
         ↑ "abcde"
         ↓ "abcde"
 
-The functions are closely related to Take and Drop, as we might expect from their glyphs. Element `i⊑↑𝕩` is `i↑𝕩`, and `i⊑↓𝕩` is `i↓𝕩`.
+The functions are closely related to [Take and Drop](take.md), as we might expect from their glyphs. Element `i⊑↑𝕩` is `i↑𝕩`, and `i⊑↓𝕩` is `i↓𝕩`.
 
 In both cases, an empty array and the entire argument are included in the result, meaning its length is one more than that of the argument. Using [Span](logic.md), we can say that the result has elements whose lengths go from `0` to `≠𝕩`, inclusive, so there are `(≠𝕩)¬0` or `1+≠𝕩` elements. The total number or cells in the result (for example, `≠∾↑𝕩` or `+´≠¨↑𝕩`) scales with the square of the argument length—it is quadratic in `≠𝕩`. We can find the exact total by looking at Prefixes and Suffixes together:
 
@@ -18,7 +18,7 @@ Joining corresponding elements of `↑𝕩` and `↓𝕩` gives `𝕩` again. Th
 
 ## Definition
 
-Knowing the length and the elements, it's easy to define functions for Prefixes and Suffixes: `↑` is equivalent to `(↕1+≠)↑¨<` while `↓` is `(↕1+≠)↓¨<`. Each primitive is defined only on arrays with at least one axis.
+Knowing the [length](shape.md) and the elements, it's easy to define functions for Prefixes and Suffixes: `↑` is equivalent to `(↕1+≠)↑¨<` while `↓` is `(↕1+≠)↓¨<`. Each primitive is defined only on arrays with at least one axis.
 
 ## Working with pairs
 
@@ -26,7 +26,7 @@ Sometimes it's useful to apply an operation to every unordered pair of elements 
 
         ×⌜˜ 1+↕6
 
-It's easy enough to use the Table modifier here, but it also computes most products twice. If we only care about the unique products, we could multiply each number by all the ones after it. "After" sounds like suffixes, so let's look at those:
+It's easy enough to use the [Table](map.md#table) modifier here, but it also computes most products twice. If we only care about the unique products, we could multiply each number by all the ones after it. "After" sounds like suffixes, so let's look at those:
 
         1+↕6
         ↓ 1+↕6
@@ -36,7 +36,7 @@ We want to include the diagonal, so we'll pair each element with the correspondi
         (⊢ × ≠ ↑ ↓) 1+↕6
         (⊢ × 1 ↓ ↓) 1+↕6
 
-By using `≍` instead of `×`, we can see the argument ordering, demonstrating that we are looking at the upper right half of the matrix produced by Table. While in this case we could use `≍⚇0` to mimic the pervasion of `×`, we'd like this to work even on nested arguments so we should figure out how the mapping structure works to apply Each appropriately.
+By using [Couple](couple.md) (`≍`) instead of `×`, we can see the argument ordering, demonstrating that we are looking at the upper right half of the matrix produced by Table. While in this case we could use `≍⚇0` to mimic the pervasion of `×`, we'd like this to work even on nested arguments so we should figure out how the mapping structure works to apply Each appropriately.
 
         ≍⌜˜ "abc"
         (<˘ ≍¨¨ ≠ ↑ ↓) "abc"
@@ -54,7 +54,7 @@ Prefixes and Suffixes give certain restricted slices of the argument array, wher
         ↓¨↑ "abc"
         ↑¨↓ "abc"
 
-Effectively, this parametrizes the slices either by ending then starting index, or by starting index then length. Four empty slices are included because in a list of length 3 there are 4 places an empty slice can start: all the spaces between or outside elements (these also correspond to all the possible positions for the result of [Bins](bins.md)). The slices can also be parametrized by length and then starting index using [Windows](windows.md).
+Effectively, this parametrizes the slices either by ending then starting index, or by starting index then length. Four empty slices are included because in a list of length 3 there are 4 places an empty slice can start: all the spaces between or outside elements (these also correspond to all the possible positions for the result of [Bins](order.md#bins)). The slices can also be parametrized by length and then starting index using [Windows](windows.md).
 
         ((↕1+≠)↕¨<) "abc"
         ((↕1+≠)<˘∘↕¨<) "abc"  # Split them to match Prefixes/Suffixes
@@ -69,7 +69,7 @@ This array can be [joined](join.md), indicating that the length of each inner ax
 
         ∾ 1‿1 ↓ ((↕1+≢)<⎉2∘↕¨<) 3‿2⥊"abcdef"
 
-But Prefixes and Suffixes [don't have](../commentary/problems.md#cant-take-prefixes-or-suffixes-on-multiple-axes) any way to specify that they should work on multiple axes, and always work on exactly one. So to extend this pattern we will have to define multi-dimensional versions. This turns out to be very easy: just replace Length with Shape in the [definitions](#definition) above.
+But Prefixes and Suffixes [don't have](../commentary/problems.md#cant-take-prefixes-or-suffixes-on-multiple-axes) any way to specify that they should work on multiple axes, and always work on exactly one. So to extend this pattern we will have to define multi-dimensional versions. This turns out to be very easy: just replace Length with [Shape](shape.md) in the [definitions](#definition) above.
 
         Prefs ← (↕1+≢)↑¨<
         Suffs ← (↕1+≢)↓¨<

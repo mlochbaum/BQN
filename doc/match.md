@@ -7,7 +7,7 @@ The primitive Match (`≡`) tests whether its two argument arrays are considered
         "abc" ≡ 'a'‿'b'‿'c'
         4 ≢ <4
 
-Match always gives the same result as Equals (`=`) when both arguments are atoms, but the two functions are extended to arrays differently: while Equals maps over array arguments to return an array of results, Match compares them in totality and always returns one boolean (it never gives an error). Match is the basis for BQN's search and self-comparison functions.
+Match always gives the same result as [Equals](arithmetic.md#comparisons) (`=`) when both arguments are atoms, but the two functions are extended to arrays differently: while the pervasive Equals maps over array arguments to return an array of results, Match compares them in totality and always returns one boolean (it never gives an error). Match is the basis for BQN's [search](search.md) and [self-comparison](selfcmp.md) functions.
 
         "abc" = "acc"
         "abc" ≡ "acc"
@@ -15,7 +15,7 @@ Match always gives the same result as Equals (`=`) when both arguments are atoms
         "abc" = "ab"  # Mismatched shapes
         "abc" ≡ "ab"
 
-Match compares arrays based on their fundamental properties—shape and elements—and not the [fill element](../spec/inferred.md#fill-elements), which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for `'a'‿'b'‿'c'`, it should still be considered to match `"abc"`.
+Match compares arrays based on their fundamental properties—[shape](shape.md) and elements—and not the [fill element](../spec/inferred.md#fill-elements), which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for `'a'‿'b'‿'c'`, it should still be considered to match `"abc"`.
 
 To give a precise definition, two arrays are considered to match if they have the same shape and all corresponding elements from the two arrays match. Every array has a finite [depth](depth.md) so this recursive definition always ends up comparing non-arrays, or atoms. An array never matches an atom, so the result if only one argument is an atom is `0`. The interesting case is when both arguments are atoms, discussed below.
 
@@ -30,6 +30,7 @@ Starting with the easiest rules, values with different types are never equal to 
 Two characters are equal when they have the same code point. Numeric equality depends on the number system in use, but probably works about how you expect. If you're coming from APL, note that current BQN implementations don't employ comparison tolerance. To see if two floats are roughly equal you'll need to write a tolerant comparison yourself, but how often do you really need to do this?
 
         'x' = "wxyz"
+
         1.25 = 1 + 0.25
 
 Mutable types are more difficult. Here there are three cases:
@@ -40,7 +41,9 @@ Mutable types are more difficult. Here there are three cases:
 The first two are fairly similar to how numbers and arrays work. Primitives and compounds like trains, or modifiers with bound operands, are immutable, so they are defined purely by what components they contain.
 
         ⟨+,-,×⟩ = ⟨+,-,÷⟩
+
         ⟨+ - ×⟩ = ⟨+ - ÷⟩  # Compare two three-trains component-wise
+
         ⟨+ - ÷⟩ = ⟨+ - ÷⟩
 
 This approach can't tell you whether two functions are mathematically different—that is, whether they ever return different results given the same arguments (this is an undecidable problem, and also gets confusing since "different" is included in its own definition). However, if two functions compare equal, then they will always return the same results.
@@ -50,6 +53,7 @@ This approach can't tell you whether two functions are mathematically different�
 The final point above about block instances is subtler. An instance of a block function or modifier is mutable, meaning that its behavior can change over the course of a program. Consider the following two functions:
 
         F‿G ← { a←10 ⋄ {a+𝕩}‿{a↩𝕩} }
+
         F 5   # One result
         G 8
         F 5   # Another result—the definition of insanity!
@@ -58,6 +62,7 @@ The final point above about block instances is subtler. An instance of a block f
 
         F1 ← F
         {𝕏 6}¨ F‿F1
+
         G 3
         {𝕏 6}¨ F‿F1
 

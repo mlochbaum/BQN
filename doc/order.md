@@ -2,7 +2,7 @@
 
 # Ordering functions
 
-BQN has six functions that order arrays as part of their operation (the comparison functions `≤<>≥` only order atoms, so they aren't included). These come in three pairs, where one of each pair uses an ascending ordering and the other uses a descending ordering.
+BQN has six functions that order arrays as part of their operation (the [comparison functions](arithmetic.md#comparisons) `≤<>≥` only order atoms, so they aren't included). These come in three pairs, where one of each pair uses an ascending ordering and the other uses a descending ordering.
 
 - `∨∧`, Sort, rearranges the argument to order it
 - `⍒⍋`, Grade, outputs the permutation that Sort would use to rearrange it
@@ -20,7 +20,7 @@ You've probably seen it before. Sort Up (`∧`) reorders the major cells of its 
 
         ∨ "δαβγ"
 
-Sort Down always [matches](match.md) Sort Up reversed, `⌽∘∧`. The reason for this is that BQN's array ordering is a [total order](https://en.wikipedia.org/wiki/Total_order), meaning that if one array doesn't come earlier or later that another array in the ordering then the two arrays match. Since any two non-matching argument cells are strictly ordered, they will have one ordering in `∧` and the opposite ordering in `∨`. With the reverse, any pair of non-matching cells are ordered the same way in `⌽∘∧` and `∨`. Since these two results have the same major cells in the same order, they match. However, note that the results will not always behave identically because Match doesn't take fill elements into account (if you're curious, take a look at `⊑¨∨⟨↕0,""⟩` versus `⊑¨⌽∘∧⟨↕0,""⟩`).
+Sort Down always [matches](match.md) Sort Up [reversed](reverse.md), `⌽∘∧`. The reason for this is that BQN's array ordering is a [total order](https://en.wikipedia.org/wiki/Total_order), meaning that if one array doesn't come earlier or later that another array in the ordering then the two arrays match. Since any two non-matching argument cells are strictly ordered, they will have one ordering in `∧` and the opposite ordering in `∨`. With the reverse, any pair of non-matching cells are ordered the same way in `⌽∘∧` and `∨`. Since these two results have the same major cells in the same order, they match. However, note that the results will not always behave identically because Match doesn't take fill elements into account (if you're curious, take a look at `⊑¨∨⟨↕0,""⟩` versus `⊑¨⌽∘∧⟨↕0,""⟩`).
 
 ## Grade
 
@@ -74,7 +74,7 @@ To see some of the possibilities of Grade, you might pick apart the following ex
 
 The two Bins functions are written with the same symbols `⍋` and `⍒` as Grade, but take two arguments instead of one. More complicated? A little, but once you understand Bins you'll find that it's a basic concept that shows up in the real world all the time.
 
-Bins behaves like a dyadic search function: it looks up cells from the right argument relative to major cells of the left argument. However, there's an extra requirement: the left argument to Bins is already sorted according to whichever ordering is used. If it isn't, you'll get an error.
+Bins behaves like a [search function](search.md) with respect to rank: it looks up cells from `𝕩` relative to major cells of `𝕨`. However, there's an extra requirement: the left argument to Bins is already sorted according to whichever ordering is used. If it isn't, you'll get an error.
 
         5‿6‿2‿4‿1 ⍋ 3
         0‿3‿4‿7‿9 ⍒ 3
@@ -95,7 +95,7 @@ Most of the time you won't need to worry about the details of how BQN arrays are
 
 The array ordering defines some arrays to be smaller or larger than others. All of the "Up" ordering functions use this ordering directly, so that smaller arrays come earlier, and the "Down" ones use the opposite ordering, with larger arrays coming earlier. For arrays consisting only of characters and numbers, with arbitrary nesting, the ordering is always defined. If an array contains an operation, trying to order it relative to another array might give an error. If comparing two arrays succeeds, there are three possibilities: the first array is smaller, the second is smaller, or the two arrays [match](match.md).
 
-Comparing two atoms is defined to work the same way as the comparison functions `≤<>≥`. Numbers come earlier than characters and otherwise these two types are ordered in the obvious way. To compare an atom to an array, the atom enclosing and then compared with the array ordering defined below. The result of this comparison is used except when the two arrays match: in that case, the atom is considered smaller.
+Comparing two atoms is defined to work the same way as the [comparison functions](arithmetic.md#comparisons) `≤<>≥`. Numbers come earlier than characters and otherwise these two types are ordered in the obvious way. To compare an atom to an array, the atom enclosing and then compared with the array ordering defined below. The result of this comparison is used except when the two arrays match: in that case, the atom is considered smaller.
 
 Two arrays of the same shape are compared by comparing all their corresponding elements, in index order. This comparison can stop at the first pair of different elements (which allows later elements to contain operations without causing an error). If any elements were different, then they decide the result of the comparison. If all the elements matched, then by definition the two arrays match.
 

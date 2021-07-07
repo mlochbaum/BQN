@@ -25,7 +25,7 @@ Namespaces improve encapsulation by allowing many values to be exported at once.
 
 Mutability means that the behavior of one namespace can change over the course of the program. Mutability is often a liability, so make sure you really need it before leaning too heavily on this property. While there's no way to tell from the outside that a particular namespace is mutable, you can tell it isn't if the source code doesn't contain `↩`, as this is the only way it can modify the variables it contains.
 
-A namespace that makes use of mutability is essentially an object: a collection of state along with operations that act on it. Object-oriented programming is the other major use of namespaces. Contrary to the name, there's never a need to orient your programming around objects, and it's perfectly fine to use an object here or there when you need to, for instance to build a mutable queue of values.
+A namespace that makes use of mutability is essentially an object: a collection of state along with operations that act on it. [Object-oriented programming](oop.md) is the other major use of namespaces. Contrary to the name, there's never a need to orient your programming around objects, and it's perfectly fine to use an object here or there when you need to, for instance to build a mutable queue of values.
 
 ## Exports
 
