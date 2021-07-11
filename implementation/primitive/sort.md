@@ -34,8 +34,6 @@ Sorting algorithms of interest are counting sort and [pdqsort](https://github.co
 
 For small-range Grade, counting sort must be replaced with bucket sort, at a significant performance cost. I don't have any method I'm happy with for other data. Stabilizing pdqsort by sorting the indices at the end is possible but slow. [Wolfsort](https://github.com/scandum/wolfsort) is a hybrid radix/merge sort that might be better.
 
-[IPS⁴o](https://github.com/ips4o/ips4o) is a horrifyingly complicated samplesort thing. Stable, I think. For very large arrays it probably has the best memory access patterns, so a few samplesort passes could be useful.
-
 A branchless binary search is adequate for Bins but in many cases—very small or large `𝕨`, and small range—there are better methods.
 
 ### Counting and bucket sort
@@ -43,6 +41,22 @@ A branchless binary search is adequate for Bins but in many cases—very small o
 Both counting and bucket sort are small-range algorithms that begin by counting the number of each possible value. Bucket sort, as used here, means that the counts are then used to place values in the appropriate position in the result in another pass. Counting sort does not read from the initial values again and instead reconstructs them from the counts. It might be written `(/≠¨∘⊔)⌾(-⟜min)` in BQN, with `≠¨∘⊔` as a single efficient operation.
 
 Bucket sort can be used for Grade or sort-by (`⍋⊸⊏`), but counting sort only works for sorting itself. It's not-even-unstable: there's no connection between result values and the input values except that they are constructed to be equal. But with [fast Indices](replicate.md#non-booleans-to-indices), Counting sort is vastly more powerful, and is effective with a range four to eight times the argument length. This is large enough that it might pose a memory usage problem, but the memory use can be made arbitrarily low by partitioning.
+
+### Other sorting algorithms
+
+[IPS⁴o](https://github.com/ips4o/ips4o) is a horrifyingly complicated samplesort thing. Unstable, but there's also a stable not-in-place version PS⁴o. For very large arrays it probably has the best memory access patterns, so a few samplesort passes could be useful.
+
+[Vergesort](https://github.com/Morwenn/vergesort) has another useful first-pass strategy, which spends an asymptotically small amount of time searching for runs before sorting. Since it only detects perfect runs it won't give the full adaptivity of a good merge sort.
+
+Sorting networks compare and swap elements in a fixed pattern, and so can be implemented with branchless or even vectorized code. They're great for sorting many small arrays of the same size, but the limit before insertion sort beats it will be pretty small without hardware specialization.
+
+#### SIMD sorting
+
+A few people have done some work on merge sorting with AVX2 or AVX-512: [two](https://github.com/sid1607/avx2-merge-sort) [examples](https://github.com/PatwinchIR/ultra-sort). Pretty complicated, and still mostly in the proof of concept stage, but the benchmarks on uniform random arrays are good. Can these be made adaptive?
+
+[ChipSort](https://github.com/nlw0/ChipSort.jl) seems further along than those. It uses sorting networks, comb sort, and merging, which all fit nicely with SIMD and should work well together.
+
+Or AVX can [speed up](https://github.com/WojciechMula/simd-sort) quicksort. I suspect this is more of a marginal improvement (over BlockQuicksort/pdqsort discussed below) relative to merge sort. If partitioning is fast enough it might make stable quicksort viable.
 
 ### Partitioning
 
