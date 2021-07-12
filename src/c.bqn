@@ -248,8 +248,6 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
-  idor∾˜↩5/1+g⊏˜fw/¯1∾rt
-  idbc∾˜↩(+´fw)⥊⟨21‿0‿2‿18‿14⟩
 
   # Bytecode generation: numbers bc ordered by source location (after rev) oi
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
@@ -260,7 +258,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   # Function metadata and overall output
-  ⟨bc∾¯1⊑rc,u,⟨ft,¬fx,/1∾or≥bc-○≠rt,fsc+≠¨dn,dn,dx⟩,ind⟩
+  fs←fw↑∘⥊⍟⊣¨⌾(fx⊸/)/1∾or≥bc-○≠rt  # Function start indices
+  ⟨bc∾¯1⊑rc,u,⟨ft,¬fx,fs,fsc+≠¨dn,dn,dx⟩,ind⟩
 }
 
 Compile←{
