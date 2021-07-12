@@ -1,7 +1,7 @@
 #! /usr/bin/env bqn
 
 # Javascript/JSON formatting
-L ← "["∾"]"∾˜1↓·∾","⊸∾¨       # Native list/array
+L ← "["∾"]"∾˜(0<≠)◶⟨"",1↓·∾","⊸∾¨⟩ # Native list/array
 Ind ← {∾𝕨‿"["‿𝕩‿"]"}          # Native list/array indexing
 Cat ← {∾𝕨‿".concat("‿𝕩‿")"}   # Native list/array concatenation (like ∾)
 # Escape the special characters that appear in BQN sources.
@@ -24,7 +24,7 @@ useInd ← "-i"≡⊑args←•args ⋄ args↓˜↩useInd
 Comp ← ((<"runtime" Ind F)¨↕62) glyphs _getComp ⊢
 J ← ∾∾⟜(@+10)¨
 Fconst ← ≡◶⟨@⊸≤◶Num‿Char, Str, ⊑⟩
-Fout ← (≠↑⟨F,Fconst,L ·F¨4⊸↑,F⟩˙) {L𝕎¨𝕩}¨ ⊢
+Fout ← (≠↑⟨F,Fconst,L ·=◶⟨F,L(L F¨)¨⟩¨4⊸↑,F⟩˙) {L𝕎¨𝕩}¨ ⊢
 Long ← ∾ (≠↑1‿3/⟨"  "⊸∾⋄((@+10)∾" ,")⊸∾⟩˙) {𝕎𝕩}¨ ⊢
 LFC ← Long∘Fout∘Comp
 
