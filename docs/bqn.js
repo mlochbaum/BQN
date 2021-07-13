@@ -126,7 +126,7 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
     let c,vid,def;
     if (isnum(ind)) {
       [c,vid] = gen(ind);
-      if (useenv)   c =          "const e=def;"+c;
+      if (useenv)   c =          "const e=env;"+c;
       else if (imm) c =          "const e=[...e2];e.vid=vid;e.p=oe;"+c;
       else c = "const fn=(x, w)=>{const e=[...e2];e.vid=vid;e.p=oe;e[0]=fn;e[1]=x;e[2]=w;"+c+"};"+repdf[type]+"return fn;";
       def = useenv ? "env" : ("new Array("+vid.length+").fill(null)");
@@ -497,8 +497,8 @@ let makerepl = (x,w) => {
   let repl = (x,w) => {
     names.sh=redef.sh=[names.length];
     let c = comp(str(req1str("Repl",x,w)), rtn);
-    let pnames = c[4][2][0];
-    let newv = c[2][0][4].slice(vars.length);
+    let pnames = c[5][2][0];
+    let newv = c[3][0][2].slice(vars.length);
     names.push(...newv.map(i=>pnames[i]));
     redef.push(...newv.map(i=>-1));
     vars .push(...newv.map(i=>null));
