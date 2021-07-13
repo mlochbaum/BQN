@@ -5,6 +5,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   mod1                  # 1-modifier
   mod2                  # 2-modifier
   "⋄,"∾lf               # Separator
+  ";"                   # Case separator
   "⇐←↩"                 # Gets
   "(){}⟨⟩"              # Bracket
   "‿"                   # Ligature
@@ -17,7 +18,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "•"∾(¯1↓"𝕨")∾" "∾@+9  # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
-bF‿b1‿b2‿bS‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
+bF‿b1‿b2‿bS‿bC‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
 bI←bX+≍⟜-5⋄bR←8+⊑bX
@@ -31,7 +32,7 @@ CharCode←charSet{
 }
 
 vd←1+vi←⊑bN  # Start of identifier numbering (plus dot)
-charRole←4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯3,¯1‿0,¯2,0,¬/5‿6⟩ # For first vd chars
+charRole←4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯1,¯3,¯1‿0,¯2,0,¬/5‿6⟩ # For first vd chars
 T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
@@ -147,18 +148,22 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   gf←⍋fd←+`br←rev⊏p×𝕩M⟨2+⊑bB,2⟩             # Order by brace depth fd to de-nest blocks
   rev⊏˜↩gf⋄fd⊏˜↩gf⋄br⊏˜↩gf
   𝕩⊏˜↩rev⋄p⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev
-  fi←+`b←br>0⋄c←/br<0                       # Block Begin (mask) and Close (index), in matching order
 
   # Block properties
-  PN←1(∾/∾˜)(∨/⊣)⋄H←b¬∘PN=                  # Which blocks have a property
+  fi←+`b←br>0⋄c←/br<0                       # Block Begin (mask) and Close (index), in matching order
+  cb←b∨cs←𝕩=⊑bC⋄cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co
+  cc←(⍋⍋«co)⊏c∾/cs
+  "At most two header-less bodies allowed"_err_(/CB) »⊸∧co
+  PN←1(∾/∾˜)(∨/⊣)⋄H←cb¬∘PN⊢⋄HE←H∘=          # Which bodies have a property
   sn←(0‿3‿5‿6+⊑bI)⍋𝕩⋄sp←/𝕩 M bI             # Special name index
-  fx←1 H sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸H⌈2×3⊸H)sn   # Block immediacy ¬fx and type ft
+  fx←H 1=sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸HE⌈2×3⊸HE)sn # Body immediacy ¬fx and type ft
+  "Block cases must be of the same kind"_err_(/CB) 1↓cf<»⊸≠fr
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
 
   # Propagate roles through parentheses
   # ir is the role of the expression ending at each position (truncated to the right)
-  r↩sl-˜ns×(1↓fr)⌾((c⊏rev)⊸⊏)r              # Add block roles; make strand elements ¯1
+  r↩sl-˜ns×(1↓cf/fr)⌾((c⊏rev)⊸⊏)r           # Add block roles; make strand elements ¯1
   pt←cp∧ns                                  # Pass-through parentheses: not in strands
   pp←pt∧»es←1⊸»⌾(g⊸⊏)r<0                    # Parens enclosing one object (maybe with assignment) don't change roles
   ir←((»⌾(g⊸⊏)(1+es)×3=⊢)⌈⊢-es<2≤⊢)r+pp×(IT¬pp)⊏r # Propagate modifier roles
@@ -187,6 +192,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3       # op: active modifiers; ro: mod or right operand
   "Missing operand"_nerr op×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
+  fc←𝕩=⊑bC
   "Can't use Nothing (·) in lists"_nerr ne×»lo∨ls
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1                     # Modified assignment
@@ -196,9 +202,10 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
   aa←×g⊏ac←»+`(»⊸∨0=+`)⊸×gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩 # ac broadcasts it to the entire target
-  nf←b¬∘PN ac<xv=vi-˜⊑bG                    # Namespace blocks
-  fw←b¬∘PN gi⊏nx                            # Blocks where 𝕨 must be defined
-  {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾c⊏rev
+  nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
+  fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
+  {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
+  "Invalid use of 𝕨 in monadic case"_err_(/CB) 1↓fw∧cf∧cm
   nn←fo+`⊸⊏fw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn         # fw indicates 𝕨 is never Nothing
   "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
@@ -233,7 +240,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
   ido←21+uu(⊢+10×>)ia∾sa                    # Opcode
-  idbc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
+  idoc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
@@ -241,31 +248,32 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
   dy←2≠ny←fa⊏2«no⌈2×¬(tr∧r≥0)∨ro<r=0        # Dyadic
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
-  cn←pi∾lt←/𝕩≥ci←vi+nv⋄ob∾↩(ci-˜≠u)+lt⊏𝕩    # Constants
+  cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob∾↩(cl-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
-  dr←/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo              # Drop (block separator) and return
+  dr←/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo∨fc           # Drop (block separator) and return
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
 
-  # Bytecode generation: numbers bc ordered by source location (after rev) oi
+  # Object code generation: numbers oc ordered by source location (after rev) oi
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  bc←or⊏∾idbc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,14¨dr
+  oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,14¨dr
                11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,28¨al,vi-˜(al-1)⊏𝕩
                5+oa⊏r,19⌊5+(fn/dy+11×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←25+4×nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
-  # Function metadata and overall output
-  fs←fw↑∘⥊⍟⊣¨⌾(fx⊸/)/1∾or≥bc-○≠rt  # Function start indices
-  ⟨bc∾¯1⊑rc,u,⟨ft,¬fx,fs,fsc+≠¨dn,dn,dx⟩,ind⟩
+  ci←(/cf)+(cf/fx×fw⌈2×cm)⊏⟨0,↑↕1,⥊¨↕2⟩
+  fq←⟨cf/ft,cf/¬fx,ci⟩                      # Per-function data
+  cq←⟨/1∾or≥oc-○≠rt,fsc+≠¨dn,dn,dx⟩         # Per-body data
+  ⟨oc∾¯1⊑rc,u,fq,cq,ind⟩                    # Overall output
 }
 
 Compile←{
   defaults←⟨⟩‿(("System values not supported"!0˙)¨)‿⟨⟩‿(↕0)
   prims‿Sys‿vars‿redef ← ∾⟜(≠↓defaults˙) ≍○<⍟(4<≠)𝕨
   ⟨tok,role,val,t0,t1⟩←tx←sys‿vars Tokenize 𝕩
-  ⟨bc,prim,blk,oi⟩←⟨role,⊑val,t0,t1,redef»0¨vars⟩ Parse tok
-  ⟨bc, ∾⟨prim⊏prims⟩∾1↓val, <˘⍉>blk, oi, tx⟩
+  ⟨oc,prim,blk,bdy,oi⟩←⟨role,⊑val,t0,t1,redef»0¨vars⟩ Parse tok
+  ⟨oc, ∾⟨prim⊏prims⟩∾1↓val, <˘⍉>blk, <˘⍉>bdy, oi, tx⟩
 }
