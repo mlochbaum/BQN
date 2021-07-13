@@ -98,10 +98,10 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
       case 18:         { r+= "if(undefined==="+rV(rD-1)+")throw Error('Left argument required');";                            break; }
       case 21:case 31: { r+= rP("getv("+ge(num())+","+num()+")");                                                             break; }
       case 22:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                             break; }
-      case 28:         { let m=rG(); r+=rP("{vid,m:"+m+",a:"+num()+"}");                                                      break; }
-      case 26:         { let v=rG(); r+=rP("readns("+v+",vid,"+num()+")");                                                    break; }
+      case 28:         { let m=rG(); r+=rP("{vid:e.vid,m:"+m+",a:"+num()+"}");                                                break; }
+      case 26:         { let v=rG(); r+=rP("readns("+v+",e.vid,"+num()+")");                                                  break; }
       case 25:         { if(rD!==1) throw Error("Internal compiler error: Wrong stack size"); r+= "return v0;";               break loop; }
-      case 29:         { r+= "e.ns=vid.ns;return e;";                                                                         break loop; }
+      case 29:         { r+= "e.ns=e.vid.ns;return e;";                                                                       break loop; }
     }
   }
   return "let "+new Array(szM).fill().map((_,i)=>rV(i)).join(',')+";"+r+fin;
