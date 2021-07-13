@@ -150,8 +150,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   𝕩⊏˜↩rev⋄p⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev
 
   # Block properties
-  fi←+`b←br>0⋄c←/br<0                       # Block Begin (mask) and Close (index), in matching order
-  cb←b∨cs←𝕩=⊑bC⋄cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co
+  b←br>0⋄c←/br<0                            # Block Begin (mask) and Close (index), in matching order
+  fi←+`cb←b∨cs←𝕩=⊑bC⋄cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co
   cc←(⍋⍋«co)⊏c∾/cs
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co
   PN←1(∾/∾˜)(∨/⊣)⋄H←cb¬∘PN⊢⋄HE←H∘=          # Which bodies have a property
@@ -223,7 +223,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   d↩(0≤dpf)⌾(dp⊸/)d⋄zda←0¨da←/def≤0         # Turn def ¯1 ← into ↩
   dn←(dg←zda∾(df←d/idf)∾≠fsc)⊔da∾dv←d/idv   # Identifier name ID, per-block
   # Order every referenced identifier, and an undeclaration for each declaration
-  ixf←((1=ic)+idf⊏¯1∾b/gf)∾df⊏(≠𝕩)∾c⊏gf     # First order by block index, open for real and closed for virtual
+  ixf←((1=ic)+idf⊏¯1∾cb/gf)∾df⊏(≠𝕩)∾cc⊏gf   # First order by block index, open for real and closed for virtual
   ig←(⍋⊏⟜(ixx←idv∾dv))⊸⊏⍋ixf                # Then order by name
   {"Redefinition"_err_(𝕩⊏·∾⟜(d⊸/)ID) ¬ixx∨○(»⊸≠𝕩⊸⊏)ixf} (≠d)⊸≤⊸/ig
   ig↩<⟜(≠d)⊸/(⍋ds←+`ig⊏d∾¯1¨dv)⊏ig          # Last order by declaration depth
