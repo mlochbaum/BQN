@@ -21,7 +21,7 @@ Another XKB option, if you have a compose key enabled, is to place
 XCompose (possibly with adjustments) in ~/.XCompose .
 
 For Android, the following fork adds APL and BQN to Hacker's Keyboard:
-https://github.com/dzaima/hackerskeyboard/releases/tag/2.0arr
+https://github.com/dzaima/hackerskeyboard/releases/latest
 
 The file inputrc can be copied or appended to ~/.inputrc to enable
 backslash input in bash, command-line dzaima/BQN, and other software
