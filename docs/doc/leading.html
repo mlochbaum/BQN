@@ -201,12 +201,12 @@
 <p>If one argument is a unit, that is, it has no axes, then leading axis agreement reduces to APL's &quot;scalar extension&quot; (where &quot;scalar&quot; is equivalent to BQN's &quot;unit&quot;), where a single unit is matched with an entire array by repeating it at every application. A unit always agrees with any other array under leading axis agreement because it has no axes whose lengths would need to be checked.</p>
 <p>With leading axis agreement, there are <code><span class='Value'>k</span><span class='Function'>+</span><span class='Number'>1</span></code> shapes for arrays that can be added (or any other function with Each) to a given array <code><span class='Value'>x</span></code> without changing its rank. These are precisely the prefixes of <code><span class='Function'>≢</span><span class='Value'>x</span></code>, with ranks from <code><span class='Number'>0</span></code> to <code><span class='Value'>k</span></code> inclusive. Arrays with larger rank can also be used as the other argument, but then the result shape will match that argument and not <code><span class='Value'>x</span></code>.</p>
 <h3 id="search-functions">Search functions</h3>
-<p>The <a href="search.html">search functions</a> Bins (<code><span class='Function'>⍋⍒</span></code>), Index of (<code><span class='Function'>⊐</span></code>), Progressive Index of (<code><span class='Function'>⊒</span></code>), and Member of (<code><span class='Function'>∊</span></code>) look through cells of one argument to find cells of the other. Find (<code><span class='Function'>⍷</span></code>) also does a search, but a slightly different one: it tries to find <em>slices</em> of cells of <code><span class='Value'>𝕩</span></code> that match <code><span class='Value'>𝕨</span></code>.</p>
+<p>The <a href="search.html">search functions</a>, Index of (<code><span class='Function'>⊐</span></code>), Progressive Index of (<code><span class='Function'>⊒</span></code>), and Member of (<code><span class='Function'>∊</span></code>), and also <a href="order.html#bins">Bins</a> (<code><span class='Function'>⍋⍒</span></code>), look through cells of one argument to find cells of the other. Find (<code><span class='Function'>⍷</span></code>) also does a search, but a slightly different one: it tries to find <em>slices</em> of cells of <code><span class='Value'>𝕩</span></code> that match <code><span class='Value'>𝕨</span></code>.</p>
 <table>
 <thead>
 <tr>
-<th>Searching through</th>
-<th>Look for</th>
+<th>Search in</th>
+<th>Search for</th>
 <th>Functions</th>
 </tr>
 </thead>
@@ -223,4 +223,4 @@
 </tr>
 </tbody>
 </table>
-<p>For all of these functions but Find, the argument to search through is treated as a list of its major cells. It is the rank of these major cells—let's call this rank <code><span class='Value'>c</span></code>—that determines how the other argument is treated. That argument must have rank at least <code><span class='Value'>c</span></code>, and it is treated as an array of <code><span class='Value'>c</span></code>-cells. For example, if the left argument to <code><span class='Function'>⍋</span></code> is a matrix, then each 1-cell or row of <code><span class='Value'>𝕩</span></code> is treated independently, and each one yields one number in the result: a 0-cell. The result rank of <code><span class='Function'>⍋</span></code> is always <code><span class='Value'>𝕨</span><span class='Function'>¬</span><span class='Modifier2'>○</span><span class='Function'>=</span><span class='Value'>𝕩</span></code>.</p>
+<p>For all of these functions but Find, the searched-in argument is treated as a list of its major cells, and the searched-for argument is considered a collection of cells with the same rank. See the <a href="search.html#higher-ranks">search function documentation</a>.</p>

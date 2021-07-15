@@ -114,3 +114,55 @@ This primitive gives an interesting way to implement the [ordinals](order.md#ord
 Here's a goofy code golf tip: if the two arguments to Progressive Index of are the same, then every cell will be matched to itself, because all the previous indices are taken but the current one does match. So `⊒˜` is the same as `↕∘≠`.
 
         ⊒˜ "anything at all"
+
+## Single search
+
+Search functions are designed to search for multiple elements at once, and return an array of results. This is the array-oriented way to do it, and can allow faster algorithms to be used for the computation.
+
+        stuff ← "tacks"‿"paper"‿"string"‿"tape"
+
+        stuff ⊐ "tacks"‿"string"
+
+The first thing you might try to search for just one element does not go so well (and yes, this [is a bad thing](../commentary/problems.md#search-function-depth)).
+
+        stuff ⊐ "string"
+
+Instead of interpreting `𝕩` as a single element, Index of treats it as a list, and `𝕨` doesn't even contain characters! Well, [Enclose](enclose.md) (`<`) makes an array from a single element…
+
+        stuff ⊐< "string"
+
+Just as bad, this result has the right information, but is enclosed and could break the program later on. Remember that the result of a search function is *always* an array. We really want the [first](pick.md#first) element.
+
+        stuff ⊑∘⊐⟜< "string"
+
+If `𝕨` is fixed, then the version I prefer is to use Under to enclose the argument and then un-enclose the result. It requires `𝕨` to be bound to `⊐` because otherwise Under would enclose `𝕨` as well, since it applies `𝔾` to both arguments.
+
+        stuff⊸⊐⌾< "string"
+
+For Member of, the equivalent is `∊⟜stuff⌾<`.
+
+## Higher ranks
+
+So far we've shown set functions acting on lists. Well, and one example with a unit array slipped into the last section. In fact, if the searched-in array is a list, then the searched-for argument can have any rank.
+
+        ("high"≍"rank") ∊ "list arg"
+
+Member of and Index of compute each result number independently, so only the shape is different. Progressive Index of depends on the way entries in `𝕩` are ordered: it searches them in index order, so that (using [Deshape](reshape.md)) `⥊𝕨⊒𝕩` is `𝕨⊒⥊𝕩`.
+
+        4‿4‿4 ⊒ 3‿2⥊4
+
+But the seached-in argument doesn't have to be a list either! It can also be an array of higher rank. Rank 0 isn't allowed: if you want to "search" a unit, you're probably just looking for [match](match.md).
+
+The searched-in argument is treated as a list of its major cells. It's the rank of these major cells—let's call this rank `c`—that determines how the searched-for argument is treated. That argument must have rank `c` or more, and it's treated as an array of `c`-cells. For example, if the left argument to `⊐` is a rank-2 table, then each 1-cell (row) of `𝕩` is searched for independently, yielding one number in the result: a 0-cell.
+
+        ⊢ rows ← >"row"‿"rho"‿"row"‿"rue"
+
+        rows ⊐ >"row"‿"row"‿"col"≍"rho"‿"cow"‿"col"
+
+So the result rank of `⊐` is always `𝕨¬○=𝕩`, with a result shape `(1-˜=𝕨)↓≢𝕩`, and `𝕨⊐𝕩` fails if `1>=𝕩` or the result rank would be negative. In the list case, we have `1==𝕩` (so the first condition holds), and the result rank resolves to `=𝕨` (which can't be negative, so the second holds as well). The cell rank of `𝕩` is 0, and the fact that a 0-cell of `𝕩` gives a 0-cell of the result is what causes the shape arithmetic to be so simple.
+
+For Member of, the arguments are reversed relative to Index of, but otherwise everything's the same. This differs from APL, where entries are always elements, not cells. Many APL designers consider the APL definition to be a failure of foresight and would prefer BQN's definition—or rather A+'s or J's definition, as these languages were actually the first to use it. The rank-aware version is more flexible, as it allows both searching for elements and searching for rows. APL would return the first result in both cases.
+
+        (2‿1≍3‿1) ∊ 3‿1‿4‿3
+
+        (2‿1≍3‿1) ∊ 3‿1≍4‿3

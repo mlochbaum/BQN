@@ -192,3 +192,72 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqSy5wgImFueXRoaW5nIGF0IGFsbCI=">↗️</a><pre>    <span class='Function'>⊒</span><span class='Modifier'>˜</span> <span class='String'>&quot;anything at all&quot;</span>
 ⟨ 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 ⟩
 </pre>
+<h2 id="single-search">Single search</h2>
+<p>Search functions are designed to search for multiple elements at once, and return an array of results. This is the array-oriented way to do it, and can allow faster algorithms to be used for the computation.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=c3R1ZmYg4oaQICJ0YWNrcyLigL8icGFwZXIi4oC/InN0cmluZyLigL8idGFwZSIKCnN0dWZmIOKKkCAidGFja3Mi4oC/InN0cmluZyI=">↗️</a><pre>    <span class='Value'>stuff</span> <span class='Gets'>←</span> <span class='String'>&quot;tacks&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;paper&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;string&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;tape&quot;</span>
+
+    <span class='Value'>stuff</span> <span class='Function'>⊐</span> <span class='String'>&quot;tacks&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;string&quot;</span>
+⟨ 0 2 ⟩
+</pre>
+<p>The first thing you might try to search for just one element does not go so well (and yes, this <a href="../commentary/problems.html#search-function-depth">is a bad thing</a>).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=c3R1ZmYg4oqQICJzdHJpbmci">↗️</a><pre>    <span class='Value'>stuff</span> <span class='Function'>⊐</span> <span class='String'>&quot;string&quot;</span>
+⟨ 4 4 4 4 4 4 ⟩
+</pre>
+<p>Instead of interpreting <code><span class='Value'>𝕩</span></code> as a single element, Index of treats it as a list, and <code><span class='Value'>𝕨</span></code> doesn't even contain characters! Well, <a href="enclose.html">Enclose</a> (<code><span class='Function'>&lt;</span></code>) makes an array from a single element…</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=c3R1ZmYg4oqQPCAic3RyaW5nIg==">↗️</a><pre>    <span class='Value'>stuff</span> <span class='Function'>⊐&lt;</span> <span class='String'>&quot;string&quot;</span>
+┌·   
+· 2  
+    ┘
+</pre>
+<p>Just as bad, this result has the right information, but is enclosed and could break the program later on. Remember that the result of a search function is <em>always</em> an array. We really want the <a href="pick.html#first">first</a> element.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=c3R1ZmYg4oqR4oiY4oqQ4p+cPCAic3RyaW5nIg==">↗️</a><pre>    <span class='Value'>stuff</span> <span class='Function'>⊑</span><span class='Modifier2'>∘</span><span class='Function'>⊐</span><span class='Modifier2'>⟜</span><span class='Function'>&lt;</span> <span class='String'>&quot;string&quot;</span>
+2
+</pre>
+<p>If <code><span class='Value'>𝕨</span></code> is fixed, then the version I prefer is to use Under to enclose the argument and then un-enclose the result. It requires <code><span class='Value'>𝕨</span></code> to be bound to <code><span class='Function'>⊐</span></code> because otherwise Under would enclose <code><span class='Value'>𝕨</span></code> as well, since it applies <code><span class='Function'>𝔾</span></code> to both arguments.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=c3R1ZmbiirjiipDijL48ICJzdHJpbmci">↗️</a><pre>    <span class='Value'>stuff</span><span class='Modifier2'>⊸</span><span class='Function'>⊐</span><span class='Modifier2'>⌾</span><span class='Function'>&lt;</span> <span class='String'>&quot;string&quot;</span>
+2
+</pre>
+<p>For Member of, the equivalent is <code><span class='Function'>∊</span><span class='Modifier2'>⟜</span><span class='Value'>stuff</span><span class='Modifier2'>⌾</span><span class='Function'>&lt;</span></code>.</p>
+<h2 id="higher-ranks">Higher ranks</h2>
+<p>So far we've shown set functions acting on lists. Well, and one example with a unit array slipped into the last section. In fact, if the searched-in array is a list, then the searched-for argument can have any rank.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KCJoaWdoIuKJjSJyYW5rIikg4oiKICJsaXN0IGFyZyI=">↗️</a><pre>    <span class='Paren'>(</span><span class='String'>&quot;high&quot;</span><span class='Function'>≍</span><span class='String'>&quot;rank&quot;</span><span class='Paren'>)</span> <span class='Function'>∊</span> <span class='String'>&quot;list arg&quot;</span>
+┌─         
+╵ 0 1 1 0  
+  1 1 0 0  
+          ┘
+</pre>
+<p>Member of and Index of compute each result number independently, so only the shape is different. Progressive Index of depends on the way entries in <code><span class='Value'>𝕩</span></code> are ordered: it searches them in index order, so that (using <a href="reshape.html">Deshape</a>) <code><span class='Function'>⥊</span><span class='Value'>𝕨</span><span class='Function'>⊒</span><span class='Value'>𝕩</span></code> is <code><span class='Value'>𝕨</span><span class='Function'>⊒⥊</span><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NOKAvzTigL80IOKKkiAz4oC/MuKlijQ=">↗️</a><pre>    <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>⊒</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='Number'>4</span>
+┌─     
+╵ 0 1  
+  2 3  
+  3 3  
+      ┘
+</pre>
+<p>But the seached-in argument doesn't have to be a list either! It can also be an array of higher rank. Rank 0 isn't allowed: if you want to &quot;search&quot; a unit, you're probably just looking for <a href="match.html">match</a>.</p>
+<p>The searched-in argument is treated as a list of its major cells. It's the rank of these major cells—let's call this rank <code><span class='Value'>c</span></code>—that determines how the searched-for argument is treated. That argument must have rank <code><span class='Value'>c</span></code> or more, and it's treated as an array of <code><span class='Value'>c</span></code>-cells. For example, if the left argument to <code><span class='Function'>⊐</span></code> is a rank-2 table, then each 1-cell (row) of <code><span class='Value'>𝕩</span></code> is searched for independently, yielding one number in the result: a 0-cell.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHJvd3Mg4oaQID4icm93IuKAvyJyaG8i4oC/InJvdyLigL8icnVlIgoKcm93cyDiipAgPiJyb3ci4oC/InJvdyLigL8iY29sIuKJjSJyaG8i4oC/ImNvdyLigL8iY29sIg==">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>rows</span> <span class='Gets'>←</span> <span class='Function'>&gt;</span><span class='String'>&quot;row&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;rho&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;row&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;rue&quot;</span>
+┌─     
+╵"row  
+  rho  
+  row  
+  rue" 
+      ┘
+
+    <span class='Value'>rows</span> <span class='Function'>⊐</span> <span class='Function'>&gt;</span><span class='String'>&quot;row&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;row&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;col&quot;</span><span class='Function'>≍</span><span class='String'>&quot;rho&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;cow&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;col&quot;</span>
+┌─       
+╵ 0 0 4  
+  1 4 4  
+        ┘
+</pre>
+<p>So the result rank of <code><span class='Function'>⊐</span></code> is always <code><span class='Value'>𝕨</span><span class='Function'>¬</span><span class='Modifier2'>○</span><span class='Function'>=</span><span class='Value'>𝕩</span></code>, with a result shape <code><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Function'>=</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>↓≢</span><span class='Value'>𝕩</span></code>, and <code><span class='Value'>𝕨</span><span class='Function'>⊐</span><span class='Value'>𝕩</span></code> fails if <code><span class='Number'>1</span><span class='Function'>&gt;=</span><span class='Value'>𝕩</span></code> or the result rank would be negative. In the list case, we have <code><span class='Number'>1</span><span class='Function'>==</span><span class='Value'>𝕩</span></code> (so the first condition holds), and the result rank resolves to <code><span class='Function'>=</span><span class='Value'>𝕨</span></code> (which can't be negative, so the second holds as well). The cell rank of <code><span class='Value'>𝕩</span></code> is 0, and the fact that a 0-cell of <code><span class='Value'>𝕩</span></code> gives a 0-cell of the result is what causes the shape arithmetic to be so simple.</p>
+<p>For Member of, the arguments are reversed relative to Index of, but otherwise everything's the same. This differs from APL, where entries are always elements, not cells. Many APL designers consider the APL definition to be a failure of foresight and would prefer BQN's definition—or rather A+'s or J's definition, as these languages were actually the first to use it. The rank-aware version is more flexible, as it allows both searching for elements and searching for rows. APL would return the first result in both cases.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDLigL8x4omNM+KAvzEpIOKIiiAz4oC/MeKAvzTigL8zCgooMuKAvzHiiY0z4oC/MSkg4oiKIDPigL8x4omNNOKAvzM=">↗️</a><pre>    <span class='Paren'>(</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Function'>≍</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>∊</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+┌─     
+╵ 0 1  
+  1 1  
+      ┘
+
+    <span class='Paren'>(</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Function'>≍</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>∊</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Function'>≍</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+⟨ 0 1 ⟩
+</pre>
