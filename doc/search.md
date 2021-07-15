@@ -143,7 +143,7 @@ For Member of, the equivalent is `∊⟜stuff⌾<`.
 
 ## Higher ranks
 
-So far we've shown set functions acting on lists. Well, and one example with a unit array slipped into the last section. In fact, if the searched-in array is a list, then the searched-for argument can have any rank.
+So far we've shown search functions acting on lists. Well, and one example with a unit array slipped into the last section. In fact, if the searched-in array is a list, then the searched-for argument can have any rank.
 
         ("high"≍"rank") ∊ "list arg"
 
@@ -151,7 +151,7 @@ Member of and Index of compute each result number independently, so only the sha
 
         4‿4‿4 ⊒ 3‿2⥊4
 
-But the seached-in argument doesn't have to be a list either! It can also be an array of higher rank. Rank 0 isn't allowed: if you want to "search" a unit, you're probably just looking for [match](match.md).
+But the searched-in argument doesn't have to be a list either! It can also be an array of higher rank. Rank 0 isn't allowed: if you want to "search" a unit, you're probably just looking for [match](match.md).
 
 The searched-in argument is treated as a list of its major cells. It's the rank of these major cells—let's call this rank `c`—that determines how the searched-for argument is treated. That argument must have rank `c` or more, and it's treated as an array of `c`-cells. For example, if the left argument to `⊐` is a rank-2 table, then each 1-cell (row) of `𝕩` is searched for independently, yielding one number in the result: a 0-cell.
 
