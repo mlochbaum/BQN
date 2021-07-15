@@ -1,10 +1,10 @@
 <head>
   <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
   <link href="../style.css" rel="stylesheet"/>
-  <title>BQN: Self-comparison functions</title>
+  <title>BQN: Self-search functions</title>
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
-<h1 id="self-comparison-functions">Self-comparison functions</h1>
+<h1 id="self-search-functions">Self-search functions</h1>
 <svg viewBox='-115.2 -33 676.8 299.2'>
   <defs>
     <mask id='m'>
@@ -131,11 +131,11 @@
   </g>
 </svg>
 
-<p>BQN has four self-comparison functions, Classify (<code><span class='Function'>⊐</span></code>), Occurrence Count (<code><span class='Function'>⊒</span></code>), Mark Firsts (<code><span class='Function'>∊</span></code>), and Deduplicate (<code><span class='Function'>⍷</span></code>). Each of these is a monadic function that obtains its result by comparing each major cell of the argument (which must have rank at least 1) to the earlier major cells with <a href="match.html">match</a>. For example, Mark Firsts indicates the cells that don't match any earlier cell, making them the first of their kind.</p>
+<p>BQN has four self-search functions, Classify (<code><span class='Function'>⊐</span></code>), Occurrence Count (<code><span class='Function'>⊒</span></code>), Mark Firsts (<code><span class='Function'>∊</span></code>), and Deduplicate (<code><span class='Function'>⍷</span></code>). Each of these is a monadic function that obtains its result by comparing each major cell of the argument (which must have rank at least 1) to the earlier major cells with <a href="match.html">match</a>. For example, Mark Firsts indicates the cells that don't match any earlier cell, making them the first of their kind.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiKICJhYmFhY2Ii">↗️</a><pre>    <span class='Function'>∊</span> <span class='String'>&quot;abaacb&quot;</span>
 ⟨ 1 1 0 0 1 0 ⟩
 </pre>
-<p>When the argument is a list, its major cells are units and thus contain one element each, so it's just as valid to say that a self-comparison function compares elements of its argument. Only with a higher-rank argument does the major cell nature become apparent.</p>
+<p>When the argument is a list, its major cells are units and thus contain one element each, so it's just as valid to say that a self-search function compares elements of its argument. Only with a higher-rank argument does the major cell nature become apparent.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGFyciDihpAgPiJhYmMi4oC/ImRjYiLigL8iYWJjIuKAvyJiY2Qi4oC/ImRjYiIK4oiKIGFycg==">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>arr</span> <span class='Gets'>←</span> <span class='Function'>&gt;</span><span class='String'>&quot;abc&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;dcb&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;abc&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;bcd&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;dcb&quot;</span>
 ┌─     
 ╵"abc  
@@ -147,9 +147,9 @@
     <span class='Function'>∊</span> <span class='Value'>arr</span>
 ⟨ 1 1 0 1 0 ⟩
 </pre>
-<p>The result has one number for each major cell, or in other words is a list with the same length as its argument. Three self-comparison functions follow this pattern, but Deduplicate (<code><span class='Function'>⍷</span></code>) is different: it returns an array of the same rank but possibly a shorter length than the argument.</p>
+<p>The result has one number for each major cell, or in other words is a list with the same length as its argument. Three self-search functions follow this pattern, but Deduplicate (<code><span class='Function'>⍷</span></code>) is different: it returns an array of the same rank but possibly a shorter length than the argument.</p>
 <h2 id="classify">Classify</h2>
-<p>Classify is the universal self-comparison function, in that it preserves all the self-comparison information in its argument. It gives each different cell value a natural number, ordered by first appearance.</p>
+<p>Classify is the universal self-search function, in that it preserves all the self-search information in its argument. It gives each different cell value a natural number, ordered by first appearance.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqQIDXigL824oC/MuKAvzLigL814oC/MQ==">↗️</a><pre>    <span class='Function'>⊐</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 ⟨ 0 1 2 2 0 3 ⟩
 </pre>
@@ -160,7 +160,7 @@
   0 1 2 2 0 3  
               ┘
 </pre>
-<p>Applying Classify before another self-comparison function will never change the result, except in the case of Deduplicate (<code><span class='Function'>⍷</span></code>), which constructs its result from cells in the argument. In particular, Classify is <a href="https://en.wikipedia.org/wiki/Idempotent">idempotent</a>, meaning that applying it twice is the same as applying it once.</p>
+<p>Applying Classify before another self-search function will never change the result, except in the case of Deduplicate (<code><span class='Function'>⍷</span></code>), which constructs its result from cells in the argument. In particular, Classify is <a href="https://en.wikipedia.org/wiki/Idempotent">idempotent</a>, meaning that applying it twice is the same as applying it once.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiKICAgImRiYWVkY2JjZWNiY2QiCuKIiiDiipAgImRiYWVkY2JjZWNiY2QiCgp7KPCdlY/iiaHwnZWP4oiY4oqQKSJkYmFlZGNiY2VjYmNkIn3CqCDiipDigL/iipLigL/iiIrigL/ijbc=">↗️</a><pre>    <span class='Function'>∊</span>   <span class='String'>&quot;dbaedcbcecbcd&quot;</span>
 ⟨ 1 1 1 1 0 1 0 0 0 0 0 0 0 ⟩
     <span class='Function'>∊</span> <span class='Function'>⊐</span> <span class='String'>&quot;dbaedcbcecbcd&quot;</span>
@@ -208,7 +208,7 @@
 <p>Applying both Classify and Deduplicate gives an array that has both properties (this isn't the case for all pairs of projections—we need to know that Classify maintains the uniqueness property for Deduplicate and vice-versa). It has no duplicate major cells, <em>and</em> it's a list of natural numbers that starts with 0 and never goes up by more than one. Taken together, these are a tight constraint! The first element of the argument has to be 0. The next can't be 0 because it's already appeared, but it can't be more than one higher—it has to be 1. The next can't be 0 or 1, and has to be 2. And so on. So the result is always <code><span class='Function'>↕</span><span class='Value'>n</span></code> for some <code><span class='Value'>n</span></code>. In fact it's possible to determine the length as well, by noting that each function preserves the number of unique major cells in its argument. Classify does this because distinct numbers in the output correspond exactly to distinct major cells in the input; Deduplicate does this because it only removes duplicate cells, not distinct ones. So the final result is <code><span class='Function'>↕</span><span class='Value'>n</span></code>, where <code><span class='Value'>n</span></code> is the number of unique major cells in the argument.</p>
 <h3 id="mark-firsts">Mark Firsts</h3>
 <p><em>See the <a href="https://aplwiki.com/wiki/Unique_Mask">APL Wiki page</a> on this function as well.</em></p>
-<p>Mark Firsts (<code><span class='Function'>∊</span></code>) is the simplest self-comparison function: it returns <code><span class='Number'>0</span></code> for any major cell of the argument that is a duplicate of an earlier cell and <code><span class='Number'>1</span></code> for a major cell that's the first with its value. To implement <a href="#deduplicate">Deduplicate</a> in terms of Mark Firsts, just filter out the duplicates with <code><span class='Function'>∊</span><span class='Modifier2'>⊸</span><span class='Function'>/</span></code>.</p>
+<p>Mark Firsts (<code><span class='Function'>∊</span></code>) is the simplest self-search function: it returns <code><span class='Number'>0</span></code> for any major cell of the argument that is a duplicate of an earlier cell and <code><span class='Number'>1</span></code> for a major cell that's the first with its value. To implement <a href="#deduplicate">Deduplicate</a> in terms of Mark Firsts, just filter out the duplicates with <code><span class='Function'>∊</span><span class='Modifier2'>⊸</span><span class='Function'>/</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiKICAgM+KAvzHigL804oC/MeKAvzXigL854oC/MuKAvzbigL81CgriiIriirgvIDPigL8x4oC/NOKAvzHigL814oC/OeKAvzLigL824oC/NQ==">↗️</a><pre>    <span class='Function'>∊</span>   <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>5</span>
 ⟨ 1 1 1 0 1 1 1 1 0 ⟩
 

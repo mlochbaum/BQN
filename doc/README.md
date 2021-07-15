@@ -51,7 +51,7 @@ Primitives:
 - [Scan](scan.md) (`` ` ``)
 - [Search functions](search.md) (`⊐⊒∊`)
 - [Select](select.md) (`⊏`)
-- [Self-comparison functions](selfcmp.md) (`⊐⊒∊⍷`)
+- [Self-search functions](selfcmp.md) (`⊐⊒∊⍷`)
 - [Shift functions](shift.md) (`»«`)
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
 - [Transpose](transpose.md) (`⍉`)

@@ -7,7 +7,7 @@ The primitive Match (`≡`) tests whether its two argument arrays are considered
         "abc" ≡ 'a'‿'b'‿'c'
         4 ≢ <4
 
-Match always gives the same result as [Equals](arithmetic.md#comparisons) (`=`) when both arguments are atoms, but the two functions are extended to arrays differently: while the pervasive Equals maps over array arguments to return an array of results, Match compares them in totality and always returns one boolean (it never gives an error). Match is the basis for BQN's [search](search.md) and [self-comparison](selfcmp.md) functions.
+Match always gives the same result as [Equals](arithmetic.md#comparisons) (`=`) when both arguments are atoms, but the two functions are extended to arrays differently: while the pervasive Equals maps over array arguments to return an array of results, Match compares them in totality and always returns one boolean (it never gives an error). Match is the basis for BQN's [search](search.md) and [self-search](selfcmp.md) functions.
 
         "abc" = "acc"
         "abc" ≡ "acc"

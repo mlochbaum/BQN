@@ -1,6 +1,6 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/selfcmp.html).*
 
-# Self-comparison functions
+# Self-search functions
 
 <!--GEN
 d ← 48‿22
@@ -39,20 +39,20 @@ defs ← "defs" Enc ("mask"At"id=m") Enc ⟨
 ⟩
 -->
 
-BQN has four self-comparison functions, Classify (`⊐`), Occurrence Count (`⊒`), Mark Firsts (`∊`), and Deduplicate (`⍷`). Each of these is a monadic function that obtains its result by comparing each major cell of the argument (which must have rank at least 1) to the earlier major cells with [match](match.md). For example, Mark Firsts indicates the cells that don't match any earlier cell, making them the first of their kind.
+BQN has four self-search functions, Classify (`⊐`), Occurrence Count (`⊒`), Mark Firsts (`∊`), and Deduplicate (`⍷`). Each of these is a monadic function that obtains its result by comparing each major cell of the argument (which must have rank at least 1) to the earlier major cells with [match](match.md). For example, Mark Firsts indicates the cells that don't match any earlier cell, making them the first of their kind.
 
         ∊ "abaacb"
 
-When the argument is a list, its major cells are units and thus contain one element each, so it's just as valid to say that a self-comparison function compares elements of its argument. Only with a higher-rank argument does the major cell nature become apparent.
+When the argument is a list, its major cells are units and thus contain one element each, so it's just as valid to say that a self-search function compares elements of its argument. Only with a higher-rank argument does the major cell nature become apparent.
 
         ⊢ arr ← >"abc"‿"dcb"‿"abc"‿"bcd"‿"dcb"
         ∊ arr
 
-The result has one number for each major cell, or in other words is a list with the same length as its argument. Three self-comparison functions follow this pattern, but Deduplicate (`⍷`) is different: it returns an array of the same rank but possibly a shorter length than the argument.
+The result has one number for each major cell, or in other words is a list with the same length as its argument. Three self-search functions follow this pattern, but Deduplicate (`⍷`) is different: it returns an array of the same rank but possibly a shorter length than the argument.
 
 ## Classify
 
-Classify is the universal self-comparison function, in that it preserves all the self-comparison information in its argument. It gives each different cell value a natural number, ordered by first appearance.
+Classify is the universal self-search function, in that it preserves all the self-search information in its argument. It gives each different cell value a natural number, ordered by first appearance.
 
         ⊐ 5‿6‿2‿2‿5‿1
 
@@ -60,7 +60,7 @@ Classify is the universal self-comparison function, in that it preserves all the
 
         ≍⟜⊐ 5‿6‿2‿2‿5‿1
 
-Applying Classify before another self-comparison function will never change the result, except in the case of Deduplicate (`⍷`), which constructs its result from cells in the argument. In particular, Classify is [idempotent](https://en.wikipedia.org/wiki/Idempotent), meaning that applying it twice is the same as applying it once.
+Applying Classify before another self-search function will never change the result, except in the case of Deduplicate (`⍷`), which constructs its result from cells in the argument. In particular, Classify is [idempotent](https://en.wikipedia.org/wiki/Idempotent), meaning that applying it twice is the same as applying it once.
 
         ∊   "dbaedcbcecbcd"
         ∊ ⊐ "dbaedcbcecbcd"
@@ -89,7 +89,7 @@ Applying both Classify and Deduplicate gives an array that has both properties (
 
 *See the [APL Wiki page](https://aplwiki.com/wiki/Unique_Mask) on this function as well.*
 
-Mark Firsts (`∊`) is the simplest self-comparison function: it returns `0` for any major cell of the argument that is a duplicate of an earlier cell and `1` for a major cell that's the first with its value. To implement [Deduplicate](#deduplicate) in terms of Mark Firsts, just filter out the duplicates with `∊⊸/`.
+Mark Firsts (`∊`) is the simplest self-search function: it returns `0` for any major cell of the argument that is a duplicate of an earlier cell and `1` for a major cell that's the first with its value. To implement [Deduplicate](#deduplicate) in terms of Mark Firsts, just filter out the duplicates with `∊⊸/`.
 
         ∊   3‿1‿4‿1‿5‿9‿2‿6‿5
 
