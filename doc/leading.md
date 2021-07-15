@@ -96,11 +96,11 @@ With leading axis agreement, there are `k+1` shapes for arrays that can be added
 
 ### Search functions
 
-The [search functions](search.md) Bins (`⍋⍒`), Index of (`⊐`), Progressive Index of (`⊒`), and Member of (`∊`) look through cells of one argument to find cells of the other. Find (`⍷`) also does a search, but a slightly different one: it tries to find *slices* of cells of `𝕩` that match `𝕨`.
+The [search functions](search.md), Index of (`⊐`), Progressive Index of (`⊒`), and Member of (`∊`), and also [Bins](order.md#bins) (`⍋⍒`), look through cells of one argument to find cells of the other. Find (`⍷`) also does a search, but a slightly different one: it tries to find *slices* of cells of `𝕩` that match `𝕨`.
 
-| Searching through | Look for | Functions
-|-------------------|----------|----------
-| `𝕨`               | `𝕩`      | `⍋⍒⊐⊒`
-| `𝕩`               | `𝕨`      | `∊⍷`
+| Search in | Search for | Functions
+|-----------|------------|----------
+| `𝕨`       | `𝕩`        | `⍋⍒⊐⊒`
+| `𝕩`       | `𝕨`        | `∊⍷`
 
-For all of these functions but Find, the argument to search through is treated as a list of its major cells. It is the rank of these major cells—let's call this rank `c`—that determines how the other argument is treated. That argument must have rank at least `c`, and it is treated as an array of `c`-cells. For example, if the left argument to `⍋` is a matrix, then each 1-cell or row of `𝕩` is treated independently, and each one yields one number in the result: a 0-cell. The result rank of `⍋` is always `𝕨¬○=𝕩`.
+For all of these functions but Find, the searched-in argument is treated as a list of its major cells, and the searched-for argument is considered a collection of cells with the same rank. See the [search function documentation](search.md#higher-ranks).
