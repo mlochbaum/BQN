@@ -2,4 +2,4 @@
 
 # Generate HTML files from markdown ones
 # Argument gives specific files if present; otherwise convert everything
-./dzref md.bqn ${1-*.md */*.md} ${@:2:$#}
+./dzref md.bqn ${1-*.md */*.md */*/*.md} ${@:2:$#}
