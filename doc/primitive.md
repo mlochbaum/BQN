@@ -51,9 +51,9 @@ Functions that have significant differences from APL functions are marked with a
 | `⍒`   | [Grade Down](order.md#grade)                        | [Bins Down](order.md#bins)
 | `⊏`   | [First Cell](select.md)*                            | [Select](select.md)*
 | `⊑`   | [First](pick.md#first)                              | [Pick](pick.md)*
-| `⊐`   | [Classify](selfcmp.md#classify)* (`⍷⊸⊐`)            | [Index of](https://aplwiki.com/wiki/Index_Of)
-| `⊒`   | [Occurrence Count](selfcmp.md#occurrence-count)*    | Progressive Index of*
-| `∊`   | [Mark Firsts](selfcmp.md#mark-firsts)               | [Member of](https://aplwiki.com/wiki/Membership)
+| `⊐`   | [Classify](selfcmp.md#classify)*                    | [Index of](search.md#index-of)
+| `⊒`   | [Occurrence Count](selfcmp.md#occurrence-count)*    | [Progressive Index of](search.md#progressive-index-of)*
+| `∊`   | [Mark Firsts](selfcmp.md#mark-firsts)               | [Member of](search.md#member-of)
 | `⍷`   | [Deduplicate](selfcmp.md#deduplicate)               | [Find](https://aplwiki.com/wiki/Find)
 | `⊔`   | [Group Indices](group.md)*                          | [Group](group.md)*
 | `!`   | [Assert](assert.md)*                                | [Assert with Message](assert.md)*
