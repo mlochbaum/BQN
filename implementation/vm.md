@@ -19,23 +19,33 @@ dzaima/BQN can interpret bytecode or convert it to [JVM](https://en.wikipedia.or
 The complete bytecode for a program consists of the following:
 * A bytecode sequence `code`
 * A list `consts` of constants that can be loaded
-* A list `blocks` of block information, described in the next section
+* A list `blocks` of per-block information, described in the next section
+* A list `bodies` of per-body information, described in the section after
 * Optionally, source locations for each instruction
 * Optionally, tokenization information
 
-### Blocks
+#### Blocks
 
-Each block in `blocks` is a list of the following properties:
+Each entry in `blocks` is a list of the following properties:
 * Block type: (0) function/immediate, (1) 1-modifier, (2) 2-modifier
 * Block immediateness: (1) immediate or (0) deferred
-* Block starting index in `code`
+* Index or indices in `bodies`
+
+Compilation separates blocks so that they are not nested in bytecode. A block consists of bodies, so that all compiled code is contained in some body of a block. The self-hosted compiler compiles the entire program into an immediate block, and the program is run by evaluating this block. Bodies are terminated with a RETN or RETD instruction.
+
+When the block is evaluated depends on its type and immediateness. An immediate block (0,1) is evaluated as soon as it is pushed; a function (0,0) is evaluated when called on arguments, an immediate modifier (1 or 2, 1) is evaluated when called on operands, and a deferred modifier (1 or 2, 0) creates a derived function when called on operands and is evaluated when this derived function is called on arguments.
+
+The last property can be a single number, or, if it's a deferred block, might be a pair of lists. For a single number the block is always evaluated by evaluating the body with the given index. For a pair, the first element gives the monadic case and the second the dyadic one. A given valence should begin at the first body in the appropriate list, moving to the next one if a header test (SETH instruction) fails.
+
+#### Bodies
+
+Bodies in a block are separated by `;`. Each entry in `bodies` is a list containing:
+* Starting index in `code`
 * Number of variables the block needs to allocate
 * Variable names, as indices into the program's symbol list
 * A mask indicating which variables are exported
 
-Compilation separates blocks so that they are not nested in bytecode. All compiled code is contained in some block. The self-hosted compiler compiles the entire program into an immediate block, and the program is run by evaluating this block. Blocks are terminated with the RETN instruction.
-
-The starting index refers to the position where execution starts in order to evaluate the block. When the block is evaluated depends on its type and immediateness. An immediate block (0,1) is evaluated as soon as it is pushed; a function (0,0) is evaluated when called on arguments, an immediate modifier (1 or 2, 1) is evaluated when called on operands, and a deferred modifier (1 or 2, 0) creates a derived function when called on operands and is evaluated when this derived function is called on arguments.
+The starting index refers to the position in bytecode where execution starts in order to evaluate the block. Different bodies will always have the same set of special names, but the variables they define are unrelated, so of course they can have different counts. The given number of variables includes special names, but list of names and export mask don't.
 
 The program's symbol list is included in the tokenization information `t`: it is `0⊑2⊑t`. Since the entire program (the source code passed in one compiler call) uses this list, namespace field accesses can be performed with indices alone within a program. The symbol list is needed for cross-program access, for example if `•BQN` returns a namespace.
 
