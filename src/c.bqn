@@ -157,7 +157,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   PN←1(∾/∾˜)(∨/⊣)⋄H←cb¬∘PN⊢⋄HE←H∘=          # Which bodies have a property
   sn←(0‿3‿5‿6+⊑bI)⍋𝕩⋄sp←/𝕩 M bI             # Special name index
   fx←H 1=sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸HE⌈2×3⊸HE)sn # Body immediacy ¬fx and type ft
-  "Block cases must be of the same kind"_err_(/CB) 1↓cf<»⊸≠fr
+  "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓cm>fx
+  "Block bodies must be of the same kind"_err_(/CB) 1↓cf<»⊸≠ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
 
