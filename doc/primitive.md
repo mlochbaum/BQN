@@ -39,8 +39,8 @@ Functions that have significant differences from APL functions are marked with a
 | `⥊`   | [Deshape](reshape.md)                               | [Reshape](reshape.md)*
 | `∾`   | [Join](join.md)*                                    | [Join to](join.md)
 | `≍`   | [Solo](couple.md)*                                  | [Couple](couple.md)*
-| `↑`   | [Prefixes](prefixes.md)*                            | [Take](https://aplwiki.com/wiki/Take)
-| `↓`   | [Suffixes](prefixes.md)*                            | [Drop](https://aplwiki.com/wiki/Drop)
+| `↑`   | [Prefixes](prefixes.md)*                            | [Take](take.md)
+| `↓`   | [Suffixes](prefixes.md)*                            | [Drop](take.md)
 | `↕`   | [Range](range.md)                                   | [Windows](windows.md)*
 | `»`   | [Nudge](shift.md)*                                  | [Shift Before](shift.md)*
 | `«`   | [Nudge Back](shift.md)*                             | [Shift After](shift.md)*

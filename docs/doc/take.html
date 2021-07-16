@@ -33,3 +33,122 @@
   </g>
 </svg>
 
+<p>The basic idea of Take (<code><span class='Function'>↑</span></code>) is to get the first few elements of a list, while Drop (<code><span class='Function'>↓</span></code>) removes those and returns the rest. Then they are extended in like a billion ways.</p>
+<ul>
+<li><code><span class='Value'>𝕩</span></code> can be an atom, or array of any rank (the result will be an array).</li>
+<li><code><span class='Value'>𝕨</span></code> can be negative to take or drop from the end instead of the beginning.</li>
+<li>For Take, if <code><span class='Value'>𝕨</span></code> is larger than the length of <code><span class='Value'>𝕩</span></code>, then fills are added.</li>
+<li><code><span class='Value'>𝕨</span></code> can have multiple numbers corresponding to leading axes of <code><span class='Value'>𝕩</span></code>.</li>
+<li><code><span class='Value'>𝕨</span></code> is allowed to be longer than the rank of <code><span class='Value'>𝕩</span></code>; <code><span class='Value'>𝕩</span></code> will be extended to fit.</li>
+</ul>
+<p>These extensions can be combined as well, so there are a lot of possibilities. A good picture to have in mind is cutting out a corner of the array <code><span class='Value'>𝕩</span></code>. This is because the result <code><span class='Value'>𝕨</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code> or <code><span class='Value'>𝕨</span><span class='Function'>↓</span><span class='Value'>𝕩</span></code> always aligns with one side of <code><span class='Value'>𝕩</span></code> along each axis, so it aligns with the corner where those sides meet.</p>
+<p>The result <code><span class='Value'>d</span><span class='Function'>↓</span><span class='Value'>𝕩</span></code> is always the same as <code><span class='Value'>t</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code> for some other argument <code><span class='Value'>t</span></code>, but computing <code><span class='Value'>t</span></code> wouldn't be too convenient. The reverse isn't true: only Take can insert fills, so results that include them can't come from Drop.</p>
+<h2 id="one-axis">One axis</h2>
+<p>Let's start with a natural number <code><span class='Value'>𝕨</span></code>. Take gives the first <code><span class='Value'>𝕨</span></code> major cells of <code><span class='Value'>𝕩</span></code> (or elements of a list), while Drop gives all but the first <code><span class='Value'>𝕨</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NCDihpEgInRha2UgYW5kIGRyb3AiCjQg4oaTICJ0YWtlIGFuZCBkcm9wIgoKMSDihpMgPiJtYWoi4oC/Im9yYyLigL8iZWxsIg==">↗️</a><pre>    <span class='Number'>4</span> <span class='Function'>↑</span> <span class='String'>&quot;take and drop&quot;</span>
+"take"
+    <span class='Number'>4</span> <span class='Function'>↓</span> <span class='String'>&quot;take and drop&quot;</span>
+" and drop"
+
+    <span class='Number'>1</span> <span class='Function'>↓</span> <span class='Function'>&gt;</span><span class='String'>&quot;maj&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;orc&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;ell&quot;</span>
+┌─     
+╵"orc  
+  ell" 
+      ┘
+</pre>
+<p>If <code><span class='Value'>𝕨</span></code> is too large it's usually not a problem. For Take, fill elements are added to the end to bring <code><span class='Value'>𝕩</span></code> up to the required length—although this <em>will</em> fail if <code><span class='Value'>𝕩</span></code> has no fill element. For Drop, the result is an empty array.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVNgoKMTAg4oaRIOKGlTYKCjEwIOKGkyDihpU2CgriiaIgNSDihpMg4oaVM+KAvznigL8y">↗️</a><pre>    <span class='Function'>↕</span><span class='Number'>6</span>
+⟨ 0 1 2 3 4 5 ⟩
+
+    <span class='Number'>10</span> <span class='Function'>↑</span> <span class='Function'>↕</span><span class='Number'>6</span>
+⟨ 0 1 2 3 4 5 0 0 0 0 ⟩
+
+    <span class='Number'>10</span> <span class='Function'>↓</span> <span class='Function'>↕</span><span class='Number'>6</span>
+⟨⟩
+
+    <span class='Function'>≢</span> <span class='Number'>5</span> <span class='Function'>↓</span> <span class='Function'>↕</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+⟨ 0 9 2 ⟩
+</pre>
+<p>If <code><span class='Value'>𝕩</span></code> is an atom or unit array, it's converted to a list first. For Take this is useful to make an array of mostly fills; for Drop it's pretty much useless.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MTAg4oaRIDkKCjMg4oaTIDwiZWxlbWVudCI=">↗️</a><pre>    <span class='Number'>10</span> <span class='Function'>↑</span> <span class='Number'>9</span>
+⟨ 9 0 0 0 0 0 0 0 0 0 ⟩
+
+    <span class='Number'>3</span> <span class='Function'>↓</span> <span class='Function'>&lt;</span><span class='String'>&quot;element&quot;</span>
+⟨⟩
+</pre>
+<h3 id="negative-argument">Negative argument</h3>
+<p>If <code><span class='Value'>𝕨</span></code> is negative then wraps around the other side to take or drop from the end of <code><span class='Value'>𝕩</span></code>. It's a lot like negative indices in <a href="select.html">Select</a> (<code><span class='Function'>⊏</span></code>), but while negative indices are asymmetric—<code><span class='Number'>0</span></code> is the first entry but <code><span class='Number'>¯1</span></code> is the last—this case is symmetric. It's because the place to cut is always <em>before</em> the index <code><span class='Value'>𝕨</span></code>, cancelling out the negative index asymmetry.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDihpEgImFiY2RlRURDQkEiCgrCrzMg4oaRICJhYmNkZUVEQ0JBIiAgIyBMYXN0IHRocmVlCgrCrzMg4oaTICJhYmNkZUVEQ0JBIiAgIyBBbGwgYnV0IHRoZSBsYXN0IHRocmVl">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>↑</span> <span class='String'>&quot;abcdeEDCBA&quot;</span>
+"abc"
+
+    <span class='Number'>¯3</span> <span class='Function'>↑</span> <span class='String'>&quot;abcdeEDCBA&quot;</span>  <span class='Comment'># Last three
+</span>"CBA"
+
+    <span class='Number'>¯3</span> <span class='Function'>↓</span> <span class='String'>&quot;abcdeEDCBA&quot;</span>  <span class='Comment'># All but the last three
+</span>"abcdeED"
+</pre>
+<p>What about <code><span class='Number'>0</span></code>? It behaves like it's both positive <em>and</em> negative. For Take, the first 0 and last 0 cells are indistinguishable, because they're both empty. For Drop, if you remove 0 cells it doesn't matter whether you start at the front or the back, because you're not going to do anything either way.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MCDihpEgNOKAvzPigL8yICAjIE5vdGhpbmcKCjAg4oaTIDTigL8z4oC/MiAgIyBFdmVyeXRoaW5n">↗️</a><pre>    <span class='Number'>0</span> <span class='Function'>↑</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span>  <span class='Comment'># Nothing
+</span>⟨⟩
+
+    <span class='Number'>0</span> <span class='Function'>↓</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span>  <span class='Comment'># Everything
+</span>⟨ 4 3 2 ⟩
+</pre>
+<p>If <code><span class='Function'>|</span><span class='Value'>𝕨</span></code> is too large, then Take will insert fills at the beginning to keep the result aligned with <code><span class='Value'>𝕩</span></code> at the end. Drop returns an empty array as in the positive case. So unlike <a href="reverse.html">Rotate</a> (<code><span class='Function'>⌽</span></code>), which is completely cyclical, Take and Drop work cyclically only around 0.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wq82IOKGkSAieHki">↗️</a><pre>    <span class='Number'>¯6</span> <span class='Function'>↑</span> <span class='String'>&quot;xy&quot;</span>
+"    xy"
+</pre>
+<h2 id="multiple-axes">Multiple axes</h2>
+<p>In the general case <code><span class='Value'>𝕨</span></code> is a list of integers. They're matched with the leading axes of <code><span class='Value'>𝕩</span></code>, so that each affects one axis independently from the others.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIG0g4oaQICgxMMOX4oaVNSkgK+KMnCDihpU3CgrCrzTigL8yIOKGkSBtICAjIExhc3QgZm91ciByb3dzOyBmaXJzdCB0d28gY29sdW1ucwoKwq804oC/MiDihpMgbQ==">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>m</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Number'>10</span><span class='Function'>×↕</span><span class='Number'>5</span><span class='Paren'>)</span> <span class='Function'>+</span><span class='Modifier'>⌜</span> <span class='Function'>↕</span><span class='Number'>7</span>
+┌─                      
+╵  0  1  2  3  4  5  6  
+  10 11 12 13 14 15 16  
+  20 21 22 23 24 25 26  
+  30 31 32 33 34 35 36  
+  40 41 42 43 44 45 46  
+                       ┘
+
+    <span class='Number'>¯4</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>↑</span> <span class='Value'>m</span>  <span class='Comment'># Last four rows; first two columns
+</span>┌─       
+╵ 10 11  
+  20 21  
+  30 31  
+  40 41  
+        ┘
+
+    <span class='Number'>¯4</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>↓</span> <span class='Value'>m</span>
+┌─           
+╵ 2 3 4 5 6  
+            ┘
+</pre>
+<p>Now Take and Drop taken together don't include the whole array. Take includes the elements that are selected on <em>every</em> axis, while Drop excludes the ones selected on <em>any</em> axis. They are opposite corners that meet at some point in the middle of the array (here, at the spot between <code><span class='Number'>2</span></code> and <code><span class='Number'>11</span></code>).</p>
+<p>Any integer values at all can be used, in any combination. Here one axis is shortened and the other's padded with fills. The result of Take has shape <code><span class='Function'>|</span><span class='Value'>𝕨</span></code>, maybe plus some trailing axes from <code><span class='Value'>𝕩</span></code>. Of course, if that's too big for your available memory, your BQN implementation probably can't compute it for you!</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAv8KvMTIg4oaRIG0KCuKJoiA54oC/wq80IOKGkSDihpU34oC/NuKAvzUgICMgVHJhaWxpbmcgc2hhcGUgZXhhbXBsZQ==">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>¯12</span> <span class='Function'>↑</span> <span class='Value'>m</span>
+┌─                                
+╵ 0 0 0 0 0  0  1  2  3  4  5  6  
+  0 0 0 0 0 10 11 12 13 14 15 16  
+  0 0 0 0 0 20 21 22 23 24 25 26  
+                                 ┘
+
+    <span class='Function'>≢</span> <span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>¯4</span> <span class='Function'>↑</span> <span class='Function'>↕</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>5</span>  <span class='Comment'># Trailing shape example
+</span>⟨ 9 4 5 ⟩
+</pre>
+<p>If the rank of <code><span class='Value'>𝕩</span></code> is <em>smaller</em> than the length of <code><span class='Value'>𝕨</span></code>, then length-1 axes are added to the beginning until it's equal. Mostly this will be used with Take when <code><span class='Value'>𝕩</span></code> is a unit, producing an array that contains <code><span class='Value'>𝕩</span></code> and a lot of fills.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAvzQg4oaRIDwx4oC/MQ==">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>↑</span> <span class='Function'>&lt;</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+┌─                                 
+╵ ⟨ 1 1 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩  
+  ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩  
+  ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩  
+                                  ┘
+</pre>
+<p>This property also enables a nice little trick with Drop. If <code><span class='Value'>𝕨</span></code> is a list of zeros, Drop won't do anything—except extend the rank of <code><span class='Value'>𝕩</span></code>. So <code><span class='Paren'>(</span><span class='Value'>r</span><span class='Function'>⥊</span><span class='Number'>0</span><span class='Paren'>)</span><span class='Function'>↓</span><span class='Value'>a</span></code>, or <code><span class='Value'>r</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span> <span class='Value'>a</span></code>, ensures <code><span class='Value'>a</span></code> is an array with rank at least <code><span class='Value'>r</span></code> but doesn't change any of the elements. As a special case, <code><span class='Bracket'>⟨⟩</span><span class='Function'>↓</span><span class='Value'>v</span></code> <a href="enclose.html">Encloses</a> an atom argument but otherwise has no effect.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omiICgz4qWKMCkg4oaTIDMKCuKJoiAoM+KlijApIOKGkyDihpUzCgriiaIgKDPipYowKSDihpMg4oaVNeKAvzTigL8z4oC/Mg==">↗️</a><pre>    <span class='Function'>≢</span> <span class='Paren'>(</span><span class='Number'>3</span><span class='Function'>⥊</span><span class='Number'>0</span><span class='Paren'>)</span> <span class='Function'>↓</span> <span class='Number'>3</span>
+⟨ 1 1 1 ⟩
+
+    <span class='Function'>≢</span> <span class='Paren'>(</span><span class='Number'>3</span><span class='Function'>⥊</span><span class='Number'>0</span><span class='Paren'>)</span> <span class='Function'>↓</span> <span class='Function'>↕</span><span class='Number'>3</span>
+⟨ 1 1 3 ⟩
+
+    <span class='Function'>≢</span> <span class='Paren'>(</span><span class='Number'>3</span><span class='Function'>⥊</span><span class='Number'>0</span><span class='Paren'>)</span> <span class='Function'>↓</span> <span class='Function'>↕</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+⟨ 5 4 3 2 ⟩
+</pre>
