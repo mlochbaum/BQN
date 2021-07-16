@@ -2,7 +2,7 @@
 
 # Transpose
 
-As in APL, Transpose (`⍉`) is a tool for rearranging the axes of an array. BQN's version is tweaked to align better with the leading axis model and make common operations easier.
+Transpose (`⍉`) is a tool for rearranging the axes of an array. BQN's version is tweaked relative to APL to align better with the leading axis model and make common operations easier.
 
 ## Transpose basics
 
@@ -22,12 +22,13 @@ With two axes the only interesting operation of this sort is to swap them (and w
 
 APL extends matrix transposition to any rank by reversing all axes for its monadic `⍉`, but this generalization isn't very natural and is almost never used. The main reason for it is to maintain the equivalence `a MP b ←→ b MP⌾⍉ a`, where `MP ← +˝∘×⎉1‿∞` is the generalized matrix product. But even here APL's Transpose is suspect. It does much more work than it needs to, as we'll see.
 
-BQN's transpose takes the first axis of its argument and moves it to the end.
+BQN's transpose takes the first axis of `𝕩` and moves it to the end.
 
         ≢ a23456 ← ↕2‿3‿4‿5‿6
+
         ≢ ⍉ a23456
 
-In terms of the argument data as given by Deshape (`⥊`), this looks like a simple 2-dimensional transpose: one axis is exchanged with a compound axis made up of the other axes. Here we transpose a rank 3 matrix:
+In terms of the argument data as given by [Deshape](reshape.md#deshape) (`⥊`), this looks like a simple 2-dimensional transpose: one axis is exchanged with a compound axis made up of the other axes. Here we transpose a rank 3 matrix:
 
         a322 ← 3‿2‿2⥊↕12
         ≍○<⟜⍉ a322
@@ -36,9 +37,10 @@ But, ignoring the whitespace and going in reading order, the argument and result
 
         ≍○<⟜⍉ ⥊˘ a322
 
-To exchange multiple axes, use the Power modifier. A negative power moves axes in the other direction, just like how Rotate handles negative left arguments. In particular, to move the last axis to the front, use Undo (as you might expect, this exactly inverts `⍉`).
+To exchange multiple axes, use the [Repeat](repeat.md) modifier. A negative power moves axes in the other direction, just like how [Rotate](reverse.md#rotate) handles negative left arguments. In particular, to move the last axis to the front, use Undo (as you might expect, this exactly inverts `⍉`).
 
         ≢ ⍉⍟3 a23456
+
         ≢ ⍉⁼ a23456
 
 In fact, we have `≢⍉⍟k a ←→ k⌽≢a` for any whole number `k` and array `a`.
@@ -47,11 +49,11 @@ To move axes other than the first, use the Rank modifier in order to leave initi
 
         ≢ ⍉⎉3 a23456
 
-And of course, Rank and Power can be combined to do more complicated transpositions: move a set of contiguous axes with any starting point and length to the end.
+And of course, Rank and Repeat can be combined to do more complicated transpositions: move a set of contiguous axes with any starting point and length to the end.
 
         ≢ ⍉⁼⎉¯1 a23456
 
-Using these forms, we can state BQN's generalized matrix product swapping rule:
+Using these forms (and the [Rank](shape.md) function), we can state BQN's generalized matrix product swapping rule:
 
     a MP b  ←→  ⍉⍟(1-=a) (⍉b) MP (⍉⁼a)
 
@@ -65,20 +67,21 @@ In a case like this BQN's Dyadic transpose is much easier.
 
 ## Dyadic Transpose
 
-Transpose also allows a left argument that specifies a permutation of the right argument's axes. For each index `p←i⊏𝕨` in the left argument, axis `i` of the argument is used for axis `p` of the result. Multiple argument axes can be sent to the same result axis, in which case that axis goes along a diagonal of the argument array, and the result will have a lower rank than the argument.
+Transpose also allows a left argument that specifies a permutation of `𝕩`'s axes. For each index `p←i⊑𝕨` in the left argument, axis `i` of `𝕩` is used for axis `p` of the result. Multiple argument axes can be sent to the same result axis, in which case that axis goes along a diagonal of `𝕩`, and the result will have a lower rank than `𝕩`.
 
         ≢ 1‿3‿2‿0‿4 ⍉ a23456
+
         ≢ 1‿2‿2‿0‿0 ⍉ a23456  # Don't worry too much about this case though
 
 Since this kind of rearrangement can be counterintuitive, it's often easier to use `⍉⁼` when specifying all axes. If `p≡○≠≢a`, then we have `≢p⍉⁼a ←→ p⊏≢a`.
 
         ≢ 1‿3‿2‿0‿4 ⍉⁼ a23456
 
-So far, all like APL. BQN makes one little extension, which is to allow only some axes to be specified. The left argument will be matched up with leading axes of the right argument. Those axes are moved according to the left argument, and remaining axes are placed in order into the gaps between them.
+So far, all like APL. BQN makes one little extension, which is to allow only some axes to be specified. Then `𝕨` will be matched up with [leading axes](leading.md) of `𝕩`. Those axes are moved according to `𝕨`, and remaining axes are placed in order into the gaps between them.
 
         ≢ 0‿2‿4 ⍉ a23456
 
-In particular, the case with only one argument specified is interesting. Here, the first axis ends up at the given location. This gives us a much better solution to the problem at the end of the last section.
+In particular, the case with only one axis specified is interesting. Here, the first axis ends up at the given location. This gives us a much better solution to the problem at the end of the last section.
 
         ≢ 2 ⍉ a23456  # Restrict Transpose to the first three axes
 
@@ -88,8 +91,8 @@ Finally, it's worth noting that, as monadic Transpose moves the first axis to th
 
 Here we define the two valences of Transpose more precisely.
 
-Monadic transpose is identical to `(=-1˙)⊸⍉`, except that if the argument is a unit it is returned unchanged rather than giving an error.
+An atom right argument to either valence of Transpose is always enclosed to get an array before doing anything else.
 
-An atom right argument to dyadic Transpose is always enclosed to get an array before doing anything else.
+Monadic transpose is identical to `(=-1˙)⊸⍉`, except that if `𝕩` is a unit it is returned unchanged (after enclosing, if it's an atom) rather than giving an error.
 
-In dyadic Transpose, the left argument is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
+In dyadic Transpose, `𝕨` is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the right argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.

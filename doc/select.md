@@ -32,7 +32,7 @@ tp ← (1‿2/tx‿tw) ≍¨¨ y
 ⟩
 -->
 
-The function Select (`⊏`) reorganizes the array `𝕩` along one or more axes based on [indices](indices.md) given by `𝕨`. The result has the same [depth](depth.md) as `𝕩`, since its elements are always elements of `𝕩`. This means it differs from Pick (`⊑`), which takes elements from `𝕩` but can arrange them in any nested structure, including returning an element directly.
+The function Select (`⊏`) reorganizes the array `𝕩` along one or more axes based on [indices](indices.md) given by `𝕨`. The result has the same [depth](depth.md) as `𝕩`, since its elements are always elements of `𝕩`. This means it differs from [Pick](pick.md) (`⊑`), which takes elements from `𝕩` but can arrange them in any nested structure, including returning an element directly.
 
 The monadic form First Cell (`⊏`) gets the major cell with index 0, so that `⊏𝕩` is identical to `0⊏𝕩`.
 
@@ -80,7 +80,9 @@ To find the first and last cells of `𝕩`, use `0‿¯1` for the left argument.
 
         0‿¯1 ⊏ m
 
-More generally, `𝕨` can be an array of any rank. Each of its 0-cells—containing a single number—is replaced with a cell of `𝕩` in the result. The result's shape is then made up of the shape of `𝕨` and the major cell shape of `𝕩`: it's `(≢𝕨)∾1↓≢𝕩`. When `𝕩` is a list, the result has the same shape as `𝕨`. Elements of `𝕨` are replaced one-for-one with elements of `𝕩`.
+More generally, `𝕨` can be an array of any rank. Each of its 0-cells—containing a single number—is replaced with a cell of `𝕩` in the result. The result's shape is then made up of the shape of `𝕨` and the major cell shape of `𝕩`: it's `(≢𝕨)∾1↓≢𝕩`.
+
+When `𝕩` is a list, the result has the same shape as `𝕨`. Elements of `𝕨` are replaced one-for-one with elements of `𝕩`.
 
         2|m
 
@@ -102,9 +104,9 @@ Select also allows `𝕨` to apply to multiple axes of `𝕩` simultaneously. Fo
 
         ⟨2‿1, 3‿0‿0⟩ ⊏ ↕3‿4
 
-Using a [range](range.md) for `𝕩` shows the structure of the selected elements more clearly, because each element is its own index. Each element of `𝕨` acts independently, giving a structure like the Table modifier.
+Using a [range](range.md) for `𝕩` shows the structure of the selected elements more clearly, because each element is its own index. Each element of `𝕨` acts independently, giving a structure like the [Table](map.md#table) modifier.
 
-While `𝕨` must have rank one or less, its elements can have any rank. When the elements are units, the corresponding axis of `𝕩` disappears from the result. We can select a 0-cell of `𝕩` in this way, although the more common case or selecting an element is handled by Pick.
+While `𝕨` must have rank one or less, its elements can have any rank. When the elements are units, the corresponding axis of `𝕩` disappears from the result. We can select a 0-cell of `𝕩` in this way, although the more common case of selecting an element is handled by [Pick](pick.md).
 
         ⟨<4,<5,<1⟩ ⊏ (3⥊10)⥊↕1e3
         ⟨ 4, 5, 1⟩ ⊑ (3⥊10)⥊↕1e3
@@ -115,4 +117,4 @@ However, the `<¨⊸⊏` construct can select a cell of any rank from `𝕩`, be
 
 If an element of `𝕨` has rank more than 1, it increases the rank of `𝕩` rather than decreasing it. The general rule is that in the result, one axis of `𝕩` is replaced by all the axes of the corresponding element of `𝕨` (trailing axes are unchanged). So the final shape `≢𝕨⊏𝕩` is `(∾≢¨𝕨)∾𝕨≠⊸↓≢𝕩`. But this shape doesn't affect the elements retrieved from `𝕩`. In all cases, using `⥊¨𝕨` for the left argument and then [reshaping](reshape.md) the result would yield the same value.
 
-Selection only ever applies to leading axes of `𝕩`. But you can skip some leading axes using `˘` or `⎉`, to select on any contiguous set of axes. In particular, use the one-axis case `𝕨⊸⊏⎉(-k) 𝕩` to select along axis `k` of `𝕩`.
+Selection only ever applies to leading axes of `𝕩`. However, you can skip some leading axes using `˘` or `⎉`, to select on any contiguous set of axes. In particular, use the one-axis case `𝕨⊸⊏⎉(-k) 𝕩` to select along axis `k` of `𝕩`.

@@ -2,7 +2,7 @@
 
 # Reverse and Rotate
 
-The symbol `⌽` indicates two different array transformations: with no left argument, it reverses the major cells of the array, but with a left argument, it rotates or cycles them around. These two possibilities, first put together in very early versions of APL, can't be considered restrictions or different views of some unifying function, but there are connections between them. Each returns an array with the same shape and all the same elements as `𝕩`, possibly in a different arrangement. And elements that start out next to each other in `𝕩` generally stay next to each other—always, if we consider an element on one edge to be next to the one opposite to it. One might think of them as [isometries](https://en.wikipedia.org/wiki/Isometry) preserving a discrete subgroup of the torus, if one were inclined to think such things. On major cells, the two functions decompose the [dihedral group](https://en.wikipedia.org/wiki/Dihedral_group) okay I'll stop.
+The symbol `⌽` indicates two different array transformations: with no left argument, it reverses the major cells of the array, but with a left argument, it rotates or cycles them around. These two possibilities, first put together in very early versions of APL, can't be considered restrictions or different views of some unifying function, but there are connections between them. Each returns an array with the same [shape](shape.md) and all the same elements as `𝕩`, possibly in a different arrangement. And elements that start out next to each other in `𝕩` generally stay next to each other—always, if we consider an element on one edge to be next to the one opposite to it. One might think of them as [isometries](https://en.wikipedia.org/wiki/Isometry) preserving a discrete subgroup of the torus, if one were inclined to think such things. On major cells, the two functions decompose the [dihedral group](https://en.wikipedia.org/wiki/Dihedral_group) okay I'll stop.
 
 Many uses of Rotate in APL are better handled by [shift](shift.md) functions in BQN. If there's no reason to treat the data as cyclic or periodic, it's best to avoid Rotate.
 
@@ -36,7 +36,7 @@ Reverse is its own inverse `⌽⁼`. As a result, `𝔽⌾⌽` reverses the argu
 
 ## Rotate
 
-Rotate moves elements in a list around cyclically. It can also rotate any number of axes of the argument array by different amounts at once. That's discussed in the next section; for now we'll stick to a single number in the left argument. It has to be an integer, and the right argument has to be an array with at least one axis.
+Rotate moves elements in a list around cyclically. It can also rotate any number of axes of the argument array by different amounts at once. That's discussed in the next section; for now we'll stick to a single number for `𝕨`. It has to be an integer, and `𝕩` has to be an array with at least one axis.
 
         2 ⌽ "rotate"
 
@@ -44,13 +44,13 @@ Rotate moves elements in a list around cyclically. It can also rotate any number
 
         2 ⌽ 'c'  # No axes to rotate
 
-Elements are always rotated to the left, so that entry `i` of the result is entry `𝕨+i` of the argument—or rather, entry `(≠𝕩)|𝕨+i` to enable elements to cycle around. This can be seen directly by using `↕n` as an argument: in this case, the value of `𝕩` at index `i` is just `i`.
+Elements are always rotated to the left, so that entry `i` of the result is entry `𝕨+i` of the argument—or rather, entry `(≠𝕩)|𝕨+i` to enable elements to cycle around. This can be seen directly by using the [range](range.md) `↕n` as an argument: then the value of `𝕩` at index `i` is just `i`.
 
         2 ⌽ ↕6
 
-The rotation `(≠𝕩)⌽𝕩` moves each element the entire length of `𝕩`, which just places it back where it started. In fact, adding `≠𝕩` to the rotation amount never changes the behavior or the rotation. In terms of indices, this is because `(≠𝕩)|(≠𝕩)+a` is `a`.
+The rotation `(≠𝕩)⌽𝕩` moves each element the entire [length](shape.md) of `𝕩`, which just places it back where it started. In fact, adding `≠𝕩` to the rotation amount never changes the behavior or the rotation. In terms of indices, this is because `(≠𝕩)|(≠𝕩)+a` is `a`.
 
-To rotate the other way, use a negative left argument (so `-⊸⌽` is a simple way to write "reverse rotate"). This will always be the same as a leftwards rotation, since `(-r)⌽𝕩` is `((≠𝕩)-r)⌽𝕩`, but could be more convenient.
+To rotate the other way, use a negative left argument (so `-⊸⌽` is a simple way to write "reverse rotate"). This will always be the same as some leftwards rotation, since `(-r)⌽𝕩` is `((≠𝕩)-r)⌽𝕩`, but could be more convenient.
 
         ¯2 ⌽ "rotate"
 

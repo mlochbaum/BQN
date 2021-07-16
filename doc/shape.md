@@ -8,7 +8,7 @@ Rank can be defined as `≠∘≢` while Length can be defined with a [fold](fol
 
 ## Examples
 
-The function [Reshape](reshape.md) (`⥊`) always returns an array of shape `𝕨`, so we use it to make an array of shape `1‿3‿2‿6` in the example below ([Take](take.md) (`↑`) shares this property).
+The function [Reshape](reshape.md) (`⥊`) always returns an array of shape `𝕨`, so we use it to make an array of shape `1‿3‿2‿6` in the example below ([Take](take.md) (`↑`) shares this property if `(≠𝕨)≤=𝕩`).
 
         ⊢ arr ← 1‿3‿2‿6 ⥊ '0'+↕10
 
@@ -18,11 +18,11 @@ The function [Reshape](reshape.md) (`⥊`) always returns an array of shape `�
 
         = arr  # Rank
 
-The length is the first element of the shape, and the rank is the length of the shape—the number of axes. For another example, taking the first (and only) cell of `arr` gives an array with shape `3‿2‿6`, length `3`, and rank `3`, as we can see by applying each function to `⊏arr`.
+The length is the first element of the shape, and the rank is the length of the shape—the number of axes. For another example, taking the first (and only) cell of `arr` gives an array with shape `3‿2‿6`, length `3`, and rank `3`, as we can see by applying [each](map.md#each) function to `⊏arr`.
 
         ≢‿=‿≠ {𝕎𝕩}¨< ⊏arr
 
-Applying Shape and the other two functions to an atom shows a shape of `⟨⟩`, the empty list, and a rank of zero and length of 1. The same is true of an enclosed array, which like an atom is a kind of unit.
+Applying Shape and the other two functions to an atom shows a shape of `⟨⟩` (the empty list), and a rank of zero and length of 1. The same is true of an enclosed array, which like an atom is a kind of unit.
 
         ≢ 5
 

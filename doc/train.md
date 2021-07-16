@@ -2,7 +2,7 @@
 
 # Function trains
 
-Trains are an important aspect of BQN's [tacit](tacit.md) programming capabilities. In fact, a crucial one: with trains and the identity functions Left (`⊣`) and Right (`⊢`), a fully tacit program can express any explicit function whose body is a statement with `𝕨` and `𝕩` used only as arguments (that is, there are no assignments and `𝕨` and `𝕩` are not used in operands or lists. Functions with assignments may have too many variables active at once to be directly translated but can be emulated by constructing lists. But it's probably a bad idea). Without trains it isn't possible to have two different functions that each use both arguments to a dyadic function. With trains it's perfectly natural.
+Trains are an important aspect of BQN's [tacit](tacit.md) programming capabilities. In fact, a crucial one: with trains and the [identity functions](identity.md) Left (`⊣`) and Right (`⊢`), a fully tacit program can express any explicit function whose body is a statement with `𝕨` and `𝕩` used only as arguments (that is, there are no assignments and `𝕨` and `𝕩` are not used in operands or lists. Functions with assignments may have too many variables active at once to be directly translated but can be emulated by constructing lists. But it's probably a bad idea). Without trains it isn't possible to have two different functions that each use both arguments to a dyadic function. With trains it's perfectly natural.
 
 BQN's trains are the same as those of Dyalog APL, except that Dyalog is missing the minor convenience of BQN's Nothing (`·`). There are many Dyalog-based documents and videos on trains you can view on the [APL Wiki](https://aplwiki.com/wiki/Train).
 
@@ -22,7 +22,7 @@ Here [Couple](couple.md) (`≍`) is used to combine two units into a list, so we
         (·∾⌽) "ab"‿"cde"‿"f"
         ∾∘⌽ "ab"‿"cde"‿"f"
 
-The three functions `∾⌽`, `·∾⌽`, and `∾∘⌽` are completely identical. Why might we want **three** different ways to write the same thing? If we only want to define a function, there's hardly any difference. However, these three forms have different syntax, and might be easier or harder to use in different contexts. As we'll see, we can use `∾∘⌽` inside a train without parenthesizing it, and string `·∾⌽` but not `∾⌽` together with other trains. Let's look at how the train syntax extends to longer expressions.
+The three functions `∾⌽`, `·∾⌽`, and `∾∘⌽` are completely identical: [Join](join.md#join) of [Reverse](reverse.md). Why might we want **three** different ways to write the same thing? If we only want to define a function, there's hardly any difference. However, these three forms have different syntax, and might be easier or harder to use in different contexts. As we'll see, we can use `∾∘⌽` inside a train without parenthesizing it, and string `·∾⌽` but not `∾⌽` together with other trains. Let's look at how the train syntax extends to longer expressions.
 
 ## Longer trains
 
@@ -46,7 +46,7 @@ In a train, arguments alternate strictly with combining functions between them. 
 
 ## Practice training
 
-The train `` ⊢>¯1»⌈` `` is actually a nice trick for marking first occurrences `∊𝕩` given the self-classify `⊐𝕩` without doing another search. Let's take a closer look, first by applying it mechanically. To do this, we apply each "argument" to the train's argument, and then combine them with the combining functions.
+The train `` ⊢>¯1»⌈` `` is actually a nice trick to get the result of [Mark Firsts](selfcmp.md#mark-firsts) `∊𝕩` given the result of [Classify](selfcmp.md#classify) `⊐𝕩`, without doing another search. Let's take a closer look, first by applying it mechanically. To do this, we apply each "argument" to the train's argument, and then combine them with the combining functions.
 
     (⊢ > ¯1 » ⌈`) 𝕩
     (⊢𝕩) > (¯1) » (⌈`𝕩)
@@ -54,15 +54,15 @@ The train `` ⊢>¯1»⌈` `` is actually a nice trick for marking first occurre
 
 So—although not all trains simplify so much—this confusing train is just `` {𝕩>¯1»⌈`𝕩} ``! Why would I write it in such an obtuse way? To someone used to working with trains, the function `` (⊢>¯1»⌈`) `` isn't any more complicated to read: `⊢` in an argument position of a train just means `𝕩` while `` ⌈` `` will be applied to the arguments. Using the train just means slightly shorter code and two fewer `𝕩`s to trip over.
 
-This function's argument is the self-classify `⊐` of some list (in fact this technique also works on the self-indices `𝕩⊐𝕩`). Self-classify moves along its argument, giving each major cell a number: the first unused natural number if that value hasn't been seen yet, and otherwise the number chosen when it was first seen. It can be implemented as `∊⊐⊢`, another train!
+This function's argument is Classify (`⊐`) of some list (in fact this technique also works on the [index-of](search.md#index-of)-self `𝕩⊐𝕩`). Classify moves along its argument, giving each major cell a number: the first unused natural number if that value hasn't been seen yet, and otherwise the number chosen when it was first seen. It can be implemented as `⍷⊐⊢`, another train!
 
         ⊢ sc ← ⊐ "tacittrains"
 
-Each `'t'` is `0`, each `'a'` is `1`, and so on. We'd like to discard some of the information in the self-classify, to just find whether each major cell had a new value. Here are the input and desired result:
+Each `'t'` is `0`, each `'a'` is `1`, and so on. We'd like to discard some of the information from Classify, to just find whether each major cell had a new value. Here are the input and desired result:
 
         sc ≍ ∊ "tacittrains"
 
-The result should be `1` when a new number appears, higher than all the previous numbers. To do this, we first find the highest previous number by taking the maximum-scan `` ⌈` `` of the argument, then [shifting](shift.md) to move the previous maximum to the current position. The first cell is always new, so we shift in a `¯1`, so it will be less than any element of the argument.
+The result should be `1` when a new number appears, higher than all the previous numbers. To do this, we first find the highest previous number by taking the [maximum](arithmetic.md#additional-arithmetic)-[scan](scan.md) `` ⌈` `` of the argument, then [shifting](shift.md) to move the previous maximum to the current position. The first cell is always new, so we shift in a `¯1`, so it will be less than any element of the argument.
 
         ¯1 » ⌈`sc
         (¯1»⌈`) sc
@@ -76,7 +76,7 @@ Now we compare the original list with the list of previous-maximums.
 
 The example above uses a train with five functions: an odd number. Trains with an odd length are always composed of length-3 trains, and they themselves are composed the same way as subject expressions: an odd-length train can be placed in the last position of another train without parentheses, but it needs parentheses to go in any other position.
 
-But we also saw the length-2 train `∾⌽` above. Even-length trains consist of a single function (`∾`) applied to a function or odd-length train (`⌽`); another perspective is that an even-length train is an odd-length train where the left argument of the final (leftmost) function is left out, so it's called with only a right argument. An even-length train *always* needs parentheses if it's used as one of the functions in another train. However, it can also be turned into an odd-length train by placing `·` at the left, making the implicit missing argument explicit. After this it can be used at the end of an odd-length train without parentheses. To get some intuition for even-length trains, let's look at an example of three functions used together: the unique (`⍷`) sorted (`∧`) absolute values (`|`) of an argument list.
+But we also saw the length-2 train `∾⌽` above. Even-length trains consist of a single function (`∾`) applied to a function or odd-length train (`⌽`); another perspective is that an even-length train is an odd-length train where the left argument of the final (leftmost) function is left out, so it's called with only a right argument. An even-length train *always* needs parentheses if it's used as one of the functions in another train. However, it can also be turned into an odd-length train by placing `·` at the left, making the implicit missing argument explicit. After this it can be used at the end of an odd-length train without parentheses. To get some intuition for even-length trains, let's look at an example of three functions used together: the [unique](selfcmp.md#deduplicate) (`⍷`) [sorted](order.md#sort) (`∧`) [absolute values](arithmetic.md#additional-arithmetic) (`|`) of an argument list.
 
         ⍷∧| 3‿4‿¯3‿¯2‿0
 

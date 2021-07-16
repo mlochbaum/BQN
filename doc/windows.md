@@ -12,9 +12,9 @@ We'll start with the one-axis case. Here Window's left argument is a number betw
 
         5↕"abcdefg"
 
-There are `1+(≠𝕩)-𝕨`, or `(≠𝕩)¬𝕨`, of these sections, because the starting index must be at least `0` and at most `(≠𝕩)-𝕨`. Another way to find this result is to look at the number of cells in or before a given slice: there are always `𝕨` in the slice and there are only `≠𝕩` in total, so the number of slices is the range spanned by these two endpoints.
+There are `1+(≠𝕩)-𝕨`, or `(≠𝕩)¬𝕨`, of these sections, because the starting index must be at least `0` and at most `(≠𝕩)-𝕨`. Another way to find this result is to look at the number of cells in or before a given slice: there are always `𝕨` in the slice and there are only `≠𝕩` in total, so the number of slices is the range [spanned](logic.md) by these two endpoints.
 
-You can take a slice of an array `𝕩` that has length `l` and starts at index `i` using `l↑i↓𝕩` or `l↑i⌽𝕩`. The [Prefixes](prefixes.md) function returns all the slices that end at the end of the array (`(≠𝕩)=i+l`), and Suffixes gives the slices that start at the beginning (`i=0`). Windows gives yet another collection of slices: the ones that have a fixed length `l=𝕨`. Selecting one cell from its result gives you the slice starting at that cell's index:
+You can take a slice of an array `𝕩` that has length `l` and starts at index `i` using [Take](take.md) with Drop or [Rotate](reverse.md#rotate): `l↑i↓𝕩` or `l↑i⌽𝕩`. The [Prefixes](prefixes.md) function returns all the slices that end at the end of the array (`(≠𝕩)=i+l`), and Suffixes gives the slices that start at the beginning (`i=0`). Windows gives yet another collection of slices: the ones that have a fixed length `l=𝕨`. Selecting one cell from its result gives you the slice starting at that cell's index:
 
         2⊏5↕"abcdefg"
         5↑2↓"abcdefg"
@@ -33,7 +33,7 @@ Passing a list as the left argument to Windows takes slices along any number of 
 
 The slices are naturally arranged along multiple dimensions according to their starting index. Once again the equivalence `i⊏l↕x` ←→ `l↑i↓x` holds, provided `i` and `l` have the same length.
 
-If the left argument has length `0`, then the argument is not sliced along any dimensions. The only slice that results—the entire argument—is then arranged along an additional zero dimensions. In the end, the result is the same as the argument.
+If `𝕨` has length `0`, then `𝕩` is not sliced along any dimensions. The only slice that results—the entire argument—is then arranged along an additional zero dimensions. In the end, the result is `𝕩`, unchanged.
 
 ### More formally
 
@@ -43,7 +43,7 @@ Using [Group](group.md) we could also write `i⊑z` ←→ `𝕩⊑˜(𝕨∾○
 
 ## Symmetry
 
-Let's look at an earlier example, along with its transpose.
+Let's look at an earlier example, along with its [Transpose](transpose.md) (`⍉`).
 
         {⟨𝕩,⍉𝕩⟩}5↕"abcdefg"
 
@@ -55,21 +55,22 @@ In other words, the i'th element of slice j is the same as the j'th element of s
 
         {(5↕𝕩)≡⍉(3↕𝕩)}"abcdefg"
 
-In general, we need a more complicated transpose—swapping the first set of `≠𝕨` axes with the second set. Note again the use of Span, our slice-length to slice-number converter.
+In general, we need a more complicated transpose—swapping the first set of `≠𝕨` axes with the second set. Note again the use of [Span](logic.md), our slice-length to slice-number converter.
 
         {((5‿6¬2‿2)↕𝕩) ≡ 2‿3⍉(2‿2↕𝕩)} ↕5‿6‿7
 
 ## Applications
 
-Windows can be followed up with a reduction on each slice to give a windowed reduction. Here we take running sums of 3 values.
+Windows can be followed up with a [reduction](fold.md#insert) on each slice to give a windowed reduction. Here we take running sums of 3 values.
 
-        +´˘3↕ ⟨2,6,0,1,4,3⟩
+        +˝˘3↕ ⟨2,6,0,1,4,3⟩
 
-A common task is to act on windows with an initial or final element so the total length stays the same. When using windows of length 2, the best way to accomplish this is with [shift functions](shift.md) like `«` or `»`. If the window length is longer or variable, then a trick with Windows works better: add the elements, and then use windows matching the original length. Here we invert `` +` ``, which requires we take pairwise differences starting at initial value 0.
+A common task is to act on windows with an initial or final element so the total length stays the same. When using windows of length 2, the best way to accomplish this is with a [shift](shift.md) `«` or `»`. If the window length is longer or variable, then a trick with Windows works better: add the elements, and then use windows matching the original length. Here we invert Plus [Scan](scan.md) `` +` ``, which requires we take pairwise differences starting at initial value 0.
 
         -⟜(0»⊢) +` 3‿2‿1‿1
+
         (-˜˝≠↕0∾⊢) +` 3‿2‿1‿1
 
-With Windows, we can modify the 3-element running sum above to keep the length constant by starting with two zeros.
+With Windows, we can modify the 3-element running sum from before to keep the length constant by starting with two zeros.
 
         (+˝≠↕(2⥊0)⊸∾) ⟨2,6,0,1,4,3⟩
