@@ -75,7 +75,7 @@ Classify is also related to [Deduplicate](#deduplicate). In a way they are compl
         ⍷ ⊐ c
         ⊐ ⍷ c
 
-Applying both separately, in contrast, gives completely interesting results. These results contain all information from the original argument, as `⍷` indicates which cells it contained and `⊐` indicates where they were located. The function Select (`⊏`) reconstructs the argument from the two values.
+Applying both separately, in contrast, gives completely interesting results. These results contain all information from the original argument, as `⍷` indicates which cells it contained and `⊐` indicates where they were located. The function [Select](select.md) (`⊏`) reconstructs the argument from the two values.
 
         ⍷ c
         ⊐ c
@@ -89,15 +89,15 @@ Applying both Classify and Deduplicate gives an array that has both properties (
 
 *See the [APL Wiki page](https://aplwiki.com/wiki/Unique_Mask) on this function as well.*
 
-Mark Firsts (`∊`) is the simplest self-search function: it returns `0` for any major cell of the argument that is a duplicate of an earlier cell and `1` for a major cell that's the first with its value. To implement [Deduplicate](#deduplicate) in terms of Mark Firsts, just filter out the duplicates with `∊⊸/`.
+Mark Firsts (`∊`) is the simplest self-search function: it returns `0` for any major cell of the argument that is a duplicate of an earlier cell and `1` for a major cell that's the first with its value. To implement [Deduplicate](#deduplicate) in terms of Mark Firsts, just [filter](replicate.md) out the duplicates with `∊⊸/`.
 
         ∊   3‿1‿4‿1‿5‿9‿2‿6‿5
 
         ∊⊸/ 3‿1‿4‿1‿5‿9‿2‿6‿5
 
-Mark Firsts has other uses, of course. Instead of keeping the unique values, you might remove the first of each value with `¬∘∊⊸/`. You can use `∧´∊` to check that an array has no duplicate major cells, or `+´∘∊` to count the number of unique ones.
+Mark Firsts has other uses, of course. Instead of keeping the unique values, you might remove the first of each value with `¬∘∊⊸/`. You can use `∧´∊` to check that an array has no duplicate major cells, or `+´∊` to count the number of unique ones.
 
-What about marking the elements that appear exactly once? There's a trick for this: find the cells that are firsts running both forwards (`∊`) and backwards (`∊⌾⌽`). Such a cell has no equal before it, nor after it, so it's unique in the entire array.
+What about marking the elements that appear exactly once? There's a trick for this: find the cells that are firsts running both forwards (`∊`) and [backwards](reverse.md) (`∊⌾⌽`). Such a cell has no equal before it, nor after it, so it's unique in the entire array.
 
         (∊∧∊⌾⌽) "duck"‿"duck"‿"teal"‿"duck"‿"goose"
 
@@ -121,11 +121,11 @@ One easy example with Occurrence count is to take a list that has duplicates and
 
         (1=⊒)⊸/ "aaaabcddcc"
 
-An interesting combination is Occurrence Count applied to the result of Indices (`/`). The result counts up to each number from the argument in turn; in other symbols, it's `∾↕¨`. This version is interesting because it doesn't create any nested arrays, just lists of natural numbers.
+An interesting combination is Occurrence Count applied to the result of [Indices](replicate.md#indices) (`/`). The result counts up to each number from the argument in turn; in other symbols, it's `∾↕¨`. This version is interesting because it doesn't create any nested arrays, just lists of natural numbers.
 
         ⊒ / 2‿3‿4
 
-A more efficient way when the interpreter doesn't optimize `⊒` here is `` /(¯1⊸⊑↕⊸-⊏⟜»)+` ``, but that's clearly quite a bit more complicated.
+A more efficient way when `⊒` doesn't have a fast implementation is `` /(¯1⊸⊑↕⊸-⊏⟜»)+` ``, but that's clearly quite a bit more complicated.
 
 ### Deduplicate
 

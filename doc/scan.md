@@ -46,9 +46,9 @@ dim ← ⟨2.5+≠tx,0.75+1⊑ty⟩ ⋄ sh ← ¯2.3‿0
 
 The 1-modifier Scan (`` ` ``) moves along the first axis of the array `𝕩`, building up an array of results by applying `𝔽` repeatedly beginning with `𝕨` or `⊏𝕩`. It's related to the fold modifiers, and most closely resembles the [APL2-style reduction](fold.md#apl2-reduction) `¨˝`, but it traverses the array in forward rather than reverse index order, and includes all intermediate results of `𝔽` in its output instead of just the final one.
 
-BQN's Scan is ordered differently from Scan in APL. Both include one result for each non-empty prefix of `𝕩`. In BQN this is a left-to-right fold, so that each new result requires one application of `𝔽`. APL uses a right-to-left ordering, which matches with reduction, but requires starting over at the end for each new prefix, except in special cases. If needed, this definition can be obtained with a fold on each [prefix](prefixes.md) except the first (which is empty). In the particular case of `-⍀`, that nested solution isn't needed: negate odd-indexed elements and then apply `` +` ``.
+BQN's Scan is ordered differently from Scan in APL. Both include one result for each non-empty prefix of `𝕩`. In BQN this is a left-to-right fold, so that each new result requires one application of `𝔽`. APL uses right-to-left folds, which matches with reduction, but requires starting over at the end for each new prefix, except in special cases. If needed, this definition can be obtained with a fold on each [prefix](prefixes.md) except the first (which is empty). In the particular case of `-⍀`, that nested solution isn't needed: negate odd-indexed elements and then apply `` +` ``.
 
-Scan also differs from Fold or Insert in that it never depends on `𝔽`'s identity element, because scanning over an empty array simply returns that array.
+Scan also differs from Fold or Insert in that it never depends on `𝔽`'s [identity value](fold.md#identity-values), because scanning over an empty array simply returns that array.
 
 ## Lists
 
@@ -58,7 +58,7 @@ The best-known use of Scan is the [prefix sum](https://en.wikipedia.org/wiki/Pre
 
         +`»2‿4‿3‿1  # Exclusive prefix sum
 
-The pattern is generalized to any function `𝔽`. With an operand of `×`, it can find the first *n* factorials. With `⌈`, it returns the largest element so far.
+The pattern is generalized to any function `𝔽`. With an operand of `×`, it can find the first *n* factorials. With [Maximum](arithmetic.md#additional-arithmetic) (`⌈`), it returns the largest element so far.
 
         ×` 1+↕6
 
@@ -80,7 +80,7 @@ The left argument in each result element is always the previous element, if ther
         {c+↩1⋄𝕨+𝕩}` ↕10
         c
 
-Some other useful scans apply to boolean lists. The function `` ∨` `` tests whether this or any previous element is 1, so that the result starts at 0 but permanently switches to 1 as soon as the first 1 is found. Similarly, `` ∧` `` turns all instances of 1 after the first 0 to 0.
+Some other useful scans apply to boolean lists. The function `` ∨` `` (with [Or](logic.md)) tests whether this or any previous element is 1, so that the result starts at 0 but permanently switches to 1 as soon as the first 1 is found. Similarly, `` ∧` `` turns all instances of 1 after the first 0 to 0.
 
         ∨` 0‿0‿1‿0‿0‿1‿0‿1
 
@@ -94,7 +94,7 @@ A more complicated boolean scan, which depends on the left-to-right ordering, is
 
 ## Reverse scan
 
-We've discussed how the scan moves forward along `𝕩`, so that each time `𝔽` takes an old result as `𝕨` and a new value as `𝕩`. This means that results correspond to prefixes and go left to right on each one. Since the most important scans have associative, commutative operands, the left-to-right ordering often doesn't make a difference. But sometimes a suffix rather than prefix scan is wanted. For these cases, Scan Under [Reverse](reverse.md) (`` `⌾⌽ ``) does the trick.
+We've discussed how the scan moves forward along `𝕩`, so that each time `𝔽` takes an old result as `𝕨` and a new value as `𝕩`. This means that results correspond to [prefixes](prefixes.md) and go left to right on each one. Since the most important scans have associative, commutative operands, the left-to-right ordering often doesn't make a difference. But sometimes a suffix rather than prefix scan is wanted. For these cases, Scan Under [Reverse](reverse.md) (`` `⌾⌽ ``) does the trick.
 
         ∨`   0‿0‿1‿0‿0‿1‿0
 
