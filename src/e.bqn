@@ -37,7 +37,7 @@ hlTag ← {"<tspan class='"∾𝕩∾"'>"}¨ hlcl
 escchars ← """&<>" ⋄ escapes ← ("&"∾∾⟜";")¨"quot"‿"amp"‿"lt"‿"gt"
 
 Explain ← {
-  b‿const‿blk‿(i‿e)‿tok ← 𝕨
+  b‿const‿blk‿bdy‿(i‿e)‿tok ← 𝕨
   ba‿bc‿bo‿bp ← '0'-˜⟨ # For each instruction, number of:
     "11111000000000010000022000111012"  # Arguments
     "000//232323223102303200121111100"  # Stack values consumed
