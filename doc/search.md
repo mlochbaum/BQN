@@ -95,7 +95,7 @@ Progressive Index of (`⊒`), as the name and glyph suggest, is a more sophistic
 
         "aaabb" ⊒ "ababababab"
 
-Above we said that `𝕩∊𝕨` is `(𝕨⊐𝕩)<≠𝕨`, so that `⊐˜<≠∘⊢` is an implementation of Member of. The corresponding `⊒˜<≠∘⊢` implements *progressive* member of, that is, membership on [multisets](https://en.wikipedia.org/wiki/Multiset). So if `𝕩` contains two copies of `'a'`, only the first to instances of `'a'` in `𝕨` are considered to belong to it. And like membership is useful for set intersection and difference, progressive membership gives multiset versions of these.
+Above we said that `𝕩∊𝕨` is `(𝕨⊐𝕩)<≠𝕨`, so that `⊐˜<≠∘⊢` is an implementation of Member of. The corresponding `⊒˜<≠∘⊢` implements *progressive* member of, that is, membership on [multisets](https://en.wikipedia.org/wiki/Multiset). So if `𝕩` contains two copies of `'a'`, only the first two instances of `'a'` in `𝕨` are considered to belong to it. And like membership is useful for set intersection and difference, progressive membership gives multiset versions of these.
 
         "aabbcc" (⊐˜<≠∘⊢) "baa"
 
