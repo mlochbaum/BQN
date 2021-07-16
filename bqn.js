@@ -147,7 +147,9 @@ if (!module.parent) {
     let e = exec(s=>show(repl(str(s))));
     stdin.on('end', () => { process.exit(); });
     stdin.on('readable', () => {
-      let inp; while ((inp=stdin.read())!==null) { e(inp.toString()); }
+      let inp; while ((inp=stdin.read())!==null) {
+        if (!/^[ \t]*[#\n]/.test(inp)) e(inp.toString());
+      }
     });
   } else if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
     let f=arg0, a=list(args.slice(1).map(str));
