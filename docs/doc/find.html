@@ -1,0 +1,80 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Find</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="find">Find</h1>
+<p>Find (<code><span class='Function'>⍷</span></code>) searches for occurrences of an array <code><span class='Value'>𝕨</span></code> within <code><span class='Value'>𝕩</span></code>. The result contains a boolean for each possible location, which is 1 if <code><span class='Value'>𝕨</span></code> was found there and 0 if not.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Inh4IiDijbcgInh4YmR4eHhjeCI=">↗️</a><pre>    <span class='String'>&quot;xx&quot;</span> <span class='Function'>⍷</span> <span class='String'>&quot;xxbdxxxcx&quot;</span>
+⟨ 1 0 0 0 1 1 0 0 ⟩
+</pre>
+<p>More precisely <code><span class='Value'>𝕨</span></code> needs to <a href="match.html">match</a> a contiguous selection from <code><span class='Value'>𝕩</span></code>, which for strings means a substring. These subarrays of <code><span class='Value'>𝕩</span></code> are also exactly the cells in the result of <a href="windows.html">Windows</a>. In fact we can use Windows to see all the arrays <code><span class='Value'>𝕨</span></code> will be compared against.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDihpUgInh4YmR4eHhjeCIKCiJ4eCLiirjiiaHLmCAyIOKGlSAieHhiZHh4eGN4Ig==">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>↕</span> <span class='String'>&quot;xxbdxxxcx&quot;</span>
+┌─    
+╵"xx  
+  xb  
+  bd  
+  dx  
+  xx  
+  xx  
+  xc  
+  cx" 
+     ┘
+
+    <span class='String'>&quot;xx&quot;</span><span class='Modifier2'>⊸</span><span class='Function'>≡</span><span class='Modifier'>˘</span> <span class='Number'>2</span> <span class='Function'>↕</span> <span class='String'>&quot;xxbdxxxcx&quot;</span>
+⟨ 1 0 0 0 1 1 0 0 ⟩
+</pre>
+<p>Like Windows, the result usually doesn't have the same dimensions as <code><span class='Value'>𝕩</span></code>. This is easier to see when <code><span class='Value'>𝕨</span></code> is longer. It differs from APL's version, which includes trailing 0s in order to maintain the same length. Bringing the size up to that of <code><span class='Value'>𝕩</span></code> is easy enough with <a href="take.html">Take</a> (<code><span class='Function'>↑</span></code>), while shortening a padded result would be harder.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InN0cmluZyIg4o23ICJzdWJzdHJpbmciCgoic3RyaW5nIiAo4omi4oiY4oqi4oaR4o23KSAic3Vic3RyaW5nIiAgIyBBUEwgc3R5bGU=">↗️</a><pre>    <span class='String'>&quot;string&quot;</span> <span class='Function'>⍷</span> <span class='String'>&quot;substring&quot;</span>
+⟨ 0 0 0 1 ⟩
+
+    <span class='String'>&quot;string&quot;</span> <span class='Paren'>(</span><span class='Function'>≢</span><span class='Modifier2'>∘</span><span class='Function'>⊢↑⍷</span><span class='Paren'>)</span> <span class='String'>&quot;substring&quot;</span>  <span class='Comment'># APL style
+</span>⟨ 0 0 0 1 0 0 0 0 0 ⟩
+</pre>
+<p>If <code><span class='Value'>𝕨</span></code> is larger than <code><span class='Value'>𝕩</span></code>, the result is empty, and there's no error even in cases where Windows would fail. One place this tends to come up is when applying <a href="pick.html">First</a> (<code><span class='Function'>⊑</span></code>) the result: <code><span class='Function'>⊑⍷</span></code> tests whether <code><span class='Value'>𝕨</span></code> appears in <code><span class='Value'>𝕩</span></code> at the first position, that is, whether it's a prefix of <code><span class='Value'>𝕩</span></code>. If <code><span class='Value'>𝕨</span></code> is longer than <code><span class='Value'>𝕩</span></code> it shouldn't be a prefix, so 0 is appropriate.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Imxvb29vb29uZyIg4o23ICJzaG9ydCIKCjkg4oaVICJzaG9ydCIKCuKKkSAibG9vb29vb25nIiDijbcgInNob3J0Ig==">↗️</a><pre>    <span class='String'>&quot;loooooong&quot;</span> <span class='Function'>⍷</span> <span class='String'>&quot;short&quot;</span>
+⟨⟩
+
+    <span class='Number'>9</span> <span class='Function'>↕</span> <span class='String'>&quot;short&quot;</span>
+ERROR
+
+    <span class='Function'>⊑</span> <span class='String'>&quot;loooooong&quot;</span> <span class='Function'>⍷</span> <span class='String'>&quot;short&quot;</span>
+0
+</pre>
+<p>This pattern also works in the high-rank case discussed below, testing whether <code><span class='Value'>𝕨</span></code> is a multi-dimensional prefix starting at the lowest-index corner of <code><span class='Value'>𝕩</span></code>.</p>
+<h3 id="higher-ranks">Higher ranks</h3>
+<p>If <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code> are two-dimensional then Find does a two-dimensional search. The cells used are also found in <code><span class='Value'>𝕨</span><span class='Function'>≢</span><span class='Modifier2'>⊸</span><span class='Function'>↕</span><span class='Value'>𝕩</span></code>. For example, the bottom-right corner of <code><span class='Value'>𝕩</span></code> below matches <code><span class='Value'>𝕨</span></code>, so there's a 1 in the bottom-right corner of the result.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQIDcgKDR84ouGy5wp4oyc4peL4oaVIDkgICAjIEFycmF5IHdpdGggcGF0dGVybnMKCigw4oC/M+KAvzDiiY0w4oC/MeKAvzApIOKNtyBh">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>7</span> <span class='Paren'>(</span><span class='Number'>4</span><span class='Function'>|⋆</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier'>⌜</span><span class='Modifier2'>○</span><span class='Function'>↕</span> <span class='Number'>9</span>   <span class='Comment'># Array with patterns
+</span>┌─                   
+╵ 1 1 1 1 1 1 1 1 1  
+  0 1 2 3 0 1 2 3 0  
+  0 1 0 1 0 1 0 1 0  
+  0 1 0 3 0 1 0 3 0  
+  0 1 0 1 0 1 0 1 0  
+  0 1 0 3 0 1 0 3 0  
+  0 1 0 1 0 1 0 1 0  
+                    ┘
+
+    <span class='Paren'>(</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Function'>≍</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Paren'>)</span> <span class='Function'>⍷</span> <span class='Value'>a</span>
+┌─               
+╵ 0 0 0 0 0 0 0  
+  0 0 0 0 0 0 0  
+  0 0 0 0 0 0 0  
+  0 0 1 0 0 0 1  
+  0 0 0 0 0 0 0  
+  0 0 1 0 0 0 1  
+                ┘
+</pre>
+<p>It's also allowed for <code><span class='Value'>𝕨</span></code> to have a smaller rank than <code><span class='Value'>𝕩</span></code>; in this case leading axes of <code><span class='Value'>𝕩</span></code> are mapped over so that axes of <code><span class='Value'>𝕨</span></code> correspond to trailing axes of <code><span class='Value'>𝕩</span></code>. This is a minor violation of the <a href="leading.html">leading axis</a> principle, which would match axes of <code><span class='Value'>𝕨</span></code> to leading axes of <code><span class='Value'>𝕩</span></code> in order to make a function that's useful with the Rank operator, but such a function would be quite strange and hardly ever useful.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MOKAvzHigL8w4oC/MSDijbcgYQ==">↗️</a><pre>    <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span> <span class='Function'>⍷</span> <span class='Value'>a</span>
+┌─             
+╵ 0 0 0 0 0 0  
+  0 0 0 0 0 0  
+  1 0 1 0 1 0  
+  0 0 0 0 0 0  
+  1 0 1 0 1 0  
+  0 0 0 0 0 0  
+  1 0 1 0 1 0  
+              ┘
+</pre>
