@@ -9,7 +9,7 @@
 <p>Primitives have no side effects other than errors, and can't perform infinite computations, except when a primitive modifier calls an operand function that does one of these things (this can only happen when arguments are passed, as primitive modifiers are always deferred). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function without them always returns the same result if passed the same arguments. Since trains and list notation have the same nice properties, tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.</p>
 <p>Recursion is the primary way to perform potentially infinite computations in BQN, and it can be packaged into <a href="control.html">control structures</a> like <code><span class='Function'>While</span></code> for ease of use. A given BQN implementation might also provide <a href="../spec/system.html">system values</a> for &quot;impure&quot; tasks like file access or other I/O.</p>
 <h2 id="functions">Functions</h2>
-<p>Functions that have significant differences from APL functions are marked with an asterisk. A few of the non-asterisk links go the the APL Wiki currently.</p>
+<p>Functions that have significant differences from APL equivalents or don't appear in APL are marked with an asterisk.</p>
 <table>
 <thead>
 <tr>
@@ -222,7 +222,7 @@
 <tr>
 <td><code><span class='Function'>⍷</span></code></td>
 <td><a href="selfcmp.html#deduplicate">Deduplicate</a></td>
-<td><a href="https://aplwiki.com/wiki/Find">Find</a></td>
+<td><a href="find.html">Find</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⊔</span></code></td>
