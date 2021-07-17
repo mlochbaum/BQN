@@ -2,7 +2,7 @@
 
 # BQN documentation
 
-BQN's documentation describes what features it has, how to use them (with examples), and why they were chosen. For a linear introduction to the language, see the [tutorials](../tutorial/README.md). While the core language [specification](../spec/README.md) is complete, the documentation still has some gaps.
+BQN's documentation describes what features it has, how to use them (with examples), and why they were chosen. For a linear introduction to the language, see the [tutorials](../tutorial/README.md). While the core language [specification](../spec/README.md) is complete, the documentation still has minor gaps.
 
 Overview:
 - [Syntax](syntax.md)

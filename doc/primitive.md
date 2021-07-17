@@ -10,7 +10,7 @@ Recursion is the primary way to perform potentially infinite computations in BQN
 
 ## Functions
 
-Functions that have significant differences from APL functions are marked with an asterisk. A few of the non-asterisk links go the the APL Wiki currently.
+Functions that have significant differences from APL equivalents or don't appear in APL are marked with an asterisk.
 
 | Glyph | Monadic                                             | Dyadic
 |-------|-----------------------------------------------------|---------
@@ -54,7 +54,7 @@ Functions that have significant differences from APL functions are marked with a
 | `⊐`   | [Classify](selfcmp.md#classify)*                    | [Index of](search.md#index-of)
 | `⊒`   | [Occurrence Count](selfcmp.md#occurrence-count)*    | [Progressive Index of](search.md#progressive-index-of)*
 | `∊`   | [Mark Firsts](selfcmp.md#mark-firsts)               | [Member of](search.md#member-of)
-| `⍷`   | [Deduplicate](selfcmp.md#deduplicate)               | [Find](https://aplwiki.com/wiki/Find)
+| `⍷`   | [Deduplicate](selfcmp.md#deduplicate)               | [Find](find.md)
 | `⊔`   | [Group Indices](group.md)*                          | [Group](group.md)*
 | `!`   | [Assert](assert.md)*                                | [Assert with Message](assert.md)*
 
