@@ -1,0 +1,80 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Lexical scoping</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<h1 id="lexical-scoping">Lexical scoping</h1>
+<p>BQN uses lexical scope, like most modern functional programming languages including Javascript, Scheme, and Julia, and like Dyalog APL's dfns (tradfns are dynamically scoped). This document describes how lexical scoping works, and a few small details relevant to BQN's version of it.</p>
+<p>In short, every <a href="block.html">block</a> is a separate scope that can refer to identifiers in containing scopes. When evaluated, the block makes a variable for each identifier defined in it (including arguments and operands). The blocks that it contains will now access these variables. In the first level of a block, variables must be defined before they can be used, but in child blocks, a variable can be used regardless of where it's defined, as long as the definition is evaluated before the child block is.</p>
+<h2 id="scopes">Scopes</h2>
+<p>Scoping is a mechanism that allows the same variable name to refer to different variables depending on program context. For example, the following code uses the name <code><span class='Value'>a</span></code> in two ways: once for a value at the top level, and once locally in a function. With scoping, once you write <code><span class='Brace'>{}</span></code> to create a block, you can define any name you want inside without worrying whether it's taken.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNgpGIOKGkCB7IGEgw5cgMSArIGEg4oaQIPCdlakgfQoKRiA0ICAgICMgU2V0cyBh4oaQNCBpbnRlcm5hbGx5CmEgICAgICAjIFRoZSBvdXRlciBhIGlzIHVuY2hhbmdlZA==">↗️</a><pre>    <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>6</span>
+    <span class='Function'>F</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>a</span> <span class='Function'>×</span> <span class='Number'>1</span> <span class='Function'>+</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Value'>𝕩</span> <span class='Brace'>}</span>
+
+    <span class='Function'>F</span> <span class='Number'>4</span>    <span class='Comment'># Sets a←4 internally
+</span>20
+    <span class='Value'>a</span>      <span class='Comment'># The outer a is unchanged
+</span>6
+</pre>
+<p>Above, the scope of the first <code><span class='Value'>a</span></code> is the entire program, while the scope of the second <code><span class='Value'>a</span></code> is limited to the body of <code><span class='Function'>F</span></code>. So one form of context is that a name might mean different things depending on which block contains it. But even the exact same instance of a name in the source code might mean multiple things! A second kind of context is which evaluation of a block uses the name.</p>
+<p>Without this ability BQN would be pretty limited: for example, an <a href="oop.html">object</a>'s fields are variables. If the variable value didn't depend on what object contained it, there could effectively only be one instance of each object! While it's needed all the time, the most direct way to demonstrate one name meaning multiple things is with recursion. The (fragile) function below labels each element in a nested list structure with its index in the list containing it.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=TGFiZWwg4oaQIHsgaeKGkOKGleKJoPCdlakg4ouEIGkg4omNIPCdlYrijZ89wqgg8J2VqSB9CgpMYWJlbCDin6giYWIi4oC/OCwgN+KAvzbigL814p+p">↗️</a><pre>    <span class='Function'>Label</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>i</span><span class='Gets'>←</span><span class='Function'>↕≠</span><span class='Value'>𝕩</span> <span class='Separator'>⋄</span> <span class='Value'>i</span> <span class='Function'>≍</span> <span class='Function'>𝕊</span><span class='Modifier2'>⍟</span><span class='Function'>=</span><span class='Modifier'>¨</span> <span class='Value'>𝕩</span> <span class='Brace'>}</span>
+
+    <span class='Function'>Label</span> <span class='Bracket'>⟨</span><span class='String'>&quot;ab&quot;</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Separator'>,</span> <span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
+┌─                             
+╵ 0                 1          
+  ┌─                ┌─         
+  ╵ 0           1   ╵ 0 1 2    
+    ┌─          8     7 6 5    
+    ╵ 0   1                 ┘  
+      'a' 'b'                  
+              ┘                
+                  ┘            
+                              ┘
+</pre>
+<p>Each call creates the <a href="range.html">list of indices</a> <code><span class='Value'>i</span></code>, then calls itself using <code><span class='Function'>𝕊</span></code> on each element of <code><span class='Value'>𝕩</span></code> <a href="repeat.html">if</a> it's a list, then <a href="couple.html">couples</a> <code><span class='Value'>i</span></code> to the result. This requires <code><span class='Value'>i</span></code> to be unaffected by other calls to the function, which works because <code><span class='Value'>i</span></code> is scoped not only to the source code location but also to the particular evaluation of the block that creates it.</p>
+<p>These examples probably work like you expect—they're meant to highlight the features that scoping should have, in order to help show how less intuitive cases work later on.</p>
+<h2 id="visibility">Visibility</h2>
+<p>A scope can view and modify (with <code><span class='Gets'>↩</span></code>) variables in other scopes that contain it. We say these variables are visible in the inner scopes. Variables at the top level of a program are visible to all the code in that program, so that we might call them &quot;global&quot;. That would be a little misleading though, because for example each file is an entire program, so if one file is imported from another then it can't read the first file's variables.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Y291bnRlciDihpAgMAppbmMg4oaQIDYKQ291bnQg4oaQIHsgY291bnRlciAr4oapIPCdlakgw5cgaW5jIH0KCkNvdW50IDAKQ291bnQgMQpDb3VudCAxCkNvdW50IDU=">↗️</a><pre>    <span class='Value'>counter</span> <span class='Gets'>←</span> <span class='Number'>0</span>
+    <span class='Value'>inc</span> <span class='Gets'>←</span> <span class='Number'>6</span>
+    <span class='Function'>Count</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>counter</span> <span class='Function'>+</span><span class='Gets'>↩</span> <span class='Value'>𝕩</span> <span class='Function'>×</span> <span class='Value'>inc</span> <span class='Brace'>}</span>
+
+    <span class='Function'>Count</span> <span class='Number'>0</span>
+0
+    <span class='Function'>Count</span> <span class='Number'>1</span>
+6
+    <span class='Function'>Count</span> <span class='Number'>1</span>
+12
+    <span class='Function'>Count</span> <span class='Number'>5</span>
+42
+</pre>
+<p>So the <code><span class='Function'>Count</span></code> function above increments and prints a global <code><span class='Value'>counter</span></code> by a global amount <code><span class='Value'>inc</span></code>, which is visible in <code><span class='Function'>Count</span></code> because it's visible everywhere. Or, not quite… if a block defines its <em>own</em> copy of <code><span class='Value'>inc</span></code>, then it will lose access to the outer one. However, code that comes before that definition can still see the outer variable. So it can copy its value at the start of the block (this won't reflect later changes to the value. Don't shadow variables you want to use!).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyBpbmPihpAzIOKLhCBpbmMgfSAgIyBpbmMgaXMgc2hhZG93ZWQKCmluYyAgIyBCdXQgaXQncyBzdGlsbCBoZXJlIGluIHRoZSBvdXRlciBzY29wZQoKeyBh4oaQaW5jIOKLhCBpbmPihpAzIOKLhCBhIH0gICMgUmVhZCBiZWZvcmUgc2hhZG93aW5n">↗️</a><pre>    <span class='Brace'>{</span> <span class='Value'>inc</span><span class='Gets'>←</span><span class='Number'>3</span> <span class='Separator'>⋄</span> <span class='Value'>inc</span> <span class='Brace'>}</span>  <span class='Comment'># inc is shadowed
+</span>3
+
+    <span class='Value'>inc</span>  <span class='Comment'># But it's still here in the outer scope
+</span>6
+
+    <span class='Brace'>{</span> <span class='Value'>a</span><span class='Gets'>←</span><span class='Value'>inc</span> <span class='Separator'>⋄</span> <span class='Value'>inc</span><span class='Gets'>←</span><span class='Number'>3</span> <span class='Separator'>⋄</span> <span class='Value'>a</span> <span class='Brace'>}</span>  <span class='Comment'># Read before shadowing
+</span>6
+</pre>
+<p>Each scope can only define a given name once. Trying to shadow a name that's in the current scope and not a higher one gives an error at compilation.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyBpbmPihpAzIOKLhCBpbmPihpA0IH0=">↗️</a><pre>    <span class='Brace'>{</span> <span class='Value'>inc</span><span class='Gets'>←</span><span class='Number'>3</span> <span class='Separator'>⋄</span> <span class='Value'>inc</span><span class='Gets'>←</span><span class='Number'>4</span> <span class='Brace'>}</span>
+ERROR
+</pre>
+<p>Let's go all in on shadowing and make a modifier that creates its own copies of <code><span class='Value'>counter</span></code> and <code><span class='Value'>inc</span></code>, returning a custom version of the <code><span class='Function'>Count</span></code> function above.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=X21ha2VDb3VudCDihpAgeyBjb3VudGVy4oC/aW5j4oaQ8J2VlyDii4QgeyBjb3VudGVyICvihqkg8J2VqSDDlyBpbmMgfSB9CgpDM183IOKGkCAz4oC/NyBfbWFrZUNvdW50ICAjIFN0YXJ0IGF0IDM7IGluYyBieSA3CgpDM183IDAKQzNfNyAxCkNvdW50IDAgICMgT2xkIGNvdW50ZXIgc3RheXMgdGhlIHNhbWU=">↗️</a><pre>    <span class='Modifier'>_makeCount</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>counter</span><span class='Ligature'>‿</span><span class='Value'>inc</span><span class='Gets'>←</span><span class='Value'>𝕗</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span> <span class='Value'>counter</span> <span class='Function'>+</span><span class='Gets'>↩</span> <span class='Value'>𝕩</span> <span class='Function'>×</span> <span class='Value'>inc</span> <span class='Brace'>}</span> <span class='Brace'>}</span>
+
+    <span class='Function'>C3_7</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>7</span> <span class='Modifier'>_makeCount</span>  <span class='Comment'># Start at 3; inc by 7
+</span>
+    <span class='Function'>C3_7</span> <span class='Number'>0</span>
+3
+    <span class='Function'>C3_7</span> <span class='Number'>1</span>
+10
+    <span class='Function'>Count</span> <span class='Number'>0</span>  <span class='Comment'># Old counter stays the same
+</span>42
+</pre>
+<p>The function <code><span class='Function'>C3_7</span></code> uses the versions of <code><span class='Value'>counter</span></code> and <code><span class='Value'>inc</span></code> created in <code><span class='Modifier'>_makeCount</span></code>, even though it's called not from inside <code><span class='Modifier'>_makeCount</span></code>, but from the top-level program. This is what it means for BQN's scoping to be lexical rather than dynamic. Which identifiers are visible is determined by where the code containing them is located in the source code, not how it's called at runtime. The static nature of lexical scoping makes it much easier to keep track of how variables are used (for compilers, this means optimization opportunities), and for this reason dynamic scoping is very rare in programming languages today.</p>
+<h2 id="closures">Closures</h2>
