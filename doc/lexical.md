@@ -65,4 +65,78 @@ Let's go all in on shadowing and make a modifier that creates its own copies of 
 
 The function `C3_7` uses the versions of `counter` and `inc` created in `_makeCount`, even though it's called not from inside `_makeCount`, but from the top-level program. This is what it means for BQN's scoping to be lexical rather than dynamic. Which identifiers are visible is determined by where the code containing them is located in the source code, not how it's called at runtime. The static nature of lexical scoping makes it much easier to keep track of how variables are used (for compilers, this means optimization opportunities), and for this reason dynamic scoping is very rare in programming languages today.
 
+### Post-definition
+
+In the top level a block, a variable can only be used after it's defined, and the compiler rejects any code that tries to use an undefined variable. But blocks contained in that block see variables it defines regardless of the positioning. Below, `PlusC` references the variable `c` that's defined after it (but when code is executed one line at a time like it is here, I still have to put both definitions on the same line so they are compiled together).
+
+        PlusC ← { 𝕩+c } ⋄ c←¯1
+        PlusC 7
+
+But you'll still get an error if the variable is used before its definition is run. Unlike the single-level case, this is a runtime error and only appears when the variable is actually accessed.
+
+        { 2+d } ⋄ d←¯2
+
+Why define things this way? It's easier to see if you imagine the variable used is also a function. It's normal for a function to call other functions defined at the top level, of course. And it would be pretty unpleasant for BQN to enforce a specific ordering for them. It would also make recursive functions impossible except by using `𝕊`, and mutually recursive ones completely impossible. A simple rule that makes all these things just work smoothly seems much better than any alternative.
+
 ## Closures
+
+Let's run `_makeCount` from above a few more times.
+
+        C4_2 ← 4‿2 _makeCount  # Start at 4; increment by 2
+        C1_4 ← 1‿4 _makeCount  #          1;              4
+
+        C4_2 0
+        C1_4 0
+        C4_2 10
+        C1_4 10
+        C4_2 0
+        C3_7 0  # The first one's still around too
+
+Each result keeps its own counter and the different copies don't interfere with each other. This is because every call to `_makeCount` is isolated, happening in its own world. We say that whenever a block begins execution it creates an *environment* where all its variables are stored. This environment might even be exposed later on, as a [namespace](namespace.md).
+
+Each counter function has access to the environment containing its `counter` and `inc`, even though the block that created that environment (`_makeCount`) has finished execution—it must have finished, since we are now using the function it returns on the last line. There's nothing particularly weird about this; just because a block creates an environment when it starts doesn't mean it has to destroy it when it finishes. From the mathematical perspective, it's easiest to say the environment exists forever, but a practical implementation will perform garbage collection to free environments that are no longer reachable.
+
+Since a function like `C1_4` maintains access to all the variables it needs to run, we say it *encloses* those variables, and call it a *closure*. It doesn't need to modify them. For example, even the following definition of `stdDev` is a closure.
+
+    stdDev ← {
+      # Arithmetic mean
+      Mean ← +´ ÷ ≠
+
+      # Return this function
+      {
+        Mean⌾(×˜) 𝕩 - Mean 𝕩
+      }
+    }
+
+The variable `Mean` is visible only within the outer immediate block. The only way it can be accessed is by code in this block: the two calls in the returned function, which will later be renamed `stdDev`. Nothing in the block modifies it, so its value is constant. It's just a little utility that exists only for code in the block. Making it visible elsewhere is as simple as moving it out of the block, but it's best not to do this without reason. Keeping a variable in the smallest possible scope makes it easier to understand the program, because it reduces the amount of information needed to understand scopes where that variable doesn't apply.
+
+Neither the specification nor a typical implementation keep track of what is and isn't a closure, although an advanced interpreter will probably work with some related properties. The existence of closures is an ordinary feature of lexical scoping and not a special case. However, it's sometimes a useful term for discussing the operation of a program. We might define a closure as a block that can be run and access variables from a parent scope even after the block that created that scope finishes execution.
+
+### Environments form a tree
+
+So a block has access to every environment that it might need a variable from, for as long as it needs. This idea is a little fuzzy, so let's clarify by describing how an implementation would support figure out what can access where.
+
+The mechanism is that each environment can have a *parent* environment (the topmost environment, which corresponds to the entire program, has no parent). When a variable is accessed, it might be in the current environment, or its parent, or that environment's parent, and so on. Every environment corresponds to one block in the source code, and its parent corresponds to the parent block, so a compiler can figure out how many levels up it will have to go based on the source code.
+
+We've seen that one block can create many environments. An environment can have only one parent, but many children, so environments form a tree. A forest to be precise, as one execution of BQN can involve multiple programs.
+
+How does an environment know which of the many environments corresponding to the parent scope is its parent? This information is saved when the block is reached in the program and a *block instance* is created. Unless it's an immediate block, the block instance won't be run right away: a block instance isn't the same as a block evaluation. But each block evaluation starts with a block instance, and that's where it gets the parent environment. Unlike block evaluation, which can happen anywhere, a block instance is created only during evaluation of the parent block. So the saved parent environment is simply the current environment.
+
+## Mutation
+
+The value of a variable can be modified with `↩`. It's similar to definition `←` in that it sets the value of the variable, but the way it interacts with scoping is completely different. Defining creates a new variable in the current scope, and modifying refers to an existing variable in the current scope or a parent. In scoping terms, modifying is more like an ordinary variable reference than a definition.
+
+When a variable's modified, functions with access to it see the new value. They have access to the variable, not any particular value that it has.
+
+        factor ← 3
+        Mul ← { factor × 𝕩 }
+
+        Mul 6
+        factor ↩ 5
+        Mul 6   # A new result
+
+Only code with access to a variable can modify it! This means that if none of the code in a variable's scope modifies it, then the variable is a constant in each environment that contains it (not necessarily across environments). That is, constant once it's defined: it's still possible to get an error if the variable is accessed before being defined.
+
+        { { a } ⋄ a←4 }
+
+With lexical scoping, variable mutation automatically leads to mutable data. This is because a function or modifier that depends on the variable value changes its behavior when the variable changes. For further discussion see the documentation on [mutable objects](oop.md#mutability).
