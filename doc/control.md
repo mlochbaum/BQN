@@ -24,7 +24,7 @@ The useful control structures introduced here are collected as shortened definit
 
 ## Blocks and functions
 
-Control structures are generally defined to work with blocks of code, which they might skip, or execute one or more times. This might sound like a BQN immediate block, which also consists of a sequence of code to execute, but immediate blocks are always executed as soon as they are encountered and can't be manipulated the way that blocks in imperative languages can. They're intended to be used with lexical scoping as a tool for encapsulation. Instead, the main tool we will use to get control structures is the block function.
+Control structures are generally defined to work with blocks of code, which they might skip, or execute one or more times. This might sound like a BQN immediate block, which also consists of a sequence of code to execute, but immediate blocks are always executed as soon as they are encountered and can't be manipulated the way that blocks in imperative languages can. They're intended to be used with [lexical scoping](lexical.md) as a tool for encapsulation. Instead, the main tool we will use to get control structures is the block function.
 
 Using functions as blocks is a little outside their intended purpose, and the fact that they have to be passed an argument and are expected to use it will be a minor annoyance. The following conventions signal a function that ignores its argument and is called purely for the side effects:
 - Pass `@` to a function that ignores its argument. It's a nice signal that nothing is happening and is easy to type.

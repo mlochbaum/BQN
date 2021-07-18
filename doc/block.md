@@ -9,7 +9,7 @@ Blocks are most commonly used to define functions by including one of the specia
         {𝕩+1} 3
         ×{𝕩𝔽𝕩} 4
 
-Because they use [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping), blocks can also be used to encapsulate code. If a block uses only variables that it initializes, then it has no dependence on its environment and would work the same way if defined anywhere. But it can also use external variables, defined in a containing block.
+Because they use [lexical scoping](lexical.md), blocks can also be used to encapsulate code. If a block uses only variables that it initializes, then it has no dependence on its environment and would work the same way if defined anywhere. But it can also use external variables, defined in a containing block.
 
         a←b←"outer"
         { a←"inner" ⋄ a‿b }

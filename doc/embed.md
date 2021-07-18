@@ -14,7 +14,7 @@ Instead, return a function from BQN and call it: `bqn("{×´1+↕𝕩}")(n)`. Th
 
 BQN can also call JS functions, to use functionality that isn't native to BQN or interact with a program written in JS. For example, `bqn("{𝕏'a'+↕26}")(alert)` calls the argument `alert` from within BQN. The displayed output isn't quite right here, because a BQN string is stored as a JS array, not a string. See the next section for more information.
 
-Cool, but none of these examples really use closures, just self-contained functions. Closures are functions that use outside state, which is maintained over the course of the program. Here's an example program that defines `i` and then returns a function that manipulates `i` and returns its new value.
+Cool, but none of these examples really use closures, just self-contained functions. [Closures](lexical.md#closures) are functions that use outside state, which is maintained over the course of the program. Here's an example program that defines `i` and then returns a function that manipulates `i` and returns its new value.
 
     let push = bqn(`
         i←4⥊0

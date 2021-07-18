@@ -19,7 +19,7 @@ An here's how the contents of file.bqn might look in order to define the variabl
 
 ## Uses
 
-The features of namespaces that make them useful in BQN programming are encapsulation and mutability. But these are exactly the same features that [closures](https://en.wikipedia.org/wiki/Closure_(computer_programming)) provide! In fact a namespace is not much more than a closure with a name lookup system. Consequently namespaces don't really expand the basic functionality of the language, but just make it easier to use.
+The features of namespaces that make them useful in BQN programming are encapsulation and mutability. But these are exactly the same features that [closures](lexical.md#closures) provide! In fact a namespace is not much more than a closure with a name lookup system. Consequently namespaces don't really expand the basic functionality of the language, but just make it easier to use.
 
 Namespaces improve encapsulation by allowing many values to be exported at once. With only one way to call them, functions and modifiers aren't such a good way to define a large part of a program. With a namespace you can define lots of things and expose exactly the ones you want to the rest of the world. For example, it's typical for files to define namespaces. A reader can see the exported values just by searching for `⇐`, and if you're nice, you might declare them all at the beginning of the file. Careful use of exports can guarantee that potentially dangerous functions are used correctly: if it's only valid to call function `B` after function `A` has been called, export `AB⇐{A𝕩⋄B𝕩}` and don't export `B`.
 

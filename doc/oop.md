@@ -128,7 +128,7 @@ This is a pretty clunky solution, and exports a useless method `SetThis` (which 
 
 ## Class members
 
-As with `this`, giving a class variables that belong to it is a do-it-yourself sort of thing (or more positively, not at all magic (funny how programmer jargon goes the opposite way to ordinary English)). It's an easy one though, as this is exactly what lexical scoping does:
+As with `this`, giving a class variables that belong to it is a do-it-yourself sort of thing (or more positively, not at all magic (funny how programmer jargon goes the opposite way to ordinary English)). It's an easy one though, as this is exactly what [lexical scoping](lexical.md) does:
 
     staticClass ← {
       counter ← 0

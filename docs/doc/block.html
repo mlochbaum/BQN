@@ -12,7 +12,7 @@
     <span class='Function'>×</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>𝔽</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>4</span>
 16
 </pre>
-<p>Because they use <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping">lexical scoping</a>, blocks can also be used to encapsulate code. If a block uses only variables that it initializes, then it has no dependence on its environment and would work the same way if defined anywhere. But it can also use external variables, defined in a containing block.</p>
+<p>Because they use <a href="lexical.html">lexical scoping</a>, blocks can also be used to encapsulate code. If a block uses only variables that it initializes, then it has no dependence on its environment and would work the same way if defined anywhere. But it can also use external variables, defined in a containing block.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YeKGkGLihpAib3V0ZXIiCnsgYeKGkCJpbm5lciIg4ouEIGHigL9iIH0=">↗️</a><pre>    <span class='Value'>a</span><span class='Gets'>←</span><span class='Value'>b</span><span class='Gets'>←</span><span class='String'>&quot;outer&quot;</span>
     <span class='Brace'>{</span> <span class='Value'>a</span><span class='Gets'>←</span><span class='String'>&quot;inner&quot;</span> <span class='Separator'>⋄</span> <span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span> <span class='Brace'>}</span>
 ⟨ "inner" "outer" ⟩
