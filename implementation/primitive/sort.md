@@ -30,9 +30,9 @@ For **Bins**, use a branching binary search: see [On binary search](#on-binary-s
 
 The name of the game here is "branchless".
 
-Sorting algorithms of interest are counting sort and [pdqsort](https://github.com/orlp/pdqsort) (some improvements of my own to be described here later). However, these are both unusable for Grade.
+For sorting the best general algorithm I know of is a hybrid of pdqsort with counting sort, described below. I've found some improvements to pdqsort, but they all maintain its basic strategy and pattern-defeating nature, so I think the name still fits.
 
-For small-range Grade, counting sort must be replaced with bucket sort, at a significant performance cost. I don't have any method I'm happy with for other data. Stabilizing pdqsort by sorting the indices at the end is possible but slow. [Wolfsort](https://github.com/scandum/wolfsort) is a hybrid radix/merge sort that might be better.
+Both pdqsort and counting sort are not stable, so they can't be used for Grade. For small-range Grade, counting sort must be replaced with bucket sort, at a significant performance cost. I don't have any method I'm happy with for other data. Stabilizing pdqsort by sorting the indices at the end is possible but slow. [Wolfsort](https://github.com/scandum/wolfsort) is a hybrid radix/merge sort that might be better.
 
 A branchless binary search is adequate for Bins but in many cases—very small or large `𝕨`, and small range—there are better methods.
 
@@ -41,6 +41,35 @@ A branchless binary search is adequate for Bins but in many cases—very small o
 Both counting and bucket sort are small-range algorithms that begin by counting the number of each possible value. Bucket sort, as used here, means that the counts are then used to place values in the appropriate position in the result in another pass. Counting sort does not read from the initial values again and instead reconstructs them from the counts. It might be written `(/≠¨∘⊔)⌾(-⟜min)` in BQN, with `≠¨∘⊔` as a single efficient operation.
 
 Bucket sort can be used for Grade or sort-by (`⍋⊸⊏`), but counting sort only works for sorting itself. It's not-even-unstable: there's no connection between result values and the input values except that they are constructed to be equal. But with [fast Indices](replicate.md#non-booleans-to-indices), Counting sort is vastly more powerful, and is effective with a range four to eight times the argument length. This is large enough that it might pose a memory usage problem, but the memory use can be made arbitrarily low by partitioning.
+
+### Quicksort
+
+[This paper](https://arxiv.org/abs/2106.05123) gives a good description of [pdqsort](https://github.com/orlp/pdqsort). I'd start with the [Rust version](https://github.com/rust-lang/rust/blob/master/library/core/src/slice/sort.rs), which has some advantages but can still be improved further. The subsections below describe improved [partitioning](#partitioning) and an [initial pass](#initial-pass) with several benefits. I also found that the pivot randomization methods currently used are less effective because they swap elements that won't become pivots soon; the pivot candidates and randomization targets need to be chosen to overlap. The optimistic insertion sort can also be improved: when a pair of elements is swapped the smaller one should be inserted as usual but the larger one can also be pushed forward at little cost, potentially saving many swaps and handling too-large elements as gracefully as too-small ones.
+
+#### Partitioning
+
+In-place quicksort relies on a partitioning algorithm that exchanges elements in order to split them into two contiguous groups. The [Hoare partition scheme](https://en.wikipedia.org/wiki/Quicksort#Hoare_partition_scheme) does this, and [BlockQuicksort](https://github.com/weissan/BlockQuicksort) showed that it can be performed quickly with branchless index generation; this method was then adopted by pdqsort. But the [bit booleans to indices](replicate.md#booleans-to-indices) method is faster and fits well with vectorized comparisons.
+
+It's simplest to define an operation `P` that partitions a list `𝕩` according to a boolean list `𝕨`. Partitioning permutes `𝕩` so that all elements corresponding to 0 in `𝕨` come before those corresponding to 1. The quicksort partition step, with pivot `t`, is `(t≤𝕩)P𝕩`, and the comparison can be vectorized. Interleaving comparison and partitioning in chunks would save memory (a fraction of the size of `𝕩`, which should have 32- or 64-bit elements because plain counting sort is best for smaller ones) but hardly speeds things up: only a few percent, and only for huge lists with hundreds of millions of elements. The single-step `P` is also good for Bins, where the boolean `𝕨` will have to be saved.
+
+For binary search `𝕨⍋𝕩`, partitioning allows one pivot element `t` from `𝕨` to be compared to all of `𝕩` at once, instead of the normal strategy of working with one element from `𝕩` at a time. `𝕩` is partitioned according to `t≤𝕩`, then result values are found by searching the first half of `𝕨` for the smaller elements and the second half for the larger ones, and then they are put back in the correct positions by reversing the partitioning. Because Hoare partitioning works by swapping independent pairs of elements, `P` is a self inverse, identical to `P⁼`. So the last step is simple, provided the partitioning information `t≤𝕩` is saved.
+
+#### Initial pass
+
+An initial pass for pdqsort (or another in-place quicksort) provides a few advantages:
+- Recognize sorted and reverse-sorted arrays as fast as possible
+- Always use unguarded insertion sort
+- Find and maintain range information to switch to counting sort
+
+The main purpose of the pass is to find the range of the array. For an insignificant additional cost, the smallest and largest elements can be swapped to the edges of the array and sorted arrays can be detected.
+
+To find the smallest and largest elements, compute the range in blocks, on the order of 1KB each. Record the maximum and minimum, as well as the index of the block that contained these. After each block, update the range as well as the indices. Then, after traversing all blocks, search the appropriate blocks for these values to find exact indices. It may also be possible to skip the search and jump straight to counting sort.
+
+Finding an initial run is fast as well. Compare the first two elements to determine direction, then search for the first pair that have the opposite direction (this can be vectorized because overreading is fine). This run can be used as the first range block, because the maximum and minimum are the two elements at the ends of the run.
+
+At the start of sorting, swap the smallest element to the beginning and the largest to the end, and shrink the size of the array by one in each direction. Now the element before the array is a lower bound and the one after is an upper bound. This property can also be maintained as the array is partitioned, by placing a pivot element between the two halves (swap it to one side of the array before partitioning and to the middle afterwards). As a result, it's always safe to use unguarded insertion sort, and an upper bound for the range of the array can always be found using the difference between the elements before and after it. Now finding the range is fast enough to check for counting sort at every recursion.
+
+This is a very simple initial pass; a more sophisticated one might be beneficial. If the array starts with a large run then there could be more of them. There may also be sampling-based tests to find when merge sort is better, even if the runs aren't perfect (but is this actually common?).
 
 ### Other sorting algorithms
 
@@ -57,14 +86,6 @@ A few people have done some work on merge sorting with AVX2 or AVX-512: [two](ht
 [ChipSort](https://github.com/nlw0/ChipSort.jl) seems further along than those. It uses sorting networks, comb sort, and merging, which all fit nicely with SIMD and should work well together.
 
 Or AVX can [speed up](https://github.com/WojciechMula/simd-sort) quicksort. I suspect this is more of a marginal improvement (over BlockQuicksort/pdqsort discussed below) relative to merge sort. If partitioning is fast enough it might make stable quicksort viable.
-
-### Partitioning
-
-In-place quicksort relies on a partitioning algorithm that exchanges elements in order to split them into two contiguous groups. The [Hoare partition scheme](https://en.wikipedia.org/wiki/Quicksort#Hoare_partition_scheme) does this, and [BlockQuicksort](https://github.com/weissan/BlockQuicksort) showed that it can be performed quickly with branchless index generation; this method was then adopted by pdqsort. But the [bit booleans to indices](replicate.md#booleans-to-indices) method is faster and fits well with vectorized comparisons.
-
-It's simplest to define an operation `P` that partitions a list `𝕩` according to a boolean list `𝕨`. Partitioning permutes `𝕩` so that all elements corresponding to 0 in `𝕨` come before those corresponding to 1. The quicksort partition step, with pivot `t`, is `(t≤𝕩)P𝕩`, and the comparison can be vectorized. Interleaving comparison and partitioning in chunks would save memory (a fraction of the size of `𝕩`, which should have 32- or 64-bit elements because plain counting sort is best for smaller ones) but hardly speeds things up: only a few percent, and only for huge lists with hundreds of millions of elements. The single-step `P` is also good for Bins, where the boolean `𝕨` will have to be saved.
-
-For binary search `𝕨⍋𝕩`, partitioning allows one pivot element `t` from `𝕨` to be compared to all of `𝕩` at once, instead of the normal strategy of working with one element from `𝕩` at a time. `𝕩` is partitioned according to `t≤𝕩`, then result values are found by searching the first half of `𝕨` for the smaller elements and the second half for the larger ones, and then they are put back in the correct positions by reversing the partitioning. Because Hoare partitioning works by swapping independent pairs of elements, `P` is a self inverse, identical to `P⁼`. So the last step is simple, provided the partitioning information `t≤𝕩` is saved.
 
 ### Binary search
 
