@@ -16,16 +16,17 @@ References:
 - [BQN-J dictionary](fromJ.md)
 
 Concepts:
-- [Based array theory](based.md)
-- [Blocks](block.md) (including function and modifier definition)
 - [Context-free grammar](context.md)
-- [Control flow](control.md)
-- [Functional programming](functional.md)
+- [Based array theory](based.md)
 - [Array indices](indices.md)
 - [The leading axis model](leading.md)
+- [Function trains](train.md)
+- [Blocks](block.md) (including function and modifier definition)
+- [Lexical scoping](lexical.md)
+- [Functional programming](functional.md)
+- [Control flow](control.md)
 - [Namespaces](namespace.md)
 - [Object-oriented programming](oop.md)
-- [Function trains](train.md)
 
 Primitives:
 - [Arithmetic](arithmetic.md) (`+-×÷⋆√⌊⌈|≤<>≥=≠`)
