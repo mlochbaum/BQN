@@ -6,6 +6,8 @@ Notes about how BQN is implemented. There's not too much here yet.
 
 - [Comparison to Co-dfns](codfns.md) discusses the general compilation strategy and how it compares to the only other array-based compiler.
 - [The BQN virtual machine and runtime](vm.md) describes the non-self-hosted parts of the BQN implementation, that is, everything you need to port it to a new platform.
+- [Notes on implementing primitives](primitive/README.md)
+- [Notes on compilation](compile/README.md)
 
 This repository's BQN implementation is written mainly in BQN: the bytecode [compiler](../src/c.bqn) is completely self-hosted, and the majority of the runtime ([r0](../src/r0.bqn), [r1](../src/r1.bqn)) is written in BQN except that it is allowed to define primitives; some preprocessing turns the primitives into identifiers. The remaining part, a VM, can be implemented in any language to obtain a version of BQN running in that language.
 
