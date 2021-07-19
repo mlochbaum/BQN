@@ -2,6 +2,10 @@
 
 # Based array theory
 
+<!--GEN
+"style" Enc "code span.Comment { color: inherit; }"
+-->
+
 *"Like a normal programming language"*
 
 This page explains how BQN's array model (christened "based" [in 1981](https://dl.acm.org/doi/abs/10.1145/586656.586663)) differs from the models used by existing APL dialects, and why the choice was made to discard APL's "everything is an array" dictum. If you're not wondering what the difference is, and don't think everything should be an array, then you can probably just read about BQN's [type system](types.md) instead.
