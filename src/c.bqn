@@ -234,9 +234,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ix←(ic<3)∧ia←0<ic                         # Which are exports, assignments
   idd←(⊢-(uv⊏ded←-0⌈def)∾(du↓IT d)⊸⊏)id⊏fd  # Identifier frame depth
   "Can't export from surrounding scope"_err_(ID) ix∧0<idd
-  dx←dg⊔zda∾(dig←⍋d/ig)⊏d(/≥1↓PN)ix         # Exported identifier mask
+  dx←dg⊔zda∾(dig←⍋d/ig)⊏ixa←d(/≥1↓PN)ix     # Exported identifier mask
   idi←(uv⊸⊏∾(¯1+`du↓d)⊏dig⍋⊸⊏da≠⊸↓⊢)(⊏⟜fsc+⊒)ded∾df # Slot within frame
-  uu←(ia<1«d)∧d(⊣+`⊸⊏·0⌾⊑PN)0<idd           # Unused marker
+  uu←(ia<1«d)∧d(⊣+`⊸⊏(1∾ixa)<PN)0<idd       # Unused marker
   spi←((spf←sp⊏fi)⊏3×fx)+3+sp⊏xv            # Special name index
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
