@@ -650,7 +650,7 @@ ConvertFile ← {
   head ← "head" Html lf∾JoinLines "  "⊸∾¨⟨
     "shortcut icon' type='image/x-icon" Link "favicon.ico"
     "stylesheet" Link "style.css"
-    "title" Html "BQN: " ∾⍟(¬·∨´"BQN"⍷⊢) 2↓⊑h1
+    "title" Html ("BQN"∾":"⊸(¬∘∊/⊣)∾" "∾⊢)⍟(¬·∨´"BQN"⍷⊢) 2↓⊑h1
   ⟩
   repo ← "a href='"‿repoURL‿"'" ∾⊸Html "BQN"
   crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"main")»parts
