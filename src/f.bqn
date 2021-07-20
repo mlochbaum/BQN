@@ -66,7 +66,7 @@
     # Escape quotes in strings (rank 1) and substitute control chars
     # with control pictures for other ranks.
     CSub ← { 𝕩 + (𝕩(=×'␡'-⊢)@+127) + ('␀'-@)×𝕩<@+32 }
-    𝕩 ↩ (1≠=)◶⟨(1+q=⊢)⊸/,Csub⟩ 𝕩
+    𝕩 ↩ (1≠r)◶⟨(1+q=⊢)⊸/,Csub⟩ 𝕩
     (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (q⌾⊑c⥊(¯1⊑1∾c)↑'·') ∾⎉k 𝕩 ∾⎉k c-⊸↑q
   }‿{
     # Not homogeneous, or empty
