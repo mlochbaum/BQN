@@ -18,6 +18,7 @@ References:
 Concepts:
 - [Context-free grammar](context.md)
 - [Based array theory](based.md)
+- [Array notation and display](arrayrepr.md)
 - [Array indices](indices.md)
 - [The leading axis model](leading.md)
 - [Function trains](train.md)
