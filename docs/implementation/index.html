@@ -5,16 +5,16 @@
 </head>
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a></div>
 <h1 id="bqn-implementation-notes">BQN implementation notes</h1>
-<p>Notes about how BQN is implemented. There's not too much here yet.</p>
+<p>Notes about how BQN is or could be implemented.</p>
+<p>This repository's BQN implementation is written mainly in BQN: the bytecode <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/c.bqn">compiler</a> is completely self-hosted, and the majority of the runtime (<a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r0.bqn">r0</a>, <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r1.bqn">r1</a>) is written in BQN except that it is allowed to define primitives; some preprocessing (<a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/pr.bqn">pr</a>) turns the primitives into identifiers.</p>
+<p>The remaining part, a Virtual Machine (VM), can be implemented in any language to obtain a version of BQN running in that language. The VM used for the online REPL is the <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../docs/bqn.js">Javascript implementation</a>, while <a href="https://github.com/dzaima/CBQN">CBQN</a> is a more advanced VM in C. There are platform-specific and generic tests in the <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/">test</a> directory.</p>
 <ul>
-<li><a href="codfns.html">Comparison to Co-dfns</a> discusses the general compilation strategy and how it compares to the only other array-based compiler.</li>
-<li><a href="vm.html">The BQN virtual machine and runtime</a> describes the non-self-hosted parts of the BQN implementation, that is, everything you need to port it to a new platform.</li>
+<li><a href="vm.html">The BQN virtual machine and runtime</a>: the non-self-hosted parts of the BQN implementation, or those needed to port it to a new platform.</li>
 <li><a href="primitive/index.html">Notes on implementing primitives</a></li>
 <li><a href="compile/index.html">Notes on compilation</a></li>
+<li><a href="codfns.html">Comparison to Co-dfns</a>, the only other array-based compiler.</li>
 </ul>
-<p>This repository's BQN implementation is written mainly in BQN: the bytecode <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/c.bqn">compiler</a> is completely self-hosted, and the majority of the runtime (<a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r0.bqn">r0</a>, <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r1.bqn">r1</a>) is written in BQN except that it is allowed to define primitives; some preprocessing turns the primitives into identifiers. The remaining part, a VM, can be implemented in any language to obtain a version of BQN running in that language.</p>
-<p>The VM used for the online REPL is the <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../docs/bqn.js">Javascript implementation</a>. The bytecode matches dzaima/BQN's format, and <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../dc.bqn">an extension</a> to the compiler adjusts the slightly different block declarations to target dzaima+reference BQN. <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../wc.bqn">An earlier experiment</a> targetting <a href="https://en.wikipedia.org/wiki/WebAssembly">WebAssembly</a> works only on a very small subset of BQN. All versions have automated tests in the <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/">test</a> directory.</p>
-<p>I have also held some forum discussions on the actual workings of the compiler, but aborted these because the interactive format wasn't doing too much. I haven't yet started on non-interactive replacements.</p>
+<p>I held a few early forum discussions on the workings of the self-hosted compiler, but aborted these because the interactive format wasn't doing too much. I haven't yet started on non-interactive replacements.</p>
 <ul>
 <li><a href="https://chat.stackexchange.com/rooms/52405/conversation/lesson-s1-parenthesis-nesting-level">Parenthesis nesting level</a></li>
 <li><a href="https://chat.stackexchange.com/rooms/52405/conversation/lesson-s2-infix-to-rpn">Infix to RPN</a></li>
