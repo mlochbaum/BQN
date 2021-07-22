@@ -84,6 +84,8 @@ In BQN `⎉` is Rank and `∘` is Atop. Dyalog's Atop (`⍤`) and Over (`⍥`) w
 
 The tables below give approximate implementations of Dyalog primitives for the ones that aren't the same. First- and last-axis pairs are also mostly omitted. BQN just has the first-axis form, and you can get the last-axis form with `⎉1`.
 
+The form `F⍣G` (Power with a function right operand; Power limit) must be implemented with recursion instead of primitives because it performs unbounded iteration. The modifier `_while_ ← {𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}` provides similar functionality without risk of stack overflow. It's discussed [here](control.md#low-stack-version) and called as `Fn _while_ Cond arg`.
+
 <table>
 <tr><th colspan=3>Functions</th></tr>
 <tr><th> Glyph          </th><th> Monadic                      </th><th> Dyadic </th>               </tr>

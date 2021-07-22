@@ -8,13 +8,13 @@ Control structures here are always functions that act on lists of functions, alt
 
 The surfeit of ways to write control structures could be a bit of an issue for reading BQN. My hope is that the community can eventually settle on a smaller set of standard forms to recommend so that you won't have to recognize all the variants given here. On the other hand, the cost of using specialized control structures is lower in a large project without too many contributors. In this case BQN's flexibility allows developers to adapt to the project's particular demands (for example, some programs use switch/case statements heavily but most do not).
 
-The useful control structures introduced here are collected as shortened definitions below.
+The useful control structures introduced here are collected as shortened definitions below. `While` uses the slightly more complicated implementation that avoids stack overflow, and `DoWhile` and `For` are written in terms of it in order to share this property. The more direct versions with linear stack use appear in the main text.
 
-    If      ← {𝕏⍟𝕎@}´               # Also Repeat
+    If      ← {𝕏⍟𝕎@}´                 # Also Repeat
     IfElse  ← {c‿T‿F: c◶F‿T@}
-    While   ← {𝕨{𝕊∘𝔾⍟𝔽𝕩}𝕩@}´        # While 1‿{... to run forever
-    DoWhile ← {𝕨{𝕊⍟𝔽𝔾𝕩}𝕩@}´
-    For     ← {I‿C‿P‿A: I@ ⋄ {𝕊∘P∘A⍟C 𝕩}@}
+    While   ← {𝕩{𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}𝕨@}´  # While 1‿{... to run forever
+    DoWhile ← {𝕏@ ⋄ While 𝕨‿𝕩}´
+    For     ← {I‿C‿P‿A: I@ ⋄ While⟨C,P∘A⟩}
 
     # Switch/case statements have many variations; these are a few
     Match   ← {𝕏𝕨}´
@@ -195,6 +195,14 @@ The same modifier technique used in `Forever` works for a while loop as well. Be
     DoWhile ← {𝕨{𝕊⍟𝔽𝔾𝕩}𝕩@}´
 
 Because the condition is run repeatedly, it has to be a function, and can't be a plain expression as in an if conditional.
+
+### Low-stack version
+
+The above version of `While` will fail in a fairly small number of iterations, because it consumes a new stack frame with each iteration. While tail call optimization could solve this, detecting the tail call in a compound function like `𝕊∘𝔾⍟𝔽` is technically difficult and would introduce overhead into a BQN interpreter. However, there is a method to make the number of required stack frames logarithmic in the number of iterations instead of linear:
+
+    While ← {𝕩{𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}𝕨@}´
+
+The innovation is to use `{𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}` instead of the equivalent `{𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}` or `{𝕊∘𝔽⍟𝔾𝕩}` (these are the same, as `𝕊` in a modifier is defined as `𝔽_𝕣_𝔾`). Here `𝔽` performs one iteration and `𝔾` tests whether to continue. The simplest approach is to perform one iteration and recurse with the same two functions. The modified approach replaces `𝔽` with `𝔽⍟𝔾∘𝔽`, that is, it doubles it while making sure the condition is still checked each iteration. The doublings compound so that recursion level `n` performs `𝔽` up to `2⋆n` times while using on the order of `n` additional stack frames. Only a hundred or two stack frames are needed to give a practically unlimited number of iterations.
 
 ## For
 
