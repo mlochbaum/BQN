@@ -86,6 +86,8 @@ This case also covers empty lists, which are shown as `⟨⟩`. This includes an
 
 ## List literals
 
+*The tutorial section [here](../tutorial/list.md#list-notation) also covers this topic.*
+
 There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the fill) and the other two can combine any sequence of elements.
 
 ### Strings

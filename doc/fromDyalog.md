@@ -51,7 +51,7 @@ BQN doesn't have guards: it uses modifiers or [control structures](control.md) i
 
 The assignment arrow `←` defines a new variable in a block, while `↩` modifies an existing one.
 
-BQN uses the ligature character `‿` for stranding, instead of plain juxtaposition. It also has a [list notation](syntax.md#list-notation) using `⟨⟩`.
+BQN uses the ligature character `‿` for stranding, instead of plain juxtaposition. It also has a [list notation](arrayrepr.md#brackets) using `⟨⟩`.
 
 ## For reading
 
