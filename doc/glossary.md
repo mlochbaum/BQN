@@ -108,7 +108,7 @@ The possible roles are:
 * **Nothing**: A special value-like entity that comes from `·`, `𝕨` in a function with no left argument, or a function called on nothing.
 * **Statement**: An expression, or nothing (`·`).
 * **Ligature**: The character `‿`.
-* [**List notation**](syntax.md#list-notation): The angle brackets `⟨⟩` or ligatures used to indicate a list.
+* [**List notation**](arrayrepr.md#brackets): The angle brackets `⟨⟩` or ligatures used to indicate a list.
 
 ## Assignment and scoping
 

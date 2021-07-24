@@ -228,7 +228,7 @@ Very well… a for loop is just a while loop with some extra pre- and post-actio
 
 The initialization can be a simple expression as shown; in fact it's a little silly to make initialization one of the arguments to `For` at all.Unlike in C, it's impossible to declare a variable that's local to the whole `For` loop but not its surroundings. Hopefully this is obvious from the structure of the code! Only curly braces can create a new scope, so to localize some variables in the `For` loop, just surround it in an extra set of curly braces.
 
-The `While` loop alone allows syntax similar to the `For` loop. Perform any initialization outside of the loop, and compose the post-action with the main body using the reverse composition `{𝔾∘𝔽}`. Because the composition binds less tightly than stranding, the bracketed list notation has to be used here.
+The `While` loop alone allows syntax similar to the `For` loop. Perform any initialization outside of the loop, and compose the post-action with the main body using the reverse composition `{𝔾∘𝔽}`. Because the composition binds less tightly than stranding, the bracketed [list notation](arrayrepr.md#brackets) has to be used here.
 
     c←27 ⋄ n←0
     While ⟨{𝕤⋄1<c}, {𝕤⋄n+↩1}{𝔾∘𝔽}{𝕤

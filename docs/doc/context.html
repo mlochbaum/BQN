@@ -59,7 +59,7 @@
 <p>The associations between spelling and syntactic role are considered part of BQN's <a href="../spec/token.html">token formation rules</a>.</p>
 <p>One rule for typing is also best considered to be a pre-parsing rule like the spelling system: the role of a brace construct <code><span class='Brace'>{}</span></code> with no header is determined by which special arguments it uses: it's a subject if there are none, but a <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code> makes it at least a function, an <code><span class='Function'>𝔽</span></code> makes it a 1- or 2-modifier, and a <code><span class='Function'>𝔾</span></code> always makes it a 2-modifier.</p>
 <h2 id="bqns-grammar">BQN's grammar</h2>
-<p>A formal treatment is included in <a href="../spec/grammar.html">the spec</a>. BQN's grammar—the ways syntactic roles interact—follows the original APL model (plus trains) closely, with allowances for new features like list notation. In order to keep BQN's syntax context-free, the syntactic role of any expression must be known from its contents, just like tokens.</p>
+<p>A formal treatment is included in <a href="../spec/grammar.html">the spec</a>. BQN's grammar—the ways syntactic roles interact—follows the original APL model (plus trains) closely, with allowances for new features like <a href="arrayrepr.html#list-literals">list notation</a>. In order to keep BQN's syntax context-free, the syntactic role of any expression must be known from its contents, just like tokens.</p>
 <p>Here is a table of the APL-derived modifier and function application rules:</p>
 <table>
 <thead>

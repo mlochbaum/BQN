@@ -48,7 +48,7 @@ One rule for typing is also best considered to be a pre-parsing rule like the sp
 
 ## BQN's grammar
 
-A formal treatment is included in [the spec](../spec/grammar.md). BQN's grammar—the ways syntactic roles interact—follows the original APL model (plus trains) closely, with allowances for new features like list notation. In order to keep BQN's syntax context-free, the syntactic role of any expression must be known from its contents, just like tokens.
+A formal treatment is included in [the spec](../spec/grammar.md). BQN's grammar—the ways syntactic roles interact—follows the original APL model (plus trains) closely, with allowances for new features like [list notation](arrayrepr.md#list-literals). In order to keep BQN's syntax context-free, the syntactic role of any expression must be known from its contents, just like tokens.
 
 Here is a table of the APL-derived modifier and function application rules:
 

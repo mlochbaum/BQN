@@ -45,7 +45,7 @@ In J, the part of speech is an inherent property of a value, while in BQN it is 
 | `[:`              | `·`         | Cap
 | `assert.`         | `!`         |
 
-BQN's explicit functions and modifiers are called "blocks", and have a more sophisticated syntax than J; see [the documentation](block.md). BQN uses [lexical scope](lexical.md), and has no global variables. BQN also has a [list notation](syntax.md#list-notation) using `⟨⟩`.
+BQN's explicit functions and modifiers are called "blocks", and have a more sophisticated syntax than J; see [the documentation](block.md). BQN uses [lexical scope](lexical.md), and has no global variables. BQN also has a [list notation](arrayrepr.md#brackets) using `⟨⟩`.
 
 ## For reading
 
