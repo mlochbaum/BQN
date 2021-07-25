@@ -142,7 +142,7 @@
   235 236 237  
               ┘
 </pre>
-<p>If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element <code><span class='Number'>247</span></code> and start over at <code><span class='Number'>135</span></code>. If the array doesn't have any elements to start with, its fill value is used instead, but it's probably best not to invoke this case!</p>
+<p>If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element <code><span class='Number'>247</span></code> and start over at <code><span class='Number'>135</span></code>. If the array doesn't have any elements to start with, its <a href="fill.html">fill element</a> is used instead, but it's probably best not to invoke this case!</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MTUg4qWKIGEKCjQg4qWKIOKGlTAgICMgRmlsbCBmb3Ig4oaVMCBpcyAw">↗️</a><pre>    <span class='Number'>15</span> <span class='Function'>⥊</span> <span class='Value'>a</span>
 ⟨ 135 136 137 145 146 147 235 236 237 245 246 247 135 136 137 ⟩
 
@@ -176,7 +176,7 @@
 <li><code><span class='Modifier2'>∘</span></code> says the length must be an exact fit, and gives an error in such a case.</li>
 <li><code><span class='Function'>⌊</span></code> rounds the length down, so that some elements are discarded.</li>
 <li><code><span class='Function'>⌽</span></code> rounds the length up, repeating elements to make up the difference.</li>
-<li><code><span class='Function'>↑</span></code> rounds the length up, but uses the argument's fill values for the needed extra elements.</li>
+<li><code><span class='Function'>↑</span></code> rounds the length up, but uses the argument's fill for the needed extra elements.</li>
 </ul>
 <p>These values are just BQN primitives of course. They're not called by Reshape or anything like that; the primitives are just chosen to suggest the corresponding functionality.</p>
 <p>Here's an example. If we try to turn five elements into two rows, <code><span class='Modifier2'>∘</span></code> gives an error, <code><span class='Function'>⌊</span></code> drops the last element, <code><span class='Function'>⌽</span></code> uses the first element again, and <code><span class='Function'>↑</span></code> uses a fill element (like <code><span class='Number'>5</span><span class='Function'>↑</span><span class='String'>&quot;abcde&quot;</span></code> would).</p>

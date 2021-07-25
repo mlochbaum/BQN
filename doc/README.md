@@ -20,6 +20,7 @@ Concepts:
 - [Based array theory](based.md)
 - [Array notation and display](arrayrepr.md)
 - [Array indices](indices.md)
+- [Fill elements](fill.md)
 - [The leading axis model](leading.md)
 - [Function trains](train.md)
 - [Blocks](block.md) (including function and modifier definition)

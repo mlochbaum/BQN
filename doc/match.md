@@ -15,7 +15,7 @@ Match always gives the same result as [Equals](arithmetic.md#comparisons) (`=`) 
         "abc" = "ab"  # Mismatched shapes
         "abc" ≡ "ab"
 
-Match compares arrays based on their fundamental properties—[shape](shape.md) and elements—and not the [fill element](../spec/inferred.md#fill-elements), which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for `'a'‿'b'‿'c'`, it should still be considered to match `"abc"`.
+Match compares arrays based on their fundamental properties—[shape](shape.md) and elements—and not the [fill element](fill.md), which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for `'a'‿'b'‿'c'`, it should still be considered to match `"abc"`.
 
 To give a precise definition, two arrays are considered to match if they have the same shape and all corresponding elements from the two arrays match. Every array has a finite [depth](depth.md) so this recursive definition always ends up comparing non-arrays, or atoms. An array never matches an atom, so the result if only one argument is an atom is `0`. The interesting case is when both arguments are atoms, discussed below.
 

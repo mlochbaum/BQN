@@ -30,7 +30,7 @@
                     ┘
 </pre>
 <p>There are several different ways to show arrays: as a string <code><span class='String'>&quot;&quot;</span></code>, with brackets <code><span class='Bracket'>⟨⟩</span></code>, or with corners <code><span class='Value'>┌</span></code> and <code><span class='Value'>┘</span></code>. We'll start with the most general, the corners. These show arrays of any rank while the other two ways are special cases for lists.</p>
-<p>Array displays show only the array shape and elements. The fill is an inferred property and the display never indicates or depends on it.</p>
+<p>Array displays show only the array shape and elements. The <a href="fill.html">fill</a> is an inferred property and the display never indicates or depends on it.</p>
 <h3 id="corners">Corners</h3>
 <p>Those top-left and bottom-right corners are a distinctive part of BQN's display, as other systems almost always completely enclose the contents. BQN could add the other two corners, naturally; it just doesn't. Within the corners, elements are separated by whitespace only, and generally aligned to the top left.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMiwieHki4p+p4omN4p+oMuKAvzLipYoiYWJjZCIsNOKfqSAgIyBOZXN0ZWQgMsOXMiBhcnJheQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='String'>&quot;xy&quot;</span><span class='Bracket'>⟩</span><span class='Function'>≍</span><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;abcd&quot;</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩</span>  <span class='Comment'># Nested 2×2 array
@@ -160,7 +160,7 @@
 <p>This case also covers empty lists, which are shown as <code><span class='Bracket'>⟨⟩</span></code>. This includes an empty string, as the only difference between an empty string and any other empty list is its fill element and array displays don't depend on the fill.</p>
 <h2 id="list-literals">List literals</h2>
 <p><em>The tutorial section <a href="../tutorial/list.html#list-notation">here</a> also covers this topic.</em></p>
-<p>There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the fill) and the other two can combine any sequence of elements.</p>
+<p>There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the <a href="fill.html">fill</a>) and the other two can combine any sequence of elements.</p>
 <h3 id="strings">Strings</h3>
 <p>A <strong>string</strong> consists of a sequence of characters surrounded by double quotes <code><span class='String'>&quot;&quot;</span></code>. The only rule for the characters inside is that any double quote must be escaped by repeating it twice; otherwise the string ends at that point.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Ii0nw5clIiIqIgoKIi0nw5clIioiICAjIEVzY2FwaW5nIGZhaWx1cmU=">↗️</a><pre>    <span class='String'>&quot;-'×%&quot;&quot;*&quot;</span>

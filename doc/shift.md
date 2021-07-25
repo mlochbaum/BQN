@@ -9,7 +9,7 @@ The result of a shift function always has the same shape as `𝕩`. The function
         0‿0 » 3‿2‿1             # Shift Before
         "end" « "add to the "   # Shift After
 
-The cells to add come from `𝕨` if it's present, as shown above. Otherwise, a single cell of fill values for `𝕩` is used. This kind of shift, which moves cells in `𝕩` over by just one, is called a "nudge".
+The cells to add come from `𝕨` if it's present, as shown above. Otherwise, a single cell of [fill elements](fill.md) for `𝕩` is used. This kind of shift, which moves cells in `𝕩` over by just one, is called a "nudge".
 
         » "abcd"   # Nudge
         « 1‿2‿3    # Nudge Back

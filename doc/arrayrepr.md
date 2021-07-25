@@ -18,7 +18,7 @@ Although it's really part of the language environment and not BQN itself, let's 
 
 There are several different ways to show arrays: as a string `""`, with brackets `⟨⟩`, or with corners `┌` and `┘`. We'll start with the most general, the corners. These show arrays of any rank while the other two ways are special cases for lists.
 
-Array displays show only the array shape and elements. The fill is an inferred property and the display never indicates or depends on it.
+Array displays show only the array shape and elements. The [fill](fill.md) is an inferred property and the display never indicates or depends on it.
 
 ### Corners
 
@@ -88,7 +88,7 @@ This case also covers empty lists, which are shown as `⟨⟩`. This includes an
 
 *The tutorial section [here](../tutorial/list.md#list-notation) also covers this topic.*
 
-There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the fill) and the other two can combine any sequence of elements.
+There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the [fill](fill.md)) and the other two can combine any sequence of elements.
 
 ### Strings
 
