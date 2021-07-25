@@ -551,12 +551,12 @@ ShiftCheck←{
 ShiftBefore←{
   n←𝕨 ShiftCheck 𝕩
   m←n⌊l←≠d←⥊𝕩
-  (≢𝕩) ⥊ (𝕨{(Fill𝕩)⌜↕𝕨}⟜𝕩⊘(↑⟜Deshape˜)m) ∾ (l-m)↑d
+  (≢𝕩) ⥊ (𝕨{(Fill𝕩)⌜↕𝕨}⍟(0<l)⟜𝕩⊘(↑⟜Deshape˜)m) ∾ (l-m)↑d
 } _fillBy_ (⊢⊘IF)
 ShiftAfter←{
   n←𝕨 ShiftCheck 𝕩
-  m←n⌊≠d←⥊𝕩
-  (≢𝕩) ⥊ (m↓d) ∾ 𝕨{(Fill𝕩)⌜↕𝕨}⟜𝕩⊘(n⊸-⊸↓⟜Deshape˜)m
+  m←n⌊l←≠d←⥊𝕩
+  (≢𝕩) ⥊ (m↓d) ∾ 𝕨{(Fill𝕩)⌜↕𝕨}⍟(0<l)⟜𝕩⊘(n⊸-⊸↓⟜Deshape˜)m
 } _fillBy_ (⊢⊘IF)
 
 RangeCheck ← "↕𝕩: 𝕩 must consist of natural numbers"!Nat
