@@ -46,7 +46,7 @@ The basic idea of Take (`↑`) is to get the first few elements of a list, while
 
 - `𝕩` can be an atom, or array of any rank (the result will be an array).
 - `𝕨` can be negative to take or drop from the end instead of the beginning.
-- For Take, if `𝕨` is larger than the length of `𝕩`, then fills are added.
+- For Take, if `𝕨` is larger than the length of `𝕩`, then [fills](fill.md) are added.
 - `𝕨` can have multiple numbers corresponding to leading axes of `𝕩`.
 - `𝕨` is allowed to be longer than the rank of `𝕩`; `𝕩` will be extended to fit.
 
@@ -63,7 +63,7 @@ Let's start with a natural number `𝕨`. Take gives the first `𝕨` major cell
 
         1 ↓ >"maj"‿"orc"‿"ell"
 
-If `𝕨` is too large it's usually not a problem. For Take, fill elements are added to the end to bring `𝕩` up to the required length—although this *will* fail if `𝕩` has no fill element. For Drop, the result is an empty array.
+If `𝕨` is too large it's usually not a problem. For Take, [fill elements](fill.md) are added to the end to bring `𝕩` up to the required length—although this *will* fail if `𝕩` has no fill element. For Drop, the result is an empty array.
 
         ↕6
 

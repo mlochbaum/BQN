@@ -88,7 +88,7 @@ If the left argument implies a smaller number of elements, then only the initial
 
         3‿3 ⥊ a
 
-If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element `247` and start over at `135`. If the array doesn't have any elements to start with, its fill value is used instead, but it's probably best not to invoke this case!
+If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element `247` and start over at `135`. If the array doesn't have any elements to start with, its [fill element](fill.md) is used instead, but it's probably best not to invoke this case!
 
         15 ⥊ a
 
@@ -111,7 +111,7 @@ Above, the length given is `∘`, a special value that indicates that a length t
 - `∘` says the length must be an exact fit, and gives an error in such a case.
 - `⌊` rounds the length down, so that some elements are discarded.
 - `⌽` rounds the length up, repeating elements to make up the difference.
-- `↑` rounds the length up, but uses the argument's fill values for the needed extra elements.
+- `↑` rounds the length up, but uses the argument's fill for the needed extra elements.
 
 These values are just BQN primitives of course. They're not called by Reshape or anything like that; the primitives are just chosen to suggest the corresponding functionality.
 
