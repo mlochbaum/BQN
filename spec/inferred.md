@@ -50,10 +50,9 @@ Fill elements for many primitives are given in the table below. The "Fill" colum
 |--------|--------------|-------------|----------
 | `⊢`    | `∧∨⥊≍»«⌽⍉⊏⍷` | `⥊↑↓↕⌽⍉/⊏`  | `` 𝔽` ``
 | `0`    | `≢/⍋⍒∊⊐⊒`    | `⍋⍒⊐⊒∊⍷`
-| `𝕩`    | `<`
+| `𝕩`    | `<↕`
 | `∩`    | `>∾`         | `∾≍»«`
 | `0↑𝕩`  | `↑↓`
-| `0⚇0𝕩` | `↕`
 
 For Group and Group Indices (`⊔`), the fill element of the result and its elements are both specified: the fill element of each element of the result is the same as that of `𝕩` for Group, and is `0` for Group Indices. The fill element of the result is `(0⚇1𝕨)↑𝕩` for Group, and `⥊⟜<0⚇1𝕩` for Group Indices.
 
