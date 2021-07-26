@@ -67,6 +67,8 @@ Other linear combinations such as adding two characters or negating a character 
 
 ### Arrays
 
+*Full documentation [here](array.md).*
+
 A BQN array is a multidimensional arrangement of data. This means it has a certain [*shape*](shape.md), which is a finite list of natural numbers giving the length along each axis, and it contains an *element* for each possible [*index*](indices.md), which is a choice of one natural number that's less than each axis length in the shape. The total number of elements, or *bound*, is then the product of all the lengths in the shape. The shape may have any length including zero, and this shape is known as the array's *rank*. An array of rank 0, which always contains exactly one element, is called a *unit*, while an array of rank 1 is called a *list* and an array of rank 2 is called a *table*.
 
 Each array—empty or nonempty—has an inferred property called a *fill*. The fill either indicates what element should be used to pad an array, or that such an element is not known and an error should result. Fills can be used by [Take](take.md) (`↑`), the two [Nudge](shift.md) functions (`»«`), [First](pick.md) (`⊑`), and [Reshape](reshape.md) (`⥊`).
