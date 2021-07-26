@@ -17,6 +17,7 @@ References:
 
 Concepts:
 - [Context-free grammar](context.md)
+- [Arrays](array.md)
 - [Based array theory](based.md)
 - [Array notation and display](arrayrepr.md)
 - [Array indices](indices.md)

@@ -2,7 +2,7 @@
 
 # The leading axis convention
 
-Several primitive functions manipulate the right argument, or sometimes both arguments, along one or more axes. According to the [leading axis model](https://aplwiki.com/wiki/Leading_axis_theory), it's best to make the primitives operate on initial axes, because the Rank modifier then allows it to apply to later axes as well. Here we'll see how this pattern works in BQN.
+Several primitive functions manipulate the right argument, or sometimes both arguments, of an [array](array.md) along one or more axes. According to the [leading axis model](https://aplwiki.com/wiki/Leading_axis_theory), it's best to make the primitives operate on initial axes, because the Rank modifier then allows it to apply to later axes as well. Here we'll see how this pattern works in BQN.
 
 ## Monadic functions
 
