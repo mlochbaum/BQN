@@ -12,7 +12,7 @@ g  ← "fill=currentColor|stroke-linecap=round|font-family=BQN,monospace"
 dg ← "font-size=22px|fill=currentColor|opacity=0.9"
 tg ← "font-size=18px|text-anchor=end"
 bg ← "class=bluegreen|stroke-width=3|style=fill:none|opacity=0.7"
-lg ← "stroke=#104409|fill=none|stroke-width=4|stroke-linejoin=round|opacity=0.4"
+lg ← "stroke=#3b285c|fill=none|stroke-width=4|stroke-linejoin=round|opacity=0.5"
 
 Text ← ("text" Attr "dy"‿"0.33em"∾Pos)⊸Enc
 Pd ← ·∾∾¨⟜FmtNum
