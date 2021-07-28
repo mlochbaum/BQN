@@ -10,6 +10,65 @@ BQN's arrays are immutable, meaning that an array is entirely defined by its att
 
 An array might also have a [fill element](fill.md) that captures some structural information about its elements and is used by a few operations. The fill, as an inferred property, isn't considered to truly be part of the array but is instead some information about the array that the interpreter keeps track of. So it's out of scope here.
 
+<!--GEN
+xt ← ∾˝ Highlight∘•Repr¨ xv ← 3‿2‿6⥊×˜2+3×↕5
+xs ← ≢ xv
+d ← 64‿36
+
+Ge ← "g"⊸At⊸Enc
+g  ← "fill=currentColor|stroke-linecap=round|text-anchor=middle|font-size=14|font-family=BQN,monospace"
+dg ← "font-size=24px|opacity=0.9|text-anchor=start"
+tg ← "font-size=18px|text-anchor=end"
+bg ← "class=bluegreen|stroke-width=3|style=fill:none|opacity=0.8"
+gg ← "stroke=currentColor|stroke-width=1.5|opacity=0.1"
+pg ← "class=purple|stroke-width=2|style=fill:none"
+
+Text ← ("text" Attr "dy"‿"0.33em"∾Pos)⊸Enc
+Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ FmtNum
+Path ← "path"⊘("path"At⊣) Elt "d"≍○<⊢
+Pd ← ·∾∾¨⟜FmtNum
+Rd ← Pos∘⊣ ∾ "width"‿"height"≍˘FmtNum∘⊢
+Rect ← "rect"⊸At⊸Elt
+
+strd ← (1⊑d) × str ← ×`⌾⌽1+«¯1↓xs
+elp ← ⌽ ¯1 (+´∘↓≍⊑) xs (×`⌾⌽1⊸«)⊸×⌾(¯1⊸↓) el ← 2‿0‿3
+
+pad ← 48‿40 ⋄ off ← pad+d+0‿28 ⋄ sh ← ¯4‿0
+dim ← pad + ¯1⊑¨ tx‿ty ← off+d× ¯1(⊑{⟨↕𝕨,⥊+⌜´str×↕¨𝕩⟩}↓)xs
+bp ← ⥊⌽(21×1.5‿¯1) (+⌾⊑ ≍ -⊸≍∘⊣)˘ 29‿21-⊸≍⊸+ ⍉> 0‿¯1⊸⊏¨tx‿ty
+
+Tr ← {(𝕨⊢⊘(At˜)"g") Attr "transform"‿𝕩}
+Tt ← Tr "translate("∾")"∾˜∾⟜","⊸∾´∘FmtNum
+
+axp ← off⊸+¨<˘(⟨tx-⊑off,0⟩-0.35‿1.3×d) ∾ ⍉ (1‿0.3×d) -˜ (0.5‿0×-⊑d)≍strd×↕¨¯1↓xs
+axd ← 50∾10(⊢-«)strd
+
+(((-∾+˜)32‿15)+sh∾dim) SVG g Ge ⟨
+  "class=code|stroke-width=1.5|rx=12" Rect sh Rd dim
+  dg Ge 23‿¯2 Text "Array properties"
+  "fill=#7f651c|opacity=0.1"Rect {⟨elp⊑⊸⊑tx,𝕩⟩(- Rd 2×⊢)23≍𝕩-14}2÷˜⊢´dim
+  bg Path ("M hv"∾˜⊸∾"m v") Pd bp∾0‿16‿12
+  tg Ge (⍉(tx+16)≍⌜ty) Text¨ xt
+
+  ("font-size=18" Tr "rotate(-90)") Enc (-⌾⊑⌽off+d×¯0.9‿5) Text "Axis 0"
+  ((off⊣⌾(¯1⊸⊑)elp⊑¨tx‿ty)-d×0‿1.8) Text "Position "∾•Repr ¯1⊑el
+  (Tt elp⊑¨tx‿ty) Enc ⟨
+    pg Path "M hvh" (Pd∾"z"˙) (÷⟜¯2∾(⊢∾-∘⊏)∘⊢) 0.7‿0.9×d
+    (d×0‿¯1.2) Text "Element at "∾1↓∾"‿"⊸∾¨•Repr¨el
+    (d×0‿¯0.75) Text "Value "∾•Repr el⊑xv
+  ⟩
+
+  "class=yellow" Ge ⟨
+    "font-size=22px" Ge (0.7‿0.8‿0.25{(d×0.1‿0.25-(=⊑𝕩)⌽0‿𝕨)+⊑¨𝕩}¨1⌽axp) Text¨ FmtNum xs
+    (off-1.1‿1.4×d) Text "Shape"
+  ⟩
+  "class=bluegreen|font-size=16" Ge (off-0.95‿1.95×d) Text "Rank 3"
+  gg Path ∾ axd {o←=⊑𝕩 ⋄ ("M "∾o⊏"VH") Pd 16⊸+⌾(o⊸⊑)(⊑∾𝕨+o¬⊸⊑⊢´) ≍¨´𝕩}¨ axp
+  pg Path ∾ axd {(("M "∾3⥊"hv"⌽˜=⊑𝕩)⥊˜≠)⊸Pd ∾∾⟜16‿𝕨‿6¨ ≍¨´𝕩}¨ axp
+  ∾{Text⟜("0"⊸+)¨⟜(↕≠) 8+≍¨´𝕩}¨ axp
+⟩
+-->
+
 ## Rectangles
 
 A BQN **array** is a multidimensional arrangement of data. The word "array" descends from words meaning "order", and the data in an array is ordered indeed. Below are examples of arrays with zero, one, and two dimensions.
