@@ -15,7 +15,7 @@ In mathematics (which unsurpisingly tends to use complicated terms to talk about
 
 `F⍟0` repeats `F` zero times, that is, does nothing. Like `n⋆0` gives the multiplicative identity `1`, `F⍟0` is the compositional [identity](identity.md), `⊢`. Since `F⍟1` applies `F` and `F⍟0` doesn't, Repeat might be pronounced "if" or "conditional" when `𝔾` is boolean.
 
-BQN's Repeat modifier has some extra functionality relative to the mathematical version. It allows a left argument, and some extensions to the right operand `𝔾`. As usual for 2-modifiers, `𝔾` is actually a function that applies to the arguments to give a result. The result can be a natural number as shown above, or a negative number to Undo (`⁼`) `𝔽`, or an array of values.
+BQN's Repeat modifier has some extra functionality relative to the mathematical version. It allows a left argument, and some extensions to the right operand `𝔾`. As usual for 2-modifiers, `𝔾` is actually a function that applies to the arguments to give a result. The result can be a natural number as shown above, or a negative number to [Undo](undo.md) (`⁼`) `𝔽`, or an array of values.
 
 ## Left argument
 

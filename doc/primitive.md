@@ -85,7 +85,7 @@ Other modifiers control array traversal and iteration. In three cases a simpler 
 `˘`        | Cells                                 | `⎉`        | [Rank](https://aplwiki.com/wiki/Rank_(operator))
 `¨`        | [Each](map.md)                        | `⚇`        | [Depth](depth.md#the-depth-modifier)
 `⌜`        | [Table](map.md)                       |
-`⁼`        | Undo                                  | `⍟`        | [Repeat](repeat.md)
+`⁼`        | [Undo](undo.md)                       | `⍟`        | [Repeat](repeat.md)
 `´`        | [Fold](fold.md)                       |
 `˝`        | [Insert](fold.md)                     |
 `` ` ``    | [Scan](scan.md)                       |

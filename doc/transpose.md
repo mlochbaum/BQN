@@ -37,7 +37,7 @@ But, ignoring the whitespace and going in reading order, the argument and result
 
         ≍○<⟜⍉ ⥊˘ a322
 
-To exchange multiple axes, use the [Repeat](repeat.md) modifier. A negative power moves axes in the other direction, just like how [Rotate](reverse.md#rotate) handles negative left arguments. In particular, to move the last axis to the front, use Undo (as you might expect, this exactly inverts `⍉`).
+To exchange multiple axes, use the [Repeat](repeat.md) modifier. A negative power moves axes in the other direction, just like how [Rotate](reverse.md#rotate) handles negative left arguments. In particular, to move the last axis to the front, use [Undo](undo.md) (as you might expect, this exactly inverts `⍉`).
 
         ≢ ⍉⍟3 a23456
 

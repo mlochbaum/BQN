@@ -14,7 +14,7 @@ Here are the simplest functions in BQN: Right (`⊢`) always returns its right a
 
 Depending on your past experiences, this could cause some confusion: built-in support for functions that do nothing? Documentation should say why a feature's there and how to use it, not just what it does, so we'll try to address this below. The most important single use is for tacit programming, but there are a variety of other uses as well.
 
-Of course, it's easy to write block functions `{𝕩}` and `{𝕨}` that return particular arguments. While I would already make `⊣` and `⊢` primitives just because they are common and important, there are also specific disadvantages to using blocks. They fail to indicate that there are no side effects, as primitives would, and they also need special casing for the interpreter to manipulate them when applying Undo (`⁼`) or making other inferences.
+Of course, it's easy to write block functions `{𝕩}` and `{𝕨}` that return particular arguments. While I would already make `⊣` and `⊢` primitives just because they are common and important, there are also specific disadvantages to using blocks. They fail to indicate that there are no side effects, as primitives would, and they also need special casing for the interpreter to manipulate them when applying [Undo](undo.md) (`⁼`) or making other inferences.
 
 ## Filling arrays
 

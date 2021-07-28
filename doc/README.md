@@ -61,6 +61,7 @@ Primitives:
 - [Solo, Couple, and Merge](couple.md) (`≍>`)
 - [Take and Drop](take.md) (`↑`)
 - [Transpose](transpose.md) (`⍉`)
+- [Undo](undo.md) (`⁼`)
 - [Windows](windows.md) (`↕`)
 
 Environment:
