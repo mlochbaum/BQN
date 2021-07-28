@@ -220,14 +220,14 @@ svg tspan {
 }
 .purple    { fill:#d6afe0; stroke:#3d1b46; } text.purple   ,.purple    text { fill:#3b1346; stroke:none; }
 .lilac     { fill:none;    stroke:#736480; } text.lilac    ,.lilac     text { fill:#3b373e; stroke:none; }
-.bluegreen { fill:#55cbcb; stroke:#1c4e4e; } text.bluegreen,.bluegreen text { fill:#113939; stroke:none; }
+.bluegreen { fill:#55cbcb; stroke:#1c4e4e; } text.bluegreen,.bluegreen text { fill:#183d3d; stroke:none; }
 .yellow    { fill:#e2d17f; stroke:#a28237; } text.yellow   ,.yellow    text { fill:#7a5a0e; stroke:none; }
 .red       { fill:#ce8379; stroke:#861d17; } text.red      ,.red       text { fill:#510d09; stroke:none; }
 .green     { fill:#6fb360; stroke:#1b6720; } text.green    ,.green     text { fill:#14401a; stroke:none; }
 @media (prefers-color-scheme: dark) {
 .purple    { fill:#241922; stroke:#612d86; } text.purple   ,.purple    text { fill:#6e2ca0; stroke:none; }
 .lilac     { fill:none;    stroke:#5a4d6a; } text.lilac    ,.lilac     text { fill:#8a8285; stroke:none; }
-.bluegreen { fill:#0e2525; stroke:#297f7f; } text.bluegreen,.bluegreen text { fill:#578d8d; stroke:none; }
+.bluegreen { fill:#0e2525; stroke:#297f7f; } text.bluegreen,.bluegreen text { fill:#52848a; stroke:none; }
 .yellow    { fill:#5b4b25; stroke:#a27e2a; } text.yellow   ,.yellow    text { fill:#9d7925; stroke:none; }
 .red       { fill:#532923; stroke:#ae251e; } text.red      ,.red       text { fill:#a6221a; stroke:none; }
 .green     { fill:#25431e; stroke:#298221; } text.green    ,.green     text { fill:#298221; stroke:none; }
