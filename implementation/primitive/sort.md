@@ -30,9 +30,7 @@ For **Bins**, use a branching binary search: see [On binary search](#on-binary-s
 
 The name of the game here is "branchless".
 
-For sorting the best general algorithm I know of is a hybrid of pdqsort with counting sort, described below. I've found some improvements to pdqsort, but they all maintain its basic strategy and pattern-defeating nature, so I think the name still fits.
-
-Both pdqsort and counting sort are not stable, so they can't be used for Grade. For small-range Grade, counting sort must be replaced with bucket sort, at a significant performance cost. I don't have any method I'm happy with for other data. Stabilizing pdqsort by sorting the indices at the end is possible but slow. [Wolfsort](https://github.com/scandum/wolfsort) is a hybrid radix/merge sort that might be better.
+For sorting, the fastest algorithms for generic data and generic hardware are branchless [quicksorts](#quicksort). Fluxsort is new and very exciting because it's a *stable* algorithm that's substantially faster than runner-up pdqsort on random arrays. However, it's immature and is missing a lot of the specialized strategies pdqsort has. I'm working on adapting these improvements to work for stable sorting and also on hybridizing with counting/bucket sort.
 
 A branchless binary search is adequate for Bins but in many cases—very small or large `𝕨`, and small range—there are better methods.
 
@@ -44,7 +42,11 @@ Bucket sort can be used for Grade or sort-by (`⍋⊸⊏`), but counting sort on
 
 ### Quicksort
 
+[Fluxsort](https://github.com/scandum/fluxsort) attains high performance with a branchless stable partition that places one half on top of existing data and the other half somewhere else. One half ends up in the appropriate place in the sorted array. The other is in swap memory, and will be shifted back by subsequent partitions and base-case sorting. Aside from the partitioning strategy, Fluxsort makes a number of other decisions differently from pdqsort, including a fairly complicated merge sort ([Quadsort](https://github.com/scandum/quadsort)) as the base case. I haven't fully evaluated these.
+
 [This paper](https://arxiv.org/abs/2106.05123) gives a good description of [pdqsort](https://github.com/orlp/pdqsort). I'd start with the [Rust version](https://github.com/rust-lang/rust/blob/master/library/core/src/slice/sort.rs), which has some advantages but can still be improved further. The subsections below describe improved [partitioning](#partitioning) and an [initial pass](#initial-pass) with several benefits. I also found that the pivot randomization methods currently used are less effective because they swap elements that won't become pivots soon; the pivot candidates and randomization targets need to be chosen to overlap. The optimistic insertion sort can also be improved: when a pair of elements is swapped the smaller one should be inserted as usual but the larger one can also be pushed forward at little cost, potentially saving many swaps and handling too-large elements as gracefully as too-small ones.
+
+While the stable partitioning for Fluxsort seems to be an overall better choice, pdqsort's unstable partitioning is what I've worked with in the past. The following sections are written from the perspective of pdqsort and will be rewritten for Fluxsort as the methods are adapted.
 
 #### Partitioning
 
