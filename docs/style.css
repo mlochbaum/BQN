@@ -181,7 +181,7 @@ a:link        { color: #0b39dc; text-decoration-color: #0b39dc91; }
 a:visited     { color: #3d155f; }
 
 .kb span:hover{ background-color: #bce; }
-.kb.backslash { background-color: #cee; }
+.kb.prefix { background-color: #cee; }
 
 @media (prefers-color-scheme: dark) {
   body, input, select { color: #d6d7d9; background-color: #141515; }
@@ -194,7 +194,7 @@ a:visited     { color: #3d155f; }
   table td, th{ border-color: #636967; }
   table th    { border-color: #88918c; background-color: #292a2b; }
   .kb span:hover { background-color: #237; }
-  .kb.backslash  { background-color: #1e2430; }
+  .kb.prefix  { background-color: #1e2430; }
 
   .Value      { color: #b2b9bb; }
   .Function   { color: #3aa548; }
