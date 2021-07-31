@@ -78,13 +78,8 @@ sysvals.plot = (x,w) => {
   return '\0';
 }
 
-doc.prfx.onchange = ev => {
-  prefix = ev.target.value;
-  buildKb();
-}
-
 let keymode=0; // 1 for prefix
-let prefix=doc.prfx.value;
+let prefix='\\';
 doc.code.onkeydown = ev => {
   let k = ev.which;
   if (16<=k && k<=20) {
@@ -117,17 +112,20 @@ let kk=Array.from('`123456890-=~!@#$%^&*()_+qwertuiop[]QWERTIOP{}asdfghjkl;ASFGH
 let kv=Array.from('˜˘¨⁼⌜´˝∞¯•÷×¬⎉⚇⍟◶⊘⎊⍎⍕⟨⟩√⋆⌽𝕨∊↑∧⊔⊏⊐π←→↙𝕎⍷𝕣⍋⊑⊒⍳⊣⊢⍉𝕤↕𝕗𝕘⊸∘○⟜⋄↖𝕊𝔽𝔾«⌾»·˙⥊𝕩↓∨⌊≡∾≍≠𝕏⍒⌈≢≤≥⇐‿↩');
 let keys={}, revkeys={}, primhelp={};
 kk.map((k,i)=>{keys[k]=kv[i];revkeys[kv[i]]=k;});
-let buildKb = () => {
-  doc.kb.innerHTML = keydesc.map(d=>{
-    let s = syncls[d[0]];
+doc.kb.innerHTML = keydesc
+  .map(d=>'<span class="'+syncls[d[0]]+'">'+Array.from(d)[1]+'</span>')
+  .concat(['<a href="keymap.html" target="_blank">map</a>'])
+  .join("&#8203;"); // zero-width space
+let setPrefix = () => {
+  doc.kb.querySelectorAll("span").forEach((x,i) => {
+    let d = keydesc[i];
     let c = Array.from(d)[1];
     let t = d.slice(1+c.length).replace(';','\n');
     let k = revkeys[c]; if (k) t += '\n'+prefix+(k==='"'?'&quot;':k);
-    primhelp[c] = t;
-    return '<span title="'+t+'" class="'+s+'">'+c+'</span>'
-  }).concat(['<a href="keymap.html" target="_blank">map</span>']).join("&#8203;"); // zero-width space
+    x.title = primhelp[c] = t;
+  });
 }
-buildKb();
+setPrefix();
 doc.kb.onmousedown = ev => {
   let t = ev.target;
   if (t.nodeName === 'SPAN') {
@@ -135,15 +133,23 @@ doc.kb.onmousedown = ev => {
   }
 }
 
+doc.kb.innerHTML += '<div class="kbext"></div>';
+doc.kbext = doc.kb.querySelector('.kbext');
+
 if (doc.demo) {
   let fonts=[["BQN386"],["DejaVu","Mod"],["Fairfax","HD"],["3270","font"],["Iosevka","Term"],["Julia","Mono"]];
   let fclass = f => f==="3270"?"f"+f:f
   let fontsel = '<select>'+fonts.map(f =>
       '<option value="'+f[0]+'">'+f[0]+(f[1]?' '+f[1]:'')+'</option>'
     ).join("")+'select';
-  doc.kb.innerHTML += fontsel;
-  doc.kb.querySelector('select').onchange =
+  doc.kbext.innerHTML += fontsel;
+  doc.kbext.querySelector('select').onchange =
     e=>doc.cont.className='cont '+fclass(e.target.value);
+}
+
+doc.kbext.innerHTML += '<input class="prfx" type="text" maxlength="1" value="'+prefix+'"/>';
+doc.kbext.querySelector(".prfx").onchange = ev => {
+  prefix = ev.target.value; setPrefix();
 }
 
 if (doc.perm) doc.perm.onmouseover = doc.perm.onfocus = () => {
