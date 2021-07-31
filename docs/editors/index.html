@@ -1,0 +1,33 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Editor support</title>
+</head>
+<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a></div>
+<h1 id="editor-support">Editor support</h1>
+<style>.Comment,.Function,.Number,.String { color: inherit; }</style>
+<p>Editor plugins and other tools for allowing BQN input are in <a href="https://github.com/mlochbaum/BQN/tree/master/editors">this folder</a>. Input is always performed with a backslash <code><span class='Value'>\</span></code> prefix by default, using the layout shown <a href="https://mlochbaum.github.io/BQN/keymap.html">here</a>. To type an actual backslash, hit the backslash key twice.</p>
+<p><a href="https://abrudz.github.io/lb/bqn">This bookmarklet</a> enables BQN input in any webpage in your <strong>browser</strong>.</p>
+<p><a href="https://gist.github.com/dzaima/35ca0ce12b5e215a62460f00e693984f">This userscript</a> highlights BQN code on <strong>GitHub</strong>.</p>
+<p>For <strong>Android</strong>, <a href="https://github.com/dzaima/hackerskeyboard/releases/latest">this fork</a> adds APL and BQN to Hacker's Keyboard.</p>
+<p>The file <a href="https://github.com/mlochbaum/BQN/blob/master/editors/inputrc">inputrc</a> can be copied or appended to <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.inputrc</span></code> to enable backslash input in <strong>bash</strong>, BQN with <strong>rlwrap</strong>, and other software that uses GNU Readline.</p>
+<p>If you'd like to contribute files for another editor I'd gladly accept them!</p>
+<h3 id="xkb">XKB</h3>
+<p>The file <a href="https://github.com/mlochbaum/BQN/blob/master/editors/bqn">bqn</a> is for configuring XKB on Linux. To use, copy it to <code><span class='Function'>/</span><span class='Value'>usr</span><span class='Function'>/</span><span class='Value'>share</span><span class='Function'>/X11/</span><span class='Value'>xkb</span><span class='Function'>/</span><span class='Value'>symbols</span><span class='Function'>/</span></code>, then run</p>
+<pre><span class='Value'>$</span> <span class='Value'>setxkbmap</span> <span class='Function'>-</span><span class='Value'>layout</span> <span class='Value'>us</span><span class='Separator'>,</span><span class='Value'>bqn</span> <span class='Function'>-</span><span class='Value'>option</span> <span class='Value'>grp:switch</span>
+</pre>
+<p>replacing <code><span class='Value'>us</span></code> with your ordinary keyboard layout. <code><span class='Value'>switch</span></code> indicates the right alt key and can be replaced with <code><span class='Value'>lswitch</span></code> for left alt or other codes. The setting will go away on shutdown so you will probably want to configure it to run every time you start up. The way to do this depends on your desktop environment. For further discussion, see <a href="https://en.wikipedia.org/wiki/X_keyboard_extension">Wikipedia</a> or the <a href="https://aplwiki.com/wiki/Typing_glyphs_on_Linux">APL Wiki</a>.</p>
+<p>Another XKB option, if you have a compose key enabled, is to place <a href="https://github.com/mlochbaum/BQN/blob/master/editors/XCompose">XCompose</a> (possibly with adjustments) in <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.</span><span class='Function'>XCompose</span></code>.</p>
+<h3 id="vim">Vim</h3>
+<p>Copy or symlink all files into the corresponding directories in <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.vim</span></code>. Add the following two lines to <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.vim</span><span class='Function'>/</span><span class='Value'>filetype.vim</span></code>:</p>
+<pre>  <span class='Value'>au</span><span class='Function'>!</span> <span class='Function'>BufRead</span><span class='Separator'>,</span><span class='Function'>BufNewFile</span> <span class='Value'>*.bqn</span> <span class='Value'>setf</span> <span class='Value'>bqn</span>
+  <span class='Value'>au</span><span class='Function'>!</span> <span class='Function'>BufRead</span><span class='Separator'>,</span><span class='Function'>BufNewFile</span> <span class='Value'>*</span> <span class='Value'>if</span> <span class='Value'>getline</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>=</span><span class='Value'>~</span> <span class='String'>'</span><span class='Value'>^</span><span class='Comment'>#!.*bqn$' | setf bqn | endif
+</span></pre>
+<p>Include <code><span class='Value'>syntax</span> <span class='Value'>on</span></code> in your .vimrc for syntax highlighting and <code><span class='Value'>filetype</span> <span class='Value'>plugin</span> <span class='Value'>on</span></code> for keyboard input.</p>
+<h3 id="emacs">Emacs</h3>
+<p>Add the following two lines to <code><span class='Value'>init.el</span></code> (usually <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.emacs.d</span><span class='Function'>/</span><span class='Value'>init.el</span></code>), replacing the path appropriately.</p>
+<pre><span class='Paren'>(</span><span class='Value'>add</span><span class='Function'>-</span><span class='Value'>to</span><span class='Function'>-</span><span class='Value'>list</span> <span class='String'>'</span><span class='Value'>load</span><span class='Function'>-</span><span class='Value'>path</span> <span class='String'>&quot;/path/to/BQN/editors/emacs&quot;</span><span class='Paren'>)</span>
+<span class='Paren'>(</span><span class='Value'>require</span> <span class='String'>'</span><span class='Value'>gnu</span><span class='Function'>-</span><span class='Value'>apl</span><span class='Function'>-</span><span class='Value'>mode</span><span class='Paren'>)</span>
+</pre>
+<h3 id="kakoune">Kakoune</h3>
+<p>Copy or symlink <code><span class='Value'>kak</span><span class='Function'>/</span><span class='Value'>autoload</span><span class='Function'>/</span><span class='Value'>filetype</span><span class='Function'>/</span><span class='Value'>bqn.kak</span></code> into <code><span class='Value'>autoload</span><span class='Function'>/</span><span class='Value'>filetype</span></code> in your Kakoune config directory (probably <code><span class='Value'>.config</span><span class='Function'>/</span><span class='Value'>kak</span><span class='Function'>/</span></code>).</p>
