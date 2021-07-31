@@ -9,10 +9,11 @@
     li { margin:0.7em 0; }
     textarea { padding:0.2em; }
     .perm, .count { font-size:0.7em; margin:-0.2em 0.8em 0 0; }
-    .run, .doexplain, .perm { float:right; margin-left:0.4em; }
+    .run, .doexplain, .perm, .prfx { float:right; margin-left:0.4em; }
     .doexplain.selected { background:#777; }
     .count { float:left; opacity:0.6; }
     .rslt { border:none; background:none; min-height:8em; }
+    .prfx { width: 1.1em; }
   </style>
 </head>
 <body>
@@ -21,6 +22,7 @@
     <div class="kb"></div>
     <textarea class="code" rows="8" autofocus></textarea>
     <div class="count"></div>
+    <input class="prfx" type="text" maxlength="1" value="\"/>
     <input class="run" type="submit" value="Run (or shift-enter)"/>
     <input class="doexplain" type="button" value="Explain"/>
     <a class="perm" href="#" title="Link with the code above embedded">permalink</a>
@@ -30,7 +32,7 @@
   <p>
     Notes:
     <ul>
-      <li>You can type special characters with a back<em>slash</em> prefix, as shown by hovering over the character bar above. Documentation links for primitives are <a href="doc/primitive.html#functions">here</a>.</li>
+      <li>You can type special characters with a back<em>slash</em> (customizable) prefix, as shown by hovering over the character bar above. Documentation links for primitives are <a href="doc/primitive.html#functions">here</a>.</li>
       <li>Any modifier with enter will execute, not just shift. The code window is vertically resizeable.</li>
       <li>Support for function headers and multiple bodies is missing.</li>
     </ul>

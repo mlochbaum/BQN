@@ -78,7 +78,13 @@ sysvals.plot = (x,w) => {
   return '\0';
 }
 
-let keymode=0; // 1 for backslash
+doc.prfx.onchange = ev => {
+  prefix = ev.target.value;
+  buildKb();
+}
+
+let keymode=0; // 1 for prefix
+let prefix=doc.prfx.value;
 doc.code.onkeydown = ev => {
   let k = ev.which;
   if (16<=k && k<=20) {
@@ -87,12 +93,12 @@ doc.code.onkeydown = ev => {
     repl(); return false;
   } if (keymode) {
     keymode = 0;
-    doc.kb.classList.remove('backslash');
+    doc.kb.classList.remove('prefix');
     let c = keys[ev.key];
     if (c) return typeChar(ev.target, c, ev);
-  } else if (ev.key=='\\') {
+  } else if (ev.key==prefix) {
     keymode = 1;
-    doc.kb.classList.add('backslash');
+    doc.kb.classList.add('prefix');
     ev.preventDefault();
   }
 }
@@ -111,14 +117,17 @@ let kk=Array.from('`123456890-=~!@#$%^&*()_+qwertuiop[]QWERTIOP{}asdfghjkl;ASFGH
 let kv=Array.from('˜˘¨⁼⌜´˝∞¯•÷×¬⎉⚇⍟◶⊘⎊⍎⍕⟨⟩√⋆⌽𝕨∊↑∧⊔⊏⊐π←→↙𝕎⍷𝕣⍋⊑⊒⍳⊣⊢⍉𝕤↕𝕗𝕘⊸∘○⟜⋄↖𝕊𝔽𝔾«⌾»·˙⥊𝕩↓∨⌊≡∾≍≠𝕏⍒⌈≢≤≥⇐‿↩');
 let keys={}, revkeys={}, primhelp={};
 kk.map((k,i)=>{keys[k]=kv[i];revkeys[kv[i]]=k;});
-doc.kb.innerHTML = keydesc.map(d=>{
-  let s = syncls[d[0]];
-  let c = Array.from(d)[1];
-  let t = d.slice(1+c.length).replace(';','\n');
-  let k = revkeys[c]; if (k) t += '\n\\ '+(k==='"'?'&quot;':k);
-  primhelp[c] = t;
-  return '<span title="'+t+'" class="'+s+'">'+c+'</span>'
-}).concat(['<a href="keymap.html" target="_blank">map</span>']).join("&#8203;"); // zero-width space
+let buildKb = () => {
+  doc.kb.innerHTML = keydesc.map(d=>{
+    let s = syncls[d[0]];
+    let c = Array.from(d)[1];
+    let t = d.slice(1+c.length).replace(';','\n');
+    let k = revkeys[c]; if (k) t += '\n'+prefix+(k==='"'?'&quot;':k);
+    primhelp[c] = t;
+    return '<span title="'+t+'" class="'+s+'">'+c+'</span>'
+  }).concat(['<a href="keymap.html" target="_blank">map</span>']).join("&#8203;"); // zero-width space
+}
+buildKb();
 doc.kb.onmousedown = ev => {
   let t = ev.target;
   if (t.nodeName === 'SPAN') {
