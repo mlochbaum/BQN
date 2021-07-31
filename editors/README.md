@@ -44,6 +44,10 @@ Add the following two lines to `init.el` (usually `~/.emacs.d/init.el`), replaci
     (add-to-list 'load-path "/path/to/BQN/editors/emacs")
     (require 'gnu-apl-mode)
 
+### VS Code
+
+See [this repository](https://github.com/razetime/bqn-vscode).
+
 ### Kakoune
 
 Copy or symlink `kak/autoload/filetype/bqn.kak` into `autoload/filetype` in your Kakoune config directory (probably `.config/kak/`).
