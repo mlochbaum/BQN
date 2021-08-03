@@ -30,7 +30,7 @@ In all cases what these functions do is more like reinterpreting existing data t
         ⥊ ⥊¨ a
         ∾ ⥊ ⥊¨ a
 
-The way this happens, and the constraint that all inner arrays have the same shape, is closely connected to the concept of an array, and like [Table](map.md#table) `⌜`, Merge might be considered a fundamental way to build up multidimensional arrays from lists. In both cases rank-0 or [unit](enclose.md#whats-a-unit) arrays are somewhat special. They are the [identity value](fold.md#identity-values) of a function with Table, and can be produced by Merge inverse, `>⁼` **on a list**, which forces either the outer or inner shape to be empty (BQN chooses `>⁼` to be `<`, but only on an array, as `>` cannot produce non-arrays). Merge has another catch as well: it cannot produce arrays with a `0` in the shape, except at the end, unless fills can be specified.
+The way this happens, and the constraint that all inner arrays have the same shape, is closely connected to the concept of an array, and like [Table](map.md#table) `⌜`, Merge might be considered a fundamental way to build up multidimensional arrays from lists. In both cases rank-0 or [unit](enclose.md#whats-a-unit) arrays are somewhat special. They are the [identity value](fold.md#identity-values) of a function with Table, and can be produced by Merge [inverse](undo.md), `>⁼` **on a list**, which forces either the outer or inner shape to be empty (BQN chooses `>⁼` to be `<`, but only on an array, as `>` cannot produce non-arrays). Merge has another catch as well: it cannot produce arrays with a `0` in the shape, except at the end, unless fills can be specified.
 
         ⊢ e ← ⟨⟩¨ ↕3
         ≢ > e

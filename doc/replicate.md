@@ -129,7 +129,7 @@ This means the transitions can be grouped exactly in pairs, the beginning and en
 
 ### Inverse
 
-The result of Indices `/n` is an ordered list of natural numbers, where the number `i` appears `i⊑n` times. Given an ordered list of natural numbers `k`, the *inverse* of indices returns a corresponding `n`: one where the value `i⊑n` is the number of times `i` appears in `k`.
+The result of Indices `/n` is an ordered list of natural numbers, where the number `i` appears `i⊑n` times. Given an ordered list of natural numbers `k`, the [*inverse*](undo.md) of indices returns a corresponding `n`: one where the value `i⊑n` is the number of times `i` appears in `k`.
 
         / 3‿2‿1
 
