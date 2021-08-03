@@ -18,7 +18,7 @@ If `𝕨` is longer than `𝕩`, some cells from `𝕨` will be discarded, as we
 
 ## Sequence processing with shifts
 
-When working with a sequence of data such as text, daily measurements, or audio data, shift functions are generally the best way to handle the concept of "next" or "previous". In the following example `s` is shown alongside the shifted-right data `»s`, and each element is compared to the previous with `-⟜»`, which we see is the inverse of Plus [Scan](scan.md) `` +` ``.
+When working with a sequence of data such as text, daily measurements, or audio data, shift functions are generally the best way to handle the concept of "next" or "previous". In the following example `s` is shown alongside the shifted-right data `»s`, and each element is compared to the previous with `-⟜»`, which we see is the [inverse](undo.md) of Plus [Scan](scan.md) `` +` ``.
 
         s ← 1‿2‿2‿4‿3‿5‿6
         s ≍ »s

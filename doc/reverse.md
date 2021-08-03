@@ -28,7 +28,7 @@ Reverse is useful for [folding](fold.md) left to right instead of right to left.
 
         ≍○<˜´ ⌽ "abcd"  # Left to right
 
-Reverse is its own inverse `⌽⁼`. As a result, `𝔽⌾⌽` reverses the argument, applies `𝔽`, and reverses again. It's a particularly useful pattern with [Scan](scan.md), as it allows scanning from the end rather than the beginning of the array. For example, `` ∨` `` on a list of booleans changes all bits after the first `1` to `1`, but `` ∨`⌾⌽ `` does this to all bits before the last `1`.
+Reverse is its own [inverse](undo.md) `⌽⁼`. As a result, `𝔽⌾⌽` reverses the argument, applies `𝔽`, and reverses again. It's a particularly useful pattern with [Scan](scan.md), as it allows scanning from the end rather than the beginning of the array. For example, `` ∨` `` on a list of booleans changes all bits after the first `1` to `1`, but `` ∨`⌾⌽ `` does this to all bits before the last `1`.
 
         ∨`   0‿0‿1‿0‿0‿1‿0
 
