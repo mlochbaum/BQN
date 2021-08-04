@@ -622,7 +622,8 @@ GetMultiHighlights ← {
 
 ################################
 # Format an array to a string
-fmt ← ⊑ (•Import "src/f.bqn"){𝔽} ⟨•Type,•Decompose,•Glyph,•Repr⟩
+tn ← "*"⊸(∾∾⊣)¨"array"‿"function"‿"1-modifier"‿"2-modifier"‿"namespace"
+fmt ← ⊑ (•Import "src/f.bqn"){𝔽} ⟨•Type,•Decompose,•Glyph⎊(tn⊑˜2-˜•Type),•Repr⟩
 
 
 ################################
