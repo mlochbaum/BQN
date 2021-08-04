@@ -167,13 +167,13 @@ Each function in this section is monadic.
 
 `•Source` gives a string containing a block's source, including the enclosing braces `{}`. It causes an error if the argument is not a block. In contrast to `•Glyph`, this function does not give full information about `𝕩` because the result cannot convey environment or mutable identity.
 
-`•Decompose` breaks down one level of a compound function or modifier, returning a list with a code giving what kind of structure it has (as listed in the table below) followed by each of its components. Non-operations do not cause an error, but return code -1, then the argument as a single component. The result is thus a list of length 2 to 4, and `•Decompose` cannot cause an error.
+`•Decompose` breaks down one level of a compound function or modifier, returning a list with a code giving what kind of structure it has (as listed in the table below) followed by each of its components. "Other" includes blocks and system functions. Non-operations do not cause an error, but return code -1, then the argument as a single component. The result is thus a list of length 2 to 4, and `•Decompose` cannot cause an error.
 
 | Kind          | Code | Components
 |---------------|------|-----------
 | Non-operation | -1   | `𝕩`
 | Primitive     |  0   | `𝕩`
-| Block         |  1   | `𝕩`
+| Other         |  1   | `𝕩`
 | 2-train       |  2   | `  g,h`
 | 3-train       |  3   | `f,g,h`
 | 1-mod         |  4   | `𝕗,𝕣`
