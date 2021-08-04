@@ -90,8 +90,8 @@
     s ↩ ∾⟜"{𝔽}"⍟(3>·Type ¯1⊑d˙)⍟(2≤p) s
     p‿s
   }
-  tn ← '*'(∾∾⊣)¨"array"‿"function"‿"1-modifier"‿"2-modifier"‿"namespace"
-  FmtOp ← ≍1⊑ (1=≠)◶⟨⊑tn,⊏⟩∘FmtDat _dispOp_ (tn⊑˜-⟜2)
+  arr ← "*array*"
+  FmtOp ← ≍1⊑ (1=≠)◶⟨arr,⊏⟩∘FmtDat _dispOp_ (=⟜2◶⟨FF⊑∘⊢,arr⟩)
 
   # Format any value to character matrix
   Fmt ← Type (3≤⊣)◶⟨FmtDat⊢,FmtOp⟩ ⊢
