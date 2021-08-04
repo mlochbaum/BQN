@@ -354,7 +354,7 @@
 </table>
 <p><code><span class='Function'>•Glyph</span></code> gives the glyph corresponding to a primitive as a single character, for example returning <code><span class='String'>'+'</span></code> given an argument matching <code><span class='Function'>+</span></code>. It causes an error if the argument is not a primitive.</p>
 <p><code><span class='Function'>•Source</span></code> gives a string containing a block's source, including the enclosing braces <code><span class='Brace'>{}</span></code>. It causes an error if the argument is not a block. In contrast to <code><span class='Function'>•Glyph</span></code>, this function does not give full information about <code><span class='Value'>𝕩</span></code> because the result cannot convey environment or mutable identity.</p>
-<p><code><span class='Function'>•Decompose</span></code> breaks down one level of a compound function or modifier, returning a list with a code giving what kind of structure it has (as listed in the table below) followed by each of its components. Non-operations do not cause an error, but return code -1, then the argument as a single component. The result is thus a list of length 2 to 4, and <code><span class='Function'>•Decompose</span></code> cannot cause an error.</p>
+<p><code><span class='Function'>•Decompose</span></code> breaks down one level of a compound function or modifier, returning a list with a code giving what kind of structure it has (as listed in the table below) followed by each of its components. &quot;Other&quot; includes blocks and system functions. Non-operations do not cause an error, but return code -1, then the argument as a single component. The result is thus a list of length 2 to 4, and <code><span class='Function'>•Decompose</span></code> cannot cause an error.</p>
 <table>
 <thead>
 <tr>
@@ -375,7 +375,7 @@
 <td><code><span class='Value'>𝕩</span></code></td>
 </tr>
 <tr>
-<td>Block</td>
+<td>Other</td>
 <td>1</td>
 <td><code><span class='Value'>𝕩</span></code></td>
 </tr>
