@@ -66,6 +66,7 @@
 <Multi_key> <backslash> <K> : "⌾"
 <Multi_key> <backslash> <L> : "»"
 <Multi_key> <backslash> <colon> : "·"
+<Multi_key> <backslash> <semicolon> : "⋄"
 <Multi_key> <backslash> <quotedbl> : "˙"
 <Multi_key> <backslash> <z> : "⥊"
 <Multi_key> <backslash> <x> : "𝕩"
