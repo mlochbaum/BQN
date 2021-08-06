@@ -4,7 +4,7 @@
 
 BQN's grammar is given below. Terms are defined in a [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) variant. However, handling special names properly is possible but difficult in BNF, so they are explained in text along with the braced block grammar.
 
-The symbols `s`, `F`, `_m`, and `_c_` are identifier tokens with subject, function, 1-modifier, and 2-modifier classes respectively. Similarly, `sl`, `Fl`, `_ml`, and `_cl_` refer to literals and primitives of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic classes are no longer used after parsing and cannot be inspected in a running program.
+The symbols `s`, `F`, `_m`, and `_c_` are identifier tokens with subject, function, 1-modifier, and 2-modifier classes respectively. Similarly, `sl`, `Fl`, `_ml`, and `_cl_` refer to literals and primitives of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic roles are no longer used after parsing and cannot be inspected in a running program.
 
 A program is a list of statements. Almost all statements are expressions. Namespace export statements, and valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions.
 
