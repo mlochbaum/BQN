@@ -245,7 +245,7 @@ Fixed by not using Greek letters. In particular, the idea of using fancy Latin l
 Fixed with list notation, which descends from the array notation developed by Phil Last and later Adám Brudzewsky. The problem that array notation has much more cluttered syntax than stranding has pretty much been fixed by the ligature character `‿`, which I discovered during proto-BQN discussions.
 
 ### Functions are not first class
-Fixed by allowing a variable to be written with a different syntactic class than it was created with, suggested by Adám in proto-BQN discussions.
+Fixed by allowing a variable to be written with a different syntactic role than it was created with, suggested by Adám in proto-BQN discussions.
 
 ### APL is not context-free
 Fixed with the casing conventions for variable names, which I think I first saw in [APL\iv](https://aplwiki.com/wiki/APL%5Civ), although the cases are swapped relative to BQN.
