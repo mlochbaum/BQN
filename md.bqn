@@ -395,10 +395,10 @@ Markdown ← {filename𝕊𝕩:
       # the natural depth, which is equal to the adjusted depth plus one
       # at each open bracket, can only decrease between two values if
       # they have the same depth and the first is open but the second
-      # is closed: that is, if they form a balanced pair. ⊑⊸»⊸> gives a
-      # mask for the second part of each such pair and «⊸∨ extends it to
-      # the first as well.
-      hasPair ← «⊸∨ ⊑⊸»⊸> order⊏depth
+      # is closed: that is, if they form a balanced pair. 1⊸↑⊸»⊸> gives
+      # a mask for the second part of each such pair and «⊸∨ extends it
+      # to the first as well.
+      hasPair ← «⊸∨ 1⊸↑⊸»⊸> order⊏depth
       ∘‿2 ⥊ hasPair / order⊏ind
     }
     JoinPairs ← {
