@@ -157,7 +157,7 @@ Reshape←{
     s↩p⊣◶⊢‿a¨s
     {d∾↩(Fill d)⌜↕𝕩-n⋄n↩𝕩}⍟(n⊸<)⍟(3=t)lp×a
   } s
-  s⥊(↕l)(0<n)◶⟨<∘Fill⊸(⊣¨)⋄{⊑⟜𝕩¨n|𝕨}⟩⍟(l≠n)d
+  s⥊(↕l){!0<n⋄⊑⟜𝕩¨n|𝕨}⍟(l≠n)d
 }
 
 Range←{
@@ -176,7 +176,7 @@ Pick1←{
 }
 Pickd←(∨´∘⥊IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
 Pick←IsArray◶⥊‿⊢⊸Pickd
-First←(0<≠)◶⟨Fill,0⊸⊑⟩∘Deshape
+First←(0<≠)◶⟨!∘0,0⊸⊑⟩∘Deshape
 
 match←{¬∘(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨≠○IsArray , 0⟩

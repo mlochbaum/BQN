@@ -6,7 +6,7 @@
 <div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
 <h1 id="pick">Pick</h1>
 <p>Pick (<code><span class='Function'>⊑</span></code>) chooses elements from <code><span class='Value'>𝕩</span></code> based on <a href="indices.html">index</a> lists from <code><span class='Value'>𝕨</span></code>. <code><span class='Value'>𝕨</span></code> can be a plain list, or even one number if <code><span class='Value'>𝕩</span></code> is a list, in order to get one element from <code><span class='Value'>𝕩</span></code>. It can also be an array of index lists, or have deeper array structure: each index list will be replaced with the element of <code><span class='Value'>𝕩</span></code> at that index, effectively applying to <code><span class='Value'>𝕨</span></code> at <a href="depth.html#the-depth-modifier">depth</a> 1.</p>
-<p>With no <code><span class='Value'>𝕨</span></code>, monadic <code><span class='Function'>⊑</span><span class='Value'>𝕩</span></code> takes the first element of <code><span class='Value'>𝕩</span></code> in index order, or its <a href="fill.html">fill element</a> if <code><span class='Value'>𝕩</span></code> is empty (causing an error if no fill is known).</p>
+<p>With no <code><span class='Value'>𝕨</span></code>, monadic <code><span class='Function'>⊑</span><span class='Value'>𝕩</span></code> takes the first element of <code><span class='Value'>𝕩</span></code> in index order, with an error if <code><span class='Value'>𝕩</span></code> is empty.</p>
 <p>While sometimes &quot;scatter-point&quot; indexing is necessary, using Pick to select multiple elements from <code><span class='Value'>𝕩</span></code> is less array-oriented than <a href="select.html">Select</a> (<code><span class='Function'>⊏</span></code>), and probably slower. Consider rearranging your data so that you can select along axes instead of picking out elements.</p>
 <h2 id="one-element">One element</h2>
 <p>When the left argument is a number, Pick gets an element from a list:</p>
@@ -55,15 +55,12 @@
     <span class='Function'>⊑</span> <span class='Function'>↕</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 ⟨ 0 0 0 0 ⟩
 </pre>
-<p>If <code><span class='Value'>𝕩</span></code> is empty then Pick always results in an error. First never gives an error: instead it returns the <a href="fill.html">fill element</a> for <code><span class='Value'>𝕩</span></code>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRICIiCuKKkSDiiaLPgAriipEgMOKGkTzin6giICAiLOKGlTTin6k=">↗️</a><pre>    <span class='Function'>⊑</span> <span class='String'>&quot;&quot;</span>
-' '
+<p>If <code><span class='Value'>𝕩</span></code> is empty then First results in an error, like Pick.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRICIiCuKKkSDiiaLPgA==">↗️</a><pre>    <span class='Function'>⊑</span> <span class='String'>&quot;&quot;</span>
+ERROR
     <span class='Function'>⊑</span> <span class='Function'>≢</span><span class='Number'>π</span>
-0
-    <span class='Function'>⊑</span> <span class='Number'>0</span><span class='Function'>↑&lt;</span><span class='Bracket'>⟨</span><span class='String'>&quot;  &quot;</span><span class='Separator'>,</span><span class='Function'>↕</span><span class='Number'>4</span><span class='Bracket'>⟩</span>
-⟨ "  " ⟨ 0 0 0 0 ⟩ ⟩
+ERROR
 </pre>
-<p>So one way to find the fill element for an array <code><span class='Value'>𝕩</span></code> of any shape is <code><span class='Function'>⊑</span><span class='Number'>0</span><span class='Function'>⥊</span><span class='Value'>𝕩</span></code>.</p>
 <p>In APL it's common to get the last element of a list with an idiom that translates to <code><span class='Function'>⊑⌽</span></code>, or First-<a href="reverse.html">Reverse</a>. In BQN the most straightforward way is to select with index <code><span class='Number'>¯1</span></code> instead. I also sometimes use <a href="fold.html">Fold</a> with the Right <a href="identity.html">identity function</a>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqR4oy9ICJsYXN0IgrCrzHiipEgImxhc3QiCuKKosK0ICJsYXN0Ig==">↗️</a><pre>    <span class='Function'>⊑⌽</span> <span class='String'>&quot;last&quot;</span>
 't'

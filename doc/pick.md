@@ -4,7 +4,7 @@
 
 Pick (`⊑`) chooses elements from `𝕩` based on [index](indices.md) lists from `𝕨`. `𝕨` can be a plain list, or even one number if `𝕩` is a list, in order to get one element from `𝕩`. It can also be an array of index lists, or have deeper array structure: each index list will be replaced with the element of `𝕩` at that index, effectively applying to `𝕨` at [depth](depth.md#the-depth-modifier) 1.
 
-With no `𝕨`, monadic `⊑𝕩` takes the first element of `𝕩` in index order, or its [fill element](fill.md) if `𝕩` is empty (causing an error if no fill is known).
+With no `𝕨`, monadic `⊑𝕩` takes the first element of `𝕩` in index order, with an error if `𝕩` is empty.
 
 While sometimes "scatter-point" indexing is necessary, using Pick to select multiple elements from `𝕩` is less array-oriented than [Select](select.md) (`⊏`), and probably slower. Consider rearranging your data so that you can select along axes instead of picking out elements.
 
@@ -44,13 +44,10 @@ With no left argument, `⊑` is called First, and performs a slight generalizati
         ⊑ "First"
         ⊑ ↕4‿2‿5‿1
 
-If `𝕩` is empty then Pick always results in an error. First never gives an error: instead it returns the [fill element](fill.md) for `𝕩`.
+If `𝕩` is empty then First results in an error, like Pick.
 
         ⊑ ""
         ⊑ ≢π
-        ⊑ 0↑<⟨"  ",↕4⟩
-
-So one way to find the fill element for an array `𝕩` of any shape is `⊑0⥊𝕩`.
 
 In APL it's common to get the last element of a list with an idiom that translates to `⊑⌽`, or First-[Reverse](reverse.md). In BQN the most straightforward way is to select with index `¯1` instead. I also sometimes use [Fold](fold.md) with the Right [identity function](identity.md).
 

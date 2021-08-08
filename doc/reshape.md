@@ -88,11 +88,11 @@ If the left argument implies a smaller number of elements, then only the initial
 
         3‿3 ⥊ a
 
-If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element `247` and start over at `135`. If the array doesn't have any elements to start with, its [fill element](fill.md) is used instead, but it's probably best not to invoke this case!
+If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element `247` and start over at `135`. If the array doesn't have any elements to start with, you'll get an error as there aren't any elements available.
 
         15 ⥊ a
 
-        4 ⥊ ↕0  # Fill for ↕0 is 0
+        4 ⥊ ↕0
 
 Reshape is the idiomatic way to make an array filled with a constant value (that is, where all elements are the same). For an atom element, just reshape it directly; for an arbitrary element, first enclose it to create a unit, and then reshape it.
 

@@ -285,7 +285,7 @@ Select ← ⟨"⊏"
   {(≠𝕩)⊸NormIndS⌜𝕨} ⊏ ⊢
   {𝕩⊸NormIndS⌜𝕨}
 ⟩_multiAxis○ToArray
-First ← IsArray◶⟨⊢, (0<≠)◶⟨Fill,0⊸⊑⟩⥊⟩
+First ← IsArray◶⟨⊢, (0<≠)◶⟨"⊑𝕩: 𝕩 can't be empty"!0˙,0⊸⊑⟩⥊⟩
 
 Reverse←{
   "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
@@ -621,9 +621,10 @@ Reshape←{
     s↩p⊣◶⊢‿a¨s
     {d∾↩(Fill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
   } s
-  s⥊(0<n)◶{(<Fill𝕩)⊣⌜↕l}‿{
+  s⥊{
+    "𝕨⥊𝕩: Can't produce non-empty array from empty 𝕩" ! 0<n
     l >⟜≠◶⟨↑, ⊣(⊢∾-⟜≠↑⊢)÷⟜2⊸{𝕨𝕊⟜(∾˜)⍟(>⟜≠)𝕩}⟩ 𝕩
-  }_fillBy_⊢⍟(1-l=n)d
+  }_fillBy_⊢⍟(1-l=n) d
 }
 
 _group←{
