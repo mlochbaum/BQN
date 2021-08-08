@@ -4,7 +4,7 @@
 
 A few array operations need an array element to use when no existing element applies. BQN tries to maintain a "default" element for every array, known as a fill element, for this purpose. If it's known, the fill element is a nested array structure where each atom is either `0` or `' '`. If no fill is known, a function that requests it results in an error.
 
-Fills are used by [Take](take.md) (`↑`) when a value in `𝕨` is larger than the corresponding length in `𝕩`, by the two [Nudge](shift.md) functions (`»«`) when `𝕩` is non-empty, and by [Reshape](reshape.md) (`⥊`) when `𝕨` contains `↑`. Except for these specific cases, the fill value an array has can't affect the program. The result of [Match](match.md) (`≡`) doesn't depend on fills, and any attempt to compute a fill can't cause side effects.
+Fills are used by [Take](take.md) (`↑`) when a value in `𝕨` is larger than the corresponding length in `𝕩`, by the two [Nudge](shift.md) functions (`»«`) when `𝕩` is non-empty, by [Merge](couple.md) (`>`) when `𝕩` is empty, and by [Reshape](reshape.md) (`⥊`) when `𝕨` contains `↑`. Except for these specific cases, the fill value an array has can't affect the program. The result of [Match](match.md) (`≡`) doesn't depend on fills, and any attempt to compute a fill can't cause side effects.
 
 ## Using fills
 
@@ -23,6 +23,8 @@ Nudge Left or Right shifts the array over and places a fill in the vacated space
         3↑⟨⟩  # Fill unknown
 
         »⟨⟩   # Fill not needed
+
+If the argument to [Merge](couple.md) is empty then its result will be as well, since the shape `≢𝕩` is a prefix of `≢>𝕩`. However, the remainder of the result shape is determined by the elements of `𝕩`, so if there are none then Merge uses the fill element to decide what the result shape should be.
 
 [Reshape](reshape.md#computed-lengths) (`⥊`) uses the fill when `𝕨` contains `↑` and the product of the rest of `𝕨` doesn't evenly divide the number of elements in `𝕩`.
 
