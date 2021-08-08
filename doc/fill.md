@@ -4,7 +4,7 @@
 
 A few array operations need an array element to use when no existing element applies. BQN tries to maintain a "default" element for every array, known as a fill element, for this purpose. If it's known, the fill element is a nested array structure where each atom is either `0` or `' '`. If no fill is known, a function that requests it results in an error.
 
-Fills are used by [Take](take.md) (`↑`) when a value in `𝕨` is larger than the corresponding length in `𝕩`, by the two [Nudge](shift.md) functions (`»«`) when `𝕩` is non-empty, and by [First](pick.md) (`⊑`) and [Reshape](reshape.md) (`⥊`) when `𝕩` is empty. Except for these specific cases, the fill value an array has can't affect the program. The result of [Match](match.md) (`≡`) doesn't depend on fills, and any attempt to compute a fill can't cause side effects.
+Fills are used by [Take](take.md) (`↑`) when a value in `𝕨` is larger than the corresponding length in `𝕩`, by the two [Nudge](shift.md) functions (`»«`) when `𝕩` is non-empty, and by [Reshape](reshape.md) (`⥊`) when `𝕨` contains `↑`. Except for these specific cases, the fill value an array has can't affect the program. The result of [Match](match.md) (`≡`) doesn't depend on fills, and any attempt to compute a fill can't cause side effects.
 
 ## Using fills
 
@@ -24,17 +24,13 @@ Nudge Left or Right shifts the array over and places a fill in the vacated space
 
         »⟨⟩   # Fill not needed
 
-[First](pick.md) (`⊑`) and [Reshape](reshape.md) (`⥊`) use the fill when `𝕩` is empty, and in the case of Reshape only when the result needs to be non-empty.
+[Reshape](reshape.md#computed-lengths) (`⥊`) uses the fill when `𝕨` contains `↑` and the product of the rest of `𝕨` doesn't evenly divide the number of elements in `𝕩`.
 
-        ⊑ ""
+        ↑‿8 ⥊ "completepart"
 
-        4 ⥊¨ ⟨↕0, ""⟩
+If for some reason you need to find an array's fill element, the easiest general way is probably `⊑»1↑⥊a`.
 
-        0‿3 ⥊ ⟨⟩  # Fill not needed
-
-If for some reason you need to find an array's fill element, the easiest way is `⊑0⥊a`.
-
-        ⊑0⥊"string"
+        ⊑»1↑⥊"string"
 
 ## How fills are computed
 

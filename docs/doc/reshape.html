@@ -142,12 +142,12 @@
   235 236 237  
               ┘
 </pre>
-<p>If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element <code><span class='Number'>247</span></code> and start over at <code><span class='Number'>135</span></code>. If the array doesn't have any elements to start with, its <a href="fill.html">fill element</a> is used instead, but it's probably best not to invoke this case!</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MTUg4qWKIGEKCjQg4qWKIOKGlTAgICMgRmlsbCBmb3Ig4oaVMCBpcyAw">↗️</a><pre>    <span class='Number'>15</span> <span class='Function'>⥊</span> <span class='Value'>a</span>
+<p>If the left argument implies a larger number of elements, then the argument elements are reused cyclically. Below, we reach the last element <code><span class='Number'>247</span></code> and start over at <code><span class='Number'>135</span></code>. If the array doesn't have any elements to start with, you'll get an error as there aren't any elements available.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MTUg4qWKIGEKCjQg4qWKIOKGlTA=">↗️</a><pre>    <span class='Number'>15</span> <span class='Function'>⥊</span> <span class='Value'>a</span>
 ⟨ 135 136 137 145 146 147 235 236 237 245 246 247 135 136 137 ⟩
 
-    <span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>0</span>  <span class='Comment'># Fill for ↕0 is 0
-</span>⟨ 0 0 0 0 ⟩
+    <span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>0</span>
+ERROR
 </pre>
 <p>Reshape is the idiomatic way to make an array filled with a constant value (that is, where all elements are the same). For an atom element, just reshape it directly; for an arbitrary element, first enclose it to create a unit, and then reshape it.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAvzQg4qWKIDAKCjUg4qWKIDwgInN0cmluZyI=">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Number'>0</span>

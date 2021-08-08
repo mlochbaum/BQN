@@ -18,13 +18,13 @@ Like Windows, the result usually doesn't have the same dimensions as `𝕩`. Thi
 
         "string" (≢∘⊢↑⍷) "substring"  # APL style
 
-If `𝕨` is larger than `𝕩`, the result is empty, and there's no error even in cases where Windows would fail. One place this tends to come up is when applying [First](pick.md) (`⊑`) the result: `⊑⍷` tests whether `𝕨` appears in `𝕩` at the first position, that is, whether it's a prefix of `𝕩`. If `𝕨` is longer than `𝕩` it shouldn't be a prefix, so 0 is appropriate.
+If `𝕨` is larger than `𝕩`, the result is empty, and there's no error even in cases where Windows would fail. One place this tends to come up is when applying [First](pick.md#first) (`⊑`) the result: `⊑⍷` tests whether `𝕨` appears in `𝕩` at the first position, that is, whether it's a prefix of `𝕩`. If `𝕨` is longer than `𝕩` it shouldn't be a prefix. First will fail but using a [fold](fold.md) `0⊣´⥊∘⍷` instead gives a 0 in this case.
 
         "loooooong" ⍷ "short"
 
         9 ↕ "short"
 
-        ⊑ "loooooong" ⍷ "short"
+        0 ⊣´ "loooooong" ⍷ "short"
 
 This pattern also works in the high-rank case discussed below, testing whether `𝕨` is a multi-dimensional prefix starting at the lowest-index corner of `𝕩`.
 
