@@ -5,7 +5,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   mod1                  # 1-modifier
   mod2                  # 2-modifier
   "⋄,"∾lf               # Separator
-  ";"                   # Case separator
+  ":;"                  # Header punctuation
   "⇐←↩"                 # Gets
   "(){}⟨⟩"              # Bracket
   "‿"                   # Ligature
@@ -18,7 +18,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "•"∾(¯1↓"𝕨")∾" "∾@+9  # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
-bF‿b1‿b2‿bS‿bC‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
+bF‿b1‿b2‿bS‿bH‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
 bI←bX+≍⟜-5⋄bR←8+⊑bX
@@ -34,6 +34,7 @@ CharCode←charSet{
 vd←1+vi←⊑bN  # Start of identifier numbering (plus dot)
 charRole←4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯1,¯3,¯1‿0,¯2,0,¬/5‿6⟩ # For first vd chars
 T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
+PN←1(∾/∾˜)(∨/⊣)  # Partitioned-none: partitions where 𝕨<𝕩 is never 1
 
 # Source to ⟨tokens, roles, number of identifiers, literals⟩
 # Identifiers then literal tokens are numbered starting at vi
@@ -151,12 +152,19 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Block properties
   b←br>0⋄c←/br<0                            # Block Begin (mask) and Close (index), in matching order
-  fi←+`cb←b∨cs←𝕩=⊑bC⋄cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co
+  hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH                       # Case header : and separator ;
+  "Punctuation : and ; not allowed outside blocks"_err_(↕∘≠) (∨`b)<hh∨cs
+  fi←+`cb←b∨cs⋄H←cb¬∘PN⊢                    # Body index fi; which bodies Have a property
+
+  ch←H hh
+  cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co                 # cf: body is first; cm: body is one of multiple
+  "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)ch
+  "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
+  "Headers unsupported for now!"_err_(↕∘≠) hh
   cc←(⍋⍋«co)⊏c∾/cs
-  "At most two header-less bodies allowed"_err_(/CB) »⊸∧co
-  PN←1(∾/∾˜)(∨/⊣)⋄H←cb¬∘PN⊢⋄HE←H∘=          # Which bodies have a property
-  sn←(0‿3‿5‿6+⊑bI)⍋𝕩⋄sp←/𝕩 M bI             # Special name index
-  fx←H 1=sn⋄fr←(fx∨0⊸<)⊸+ft←(2⊸HE⌈2×3⊸HE)sn # Body immediacy ¬fx and type ft
+
+  HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/𝕩 M bI        # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
+  fx←HS 1⋄fr←(fx∨0⊸<)⊸+ft←2(⊣⌈2×⊢)○HS 3     # Body immediacy ¬fx, type ft, role fr
   "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓cm>fx
   "Block bodies must be of the same kind"_err_(/CB) 1↓cf<»⊸≠ft
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
@@ -193,7 +201,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3       # op: active modifiers; ro: mod or right operand
   "Missing operand"_nerr op×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
-  fc←𝕩=⊑bC
+  fc←𝕩=1+⊑bH
   "Can't use Nothing (·) in lists"_nerr ne×»lo∨ls
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
   ma←tr<(𝕩=2+⊑bG)∧«ir≥1                     # Modified assignment
