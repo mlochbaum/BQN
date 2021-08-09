@@ -174,7 +174,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
   fx←HS 1⋄fr←(fx∨0⊸<)⊸+ft←2(⊣⌈2×⊢)○HS 3     # Body immediacy ¬fx, type ft, role fr
   "Invalid special names for block header"_err_(/CB) 1↓ch∧hr<fr
-  ft⌈↩1-˜fr⌈↩ch×hr⋄fx⌈↩ch∧0<fr
+  ft⌈↩1-˜fr⌈↩ch×hr⋄fx⌈↩ch∧1=fr
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓cm>fx
   "Block bodies must be of the same kind"_err_(/CB) 1↓cf<»⊸≠ft
