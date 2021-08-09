@@ -85,7 +85,7 @@ Tokenize←{System‿vars←𝕨
   t↩(w∨wf)/(vars≠⊸↓∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t  # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
-  sk←sb/˜p>∨⟜«(p+(sb-p)⊏t)∊3‿5+⊑bB          # Keep the first of each group that's not just inside a bracket
+  sk←sb/˜p>∨⟜«(M⟜bH∨(3‿5+⊑bB)∊˜p⊸+)(sb-p)⊏t # Keep the first of each group that's not just inside a bracket
   t{is/˜↩𝕨⋄ie/˜↩𝕨⋄𝕨/𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep      # Remove the rest
   im←(t=bR)∨t M vd≍+´2↑kk                   # Identifier (or 𝕣) mask
   r←ir⌾(im⊸/)(vd⌊t)⊏charRole∾0              # Role
