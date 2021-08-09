@@ -156,18 +156,21 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Punctuation : and ; not allowed outside blocks"_err_(↕∘≠) (∨`b)<hh∨cs
   fi←+`cb←b∨cs⋄H←cb¬∘PN⊢                    # Body index fi; which bodies Have a property
 
-  ch←H hh
+  ch←H hh⋄hf←»cb
   cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co                 # cf: body is first; cm: body is one of multiple
   "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)ch
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
-  "Headers unsupported for now!"_err_(↕∘≠) hh
   cc←(⍋⍋«co)⊏c∾/cs
+  "Non-label headers unsupported for now!"_err_(↕∘≠) hh>»(𝕩 M bI+0‿nv)∧hf
+  hr←0∾(hf/rev)⊏r⋄hf∧↩«hh⋄hu←(𝕩 M bI)<hf∧0<rev⊏r
 
-  HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/𝕩 M bI        # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
+  HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
   fx←HS 1⋄fr←(fx∨0⊸<)⊸+ft←2(⊣⌈2×⊢)○HS 3     # Body immediacy ¬fx, type ft, role fr
+  "Invalid special names for block header"_err_(/CB) 1↓ch∧hr<fr
+  ft⌈↩1-˜fr⌈↩ch×hr⋄fx⌈↩ch∧0<fr
+  "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓cm>fx
   "Block bodies must be of the same kind"_err_(/CB) 1↓cf<»⊸≠ft
-  "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
 
   # Propagate roles through parentheses
@@ -210,7 +213,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
   aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
-  aa←×g⊏ac←»+`(»⊸∨0=+`)⊸×gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩 # ac broadcasts it to the entire target
+  aa←×g⊏ac←(3×hu)+»+`(»⊸∨0=+`)⊸×gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩 # ac broadcasts it to the entire target
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
@@ -223,7 +226,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Lexical resolution (independent of parsing part 2 below)
   di←/dm←»dc                                # Dots aren't scoped
-  id←/(gi⊏«aa∧a)<dm<(0⊸≤∧<⟜nv)xv            # Identifier indices in xv
+  id←/((hf>hu)∨dm∨gi⊏«aa∧a)<(0⊸≤∧<⟜nv)xv         # Identifier indices in xv
   sa←0<sc←sp⊏ac⋄d←(ic←id⊏ac)M 2‿2           # Which accesses are definitions
   "Can't define special name"_err_(SP) sa∧sc<4
   idf←id⊏fi⋄idv←id⊏xv                       # Function index and name ID
@@ -250,6 +253,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
   ido←21+uu(⊢+10×>)ia∾sa                    # Opcode
   idoc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
+  idor∾˜↩3/hi←/hu∧0<ac⋄idoc∾˜↩<21‿0‿0⥊˜3×≠hi
+  idor∾↩2/hi⋄idoc∾↩<11‿14⥊˜2×≠hi
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
