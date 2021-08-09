@@ -144,14 +144,21 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   nx←0 ⋄ nei←↕≠nr ⋄ _nerr←{𝕗 _err_ nei 2=nx⌈↩𝕩}
   "Can't strand Nothing (·)"_nerr nr×¬ns
   g⊏˜↩⍋g⊏sdl←sl∨dl                          # Avoid reordering strands and dots in rev
+  rp←≠⊸»⌾(g⊸⊏)↕≠r                           # Position of previous, for roles
   # Permutation to reverse each expression: *more* complicated than it looks
   rev←⍋+`¯1↓(¯1∾g)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾g⊏sdl∨r=¯1
   gf←⍋fd←+`br←rev⊏p×𝕩M⟨2+⊑bB,2⟩             # Order by brace depth fd to de-nest blocks
   rev⊏˜↩gf⋄fd⊏˜↩gf⋄br⊏˜↩gf
-  𝕩⊏˜↩rev⋄p⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev
+  𝕩⊏˜↩rev⋄dc⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev
+
+  # Compute parsing ordering gr≡g⊏rev
+  g↩⍋+`p↩br-˜rev⊏p⋄g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev    # Order by non-brace bracket depth, then dots
+  sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB    # Strand length; list starts
+  b←br>0⋄c←/br<0                            # Block Begin (mask) and Close (index), in matching order
+  bp←⟨/b,c⟩∾¨0(<≍○(</⟜g)>)g⊏p               # Bracket pairs
+  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
 
   # Block properties
-  b←br>0⋄c←/br<0                            # Block Begin (mask) and Close (index), in matching order
   hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH                       # Case header : and separator ;
   "Punctuation : and ; not allowed outside blocks"_err_(↕∘≠) (∨`b)<hh∨cs
   fi←+`cb←b∨cs⋄H←cb¬∘PN⊢                    # Body index fi; which bodies Have a property
@@ -177,26 +184,22 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   # ir is the role of the expression ending at each position (truncated to the right)
   r↩sl-˜ns×(1↓cf/fr)⌾((c⊏rev)⊸⊏)r           # Add block roles; make strand elements ¯1
   pt←cp∧ns                                  # Pass-through parentheses: not in strands
-  pp←pt∧»es←1⊸»⌾(g⊸⊏)r<0                    # Parens enclosing one object (maybe with assignment) don't change roles
-  ir←((»⌾(g⊸⊏)(1+es)×3=⊢)⌈⊢-es<2≤⊢)r+pp×(IT¬pp)⊏r # Propagate modifier roles
+  pp←pt∧»es←rp⊏1∾˜r<0                       # Parens enclosing one object (maybe with assignment) don't change roles
+  ir←((rp⊏0∾˜(1+es)×3=⊢)⌈⊢-es<2≤⊢)r+pp×(IT¬pp)⊏r # Propagate modifier roles
   ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir # ...and function roles
   r+↩pt×»ir                                 # Roles at pt were 0; set them now
   nr×↩¬nx∨↩(0≠ir)∧1=nr                      # Assume 𝕎 can't be Nothing
   ir-↩nr                                    # Include nothingness
   r-↩(r=¯4)∧1»r=¯1                          # Lone ⇐ to role ¯5
-  "Dot must be preceded by a subject"_err_(⍋∘rev) dc>»r=0
-  r(×⟜¬-⊢)↩dl⋄dc⊏˜↩rev                      # Namespace and dot to ¯1
+  "Dot must be preceded by a subject"_err_(⍋∘rev) (r=4)>»r=0
+  r(×⟜¬-⊢)↩dl                               # Namespace and dot to ¯1
 
   # Prep for lexical resolution before reordering 𝕩
   xv←𝕩-vi
+  {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
+  𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
 
   # Parsing part 1
-  p-↩br⋄g↩⍋+`p⋄g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev        # Order by non-brace bracket depth, then dots
-  sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB    # Strand length; list starts
-  bp←⟨/b,c⟩∾¨0(<≍○(</⟜g)>)g⊏p               # Bracket pairs
-  {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
-  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
-  𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
   a←(¯5⊸<∧≤⟜¯3)r⋄ps←a<r<0                   # a: assignment, ps: part separator
   tr←1≤er←ir⊏˜IT»ps                         # er: expression role; tr: train or modifier expression
   no←0⌈-ir⋄ne←0⌈-er⋄nei↩g⋄nx⊏˜↩gr           # Nothing value; expression
@@ -226,7 +229,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Lexical resolution (independent of parsing part 2 below)
   di←/dm←»dc                                # Dots aren't scoped
-  id←/((hf>hu)∨dm∨gi⊏«aa∧a)<(0⊸≤∧<⟜nv)xv         # Identifier indices in xv
+  id←/((hf>hu)∨dm∨gi⊏«aa∧a)<(0⊸≤∧<⟜nv)xv    # Identifier indices in xv
   sa←0<sc←sp⊏ac⋄d←(ic←id⊏ac)M 2‿2           # Which accesses are definitions
   "Can't define special name"_err_(SP) sa∧sc<4
   idf←id⊏fi⋄idv←id⊏xv                       # Function index and name ID
