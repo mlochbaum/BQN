@@ -158,23 +158,36 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   bp←⟨/b,c⟩∾¨0(<≍○(</⟜g)>)g⊏p               # Bracket pairs
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
 
-  # Block properties
+  # Headers
   hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH                       # Case header : and separator ;
   "Punctuation : and ; not allowed outside blocks"_err_(↕∘≠) (∨`b)<hh∨cs
   fi←+`cb←b∨cs⋄H←cb¬∘PN⊢                    # Body index fi; which bodies Have a property
-
-  ch←H hh⋄hf←»cb
+  ch←H hh
   cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co                 # cf: body is first; cm: body is one of multiple
   "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)ch
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
   cc←(⍋⍋«co)⊏c∾/cs
-  "Non-label headers unsupported for now!"_err_(↕∘≠) hh>»(𝕩 M bI+0‿nv)∧hf
-  hr←0∾(hf/rev)⊏r⋄hf∧↩«hh⋄hu←(𝕩 M bI)<hf∧0<rev⊏r
+  rr←rev⊏r
+  hr←rr/˜hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)¯1=rr
+  hl←2=hn←(1⊸»+«)hc←¯1=hr
+  ho←(»∨·«(hr=3)∧⊢)hl<hd←2≤hr               # Header operands
+  "Missing operand in header"_err_(/HF) ho∧hc∨hd
+  hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
+  "Invalid header structure"_err_(hm//∘HF) 1⊸»⊸=hm/hc
+  hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
+  hl/˜↩hm⋄hm↩hm⌾(hf⊸/)hf
+  "Header left argument without right"_err_(/HF) ha>hc+`⊸⊏hx∾0
+  hx∨↩1=hr
+  hid←vi‿nv M˜ ht←hm/𝕩
+  "Header operation must be name or valid self-reference (𝕊 or 𝕣)"_err_(/HM) hid<ht≠(⊑bI)+3×1-˜2⌊hr
+  "Only special name inputs allowed in headers for now!"_err_((HO∨HA)//∘HF) ¬bI M˜(ho∨ha)/hf/𝕩
+  hu←(𝕩 M bI)<hf∧0<rr
 
+  # Block properties
   HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
   fx←HS 1⋄fr←(fx∨0⊸<)⊸+ft←2(⊣⌈2×⊢)○HS 3     # Body immediacy ¬fx, type ft, role fr
-  "Invalid special names for block header"_err_(/CB) 1↓ch∧hr<fr
-  ft⌈↩1-˜fr⌈↩ch×hr⋄fx⌈↩ch∧1=fr
+  "Invalid special names for block header"_err_(ch/0∾/∘CB) (hr<ch/fr)∨hl<hx<ch/fx
+  ft⌈↩1-˜fr↩hr⌾(ch⊸/)fr⋄fx↩hx⊸⌈⌾(ch⊸/)fx
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓cm>fx
   "Block bodies must be of the same kind"_err_(/CB) 1↓cf<»⊸≠ft
@@ -204,7 +217,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   tr←1≤er←ir⊏˜IT»ps                         # er: expression role; tr: train or modifier expression
   no←0⌈-ir⋄ne←0⌈-er⋄nei↩g⋄nx⊏˜↩gr           # Nothing value; expression
   "Nothing (·) cannot be assigned"_nerr ne×a
-  oa←⌽/op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3       # op: active modifiers; ro: mod or right operand
+  oa←⌽/hf<op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3    # op: active modifiers; ro: mod or right operand
   "Missing operand"_nerr op×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
   s←𝕩=sep⋄fo←𝕩=2+⊑bB⋄ls←s∧fo<○IT lo←𝕩=4+⊑bB # List Separators: after ⟨lo, not {fo
   fc←𝕩=1+⊑bH
@@ -224,7 +237,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   nn←fo+`⊸⊏fw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn         # fw indicates 𝕨 is never Nothing
   "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
-  "Can't use result of function/modifier assignment without parentheses"_err_(G) (0<er)∧(0≤r)∧»⊸>aa
+  "Can't use result of function/modifier assignment without parentheses"_err_(G) hf<(0<er)∧(0≤r)∧»⊸>aa
   af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
 
   # Lexical resolution (independent of parsing part 2 below)
@@ -261,7 +274,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
-  fa←/(fe←ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op      # Active functions: cases fe are excluded
+  fa←/(fe←hf∨ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op   # Active functions: cases fe are excluded
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
   dy←2≠ny←fa⊏2«no⌈2×¬(tr∧r≥0)∨ro<r=0        # Dyadic
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
