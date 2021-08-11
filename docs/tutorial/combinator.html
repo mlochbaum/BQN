@@ -4,11 +4,11 @@
   <title>BQN Tutorial: Combinators</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">tutorial</a></div>
-<h1 id="tutorial-combinators">Tutorial: Combinators</h1>
+<h1 id="tutorial-combinators"><a class="header" href="#tutorial-combinators">Tutorial: Combinators</a></h1>
 <p>BQN has a normal enough curly-brace syntax for functions and so on. I don't want to talk about it just yet. Before you get to thinking about how to write <a href="http://www.pbm.com/~lindahl/real.programmers.html">FORTRAN in any language</a> in BQN, let's see if we can acquire some instincts about idiomatic BQN the way that only being stuck in a tightly restricted and horribly confining programming environment can accomplish.</p>
 <p>There are benefits to being tightly restricted and horribly confined! In programming. I don't just mean that it forces you to learn new techniques like I said, I mean that using the restricted style we will learn is actually a better way to write portions of a program. This is because a restriction you apply in one part of a program is a promise you can rely on in the rest of the program. So what are we giving up, and what can we rely on in return?</p>
 <p><em>Tacit programming</em> does not use variables during the execution of a function (but you might use them for convenience in order to <em>construct</em> a tacit program). Variables allow you to use any accessible value in the program with the same level of ease. Tacit code doesn't. In fact it becomes pretty unusable when more than about three values are active at once. One consequence is that tacit code won't cause confusion by modifying far-away variables. But something unique to the tacit paradigm is that when only a small number of values are active—which is always true in a small enough portion of a program!—it has more powerful ways to describe the way these values flow through the program. The main way it achieves this is with combinators.</p>
-<h2 id="whats-a-combinator">What's a combinator?</h2>
+<h2 id="whats-a-combinator"><a class="header" href="#whats-a-combinator">What's a combinator?</a></h2>
 <p>(It's when you can't stop adding suffixes to &quot;combine&quot;). In the first tutorial, we briefly presented three <em>combinators</em>, <code><span class='Modifier2'>∘</span></code>, <code><span class='Modifier'>˜</span></code>, and <code><span class='Modifier'>˙</span></code>. These are functions or modifiers that produce a result from their inputs (arguments or operands) only by applying functions to arguments. For example, let's look at a composition:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=fOKImC0gNg==">↗️</a><pre>    <span class='Function'>|</span><span class='Modifier2'>∘</span><span class='Function'>-</span> <span class='Number'>6</span>
 6
@@ -156,7 +156,7 @@
   </g>
 </svg>
 
-<h2 id="comparisons">Comparisons</h2>
+<h2 id="comparisons"><a class="header" href="#comparisons">Comparisons</a></h2>
 <table class='primitives'>
   <tr>
     <td><span class='Function'><</span></td>
@@ -205,7 +205,7 @@
     <span class='Number'>∞</span> <span class='Function'>&lt;</span> <span class='String'>@</span>
 1
 </pre>
-<h3 id="booleans">Booleans</h3>
+<h3 id="booleans"><a class="header" href="#booleans">Booleans</a></h3>
 <p>The return values <code><span class='Number'>0</span></code> and <code><span class='Number'>1</span></code> are natural choices because BQN has no dedicated boolean type: instead, in BQN, the word <em>boolean</em> indicates a number that's 0 or 1, much like &quot;natural number&quot; selects a subset of the possible numbers. This is a choice that might be at odds with your own programming experience, and especially clashes with the world of typed functional programming, where even using the boolean type rather than a dedicated type for an option might be considered a code smell! The design principle guiding this decision, and most of BQN's type system, is that there should only be one type that accomplishes any given programming task. Any distinctions that it has are there because they are really necessary: conflating numbers and characters would make working with strings too difficult, and functions can't really be combined with modifiers because one-argument functions and 1-modifiers take their inputs on different sides.</p>
 <p>The advantage of this strategy is that you will spend much less time thinking about types when writing programs. The decisions are already made: if there are a few things, they go in a list; if there a few possible values in a qualitative category then they should be labelled with numbers. And if some value has multiple interpretations then BQN is less likely to require an explicit conversion between these. For example, while the result of <code><span class='Function'>=</span></code> might be taking to say <em>whether</em> two atoms have equal values, maybe it also says <em>how many times</em> the atom on the left appears in the right argument—which is at most one, because there's only one right argument. A silly distinction, or is it? An important property of counts is that we can add them together, for instance, to find how many times the letter &quot;e&quot; appears in a string.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2UnID0gIkdlb3JnZSBCb29sZSIKCivCtCAnZScgPSAiR2VvcmdlIEJvb2xlIgoKJ2UnICvCtOKImD0gIkdlb3JnZSBCb29sZSIgICMgV2l0aCBhIGNvbWJpbmF0b3I=">↗️</a><pre>    <span class='String'>'e'</span> <span class='Function'>=</span> <span class='String'>&quot;George Boole&quot;</span>
@@ -218,7 +218,7 @@
 </span>3
 </pre>
 <p>This, a well-typed and well-spoken programmer should declare, is an outrage! The purpose of types is to <em>protect</em> us from applying functions to types they're not intended for, because the most likely result is that such an application doesn't make sense. Static types provide a valuable service by catching these dangerous actions at compile time and allowing a programmer to prove that they never happen. Well… this is all true. BQN chooses not to pay the type price of this service and so doesn't get the type protection. And it helps that it's consistent about this choice, so you know that BQN's types are never the answer to these sorts of safety concerns. You will have to find a different way to avoid type errors: perhaps just programming carefully in a small or one-off program, and testing and code review or even external tools in a large one. All that said, I think programmers from outside the array programming world (and even many inside!) drastically underestimate how often a boolean value is really just a narrow-minded take on a counting number.</p>
-<h3 id="comparing-whole-arrays">Comparing whole arrays</h3>
+<h3 id="comparing-whole-arrays"><a class="header" href="#comparing-whole-arrays">Comparing whole arrays</a></h3>
 <table class='primitives'>
   <tr>
     <td><span class='Function'>≡</span></td>
@@ -250,7 +250,7 @@
     <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>≢</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span>
 1
 </pre>
-<h2 id="length-rank-and-depth">Length, rank, and depth</h2>
+<h2 id="length-rank-and-depth"><a class="header" href="#length-rank-and-depth">Length, rank, and depth</a></h2>
 <p>I said above that the comparison functions might have a different meaning when called with only one argument, so let's cover a few of these.</p>
 <p>Length (<code><span class='Function'>≠</span></code>) gives the number of elements in a list. For atoms it returns 1; it can't result in an error.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omgICJ0ZXN0aW5nIgriiaAg4p+o4p+pCuKJoCDin6ggz4AsIOKImCwgImVsZW1lbnQiIOKLhCDin6gnbCcsMSw1LCd0J+KfqSDin6kK4omgIDQ=">↗️</a><pre>    <span class='Function'>≠</span> <span class='String'>&quot;testing&quot;</span>
@@ -281,9 +281,9 @@
 </span>3
 </pre>
 <p>You probably won't end up using Depth too much. The data in a typical program has a fixed, known depth, so there's no point in asking BQN what it is. But it might be useful if you want to write a utility function that's flexible about its input. <code><span class='Number'>0</span><span class='Function'>&lt;≡</span><span class='Value'>a</span></code> is the idiomatic way to test whether <code><span class='Value'>a</span></code> is an array.</p>
-<h2 id="composition">Composition</h2>
+<h2 id="composition"><a class="header" href="#composition">Composition</a></h2>
 <p>We've discussed Atop (<code><span class='Modifier2'>∘</span></code>), but hopefully you've intuited that it's not the end of the story as far as compositions go. In fact BQN has <strong>three</strong> more modifiers that could reasonably be interpreted as varieties of composition.</p>
-<h3 id="over">Over</h3>
+<h3 id="over"><a class="header" href="#over">Over</a></h3>
 <table class='primitives'>
   <tr>
     <td><span class='Modifier2'>○</span></td>
@@ -375,7 +375,7 @@
   </g>
 </svg>
 
-<h3 id="before-and-after">Before and After</h3>
+<h3 id="before-and-after"><a class="header" href="#before-and-after">Before and After</a></h3>
 <p>Atop (<code><span class='Modifier2'>∘</span></code>) and Over (<code><span class='Modifier2'>○</span></code>) are both symmetric in some sense: with two arguments, <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier2'>∘</span><span class='Function'>G</span><span class='Paren'>)</span><span class='Modifier'>˜</span></code> is <code><span class='Function'>F</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>G</span><span class='Modifier'>˜</span><span class='Paren'>)</span></code>, and <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier2'>○</span><span class='Function'>G</span><span class='Paren'>)</span><span class='Modifier'>˜</span></code> is <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier2'>○</span><span class='Function'>G</span></code>. Put another way, reversing the order of arguments to Atop or Over as a whole is the same as reversing the order of every two-argument function inside—<code><span class='Function'>G</span></code> for <code><span class='Function'>F</span><span class='Modifier2'>∘</span><span class='Function'>G</span></code> and <code><span class='Function'>F</span></code> for <code><span class='Function'>F</span><span class='Modifier2'>○</span><span class='Function'>G</span></code>. If it's not obvious why this is the case, work it out for yourself by walking through how these functions would apply to their arguments! This causes their diagrams to be symmetric as well. Swap (<code><span class='Modifier'>˜</span></code>) also has a symmetric diagram, and it's very easy to show that it's symmetric: take a look at <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier'>˜</span></code> and <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier'>˜</span></code>. In both cases I started with <code><span class='Function'>F</span><span class='Modifier'>˜</span></code>, but in one case I applied <code><span class='Modifier'>˜</span></code> to the entire function and in the other I applied it on the inside, to <code><span class='Function'>F</span></code> only. And I won't tell you which is which.</p>
 <table class='primitives'>
   <tr>
@@ -497,7 +497,7 @@
 ⟨ 0 0.109375 0.1875 0.234375 0.25 0.234375 0.1875 0.109375 ⟩
 </pre>
 <p>Our list of arguments stops before reaching 1, because <code><span class='Function'>↕</span><span class='Number'>8</span></code> doesn't include <code><span class='Number'>8</span></code>. If we wanted a list from 0 to 1 <em>inclusive</em>, we'd need to divide by <code><span class='Number'>7</span></code> (that is, <code><span class='Number'>8</span><span class='Function'>-</span><span class='Number'>1</span></code>) instead of <code><span class='Number'>8</span></code>. We can do this as well! But first we need to understand some other ways to apply Before and After.</p>
-<h4 id="bind">Bind</h4>
+<h4 id="bind"><a class="header" href="#bind">Bind</a></h4>
 <p>We showed in the first tutorial that a modifier's operand doesn't have to be a function, but can also be a data value. That hasn't come up yet, except for a cryptic use of &quot;Bind&quot; (<code><span class='Modifier2'>⊸</span></code>?) in the function <code><span class='Paren'>(</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Modifier'>¨</span></code> from the last tutorial. How does that work? Some kind of secret identity for Before and After?</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MeKKuCsgNQor4p+cMSA1">↗️</a><pre>    <span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Number'>5</span>
 6
@@ -550,7 +550,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKGlcO3LeKfnDEpIDg=">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>↕÷-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Number'>8</span>
 ⟨ 0 0.14285714285714285 0.2857142857142857 0.42857142857142855 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
 </pre>
-<h2 id="base-decoding-continued">Base decoding continued</h2>
+<h2 id="base-decoding-continued"><a class="header" href="#base-decoding-continued">Base decoding continued</a></h2>
 <p>We're speeding up a bit now, so in the examples below it might take some time for you to break down what I did and why. Remember that you can open any expression in the REPL in order to change parts of it or view the syntax. And don't get discouraged just because of how long it takes to understand a line of code! First, you'll surely get faster in fitting the pieces together. Second, a line of BQN often has more code in it than a line in other languages, because primitives have such short names. Think about how much <em>functionality</em> you can read and understand rather than how few <em>lines</em> you get through.</p>
 <p>In the last tutorial I <a href="list.html#example-base-decoding">went over</a> a way to decode a list of strings containing binary codes for ASCII characters:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QCArICvCtMKoICjijL0y4ouG4oaVOCniirjDl8KoICcwJyAty5wgIjAxMDAwMDEwIuKAvyIwMTAxMDAwMSLigL8iMDEwMDExMTAi">↗️</a><pre>    <span class='String'>@</span> <span class='Function'>+</span> <span class='Function'>+</span><span class='Modifier'>´¨</span> <span class='Paren'>(</span><span class='Function'>⌽</span><span class='Number'>2</span><span class='Function'>⋆↕</span><span class='Number'>8</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Modifier'>¨</span> <span class='String'>'0'</span> <span class='Function'>-</span><span class='Modifier'>˜</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
@@ -597,7 +597,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KEArIMK3K+KfnCgy4oq4w5cpwrTiiJjijL3CqCAt4p+cJzAnKSAiMDEwMDAwMTAi4oC/IjAxMDEwMDAxIuKAvyIwMTAwMTExMCI=">↗️</a><pre>    <span class='Paren'>(</span><span class='String'>@</span><span class='Function'>+</span> <span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span><span class='Modifier'>¨</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='String'>'0'</span><span class='Paren'>)</span> <span class='String'>&quot;01000010&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01010001&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;01001110&quot;</span>
 "BQN"
 </pre>
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
 <p>BQN has a full complement of comparison functions, which are pervasive (work on atoms only) like arithmetic functions. The non-pervasive functions Match (<code><span class='Function'>≡</span></code>) and Not Match (<code><span class='Function'>≢</span></code>) compare entire arrays. Comparison functions return <code><span class='Number'>1</span></code> if the comparison holds and <code><span class='Number'>0</span></code> if it doesn't; these two numbers make up the &quot;booleans&quot;.</p>
 <table>
 <thead>

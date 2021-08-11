@@ -4,15 +4,15 @@
   <title>BQN–J dictionary</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="bqnj-dictionary">BQN–J dictionary</h1>
+<h1 id="bqnj-dictionary"><a class="header" href="#bqnj-dictionary">BQN–J dictionary</a></h1>
 <style>.Comment { color: inherit; }</style>
 <p>A guide to help users of J get up to speed with BQN quickly.</p>
-<h2 id="terminology">Terminology</h2>
-<h3 id="array-model">Array model</h3>
+<h2 id="terminology"><a class="header" href="#terminology">Terminology</a></h2>
+<h3 id="array-model"><a class="header" href="#array-model">Array model</a></h3>
 <p>BQN uses the <a href="based.html">based array model</a>, which is fundamentally different from J's flat array model. BQN uses non-array values such as characters and numbers, called &quot;atoms&quot;, while in J every noun is an array. A BQN array can contain any values in any mixture, while a J array must be uniformly numbers, characters, or boxes (BQN doesn't use boxes).</p>
 <p>The J terms &quot;atom&quot; and &quot;element&quot; are used to mean different things by different authors. In BQN, an atom or rank-0 array is called a &quot;unit&quot;, and the values contained in an array—which may or may not be arrays—are called &quot;elements&quot;. Each element is contained in a 0-cell, or rank-0 subarray. BQN uses the term &quot;major cell&quot; for what J calls an &quot;item&quot; of an array: a cell with rank one less than that array. BQN shares the terms &quot;list&quot; and &quot;table&quot; for rank-1 and rank-2 arrays with J.</p>
 <p>BQN uses &quot;<a href="depth.html">depth</a>&quot; rather than &quot;boxing level&quot;. BQN gives atoms depth 0, so that the depth of a BQN array is one higher than the boxing level of the corresponding J array.</p>
-<h3 id="roles">Roles</h3>
+<h3 id="roles"><a class="header" href="#roles">Roles</a></h3>
 <p>In J, the part of speech is an inherent property of a value, while in BQN it is determined by how the value is used in a particular expression, and can be different from the value's type. See <a href="context.html">context-free grammar</a>.</p>
 <table>
 <thead>
@@ -40,7 +40,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
 <table>
 <thead>
 <tr>
@@ -108,7 +108,7 @@
 </tbody>
 </table>
 <p>BQN's explicit functions and modifiers are called &quot;blocks&quot;, and have a more sophisticated syntax than J; see <a href="block.html">the documentation</a>. BQN uses <a href="lexical.html">lexical scope</a>, and has no global variables. BQN also has a <a href="arrayrepr.html#brackets">list notation</a> using <code><span class='Bracket'>⟨⟩</span></code>.</p>
-<h2 id="for-reading">For reading</h2>
+<h2 id="for-reading"><a class="header" href="#for-reading">For reading</a></h2>
 <p>J analogues of BQN primitive functions are given below. They are not always the same; usually this is because BQN has extra functionality relative to J, although in some cases it has less or different functionality.</p>
 <p>Functions <code><span class='Function'>+</span></code> <code><span class='Function'>-</span></code> <code><span class='Function'>|</span></code> <code><span class='Function'>&lt;</span></code> <code><span class='Function'>&gt;</span></code> are the same in both languages.</p>
 <table>
@@ -329,7 +329,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="for-writing">For writing</h2>
+<h2 id="for-writing"><a class="header" href="#for-writing">For writing</a></h2>
 <p>J's primitive nouns are easily defined in BQN.</p>
 <table>
 <thead>

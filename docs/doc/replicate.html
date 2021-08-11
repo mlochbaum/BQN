@@ -4,7 +4,7 @@
   <title>BQN: Indices and Replicate</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="indices-and-replicate">Indices and Replicate</h1>
+<h1 id="indices-and-replicate"><a class="header" href="#indices-and-replicate">Indices and Replicate</a></h1>
 <svg viewBox='-134.4 -37.4 595.2 198'>
   <g font-family='BQN,monospace' font-size='18px' text-anchor='middle'>
     <rect class='code' stroke-width='1.5' rx='12' x='-100.8' y='-28.6' width='528' height='180.4'/>
@@ -87,7 +87,7 @@
 
 <p>The functions Indices and Replicate are used to copy or filter data. They might be described as transforming a <a href="https://en.wikipedia.org/wiki/Run-length_encoding">run-length encoding</a> into unencoded form. On the other hand, Indices might be described as giving a sparse representation of <code><span class='Value'>𝕩</span></code>, which is smaller if <code><span class='Value'>𝕩</span></code> mostly consists of zeros.</p>
 <p>BQN doesn't have any of the various features used in APL to add fills to the result of Replicate, like negative numbers in <code><span class='Value'>𝕨</span></code> or an Expand (<code><span class='Value'>\</span></code>) primitive. An alternative to Expand is to use Replicate with structural Under (<code><span class='Modifier2'>⌾</span></code>) to insert values into an array of fills.</p>
-<h2 id="replicate">Replicate</h2>
+<h2 id="replicate"><a class="header" href="#replicate">Replicate</a></h2>
 <p>Given a list of natural numbers <code><span class='Value'>𝕨</span></code>, Replicate repeats each major cell in <code><span class='Value'>𝕩</span></code> the corresponding number of times. That is, <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code> must have the same length, and the result includes <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>𝕨</span></code> copies of each cell <code><span class='Value'>i</span><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>, in order.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAvzHigL8w4oC/MiAvICJhYmNkIgoK4oqiIGEg4oaQID4iYWEwIuKAvyJiYjEi4oC/ImNjMiLigL8iZGQzIgoKMuKAvzHigL8w4oC/MiAvIGE=">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>/</span> <span class='String'>&quot;abcd&quot;</span>
 "aabdd"
@@ -128,7 +128,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ezErJyInPfCdlal94oq4LyAiZm9yICIiZXNjYXBpbmciIiBxdW90ZXMi">↗️</a><pre>    <span class='Brace'>{</span><span class='Number'>1</span><span class='Function'>+</span><span class='String'>'&quot;'</span><span class='Function'>=</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier2'>⊸</span><span class='Function'>/</span> <span class='String'>&quot;for &quot;&quot;escaping&quot;&quot; quotes&quot;</span>
 "for """"escaping"""" quotes"
 </pre>
-<h3 id="compound-replicate">Compound Replicate</h3>
+<h3 id="compound-replicate"><a class="header" href="#compound-replicate">Compound Replicate</a></h3>
 <p>If <code><span class='Value'>𝕨</span></code> has <a href="depth.html">depth</a> two, then its elements give the amounts to copy along each <a href="leading.html">leading axis</a> of <code><span class='Value'>𝕩</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGIg4oaQIDLigL81IOKliiDihpUxMAoK4p+oMuKAvzAsIDHigL8w4oC/MOKAvzHigL8x4p+pIC8gYgoKMuKAvzAgLyAx4oC/MOKAvzDigL8x4oC/MeKKuC/LmCBi">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>b</span> <span class='Gets'>←</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>10</span>
 ┌─           
@@ -172,7 +172,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YiDiiaEg4p+o4p+pIC8gYg==">↗️</a><pre>    <span class='Value'>b</span> <span class='Function'>≡</span> <span class='Bracket'>⟨⟩</span> <span class='Function'>/</span> <span class='Value'>b</span>
 1
 </pre>
-<h2 id="indices">Indices</h2>
+<h2 id="indices"><a class="header" href="#indices">Indices</a></h2>
 <p>The monadic form of <code><span class='Function'>/</span></code> is much simpler than the dyadic one, with no multidimensional case or mismatched argument ranks. <code><span class='Value'>𝕩</span></code> must be a list of natural numbers, and <code><span class='Function'>/</span><span class='Value'>𝕩</span></code> is the list <code><span class='Value'>𝕩</span><span class='Function'>/↕≠</span><span class='Value'>𝕩</span></code>. Its elements are the <a href="indices.html">indices</a> for <code><span class='Value'>𝕩</span></code>, with index <code><span class='Value'>i</span></code> repeated <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>𝕩</span></code> times.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LyAz4oC/MOKAvzHigL8y">↗️</a><pre>    <span class='Function'>/</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span>
 ⟨ 0 0 0 2 3 3 ⟩
@@ -212,7 +212,7 @@
       ┘
 </pre>
 <p>This means the transitions can be grouped exactly in pairs, the beginning and end of each group. Reshape with a <a href="reshape.html#computed-lengths">computed length</a> <code><span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Number'>2</span></code> groups these pairs, and then a scan <code><span class='Function'>-</span><span class='Modifier'>˜`˘</span></code> can be used to convert the start/end format to start/length if wanted.</p>
-<h3 id="inverse">Inverse</h3>
+<h3 id="inverse"><a class="header" href="#inverse">Inverse</a></h3>
 <p>The result of Indices <code><span class='Function'>/</span><span class='Value'>n</span></code> is an ordered list of natural numbers, where the number <code><span class='Value'>i</span></code> appears <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>n</span></code> times. Given an ordered list of natural numbers <code><span class='Value'>k</span></code>, the <a href="undo.html"><em>inverse</em></a> of indices returns a corresponding <code><span class='Value'>n</span></code>: one where the value <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>n</span></code> is the number of times <code><span class='Value'>i</span></code> appears in <code><span class='Value'>k</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LyAz4oC/MuKAvzEKCi/igbwgMOKAvzDigL8w4oC/MeKAvzHigL8y">↗️</a><pre>    <span class='Function'>/</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 ⟨ 0 0 0 1 1 2 ⟩

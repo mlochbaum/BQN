@@ -4,7 +4,7 @@
   <title>BQN Tutorial: Working with lists</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">tutorial</a></div>
-<h1 id="tutorial-working-with-lists">Tutorial: Working with lists</h1>
+<h1 id="tutorial-working-with-lists"><a class="header" href="#tutorial-working-with-lists">Tutorial: Working with lists</a></h1>
 <p>Enough with all these preliminaries like learning how to read basic expressions. Let's get into what makes BQN special.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMSwgMiwgM+KfqQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>2</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Bracket'>⟩</span>
 ⟨ 1 2 3 ⟩
@@ -14,7 +14,7 @@
 ⟨ 2 3 4 ⟩
 </pre>
 <p>There we go. Now in BQN arrays are not just lists, which are a 1-dimensional data structure, but can have any number of dimensions. In this tutorial we're going to discuss lists only, leaving the 5-dimensional stuff for later. So we're really only seeing the power of <a href="https://aplwiki.com/wiki/K">K</a>, an APL-family language that only uses lists (and dictionaries, which BQN doesn't have). K was powerful enough for Arthur Whitney to found <a href="https://en.wikipedia.org/wiki/Kx_Systems">two</a> <a href="https://shakti.com/">companies</a> and make millions and millions of dollars, and BQN's compiler also runs almost entirely on lists, so this is probably enough power for one webpage.</p>
-<h2 id="list-notation">List notation</h2>
+<h2 id="list-notation"><a class="header" href="#list-notation">List notation</a></h2>
 <p>There are three kinds of list notation in BQN. Each of them has a subject role overall, even if expressions used inside it might have other roles. First, a <em>string</em> is a list of characters, and is written by placing those characters in double quotes.</p>
 <pre><span class='String'>&quot;Text!&quot;</span>
 </pre>
@@ -86,7 +86,7 @@
     <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Paren'>)</span>
 ⟨ 0 ⟨ 1 2 ⟩ ⟩
 </pre>
-<h2 id="bqn-types">BQN types</h2>
+<h2 id="bqn-types"><a class="header" href="#bqn-types">BQN types</a></h2>
 <p>Now that all six BQN types have been introduced, let's make a table:</p>
 <table>
 <thead>
@@ -111,7 +111,7 @@
 </tbody>
 </table>
 <p>Lists are just one-dimensional arrays. Types are divided into <em>data types</em>, which tend to have a subject role, and <em>operation types</em>, which tend to have a role matching their type. Also, any value that's not an array, such as everything we used in the last tutorial, is called an <em>atom</em>.</p>
-<h2 id="arithmetic-on-lists">Arithmetic on lists</h2>
+<h2 id="arithmetic-on-lists"><a class="header" href="#arithmetic-on-lists">Arithmetic on lists</a></h2>
 <p>Arithmetic functions automatically apply to each element of a list argument. If both arguments are lists, they have to have the same length, and they're matched up one element at a time.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w7cg4p+oMiwzLDTin6kKCiJBUEwiICsgMQoKIjMxNDE1IiAtICcwJwoKNOKAvzPigL8y4oC/MSDii4YgMeKAvzLigL8z4oC/NA==">↗️</a><pre>    <span class='Function'>÷</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩</span>
 ⟨ 0.5 0.3333333333333333 0.25 ⟩
@@ -132,7 +132,7 @@
     <span class='Bracket'>⟨</span> <span class='Number'>10</span><span class='Separator'>,</span> <span class='Number'>20</span><span class='Ligature'>‿</span><span class='Number'>30</span> <span class='Bracket'>⟩</span> <span class='Function'>+</span> <span class='Bracket'>⟨</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Separator'>,</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span>
 ⟨ ⟨ 11 12 ⟩ ⟨ 23 33 ⟩ ⟩
 </pre>
-<h2 id="some-list-functions">Some list functions</h2>
+<h2 id="some-list-functions"><a class="header" href="#some-list-functions">Some list functions</a></h2>
 <table class='primitives'>
   <tr>
     <td><span class='Function'>≍</span></td>
@@ -183,7 +183,7 @@
     <span class='Number'>¯1</span> <span class='Function'>⌽</span> <span class='String'>&quot;bcdea&quot;</span>
 "abcde"
 </pre>
-<h3 id="and-modifiers">…and modifiers</h3>
+<h3 id="and-modifiers"><a class="header" href="#and-modifiers">…and modifiers</a></h3>
 <table class='primitives'>
   <tr>
     <td><span class='Modifier'>¨</span></td>
@@ -235,7 +235,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oi+IOKfqCAiY29uIiwgImNhdCIsICJlbmF0IiwgImUiIOKfqQ==">↗️</a><pre>    <span class='Function'>∾</span> <span class='Bracket'>⟨</span> <span class='String'>&quot;con&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;cat&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;enat&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;e&quot;</span> <span class='Bracket'>⟩</span>
 "concatenate"
 </pre>
-<h2 id="example-base-decoding">Example: base decoding</h2>
+<h2 id="example-base-decoding"><a class="header" href="#example-base-decoding">Example: base decoding</a></h2>
 <p>Some people like to imagine that robots or other techno-beings speak entirely in binary-encoded ASCII, like for instance &quot;01001110 01100101 01110010 01100100 00100001&quot;. This is dumb for a lot of reasons, and the encoded text probably just says something inane, but you're a slave to curiosity and can't ignore it. Are one and a half tutorials of BQN enough to clear your conscience?</p>
 <table class='primitives'>
   <tr>
@@ -359,7 +359,7 @@ ERROR
     <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier'>´</span> <span class='Function'>⌽</span> <span class='String'>&quot;1001&quot;</span><span class='Function'>-</span><span class='String'>'0'</span>
 9
 </pre>
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
 <p>There are three types of syntax that create lists: the <code><span class='String'>&quot;string literal&quot;</span></code> for lists of characters and either enclosing angle brackets <code><span class='Bracket'>⟨⟩</span></code> with <code><span class='Separator'>,</span></code> or <code><span class='Separator'>⋄</span></code> or newline characters or connecting ligatures <code><span class='Ligature'>‿</span></code> for lists with arbitrary elements. The ligature has a higher precedence than functions or modifiers, so we should add it to our precedence table:</p>
 <table>
 <thead>

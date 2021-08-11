@@ -4,7 +4,7 @@
   <title>BQN: Arithmetic functions</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="arithmetic-functions">Arithmetic functions</h1>
+<h1 id="arithmetic-functions"><a class="header" href="#arithmetic-functions">Arithmetic functions</a></h1>
 <p>BQN's arithmetic functions use mostly the same symbols as APL, and the functionality is actually defined by the language implementation's number system and not the specification, so there's not too much to say about them.</p>
 <p>Summary of differences for APLers:</p>
 <ul>
@@ -13,7 +13,7 @@
 <li>Not uses a different symbol <code><span class='Function'>¬</span></code>, and binary logical functions <code><span class='Function'>∧∨</span></code> (described on <a href="logic.html">their own page</a>) are extended linearly in all arguments instead of using GCD or LCM.</li>
 <li>Dyadic arithmetic functions use <a href="leading.html#leading-axis-agreement">leading axis agreement</a> like J.</li>
 </ul>
-<h2 id="basic-arithmetic">Basic arithmetic</h2>
+<h2 id="basic-arithmetic"><a class="header" href="#basic-arithmetic">Basic arithmetic</a></h2>
 <p><em>These functions are also introduced in the <a href="../tutorial/expression.html">first BQN tutorial</a>.</em></p>
 <p>BQN of course supports the elementary functions taught in schools everywhere:</p>
 <table>
@@ -104,7 +104,7 @@
     <span class='Function'>×</span> <span class='Number'>∞</span><span class='Ligature'>‿</span><span class='Number'>¯2</span><span class='Ligature'>‿</span><span class='Number'>¯0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span>
 ⟨ 1 ¯1 0 0 1 ⟩
 </pre>
-<h3 id="character-arithmetic">Character arithmetic</h3>
+<h3 id="character-arithmetic"><a class="header" href="#character-arithmetic">Character arithmetic</a></h3>
 <p>The Add and Subtract functions can be applied to <a href="types.html#characters">characters</a> as well as numbers. While any two numbers (finite ones, at least) can be added or subtracted, character arithmetic has more restrictions.</p>
 <svg viewBox='-204.8 -42.2 640 132'>
   <rect class='code' stroke-width='1' rx='6' x='0' y='0' width='256' height='68'/>
@@ -149,7 +149,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2EnIC0gQA==">↗️</a><pre>    <span class='String'>'a'</span> <span class='Function'>-</span> <span class='String'>@</span>
 97
 </pre>
-<h2 id="additional-arithmetic">Additional arithmetic</h2>
+<h2 id="additional-arithmetic"><a class="header" href="#additional-arithmetic">Additional arithmetic</a></h2>
 <table>
 <thead>
 <tr>
@@ -202,7 +202,7 @@
 1
 </pre>
 <p>Unlike in APL, a left argument of 0 fails or returns a not-a-number result. Set <code><span class='Value'>𝕨</span></code> to <code><span class='Number'>∞</span></code> to keep <code><span class='Value'>𝕩</span></code> intact, but do note that if <code><span class='Value'>𝕩</span><span class='Function'>&lt;</span><span class='Number'>0</span></code> this will return <code><span class='Number'>∞</span></code>.</p>
-<h2 id="comparisons">Comparisons</h2>
+<h2 id="comparisons"><a class="header" href="#comparisons">Comparisons</a></h2>
 <p>BQN uses the six standard comparison functions of mathematics. For each pair of atoms the result is 1 if the comparison is true and 0 if it's false. These functions do the obvious thing with numeric arguments, but are extended to other types as well.</p>
 <table>
 <thead>
@@ -283,7 +283,7 @@
     <span class='String'>'b'</span> <span class='Function'>≠</span> <span class='String'>&quot;abacba&quot;</span>
 ⟨ 1 0 1 1 0 1 ⟩
 </pre>
-<h2 id="pervasion">Pervasion</h2>
+<h2 id="pervasion"><a class="header" href="#pervasion">Pervasion</a></h2>
 <p>Arithmetic primitives act as though they are given <a href="depth.html#the-depth-modifier">depth</a> 0, so that with array arguments they treat each atom independently. While the examples above use only numbers or lists of them, arithmetic applies to nested and high-rank arrays just as easily.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w5cg4omNy5jin6jCrzgswq854p+p4oC/4p+o4p+oMiww4p+pLDQsNeKfqQ==">↗️</a><pre>    <span class='Function'>×</span> <span class='Function'>≍</span><span class='Modifier'>˘</span><span class='Bracket'>⟨</span><span class='Number'>¯8</span><span class='Separator'>,</span><span class='Number'>¯9</span><span class='Bracket'>⟩</span><span class='Ligature'>‿</span><span class='Bracket'>⟨⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Bracket'>⟩</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
 ┌─                 

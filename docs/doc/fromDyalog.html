@@ -4,10 +4,10 @@
   <title>BQN–Dyalog APL dictionary</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="bqndyalog-apl-dictionary">BQN–Dyalog APL dictionary</h1>
+<h1 id="bqndyalog-apl-dictionary"><a class="header" href="#bqndyalog-apl-dictionary">BQN–Dyalog APL dictionary</a></h1>
 <p>A few tables to help users of Dyalog APL (or similar) get started quickly on BQN. Here we assume <code><span class='Value'>⎕</span><span class='Function'>ML</span></code> is 1 for Dyalog.</p>
-<h2 id="terminology">Terminology</h2>
-<h3 id="array-model">Array model</h3>
+<h2 id="terminology"><a class="header" href="#terminology">Terminology</a></h2>
+<h3 id="array-model"><a class="header" href="#array-model">Array model</a></h3>
 <p>BQN uses the <a href="based.html">based array model</a>, so that a Dyalog simple scalar corresponds to many BQN values: an atom, its enclose, and so on.</p>
 <table>
 <thead>
@@ -37,7 +37,7 @@
 </table>
 <p>BQN shares the terms &quot;cell&quot; and &quot;major cell&quot; with Dyalog, and uses
 &quot;element&quot; (which may mean different things to different Dyalog users) <em>not</em> for a 0-cell but for the value it contains.</p>
-<h3 id="roles">Roles</h3>
+<h3 id="roles"><a class="header" href="#roles">Roles</a></h3>
 <p>Dyalog uses value types (array, function, and so on) to determine syntax while BQN uses a separate concept called syntactic roles. See <a href="context.html">context-free grammar</a>.</p>
 <table>
 <thead>
@@ -69,7 +69,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
 <p>BQN comments are written with <code><span class='Comment'>#</span></code>, not <code><span class='Value'>⍝</span></code>. BQN strings use double quotes <code><span class='String'>&quot;&quot;</span></code> while single quotes <code><span class='String'>''</span></code> enclose a character.</p>
 <p>BQN's functions use <code><span class='Brace'>{}</span></code>, like Dyalog's dfns. The names for inputs and self-reference are different:</p>
 <table>
@@ -109,7 +109,7 @@
 <p>BQN doesn't have guards: it uses modifiers or <a href="control.html">control structures</a> instead. However, BQN function and modifier blocks have headers that allow pattern matching. See the <a href="block.html">block</a> documentation.</p>
 <p>The assignment arrow <code><span class='Gets'>←</span></code> defines a new variable in a block, while <code><span class='Gets'>↩</span></code> modifies an existing one.</p>
 <p>BQN uses the ligature character <code><span class='Ligature'>‿</span></code> for stranding, instead of plain juxtaposition. It also has a <a href="arrayrepr.html#brackets">list notation</a> using <code><span class='Bracket'>⟨⟩</span></code>.</p>
-<h2 id="for-reading">For reading</h2>
+<h2 id="for-reading"><a class="header" href="#for-reading">For reading</a></h2>
 <p>Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs as APL. Correspondence can be approximate, and <code><span class='Function'>⌽</span></code> is just used as a decorator to mean &quot;reverse some things&quot;.</p>
 <table>
 <thead>
@@ -272,7 +272,7 @@
 </tbody>
 </table>
 <p>In BQN <code><span class='Modifier2'>⎉</span></code> is Rank and <code><span class='Modifier2'>∘</span></code> is Atop. Dyalog's Atop (<code><span class='Value'>⍤</span></code>) and Over (<code><span class='Value'>⍥</span></code>) were added in version 18.0.</p>
-<h2 id="for-writing">For writing</h2>
+<h2 id="for-writing"><a class="header" href="#for-writing">For writing</a></h2>
 <p>The tables below give approximate implementations of Dyalog primitives for the ones that aren't the same. First- and last-axis pairs are also mostly omitted. BQN just has the first-axis form, and you can get the last-axis form with <code><span class='Modifier2'>⎉</span><span class='Number'>1</span></code>.</p>
 <p>The form <code><span class='Function'>F</span><span class='Value'>⍣</span><span class='Function'>G</span></code> (Power with a function right operand; Power limit) must be implemented with recursion instead of primitives because it performs unbounded iteration. The modifier <code><span class='Modifier2'>_while_</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Modifier2'>⍟</span><span class='Function'>𝔾</span><span class='Modifier2'>∘</span><span class='Function'>𝔽</span><span class='Modifier2'>_𝕣_</span><span class='Function'>𝔾</span><span class='Modifier2'>∘</span><span class='Function'>𝔽</span><span class='Modifier2'>⍟</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> provides similar functionality without risk of stack overflow. It's discussed <a href="control.html#low-stack-version">here</a> and called as <code><span class='Function'>Fn</span> <span class='Modifier2'>_while_</span> <span class='Function'>Cond</span> <span class='Value'>arg</span></code>.</p>
 <table>

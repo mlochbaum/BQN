@@ -4,8 +4,8 @@
   <title>Tutorial: BQN expressions</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">tutorial</a></div>
-<h1 id="tutorial-bqn-expressions">Tutorial: BQN expressions</h1>
-<h2 id="arithmetic">Arithmetic</h2>
+<h1 id="tutorial-bqn-expressions"><a class="header" href="#tutorial-bqn-expressions">Tutorial: BQN expressions</a></h1>
+<h2 id="arithmetic"><a class="header" href="#arithmetic">Arithmetic</a></h2>
 <p>All right, let's get started! Since you can run BQN online from the <a href="https://mlochbaum.github.io/BQN/try.html">REPL</a> there aren't any real technical preliminaries, but if you'd like to look at non-web-based options head over to <a href="../running.html">running.md</a>.</p>
 <p>In the code blocks shown here, input is highlighted and indented, while output is not colored or indented. To experiment with the code, you can click the <code><span class='Value'>↗️</span></code> arrow in the top right corner to open it in the REPL.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiArIDMKNi0gICA1Ci0gMS41">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>+</span> <span class='Number'>3</span>
@@ -102,7 +102,7 @@
 </span><span class='Function'>√</span> <span class='Function'>⋆</span>   <span class='Comment'># \ shift
 </span></pre>
 <p>In case you're wondering, Logarithm—the other inverse of Power—is written <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>. We'll see how that works when we introduce <code><span class='Modifier'>⁼</span></code> in the section on 1-modifiers.</p>
-<h2 id="compound-expressions">Compound expressions</h2>
+<h2 id="compound-expressions"><a class="header" href="#compound-expressions">Compound expressions</a></h2>
 <p>It's sometimes useful to write programs with more than one function in them. Here is where BQN and any sort of normality part ways.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MsOXMyAtIDUKKDLDlzMpIC0gNQ==">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>×</span><span class='Number'>3</span> <span class='Function'>-</span> <span class='Number'>5</span>
 ¯4
@@ -157,7 +157,7 @@
 
 <p>The online REPL includes a tool to create diagrams like the one shown above. To enable it, click the &quot;explain&quot; button. Then a diagram of your source code will be shown above the result each time you run an expression.</p>
 <p>The following rule might help you to internalize this system in addition to identifying when parentheses are needed: an expression never needs to end with a parenthesis, or have two closing parentheses in a row. If it does, at least one set of parentheses can be removed without changing the meaning.</p>
-<h2 id="one-or-two-arguments">One or two arguments?</h2>
+<h2 id="one-or-two-arguments"><a class="header" href="#one-or-two-arguments">One or two arguments?</a></h2>
 <p>What about functions without a left argument? Let's find an equation with lots of square roots in it… <a href="https://en.wikipedia.org/wiki/Nested_radical#Denesting">looks good</a>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDMgKyAyIMOXIOKImjIKMSArIOKImjI=">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>3</span> <span class='Function'>+</span> <span class='Number'>2</span> <span class='Function'>×</span> <span class='Function'>√</span><span class='Number'>2</span>
 2.414213562373095
@@ -227,7 +227,7 @@
 <li>A set of parentheses has the same role as whatever's inside it.</li>
 </ul>
 <p>Perhaps more than you thought! To really get roles, it's important to understand that a role is properly a property of an expression, and not its value. In language implementation terms, roles are used only to parse expressions, giving a syntax tree, but don't dictate what values are possible when the tree is evaluated. So it's possible to have a function with a number role or a number with a function role. The reason this doesn't happen with the numeric literals and primitives we've introduced is that these tokens have a constant value. <code><span class='Function'>×</span></code> or <code><span class='Number'>∞</span></code> have the same value in any possible program, and so it makes sense that their types and roles should correspond. When we introduce identifiers, we'll see this correspondence break down—and why that's good!</p>
-<h2 id="character-arithmetic">Character arithmetic</h2>
+<h2 id="character-arithmetic"><a class="header" href="#character-arithmetic">Character arithmetic</a></h2>
 <p>Gosh, that's a lot of arithmetic up there. Maybe adding characters will mix things up a bit? Hang on, you can't add characters, only subtract them… let's back up.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2Mn">↗️</a><pre>    <span class='String'>'c'</span>
 'c'
@@ -279,7 +279,7 @@
 
 <p>It's a convenient way to write non-printing characters without having to include them in your source code: for example <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>10</span></code> is the newline character.</p>
 <p>Addition and subtraction with affine characters have all the same algebraic properties that they do with numbers. One way to see this is to think of values as a combination of &quot;characterness&quot; (0 for numbers and 1 for characters) and either numeric value or code point. Addition and subtraction are done element-wise on these pairs of numbers, and are allowed if the result is a valid value, that is, its characterness is 0 or 1 and its value is a valid code point if the characterness is 1. However, because the space of values is no longer closed under addition and subtraction, certain rearrangements of valid computations might not work, if one of the values produced in the middle isn't legal.</p>
-<h2 id="modifiers">Modifiers</h2>
+<h2 id="modifiers"><a class="header" href="#modifiers">Modifiers</a></h2>
 <p>Functions are nice and all, but to really bring us into the space age BQN has a second level of function called <em>modifiers</em> (the space age in this case is when operators were introduced to APL in the early 60s—hey, did you know the <a href="https://aplwiki.com/wiki/APL_conference#1970">second APL conference</a> was held at Goddard Space Flight Center?). While functions apply to subjects, modifiers can apply to functions <em>or</em> subjects, and return functions. For example, the 1-modifier <code><span class='Modifier'>˜</span></code> modifies one function by swapping the arguments before calling it (Swap), or copying the right argument to the left if there's only one (Self).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiAty5wgJ2QnICAjIFN1YnRyYWN0IGZyb20KK8ucIDMgICAgICAjIEFkZCB0byBpdHNlbGY=">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>-</span><span class='Modifier'>˜</span> <span class='String'>'d'</span>  <span class='Comment'># Subtract from
 </span>'b'
@@ -332,7 +332,7 @@
 </pre>
 <p>Well, I guess it's not pedagogically useless, as it does demonstrate that a modifier can be applied to subjects as well as functions. Even though <code><span class='Number'>3</span></code> is a subject, <code><span class='Number'>3</span><span class='Modifier'>˙</span></code> is a function, and can be applied to and ignore the two arguments <code><span class='Number'>2</span></code> and <code><span class='Number'>4</span></code>.</p>
 <p>With three examples you may have noticed that 1-modifiers tend to cluster at the top of the screen. In fact, every primitive 1-modifer is a superscript character: we've covered <code><span class='Modifier'>˜⁼˙</span></code>, and the remaining array-based modifiers <code><span class='Modifier'>˘¨⌜´˝`</span></code> will show up later.</p>
-<h2 id="2-modifiers">2-modifiers</h2>
+<h2 id="2-modifiers"><a class="header" href="#2-modifiers">2-modifiers</a></h2>
 <p>Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop <code><span class='Modifier2'>∘</span></code>, which works a lot like mathematical composition, except that it's extended to use one or two arguments. These arguments are passed to the function on the right, and the result is passed to the function on the left. So the function on the left is only ever called with one argument.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDDl8uc4oiYKyA0ICAjIFNxdWFyZSBvZiAzIHBsdXMgNAot4oiYKMOXy5wpIDUgICMgTmVnYXRpdmUgc3F1YXJlIG9mIDU=">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>×</span><span class='Modifier'>˜</span><span class='Modifier2'>∘</span><span class='Function'>+</span> <span class='Number'>4</span>  <span class='Comment'># Square of 3 plus 4
 </span>49
@@ -384,7 +384,7 @@
 <p>This ordering is more consistent with the rule that a 1-modifier's operand should go to its left. If we tried going from right to left we'd end up with <code><span class='Function'>×</span><span class='Paren'>(</span><span class='Modifier'>˜</span><span class='Modifier2'>∘</span><span class='Function'>+</span><span class='Paren'>)</span></code>, which uses <code><span class='Modifier'>˜</span></code> as an operand to <code><span class='Modifier2'>∘</span></code>. But a modifier can't be used as an operand. To make it work we'd have to give 1-modifiers a higher precedence than 2-modifiers.</p>
 <p>In fact, the rules for modifiers are exactly the same as those for functions, but reversed. So why is there a distinction between 1- and 2-modifiers, when for functions we can look to the left to see whether there is a left argument? The reason is that it's natural to follow a 1-modifier by a subject or function that isn't supposed to be its operand. Using an example from the last section, <code><span class='Function'>+</span><span class='Modifier'>˜</span> <span class='Number'>3</span></code> has a subject to the right of the 1-modifier <code><span class='Modifier'>˜</span></code>. Even worse, <code><span class='Function'>+</span><span class='Modifier'>˜</span> <span class='Function'>÷</span> <span class='Number'>3</span></code> looks just like <code><span class='Function'>+</span><span class='Modifier2'>∘</span> <span class='Function'>÷</span> <span class='Number'>3</span></code>, but it's two functions <code><span class='Function'>+</span><span class='Modifier'>˜</span></code> and <code><span class='Function'>÷</span></code> applied to <code><span class='Number'>3</span></code> while the version with Atop is a single function <code><span class='Function'>+</span><span class='Modifier2'>∘</span><span class='Function'>÷</span></code> applied to <code><span class='Number'>3</span></code>. So the two-layer system of functions and modifiers forces modifiers to have a fixed number of operands even though every function (including those derived by applying modifiers) can be called with one or two arguments.</p>
 <p>Remember that 1-modifiers are all superscripts? The characters for 2-modifiers use a different rule: each contains an <em>unbroken</em> circle (that is, lines might touch it but not go through it). The 2-modifiers in BQN are the combinators <code><span class='Modifier2'>∘○⊸⟜⊘</span></code>, the sort-of-combinators  <code><span class='Modifier2'>⌾◶⍟</span></code>, and the not-at-all-combinators <code><span class='Modifier2'>⎉⚇⎊</span></code>. And the functions that make that unbroken circle rule necessary are written <code><span class='Function'>⌽⍉</span></code>. Since every primitive is a function, 1-modifier, or 2-modifier, you can always tell what type (and role) it has: a superscript is a 1-modifier, an unbroken circle makes it a 2-modifier, and otherwise it's a function.</p>
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
 <p>The objects we've seen so far are:</p>
 <table>
 <thead>

@@ -4,10 +4,10 @@
   <title>BQN: Reverse and Rotate</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="reverse-and-rotate">Reverse and Rotate</h1>
+<h1 id="reverse-and-rotate"><a class="header" href="#reverse-and-rotate">Reverse and Rotate</a></h1>
 <p>The symbol <code><span class='Function'>⌽</span></code> indicates two different array transformations: with no left argument, it reverses the major cells of the array, but with a left argument, it rotates or cycles them around. These two possibilities, first put together in very early versions of APL, can't be considered restrictions or different views of some unifying function, but there are connections between them. Each returns an array with the same <a href="shape.html">shape</a> and all the same elements as <code><span class='Value'>𝕩</span></code>, possibly in a different arrangement. And elements that start out next to each other in <code><span class='Value'>𝕩</span></code> generally stay next to each other—always, if we consider an element on one edge to be next to the one opposite to it. One might think of them as <a href="https://en.wikipedia.org/wiki/Isometry">isometries</a> preserving a discrete subgroup of the torus, if one were inclined to think such things. On major cells, the two functions decompose the <a href="https://en.wikipedia.org/wiki/Dihedral_group">dihedral group</a> okay I'll stop.</p>
 <p>Many uses of Rotate in APL are better handled by <a href="shift.html">shift</a> functions in BQN. If there's no reason to treat the data as cyclic or periodic, it's best to avoid Rotate.</p>
-<h2 id="reverse">Reverse</h2>
+<h2 id="reverse"><a class="header" href="#reverse">Reverse</a></h2>
 <p>There's not too much to say about Reverse. It puts the elements of a list the other way around, or more generally the major cells of an array.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oy9ICJhYmNkZWZnIgoK4oy9ID4iYWIi4oC/ImNkIuKAvyJlZiIKCuKMvSAnYyc=">↗️</a><pre>    <span class='Function'>⌽</span> <span class='String'>&quot;abcdefg&quot;</span>
 "gfedcba"
@@ -45,7 +45,7 @@
     <span class='Function'>∨</span><span class='Modifier'>`</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
 ⟨ 1 1 1 1 1 1 0 ⟩
 </pre>
-<h2 id="rotate">Rotate</h2>
+<h2 id="rotate"><a class="header" href="#rotate">Rotate</a></h2>
 <p>Rotate moves elements in a list around cyclically. It can also rotate any number of axes of the argument array by different amounts at once. That's discussed in the next section; for now we'll stick to a single number for <code><span class='Value'>𝕨</span></code>. It has to be an integer, and <code><span class='Value'>𝕩</span></code> has to be an array with at least one axis.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDijL0gInJvdGF0ZSIKCjIgKOKKoiDiiY3il4s8IOKMvSkgNeKAvzLipYoicm90YXRlQ0VMTCIKCjIg4oy9ICdjJyAgIyBObyBheGVzIHRvIHJvdGF0ZQ==">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⌽</span> <span class='String'>&quot;rotate&quot;</span>
 "tatero"
@@ -73,7 +73,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wq8yIOKMvSAicm90YXRlIg==">↗️</a><pre>    <span class='Number'>¯2</span> <span class='Function'>⌽</span> <span class='String'>&quot;rotate&quot;</span>
 "terota"
 </pre>
-<h3 id="multiple-axes">Multiple axes</h3>
+<h3 id="multiple-axes"><a class="header" href="#multiple-axes">Multiple axes</a></h3>
 <p>The easiest way to rotate a later array axis is usually to use the Cells (<code><span class='Modifier'>˘</span></code>) or Rank (<code><span class='Modifier2'>⎉</span></code>) modifier.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHRhYiDihpAgM+KAvzTipYoiYWJjZEFCQ0QwMTIzIgoKMSDijL3LmCB0YWIgICMgUm90YXRlIHRoZSBzZWNvbmQgYXhpcw==">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>tab</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊</span><span class='String'>&quot;abcdABCD0123&quot;</span>
 ┌─      

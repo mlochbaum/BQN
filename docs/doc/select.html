@@ -4,7 +4,7 @@
   <title>BQN: Select</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="select">Select</h1>
+<h1 id="select"><a class="header" href="#select">Select</a></h1>
 <svg viewBox='-148.8 -17.4 480 208.8'>
   <g font-family='BQN,monospace' font-size='22px' text-anchor='middle'>
     <rect class='code' stroke-width='1.5' rx='12' x='-96' y='0' width='374.4' height='174'/>
@@ -50,7 +50,7 @@
 
 <p>The function Select (<code><span class='Function'>⊏</span></code>) reorganizes the array <code><span class='Value'>𝕩</span></code> along one or more axes based on <a href="indices.html">indices</a> given by <code><span class='Value'>𝕨</span></code>. The result has the same <a href="depth.html">depth</a> as <code><span class='Value'>𝕩</span></code>, since its elements are always elements of <code><span class='Value'>𝕩</span></code>. This means it differs from <a href="pick.html">Pick</a> (<code><span class='Function'>⊑</span></code>), which takes elements from <code><span class='Value'>𝕩</span></code> but can arrange them in any nested structure, including returning an element directly.</p>
 <p>The monadic form First Cell (<code><span class='Function'>⊏</span></code>) gets the major cell with index 0, so that <code><span class='Function'>⊏</span><span class='Value'>𝕩</span></code> is identical to <code><span class='Number'>0</span><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>.</p>
-<h2 id="single-selection">Single selection</h2>
+<h2 id="single-selection"><a class="header" href="#single-selection">Single selection</a></h2>
 <p>Each axis of a BQN array is numbered starting at zero. Major cells are arranged along the first axis; in accordance with the <a href="leading.html">leading axis</a> principle, Select returns a major cell of <code><span class='Value'>𝕩</span></code> when <code><span class='Value'>𝕨</span></code> is an atom.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDiio8gImFiY2RlZiIgICMgQW4gZW5jbG9zZWQgZWxlbWVudAoKMiDiipEgImFiY2RlZiIgICMgUGljayBnZXRzIGEgbm9uLWVuY2xvc2VkIGVsZW1lbnQKCjIg4oqPID4ibnVsIuKAvyJvbmUi4oC/InR3byLigL8idHJlIuKAvyJmb3IiCgowIOKKjyA8NSAgIyBObyBmaXJzdCBheGlzIHRvIHNlbGVjdCBmcm9t">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⊏</span> <span class='String'>&quot;abcdef&quot;</span>  <span class='Comment'># An enclosed element
 </span>┌·   
@@ -91,7 +91,7 @@ ERROR
     <span class='Function'>⊏</span> <span class='String'>'a'</span>
 ERROR
 </pre>
-<h2 id="first-axis-selection">First-axis selection</h2>
+<h2 id="first-axis-selection"><a class="header" href="#first-axis-selection">First-axis selection</a></h2>
 <p>If <code><span class='Value'>𝕨</span></code> is an array of numbers (including any empty array), then each number indicates a major cell of <code><span class='Value'>𝕩</span></code>. In the simplest case, a list of numbers gives a result with the same rank as <code><span class='Value'>𝕩</span></code> but maybe not the same length.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAvzPigL8z4oC/MOKAvzTigL8xIOKKjyAiT2xaRXQiCgrin6jin6kg4oqPICJPbFpFdCI=">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span> <span class='Function'>⊏</span> <span class='String'>&quot;OlZEt&quot;</span>
 "ZEEOtl"
@@ -161,7 +161,7 @@ ERROR
   0123" 
        ┘
 </pre>
-<h2 id="multi-axis-selection">Multi-axis selection</h2>
+<h2 id="multi-axis-selection"><a class="header" href="#multi-axis-selection">Multi-axis selection</a></h2>
 <p>Select also allows <code><span class='Value'>𝕨</span></code> to apply to multiple axes of <code><span class='Value'>𝕩</span></code> simultaneously. For this case, <code><span class='Value'>𝕨</span></code> must be a non-empty list (or unit array) where every element is an array of indices.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMuKAvzEsIDPigL8w4oC/MOKfqSDiio8g4oaVM+KAvzQ=">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Bracket'>⟩</span> <span class='Function'>⊏</span> <span class='Function'>↕</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
 ┌─                         

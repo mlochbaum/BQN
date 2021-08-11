@@ -4,7 +4,7 @@
   <title>BQN: Take and Drop</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="take-and-drop">Take and Drop</h1>
+<h1 id="take-and-drop"><a class="header" href="#take-and-drop">Take and Drop</a></h1>
 <svg viewBox='-156.8 -64 672 204.8'>
   <g fill='currentColor' stroke-linecap='round' text-anchor='middle' font-family='BQN,monospace'>
     <rect class='code' stroke-width='1.5' rx='12' x='-100.8' y='-40' width='560' height='156.8'/>
@@ -43,7 +43,7 @@
 </ul>
 <p>These extensions can be combined as well, so there are a lot of possibilities. A good picture to have in mind is cutting out a corner of the array <code><span class='Value'>𝕩</span></code>. This is because the result <code><span class='Value'>𝕨</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code> or <code><span class='Value'>𝕨</span><span class='Function'>↓</span><span class='Value'>𝕩</span></code> always aligns with one side of <code><span class='Value'>𝕩</span></code> along each axis, so it aligns with the corner where those sides meet.</p>
 <p>The result <code><span class='Value'>d</span><span class='Function'>↓</span><span class='Value'>𝕩</span></code> is always the same as <code><span class='Value'>t</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code> for some other argument <code><span class='Value'>t</span></code>, but computing <code><span class='Value'>t</span></code> wouldn't be too convenient. The reverse isn't true: only Take can insert fills, so results that include them can't come from Drop.</p>
-<h2 id="one-axis">One axis</h2>
+<h2 id="one-axis"><a class="header" href="#one-axis">One axis</a></h2>
 <p>Let's start with a natural number <code><span class='Value'>𝕨</span></code>. Take gives the first <code><span class='Value'>𝕨</span></code> major cells of <code><span class='Value'>𝕩</span></code> (or elements of a list), while Drop gives all but the first <code><span class='Value'>𝕨</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NCDihpEgInRha2UgYW5kIGRyb3AiCjQg4oaTICJ0YWtlIGFuZCBkcm9wIgoKMSDihpMgPiJtYWoi4oC/Im9yYyLigL8iZWxsIg==">↗️</a><pre>    <span class='Number'>4</span> <span class='Function'>↑</span> <span class='String'>&quot;take and drop&quot;</span>
 "take"
@@ -76,7 +76,7 @@
     <span class='Number'>3</span> <span class='Function'>↓</span> <span class='Function'>&lt;</span><span class='String'>&quot;element&quot;</span>
 ⟨⟩
 </pre>
-<h3 id="negative-argument">Negative argument</h3>
+<h3 id="negative-argument"><a class="header" href="#negative-argument">Negative argument</a></h3>
 <p>If <code><span class='Value'>𝕨</span></code> is negative then wraps around the other side to take or drop from the end of <code><span class='Value'>𝕩</span></code>. It's a lot like negative indices in <a href="select.html">Select</a> (<code><span class='Function'>⊏</span></code>), but while negative indices are asymmetric—<code><span class='Number'>0</span></code> is the first entry but <code><span class='Number'>¯1</span></code> is the last—this case is symmetric. It's because the place to cut is always <em>before</em> the index <code><span class='Value'>𝕨</span></code>, cancelling out the negative index asymmetry.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDihpEgImFiY2RlRURDQkEiCgrCrzMg4oaRICJhYmNkZUVEQ0JBIiAgIyBMYXN0IHRocmVlCgrCrzMg4oaTICJhYmNkZUVEQ0JBIiAgIyBBbGwgYnV0IHRoZSBsYXN0IHRocmVl">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>↑</span> <span class='String'>&quot;abcdeEDCBA&quot;</span>
 "abc"
@@ -98,7 +98,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wq82IOKGkSAieHki">↗️</a><pre>    <span class='Number'>¯6</span> <span class='Function'>↑</span> <span class='String'>&quot;xy&quot;</span>
 "    xy"
 </pre>
-<h2 id="multiple-axes">Multiple axes</h2>
+<h2 id="multiple-axes"><a class="header" href="#multiple-axes">Multiple axes</a></h2>
 <p>In the general case <code><span class='Value'>𝕨</span></code> is a list of integers. They're matched with the leading axes of <code><span class='Value'>𝕩</span></code>, so that each affects one axis independently from the others.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIG0g4oaQICgxMMOX4oaVNSkgK+KMnCDihpU3CgrCrzTigL8yIOKGkSBtICAjIExhc3QgZm91ciByb3dzOyBmaXJzdCB0d28gY29sdW1ucwoKwq804oC/MiDihpMgbQ==">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>m</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Number'>10</span><span class='Function'>×↕</span><span class='Number'>5</span><span class='Paren'>)</span> <span class='Function'>+</span><span class='Modifier'>⌜</span> <span class='Function'>↕</span><span class='Number'>7</span>
 ┌─                      

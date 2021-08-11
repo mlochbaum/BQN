@@ -4,7 +4,7 @@
   <title>BQN: Identity functions</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="identity-functions">Identity functions</h1>
+<h1 id="identity-functions"><a class="header" href="#identity-functions">Identity functions</a></h1>
 <p>Here are the simplest functions in BQN: Right (<code><span class='Function'>⊢</span></code>) always returns its right argument, and Left (<code><span class='Function'>⊣</span></code>) returns its left argument if called with two arguments, and the right argument otherwise.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiICJvbmx5IgoK4oqjICJvbmx5IgoKImxlZnQiIOKKoiAicmlnaHQiCgoibGVmdCIg4oqjICJyaWdodCI=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='String'>&quot;only&quot;</span>
 "only"
@@ -20,7 +20,7 @@
 </pre>
 <p>Depending on your past experiences, this could cause some confusion: built-in support for functions that do nothing? Documentation should say why a feature's there and how to use it, not just what it does, so we'll try to address this below. The most important single use is for tacit programming, but there are a variety of other uses as well.</p>
 <p>Of course, it's easy to write block functions <code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> and <code><span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Brace'>}</span></code> that return particular arguments. While I would already make <code><span class='Function'>⊣</span></code> and <code><span class='Function'>⊢</span></code> primitives just because they are common and important, there are also specific disadvantages to using blocks. They fail to indicate that there are no side effects, as primitives would, and they also need special casing for the interpreter to manipulate them when applying <a href="undo.html">Undo</a> (<code><span class='Modifier'>⁼</span></code>) or making other inferences.</p>
-<h2 id="filling-arrays">Filling arrays</h2>
+<h2 id="filling-arrays"><a class="header" href="#filling-arrays">Filling arrays</a></h2>
 <p>What's the easiest way to create a matrix with 0 on the first row, 1 on the second, and so on? Probably this one, with <a href="map.html#table">table</a>:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKGlTQpIOKKo+KMnCDihpU1">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>4</span><span class='Paren'>)</span> <span class='Function'>⊣</span><span class='Modifier'>⌜</span> <span class='Function'>↕</span><span class='Number'>5</span>
 ┌─           
@@ -49,7 +49,7 @@
                                   ┘
 </pre>
 <p>This method can replace even values nested deeply in arrays, as long as you can write the function to get at them. The parts that aren't accessed don't even need to have matching shapes!</p>
-<h2 id="as-a-variable">As a variable</h2>
+<h2 id="as-a-variable"><a class="header" href="#as-a-variable">As a variable</a></h2>
 <p>Suppose you want a list of a matrix, its transpose, and its negation. One way to do this is to put together a list of functions for each of these values: the first one is an identity.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqi4oC/4o2J4oC/LSB78J2VjvCdlal9wqg8IDDigL/CrzHiiY0x4oC/MA==">↗️</a><pre>    <span class='Function'>⊢</span><span class='Ligature'>‿</span><span class='Function'>⍉</span><span class='Ligature'>‿</span><span class='Function'>-</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Function'>≍</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
 ┌─                             
@@ -60,7 +60,7 @@
                               ┘
 </pre>
 <p>Here <code><span class='Function'>⊢</span></code> ends up being used as <code><span class='Function'>𝕎</span></code>. A similar case might be a function or program with a caller-specified processing step. For example, a function to write some kind of file, with a parameter function to encrypt data before writing. To use no encryption, you'd pass a parameter <code><span class='Function'>⊢</span></code>. Or it might happen that you write a Choose (<code><span class='Modifier2'>◶</span></code>) expression where one of the cases should do nothing <code><span class='Function'>⊢</span></code>, or return the left argument <code><span class='Function'>⊣</span></code>.</p>
-<h2 id="in-tacit-functions">In tacit functions</h2>
+<h2 id="in-tacit-functions"><a class="header" href="#in-tacit-functions">In tacit functions</a></h2>
 <p>In a tacit context, <code><span class='Function'>⊣</span></code> is roughly equivalent to <code><span class='Value'>𝕨</span></code> and <code><span class='Function'>⊢</span></code> to <code><span class='Value'>𝕩</span></code>. In some (not too common) cases, it's even possible to translate a block function to tacit code directly by replacing the variables in this way.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyB78J2VqS3wnZWow7cxK/Cdlal9IDUKMyAo4oqiLeKKo8O3MSviiqIpIDU=">↗️</a><pre>    <span class='Number'>3</span> <span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>-</span><span class='Value'>𝕨</span><span class='Function'>÷</span><span class='Number'>1</span><span class='Function'>+</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>5</span>
 4.5
@@ -68,7 +68,7 @@
 4.5
 </pre>
 <p>A larger class of block functions can be translated just by adding parentheses and <code><span class='Modifier'>˙</span></code> (there's a discussion of this technique in APL <a href="https://dfns.dyalog.com/n_tacit.htm">here</a>). It's helpful when writing tacit code to know that <code><span class='Function'>Fn</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span></code> applies <code><span class='Function'>Fn</span></code> to the left argument only and <code><span class='Function'>Fn</span><span class='Modifier2'>∘</span><span class='Function'>⊢</span></code> applies it to the right argument—these can be read &quot;Fn of left&quot; and &quot;Fn of right&quot;.</p>
-<h2 id="syntax-tricks">Syntax tricks</h2>
+<h2 id="syntax-tricks"><a class="header" href="#syntax-tricks">Syntax tricks</a></h2>
 <p>You've probably seen <code><span class='Function'>⊢</span></code> used in documentation to display the value of a variable being assigned. This is a hack, and in most contexts <code><span class='Function'>•Show</span></code> should be used to display values.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQICJzaG93IHRoaXMi">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='String'>&quot;show this&quot;</span>
 "show this"

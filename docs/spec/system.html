@@ -4,11 +4,11 @@
   <title>Specification: BQN system-provided values</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">spec</a></div>
-<h1 id="specification-bqn-system-provided-values">Specification: BQN system-provided values</h1>
+<h1 id="specification-bqn-system-provided-values"><a class="header" href="#specification-bqn-system-provided-values">Specification: BQN system-provided values</a></h1>
 <p>This portion of the spec is still potentially subject to major changes.</p>
 <p>The <code><span class='Value'>•</span></code> symbol is used to access values other than primitives provided by BQN.</p>
 <p>All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior. For namespaces this rule applies to individual fields as well: a namespace may be provided with only some of the fields, but a field with one of the given names must behave as specified.</p>
-<h2 id="execution-and-scope-manipulation">Execution and scope manipulation</h2>
+<h2 id="execution-and-scope-manipulation"><a class="header" href="#execution-and-scope-manipulation">Execution and scope manipulation</a></h2>
 <table>
 <thead>
 <tr>
@@ -37,7 +37,7 @@
 </table>
 <p>The effect of <code><span class='Function'>•Eval</span></code> should be the same as if its argument were written as source code in the scope where <code><span class='Function'>•Eval</span></code> appears. It can define variables, and modify those in the current scope or a parent.</p>
 <p><code><span class='Function'>•ScopedEval</span></code> creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to <code><span class='Brace'>{</span><span class='Function'>•Eval</span><span class='Brace'>}</span></code>. Parent scopes are visible from the created scope; to make a scope without this property use <code><span class='Function'>•BQN</span><span class='String'>&quot;•Eval&quot;</span></code> or <code><span class='Function'>•BQN</span><span class='String'>&quot;•ScopedEval&quot;</span></code>.</p>
-<h2 id="scripts">Scripts</h2>
+<h2 id="scripts"><a class="header" href="#scripts">Scripts</a></h2>
 <table>
 <thead>
 <tr>
@@ -74,11 +74,11 @@
 <p><code><span class='Value'>•path</span></code> simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.</p>
 <p><code><span class='Value'>•name</span></code> gives the name, including the extension, of the file in which it appears. It doesn't include the path.</p>
 <p><code><span class='Function'>•Exit</span></code> immediately terminates the running BQN process. If the argument is a valid return code (on Unix, an integer), it is returned; otherwise, the default return code (the one returned when the end of the program is reached) is used.</p>
-<h2 id="files">Files</h2>
+<h2 id="files"><a class="header" href="#files">Files</a></h2>
 <p>The system namespace value <code><span class='Value'>•file</span></code> deals with file operations. For the purposes of <code><span class='Value'>•file</span></code>, paths in the filesystem are always strings. As with <code><span class='Function'>•Import</span></code>, file paths may be relative or absolute, and relative paths are relative to <code><span class='Value'>•path</span></code>, except in <code><span class='Value'>•file.</span><span class='Function'>At</span></code> which allows <code><span class='Value'>𝕨</span></code> to specify an alternate base directory. The value <code><span class='Value'>•path</span></code> used for a particular instance of <code><span class='Value'>•file</span></code> is determined by the file that contains that instance.</p>
 <p>When a <code><span class='Value'>•file</span></code> function returns a file path or portion of a path, the path is always absolute and canonical, with <code><span class='Value'>.</span></code> and <code><span class='Value'>..</span></code> components removed.</p>
 <p>Possible fields of <code><span class='Value'>•file</span></code> are given in the subsections below.</p>
-<h3 id="file-paths">File paths</h3>
+<h3 id="file-paths"><a class="header" href="#file-paths">File paths</a></h3>
 <p>The following functions manipulate paths and don't access files. Each takes a relative or absolute path <code><span class='Value'>𝕩</span></code>, and <code><span class='Function'>At</span></code> may also take a base directory <code><span class='Value'>𝕨</span></code>.</p>
 <table>
 <thead>
@@ -118,7 +118,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="file-metadata">File metadata</h3>
+<h3 id="file-metadata"><a class="header" href="#file-metadata">File metadata</a></h3>
 <p>Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path <code><span class='Value'>𝕩</span></code>, and some functions also allow new data in <code><span class='Value'>𝕨</span></code>. The returned data in any case is the specified property.</p>
 <table>
 <thead>
@@ -172,7 +172,7 @@
 <li><code><span class='String'>'b'</span></code>: Block device</li>
 <li><code><span class='String'>'c'</span></code>: Character device</li>
 </ul>
-<h3 id="file-access">File access</h3>
+<h3 id="file-access"><a class="header" href="#file-access">File access</a></h3>
 <p>File access functions read or write files, either by manipulating files as a whole or interacting with the contents. Whole-file functions cannot overwrite target files: that is, <code><span class='Function'>Rename</span></code> and <code><span class='Function'>Copy</span></code> must give an error if a file exists at <code><span class='Value'>𝕨</span></code>, and <code><span class='Function'>CreateDir</span></code> if a file exists at <code><span class='Value'>𝕩</span></code>, while <code><span class='Function'>Chars</span></code>, <code><span class='Function'>Lines</span></code>, and <code><span class='Function'>Bytes</span></code> can overwrite the contents of an existing file <code><span class='Value'>𝕨</span></code>. However, these three functions must give an error if <code><span class='Value'>𝕨</span></code> exists and is a directory.</p>
 <table>
 <thead>
@@ -255,8 +255,8 @@
 </tr>
 </tbody>
 </table>
-<h3 id="open-file-object">Open file object</h3>
-<h2 id="input-and-output">Input and output</h2>
+<h3 id="open-file-object"><a class="header" href="#open-file-object">Open file object</a></h3>
+<h2 id="input-and-output"><a class="header" href="#input-and-output">Input and output</a></h2>
 <table>
 <thead>
 <tr>
@@ -285,7 +285,7 @@
 </table>
 <p><code><span class='Function'>•Out</span></code> prints a string to stdout, with a trailing newline. <code><span class='Function'>•Show</span></code> displays a BQN value to the programmer (the representation is not specified, and does not need to be plain text). <code><span class='Function'>•Fmt</span></code> returns a string (not a character table: lines are separated by linefeeds) indicating how <code><span class='Value'>𝕩</span></code> would be printed by the interactive environment. Both <code><span class='Function'>•Show</span></code> and <code><span class='Function'>•Fmt</span></code> may take a left argument configuring how the value should be formatted.</p>
 <p><code><span class='Function'>•Repr</span></code> attempts to return a string so that <code><span class='Function'>•BQN</span> <span class='Function'>•Repr</span> <span class='Value'>𝕩</span></code> matches <code><span class='Value'>𝕩</span></code>. If <code><span class='Value'>𝕩</span></code> contains any mutable values (operations or namespaces), this is not possible. However, if such a values is stateless, in the sense that they don't access variables outside of their own scopes, it is permissible for <code><span class='Function'>•Repr</span></code> to return source code that would create a value with identical behavior.</p>
-<h2 id="operation-properties">Operation properties</h2>
+<h2 id="operation-properties"><a class="header" href="#operation-properties">Operation properties</a></h2>
 <table>
 <thead>
 <tr>
@@ -411,7 +411,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="time">Time</h2>
+<h2 id="time"><a class="header" href="#time">Time</a></h2>
 <table>
 <thead>
 <tr>
