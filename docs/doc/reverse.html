@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Reverse and Rotate</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="reverse-and-rotate">Reverse and Rotate</h1>
 <p>The symbol <code><span class='Function'>⌽</span></code> indicates two different array transformations: with no left argument, it reverses the major cells of the array, but with a left argument, it rotates or cycles them around. These two possibilities, first put together in very early versions of APL, can't be considered restrictions or different views of some unifying function, but there are connections between them. Each returns an array with the same <a href="shape.html">shape</a> and all the same elements as <code><span class='Value'>𝕩</span></code>, possibly in a different arrangement. And elements that start out next to each other in <code><span class='Value'>𝕩</span></code> generally stay next to each other—always, if we consider an element on one edge to be next to the one opposite to it. One might think of them as <a href="https://en.wikipedia.org/wiki/Isometry">isometries</a> preserving a discrete subgroup of the torus, if one were inclined to think such things. On major cells, the two functions decompose the <a href="https://en.wikipedia.org/wiki/Dihedral_group">dihedral group</a> okay I'll stop.</p>
 <p>Many uses of Rotate in APL are better handled by <a href="shift.html">shift</a> functions in BQN. If there's no reason to treat the data as cyclic or periodic, it's best to avoid Rotate.</p>

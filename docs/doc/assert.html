@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Assert</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="assert">Assert</h1>
 <p>BQN takes the position that errors exist to indicate exceptional conditions that the developer of a given program didn't expect. However, the types of errors that BQN naturally checks for, such as mismatched shapes in Couple (<code><span class='Function'>≍</span></code>), aren't always enough to detect exceptional conditions. Issues like numeric values that don't make physical sense will slip right through. BQN makes it easy for a programmer to check for these sorts of problems by building in the primitive Assert, written <code><span class='Function'>!</span></code>. This function checks whether <code><span class='Value'>𝕩</span></code> matches <code><span class='Number'>1</span></code>: if it does, then it does nothing and returns <code><span class='Value'>𝕩</span></code>, and otherwise it gives an error.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ISAyPTIgICMgUGFzc2VkCiEgMj0zICAjIEZhaWxlZA==">↗️</a><pre>    <span class='Function'>!</span> <span class='Number'>2</span><span class='Function'>=</span><span class='Number'>2</span>  <span class='Comment'># Passed

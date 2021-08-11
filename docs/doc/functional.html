@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Functional programming</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="functional-programming">Functional programming</h1>
 <p>BQN boasts of its functional capabilities, including first-class functions. What sort of functional support does it have, and how can a BQN programmer exercise these and out themself as a Schemer at heart?</p>
 <p>First, let's be clear about what the terms we're using mean. A language has <em>first-class functions</em> when functions (however they are defined) can be used in all the same ways as &quot;ordinary&quot; values like numbers and so on, such as being passed as an argument or placed in a list. Lisp and JavaScript have first-class functions, C has unsafe first-class functions via function pointers, and Java 7 and APL don't have them as functions can't be placed in lists or used as arguments. This doesn't mean every operation is supported on functions: for instance, numbers can be added, compared, and sorted; while functions could perhaps be added to give a train, comparing or sorting them as functions (not representations) isn't computable, and BQN doesn't support any of the three operations when passing functions as arguments.</p>

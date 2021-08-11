@@ -3,7 +3,7 @@
   <link href="../../style.css" rel="stylesheet"/>
   <title>BQN: Dynamic compilation</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../../index.html">main</a> / <a href="../index.html">implementation</a> / <a href="index.html">compile</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../../index.html">BQN</a> / <a href="../index.html">implementation</a> / <a href="index.html">compile</a></div>
 <h1 id="dynamic-compilation">Dynamic compilation</h1>
 <p>This page discusses at a high level (without covering any specific source transformations) how compilation and interpretation might be structured in order to execute BQN faster. Effective strategies will compile parts of the program with more specialization or higher optimization as it runs and more information about it becomes known.</p>
 <p>To avoid confusion, an <strong>interpreter</strong> evaluates code to perform actions or produce a result; a CPU is a machine code interpreter. A <strong>compiler</strong> transforms code in one language or format to another. To run a program that does anything, it must eventually be interpreted; before this the program or parts of it might be compiled any number of times.</p>

@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>Specification: BQN variable scoping</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">spec</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">spec</a></div>
 <h1 id="specification-bqn-variable-scoping">Specification: BQN variable scoping</h1>
 <p>BQN uses lexical scoping for variables, where scopes correspond roughly to blocks, or pairs of curly braces separated by semicolons. At the top level in a scope, new variables are visible only after they are defined, but in the scopes it contains, all variables defined in that scope are visible. This system is specified more precisely below.</p>
 <p>A running BQN program manipulates variables during its <a href="evaluate.html">execution</a>, but it is important to distinguish these variables from the identifiers that refer to them. As defined in the <a href="token.html">tokenization rules</a>, an identifier is a particular kind of token found in a program's source code. The lexical scoping rules in this page define which identifiers are considered the same; these identifiers will refer to the same variables when the program is run. While each variable has only one identifier, an identifier can refer to any number of variables because a new variable is created for that identifier each time its containing scope is instantiated (that is, each time the contents of the block are evaluated).</p>

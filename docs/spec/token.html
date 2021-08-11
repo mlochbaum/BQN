@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>Specification: BQN token formation</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">spec</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">spec</a></div>
 <h1 id="specification-bqn-token-formation">Specification: BQN token formation</h1>
 <p>This page describes BQN's token formation rules (token formation is also called scanning). Most tokens in BQN are a single character long, but quoted characters and strings, identifiers, and numbers can consist of multiple characters, and comments, spaces, and tabs are discarded during token formation.</p>
 <p>BQN source code should be considered as a series of unicode code points, which we refer to as &quot;characters&quot;. The separator between lines in a file is considered to be a single character, newline, even though some operating systems such as Windows typically represent it with a two-character CRLF sequence. Implementers should note that not all languages treat unicode code points as atomic, as exposing the UTF-8 or UTF-16 representation instead is common. For a language such as JavaScript that uses UTF-16, the double-struck characters <code><span class='Value'>𝕨</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Function'>𝕏</span><span class='Value'>𝕗</span><span class='Function'>𝔽</span><span class='Value'>𝕘</span><span class='Function'>𝔾</span></code> are represented as two 16-bit surrogate characters, but BQN treats them as a single unit.</p>

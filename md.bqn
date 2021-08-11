@@ -653,8 +653,8 @@ ConvertFile ← {
     "stylesheet" Link "style.css"
     "title" Html ("BQN"∾":"⊸(¬∘∊/⊣)∾" "∾⊢)⍟(¬·∨´"BQN"⍷⊢) 2↓⊑h1
   ⟩
-  repo ← "a href='"‿repoURL‿"'" ∾⊸Html "BQN"
-  crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"main")»parts
+  repo ← "("∾")"∾˜ "a href='"‿repoURL‿"'" ∾⊸Html "github"
+  crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"BQN")»parts
   nav ← RQ "div class='nav'" Html 3↓∾ " / "⊸∾¨ repo <⊸∾ crumbs
   front ← head ∾○(∾⟜lf) nav
   ("docs/"∾fileout) •FChars front ∾ out

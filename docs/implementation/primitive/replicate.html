@@ -3,7 +3,7 @@
   <link href="../../style.css" rel="stylesheet"/>
   <title>BQN: Implementation of Indices and Replicate</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../../index.html">main</a> / <a href="../index.html">implementation</a> / <a href="index.html">primitive</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../../index.html">BQN</a> / <a href="../index.html">implementation</a> / <a href="index.html">primitive</a></div>
 <h1 id="implementation-of-indices-and-replicate">Implementation of Indices and Replicate</h1>
 <p>The replicate family of functions contains not just primitives but powerful tools for implementing other functionality. The most important is converting <a href="#booleans-to-indices">bits to indices</a>: AVX-512 extensions implement this natively for various index sizes, and even with no SIMD support at all there are surprisingly fast table-based algorithms for it.</p>
 <p><a href="#replicate">General replication</a> is more complex. Branching will slow many useful cases down considerably when using the obvious solution. However, branch-free techniques introduce overhead for larger replication amounts. Hybridizing these seems to be the only way, but it's finicky.</p>

@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Pick</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="pick">Pick</h1>
 <p>Pick (<code><span class='Function'>⊑</span></code>) chooses elements from <code><span class='Value'>𝕩</span></code> based on <a href="indices.html">index</a> lists from <code><span class='Value'>𝕨</span></code>. <code><span class='Value'>𝕨</span></code> can be a plain list, or even one number if <code><span class='Value'>𝕩</span></code> is a list, in order to get one element from <code><span class='Value'>𝕩</span></code>. It can also be an array of index lists, or have deeper array structure: each index list will be replaced with the element of <code><span class='Value'>𝕩</span></code> at that index, effectively applying to <code><span class='Value'>𝕨</span></code> at <a href="depth.html#the-depth-modifier">depth</a> 1.</p>
 <p>With no <code><span class='Value'>𝕨</span></code>, monadic <code><span class='Function'>⊑</span><span class='Value'>𝕩</span></code> takes the first element of <code><span class='Value'>𝕩</span></code> in index order, with an error if <code><span class='Value'>𝕩</span></code> is empty.</p>

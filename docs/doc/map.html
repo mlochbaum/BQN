@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Mapping modifiers</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="mapping-modifiers">Mapping modifiers</h1>
 <p>Mapping a function over an array means to call it on each element of that array, creating an array of results. It's also possible to map over two arrays, applying the function to various choices of one element from each, but there's no longer a single correct way to iterate over these elements.</p>
 <p>BQN has two 1-modifiers to map over arrays: Each (<code><span class='Modifier'>¨</span></code>) and Table (<code><span class='Modifier'>⌜</span></code>). On two arguments, Table applies its operand to all combinations of elements while Each creates a one-to-one or one-to-many matching. Since they apply to elements, these modifiers are different from Cells (<code><span class='Modifier'>˘</span></code>) or its generalization Rank (<code><span class='Modifier2'>⎉</span></code>), which apply the function to array cells. The modifier <a href="depth.html#the-depth-modifier">Depth</a> (<code><span class='Modifier2'>⚇</span></code>) is a generalization of Each, so that <code><span class='Modifier'>¨</span></code> is <code><span class='Modifier2'>⚇</span><span class='Number'>¯1</span></code>; however, it can't be used to implement Table without some additional array operations.</p>

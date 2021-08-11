@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Array dimensions</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="array-dimensions">Array dimensions</h1>
 <p>The function Shape (<code><span class='Function'>≢</span></code>) returns an array's shape, and Rank (<code><span class='Function'>=</span></code>) and Length (<code><span class='Function'>≠</span></code>) return properties that can be derived from the shape. BQN's arrays are multidimensional, so that the shape is a list of natural numbers (the length along each axis), while the rank (length of the shape) and length (of the first axis) are numbers. In these functions, an atom is treated as a unit array, which has rank 0 and empty shape. A unit has no first axis, but its length is defined to be 1.</p>
 <p>Rank can be defined as <code><span class='Function'>≠</span><span class='Modifier2'>∘</span><span class='Function'>≢</span></code> while Length can be defined with a <a href="fold.html">fold</a> to be <code><span class='Number'>1</span><span class='Function'>⊣</span><span class='Modifier'>´</span><span class='Function'>≢</span></code>.</p>
