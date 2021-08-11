@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Lexical scoping</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="lexical-scoping">Lexical scoping</h1>
 <p>BQN uses lexical scope, like most modern functional programming languages including Javascript, Scheme, and Julia, and like Dyalog APL's dfns (tradfns are dynamically scoped). This document describes how lexical scoping works, and a few small details relevant to BQN's version of it.</p>
 <p>In short, every <a href="block.html">block</a> is a separate scope that can refer to identifiers in containing scopes. When evaluated, the block makes a variable for each identifier defined in it (including arguments and operands). The blocks that it contains will now access these variables. In the first level of a block, variables must be defined before they can be used, but in child blocks, a variable can be used regardless of where it's defined, as long as the definition is evaluated before the child block is.</p>

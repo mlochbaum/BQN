@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: Couple and Merge</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="couple-and-merge">Couple and Merge</h1>
 <p>Solo/Couple (<code><span class='Function'>≍</span></code>) and Merge (<code><span class='Function'>&gt;</span></code>) are functions that create a higher-rank array from lower-rank components. Each takes some number of inner arrays organized in an outer structure, and creates a single array combining all elements of those inner arrays. For example, let's couple two arrays of shape <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span></code>:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHAg4oaQIDPigL81w5fijJzihpUzCuKKoiBxIOKGkCAy4oC/M+KliiJhYmNkZWYiCnAg4omNIHEgICAjIHAgY291cGxlZCB0byBxCuKJoiBwIOKJjSBx">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>p</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Function'>×</span><span class='Modifier'>⌜</span><span class='Function'>↕</span><span class='Number'>3</span>

@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN: The leading axis convention</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="the-leading-axis-convention">The leading axis convention</h1>
 <p>Several primitive functions manipulate the right argument, or sometimes both arguments, of an <a href="array.html">array</a> along one or more axes. According to the <a href="https://aplwiki.com/wiki/Leading_axis_theory">leading axis model</a>, it's best to make the primitives operate on initial axes, because the Rank modifier then allows it to apply to later axes as well. Here we'll see how this pattern works in BQN.</p>
 <h2 id="monadic-functions">Monadic functions</h2>

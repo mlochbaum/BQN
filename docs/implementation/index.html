@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN implementation notes</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a></div>
 <h1 id="bqn-implementation-notes">BQN implementation notes</h1>
 <p>Notes about how BQN is or could be implemented.</p>
 <p>This repository's BQN implementation is written mainly in BQN: the bytecode <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/c.bqn">compiler</a> is completely self-hosted, and the majority of the runtime (<a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r0.bqn">r0</a>, <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r1.bqn">r1</a>) is written in BQN except that it is allowed to define primitives; some preprocessing (<a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/pr.bqn">pr</a>) turns the primitives into identifiers.</p>

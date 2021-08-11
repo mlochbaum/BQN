@@ -3,7 +3,7 @@
   <link href="../style.css" rel="stylesheet"/>
   <title>Using embedded BQN</title>
 </head>
-<div class="nav"><a href="https://github.com/mlochbaum/BQN">BQN</a> / <a href="../index.html">main</a> / <a href="index.html">doc</a></div>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="using-embedded-bqn">Using embedded BQN</h1>
 <p>The Javascript implementation of BQN, <a href="https://github.com/mlochbaum/BQN/blob/master/doc/../docs/bqn.js">docs/bqn.js</a>, can be <a href="https://mlochbaum.github.io/BQN/try.html">used</a> as a standalone interpreter, but it can also be called from JS, which in combination with BQN's first-class functions allows the two language to interoperate well. Similar functionality will most likely be brought to other host languages in the future. Languages that (like JS) allow functions and arrays to be tagged with extra properties can host a full BQN implementation with good interoperability. Other languages would either require functions and arrays to be stored in specialized data structures, making interoperability a little harder, or would miss out on some inferred properties like function inverses and array fills.</p>
 <p>There is only one mechanism to interface between the host language and BQN: the function <code><span class='Value'>bqn</span></code> evaluates a string containing a BQN program and returns the result. Doesn't sound like much, especially considering these programs can't share any state such as global variables (BQN doesn't have those). But taking first-class functions and closures into account, it's all you could ever need!</p>
