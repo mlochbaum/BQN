@@ -256,8 +256,11 @@ Markdown ← {filename𝕊𝕩:
       b ← bounds ⍋ 𝕩
       ((2|b)∨∊⟜("-"∾'0'+↕10))⊸/ 𝕩+32×1=b
     }
-    extensions { tag ∾↩ " id="∾""""(∾∾⊣) Slugify 𝕩 }⍟⊣ 𝕩
-    tag Html ProcInline Trim 𝕩
+    ExtHtml ← 𝕩{
+      s←Slugify 𝕗 ⋄ Q ← """"⊸(∾∾⊣)
+      (𝕨 ∾ " id="∾Q s) Html ("a class=""header"" href="∾Q"#"∾s) Html 𝕩
+    }
+    tag extensions◶Html‿ExtHtml ProcInline Trim 𝕩
   }⟜⊑
 
   # List items start with a bullet (unordered) or number (ordered).

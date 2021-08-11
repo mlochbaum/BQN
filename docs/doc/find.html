@@ -4,7 +4,7 @@
   <title>BQN: Find</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="find">Find</h1>
+<h1 id="find"><a class="header" href="#find">Find</a></h1>
 <p>Find (<code><span class='Function'>⍷</span></code>) searches for occurrences of an array <code><span class='Value'>𝕨</span></code> within <code><span class='Value'>𝕩</span></code>. The result contains a boolean for each possible location, which is 1 if <code><span class='Value'>𝕨</span></code> was found there and 0 if not.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Inh4IiDijbcgInh4YmR4eHhjeCI=">↗️</a><pre>    <span class='String'>&quot;xx&quot;</span> <span class='Function'>⍷</span> <span class='String'>&quot;xxbdxxxcx&quot;</span>
 ⟨ 1 0 0 0 1 1 0 0 ⟩
@@ -43,7 +43,7 @@ ERROR
 0
 </pre>
 <p>This pattern also works in the high-rank case discussed below, testing whether <code><span class='Value'>𝕨</span></code> is a multi-dimensional prefix starting at the lowest-index corner of <code><span class='Value'>𝕩</span></code>.</p>
-<h3 id="higher-ranks">Higher ranks</h3>
+<h3 id="higher-ranks"><a class="header" href="#higher-ranks">Higher ranks</a></h3>
 <p>If <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code> are two-dimensional then Find does a two-dimensional search. The cells used are also found in <code><span class='Value'>𝕨</span><span class='Function'>≢</span><span class='Modifier2'>⊸</span><span class='Function'>↕</span><span class='Value'>𝕩</span></code>. For example, the bottom-right corner of <code><span class='Value'>𝕩</span></code> below matches <code><span class='Value'>𝕨</span></code>, so there's a 1 in the bottom-right corner of the result.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQIDcgKDR84ouGy5wp4oyc4peL4oaVIDkgICAjIEFycmF5IHdpdGggcGF0dGVybnMKCigw4oC/M+KAvzDiiY0w4oC/MeKAvzApIOKNtyBh">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>7</span> <span class='Paren'>(</span><span class='Number'>4</span><span class='Function'>|⋆</span><span class='Modifier'>˜</span><span class='Paren'>)</span><span class='Modifier'>⌜</span><span class='Modifier2'>○</span><span class='Function'>↕</span> <span class='Number'>9</span>   <span class='Comment'># Array with patterns
 </span>┌─                   

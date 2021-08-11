@@ -4,7 +4,7 @@
   <title>BQN Tutorial: Variables</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">tutorial</a></div>
-<h1 id="tutorial-variables">Tutorial: Variables</h1>
+<h1 id="tutorial-variables"><a class="header" href="#tutorial-variables">Tutorial: Variables</a></h1>
 <p>To take a proud denizen of the eternal cosmos of values, held for a fleeting instant by the course of code, and bind it. Tie it down with a name, failing always to alter its inner nature but allowing context to reform its outer appearance. So labelled, perhaps through the progress of time it will know escape, or else find itself passed through one bond to another, ever tethered. It's a task to be approached only with respect.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=aGV5IOKGkCAiSGkgdGhlcmUiCgpoZXkg4oi+ICIsIFdvcmxkISI=">↗️</a><pre>    <span class='Value'>hey</span> <span class='Gets'>←</span> <span class='String'>&quot;Hi there&quot;</span>
 
@@ -12,7 +12,7 @@
 "Hi there, World!"
 </pre>
 <p>Like that.</p>
-<h2 id="defining-variables">Defining variables</h2>
+<h2 id="defining-variables"><a class="header" href="#defining-variables">Defining variables</a></h2>
 <p>BQN uses the left-pointing arrow <code><span class='Gets'>←</span></code> to define variables, as shown above. Most of the time it's best to use it in a plain way, with just the name and its definition, but it's also possible to define multiple variables using list notation, or to define a variable as part of a larger expression that continues to the left (in terms of precedence, <code><span class='Gets'>←</span></code> behaves like a function, but it isn't one—it's a part of syntax).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cGnigL9l4oC/dGVuIOKGkCDin6ggz4AsIOKLhjEsIDEwIOKfqQoKdGVuIMOXIHBpCgp0aHJlZSDiiY0gdGVuIC0gdGhyZWUg4oaQIDM=">↗️</a><pre>    <span class='Value'>pi</span><span class='Ligature'>‿</span><span class='Value'>e</span><span class='Ligature'>‿</span><span class='Value'>ten</span> <span class='Gets'>←</span> <span class='Bracket'>⟨</span> <span class='Number'>π</span><span class='Separator'>,</span> <span class='Function'>⋆</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>10</span> <span class='Bracket'>⟩</span>
 ⟨ 3.141592653589793 2.718281828459045 10 ⟩
@@ -40,7 +40,7 @@ ERROR
 </span>ERROR
 </pre>
 <p>It's an odd distinction to have when your program is just one long sequence of statements, because there's only ever one arrow you can use: it just changes annoyingly after you define the variable for the first time. With multiple scopes this isn't the case: if you start a new scope inside another, then you'll still be able to use variables from the outside scope. Then <code><span class='Gets'>↩</span></code> lets you change the value of one of these variables while <code><span class='Gets'>←</span></code> allows you to define your own. If you're coming from a typical curly-brace language, you'd say that <code><span class='Gets'>←</span></code> both declares and assigns a variable, while <code><span class='Gets'>↩</span></code> only assigns it.</p>
-<h2 id="variable-roles">Variable roles</h2>
+<h2 id="variable-roles"><a class="header" href="#variable-roles">Variable roles</a></h2>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QlFOIOKGkCAiW21hbnkgcGFnZXMgb2Ygc3BlY2lmaWNhdGlvbl0i">↗️</a><pre>    <span class='Function'>BQN</span> <span class='Gets'>←</span> <span class='String'>&quot;[many pages of specification]&quot;</span>
 ERROR
 </pre>
@@ -104,7 +104,7 @@ ERROR
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MV8wMDBfMDAw">↗️</a><pre>    <span class='Number'>1_000_000</span>
 1000000
 </pre>
-<h2 id="function-assignment">Function assignment</h2>
+<h2 id="function-assignment"><a class="header" href="#function-assignment">Function assignment</a></h2>
 <p>While you could build up a script by computing values and assigning them names, the main way to use assignment in tacit programming is to give names to functions, not data. For example, we might name the base-2 conversion function from our last tutorial:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QmFzZTIg4oaQICvin5woMuKKuMOXKcK04oiY4oy9CgpCYXNlMiAx4oC/MOKAvzHigL8wCgpCYXNlMiAiMDEwMTAwMDEiLScwJwoKQCArIEJhc2UywqggJzAnIC3LnCAiMDEwMDAwMTAi4oC/IjAxMDEwMDAxIuKAvyIwMTAwMTExMCI=">↗️</a><pre>    <span class='Function'>Base2</span> <span class='Gets'>←</span> <span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>×</span><span class='Paren'>)</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>⌽</span>
 
@@ -130,7 +130,7 @@ ERROR
     <span class='Function'>Base2</span> <span class='Number'>6</span>
 16
 </pre>
-<h2 id="modifying-part-of-an-array">Modifying part of an array</h2>
+<h2 id="modifying-part-of-an-array"><a class="header" href="#modifying-part-of-an-array">Modifying part of an array</a></h2>
 <p>You cannot modify part of an array. You can't modify an array: an array that differs a little bit from another array <em>is a different array</em>. And this isn't just a terminology choice: it has real effects on how BQN arrays behave and even which arrays are representable, as we'll discuss later.</p>
 <p>But say I have a list, and I want to subtract one from one of the elements. With the understanding that the resulting list is different from the first one, BQN allows this!</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IkJRTiIgICAgICAgICAgICAjIEEgbGlzdCBvZiBjaGFyYWN0ZXJzCgot4p+cMeKMvigy4oq44oqRKSAiQlFOIiAgIyBXYWl0IHdoeSBkaWQgSSBkbyB0aGF0">↗️</a><pre>    <span class='String'>&quot;BQN&quot;</span>            <span class='Comment'># A list of characters
@@ -252,7 +252,7 @@ ERROR
 "abcdEFgh"
 </pre>
 <p>(Here I've snuck in a train <code><span class='Number'>2</span> <span class='Function'>↑</span> <span class='Number'>4</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span></code> to combine the two functions. As an exercise, you might try to write that function using combinators instead, and as an extra hard exercise you might then ponder why someone would want to add trains to a language).</p>
-<h2 id="identity-functions">Identity functions</h2>
+<h2 id="identity-functions"><a class="header" href="#identity-functions">Identity functions</a></h2>
 <table class='primitives'>
   <tr>
     <td><span class='Function'>⊣</span></td>
@@ -282,7 +282,7 @@ ERROR
 "left"
 </pre>
 <p>They are not complicated functions: if you're confused it's because you don't understand why anyone would ever use them. Indeed, it's harder to see why these functions are useful than to see what they do. That is a fact.</p>
-<h2 id="modified-assignment">Modified assignment</h2>
+<h2 id="modified-assignment"><a class="header" href="#modified-assignment">Modified assignment</a></h2>
 <p>Let's revisit our question about modifying an array. As we said, the answer to &quot;how do I modify part of an array?&quot; is simply that you can't, and that the question doesn't make sense. But there's a seemingly similar question with a very different answer: &quot;how do I modify part of a variable whose value is an array?&quot; This is because unlike an array, a variable isn't defined by the value it has, but by the name used to refer to it (and the scope it resides in). Here's how we would modify the variable <code><span class='Value'>a</span></code>:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNCAgICAgICAgICAgICMgRmlyc3QgaXQncyBhIG51bWJlcgphCgphIOKGqSA04oC/NeKAvzYgICAgICAgICMgTm93IGl0J3MgYSBsaXN0IQph">↗️</a><pre>    <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>4</span>            <span class='Comment'># First it's a number
 </span>    <span class='Value'>a</span>

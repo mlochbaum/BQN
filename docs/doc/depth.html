@@ -4,7 +4,7 @@
   <title>BQN: Depth</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="depth">Depth</h1>
+<h1 id="depth"><a class="header" href="#depth">Depth</a></h1>
 <svg viewBox='-278.4 -45.6 556.8 193.8'>
   <g font-family='BQN,monospace' font-size='16px' text-anchor='middle' fill='currentColor' stroke-width='0' stroke='currentColor' stroke-linecap='round'>
     <rect class='code' stroke-width='1.5' rx='12' x='-196.8' y='-30.4' width='393.6' height='163.4'/>
@@ -65,7 +65,7 @@
 </svg>
 
 <p>The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (<code><span class='Function'>≡</span></code>) returns the depth of its argument, while the 2-modifier Depth (<code><span class='Modifier2'>⚇</span></code>) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.</p>
-<h2 id="the-depth-function">The Depth function</h2>
+<h2 id="the-depth-function"><a class="header" href="#the-depth-function">The Depth function</a></h2>
 <p>To find the depth of an array, use Depth (<code><span class='Function'>≡</span></code>). For example, the depth of a list of numbers or characters is 1:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhIDLigL8z4oC/NAriiaEgImEgc3RyaW5nIGlzIGEgbGlzdCBvZiBjaGFyYWN0ZXJzIg==">↗️</a><pre>    <span class='Function'>≡</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
 1
@@ -105,7 +105,7 @@
     <span class='Function'>≡</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Function'>⥊</span><span class='Number'>0</span>
 1
 </pre>
-<h2 id="testing-depth-for-multiple-axis-primitives">Testing depth for multiple-axis primitives</h2>
+<h2 id="testing-depth-for-multiple-axis-primitives"><a class="header" href="#testing-depth-for-multiple-axis-primitives">Testing depth for multiple-axis primitives</a></h2>
 <p>Several primitive functions use the left argument to manipulate the right argument along one or more axes, using <a href="leading.html#multiple-axes">the leading axis convention</a>.</p>
 <table>
 <thead>
@@ -151,7 +151,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAvzHigL80IDzCqOKKuOKKjyDihpUz4oC/NOKAvzXigL8y">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>&lt;</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span> <span class='Function'>↕</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>2</span>
 ⟨ ⟨ 2 1 4 0 ⟩ ⟨ 2 1 4 1 ⟩ ⟩
 </pre>
-<h2 id="the-depth-modifier">The Depth modifier</h2>
+<h2 id="the-depth-modifier"><a class="header" href="#the-depth-modifier">The Depth modifier</a></h2>
 <p>The Depth 2-modifier (<code><span class='Modifier2'>⚇</span></code>) is a generalization of <a href="map.html">Each</a> that allows diving deeper into an array. To illustrate it we'll use a shape <code><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span></code> array of lists of lists.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIG4g4oaQIDzijokx4o2fMiA04oC/M+KAvzLigL8y4qWK4oaVNDgK4omhIG4=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>n</span> <span class='Gets'>←</span> <span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>1</span><span class='Modifier2'>⍟</span><span class='Number'>2</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊↕</span><span class='Number'>48</span>
 ┌─                                                                         

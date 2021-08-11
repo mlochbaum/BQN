@@ -4,7 +4,7 @@
   <title>Specification: BQN grammar</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">spec</a></div>
-<h1 id="specification-bqn-grammar">Specification: BQN grammar</h1>
+<h1 id="specification-bqn-grammar"><a class="header" href="#specification-bqn-grammar">Specification: BQN grammar</a></h1>
 <p>BQN's grammar is given below. Terms are defined in a <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> variant. However, handling special names properly is possible but difficult in BNF, so they are explained in text along with the braced block grammar.</p>
 <p>The symbols <code><span class='Value'>s</span></code>, <code><span class='Function'>F</span></code>, <code><span class='Modifier'>_m</span></code>, and <code><span class='Modifier2'>_c_</span></code> are identifier tokens with subject, function, 1-modifier, and 2-modifier classes respectively. Similarly, <code><span class='Value'>sl</span></code>, <code><span class='Function'>Fl</span></code>, <code><span class='Modifier'>_ml</span></code>, and <code><span class='Modifier2'>_cl_</span></code> refer to literals and primitives of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic roles are no longer used after parsing and cannot be inspected in a running program.</p>
 <p>A program is a list of statements. Almost all statements are expressions. Namespace export statements, and valueless results stemming from <code><span class='Nothing'>·</span></code>, or <code><span class='Value'>𝕨</span></code> in a monadic brace function, can be used as statements but not expressions.</p>

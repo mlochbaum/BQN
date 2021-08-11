@@ -4,10 +4,10 @@
   <title>BQN: Expression syntax</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="expression-syntax">Expression syntax</h1>
+<h1 id="expression-syntax"><a class="header" href="#expression-syntax">Expression syntax</a></h1>
 <p>BQN expressions are the part of <a href="syntax.html">syntax</a> that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like <a href="block.html">blocks</a> and <a href="namespace.html">namespaces</a> around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe <a href="syntax.html#constant">constant</a> and <a href="arrayrepr.html#list-literals">array</a> literals, which each form a single subject for grammatical purposes.</p>
 <p>The <a href="../tutorial/expression.html">first tutorial</a> also covers how to build and read BQN expressions.</p>
-<h2 id="overview">Overview</h2>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p>BQN expressions consist of subjects, functions, and modifiers arranged in sequence, with parentheses to group parts into subexpressions. Assignment arrows <code><span class='Gets'>←</span></code> and <code><span class='Gets'>↩</span></code> can also be present and mostly behave similar to functions. Functions can be applied to subjects or grouped into trains, while modifiers can be applied to subjects or functions. The most important kinds of application are:</p>
 <table>
 <thead>
@@ -57,11 +57,11 @@
 </table>
 <p>The four roles (subject, function, two kinds of modifier) describe expressions, not values. When an expression is evaluated, the value's <a href="types.html">type</a> doesn't have to correspond to its role, and can even change from one evaluation to another. An expression's role is determined entirely by its source code, so it's fixed.</p>
 <p>If you're comfortable reading <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> and want to understand things in more detail than described below, you might check the <a href="../spec/grammar.html">grammar specification</a> as well.</p>
-<h2 id="syntactic-role">Syntactic role</h2>
+<h2 id="syntactic-role"><a class="header" href="#syntactic-role">Syntactic role</a></h2>
 <p><em>This issue is approached from a different angle in <a href="context.html">Context free grammar</a>.</em></p>
 <p>In APL, the way one part of an expression interacts with others is determined by its value. That means that to parse an expression, in general you would have to evaluate that part, get a value, check its type, and then figure out how it fits in with the rest of the expression. This is a lot of work. BQN changes things so that you can determine how to parse an expression just by looking at its source code. But because it still needs to support expressions that can evaluate to more than one possible <a href="types.html">type</a>, BQN has to introduce a new and independent concept, called <strong>syntactic role</strong>, in order to support APL-like expressions.</p>
 <p>Syntactic role is a property of an expression, not its value. To describe it in terms of English grammar, you might say &quot;I like BQN&quot;, using &quot;BQN&quot; as an object, or &quot;BQN scares me&quot;, using it as a subject. BQN itself isn't a subject or object, it's a programming language. Similarly you might write <code><span class='Function'>F</span> <span class='Value'>g</span></code>, placing <code><span class='Value'>f</span></code> in a function role to apply it to <code><span class='Value'>g</span></code>, or <code><span class='Function'>G</span> <span class='Value'>f</span></code> to use <code><span class='Value'>f</span></code> as an argument. Maybe even in the same program, although it's unlikely.</p>
-<h3 id="role-spellings">Role spellings</h3>
+<h3 id="role-spellings"><a class="header" href="#role-spellings">Role spellings</a></h3>
 <p>The four roles are <strong>subject</strong>, <strong>function</strong>, <strong>1-modifier</strong>, and <strong>2-modifier</strong>, as shown in the table below. Each type has an associated role (with non-operation types all corresponding to subjects), and the value of an expression will often have a matching type, but it doesn't have to.</p>
 <table>
 <thead>
@@ -98,7 +98,7 @@
 <p>Variable names can be written in any case and with underscores added, and these changes don't affect what <a href="lexical.html">identifier</a> the name refers to. <code><span class='Value'>ab</span></code>, <code><span class='Value'>aB</span></code>, <code><span class='Function'>AB</span></code>, and <code><span class='Modifier2'>_a_B_</span></code> are all the same variable. However, the spelling—specifically the first and last characters—determine the variable's role. A lowercase first letter indicates a subject, and an uppercase first letter makes it a function. A leading underscore (regardless of the following character) indicates a 1-modifier, and both leading and trailing underscores makes a 2-modifier.</p>
 <p>Besides these, character, string, and <a href="arrayrepr.html#list-literals">list literals</a> always have a subject role, and the role of a <a href="block.html">block</a> is determined by its type, which depends either on the header it has or which special variables it uses.</p>
 <p>The role of a compound expression, formed by applying an operation to some inputs, depends on the operation applied. This system is discussed in the remaining sections below.</p>
-<h2 id="kinds-of-application">Kinds of application</h2>
+<h2 id="kinds-of-application"><a class="header" href="#kinds-of-application">Kinds of application</a></h2>
 <p>Here is a table of the modifier and function application rules:</p>
 <table>
 <thead>

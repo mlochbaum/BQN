@@ -4,10 +4,10 @@
   <title>BQN: Mapping modifiers</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="mapping-modifiers">Mapping modifiers</h1>
+<h1 id="mapping-modifiers"><a class="header" href="#mapping-modifiers">Mapping modifiers</a></h1>
 <p>Mapping a function over an array means to call it on each element of that array, creating an array of results. It's also possible to map over two arrays, applying the function to various choices of one element from each, but there's no longer a single correct way to iterate over these elements.</p>
 <p>BQN has two 1-modifiers to map over arrays: Each (<code><span class='Modifier'>¨</span></code>) and Table (<code><span class='Modifier'>⌜</span></code>). On two arguments, Table applies its operand to all combinations of elements while Each creates a one-to-one or one-to-many matching. Since they apply to elements, these modifiers are different from Cells (<code><span class='Modifier'>˘</span></code>) or its generalization Rank (<code><span class='Modifier2'>⎉</span></code>), which apply the function to array cells. The modifier <a href="depth.html#the-depth-modifier">Depth</a> (<code><span class='Modifier2'>⚇</span></code>) is a generalization of Each, so that <code><span class='Modifier'>¨</span></code> is <code><span class='Modifier2'>⚇</span><span class='Number'>¯1</span></code>; however, it can't be used to implement Table without some additional array operations.</p>
-<h2 id="one-argument-mapping">One-argument mapping</h2>
+<h2 id="one-argument-mapping"><a class="header" href="#one-argument-mapping">One-argument mapping</a></h2>
 <svg viewBox='-224 -21.6 680 187.2'>
   <g fill='currentColor' font-family='BQN,monospace'>
     <rect class='code' stroke-width='1.5' rx='12' x='-184' y='0' width='600' height='158.4'/>
@@ -66,7 +66,7 @@
 "indexorder"
 </pre>
 <p>When an array is displayed, index order is the same as the top-to-bottom, left-to-right reading order of English. It's also the same as the ordering of <a href="reshape.html#deshape">Deshape</a>'s result, so that here <code><span class='Value'>o</span></code> ends up being <code><span class='Function'>⥊</span><span class='Value'>𝕩</span></code>. The dyadic cases described in the following sections will also have a defined evaluation order, but it's not as easy to describe it in terms of the arguments: instead, the <em>result</em> elements are produced in index order.</p>
-<h2 id="table">Table</h2>
+<h2 id="table"><a class="header" href="#table">Table</a></h2>
 <svg viewBox='-206.4 -21.6 696 345.6'>
   <g fill='currentColor' font-family='BQN,monospace'>
     <rect class='code' stroke-width='1.5' rx='12' x='-126.4' y='0' width='536' height='316.8'/>
@@ -158,7 +158,7 @@
 ⟨ 2 2 3 ⟩
 </pre>
 <p>Except for the more sophisticated shape, this result is exactly what you'd get if you deshaped each argument to a list. In each case, every element of <code><span class='Value'>𝕨</span></code> is visited in turn, and each time the element is paired with every element of <code><span class='Value'>𝕩</span></code>.</p>
-<h2 id="each">Each</h2>
+<h2 id="each"><a class="header" href="#each">Each</a></h2>
 <svg viewBox='-224 -21.6 680 259.2'>
   <defs>
     <linearGradient id='gr' gradientUnits='userSpaceOnUse' x1='0' x2='0' y1='14.4' y2='216'>

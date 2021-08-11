@@ -4,7 +4,7 @@
   <title>BQN: Assert</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="assert">Assert</h1>
+<h1 id="assert"><a class="header" href="#assert">Assert</a></h1>
 <p>BQN takes the position that errors exist to indicate exceptional conditions that the developer of a given program didn't expect. However, the types of errors that BQN naturally checks for, such as mismatched shapes in Couple (<code><span class='Function'>≍</span></code>), aren't always enough to detect exceptional conditions. Issues like numeric values that don't make physical sense will slip right through. BQN makes it easy for a programmer to check for these sorts of problems by building in the primitive Assert, written <code><span class='Function'>!</span></code>. This function checks whether <code><span class='Value'>𝕩</span></code> matches <code><span class='Number'>1</span></code>: if it does, then it does nothing and returns <code><span class='Value'>𝕩</span></code>, and otherwise it gives an error.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ISAyPTIgICMgUGFzc2VkCiEgMj0zICAjIEZhaWxlZA==">↗️</a><pre>    <span class='Function'>!</span> <span class='Number'>2</span><span class='Function'>=</span><span class='Number'>2</span>  <span class='Comment'># Passed
 </span>1
@@ -23,7 +23,7 @@ ERROR
     <span class='Bracket'>⟨</span><span class='Modifier2'>∘</span><span class='Separator'>,</span><span class='String'>&quot;abc&quot;</span><span class='Separator'>,</span><span class='Modifier'>˜</span><span class='Bracket'>⟩</span> <span class='Function'>!</span> <span class='String'>'0'</span>  <span class='Comment'># Okay this is not a very helpful printout
 </span>ERROR
 </pre>
-<h3 id="computing-the-error-message-on-demand">Computing the error message on demand</h3>
+<h3 id="computing-the-error-message-on-demand"><a class="header" href="#computing-the-error-message-on-demand">Computing the error message on demand</a></h3>
 <p>Because the left argument to a function is always computed before the function is called, Assert <a href="../commentary/problems.html#assert-has-no-way-to-compute-the-error-message">doesn't let you</a> compute the error message only if there's an error. This might be a problem if the error message computation is slow or has side effects. There are a few ways to work around the issue:</p>
 <ul>
 <li>Handle errors with ordinary if-then logic (perhaps using <a href="control.html">control structures</a>). This is probably the best path for user-facing applications where displaying an error goes through the user interface.</li>

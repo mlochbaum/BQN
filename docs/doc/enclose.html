@@ -4,7 +4,7 @@
   <title>BQN: Enclose</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="enclose">Enclose</h1>
+<h1 id="enclose"><a class="header" href="#enclose">Enclose</a></h1>
 <p>The function enclose creates a unit array whose only element is <code><span class='Value'>𝕩</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PCAieHl6Ig==">↗️</a><pre>    <span class='Function'>&lt;</span> <span class='String'>&quot;xyz&quot;</span>
 ┌·       
@@ -13,7 +13,7 @@
 </pre>
 <p>If you understand the concept of a unit array, then that definition almost certainly made sense to you. Therefore the remainder of this document will explain what a unit array is, what it isn't, and why you would use it.</p>
 <p>If you're familiar with the Enclose or Box function from APL or J (but particularly APL), then it's possible you understand the concept of a unit array wrongly, or at least, not in the same way BQN uses it. A difference from APL is that <code><span class='Function'>&lt;</span><span class='Value'>𝕩</span></code> is never the same as <code><span class='Value'>𝕩</span></code>. I recommend reading about <a href="based.html">based array theory</a> if you haven't already.</p>
-<h2 id="whats-a-unit">What's a unit?</h2>
+<h2 id="whats-a-unit"><a class="header" href="#whats-a-unit">What's a unit?</a></h2>
 <p>A <strong>unit array</strong> is an array with no axes: that is, it has rank 0 and its shape is the empty list. The array itself isn't empty though. The number of elements is the product of the shape, which is 1.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAg4omiIDwiYW55dGhpbmciICAgIyBlbXB0eSBzaGFwZQrDl8K0IOKJoiA8ImFueXRoaW5nIiAgICMgYW5kIG9uZSBlbGVtZW50">↗️</a><pre>       <span class='Function'>≢</span> <span class='Function'>&lt;</span><span class='String'>&quot;anything&quot;</span>   <span class='Comment'># empty shape
 </span>⟨⟩
@@ -45,9 +45,9 @@ ERROR
 </pre>
 <p>The function <code><span class='Function'>+</span><span class='Modifier'>´˘</span></code> tries to mix together the result elements into one big array, causing an error because they have different lengths, but <code><span class='Function'>+</span><span class='Modifier'>˝˘</span></code> keeps them as elements.</p>
 <p>One strained example probably isn't all that compelling. And it doesn't explain why you'd use Enclose, which doesn't remove an axis from an existing array but creates a whole new unit array. So…</p>
-<h2 id="why-create-a-unit">Why create a unit?</h2>
+<h2 id="why-create-a-unit"><a class="header" href="#why-create-a-unit">Why create a unit?</a></h2>
 <p>Why indeed?</p>
-<h3 id="table-of-combinations">Table of combinations</h3>
+<h3 id="table-of-combinations"><a class="header" href="#table-of-combinations">Table of combinations</a></h3>
 <p>Let's take a look at the following program, which uses <a href="map.html#table">Table</a> (<code><span class='Modifier'>⌜</span></code>) to create an array of combinations—every possibility from three sets of choices. It uses Enclose not once but twice.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDzin6jin6kpIDziirjiiL7ijJzCtCDin6giIuKAvyJhbnRpIiwgInJlZCLigL8iYmx1ZSLigL8iZ3JlZW4iLCAidXAi4oC/ImRvd24i4p+p">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Bracket'>⟨⟩</span><span class='Paren'>)</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Modifier'>⌜´</span> <span class='Bracket'>⟨</span><span class='String'>&quot;&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;anti&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;red&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;blue&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;green&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;up&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;down&quot;</span><span class='Bracket'>⟩</span>
 ┌─                                                   
@@ -112,7 +112,7 @@ ERROR
   ⟨ "green" "down" "quark" ⟩ ⟨ "green" "strange" "quark" ⟩ ⟨ "green" "bottom" "quark" ⟩  
                                                                                         ┘
 </pre>
-<h3 id="broadcasting">Broadcasting</h3>
+<h3 id="broadcasting"><a class="header" href="#broadcasting">Broadcasting</a></h3>
 <p>Table isn't the only mapping function that gets along well with units. Here's an example with Each (<code><span class='Modifier'>¨</span></code>).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PeKAv+KJoOKAv+KJoeKAv+KJoiB78J2VjvCdlal9wqggPCAz4oC/MuKliiJhYmNkZWYi">↗️</a><pre>    <span class='Function'>=</span><span class='Ligature'>‿</span><span class='Function'>≠</span><span class='Ligature'>‿</span><span class='Function'>≡</span><span class='Ligature'>‿</span><span class='Function'>≢</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>&lt;</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;abcdef&quot;</span>
 ⟨ 2 3 1 ⟨ 3 2 ⟩ ⟩
@@ -125,7 +125,7 @@ ERROR
   ⟨ 14 ¯9 ⟩ ⟨ 15 ¯6 ⟩  
                       ┘
 </pre>
-<h2 id="coda">Coda</h2>
+<h2 id="coda"><a class="header" href="#coda">Coda</a></h2>
 <p>Perhaps you feel bludgeoned rather than convinced at this point. Unit arrays are useful, sure, but aren't they ugly? Aren't they a hack?</p>
 <p>The practical answer is that I think you should use them anyway. You'll probably come to appreciate the use of Enclose and how it can help you produce working, reliable code, making you a more effective BQN programmer.</p>
 <p>On the theoretical side, it's important to realize that units are just a consequence of having multidimensional arrays. Array languages come with units be default, so that &quot;adding&quot; them is not really a complication, it's a simplification. It's natural to not feel quite right around these sorts of non-things, because zero is a pretty special number—being among other things the only number of paddles you can have and still not be able to go anywhere in your canoe. In my opinion the right response is to understand why they are special but also why they fit in as part of the system, so you can be in control instead of worrying.</p>

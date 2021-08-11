@@ -4,9 +4,9 @@
   <title>BQN: Syntax overview</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="syntax-overview">Syntax overview</h1>
+<h1 id="syntax-overview"><a class="header" href="#syntax-overview">Syntax overview</a></h1>
 <p>BQN syntax consists of expressions where computation is done with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control so the design tries to do as much as possible with them before introducing special syntax.</p>
-<h2 id="special-glyphs">Special glyphs</h2>
+<h2 id="special-glyphs"><a class="header" href="#special-glyphs">Special glyphs</a></h2>
 <p>The following glyphs are used for BQN syntax. <a href="primitive.html">Primitives</a> (built-in functions and modifiers) are not listed in this table, and have their own page. Digits, characters, and the underscore <code><span class='Modifier2'>_</span></code> are used for numbers, and identifiers or variable names.</p>
 <table>
 <thead>
@@ -102,9 +102,9 @@
 </tr>
 </tbody>
 </table>
-<h2 id="comments">Comments</h2>
+<h2 id="comments"><a class="header" href="#comments">Comments</a></h2>
 <p>A comment starts with <code><span class='Comment'>#</span></code> that is not part of a string and continues to the end of the line.</p>
-<h2 id="constants">Constants</h2>
+<h2 id="constants"><a class="header" href="#constants">Constants</a></h2>
 <p>BQN has single-token notation for numbers, strings, and characters.</p>
 <p>Numbers allow the typical decimal notation with <code><span class='Number'>¯</span></code> for the negative sign (because <code><span class='Function'>-</span></code> is a function) and <code><span class='Value'>e</span></code> for scientific notation (or <code><span class='Function'>E</span></code>, as numeric notation is case-insensitive). <code><span class='Number'>∞</span></code> and <code><span class='Number'>π</span></code> may be used as special numeric values. If complex numbers are supported, then they can be written with the components separated by <code><span class='Value'>i</span></code>. However, no BQN to date supports complex numbers.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oIMKvz4Ag4ouEIDAuNSDii4QgNWXCrzEg4ouEIDEuNUUzIOKLhCDiiJ4g4p+pICAgIyBBIGxpc3Qgb2YgbnVtYmVycw==">↗️</a><pre>    <span class='Bracket'>⟨</span> <span class='Number'>¯π</span> <span class='Separator'>⋄</span> <span class='Number'>0.5</span> <span class='Separator'>⋄</span> <span class='Number'>5e¯1</span> <span class='Separator'>⋄</span> <span class='Number'>1.5E3</span> <span class='Separator'>⋄</span> <span class='Number'>∞</span> <span class='Bracket'>⟩</span>   <span class='Comment'># A list of numbers
@@ -118,7 +118,7 @@
 </span>⟨ 1 0 ⟩
 </pre>
 <p>The null character (code point 0) has a dedicated literal representation <code><span class='String'>@</span></code>. This character can be used to directly convert between characters and numeric code points, which among many other uses allows tricky characters to be entered by code point: for example, a non-breaking space is <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>160</span></code>. The character can also be entered as a character literal, but this will display differently in various editors and some tools may have trouble with a file directly containing a null, so it is best to use <code><span class='String'>@</span></code> instead.</p>
-<h2 id="expressions">Expressions</h2>
+<h2 id="expressions"><a class="header" href="#expressions">Expressions</a></h2>
 <p><em><a href="context.html">More discussion</a></em></p>
 <p>Like APL, BQN uses four <em>syntactic roles</em> for values in expressions:</p>
 <ul>
@@ -136,7 +136,7 @@
           ┘
 </pre>
 <p>BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (<code><span class='Modifier'>˜¨˘⁼⌜´`</span></code>) are all superscript characters, and 2-modifiers (<code><span class='Modifier2'>∘○⊸⟜⌾⊘◶⚇⎉⍟</span></code>) all have an unbroken circle (two functions <code><span class='Function'>⌽⍉</span></code> have broken circles with lines through them). Every other built-in constant is a function, although the special symbols <code><span class='Number'>¯</span></code>, <code><span class='Number'>∞</span></code>, and <code><span class='Number'>π</span></code> are used as part of numeric literal notation.</p>
-<h3 id="assignment">Assignment</h3>
+<h3 id="assignment"><a class="header" href="#assignment">Assignment</a></h3>
 <p>Another element that can be included in expressions is assignment, which is written with <code><span class='Gets'>←</span></code> to <em>define</em> (also called &quot;declare&quot; in many other languages) a variable and <code><span class='Gets'>↩</span></code> to <em>change</em> its definition. A variable can only be defined once within a <a href="lexical.html">scope</a>, and can only be changed if it has already been defined. However, it can be shadowed, meaning that it is defined again in an inner scope even though it has a definition in an outer scope already.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eOKGkDEg4ouEIHt44oaQMiDii4QgeOKGqTMg4ouEIHh9Cng=">↗️</a><pre>    <span class='Value'>x</span><span class='Gets'>←</span><span class='Number'>1</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span><span class='Value'>x</span><span class='Gets'>←</span><span class='Number'>2</span> <span class='Separator'>⋄</span> <span class='Value'>x</span><span class='Gets'>↩</span><span class='Number'>3</span> <span class='Separator'>⋄</span> <span class='Value'>x</span><span class='Brace'>}</span>
 3
@@ -149,7 +149,7 @@
     <span class='Value'>a</span>
 ¯3
 </pre>
-<h3 id="exports">Exports</h3>
+<h3 id="exports"><a class="header" href="#exports">Exports</a></h3>
 <p>The double arrow <code><span class='Gets'>⇐</span></code> is used to export variables from a block or program, causing the result to be a <a href="namespace.html">namespace</a>. There are two ways to export variables. First, <code><span class='Gets'>←</span></code> in the variable definition can be replaced with <code><span class='Gets'>⇐</span></code> to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by <code><span class='Gets'>⇐</span></code> with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.</p>
 <pre><span class='Bracket'>⟨</span><span class='Value'>alias</span><span class='Gets'>⇐</span><span class='Value'>a</span><span class='Separator'>,</span> <span class='Value'>b</span><span class='Separator'>,</span> <span class='Value'>c0</span><span class='Ligature'>‿</span><span class='Value'>c1</span><span class='Gets'>⇐</span><span class='Value'>c</span><span class='Separator'>,</span> <span class='Value'>b2</span><span class='Gets'>⇐</span><span class='Value'>b</span><span class='Bracket'>⟩</span><span class='Gets'>←</span><span class='Brace'>{</span>
   <span class='Value'>b</span><span class='Ligature'>‿</span><span class='Value'>c</span><span class='Gets'>⇐</span>   <span class='Comment'># Non-definition exports can go anywhere
@@ -159,13 +159,13 @@
 <span class='Brace'>}</span>
 </pre>
 <p>Fields of the resulting namespace can be accessed either directly using <code><span class='Value'>namespace.field</span></code> syntax, or with a destructuring assignment as shown above. This assignment's target is a list where each element specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name (such as <code><span class='Value'>b</span></code> above), which gives both, or a combination of the assignment target, then <code><span class='Gets'>⇐</span></code>, then a name. If <code><span class='Gets'>⇐</span></code> is never used, the names can be given as a strand with <code><span class='Ligature'>‿</span></code>. To use <code><span class='Gets'>⇐</span></code> for aliases, bracket syntax <code><span class='Bracket'>⟨⟩</span></code> is needed. Imported names can be repeated and can be spelled with any role (the role is ignored).</p>
-<h2 id="lists-and-blocks">Lists and blocks</h2>
-<h3 id="separators">Separators</h3>
+<h2 id="lists-and-blocks"><a class="header" href="#lists-and-blocks">Lists and blocks</a></h2>
+<h3 id="separators"><a class="header" href="#separators">Separators</a></h3>
 <p>The characters <code><span class='Separator'>⋄</span></code> and <code><span class='Separator'>,</span></code> and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.</p>
-<h3 id="list-notation">List notation</h3>
+<h3 id="list-notation"><a class="header" href="#list-notation">List notation</a></h3>
 <p><em><a href="arrayrepr.html#list-literals">Full documentation</a></em></p>
 <p>Lists (1-dimensional arrays) are enclosed in angle brackets <code><span class='Bracket'>⟨⟩</span></code>, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character <code><span class='Ligature'>‿</span></code>. This character has higher binding strength than any part of an expression. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.</p>
-<h3 id="blocks">Blocks</h3>
+<h3 id="blocks"><a class="header" href="#blocks">Blocks</a></h3>
 <p><em><a href="block.html">Full documentation</a></em></p>
 <p>Blocks are written with curly braces <code><span class='Brace'>{}</span></code> and can be used to group expressions or define functions and modifiers. The contents are simply a sequence of expressions, where each is evaluated and the result of the last is returned in order to evaluate the block. This result can have any value, and its syntactic role in the calling context is determined by the normal rules: functions return subjects and modifiers return functions. Blocks have <a href="lexical.html">lexical scope</a>.</p>
 <p>The special names <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code>, which stand for arguments, and <code><span class='Value'>𝕗</span></code> and <code><span class='Value'>𝕘</span></code>, which stand for operands, are available inside curly braces. Like ordinary names, the lowercase forms indicate subjects and the uppercase forms <code><span class='Function'>𝕎𝕏𝔽𝔾</span></code> indicate functions. The type and syntactic role of the block is determined by its contents: a 2-modifier contains <code><span class='Value'>𝕘</span></code>, a 1-modifier contains <code><span class='Value'>𝕗</span></code> but not <code><span class='Value'>𝕘</span></code>, and a function contains neither but does have one of <code><span class='Value'>𝕨𝕩𝕤</span><span class='Function'>𝕎𝕏𝕊</span></code>. If no special names are present the block is an <em>immediate block</em> and is evaluated as soon as it appears, with the result having a subject role.</p>
