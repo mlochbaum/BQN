@@ -56,7 +56,7 @@ More snippets are programmed into the live demo at the top of the page: hit the 
 
 Right at the beginning, you can use the bar above the online REPL to enter BQN code: hover over a character to see a short description, and click to insert it into the editor. But you'll soon want to skip the clicking and use keyboard input. I type the special characters using a backslash escape, so that, for example, typing `\` then `z` writes `⥊` (the backslash character itself is not used by BQN). The online REPL supports this method out of the box, and the [editor plugins](editors/README.md) include or link to ways to enable it for editors, browsers, shells, and so on.
 
-The [font comparison page](https://mlochbaum.github.io/BQN/fonts.html) shows several fonts that support BQN (including the one used on this site, BQN386). Most other monospace fonts are missing some BQN characters, such as double-struck letters `𝕨`, `𝕩` and so on, which will cause these characters to be rendered with a fallback font and possibly have the wrong width or look inconsistent.
+The [font comparison page](https://mlochbaum.github.io/BQN/fonts.html) shows several fonts that support BQN (including the one used on this site, BQN386). Most other monospace fonts are missing some BQN characters, such as double-struck letters `𝕨`, `𝕩` and so on, which will cause these characters to be rendered with a fallback font and possibly have the wrong width or look inconsistent. The double-struck characters also require two bytes in UTF-16, which breaks rendering in many Windows terminals. If you have this problem, [wsl-terminal](https://github.com/mskyaxl/wsl-terminal) with an appropriate font definitely supports them.
 
 ## Why would I use it?
 
