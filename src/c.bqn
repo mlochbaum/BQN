@@ -166,7 +166,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co                 # cf: body is first; cm: body is one of multiple
   "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)ch
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
-  cc←(⍋⍋«co)⊏c∾/cs
+  cc←(⍋⍋«co)⊏c∾/cs                          # Case close
   rr←rev⊏r
   hr←rr/˜hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)¯1=rr
   hl←2=hn←(1⊸»+«)hc←¯1=hr
@@ -175,7 +175,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
   "Invalid header structure"_err_(hm//∘HF) 1⊸»⊸=hm/hc
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
-  cw←(hc/»ha)⌾(ch⊸/)1+-⟜«cm×1«cf            # Body 𝕨: 0 no, 1 allowed, 2 required
+  cw←(hc/»hl∨ha)⌾(ch⊸/)1+-⟜«(»ch)<1(⊢<«)cf  # Body 𝕨: 0 no, 1 allowed, 2 required
   hl/˜↩hm⋄hm↩hm⌾(hf⊸/)hf
   "Header left argument without right"_err_(/HF) ha>hc+`⊸⊏hx∾0
   hx∨↩1=hr
@@ -211,14 +211,14 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   # Prep for lexical resolution before reordering 𝕩
   xv←𝕩-vi
   {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
-  𝕩⊏˜↩g⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
+  𝕩⊏˜↩g⋄hg←g⊏hf⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
 
   # Parsing part 1
   a←(¯5⊸<∧≤⟜¯3)r⋄ps←a<r<0                   # a: assignment, ps: part separator
   tr←1≤er←ir⊏˜IT»ps                         # er: expression role; tr: train or modifier expression
   no←0⌈-ir⋄ne←0⌈-er⋄nei↩g⋄nx⊏˜↩gr           # Nothing value; expression
   "Nothing (·) cannot be assigned"_nerr ne×a
-  oa←⌽/hf<op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3    # op: active modifiers; ro: mod or right operand
+  oa←⌽/hg<op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3    # op: active modifiers; ro: mod or right operand
   "Missing operand"_nerr op×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
   s←𝕩=sep⋄fo←𝕩∊⟨2+⊑bB,1+⊑bH⟩                # Separators, function open { or ;
   ls←s∧fo<○IT lo←𝕩=4+⊑bB                    # List Separators: after ⟨lo, not {fo
@@ -235,11 +235,11 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
   "Invalid use of 𝕨 in monadic case"_err_(/CB) 1↓fw∧cw=0
-  fw∨↩2=cw
-  nn←fo+`⊸⊏fw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn         # fw indicates 𝕨 is never Nothing
+  cw⌈↩2×fw
+  nn←fo+`⊸⊏2=cw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn       # 2=cw indicates 𝕨 is never Nothing
   "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
-  "Can't use result of function/modifier assignment without parentheses"_err_(G) hf<(0<er)∧(0≤r)∧»⊸>aa
+  "Can't use result of function/modifier assignment without parentheses"_err_(G) hg<(0<er)∧(0≤r)∧»⊸>aa
   af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
 
   # Lexical resolution (independent of parsing part 2 below)
@@ -276,7 +276,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
-  fa←/(fe←hf∨ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op   # Active functions: cases fe are excluded
+  fa←/(fe←hg∨ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op   # Active functions: cases fe are excluded
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
   dy←2≠ny←fa⊏2«no⌈2×¬(tr∧r≥0)∨ro<r=0        # Dyadic
   ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
@@ -296,8 +296,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
-  ci←(/cf)+(cf/fx×fw⌈2×cm)⊏⟨0,↑↕1,⥊¨↕2⟩
-  fq←⟨cf/ft,cf/¬fx,ci⟩                      # Per-function data
+  cg←((⊏⟜cw∾0˙)+3×¯1+`⊏⟜cf∾1˙)⊸⊔/cm∨↩fx∧1≠cw
+  ci←<˘⍉∧∘∾¨˝(1‿1≍0‿2)⊏⍉∘‿3⥊cg              # Indices for multi-body blocks
+  fq←⟨cf/ft,cf/¬fx,ci⌾((cf/cm)⊸/)/cf⟩       # Per-function data
   cq←⟨/1∾or≥oc-○≠rt,fsc+≠¨dn,dn,dx⟩         # Per-body data
   ⟨oc∾¯1⊑rc,u,fq,cq,ind⟩                    # Overall output
 }
