@@ -174,16 +174,15 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Missing operand in header"_err_(/HF) ho∧hc∨hd
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
   "Invalid header structure"_err_(hm//∘HF) 1⊸»⊸=hm/hc
-  hv←(ha×1+«hc)+(ho×4+«3=hr)+hm×3×1-˜2⌊hr
-  "Incorrect special name"_err_(/HF) (M⟜bI>(hv+⊑bI)⊸=)hf/𝕩
+  ht←hf/𝕩×¬rev⊏sr                           # To identify single names (no strands)
+  hv←(ha×1+«hc)+(ho×4+«3=hr)+hm×3×1-˜2⌊hr   # Required value if special name
+  "Incorrect special name"_err_(/HF) (M⟜bI∧(hv+⊑bI)⊸≠)ht
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
   cw←(hc/»hl∨ha)⌾(ch⊸/)1+-⟜«(»ch)<1(⊢<«)cf  # Body 𝕨: 0 no, 1 allowed, 2 required
-  hl/˜↩hm
   "Header left argument without right"_err_(/HF) ha>hc+`⊸⊏hx∾0
-  hx∨↩1=hr
-  "Header operation must be a single name"_err_(/HF) hm>(hf/𝕩)M bI+0‿nv
-  "Only special name inputs allowed in headers for now!"_err_((HO∨HA)//∘HF) ¬bI M˜(ho∨ha)/hf/𝕩
-  hu←(𝕩 M bI)<hf∧0<rr
+  "Header operation must be a plain name"_err_(/HF) hm>ht M bI+0‿nv
+  "Only special name inputs allowed in headers for now!"_err_(/HF) ¬hc∨hm∨ht M bI
+  hl/˜↩hm⋄hx∨↩1=hr⋄hu←(𝕩 M bI)<hf∧0<rr
 
   # Block properties
   HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
