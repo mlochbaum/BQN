@@ -21,7 +21,7 @@ Mixins              | Not really (needs `this`)
 
 ## Objects
 
-An object in BQN is simply a namespace: its fields and methods are variables in the namespace, and one of these can be accessed outside of the namespace with dot syntax if it's exported with `⇐`. Unexported variables are instance-private in OOP parlance, meaning that only they're only visible to the object containing them. They could be utilities, or hold state for the object. As an example, the object below implements the [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) puzzle with five disks. You can view the state (a list of disks occupying each of the three rods) with `towerOfHanoi.View`, or move the top disk from one rod to another with `towerOfHanoi.Move`.
+An object in BQN is simply a namespace: its fields and methods are variables in the namespace, and one of these can be accessed outside of the namespace with dot syntax if it's exported with `⇐`. Unexported variables are instance-private in OOP parlance, meaning that they're only visible to the object containing them. They could be utilities, or hold state for the object. As an example, the object below implements the [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) puzzle with five disks. You can view the state (a list of disks occupying each of the three rods) with `towerOfHanoi.View`, or move the top disk from one rod to another with `towerOfHanoi.Move`.
 
     towerOfHanoi ← {
       l ← ↕¨5‿0‿0
