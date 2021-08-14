@@ -179,7 +179,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Incorrect special name"_err_(/HF) (0=hk)∧ht≠hv+⊑bI
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
-  cw←(hc/»hl∨ha)⌾(ch⊸/)1+-⟜«(»ch)<1(⊢<«)cf  # Body 𝕨: 0 no, 1 allowed, 2 required
+  cw←1+-⟜«(»ch)<1(⊢<«)cf                    # Body 𝕨: 0 no, 1 allowed, 2 required
+  cw↩(hc/»hl⌈ha×1+0<hk)⌾(ch⊸/)cw
   "Header left argument without right"_err_(/HF) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(/HF) hm>hk≠2
   "Only plain names allowed in headers for now!"_err_(/HF) 2=hk
