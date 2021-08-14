@@ -168,31 +168,34 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
   cc←(⍋⍋«co)⊏c∾/cs                          # Case close
   rr←rev⊏r
-  hr←rr/˜hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)¯1=rr
+  hr←rr⊏˜hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)¯1=rr
   hl←2=hn←(1⊸»+«)hc←¯1=hr
   ho←(»∨·«(hr=3)∧⊢)hl<hd←2≤hr               # Header operands
   "Missing operand in header"_err_(/HF) ho∧hc∨hd
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
   "Invalid header structure"_err_(hm//∘HF) 1⊸»⊸=hm/hc
-  ht←hf/𝕩×¬rev⊏sr                           # To identify single names (no strands)
-  hv←(ha×1+«hc)+(ho×4+«3=hr)+hm×3×1-˜2⌊hr   # Required value if special name
-  "Incorrect special name"_err_(/HF) (M⟜bI∧(hv+⊑bI)⊸≠)ht
+  hk←3|1-˜(+`bI∾nv)⍋ht←hi⊏𝕩×¬rev⊏sr         # Kind: 0 special, 1 name, 2 compound
+  hv←(ha×1+«hc)+(ho×4+«3=hr)+hm×3×1-˜2⌊hr   # Special name for position
+  "Incorrect special name"_err_(/HF) (0=hk)∧ht≠hv+⊑bI
+  hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
   cw←(hc/»hl∨ha)⌾(ch⊸/)1+-⟜«(»ch)<1(⊢<«)cf  # Body 𝕨: 0 no, 1 allowed, 2 required
   "Header left argument without right"_err_(/HF) ha>hc+`⊸⊏hx∾0
-  "Header operation must be a plain name"_err_(/HF) hm>ht M bI+0‿nv
-  "Only special name inputs allowed in headers for now!"_err_(/HF) ¬hc∨hm∨ht M bI
-  hl/˜↩hm⋄hx∨↩1=hr⋄hu←(𝕩 M bI)<hf∧0<rr
+  "Header operation must be a plain name"_err_(/HF) hm>hk≠2
+  "Only plain names allowed in headers for now!"_err_(/HF) 2=hk
+  hx∨↩1=hr
+  hj←(0≠hk)/hi⋄hu←1¨⌾(hj⊸⊏)0¨hf
 
   # Block properties
   HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
   fx←HS 1⋄fr←(fx∨0⊸<)⊸+ft←2(⊣⌈2×⊢)○HS 3     # Body immediacy ¬fx, type ft, role fr
-  "Invalid special names for block header"_err_(ch/0∾/∘CB) (hr<ch/fr)∨hl<hx<ch/fx
+  "Invalid special names for block header"_err_(ch/0∾/∘CB) (hr<ch/fr)∨(hm/hl)<hx<ch/fx
   ft⌈↩1-˜fr↩hr⌾(ch⊸/)fr⋄fx↩hx⊸⌈⌾(ch⊸/)fx
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓cm>fx
   "Block bodies must be of the same kind"_err_(/CB) 1↓cf<»⊸≠ft
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
+  hv-↩hc+`⊸⊏«3×¬fx                          # Header variable slot
 
   # Propagate roles through parentheses
   # ir is the role of the expression ending at each position (truncated to the right)
@@ -271,8 +274,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
   ido←21+uu(⊢+10×>)ia∾sa                    # Opcode
   idoc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
-  idor∾˜↩3/hi←/hu∧0<ac⋄idoc∾˜↩<21‿0‿0⥊˜3×≠hi
-  idor∾↩2/hi⋄idoc∾↩<11‿14⥊˜2×≠hi
+  idor∾˜↩∾3⥊<hj⋄idoc∾˜↩⟨21¨hj,0¨hj,(0≠hk)/hv⟩
+  idor∾ ↩∾2⥊<hj⋄idoc∾ ↩⟨11¨hj,14¨hj⟩
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
