@@ -172,19 +172,19 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hl←2=hn←(1⊸»+«)hc←¯1=hr
   "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
   ho←(»∨·«(hr=3)∧⊢)hl<hd←2≤hr               # Header operands
-  "Missing operand in header"_err_(/HF) ho∧hc∨hd
+  "Missing operand in header"_err_(HI) ho∧hc∨hd
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
-  "Invalid header structure"_err_(hm//∘HF) 1⊸»⊸=hm/hc
+  "Invalid header structure"_err_(hm/HI) 1⊸»⊸=hm/hc
   hk←3|1-˜(+`bI∾nv)⍋ht←hi⊏𝕩×¬rev⊏sr         # Kind: 0 special, 1 name, 2 compound
   hv←(ha×1+«hc)+(ho×4+«3=hr)+hm×3×1-˜2⌊hr   # Special name for position
-  "Incorrect special name"_err_(/HF) (0=hk)∧ht≠hv+⊑bI
+  "Incorrect special name"_err_(HI) (0=hk)∧ht≠hv+⊑bI
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
   cw←1+-⟜«(»ch)<1(⊢<«)cf                    # Body 𝕨: 0 no, 1 allowed, 2 required
   cw↩(hc/»hl⌈ha×1+0<hk)⌾(ch⊸/)cw
-  "Header left argument without right"_err_(/HF) ha>hc+`⊸⊏hx∾0
-  "Header operation must be a plain name"_err_(/HF) hm>hk≠2
-  "Only plain names allowed in headers for now!"_err_(/HF) 2=hk
+  "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
+  "Header operation must be a plain name"_err_(HI) hm>hk≠2
+  "Only plain names allowed in headers for now!"_err_(HI) 2=hk
   hx∨↩1=hr
   hj←(0≠hk)/hi⋄hu←1¨⌾(hj⊸⊏)0¨hf
 
