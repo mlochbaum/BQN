@@ -170,6 +170,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   rr←rev⊏r
   hr←rr⊏˜hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)¯1=rr
   hl←2=hn←(1⊸»+«)hc←¯1=hr
+  "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
   ho←(»∨·«(hr=3)∧⊢)hl<hd←2≤hr               # Header operands
   "Missing operand in header"_err_(/HF) ho∧hc∨hd
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
