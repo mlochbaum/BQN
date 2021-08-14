@@ -196,7 +196,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓cm>fx
   "Block bodies must be of the same kind"_err_(/CB) 1↓cf<»⊸≠ft
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
-  hv-↩hc+`⊸⊏«3×¬fx                          # Header variable slot
+  hv-↩(»+`hc)⊏3×¬ch/fx                      # Header variable slot
 
   # Propagate roles through parentheses
   # ir is the role of the expression ending at each position (truncated to the right)
