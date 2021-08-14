@@ -185,8 +185,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hm>hk≠2
   "Only plain names allowed in headers for now!"_err_(HI) 2=hk
-  hx∨↩1=hr
-  hj←(0≠hk)/hi⋄hu←1¨⌾(hj⊸⊏)0¨hf
+  hx∨↩1=hr⋄hu←(0=hk)⌾(hi⊸⊏)hf
+  hi/˜↩0≠hk⋄hj←hi⊏gi
 
   # Block properties
   HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
@@ -235,7 +235,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
   aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
-  aa←×g⊏ac←(3×hu)+»+`(»⊸∨0=+`)⊸×gi⊏«⊸-ak⌾(at⊸⊏)0¨𝕩 # ac broadcasts it to the entire target
+  at∾↩hj
+  aa←×g⊏ac←»+`(»⊸∨0=+`)⊸×gi⊏«⊸-(ak∾3¨hj)⌾(at⊸⊏)0¨𝕩# ac broadcasts it to the entire target
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
@@ -246,10 +247,11 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) hg<(0<er)∧(0≤r)∧»⊸>aa
   af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
+  ai/˜↩af⋄at/˜↩af∾1¨hj
 
   # Lexical resolution (independent of parsing part 2 below)
   di←/dm←»dc                                # Dots aren't scoped
-  id←/((hf>hu)∨dm∨gi⊏«aa∧a)<(0⊸≤∧<⟜nv)xv    # Identifier indices in xv
+  id←/(hu∨dm∨gi⊏«aa∧a)<(0⊸≤∧<⟜nv)xv         # Identifier indices in xv
   sa←0<sc←sp⊏ac⋄d←(ic←id⊏ac)M 2‿2           # Which accesses are definitions
   "Can't define special name"_err_(SP) sa∧sc<4
   idf←id⊏fi⋄idv←id⊏xv                       # Function index and name ID
@@ -276,8 +278,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
   ido←21+uu(⊢+10×>)ia∾sa                    # Opcode
   idoc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
-  idor∾˜↩∾3⥊<hj⋄idoc∾˜↩⟨21¨hj,0¨hj,(0≠hk)/hv⟩
-  idor∾ ↩∾2⥊<hj⋄idoc∾ ↩⟨11¨hj,14¨hj⟩
+  idor∾˜↩∾3⥊<hi⋄idoc∾˜↩⟨21¨hi,0¨hi,(0≠hk)/hv⟩
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
@@ -289,17 +290,18 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
   dr←/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo              # Drop (block separator) and return
+  dr∾↩hj
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
-  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,dr,af/at,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,14¨dr
-               11⌈(11-1+⊑bG)+(af/ai)⊏ma+𝕩,28¨al,vi-˜(al-1)⊏𝕩
+  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll
+               (11¨hj)∾˜11⌈(11-1+⊑bG)+ai⊏ma+𝕩,14¨dr,28¨al,vi-˜(al-1)⊏𝕩
                5+oa⊏r,19⌊5+(fn/dy+11×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←25+4×nf⟩
   # Instruction source positions
-  MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜af/at,oa,fa⟩
+  MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   cg←((⊏⟜cw∾0˙)+3×¯1+`⊏⟜cf∾1˙)⊸⊔/cm∨↩fx∧1≠cw
   ci←<˘⍉∧∘∾¨˝(1‿1≍0‿2)⊏⍉∘‿3⥊cg              # Indices for multi-body blocks
