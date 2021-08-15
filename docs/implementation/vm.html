@@ -42,7 +42,7 @@
 <p>The starting index refers to the position in bytecode where execution starts in order to evaluate the block. Different bodies will always have the same set of special names, but the variables they define are unrelated, so of course they can have different counts. The given number of variables includes special names, but list of names and export mask don't.</p>
 <p>The program's symbol list is included in the tokenization information <code><span class='Value'>t</span></code>: it is <code><span class='Number'>0</span><span class='Function'>⊑</span><span class='Number'>2</span><span class='Function'>⊑</span><span class='Value'>t</span></code>. Since the entire program (the source code passed in one compiler call) uses this list, namespace field accesses can be performed with indices alone within a program. The symbol list is needed for cross-program access, for example if <code><span class='Function'>•BQN</span></code> returns a namespace.</p>
 <h3 id="instructions"><a class="header" href="#instructions">Instructions</a></h3>
-<p>The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the &quot;used&quot; column. Instructions marked <code><span class='Function'>NS</span></code> are used only in programs with namespaces, and so are not needed to support the compiler or self-hosted runtime.</p>
+<p>The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the &quot;used&quot; column. Instructions marked <code><span class='Function'>NS</span></code> are used only in programs with namespaces, and so are not needed to support the compiler or self-hosted runtime. Similarly, <code><span class='Function'>SETH</span></code> is only needed in programs with destructuring headers.</p>
 <table>
 <thead>
 <tr>
@@ -250,10 +250,10 @@
 <tr>
 <td align="right">24</td>
 <td>SETH</td>
-<td align="center"></td>
-<td align="right"></td>
+<td align="center">X</td>
+<td align="right">11</td>
 <td align="left"></td>
-<td>Test header</td>
+<td>Test and set header</td>
 </tr>
 <tr>
 <td align="right">25</td>
@@ -376,7 +376,7 @@
 <td align="right">11</td>
 <td>SETN</td>
 <td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>←</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
-<td><code><span class='Value'>r</span></code> is a reference</td>
+<td><code><span class='Value'>r</span></code> is a reference; 24: no result</td>
 </tr>
 <tr>
 <td align="right">12</td>
@@ -453,11 +453,12 @@
 <p>When a block is pushed with <strong>DFND</strong>, an instance of the block is created, with its <em>parent frame</em> set to be the frame of the currently-executing block. Setting the parent frame when the block is first seen, instead of when it's evaluated, is what distinguishes lexical from dynamic scoping. If it's an immediate block, it's evaluated immediately, and otherwise it's pushed onto the stack. When the block is evaluated, its frame is initialized using any arguments passed to it, the next instruction's index is pushed onto the return stack, and execution moves to the first instruction in the block. When the RETN instruction is encountered, an index is popped from the return stack and execution returns to this location. As an alternative to maintaining an explicit return stack, a block can be implemented as a native function that creates a new execution stack and returns the value in it when the <strong>RETN</strong> instruction is reached. This approach uses the implementation language's call stack for the return stack.</p>
 <p>Local variables are manipulated with the <strong>LOCO</strong> (or <strong>LOCU</strong>) and <strong>LOCM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
 <p>Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with LOCO or LOCU or modified with SETU or SETM only if it <em>has</em> been defined.</p>
-<h3 id="variable-references-arrm-locm-setn-setu-setm"><a class="header" href="#variable-references-arrm-locm-setn-setu-setm">Variable references: ARRM LOCM SETN SETU SETM</a></h3>
+<h3 id="variable-references-arrm-locm-setn-setu-setm-seth"><a class="header" href="#variable-references-arrm-locm-setn-setu-setm-seth">Variable references: ARRM LOCM SETN SETU SETM SETH</a></h3>
 <p>A <em>variable reference</em> indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. <strong>LOCM</strong> pushes a variable reference to the stack.</p>
 <p>A <em>reference list</em> is a list of variable references or reference lists. It's created with the <strong>ARRM</strong> instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.</p>
 <p>The <strong>SETN</strong>, <strong>SETU</strong>, and <strong>SETM</strong> instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.</p>
 <p><strong>SETM</strong> additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.</p>
+<p><strong>SETH</strong> is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. It also accepts constant matchers produced by VFYM as references, which fail if they don't match the corresponding value.</p>
 <h3 id="namespaces-fldo-fldm-nspm-retd"><a class="header" href="#namespaces-fldo-fldm-nspm-retd">Namespaces: FLDO FLDM NSPM RETD</a></h3>
 <p>A <em>namespace</em> is the collection of variables in a particular scope, along with an association mapping some exported <em>symbols</em> (case- and underscore-normalized strings) to a subset of these. It can be represented using a frame for the variables, plus the variable name list and mask of exported variables from that block's properties in the bytecode. <strong>RETD</strong> finishes executing the block and returns the namespace for that execution.</p>
 <p>The variable name list is split into a program-level list of names and a list of indices into these names: within-program field accesses can be done with the indices only while cross-program ones must use names. One way to check whether an access is cross-program is to compare the accessor's program-level name list with the one for the accessed namespace as references or pointers. Then a lookup should be performed as appropriate. A persistent lookup table is needed to make this efficient.</p>

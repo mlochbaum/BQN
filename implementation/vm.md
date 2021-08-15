@@ -51,7 +51,7 @@ The program's symbol list is included in the tokenization information `t`: it is
 
 ### Instructions
 
-The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the "used" column. Instructions marked `NS` are used only in programs with namespaces, and so are not needed to support the compiler or self-hosted runtime.
+The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the "used" column. Instructions marked `NS` are used only in programs with namespaces, and so are not needed to support the compiler or self-hosted runtime. Similarly, `SETH` is only needed in programs with destructuring headers.
 
 |  B | Name | Used | Like | Args     | Description
 |---:|------|:----:|-----:|:---------|------------
@@ -79,7 +79,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 21 | LOCO |  X   |      | `D`, `I` | Push local variable `I` from `D` frames up
 | 22 | LOCM |  X   |      | `D`, `I` | Push local variable reference `I` from `D` frames up
 | 23 | VFYM |      |      |          | Convert to matcher (for header tests)
-| 24 | SETH |      |      |          | Test header
+| 24 | SETH |  X   |  11  |          | Test and set header
 | 25 | RETN |  X   |      |          | Returns top of stack
 | 26 | FLDO |  NS  |      | `I`      | Read field `I` from namespace
 | 27 | FLDM |      |  26  | `I`      | Push mutable field `I` from namespace
@@ -100,7 +100,7 @@ Stack effects for most instructions are given below. Instructions 16, 17, and 19
 |  8 | OP2D | `𝕘 𝕣 𝕗 → (𝔽 _𝕣_ 𝔾)`   |
 |  9 | TR2D | `g f → (F G)`         |
 | 10 | TR3D | `h g f → (F G H)`     | 19: `F` may be `·`
-| 11 | SETN | `x r → (r←x)`         | `r` is a reference
+| 11 | SETN | `x r → (r←x)`         | `r` is a reference; 24: no result
 | 12 | SETU | `x r → (r↩x)`         | `r` is a reference
 | 13 | SETM | `x f r → (r F↩ x)`    | `r` is a reference
 | 14 | POPS | `x →`                 |
@@ -127,7 +127,7 @@ Local variables are manipulated with the **LOCO** (or **LOCU**) and **LOCM** ins
 
 Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with LOCO or LOCU or modified with SETU or SETM only if it *has* been defined.
 
-### Variable references: ARRM LOCM SETN SETU SETM
+### Variable references: ARRM LOCM SETN SETU SETM SETH
 
 A *variable reference* indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. **LOCM** pushes a variable reference to the stack.
 
@@ -136,6 +136,8 @@ A *reference list* is a list of variable references or reference lists. It's cre
 The **SETN**, **SETU**, and **SETM** instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.
 
 **SETM** additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.
+
+**SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. It also accepts constant matchers produced by VFYM as references, which fail if they don't match the corresponding value.
 
 ### Namespaces: FLDO FLDM NSPM RETD
 
