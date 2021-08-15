@@ -138,13 +138,7 @@ Modify ← { ⟨include,add,pos⟩𝕊𝕩:
 }
 
 # URL encoding for links to the REPL
-UTF32 ← {
-  p ← 2⋆10
-  s ← p×52+2+↕3  # Surrogate character boundaries
-  h ← 1 = c ← (≠s)|s⍋𝕩
-  h ¬⊸/ (»h×p×(2⋆6)+⊢)⊸+ 𝕩 - c⊏0∾s
-}⍟(2=≠"𝕩")∘-⟜@
-UTF8 ← ∾ (2⋆7) (⊣+(2⋆6){𝕨 ≤◶⟨⥊⊢-2×-⟜𝕗 ⋄ 𝕗(|∾˜(2÷˜⌊⟜𝕨)𝕊⌊∘÷˜)⊢⟩ 𝕩}¨) UTF32
+UTF8 ← ∾ (2⋆7) (⊣+(2⋆6){𝕨 ≤◶⟨⥊⊢-2×-⟜𝕗 ⋄ 𝕗(|∾˜(2÷˜⌊⟜𝕨)𝕊⌊∘÷˜)⊢⟩ 𝕩}¨) -⟜@
 Base64 ← {
   b64 ← Ranges "AZaz09++//"
   b←3|↕l←≠u←UTF8 𝕩
@@ -160,8 +154,13 @@ repoURL ← "https://github.com/mlochbaum/BQN"
 blobURL ← repoURL∾"/blob/master/"
 
 # Environments
-_getCodeExec ← {𝕗⋄•Eval}
-_getSvgExec ← {𝕗⋄e←{•Eval} ⋄ E•FChars"svg.bqn" ⋄ JoinLines⍟(1<≡)∘E}
+_getCodeExec ← {𝕗⋄•MakeREPL@}
+_getSvgExec ← {𝕗
+  e←•MakeREPL@
+  (E"GetHighlights←Modify←!⋄{GetHighlights‿Modify↩𝕩}"){𝔽} GetHighlights‿Modify
+  E•FChars"svg.bqn"
+  JoinLines⍟(1<≡)∘E
+}
 
 
 ################################
@@ -381,7 +380,7 @@ Markdown ← {filename𝕊𝕩:
       R ← "md"‿"html"‿RI‿(ghPath⊸∾) _replaceEnd
       # Exclude absolute links by testing for :
       # Don't do anything to fragments (trailing #sub-heading)
-      R⍟(¬𝕩∨´∘=':')⍟(0<≠)⌾((⊑𝕩⊐"#")⊸↑) 𝕩
+      (⊑𝕩⊐"#") (R⍟(¬𝕩∨´∘=':')⍟(0<≠)∘↑∾↓) 𝕩
     }⍟extensions
     # Find matched-depth [] and () pairs, then join adjacent ones
     brak ← (unused ∧ 𝕩⊸=)¨ "[]"≍"()"
@@ -548,7 +547,7 @@ GetHighlights ← {
   func‿mod1‿mod2 ← •Import "src/glyphs.bqn"
   classes‿chars ← <˘ ⍉ ∘‿2⥊⟨
     0             , " "∾@+9‿10  # Should never be highlighted
-    "Value"       , ¯1⊏˘5‿2⥊"𝕨𝕩𝕗𝕘𝕤"# Hack around UTF-16
+    "Value"       , "𝕨𝕩𝕗𝕘𝕤"
     "Function"    , func∾¯1⊏˘5‿2⥊"𝕎𝕏𝔽𝔾𝕊"
     "Modifier"    , mod1
     "Modifier2"   , mod2
@@ -589,9 +588,6 @@ GetHighlights ← {
   tc ← ((⊏˘b)⊏c) ∾⟜2⊸⊔ <˘b
   # Color with "String" and "Comment"
   col ⌈↩ +´ (2‿1-˜≠classes) × ToMask¨ tc
-
-  # UTF-16 hack: first half of a special name needs to match the second
-  col↩ («col) ⊣⌾((𝕩=⊑"𝕩")⊸/) col
 
   # Color numeric literals and identifiers
   id ← col=5                 # ←→ 𝕩∊idChars
