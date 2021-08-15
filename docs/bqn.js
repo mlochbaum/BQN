@@ -476,6 +476,7 @@ let dojs = (x,w) => {
   }
   return toBQN(r);
 }
+let reqexec = req1str;  // Modified by Node version to handle •state
 let extendedbqn = (x,w) => {
   let req = (r,s) => { if (!r) throw Error("•ExtendedBQN: "+s) };
   req(!has(w), "𝕨 not allowed");
@@ -492,7 +493,7 @@ let extendedbqn = (x,w) => {
   pr.map(p=>p.sh=[p.length]);
   rt = list([].concat.apply([],rt));
   let bqn = bqngen(compgen(list(pr)),list([rt,system]));
-  return (x,w)=>bqn(req1str("•BQN extension",x,w));
+  return (x,w)=>bqn(reqexec("•BQN extension",x,w));
 }
 let makerepl = (x,w) => {
   let vars = [], names = [], redef = [];
@@ -500,7 +501,7 @@ let makerepl = (x,w) => {
   let comp = wrapcomp(compile);
   let repl = (x,w) => {
     names.sh=redef.sh=[names.length];
-    let c = comp(str(req1str("Repl",x,w)), rtn);
+    let c = comp(str(reqexec("Repl",x,w)), rtn);
     let pnames = c[5][2][0];
     let newv = c[3][0][2].slice(vars.length);
     names.push(...newv.map(i=>pnames[i]));
@@ -513,7 +514,7 @@ let makerepl = (x,w) => {
 }
 let dynsys = f => { f.dynamic=1; return f; }
 let sysvals = {
-  bqn:(x,w)=> bqn(req1str("•BQN",x,w)), makerepl, js:dojs, extendedbqn,
+  bqn:(x,w)=> bqn(reqexec("•BQN",x,w)), makerepl, js:dojs, extendedbqn,
   type, glyph, decompose, fmt:fmt1, repr, unixtime, listkeys,
   listsys: dynsys(() => list(Object.keys(sysvals).sort().map(str))),
   math: obj2ns(Math,("LN10 LN2 LOG10E LOG2E cbrt expm1 hypot log10 log1p log2 round trunc atan2 cos cosh sin sinh tan tanh").split(" "), f=>typeof f==="function"?runtime[60](f,0):f)
@@ -544,5 +545,6 @@ if (typeof process!=='undefined') {
 if (typeof module!=='undefined') {  // Node.js
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;
   bqn.sysvals=sysvals; bqn.util={has,list,str,unstr,dynsys,req1str,makens};
+  bqn.setreqexec = re => { reqexec=re; }
   module.exports=bqn;
 }
