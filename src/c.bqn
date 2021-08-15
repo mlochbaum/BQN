@@ -171,8 +171,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hr←rr⊏˜hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)¯1=rr
   hl←2=hn←(1⊸»+«)hc←¯1=hr
   "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
-  ho←(»∨·«(hr=3)∧⊢)hl<hd←2≤hr               # Header operands
-  "Missing operand in header"_err_(HI) ho∧hc∨hd
+  ho←(»∨·«(hr=3)∧⊢)hl<hy←2≤hr               # Header operands
+  "Missing operand in header"_err_(HI) ho∧hc∨hy
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
   "Invalid header structure"_err_(hm/HI) 1⊸»⊸=hm/hc
   hk←3|1-˜(+`bI∾nv)⍋ht←hi⊏𝕩×¬rev⊏sr         # Kind: 0 special, 1 name, 2 compound
@@ -185,7 +185,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hm>hk≠2
   hx∨↩1=hr⋄hu←(¬he)⌾(hi⊸⊏)hf
-  hj←gi⊏˜he/hi
+  hj←gi⊏˜he/hi⋄hd←2=he/hk
 
   # Block properties
   HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
@@ -288,13 +288,13 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob∾↩(cl-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
-  dr←hj∾/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo           # Drop (block separator) and return
+  dr←(hd¬⊸/hj)∾/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo    # Drop (block separator) and return
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
-  ao←11+(0⌈(1+⊑bG)-˜ai⊏ma+𝕩)∾13×2=he/hk     # Assignment opcode
+  ao←11+(0⌈(1+⊑bG)-˜ai⊏ma+𝕩)∾13×hd          # Assignment opcode
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
   oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,ao,14¨dr,28¨al,vi-˜(al-1)⊏𝕩
                5+oa⊏r,19⌊5+(fn/dy+11×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←25+4×nf⟩
