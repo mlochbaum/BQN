@@ -181,12 +181,11 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
   cw←1+-⟜«(»ch)<1(⊢<«)cf                    # Body 𝕨: 0 no, 1 allowed, 2 required
-  cw↩(hc/»hl⌈ha×1+0<hk)⌾(ch⊸/)cw
+  cw↩(hc/»hl⌈ha×1+he←0≠hk)⌾(ch⊸/)cw
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hm>hk≠2
-  "Only plain names allowed in headers for now!"_err_(HI) 2=hk
-  hx∨↩1=hr⋄hu←(0=hk)⌾(hi⊸⊏)hf
-  hi/˜↩0≠hk⋄hj←hi⊏gi
+  hx∨↩1=hr⋄hu←(¬he)⌾(hi⊸⊏)hf
+  hj←gi⊏˜he/hi
 
   # Block properties
   HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
@@ -275,10 +274,10 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   uu←(ia<1«d)∧d(⊣+`⊸⊏(1∾ixa)<PN)0<idd       # Unused marker
   spi←((spf←sp⊏fi)⊏3×fx)+3+sp⊏xv            # Special name index
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
-  idor←∾2‿3/⟨di,id∾sp⟩                      # Identifier bytecode ordering
+  idor←∾3‿2‿3/⟨1+g⊏˜hj-1, di, id∾sp⟩        # Identifier bytecode ordering
   ido←21+uu(⊢+10×>)ia∾sa                    # Opcode
-  idoc←⟨26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
-  idor∾˜↩∾3⥊<hi⋄idoc∾˜↩⟨21¨hi,0¨hi,(0≠hk)/hv⟩
+  idoc←⟨21¨hj,0¨hj,he/hv
+        26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
@@ -289,16 +288,15 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob∾↩(cl-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
-  dr←/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo              # Drop (block separator) and return
-  dr∾↩hj
+  dr←hj∾/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo           # Drop (block separator) and return
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
+  ao←11+(0⌈(1+⊑bG)-˜ai⊏ma+𝕩)∾13×2=he/hk     # Assignment opcode
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll
-               (11¨hj)∾˜11⌈(11-1+⊑bG)+ai⊏ma+𝕩,14¨dr,28¨al,vi-˜(al-1)⊏𝕩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,ao,14¨dr,28¨al,vi-˜(al-1)⊏𝕩
                5+oa⊏r,19⌊5+(fn/dy+11×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←25+4×nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
