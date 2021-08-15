@@ -109,9 +109,9 @@ let set_state = w => {
   w = w||[]; sysvals.state=list(w);
   sysvals.path=w[0]; sysvals.name=w[1]; sysvals.args=w[2];
 }
-let bqn_state = sysvals.bqn = (x,w) => { set_state(w); return bqn(x); }
+let bqn_state = (x,w) => { set_state(w); return bqn(x); }
+bqn.setreqexec((s,x,w) => { set_state(w); return req1str(s,x); });
 sysvals.exit = (x,w) => process.exit(Number.isInteger(x)?x:0);
-sysvals.bqn = (x,w) => bqn_state(req1str("•BQN",x), w);
 let bqn_file = (f,t,w) => bqn_state(
   t, [ str(dir(path.dirname(f))), str(path.basename(f)), w ]
 );
