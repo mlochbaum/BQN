@@ -135,8 +135,13 @@
 </pre>
 <p>Because <code><span class='Value'>𝕣</span></code> only ever refers to a 1-modifier or 2-modifer, it can never make sense to refer to it as a function, and the uppercase letter <code><span class='Value'>ℝ</span></code> is not recognized by BQN. In order to allow <code><span class='Value'>𝕣</span></code> to be spelled as a 1-modifier <code><span class='Modifier'>_𝕣</span></code> or 2-modifier <code><span class='Modifier2'>_𝕣_</span></code>, it is treated as an ordinary identifier character, so it must be separated from letters or numbers by spaces.</p>
 <h2 id="block-headers"><a class="header" href="#block-headers">Block headers</a></h2>
-<p>As a program becomes larger, it often becomes necessary to name inputs to blocks rather than just using special names. It can also become difficult to identify what kind of block is being defined, as it requires scanning through the block for special names. A <em>block header</em>, which is separated from the body of a block by a colon <code><span class='Value'>:</span></code>, specifies the kind of block and can declare names for the block and its inputs. Its syntax mirrors an application of the block. As suggested by the positioning, the names given in a header apply only inside the block.</p>
-<pre><span class='Comment'># A dyadic function called Func
+<p>As a program becomes larger, it often becomes necessary to name inputs to blocks rather than just using special names. It can also become difficult to identify what kind of block is being defined, as it requires scanning through the block for special names. A <em>block header</em>, which is separated from the body of a block by a colon <code><span class='Value'>:</span></code>, specifies the kind of block and can declare names for the block and its inputs.</p>
+<pre><span class='Function'>Fact</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Function'>F</span> <span class='Value'>n:</span>
+  <span class='Value'>n</span> <span class='Function'>×</span> <span class='Paren'>(</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span><span class='Paren'>)</span><span class='Modifier2'>◶</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Function'>F</span> <span class='Value'>n</span><span class='Function'>-</span><span class='Number'>1</span>
+<span class='Brace'>}</span>
+</pre>
+<p>Its syntax mirrors an application of the block. As suggested by the positioning, the names given in a header apply only inside the block: for example <code><span class='Function'>F</span></code> above is only defined inside the <code><span class='Brace'>{}</span></code> braces while <code><span class='Function'>Fact</span></code> could be used either outside or inside. Some other possibilites are given below.</p>
+<pre><span class='Comment'># A dyadic function that refers to itself as Func
 </span><span class='Brace'>{</span> <span class='Value'>l</span> <span class='Function'>Func</span> <span class='Value'>r:</span>
   <span class='Value'>…</span>
 
@@ -152,7 +157,7 @@
 </span><span class='Brace'>{</span> <span class='Function'>F</span> <span class='Modifier2'>_op_</span> <span class='Value'>val:</span>
   <span class='Value'>…</span>
 </pre>
-<p>In all cases special names are defined just as with a headerless function. In this respect the effect of the header is the same as a series of assignments at the beginning of a function, such as the following translation of the second header above:</p>
+<p>In all cases special names still work just like in a headerless function. In this respect the effect of the header is the same as a series of assignments at the beginning of a function, such as the following translation of the second header above:</p>
 <pre><span class='Brace'>{</span> <span class='Comment'># Fn _apply ⟨a,b⟩:
 </span>  <span class='Function'>Fn</span> <span class='Gets'>←</span> <span class='Function'>𝔽</span>
   <span class='Modifier'>_apply</span> <span class='Gets'>←</span> <span class='Modifier'>_𝕣</span>

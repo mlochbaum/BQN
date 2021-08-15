@@ -98,9 +98,15 @@ Because `𝕣` only ever refers to a 1-modifier or 2-modifer, it can never make 
 
 ## Block headers
 
-As a program becomes larger, it often becomes necessary to name inputs to blocks rather than just using special names. It can also become difficult to identify what kind of block is being defined, as it requires scanning through the block for special names. A *block header*, which is separated from the body of a block by a colon `:`, specifies the kind of block and can declare names for the block and its inputs. Its syntax mirrors an application of the block. As suggested by the positioning, the names given in a header apply only inside the block.
+As a program becomes larger, it often becomes necessary to name inputs to blocks rather than just using special names. It can also become difficult to identify what kind of block is being defined, as it requires scanning through the block for special names. A *block header*, which is separated from the body of a block by a colon `:`, specifies the kind of block and can declare names for the block and its inputs.
 
-    # A dyadic function called Func
+    Fact ← { F n:
+      n × (0⊸<)◶1‿F n-1
+    }
+
+Its syntax mirrors an application of the block. As suggested by the positioning, the names given in a header apply only inside the block: for example `F` above is only defined inside the `{}` braces while `Fact` could be used either outside or inside. Some other possibilites are given below.
+
+    # A dyadic function that refers to itself as Func
     { l Func r:
       …
 
@@ -116,7 +122,7 @@ As a program becomes larger, it often becomes necessary to name inputs to blocks
     { F _op_ val:
       …
 
-In all cases special names are defined just as with a headerless function. In this respect the effect of the header is the same as a series of assignments at the beginning of a function, such as the following translation of the second header above:
+In all cases special names still work just like in a headerless function. In this respect the effect of the header is the same as a series of assignments at the beginning of a function, such as the following translation of the second header above:
 
     { # Fn _apply ⟨a,b⟩:
       Fn ← 𝔽
