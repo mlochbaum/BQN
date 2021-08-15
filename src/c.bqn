@@ -168,7 +168,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
   cc←(⍋⍋«co)⊏c∾/cs                          # Case close
   rr←rev⊏r
-  hr←rr⊏˜hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)¯1=rr
+  hr←rr⊏˜hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh
   hl←2=hn←(1⊸»+«)hc←¯1=hr
   "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
   ho←(»∨·«(hr=3)∧⊢)hl<hy←2≤hr               # Header operands
