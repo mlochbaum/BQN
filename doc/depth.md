@@ -26,7 +26,7 @@ Tree←{
   ds‿ws‿e←<˘⍉>𝕩
   d←1+0⌈´ds
   ww←1⌈+´ws
-  p←2÷˜(-ww)+`»⊸+ws
+  p←2÷˜(-ww)+`0⊸»⊸+ws
   ⟨d,ww,⟨TN d,Brak ww⟩∾(TL¨p)∾∾p≍⟜1⊸Gtr¨e⟩
 }
 n0 ← 0‿1‿⟨TN 0, Path"M h"(∾∾¨)⟜FmtNum (-∾4∾+˜)5.6⟩
