@@ -14,6 +14,8 @@ Editor plugins and other tools for allowing BQN input are in [this folder](https
 
 For **Android**, [this fork](https://github.com/dzaima/hackerskeyboard/releases/latest) adds APL and BQN to Hacker's Keyboard.
 
+For **macOS**, a keyboard layout can be found [here](https://github.com/mlochbaum/BQN/blob/master/editors/BQN.keylayout).
+
 The file [inputrc](https://github.com/mlochbaum/BQN/blob/master/editors/inputrc) can be copied or appended to `~/.inputrc` to enable backslash input in **bash**, BQN with **rlwrap**, and other software that uses GNU Readline.
 
 If you'd like to contribute files for another editor I'd gladly accept them!
