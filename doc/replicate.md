@@ -79,7 +79,7 @@ If `𝕨` has [depth](depth.md) two, then its elements give the amounts to copy 
 
         2‿0 / 1‿0‿0‿1‿1⊸/˘ b
 
-Here the `2‿0` indicates that the first row of `b` is copied twice and the second is ignored, while `1‿0‿0‿1‿1` picks out three entries from that row. `𝕩` can also have more axes than elements of `𝕨`, and the trailing ones aren't changed, just like the simpler case. However, `𝕨` has to have at least as many elements as `𝕩` has axes (so `(≠𝕨)≥=𝕩`), and each element has to have the same length as the corresponding axis in `𝕩`—or it can be a unit, as shown below.
+Here the `2‿0` indicates that the first row of `b` is copied twice and the second is ignored, while `1‿0‿0‿1‿1` picks out three entries from that row. As in the single-axis case, `𝕩` can have extra trailing axes that aren't modified by `𝕨`. The rules are that `𝕨` can't have *more* elements than axes of `𝕩` (so `(≠𝕨)≤=𝕩`), and that each element has to have the same length as the corresponding axis—or it can be a unit, as shown below.
 
         ⟨<2,<3⟩ / b
 
