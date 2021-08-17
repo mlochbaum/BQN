@@ -239,7 +239,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
-  "Invalid use of 𝕨 in monadic case"_err_(/CB) 1↓fw∧cw=0
+  fv←fw⋄fw≥○I1T↩cf                          # If a body fails on 𝕨, later ones won't see 𝕨
+  (∨´(1↓fv)⊸<)◶"Invalid use of 𝕨 in monadic case"‿"Unreachable body"_err_(/CB) 1↓fw∧cw=0
   cw⌈↩2×fw
   nn←fo+`⊸⊏2=cw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn       # 2=cw indicates 𝕨 is never Nothing
   "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
