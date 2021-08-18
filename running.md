@@ -2,15 +2,13 @@
 
 # How to run BQN
 
-We are currently working quickly to make [CBQN](https://github.com/dzaima/CBQN) into the definitive offline implementation. Compilation speed (self-hosted) is good, the only significant core language feature missing is block headers and multiple bodies, and the essential system functions are there. Unless you need to start heavy number crunching right away, I recommend that you use CBQN and make system function or performance requests on Github or the BQN forums.
-
-A lot of development to date has been done in dzaima/BQN and uses features (mainly headers) that aren't in CBQN yet. Scripts in this repository use `bqn` in the `#!` line if self-hosted or dzaima/BQN can run them, and `dbqn` if only dzaima/BQN works.
+[CBQN](https://github.com/dzaima/CBQN) is now the primary offline implementation. However, many scripts have been written for dzaima/BQN and they're not all transferred over yet. Scripts in this repository use `bqn` in the `#!` line if self-hosted or dzaima/BQN can run them, and `dbqn` if only dzaima/BQN works.
 
 ### Self-hosted BQN
 
 See the subsections below for instructions on specific implementations.
 
-This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all primitives except a few cases of structural Under (`⌾`), but is still missing some advanced features: block headers and multiple body syntax, derived 1-modifiers, and block returns.
+This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all primitives except a few cases of structural Under (`⌾`), and is missing some minor syntax features such as derived 1-modifiers and block returns.
 
 Support in the following languages has been implemented:
 - Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
