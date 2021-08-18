@@ -176,14 +176,15 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
   "Invalid header structure"_err_(hm/HI) 1⊸»⊸=hm/hc
   hk←3|1-˜(+`bI∾nv)⍋ht←hi⊏𝕩×¬rev⊏sr         # Kind: 0 special, 1 name, 2 compound
-  hv←(ha×1+«hc)+(ho×4+«3=hr)+hm×3×1-˜2⌊hr   # Special name for position
+  hma←hm>ha+↩hla←hl∧(0=hr)∧2=hk⋄hr+↩hla     # Lone non-name subject is 𝕩 with 𝕊 omitted
+  hv←(ha×1+hla<«hc)+(ho×4+«3=hr)+hma×3×1-˜2⌊hr # Special name for position
   "Incorrect special name"_err_(HI) (0=hk)∧ht≠hv+⊑bI
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
   cw←1+-⟜«(»ch)<1(⊢<«)cf                    # Body 𝕨: 0 no, 1 allowed, 2 required
-  cw↩(hc/»hl⌈ha×1+he←0≠hk)⌾(ch⊸/)cw
+  cw↩(hc/»hla¬⊸×hl⌈ha×1+he←0≠hk)⌾(ch⊸/)cw
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
-  "Header operation must be a plain name"_err_(HI) hm>hk≠2
+  "Header operation must be a plain name"_err_(HI) hma>hk≠2
   hx∨↩1=hr⋄hu←(¬he)⌾(hi⊸⊏)hf
   hj←gi⊏˜he/hi⋄hd←2=he/hk
 
