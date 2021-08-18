@@ -78,7 +78,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 20 | OP2H |      |      |          | Bind right operand to 2-modifier
 | 21 | LOCO |  X   |      | `D`, `I` | Push local variable `I` from `D` frames up
 | 22 | LOCM |  X   |      | `D`, `I` | Push local variable reference `I` from `D` frames up
-| 23 | VFYM |      |      |          | Convert to matcher (for header tests)
+| 23 | VFYM |  X   |      |          | Convert constant to matcher (for headers)
 | 24 | SETH |  X   |  11  |          | Test and set header
 | 25 | RETN |  X   |      |          | Returns top of stack
 | 26 | FLDO |  NS  |      | `I`      | Read field `I` from namespace
@@ -108,6 +108,7 @@ Stack effects for most instructions are given below. Instructions 16, 17, and 19
 | 20 | OP2H | `𝕘 𝕣 → (_𝕣_ 𝕘)`       |
 | 21 | LOCO | `→ x`                 | Local variable value
 | 22 | LOCM | `→ r`                 | Local variable reference
+| 23 | VFYM | `c → r`               | Constant to match reference
 | 25 | RETN | `x → x`               | Returns from current block
 | 26 | FLDO | `n → n.i`             |
 | 28 | NSPM | `r → s`               | Reference `s` gets field `i` and puts in `r`
@@ -127,7 +128,7 @@ Local variables are manipulated with the **LOCO** (or **LOCU**) and **LOCM** ins
 
 Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with LOCO or LOCU or modified with SETU or SETM only if it *has* been defined.
 
-### Variable references: ARRM LOCM SETN SETU SETM SETH
+### Variable references: ARRM LOCM SETN SETU SETM SETH VFYM
 
 A *variable reference* indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. **LOCM** pushes a variable reference to the stack.
 
@@ -137,7 +138,7 @@ The **SETN**, **SETU**, and **SETM** instructions set a value for a reference. I
 
 **SETM** additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.
 
-**SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. It also accepts constant matchers produced by VFYM as references, which fail if they don't match the corresponding value.
+**SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. **VFYM** converts a BQN value `c` to a special reference: assigning a value `v` to it should check if `v≡c` but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.
 
 ### Namespaces: FLDO FLDM NSPM RETD
 

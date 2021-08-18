@@ -8,7 +8,7 @@
 
 </center>
 
-*Try it online below, on [this page](https://mlochbaum.github.io/BQN/try.html), or [in our chat](#where-can-i-find-bqn-users). Offline options [here](running.md).*
+*Try it online below, on [this page](https://mlochbaum.github.io/BQN/try.html), or [in our chat](#where-can-i-find-bqn-users). Use [CBQN](https://github.com/dzaima/CBQN) offline; details [here](running.md).*
 <!--GEN
 E ← ⊐⟜":"⊸(↑At"class="∾1⊸+⊸↓)⊸Enc
 repl ← "div:cont" E ⟨
