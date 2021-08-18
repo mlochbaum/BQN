@@ -235,8 +235,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
   aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
-  at∾↩hj
-  aa←×g⊏ac←»+`(»⊸∨0=+`)⊸×gi⊏«⊸-(ak∾3¨hj)⌾(at⊸⊏)0¨𝕩# ac broadcasts it to the entire target
+  at∾↩hj⋄ac←«⊸-(ak∾5¨hj)⌾(at⊸⊏)0¨𝕩          # Header assignment is 5 temporarily
+  aa←×g⊏ac↩»+`(»⊸∨0=+`)⊸×gi⊏ac              # Broadcast ac to the entire target
+  ac-↩2×ah←5=ac                             # Assignment is header; 5→3
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
@@ -244,7 +245,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   (∨´(1↓fv)⊸<)◶"Invalid use of 𝕨 in monadic case"‿"Unreachable body"_err_(/CB) 1↓fw∧cw=0
   cw⌈↩2×fw
   nn←fo+`⊸⊏2=cw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn       # 2=cw indicates 𝕨 is never Nothing
-  "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨(ps>«𝕩=⊑bL)∨𝕩(=⟜(3+⊑)<M)bB)<aa
+  hq←/hp←(g⊏ah)∧𝕩≥nv+vi                     # Header constant
+  "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨hp∨(ps>«𝕩=⊑bL)∨𝕩(=⟜(3+⊑)<M)bB)<aa
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) hg<(0<er)∧(0≤r)∧»⊸>aa
   af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
@@ -297,8 +299,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
   ao←11+(0⌈(1+⊑bG)-˜ai⊏ma+𝕩)∾13×hd          # Assignment opcode
-  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,⥊⍉(3+l⊏aa)≍ll,ao,14¨dr,28¨al,vi-˜(al-1)⊏𝕩
+  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,hq,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,23¨hq,⥊⍉(3+l⊏aa)≍ll,ao,14¨dr,28¨al,vi-˜(al-1)⊏𝕩
                5+oa⊏r,19⌊5+(fn/dy+11×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←25+4×nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
