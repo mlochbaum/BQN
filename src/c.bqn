@@ -244,7 +244,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   (∨´(1↓fv)⊸<)◶"Invalid use of 𝕨 in monadic case"‿"Unreachable body"_err_(/CB) 1↓fw∧cw=0
   cw⌈↩2×fw
   nn←fo+`⊸⊏2=cw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn       # 2=cw indicates 𝕨 is never Nothing
-  "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨ps∨𝕩(=⟜(3+⊑)<M)bB)<aa
+  "Assignment target must be a name or list of targets"_err_(G) (a∨aid∨(ps>«𝕩=⊑bL)∨𝕩(=⟜(3+⊑)<M)bB)<aa
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) hg<(0<er)∧(0≤r)∧»⊸>aa
   af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
