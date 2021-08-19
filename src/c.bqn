@@ -167,9 +167,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)ch
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
   cc←(⍋⍋«co)⊏c∾/cs                          # Case close
-  rr←rev⊏r
-  hr←rr⊏˜hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh
-  hl←2=hn←(1⊸»+«)hc←¯1=hr
+  hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh              # Header component indices
+  hr←(⊏⟜ns×⊏⟜r)rev⊏˜hi                      # And their roles
+  hl←2=hn←(1⊸»+«)hc←¯1=hr                   # hl: is label, hc: is :
   "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
   ho←(»∨·«(hr=3)∧⊢)hl<hy←2≤hr               # Header operands
   "Missing operand in header"_err_(HI) ho∧hc∨hy
