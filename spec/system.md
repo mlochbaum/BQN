@@ -205,7 +205,7 @@ More accurately the modifier `•_maxTime_` *may* fail if execution of `𝔽` ta
 
 | Name      | Summary
 |-----------|------------------------------
-| `Range`   | An array of shape `𝕨⊣⟨⟩` selected from `↕𝕩`
+| `Range`   | A number, or array of shape `𝕨`, selected from `↕𝕩`
 | `Deal`    | A simple random sample of `𝕨⊣𝕩` elements of `↕𝕩`
 | `Subset`  | A sorted SRS of `𝕨` elements of `↕𝕩`
 
