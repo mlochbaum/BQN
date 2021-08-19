@@ -198,3 +198,21 @@ The [Unix epoch](https://en.wikipedia.org/wiki/Unix_time) is 1970-01-01 00:00:00
 `•_timed` returns the total time taken divided by the number of function calls (`𝕨` if provided and 1 otherwise), including the overhead required for the outer loop that counts iterations (which will typically be negligible in comparison to the BQN code).
 
 More accurately the modifier `•_maxTime_` *may* fail if execution of `𝔽` takes over `𝕨𝔾𝕩` seconds, and should fail as quickly as it is practically able to. The most likely way to implement this modifier is to interrupt execution at the given time. If `𝔽` completes before the interrupt there is no need to measure the amount of time it actually took.
+
+## Random generation
+
+`•MakeRand` initializes a deterministic pseudorandom number generator with seed value `𝕩`. `•rand`, if it exists, is a globally accessible generator initialized at first use. A random generator has the following member functions:
+
+| Name      | Summary
+|-----------|------------------------------
+| `Range`   | An array of shape `𝕨⊣⟨⟩` selected from `↕𝕩`
+| `Deal`    | A simple random sample of `𝕨⊣𝕩` elements of `↕𝕩`
+| `Subset`  | A sorted SRS of `𝕨` elements of `↕𝕩`
+
+For each of these functions, `𝕩` is a natural number. For `Range`, `𝕨` must be a valid shape if given, and for `Deal` and `Subset` it's a natural number less than or equal to `𝕩`. All selections are made uniformly at random, that is, each possible result is equally likely. A simple random sample (SRS) of `k` elements from list `s` is a list of `k` distinct elements of `s` in any order. Both the choice of elements and their ordering must be uniformly random. [Recommended algorithms](../implementation/primitive/random.md#simple-random-sample) for SRS selection are variants of a partial Knuth shuffle.
+
+When `𝕨` isn't given, `Deal`'s result contains all elements of `↕𝕩`, making it a random shuffle of those values, or random permutation. In `Subset`, setting `𝕨` to `𝕩` would instead always result in the list `↕𝕩`; because this is not useful, `𝕨` must be provided.
+
+In `Range`, `𝕩` may be `0`. In this case the result consists of floating-point numbers in the unit interval from 0 to 1. The numbers should have an overall uniform distribution, but their precision and whether the endpoints 0 and 1 are possible may depend on the implementation.
+
+Ranges up to `2⋆32` must be supported (that is, a maximum integer result of `(2⋆32)-1`) if the number system accommodates it. In implementations based on double-precision floats it's preferable but not required to support ranges up to `2⋆53`.
