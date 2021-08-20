@@ -132,7 +132,7 @@ if (!module.parent) {
   let arg0 = args[0];
   let cl_state = () => {
     let s = str("");
-    return [str(dir(path.resolve(__dirname))), s, list([],s)];
+    return [str(dir(path.resolve('.'))), s, list([],s)];
   }
   let exec = fn => src => {
     try {
