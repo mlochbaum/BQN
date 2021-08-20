@@ -26,7 +26,7 @@ let ff = (fr,fw,o) => resolve => (x,w) => {
   else { return fr(fs.readFileSync(f,o)); }
 };
 let fchars = ff(str,unstr,"utf-8");
-let flines = ff(s=>list(s.split('\n').map(str)),s=>s.map(unstr).join('\n'),"utf-8");
+let flines = ff(s=>list(s.replace(/\n$/,'').split('\n').map(str)),s=>s.map(unstr).join('\n')+'\n',"utf-8");
 let fbytes = ff(s=>list(Array.from(s).map(c=>String.fromCodePoint(c))),s=>Buffer.from(s.map(c=>c.codePointAt(0))));
 sysvals.fchars = withres("•FChars",fchars);
 sysvals.flines = withres("•FLines",flines);
