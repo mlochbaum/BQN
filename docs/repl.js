@@ -133,7 +133,8 @@ doc.kb.onmousedown = ev => {
   }
 }
 
-doc.kb.innerHTML += '<div class="kbext"></div>';
+let appendHTML = (e,a) => e.insertAdjacentHTML('beforeend', a);
+appendHTML(doc.kb, '<div class="kbext"></div>');
 doc.kbext = doc.kb.querySelector('.kbext');
 
 if (doc.demo) {
@@ -142,12 +143,12 @@ if (doc.demo) {
   let fontsel = '<select>'+fonts.map(f =>
       '<option value="'+f[0]+'">'+f[0]+(f[1]?' '+f[1]:'')+'</option>'
     ).join("")+'select';
-  doc.kbext.innerHTML += fontsel;
+  appendHTML(doc.kbext, fontsel);
   doc.kbext.querySelector('select').onchange =
     e=>doc.cont.className='cont '+fclass(e.target.value);
 }
 
-doc.kbext.innerHTML += '<input class="prfx" type="text" maxlength="1" value="'+prefix+'"/>';
+appendHTML(doc.kbext, '<input class="prfx" type="text" maxlength="1" value="'+prefix+'"/>');
 doc.kbext.querySelector(".prfx").onchange = ev => {
   prefix = ev.target.value; setPrefix();
 }
