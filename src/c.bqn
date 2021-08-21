@@ -208,7 +208,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ir⌈↩(IT¬pt∧ir=0)((⊏-⊢)⟜(+`¬pp)(⊢⌊1⌈+)⊏)ir # ...and function roles
   r+↩pt×»ir                                 # Roles at pt were 0; set them now
   nr×↩¬nx∨↩(0≠ir)∧1=nr                      # Assume 𝕎 can't be Nothing
-  ir-↩nr                                    # Include nothingness
+  ir↩(ir×0=nr)-nr                           # Include nothingness
   r-↩(r=¯4)∧1»r=¯1                          # Lone ⇐ to role ¯5
   "Dot must be preceded by a subject"_err_(⍋∘rev) (r=4)>»r=0
   r(×⟜¬-⊢)↩dl                               # Namespace and dot to ¯1
