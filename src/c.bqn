@@ -236,7 +236,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
   at∾↩hj⋄ac←«⊸-(ak∾5¨hj)⌾(at⊸⊏)0¨𝕩          # Header assignment is 5 temporarily
-  aa←×g⊏ac↩»+`(»⊸∨0=+`)⊸×gi⊏ac              # Broadcast ac to the entire target
+  aa←×g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac            # Broadcast ac to the entire target
   ac-↩2×ah←5=ac                             # Assignment is header; 5→3
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
