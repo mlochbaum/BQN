@@ -157,7 +157,7 @@ blobURL ← repoURL∾"/blob/master/"
 _getCodeExec ← {𝕗⋄•MakeREPL@}
 _getSvgExec ← {𝕗
   e←•MakeREPL@
-  (E"GetHighlights←Modify←!⋄{GetHighlights‿Modify↩𝕩}"){𝔽} GetHighlights‿Modify
+  ⟨"","",GetHighlights‿Modify‿E⟩ E "GetHighlights‿Modify‿Eval←•args"
   E•FChars"svg.bqn"
   JoinLines⍟(1<≡)∘E
 }
