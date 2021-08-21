@@ -18,7 +18,7 @@ M ← {e‿b←𝕩
     """",b,""": expected "
     "to fail"⍟("!"⊸≡)e
     " but "
-    0⊸≡◶⟨"received "∾·•Repr⊑,"evaluation failed"⟩𝕩
+    0⊸≡◶⟨"received "∾·•Repr⎊"{…}"⊑,"evaluation failed"⟩𝕩
   ⟩}
   ("!"⊸≡◶⟨<Native,0˙⟩ e) ≢◶⟨0,1∘•Out∘Msg⟩ <∘Exec⎊0 b
 }
