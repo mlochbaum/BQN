@@ -70,7 +70,8 @@ Tokenize←{System‿vars←𝕨
   i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
-  fr←rr/˜if←(»⌈`)⊸<ig←(i>us)×+`w>n          # Identifier groups and first character
+  if←(»⌈`)⊸<ig←(i>us)×+`w>n                 # Identifier groups and first character
+  fr←(1=wi/wt)<if/rr                        # Identifier is 𝕣-based
   w↩if∨n∧w0←w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr          # Don't produce an identifier for 𝕣
   {⟨𝕩/is,"𝕣 can't be used with other word characters"⟩!0}⍟(∨´)(i>us)∧(rr⊸≠∨if⊸<)ig⊏0∾fr
   {⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/rr<if
