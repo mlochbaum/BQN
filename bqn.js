@@ -154,7 +154,7 @@ if (!module.parent) {
     });
   } else if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
     let f=arg0, a=list(args.slice(1).map(str));
-    exec(s=>bqn_file(f,s,a))(fs.readFileSync(f,'utf-8'));
+    exec(s=>bqn_file(path.resolve(f),s,a))(fs.readFileSync(f,'utf-8'));
   } else if (arg0 === '-e') {
     let st=cl_state();
     args.slice(1).map(exec(s=>show(bqn_state(s,st))));
