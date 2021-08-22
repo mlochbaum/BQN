@@ -5,10 +5,12 @@
 "ab" ≡○(0⊸↑) ↕2
 
 # Functions that fill
-("abc"≍"de ") ≡ 2‿↑⥊"abcde"
 "abc  "≡5↑"abc"
 " ab" ≡ »"abc"
 "bc " ≡ «"abc"
+("abc"≍"de ") ≡ 2‿↑⥊"abcde"
+(1‿3⥊4‿0‿0)   ≡ ↑‿3⥊4
+(4‿3⥊12↑<¨↕10)≡ ↑‿3⥊<¨↕10
 
 # Box generates arbitrary fill elements
 ∧´ (2⊸↑ ≡ 1‿0⊸×)∘<¨ ⟨π, ↕3, "", 2+⌜○↕3, ≍˘⟨2‿1,↕4‿2⟩⟩
