@@ -145,8 +145,8 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
         vid.push(v);
         return "do {"+c+"} while (0);\n"
       }
-      let [mon,dy] = ind.map(js => {
-        let e = js.length?"No matching case":"Left argument required";
+      let [mon,dy] = ind.map((js,i) => {
+        let e = js.length?"No matching case":"Left argument "+(i?"not allowed":"required");
         return js.map(g).concat(["throw Error('"+e+"');\n"]).join("");
       });
       def = "new Array("+sp+").fill(null)";
