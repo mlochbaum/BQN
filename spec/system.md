@@ -15,7 +15,10 @@ All system values described in the BQN specification are optional: an implementa
 | `•BQN`        | Evaluate the argument string in an isolated scope
 | `•Eval`       | Evaluate the argument string in the current scope
 | `•ScopedEval` | Evaluate the argument string in a child scope
+| `•MakeREPL`   | Create an evaluator that keeps variables across runs
 | `•Using`      | Import all values from the argument namespace
+
+The left argument to any evaluator (`•BQN`, `•Eval`, `•ScopedEval`, result of `•MakeREPL`), if given, is a list of up to three elements, giving a prefix of `•state` (see next section) during evaluations of that function. Thus `⟨"","xyz"⟩•BQN"•name"` returns `"xyz"`.
 
 The effect of `•Eval` should be the same as if its argument were written as source code in the scope where `•Eval` appears. It can define variables, and modify those in the current scope or a parent.
 
@@ -26,6 +29,7 @@ The effect of `•Eval` should be the same as if its argument were written as so
 | Name       | Summary
 |------------|---------------------
 | `•Import`  | Load a script file
+| `•state`   | `⟨•path, •name, •args⟩`
 | `•args`    | Arguments passed to current file
 | `•path`    | Current file's path
 | `•name`    | Current filename

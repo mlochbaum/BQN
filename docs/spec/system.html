@@ -30,11 +30,16 @@
 <td>Evaluate the argument string in a child scope</td>
 </tr>
 <tr>
+<td><code><span class='Function'>•MakeREPL</span></code></td>
+<td>Create an evaluator that keeps variables across runs</td>
+</tr>
+<tr>
 <td><code><span class='Function'>•Using</span></code></td>
 <td>Import all values from the argument namespace</td>
 </tr>
 </tbody>
 </table>
+<p>The left argument to any evaluator (<code><span class='Function'>•BQN</span></code>, <code><span class='Function'>•Eval</span></code>, <code><span class='Function'>•ScopedEval</span></code>, result of <code><span class='Function'>•MakeREPL</span></code>), if given, is a list of up to three elements, giving a prefix of <code><span class='Value'>•state</span></code> (see next section) during evaluations of that function. Thus <code><span class='Bracket'>⟨</span><span class='String'>&quot;&quot;</span><span class='Separator'>,</span><span class='String'>&quot;xyz&quot;</span><span class='Bracket'>⟩</span><span class='Function'>•BQN</span><span class='String'>&quot;•name&quot;</span></code> returns <code><span class='String'>&quot;xyz&quot;</span></code>.</p>
 <p>The effect of <code><span class='Function'>•Eval</span></code> should be the same as if its argument were written as source code in the scope where <code><span class='Function'>•Eval</span></code> appears. It can define variables, and modify those in the current scope or a parent.</p>
 <p><code><span class='Function'>•ScopedEval</span></code> creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to <code><span class='Brace'>{</span><span class='Function'>•Eval</span><span class='Brace'>}</span></code>. Parent scopes are visible from the created scope; to make a scope without this property use <code><span class='Function'>•BQN</span><span class='String'>&quot;•Eval&quot;</span></code> or <code><span class='Function'>•BQN</span><span class='String'>&quot;•ScopedEval&quot;</span></code>.</p>
 <h2 id="scripts"><a class="header" href="#scripts">Scripts</a></h2>
@@ -49,6 +54,10 @@
 <tr>
 <td><code><span class='Function'>•Import</span></code></td>
 <td>Load a script file</td>
+</tr>
+<tr>
+<td><code><span class='Value'>•state</span></code></td>
+<td><code><span class='Bracket'>⟨</span><span class='Value'>•path</span><span class='Separator'>,</span> <span class='Value'>•name</span><span class='Separator'>,</span> <span class='Value'>•args</span><span class='Bracket'>⟩</span></code></td>
 </tr>
 <tr>
 <td><code><span class='Value'>•args</span></code></td>
