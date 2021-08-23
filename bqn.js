@@ -5,6 +5,7 @@ let path = require('path');
 let fs = require('fs');
 
 let bqn = require("./docs/bqn.js");
+module.exports = bqn;
 let {fmt,fmtErr,sysvals}=bqn;
 let {has,list,str,unstr,dynsys,req1str,makens}=bqn.util;
 
