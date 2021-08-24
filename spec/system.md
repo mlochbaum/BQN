@@ -17,12 +17,24 @@ All system values described in the BQN specification are optional: an implementa
 | `•ScopedEval` | Evaluate the argument string in a child scope
 | `•MakeREPL`   | Create an evaluator that keeps variables across runs
 | `•Using`      | Import all values from the argument namespace
+| `•NewBQN`     | Create a BQN-like evaluation function with options `𝕩`
 
 The left argument to any evaluator (`•BQN`, `•Eval`, `•ScopedEval`, result of `•MakeREPL`), if given, is a list of up to three elements, giving a prefix of `•state` (see next section) during evaluations of that function. Thus `⟨"","xyz"⟩•BQN"•name"` returns `"xyz"`.
 
 The effect of `•Eval` should be the same as if its argument were written as source code in the scope where `•Eval` appears. It can define variables, and modify those in the current scope or a parent.
 
 `•ScopedEval` creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to `{•Eval}`. Parent scopes are visible from the created scope; to make a scope without this property use `•BQN"•Eval"` or `•BQN"•ScopedEval"`.
+
+`•NewBQN` accepts a namespace `𝕩`. The following options are specified if supported:
+
+| Option        | Values (default first)
+|---------------|--------------------------
+| `repl`        | `"none"`, `"strict"`, `"loose"`
+| `scope`       | `"none"`, `"read"`, `"modify"`
+| `primitives`  | List of glyph-value pairs; default `⟨⟩`
+| `retain`      | `"all"`, `"unique"`, `"none"`
+
+The option `repl` indicates how variables are retained across calls: with "none" they are not saved; with "strict", they are saved and can't be redefined; and with "loose" they may be redefined. `scope` indicates allowed interaction with the scope in which `•NewBQN` is *called* (not loaded): with "read" variables may be read and with "modify" they may be read or modified. `primitives` indicates primitives to be added in this copy of BQN. Each primitive uses the glyph and value given. The value must have an operation type and its type determines the primitive's role. `retain` indicates which primitives from the current running BQN should be kept. With "all", an error is given if `primitives` redefines an existing primitive, but with "unique" primitives may be redefined.
 
 ## Scripts
 
