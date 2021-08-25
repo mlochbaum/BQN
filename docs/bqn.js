@@ -10,14 +10,15 @@ let call = (f,x,w) => {
   return f(x, w);
 }
 
+let getrev = names => {
+  let m=names.rev;
+  if (m) return m;
+  m={}; names.forEach((s,i)=>m[s]=i);
+  return names.rev=m;
+}
 let findkey = (ns, names, i) => {
   let nn=ns.names, ni;
-  if (nn===names) {
-    return ns[i];
-  } else {
-    if (!has(nn.rev)) { let m=nn.rev={}; nn.forEach((s,i)=>m[s]=i); }
-    return ns[nn.rev[names[i]]];
-  }
+  return ns[nn===names ? i : getrev(nn)[names[i]]];
 }
 let readns_sub = (v, names, i) => {
   let ni = findkey(v.ns, names, i);
@@ -480,44 +481,57 @@ let dojs = (x,w) => {
   return toBQN(r);
 }
 let reqexec = req1str;  // Modified by Node version to handle •state
-let extendedbqn = (x,w) => {
-  let req = (r,s) => { if (!r) throw Error("•ExtendedBQN: "+s) };
+let rebqn = (x,w) => {
+  let req = (r,s) => { if (!r) throw Error("•ReBQN: "+s) };
   req(!has(w), "𝕨 not allowed");
-  req(x.sh && x.sh.length===1, "𝕩 must be a list");
-  req(x.every(e=>e.sh&&e.sh.length===1&&e.sh[0]===2), "𝕩 must contain glyph-primitive pairs");
-  let pr = glyphs.map(str);
-  let l=0, rt = pr.map(s=>runtime.slice(l,l+=s.length));
-  x.forEach(([gl,val])=>{
-    req(typeof gl==="string", "Primitive glyphs must be characters");
-    req(isfunc(val), "Primitives must be operations");
-    let k=val.m||0;
-    pr[k].push(gl); rt[k].push(val);
-  });
-  pr.map(p=>p.sh=[p.length]);
-  rt = list([].concat.apply([],rt));
-  let bqn = bqngen(compgen(list(pr)),list([rt,system]));
-  return (x,w)=>bqn(reqexec("•BQN extension",x,w));
-}
-let makerepl = (x,w) => {
-  let vars = [], names = [], redef = [];
-  let rtn = list(rt_sys.concat([names,redef]));
-  let comp = wrapcomp(compile);
-  let repl = (x,w) => {
-    names.sh=redef.sh=[names.length];
-    let c = comp(str(reqexec("Repl",x,w)), rtn);
-    let pnames = c[5][2][0];
-    let newv = c[3][0][2].slice(vars.length);
-    names.push(...newv.map(i=>pnames[i]));
-    redef.push(...newv.map(i=>-1));
-    vars .push(...newv.map(i=>null));
-    c.push(vars);
-    return run.apply(null, c);
+  req(x.ns, "𝕩 must be a namespace");
+  let rev = getrev(x.ns.names);
+  let [repl,primitives] = ["repl","primitives"]
+    .map(s=>(i=>has(i)?x[i]:i)(rev[s]));
+
+  let comp=compile, rts=rt_sys;
+  if (has(primitives)) {
+    let p = primitives;
+    req(p.sh && p.sh.length===1, "𝕩.primitives must be a list");
+    req(p.every(e=>e.sh&&e.sh.length===1&&e.sh[0]===2), "𝕩.primitives must contain glyph-primitive pairs");
+    let pr=glyphs.map(_=>[]), l=0, rt=pr.map(_=>[]);
+    p.forEach(([gl,val])=>{
+      req(typeof gl==="string", "Primitive glyphs must be characters");
+      req(isfunc(val), "Primitives must be operations");
+      let k=val.m||0;
+      pr[k].push(gl); rt[k].push(val);
+    });
+    pr.map(p=>p.sh=[p.length]);
+    comp = compgen(list(pr));
+    rts[0] = list([].concat.apply([],rt));
   }
-  return repl;
+  comp = wrapcomp(comp);
+  let cmp= (x,w) => comp(str(reqexec("•ReBQN evaluation",x,w)), rts);
+  let ex = c => run.apply(null, c);
+
+  if (!has(repl) || (repl=unstr(repl))==="none") {
+    return (x,w) => ex(cmp(x,w));
+  } else {
+    let rd = repl==="strict" ? 0 : -1;
+    req(rd==0||repl==="loose", "invalid value for 𝕩.repl")
+    let vars = [], names = [], redef = [];
+    rts = list(rts.concat([names,redef]));
+    return (x,w) => {
+      names.sh=redef.sh=[names.length];
+      let c = cmp(x,w);
+      let pnames = c[5][2][0];
+      let newv = c[3][0][2].slice(vars.length);
+      names.push(...newv.map(i=>pnames[i]));
+      redef.push(...newv.map(i=>rd));
+      vars .push(...newv.map(i=>null));
+      c.push(vars);
+      return ex(c);
+    }
+  }
 }
 let dynsys = f => { f.dynamic=1; return f; }
 let sysvals = {
-  bqn:(x,w)=> bqn(reqexec("•BQN",x,w)), makerepl, js:dojs, extendedbqn,
+  bqn:(x,w)=> bqn(reqexec("•BQN",x,w)), rebqn, js:dojs,
   type, glyph, decompose, fmt:fmt1, repr, unixtime, listkeys,
   listsys: dynsys(() => list(Object.keys(sysvals).sort().map(str))),
   math: obj2ns(Math,("LN10 LN2 LOG10E LOG2E cbrt expm1 hypot log10 log1p log2 round trunc atan2 cos cosh sin sinh tan tanh").split(" "), f=>typeof f==="function"?runtime[60](f,0):f)
