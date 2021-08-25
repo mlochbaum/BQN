@@ -8,33 +8,26 @@ The `•` symbol is used to access values other than primitives provided by BQN.
 
 All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior. For namespaces this rule applies to individual fields as well: a namespace may be provided with only some of the fields, but a field with one of the given names must behave as specified.
 
-## Execution and scope manipulation
+## Execution
 
 | Name          | Summary
 |---------------|--------------------------
 | `•BQN`        | Evaluate the argument string in an isolated scope
-| `•Eval`       | Evaluate the argument string in the current scope
-| `•ScopedEval` | Evaluate the argument string in a child scope
-| `•MakeREPL`   | Create an evaluator that keeps variables across runs
-| `•Using`      | Import all values from the argument namespace
-| `•NewBQN`     | Create a BQN-like evaluation function with options `𝕩`
+| `•ReBQN`      | Create a BQN-like evaluation function with options `𝕩`
+| `•primitives` | List of primitives as glyph-value pairs
 
-The left argument to any evaluator (`•BQN`, `•Eval`, `•ScopedEval`, result of `•MakeREPL`), if given, is a list of up to three elements, giving a prefix of `•state` (see next section) during evaluations of that function. Thus `⟨"","xyz"⟩•BQN"•name"` returns `"xyz"`.
+The left argument to `•BQN` or the result of `•ReBQN`, if given, is a list of up to three elements, giving a prefix of `•state` (see next section) during evaluations of that function. Thus `⟨"","xyz"⟩•BQN"•name"` returns `"xyz"`.
 
-The effect of `•Eval` should be the same as if its argument were written as source code in the scope where `•Eval` appears. It can define variables, and modify those in the current scope or a parent.
-
-`•ScopedEval` creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to `{•Eval}`. Parent scopes are visible from the created scope; to make a scope without this property use `•BQN"•Eval"` or `•BQN"•ScopedEval"`.
-
-`•NewBQN` accepts a namespace `𝕩`. The following options are specified if supported:
+`•ReBQN` accepts a namespace `𝕩`. The following options are specified if supported:
 
 | Option        | Values (default first)
 |---------------|--------------------------
 | `repl`        | `"none"`, `"strict"`, `"loose"`
-| `scope`       | `"none"`, `"read"`, `"modify"`
-| `primitives`  | List of glyph-value pairs; default `⟨⟩`
-| `retain`      | `"all"`, `"unique"`, `"none"`
+| `primitives`  | List of glyph-value pairs; default `•primitives`
+| `system`      | `"all"`, `"none"`, `"safe"` or list of names
+| `scope`       | `"none"`, `"read"`, `"modify"` or list of name-setting pairs
 
-The option `repl` indicates how variables are retained across calls: with "none" they are not saved; with "strict", they are saved and can't be redefined; and with "loose" they may be redefined. `scope` indicates allowed interaction with the scope in which `•NewBQN` is *called* (not loaded): with "read" variables may be read and with "modify" they may be read or modified. `primitives` indicates primitives to be added in this copy of BQN. Each primitive uses the glyph and value given. The value must have an operation type and its type determines the primitive's role. `retain` indicates which primitives from the current running BQN should be kept. With "all", an error is given if `primitives` redefines an existing primitive, but with "unique" primitives may be redefined.
+The option `repl` indicates how variables are retained across calls: with "none" they are not saved; with "strict", they are saved and can't be redefined; and with "loose" they may be redefined. Each element in `primitives` gives the glyph and value for a primitive to be made available. The value must have an operation type and its type determines the primitive's role. `system` in general gives the list of system values to be made available, with shorthand values to indicate all currently-available ones, none of them, or only a subset that cannot be used to interact with anything outside of the execution context. `scope` indicates allowed interaction with the scope in which `•ReBQN` is *called* (not loaded): with "read" variables may be read and with "modify" they may be read or modified.
 
 ## Scripts
 
