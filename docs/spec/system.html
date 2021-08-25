@@ -8,7 +8,7 @@
 <p>This portion of the spec is still potentially subject to major changes.</p>
 <p>The <code><span class='Value'>•</span></code> symbol is used to access values other than primitives provided by BQN.</p>
 <p>All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior. For namespaces this rule applies to individual fields as well: a namespace may be provided with only some of the fields, but a field with one of the given names must behave as specified.</p>
-<h2 id="execution-and-scope-manipulation"><a class="header" href="#execution-and-scope-manipulation">Execution and scope manipulation</a></h2>
+<h2 id="execution"><a class="header" href="#execution">Execution</a></h2>
 <table>
 <thead>
 <tr>
@@ -22,31 +22,17 @@
 <td>Evaluate the argument string in an isolated scope</td>
 </tr>
 <tr>
-<td><code><span class='Function'>•Eval</span></code></td>
-<td>Evaluate the argument string in the current scope</td>
-</tr>
-<tr>
-<td><code><span class='Function'>•ScopedEval</span></code></td>
-<td>Evaluate the argument string in a child scope</td>
-</tr>
-<tr>
-<td><code><span class='Function'>•MakeREPL</span></code></td>
-<td>Create an evaluator that keeps variables across runs</td>
-</tr>
-<tr>
-<td><code><span class='Function'>•Using</span></code></td>
-<td>Import all values from the argument namespace</td>
-</tr>
-<tr>
-<td><code><span class='Function'>•NewBQN</span></code></td>
+<td><code><span class='Function'>•ReBQN</span></code></td>
 <td>Create a BQN-like evaluation function with options <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>•primitives</span></code></td>
+<td>List of primitives as glyph-value pairs</td>
 </tr>
 </tbody>
 </table>
-<p>The left argument to any evaluator (<code><span class='Function'>•BQN</span></code>, <code><span class='Function'>•Eval</span></code>, <code><span class='Function'>•ScopedEval</span></code>, result of <code><span class='Function'>•MakeREPL</span></code>), if given, is a list of up to three elements, giving a prefix of <code><span class='Value'>•state</span></code> (see next section) during evaluations of that function. Thus <code><span class='Bracket'>⟨</span><span class='String'>&quot;&quot;</span><span class='Separator'>,</span><span class='String'>&quot;xyz&quot;</span><span class='Bracket'>⟩</span><span class='Function'>•BQN</span><span class='String'>&quot;•name&quot;</span></code> returns <code><span class='String'>&quot;xyz&quot;</span></code>.</p>
-<p>The effect of <code><span class='Function'>•Eval</span></code> should be the same as if its argument were written as source code in the scope where <code><span class='Function'>•Eval</span></code> appears. It can define variables, and modify those in the current scope or a parent.</p>
-<p><code><span class='Function'>•ScopedEval</span></code> creates as new scope for evaluation as it is loaded. Other than its syntactic role, it is effectively equivalent to <code><span class='Brace'>{</span><span class='Function'>•Eval</span><span class='Brace'>}</span></code>. Parent scopes are visible from the created scope; to make a scope without this property use <code><span class='Function'>•BQN</span><span class='String'>&quot;•Eval&quot;</span></code> or <code><span class='Function'>•BQN</span><span class='String'>&quot;•ScopedEval&quot;</span></code>.</p>
-<p><code><span class='Function'>•NewBQN</span></code> accepts a namespace <code><span class='Value'>𝕩</span></code>. The following options are specified if supported:</p>
+<p>The left argument to <code><span class='Function'>•BQN</span></code> or the result of <code><span class='Function'>•ReBQN</span></code>, if given, is a list of up to three elements, giving a prefix of <code><span class='Value'>•state</span></code> (see next section) during evaluations of that function. Thus <code><span class='Bracket'>⟨</span><span class='String'>&quot;&quot;</span><span class='Separator'>,</span><span class='String'>&quot;xyz&quot;</span><span class='Bracket'>⟩</span><span class='Function'>•BQN</span><span class='String'>&quot;•name&quot;</span></code> returns <code><span class='String'>&quot;xyz&quot;</span></code>.</p>
+<p><code><span class='Function'>•ReBQN</span></code> accepts a namespace <code><span class='Value'>𝕩</span></code>. The following options are specified if supported:</p>
 <table>
 <thead>
 <tr>
@@ -60,20 +46,20 @@
 <td><code><span class='String'>&quot;none&quot;</span></code>, <code><span class='String'>&quot;strict&quot;</span></code>, <code><span class='String'>&quot;loose&quot;</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Value'>scope</span></code></td>
-<td><code><span class='String'>&quot;none&quot;</span></code>, <code><span class='String'>&quot;read&quot;</span></code>, <code><span class='String'>&quot;modify&quot;</span></code></td>
-</tr>
-<tr>
 <td><code><span class='Value'>primitives</span></code></td>
-<td>List of glyph-value pairs; default <code><span class='Bracket'>⟨⟩</span></code></td>
+<td>List of glyph-value pairs; default <code><span class='Value'>•primitives</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Value'>retain</span></code></td>
-<td><code><span class='String'>&quot;all&quot;</span></code>, <code><span class='String'>&quot;unique&quot;</span></code>, <code><span class='String'>&quot;none&quot;</span></code></td>
+<td><code><span class='Value'>system</span></code></td>
+<td><code><span class='String'>&quot;all&quot;</span></code>, <code><span class='String'>&quot;none&quot;</span></code>, <code><span class='String'>&quot;safe&quot;</span></code> or list of names</td>
+</tr>
+<tr>
+<td><code><span class='Value'>scope</span></code></td>
+<td><code><span class='String'>&quot;none&quot;</span></code>, <code><span class='String'>&quot;read&quot;</span></code>, <code><span class='String'>&quot;modify&quot;</span></code> or list of name-setting pairs</td>
 </tr>
 </tbody>
 </table>
-<p>The option <code><span class='Value'>repl</span></code> indicates how variables are retained across calls: with &quot;none&quot; they are not saved; with &quot;strict&quot;, they are saved and can't be redefined; and with &quot;loose&quot; they may be redefined. <code><span class='Value'>scope</span></code> indicates allowed interaction with the scope in which <code><span class='Function'>•NewBQN</span></code> is <em>called</em> (not loaded): with &quot;read&quot; variables may be read and with &quot;modify&quot; they may be read or modified. <code><span class='Value'>primitives</span></code> indicates primitives to be added in this copy of BQN. Each primitive uses the glyph and value given. The value must have an operation type and its type determines the primitive's role. <code><span class='Value'>retain</span></code> indicates which primitives from the current running BQN should be kept. With &quot;all&quot;, an error is given if <code><span class='Value'>primitives</span></code> redefines an existing primitive, but with &quot;unique&quot; primitives may be redefined.</p>
+<p>The option <code><span class='Value'>repl</span></code> indicates how variables are retained across calls: with &quot;none&quot; they are not saved; with &quot;strict&quot;, they are saved and can't be redefined; and with &quot;loose&quot; they may be redefined. Each element in <code><span class='Value'>primitives</span></code> gives the glyph and value for a primitive to be made available. The value must have an operation type and its type determines the primitive's role. <code><span class='Value'>system</span></code> in general gives the list of system values to be made available, with shorthand values to indicate all currently-available ones, none of them, or only a subset that cannot be used to interact with anything outside of the execution context. <code><span class='Value'>scope</span></code> indicates allowed interaction with the scope in which <code><span class='Function'>•ReBQN</span></code> is <em>called</em> (not loaded): with &quot;read&quot; variables may be read and with &quot;modify&quot; they may be read or modified.</p>
 <h2 id="scripts"><a class="header" href="#scripts">Scripts</a></h2>
 <table>
 <thead>
