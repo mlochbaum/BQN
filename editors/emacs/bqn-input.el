@@ -15,12 +15,6 @@
                           bqn--symbols))))
   (make-insert-functions))
 
-(defun bqn-insert-spc ()
-  "Insert a space. This is needed so that one can type a space
-character when using the super-prefixed characters."
-  (interactive)
-  (insert " "))
-
 (defun bqn--kbd (definition)
   (if (functionp #'kbd)
       (kbd definition)
@@ -32,7 +26,6 @@ character when using the super-prefixed characters."
       (let ((key-sequence (caddr command)))
         (dolist (s (if (listp key-sequence) key-sequence (list key-sequence)))
           (define-key map (bqn--kbd (concat prefix s)) (bqn--make-key-command-sym (car command))))))
-    (define-key map (kbd (concat prefix "SPC")) 'bqn-insert-spc)
     (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN")))
     map))
 
