@@ -417,16 +417,14 @@ let compgen = gl => {
 }
 let compile = compgen(glyphs);
 runtime[42] = rtAssert;
-let system = (x,w) => {
+let system = sysargs => (x,w) => {
   let r = table(s=>sysvals[unstr(s)])(x);
   if (r.some(v=>!has(v))) {
     let m = x.filter((_,i)=>!has(r[i])).map(s=>"•"+unstr(s)).join(" ");
     throw Error("Unknown system values (see •listSys for available): "+m);
   }
-  return table(v=>v.dynamic?v():v)(r);
+  return table(v=>v.dynamic?v(sysargs):v)(r);
 }
-let rt_sys = list([runtime, system]);
-let bqn = src => run.apply(null,compile(str(src),rt_sys));
 
 // Formatter
 let fmtnum = x => str(x==Infinity ? "∞" : x==-Infinity ? "¯∞"
@@ -463,6 +461,7 @@ let fmtErr = e => {
   return [w].concat(loc).join('\n');
 }
 
+let dynsys = f => { f.dynamic=1; return f; }
 let isstr = x => x.sh && x.sh.length==1 && x.every(c=>typeof c==="string");
 let unixtime = (x,w) => Date.now()/1000;
 let req1str = (e,x,w) => {
@@ -482,8 +481,9 @@ let dojs = (x,w) => {
   }
   return toBQN(r);
 }
+
 let reqexec = req1str;  // Modified by Node version to handle •state
-let rebqn = (x,w) => {
+let rebqn = dynsys(state => (x,w) => {
   let req = (r,s) => { if (!r) throw Error("•ReBQN: "+s) };
   req(!has(w), "𝕨 not allowed");
   req(x.ns, "𝕩 must be a namespace");
@@ -491,7 +491,6 @@ let rebqn = (x,w) => {
   let [repl,primitives] = ["repl","primitives"]
     .map(s=>(i=>has(i)?x[i]:i)(rev[s]));
 
-  let comp=compile, rts=rt_sys.slice();
   if (has(primitives)) {
     let p = primitives;
     req(p.sh && p.sh.length===1, "𝕩.primitives must be a list");
@@ -503,10 +502,13 @@ let rebqn = (x,w) => {
       let k=val.m||0;
       pr[k].push(gl); rt[k].push(val);
     });
-    comp = compgen(pr);
-    rts[0] = list([].concat.apply([],rt));
+    state = {...state};
+    state.compile = compgen(state.glyphs = pr);
+    state.runtime = list([].concat(...rt));
   }
-  let cmp= (x,w) => comp(reqexec("•ReBQN evaluation",x,w), rts);
+  let comp = state.compile;
+  let rts = list([state.runtime, system(state)]);
+  let cmp = (x,w) => comp(reqexec("•ReBQN evaluation",x,w), rts);
   let ex = c => run.apply(null, c);
 
   if (!has(repl) || (repl=unstr(repl))==="none") {
@@ -528,12 +530,16 @@ let rebqn = (x,w) => {
       return ex(c);
     }
   }
-}
-let dynsys = f => { f.dynamic=1; return f; }
+});
+let primitives = dynsys(state => {
+  let gl=[].concat(...state.glyphs), rt=state.runtime;
+  return list(gl.map((g,i) => list([g,rt[i]])));
+});
+
 let sysvals = {
-  bqn:(x,w)=> bqn(reqexec("•BQN",x,w)), rebqn, js:dojs,
+  bqn:(x,w)=> bqn(reqexec("•BQN",x,w)), rebqn, primitives, js:dojs,
   type, glyph, decompose, fmt:fmt1, repr, unixtime, listkeys,
-  listsys: dynsys(() => list(Object.keys(sysvals).sort().map(str))),
+  listsys: dynsys(_ => list(Object.keys(sysvals).sort().map(str))),
   math: obj2ns(Math,("LN10 LN2 LOG10E LOG2E cbrt expm1 hypot log10 log1p log2 round trunc atan2 cos cosh sin sinh tan tanh").split(" "), f=>typeof f==="function"?runtime[60](f,0):f)
 };
 
@@ -558,6 +564,10 @@ if (typeof process!=='undefined') {
     let t0=performance.now(); f(); return (performance.now()-t0)/1000;
   });
 }
+
+let sysargs = {compile,runtime,glyphs:glyphs.map(str)};
+let rt_sys = list([runtime, system(sysargs)]);
+let bqn = src => run.apply(null,compile(str(src),rt_sys));
 
 if (typeof module!=='undefined') {  // Node.js
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;
