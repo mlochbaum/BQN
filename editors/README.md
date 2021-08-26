@@ -49,6 +49,14 @@ Copy or symlink all files into the corresponding directories in `~/.vim`. Add th
 
 Include `syntax on` in your .vimrc for syntax highlighting and `filetype plugin on` for keyboard input.
 
+To use vim-plug to install BQN support for vim, add this to your plugin section
+of your `.vimrc`:
+
+      Plug 'mlochbaum/BQN', {'rtp': 'editors/vim'}
+
+Then run `:PlugInstall`.
+
+
 ### Emacs
 
 Add the following two lines to `init.el` (usually `~/.emacs.d/init.el`), replacing the path appropriately.
