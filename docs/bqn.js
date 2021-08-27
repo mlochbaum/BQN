@@ -504,7 +504,7 @@ let rebqn = dynsys_copy(state => (x,w) => {
   req(x.ns, "𝕩 must be a namespace");
   let rev = getrev(x.ns.names);
   let [repl,primitives] = ["repl","primitives"]
-    .map(s=>(i=>has(i)?x[i]:i)(rev[s]));
+    .map(s=>(i=>has(i)?x[x.ns[i]]:i)(rev[s]));
 
   if (has(primitives)) {
     let p = primitives;
