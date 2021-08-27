@@ -36,7 +36,7 @@ sysvals.fbytes = withres("•FBytes",fbytes);
 
 sysvals.file = dynsys(state => {
   let p = state.path;
-  let res = getres(p);
+  let res = state.resolve;
   let files = {
     // Paths and parsing
     path: p,
@@ -151,8 +151,8 @@ if (!module.parent) {
     }
   }
   if (!has(arg0) || arg0==='-r') {
-    let st = cl_state();
-    let stdin = process.stdin, repl = sysvals.makerepl();
+    let stdin = process.stdin;
+    let repl = sysvals.rebqn(cl_state())(makens(["repl"],[str("loose")]));
     let e = exec(s=>show(repl(str(s))));
     stdin.on('end', () => { process.exit(); });
     stdin.on('readable', () => {
