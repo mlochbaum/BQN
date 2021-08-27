@@ -410,7 +410,7 @@ let compgen_raw = run(
 let compgen = sys => {
   let gl = sys.glyphs, rt = sys.runtime;
   let comp = compgen_raw(list(gl));
-  return sysargs.comps = sysargs => {
+  return sys.comps = sysargs => {
     let system = (x,w) => {
       let r = table(s=>sysvals[unstr(s)])(x);
       if (r.some(v=>!has(v))) {
