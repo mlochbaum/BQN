@@ -27,7 +27,7 @@ let repl = ()=>{
   setTimeout(() => {
     try {
       let out=[]; sysvals.show = (x,w) => { out.push(x); return x; }
-      let c=compile(src,rt_sys);
+      let c=compile(src);
       setExplain(src,c);
       out.push(run.apply(null,c));
       doc.rslt.textContent=out.map(fmt).join('\n');
