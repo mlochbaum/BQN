@@ -6,12 +6,13 @@ let fs = require('fs');
 
 let bqn = require("./docs/bqn.js");
 module.exports = bqn;
-let {fmt,fmtErr,sysvals}=bqn;
+let {fmt,fmtErr,sysvals,sysargs,bqns}=bqn;
 let {has,list,str,unstr,dynsys,req1str,makens}=bqn.util;
 
 let show = x => console.log(fmt(x));
 sysvals.show = (x,w) => { show(x); return x; };
 sysvals.out = (x,w) => { console.log(req1str("•Out",x,w)); return x; };
+sysvals.exit = (x,w) => process.exit(Number.isInteger(x)?x:0);
 
 let dir = f=>f==='/'?f:f+'/'; // BQN uses trailing slash
 let getres = p => {
@@ -20,7 +21,7 @@ let getres = p => {
   else { res = (e,f) => { if (!path.isAbsolute(f)) throw Error(e+": Paths must be absolute when not running from a file"); return f; }; }
   return e => (x,w) => res(e,req1str(e,x,w));
 }
-let withres = (e,fn) => dynsys(() => fn(getres(sysvals.path)(e)));
+let withres = (e,fn) => dynsys(state => fn(state.resolve(e), state));
 let ff = (fr,fw,o) => resolve => (x,w) => {
   let f = resolve(has(w)?w:x);
   if (has(w)) { fs.writeFileSync(f,fw(x),o); return str(f); }
@@ -33,8 +34,8 @@ sysvals.fchars = withres("•FChars",fchars);
 sysvals.flines = withres("•FLines",flines);
 sysvals.fbytes = withres("•FBytes",fbytes);
 
-sysvals.file = dynsys(() => {
-  let p = sysvals.path;
+sysvals.file = dynsys(state => {
+  let p = state.path;
   let res = getres(p);
   let files = {
     // Paths and parsing
@@ -106,19 +107,24 @@ sysvals.file = dynsys(() => {
   return makens(Object.keys(files), Object.values(files));
 });
 
-let set_state = w => {
-  w = w||[]; sysvals.state=list(w);
-  sysvals.path=w[0]&&str(getres(sysvals.path)("Setting •path")(w[0]));
-  sysvals.name=w[1]; sysvals.args=w[2];
+sysargs.resolve=getres();
+let update_state = (st,w) => {
+  w=w||[];
+  st.path=w[0]&&str(st.resolve("Setting •path")(w[0]));
+  st.resolve=getres(st.path);
+  st.state=list(w); st.name=w[1]; st.args=w[2];
 }
-let bqn_state = (x,w) => { set_state(w); return bqn(x); }
-bqn.setreqexec((s,x,w) => { set_state(w); return req1str(s,x); });
-sysvals.exit = (x,w) => process.exit(Number.isInteger(x)?x:0);
-let bqn_file = (f,t,w) => bqn_state(
-  t, [ str(dir(path.dirname(f))), str(path.basename(f)), w ]
+let new_state = (st,w) => { st={...st}; update_state(st,w); return st; }
+sysvals.path=dynsys(s=>s.path);
+sysvals.name=dynsys(s=>s.name);
+sysvals.args=dynsys(s=>s.args);
+let bqn_state = (st,x,w) => bqns(new_state(st,w))(x);
+bqn.setexec(update_state);
+let bqn_file = (st,f,t,w) => bqn_state(
+  st, t, [ str(dir(path.dirname(f))), str(path.basename(f)), w ]
 );
 let imports = {};
-sysvals.import = withres("•Import", resolve => (x,w) => {
+sysvals.import = withres("•Import", (resolve,state) => (x,w) => {
   let f = resolve(x);
   let save = r=>r;
   if (!has(w)) {
@@ -126,7 +132,7 @@ sysvals.import = withres("•Import", resolve => (x,w) => {
     save = r => (imports[f]=r);
     w=list([]);
   }
-  return save(bqn_file(f, fs.readFileSync(f,'utf-8'), w));
+  return save(bqn_file(state, f, fs.readFileSync(f,'utf-8'), w));
 });
 
 if (!module.parent) {
@@ -134,7 +140,8 @@ if (!module.parent) {
   let arg0 = args[0];
   let cl_state = () => {
     let s = str("");
-    return [str(dir(path.resolve('.'))), s, list([],s)];
+    let w = [str(dir(path.resolve('.'))), s, list([],s)];
+    return new_state(sysargs, w);
   }
   let exec = fn => src => {
     try {
@@ -144,7 +151,7 @@ if (!module.parent) {
     }
   }
   if (!has(arg0) || arg0==='-r') {
-    set_state(cl_state());
+    let st = cl_state();
     let stdin = process.stdin, repl = sysvals.makerepl();
     let e = exec(s=>show(repl(str(s))));
     stdin.on('end', () => { process.exit(); });
@@ -155,9 +162,9 @@ if (!module.parent) {
     });
   } else if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
     let f=arg0, a=list(args.slice(1).map(str));
-    exec(s=>bqn_file(path.resolve(f),s,a))(fs.readFileSync(f,'utf-8'));
+    exec(s=>bqn_file(sysargs, path.resolve(f),s,a))(fs.readFileSync(f,'utf-8'));
   } else if (arg0 === '-e') {
-    let st=cl_state();
-    args.slice(1).map(exec(s=>show(bqn_state(s,st))));
+    let ev=bqns(cl_state());
+    args.slice(1).map(exec(s=>show(ev(s))));
   }
 }
