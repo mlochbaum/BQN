@@ -491,14 +491,14 @@ let dojs = (x,w) => {
 }
 
 let update_state = (st,w)=>w;  // Modified by Node version to handle •state
-let makebqn = (e,fn) => st_old => {
-  let st={...st_old}; st.addrt=[];
-  return (x,w) => {
-    let src = req1str(e,x,update_state(st,w));
-    return fn(st.comps(st)(src));
-  }
+let makebqn = (e,fn) => st => (x,w) => {
+  let src = req1str(e,x,update_state(st,w));
+  return fn(st.comps(st)(src));
 }
-let rebqn = dynsys(state => (x,w) => {
+let copy_state = st_old => { let st={...st_old}; st.addrt=[]; return st; }
+let dynsys_copy = fn => dynsys(st => fn(copy_state(st)));
+
+let rebqn = dynsys_copy(state => (x,w) => {
   let req = (r,s) => { if (!r) throw Error("•ReBQN: "+s) };
   req(!has(w), "𝕨 not allowed");
   req(x.ns, "𝕩 must be a namespace");
@@ -517,7 +517,6 @@ let rebqn = dynsys(state => (x,w) => {
       let k=val.m||0;
       pr[k].push(gl); rt[k].push(val);
     });
-    state = {...state};
     state.glyphs = pr.map(str);
     state.runtime = list([].concat(...rt));
     compgen(state);
@@ -550,7 +549,7 @@ let primitives = dynsys(state => {
 });
 
 let sysvals = {
-  bqn:dynsys(makebqn("•BQN",r=>run(...r))), rebqn, primitives, js:dojs,
+  bqn:dynsys_copy(makebqn("•BQN",r=>run(...r))), rebqn, primitives, js:dojs,
   type, glyph, decompose, fmt:fmt1, repr, unixtime, listkeys,
   listsys: dynsys(_ => list(Object.keys(sysvals).sort().map(str))),
   math: obj2ns(Math,("LN10 LN2 LOG10E LOG2E cbrt expm1 hypot log10 log1p log2 round trunc atan2 cos cosh sin sinh tan tanh").split(" "), f=>typeof f==="function"?runtime[60](f,0):f)
