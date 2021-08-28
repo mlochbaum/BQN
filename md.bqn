@@ -154,9 +154,10 @@ repoURL ← "https://github.com/mlochbaum/BQN"
 blobURL ← repoURL∾"/blob/master/"
 
 # Environments
-_getCodeExec ← {𝕗⋄•MakeREPL@}
+NewREPL ← •ReBQN∘{repl⇐"strict"}
+_getCodeExec ← {𝕗⋄NewREPL@}
 _getSvgExec ← {𝕗
-  e←•MakeREPL@
+  e←NewREPL@
   ⟨"","",GetHighlights‿Modify‿E⟩ E "GetHighlights‿Modify‿Eval←•args"
   E •file.Chars "svg.bqn"
   JoinLines⍟(1<≡)∘E
