@@ -80,7 +80,7 @@ A useful tool for both beginners and experienced users is [**BQNcrate**](https:/
 
 ## Where can I find BQN users?
 
-There's a BQN [Matrix](https://matrix.org/) channel at #bqn:matrix.org, which you can see in the Element web client with [this link](https://app.element.io/#/room/%23bqn:matrix.org), and one on Discord that you can join with [this invite](https://discord.gg/SDTW36EhWF). The two channels are bridged so that comments in one appear in both. It's among the most active array programming forums, with conversations nearly every day, so you can definitely get your questions answered fast.
+There's a BQN [Matrix](https://matrix.org/) channel at #bqn:matrix.org, which you can see in the Element web client with [this link](https://app.element.io/#/room/%23bqn:matrix.org), and one on Discord that you can join with [this invite](https://discord.gg/SDTW36EhWF). The two channels are bridged so that comments in one appear in both. The Discord server has other array programming channels as well, with the corresponding Matrix channels gathered in [this space](https://app.element.io/#/room/%23array:matrix.org) (link uses Element's spaces beta). BQN and the other channels are very active: you wouldn't believe how many people are here to discuss arrays all day!
 
 BQNBot will run your code from chat! Begin your message with `bqn)` and our friend (designation B-QN) will evaluate the rest and show the output. While putting your code in blocks `` `like this` `` is easier to read, the bot just operates on plain text and doesn't require it.
 
