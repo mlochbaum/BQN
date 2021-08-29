@@ -6,8 +6,10 @@ let fs = require('fs');
 
 let bqn = require("./docs/bqn.js");
 module.exports = bqn;
-let {fmt,fmtErr,sysvals,sysargs,bqns}=bqn;
+let {fmt,fmtErr,sysvals,sysargs,makebqn}=bqn;
 let {has,list,str,unstr,dynsys,req1str,makens}=bqn.util;
+let bqn_state=makebqn((u,s,x,w)=>(u(s,w),x));
+let bqn_nostate=makebqn((u,s,x,w)=>x);
 
 let show = x => console.log(fmt(x));
 sysvals.show = (x,w) => { show(x); return x; };
@@ -114,14 +116,12 @@ let update_state = (st,w) => {
   st.resolve=getres(st.path);
   st.state=list(w); st.name=w[1]; st.args=w[2];
 }
-let new_state = (st,w) => { st={...st}; update_state(st,w); return st; }
 sysvals.path=dynsys(s=>s.path);
 sysvals.name=dynsys(s=>s.name);
 sysvals.args=dynsys(s=>s.args);
-let bqn_state = (st,x,w) => bqns(new_state(st,w))(x);
 bqn.setexec(update_state);
-let bqn_file = (st,f,t,w) => bqn_state(
-  st, t, [ str(dir(path.dirname(f))), str(path.basename(f)), w ]
+let bqn_file = (st,f,t,w) => bqn_state(st)(
+  t, [ str(dir(path.dirname(f))), str(path.basename(f)), w ]
 );
 let imports = {};
 sysvals.import = withres("•Import", (resolve,state) => (x,w) => {
@@ -140,8 +140,8 @@ if (!module.parent) {
   let arg0 = args[0];
   let cl_state = () => {
     let s = str("");
-    let w = [str(dir(path.resolve('.'))), s, list([],s)];
-    return new_state(sysargs, w);
+    update_state(sysargs, [str(dir(path.resolve('.'))), s, list([],s)]);
+    return sysargs;
   }
   let exec = fn => src => {
     try {
@@ -164,7 +164,7 @@ if (!module.parent) {
     let f=arg0, a=list(args.slice(1).map(str));
     exec(s=>bqn_file(sysargs, path.resolve(f),s,a))(fs.readFileSync(f,'utf-8'));
   } else if (arg0 === '-e') {
-    let ev=bqns(cl_state());
+    let ev=bqn_nostate(cl_state());
     args.slice(1).map(exec(s=>show(ev(s))));
   }
 }
