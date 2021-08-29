@@ -429,9 +429,7 @@ let compgen = sys => {
 }
 let sysargs = {runtime, glyphs:glyphs.map(str)};
 let compile = compgen(sysargs)(sysargs);
-let andrun = c => src => run(...c(src));
-let bqn = andrun(compile);
-let bqns = st => andrun(st.comps(st));
+let bqn = src => run(...compile(src));
 runtime[42] = rtAssert;
 
 // Formatter
@@ -491,10 +489,11 @@ let dojs = (x,w) => {
 }
 
 let update_state = (st,w)=>w;  // Modified by Node version to handle •state
-let makebqn = (e,fn) => st => (x,w) => {
-  let src = req1str(e,x,update_state(st,w));
+let makebqn = (proc,fn) => st => (x,w) => {
+  let src = proc(update_state,st,x,w);
   return fn(st.comps(st)(src));
 }
+let makebqnfn = (e,fn) => makebqn((u,s,x,w)=>req1str(e,x,u(s,w)), fn);
 let copy_state = st_old => { let st={...st_old}; st.addrt=[]; return st; }
 let dynsys_copy = fn => dynsys(st => fn(copy_state(st)));
 
@@ -521,7 +520,7 @@ let rebqn = dynsys_copy(state => (x,w) => {
     state.runtime = list([].concat(...rt));
     compgen(state);
   }
-  let cmp = makebqn("•ReBQN evaluation", r=>r)(state);
+  let cmp = makebqnfn("•ReBQN evaluation", r=>r)(state);
 
   if (!has(repl) || (repl=unstr(repl))==="none") {
     return (x,w) => run(...cmp(x,w));
@@ -549,7 +548,7 @@ let primitives = dynsys(state => {
 });
 
 let sysvals = {
-  bqn:dynsys_copy(makebqn("•BQN",r=>run(...r))), rebqn, primitives, js:dojs,
+  bqn:dynsys_copy(makebqnfn("•BQN",r=>run(...r))), rebqn, primitives, js:dojs,
   type, glyph, decompose, fmt:fmt1, repr, unixtime, listkeys,
   listsys: dynsys(_ => list(Object.keys(sysvals).sort().map(str))),
   math: obj2ns(Math,("LN10 LN2 LOG10E LOG2E cbrt expm1 hypot log10 log1p log2 round trunc atan2 cos cosh sin sinh tan tanh").split(" "), f=>typeof f==="function"?runtime[60](f,0):f)
@@ -579,8 +578,9 @@ if (typeof process!=='undefined') {
 
 if (typeof module!=='undefined') {  // Node.js
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;
-  bqn.sysargs=sysargs; bqn.bqns=bqns;
-  bqn.sysvals=sysvals; bqn.util={has,list,str,unstr,dynsys,req1str,makens};
+  bqn.sysargs=sysargs; bqn.sysvals=sysvals;
+  bqn.makebqn=fn=>makebqn(fn,r=>run(...r));
+  bqn.util={has,list,str,unstr,dynsys,req1str,makens};
   bqn.setexec = f => { update_state=f; }
   module.exports=bqn;
 }
