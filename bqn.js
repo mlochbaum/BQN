@@ -109,17 +109,18 @@ sysvals.file = dynsys(state => {
   return makens(Object.keys(files), Object.values(files));
 });
 
-sysargs.resolve=getres();
+sysargs.resolve = getres();
+let push_state = st => { st.parres = st.resolve; }
 let update_state = (st,w) => {
   w=w||[];
-  st.path=w[0]&&str(st.resolve("Setting •path")(w[0]));
-  st.resolve=getres(st.path);
+  st.path=w[0]&&str(st.parres("Setting •path")(w[0]));
+  st.resolve = getres(st.path);
   st.state=list(w); st.name=w[1]; st.args=w[2];
 }
 sysvals.path=dynsys(s=>s.path);
 sysvals.name=dynsys(s=>s.name);
 sysvals.args=dynsys(s=>s.args);
-bqn.setexec(update_state);
+bqn.setexec(update_state, push_state);
 let bqn_file = (st,f,t,w) => bqn_state(st)(
   t, [ str(dir(path.dirname(f))), str(path.basename(f)), w ]
 );
@@ -140,7 +141,8 @@ if (!module.parent) {
   let arg0 = args[0];
   let cl_state = () => {
     let s = str("");
-    update_state(sysargs, [str(dir(path.resolve('.'))), s, list([],s)]);
+    let w = [str(dir(path.resolve('.'))), s, list([],s)];
+    push_state(sysargs); update_state(sysargs, w);
     return sysargs;
   }
   let exec = fn => src => {

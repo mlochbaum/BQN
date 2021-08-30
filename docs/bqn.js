@@ -489,12 +489,15 @@ let dojs = (x,w) => {
 }
 
 let update_state = (st,w)=>w;  // Modified by Node version to handle •state
+let push_state = st => st;
+let copy_state = st_old => {
+  let st={...st_old}; st.addrt=[]; push_state(st); return st;
+}
 let makebqn = (proc,fn) => st => (x,w) => {
   let src = proc(x,w,update_state,st);
   return fn(st.comps(st)(src));
 }
 let makebqnfn = (e,fn) => makebqn((x,w,u,s)=>req1str(e,x,u(s,w)), fn);
-let copy_state = st_old => { let st={...st_old}; st.addrt=[]; return st; }
 let dynsys_copy = fn => dynsys(st => fn(copy_state(st)));
 
 let rebqn = dynsys_copy(state => (x,w) => {
@@ -583,6 +586,6 @@ if (typeof module!=='undefined') {  // Node.js
   bqn.makebqn=fn=>makebqn(fn,r=>run(...r));
   bqn.makerepl=(st,repl)=>rerepl(repl, makebqn(x=>x,r=>r)(st), st);
   bqn.util={has,list,str,unstr,dynsys,req1str,makens};
-  bqn.setexec = f => { update_state=f; }
+  bqn.setexec = (u,p) => { update_state=u; push_state=p; }
   module.exports=bqn;
 }
