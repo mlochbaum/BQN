@@ -169,7 +169,7 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
 
 // Runtime
 let assertFn = pre => (x,w) => {
-  if (x!==1) throw {kind:pre, message:w}; return x;
+  if (x!==1) throw {kind:pre, message:has(w)?w:x}; return x;
 }
 let arr = (r,sh,fill) => {r.sh=sh;r.fill=fill;return r;}
 let list = (l,fill) => arr(l,[l.length],fill);

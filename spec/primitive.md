@@ -73,7 +73,7 @@ Inferred properties are specified in [their own document](inferred.md), not in t
 
 ## Other provided functionality
 
-- **Assert** (`!`) causes an error if the argument is not `1`. If `𝕨` is provided, it gives a message to be associated with this error (which can be any value, not necessarily a string).
+- **Assert** (`!`) causes an error if `𝕩` is not `1`. The message associated with the error (which is not used by core BQN but might be shown to the user or used by system functions) is `𝕨` if given and `𝕩` otherwise. It can be any value, not just a string.
 
 - **Catch** (`⎊`) evaluates `𝔽` on the arguments `𝕨` (if present) and `𝕩`. If `𝔽` completes without error it returns the result, but if evaluation of `𝔽` results in an error then the error is suppressed, and Catch evaluates `𝔾` on the arguments and returns the result. Errors in `𝔾` are not caught. Catch only prevents evaluation errors, and not syntax errors: these are considered errors in the program as a whole rather than any particular part of it.
 
