@@ -6,10 +6,10 @@ let fs = require('fs');
 
 let bqn = require("./docs/bqn.js");
 module.exports = bqn;
-let {fmt,fmtErr,sysvals,sysargs,makebqn}=bqn;
+let {fmt,fmtErr,sysvals,sysargs,makebqn,makerepl}=bqn;
 let {has,list,str,unstr,dynsys,req1str,makens}=bqn.util;
-let bqn_state=makebqn((u,s,x,w)=>(u(s,w),x));
-let bqn_nostate=makebqn((u,s,x,w)=>x);
+let bqn_state=makebqn((x,w,u,s)=>(u(s,w),x));
+let bqn_nostate=makebqn(x=>x);
 
 let show = x => console.log(fmt(x));
 sysvals.show = (x,w) => { show(x); return x; };
@@ -152,8 +152,8 @@ if (!module.parent) {
   }
   if (!has(arg0) || arg0==='-r') {
     let stdin = process.stdin;
-    let repl = sysvals.rebqn(cl_state())(makens(["repl"],[str("loose")]));
-    let e = exec(s=>show(repl(str(s))));
+    let repl = makerepl(cl_state(), 1);
+    let e = exec(s=>show(repl(s)));
     stdin.on('end', () => { process.exit(); });
     stdin.on('readable', () => {
       let inp; while ((inp=stdin.read())!==null) {

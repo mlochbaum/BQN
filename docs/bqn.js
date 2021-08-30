@@ -490,10 +490,10 @@ let dojs = (x,w) => {
 
 let update_state = (st,w)=>w;  // Modified by Node version to handle •state
 let makebqn = (proc,fn) => st => (x,w) => {
-  let src = proc(update_state,st,x,w);
+  let src = proc(x,w,update_state,st);
   return fn(st.comps(st)(src));
 }
-let makebqnfn = (e,fn) => makebqn((u,s,x,w)=>req1str(e,x,u(s,w)), fn);
+let makebqnfn = (e,fn) => makebqn((x,w,u,s)=>req1str(e,x,u(s,w)), fn);
 let copy_state = st_old => { let st={...st_old}; st.addrt=[]; return st; }
 let dynsys_copy = fn => dynsys(st => fn(copy_state(st)));
 
@@ -505,43 +505,44 @@ let rebqn = dynsys_copy(state => (x,w) => {
   let [repl,primitives] = ["repl","primitives"]
     .map(s=>(i=>has(i)?x[x.ns[i]]:i)(rev[s]));
 
-  if (has(primitives)) {
-    let p = primitives;
-    req(p.sh && p.sh.length===1, "𝕩.primitives must be a list");
-    req(p.every(e=>e.sh&&e.sh.length===1&&e.sh[0]===2), "𝕩.primitives must contain glyph-primitive pairs");
-    let pr=glyphs.map(_=>[]), l=0, rt=pr.map(_=>[]);
-    p.forEach(([gl,val])=>{
-      req(typeof gl==="string", "Primitive glyphs must be characters");
-      req(isfunc(val), "Primitives must be operations");
-      let k=val.m||0;
-      pr[k].push(gl); rt[k].push(val);
-    });
-    state.glyphs = pr.map(str);
-    state.runtime = list([].concat(...rt));
-    compgen(state);
-  }
+  if (has(primitives)) { addprimitives(state, primitives); }
   let cmp = makebqnfn("•ReBQN evaluation", r=>r)(state);
 
-  if (!has(repl) || (repl=unstr(repl))==="none") {
-    return (x,w) => run(...cmp(x,w));
-  } else {
-    let rd = repl==="strict" ? 0 : -1;
-    req(rd==0||repl==="loose", "invalid value for 𝕩.repl")
-    let vars = [], names = [], redef = [];
-    state.addrt = [names,redef];
-    return (x,w) => {
-      names.sh=redef.sh=[names.length];
-      let c = cmp(x,w);
-      let pnames = c[5][2][0];
-      let newv = c[3][0][2].slice(vars.length);
-      names.push(...newv.map(i=>pnames[i]));
-      redef.push(...newv.map(i=>rd));
-      vars .push(...newv.map(i=>null));
-      c.push(vars);
-      return run(...c);
-    }
-  }
+  repl = has(repl) ? ["none","loose","strict"].indexOf(unstr(repl)) : 0;
+  req(repl>=0, "invalid value for 𝕩.repl");
+  return repl ? rerepl(repl,cmp,state) : ((x,w) => run(...cmp(x,w)));
 });
+let addprimitives = (state, p) => {
+  let req = (r,s) => { if (!r) throw Error("•ReBQN 𝕩.primitives: "+s) };
+  req(p.sh && p.sh.length===1, "Must be a list");
+  req(p.every(e=>e.sh&&e.sh.length===1&&e.sh[0]===2), "Must consist of glyph-primitive pairs");
+  let pr=glyphs.map(_=>[]), l=0, rt=pr.map(_=>[]);
+  p.forEach(([gl,val])=>{
+    req(typeof gl==="string", "Glyphs must be characters");
+    req(isfunc(val), "Primitives must be operations");
+    let k=val.m||0;
+    pr[k].push(gl); rt[k].push(val);
+  });
+  state.glyphs = pr.map(str);
+  state.runtime = list([].concat(...rt));
+  compgen(state);
+}
+let rerepl = (repl, cmp, state) => {
+  let rd = repl>1 ? 0 : -1;
+  let vars = [], names = [], redef = [];
+  state.addrt = [names,redef];
+  return (x,w) => {
+    names.sh=redef.sh=[names.length];
+    let c = cmp(x,w);
+    let pnames = c[5][2][0];
+    let newv = c[3][0][2].slice(vars.length);
+    names.push(...newv.map(i=>pnames[i]));
+    redef.push(...newv.map(i=>rd));
+    vars .push(...newv.map(i=>null));
+    c.push(vars);
+    return run(...c);
+  }
+}
 let primitives = dynsys(state => {
   let gl=[].concat(...state.glyphs), rt=state.runtime;
   return list(gl.map((g,i) => list([g,rt[i]])));
@@ -580,6 +581,7 @@ if (typeof module!=='undefined') {  // Node.js
   bqn.fmt=fmt; bqn.fmtErr=fmtErr; bqn.compile=compile; bqn.run=run;
   bqn.sysargs=sysargs; bqn.sysvals=sysvals;
   bqn.makebqn=fn=>makebqn(fn,r=>run(...r));
+  bqn.makerepl=(st,repl)=>rerepl(repl, makebqn(x=>x,r=>r)(st), st);
   bqn.util={has,list,str,unstr,dynsys,req1str,makens};
   bqn.setexec = f => { update_state=f; }
   module.exports=bqn;
