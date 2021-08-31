@@ -31,7 +31,7 @@ Split2 ← { s←2⊸×⌜↕(≠𝕩)÷2 ⋄ ⟨s⊏𝕩,(1⊸+⌜s)⊏𝕩⟩ 
 _lookup_ ← {
   k‿v←Split2 𝕘 ⋄ k _glyphLookup_ (v∾⟨𝕗⟩)
 }
-Identity ← {𝕏0} ("´: Identity not found"!0˙) _lookup_ ⟨
+Identity ← {𝕏0} !∘"´: Identity not found" _lookup_ ⟨
   '+',0 , '-',0
   '×',1 , '÷',1
   '⋆',1 , '¬',1
@@ -285,7 +285,7 @@ Select ← ⟨"⊏"
   {(≠𝕩)⊸NormIndS⌜𝕨} ⊏ ⊢
   {𝕩⊸NormIndS⌜𝕨}
 ⟩_multiAxis○ToArray
-First ← IsArray◶⟨⊢, (0<≠)◶⟨"⊑𝕩: 𝕩 can't be empty"!0˙,0⊸⊑⟩⥊⟩
+First ← IsArray◶⟨⊢, (0<≠)◶⟨!∘"⊑𝕩: 𝕩 can't be empty",0⊸⊑⟩⥊⟩
 
 Reverse←{
   "⌽𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
@@ -711,8 +711,8 @@ _repeat_←{
 > ↩ Merge    ⊘ ((1-≤) _perv)
 ≠ ↩ ≠        ⊘ ((1-=) _perv)
 = ↩ =        ⊘ (= _perv)
-≥ ← ("≥: Needs two arguments"!0˙) ⊘ (≥ _perv)
-≤ ↩ ("≤: Needs two arguments"!0˙) ⊘ (≤ _perv)
+≥ ← !∘"≥: Needs two arguments" ⊘ (≥ _perv)
+≤ ↩ !∘"≤: Needs two arguments" ⊘ (≤ _perv)
 + ↩ + _perv
 - ↩ - _perv
 ¬ ← 1+-
@@ -785,13 +785,13 @@ TrainInverse ← {
 }
 FuncInverse ← (0⊸⊑ ⊣◶⟨
   {PrimInverse𝕩} 1⊸⊑                     # 0 primitive
-  ("Cannot currently invert blocks"!0˙)˙ # 1 block
+  (!∘"Cannot currently invert blocks")˙  # 1 block
   1⊸⊑ AtopInverse 2⊸⊑                    # 2-train
   TrainInverse                           # 3-train
   1⊸⊑    {𝕏𝕨}⟜{Mod1Inverse𝕩} 2⊸⊑         # 4 1-modifier
   1‿3⊸⊏ {𝕏´𝕨}⟜{Mod2Inverse𝕩} 2⊸⊑         # 5 2-modifier
 ⟩ ⊢) {Decompose𝕩}
-Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿("Cannot invert modifier"!0˙))
+Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿(!∘"Cannot invert modifier"))
 
 ∾ ↩ Join           ⊘ JoinTo
 IA ← "⁼: Inverse failed"⊸!
