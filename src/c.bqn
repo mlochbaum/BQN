@@ -26,7 +26,7 @@ Pl←∾⟜("s"/˜1<≠)   # Pluralize
 _tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
 # Convert characters to numbers, mostly the same as tokens
 CharCode←charSet{
-  ErrUnknownChars←0!˜⟨"Unknown character"⊸Pl,": ",⊢⟩_tmpl
+  ErrUnknownChars←!⟨"Unknown character"⊸Pl,": ",⊢⟩_tmpl
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
@@ -46,7 +46,7 @@ Tokenize←{System‿vars←𝕨
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
   St←(≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/          # All indices → reached mask
   a←St q⋄b←St e⋄f←1≠`ab←a∨b                 # Open/close masks; filter
-  {⟨⊑/𝕩,"Unclosed quote"⟩!0}⍟(∨´)(sm∨dm)∧b<f
+  {!⟨⊑/𝕩,"Unclosed quote"⟩}⍟(∨´)(sm∨dm)∧b<f
 
   # Extract character and string literals
   u←f∧𝕩='@'⋄ci←/u∨»a∧sm
@@ -61,10 +61,10 @@ Tokenize←{System‿vars←𝕨
   nd←(t=⊑bN)>«t M bD⋄rr←t=bR                # Namespace dot; 𝕣
   w←»⊸<l←rr∨nd<t M bN(⊣≍-˜)○⊑bW             # Word chars l, start w
   us←t=¯1++´bA⋄sy←t=⊑bW                     # Underscore, system dot
-  {⟨/us∧w+`⊸⊏0∾𝕩,"Words can't only have underscores"⟩!0}⍟(∨´)w(/<1(⊢/«)(∨/⊣))l>us
+  {!⟨/us∧w+`⊸⊏0∾𝕩,"Words can't only have underscores"⟩}⍟(∨´)w(/<1(⊢/«)(∨/⊣))l>us
   wk←(¬w/rr)×na⌊∘÷˜(⊑bA)-˜w/t               # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
-  {⟨𝕩/is,"System dot with no name"⟩!0}⍟(∨´)sy>«l
+  {!⟨𝕩/is,"System dot with no name"⟩}⍟(∨´)sy>«l
   w≠↩»⊸∨sy                                  # Start system word at dot
   wi←0<wt←(2×wk≥0)(×⟜¬+⊢)w/sy               # Type: 0 number, 1 system, 2 identifier
   i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
@@ -73,8 +73,8 @@ Tokenize←{System‿vars←𝕨
   if←(»⌈`)⊸<ig←(i>us)×+`w>n                 # Identifier groups and first character
   fr←(1=wi/wt)<if/rr                        # Identifier is 𝕣-based
   w↩if∨n∧w0←w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr          # Don't produce an identifier for 𝕣
-  {⟨𝕩/is,"𝕣 can't be used with other word characters"⟩!0}⍟(∨´)(i>us)∧(rr⊸≠∨if⊸<)ig⊏0∾fr
-  {⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩!0}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/rr<if
+  {!⟨𝕩/is,"𝕣 can't be used with other word characters"⟩}⍟(∨´)(i>us)∧(rr⊸≠∨if⊸<)ig⊏0∾fr
+  {!⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/rr<if
   ig⊏↩1-˜0∾+`⊸×¬fr
   id←vars⊸∾⌾⊑(ws∾2)⊔ig⊔t⊏charSet            # ⟨Identifiers, system values⟩
 
@@ -98,7 +98,7 @@ Tokenize←{System‿vars←𝕨
 # 𝕩 is a list of tokens that contains the numeric literals, each
 # preceded by 0. Return the numbers.
 ReadNums←{
-  _err_←{(0!˜/⟜𝔾≍○<𝔽)⍟(∨´)}
+  _err_←{(!/⟜𝔾≍○<𝔽)⍟(∨´)}
   EChars←⟨"Letter"⊸Pl," """,⊏⟜charSet,""" not allowed in numbers"⟩_tmpl
   e‿d‿n‿p‿i←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for e.¯π∞
   EChars∘(/⟜𝕩)_err_𝕨 (𝕩=bR)∨¬e∨𝕩<⊑bA
@@ -123,9 +123,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
     Lcs ← ∧○(0<≠)◶⟨0, ¯1 ⊑ 0¨∘⊢ {𝕩⌈⌈`𝕨+»𝕩}˝ =⌜⟜⌽⟩
     _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
     Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
-    0 !˜ 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
+    ! 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
   }
-  _err_←{(0!˜(∧∘⍉(i≍e˙)⊏⎉1˜/⟜𝔾)≍○<𝔽)⍟(∨´⍟=)}
+  _err_←{(!(∧∘⍉(i≍e˙)⊏⎉1˜/⟜𝔾)≍○<𝔽)⍟(∨´⍟=)}
 
   # Bracket and ligature validation and handling
   # Open brackets have role ¯1 and closed ones have role 0
@@ -315,7 +315,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 }
 
 Compile←{
-  defaults←⟨⟩‿(("System values not supported"!0˙)¨)‿⟨⟩‿(↕0)
+  defaults←⟨⟩‿(!∘"System values not supported"¨)‿⟨⟩‿(↕0)
   prims‿Sys‿vars‿redef ← ∾⟜(≠↓defaults˙) ≍○<⍟(4<≠)𝕨
   ⟨tok,role,val,t0,t1⟩←tx←sys‿vars Tokenize 𝕩
   ⟨oc,prim,blk,bdy,oi⟩←⟨role,⊑val,t0,t1,redef»0¨vars⟩ Parse tok
