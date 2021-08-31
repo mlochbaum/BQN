@@ -202,7 +202,7 @@ We now need to show that `H` captures `y` (the proof that `G` captures `z` is of
 
 ### Required structural inverses
 
-The following primitive functions be fully supported by structural Under. Each manipulates its right argument structurally.
+The following primitive functions must be fully supported by structural Under. Each manipulates its right argument structurally.
 
 | Type    | Primitives
 |---------|-----------
