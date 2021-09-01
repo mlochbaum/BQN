@@ -52,12 +52,12 @@
 <h2 id="as-a-variable"><a class="header" href="#as-a-variable">As a variable</a></h2>
 <p>Suppose you want a list of a matrix, its transpose, and its negation. One way to do this is to put together a list of functions for each of these values: the first one is an identity.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqi4oC/4o2J4oC/LSB78J2VjvCdlal9wqg8IDDigL/CrzHiiY0x4oC/MA==">↗️</a><pre>    <span class='Function'>⊢</span><span class='Ligature'>‿</span><span class='Function'>⍉</span><span class='Ligature'>‿</span><span class='Function'>-</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>¨</span><span class='Function'>&lt;</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>¯1</span><span class='Function'>≍</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
-┌─                             
-· ┌─       ┌─       ┌─         
-  ╵ 0 ¯1   ╵  0 1   ╵ ¯0  1    
-    1  0     ¯1 0     ¯1 ¯0    
-         ┘        ┘         ┘  
-                              ┘
+┌─                            
+· ┌─       ┌─       ┌─        
+  ╵ 0 ¯1   ╵  0 1   ╵  0 1    
+    1  0     ¯1 0     ¯1 0    
+         ┘        ┘        ┘  
+                             ┘
 </pre>
 <p>Here <code><span class='Function'>⊢</span></code> ends up being used as <code><span class='Function'>𝕎</span></code>. A similar case might be a function or program with a caller-specified processing step. For example, a function to write some kind of file, with a parameter function to encrypt data before writing. To use no encryption, you'd pass a parameter <code><span class='Function'>⊢</span></code>. Or it might happen that you write a Choose (<code><span class='Modifier2'>◶</span></code>) expression where one of the cases should do nothing <code><span class='Function'>⊢</span></code>, or return the left argument <code><span class='Function'>⊣</span></code>.</p>
 <h2 id="in-tacit-functions"><a class="header" href="#in-tacit-functions">In tacit functions</a></h2>
