@@ -281,9 +281,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   spi←((spf←sp⊏fi)⊏3×fx)+3+sp⊏xv            # Special name index
   uu∾↩∊⌾⌽spi+6×spf                          # and unused marker
   idor←∾3‿2‿3/⟨1+g⊏˜hj-1, di, id∾sp⟩        # Identifier bytecode ordering
-  ido←21+uu(⊢+10×>)ia∾sa                    # Opcode
-  idoc←⟨21¨hj,0¨hj,he/hv
-        26¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
+  ido←32+uu(⊢+2×>)ia∾sa                     # Opcode
+  idoc←⟨32¨hj,0¨hj,he/hv
+        64¨di,di⊏xv, ido,idd∾0¨sp,idi∾spi⟩  # Identifier bytecode: instruction, depth, slot
 
   # Parsing part 2
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
@@ -300,10 +300,10 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
-  ao←11+(0⌈(1+⊑bG)-˜ai⊏ma+𝕩)∾13×hd          # Assignment opcode
+  ao←48+(0⌈(1+⊑bG)-˜ai⊏ma+𝕩)∾-hd            # Assignment opcode
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,hq,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,15¨bk,1+↕≠bk,23¨hq,⥊⍉(3+l⊏aa)≍ll,ao,14¨dr,28¨al,vi-˜(al-1)⊏𝕩
-               5+oa⊏r,19⌊5+(fn/dy+11×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←25+4×nf⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,⥊⍉(11+l⊏aa)≍ll,ao,6¨dr,66¨al,vi-˜(al-1)⊏𝕩
+               24+oa⊏r,23⌊16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
