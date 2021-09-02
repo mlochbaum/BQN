@@ -234,10 +234,10 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r⋄ar←at⊏r       # Assignment target; af for actual (non-export) assignment
   "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
-  ak←af+(0≤ar)+(⊑bG)-˜ai⊏𝕩                  # Class of assignment: 1⇐ 2⇐? 3←? 4↩?
-  at∾↩hj⋄ac←«⊸-(ak∾5¨hj)⌾(at⊸⊏)0¨𝕩          # Header assignment is 5 temporarily
-  aa←×g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac            # Broadcast ac to the entire target
-  ac-↩2×ah←5=ac                             # Assignment is header; 5→3
+  ak←af+(0≤ar)+(ai⊏ma)+(⊑bG)-˜ai⊏𝕩          # Class of assignment: 1⇐ 2⇐? 3←? 4↩? 5+↩?
+  at∾↩hj⋄ac←«⊸-(ak∾6¨hj)⌾(at⊸⊏)0¨𝕩          # Header assignment is 6 temporarily
+  aa←×gac←g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac        # Broadcast ac to the entire target
+  ac-↩3×ah←6=ac                             # Assignment is header; 6→3
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
@@ -249,7 +249,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hq←/hp←(g⊏ah)∧𝕩≥nv+vi                     # Header constant
   atc←(hg<ps<«aa∧r≥0)<aid∨hp∨(ps>«𝕩=⊑bL)∨𝕩(=⟜(3+⊑)<M)bB
   "Assignment target must be a name or list of targets"_err_(G) (a∨atc)<aa
-  "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) (ak=2)<ai⊏aa
+  "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) ((5≠ai⊏gac)∧ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) hg<(0<er)∧(0≤r)∧»⊸>aa
   af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
   ai/˜↩af⋄at/˜↩af∾1¨hj
