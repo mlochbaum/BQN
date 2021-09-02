@@ -109,7 +109,7 @@ sysvals.file = dynsys(state => {
   return makens(Object.keys(files), Object.values(files));
 });
 
-sysargs.resolve = getres();
+sysargs.resolve = sysargs.parres = getres();
 let push_state = st => { st.parres = st.resolve; }
 let update_state = (st,w) => {
   w=w||[];
@@ -142,8 +142,7 @@ if (!module.parent) {
   let cl_state = () => {
     let s = str("");
     let w = [str(dir(path.resolve('.'))), s, list([],s)];
-    push_state(sysargs); update_state(sysargs, w);
-    return sysargs;
+    update_state(sysargs, w); return sysargs;
   }
   let exec = fn => src => {
     try {
