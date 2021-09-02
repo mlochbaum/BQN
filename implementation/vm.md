@@ -55,68 +55,73 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 
 |  B | Name | Used | Like | Args     | Description
 |---:|------|:----:|-----:|:---------|------------
-|  0 | PUSH |  X   |      | `I`      | Push object `I`
-|  1 | VARO |      |      | `I`      | Push named variable `I`
-|  2 | VARM |      |      | `I`      | Push named variable `I` reference
-|  3 | ARRO |  X   |      | `N`      | Create length-`N` list
-|  4 | ARRM |  X   |   3  | `N`      | Create length-`N` reference list
-|  5 | FN1C |  X   |      |          | Monadic function call
-|  6 | FN2C |  X   |      |          | Dyadic function call
-|  7 | OP1D |  X   |      |          | 1-modifier call
-|  8 | OP2D |  X   |      |          | 2-modifier call
-|  9 | TR2D |  X   |      |          | Create 2-train
-| 10 | TR3D |  X   |      |          | Create 3-train
-| 11 | SETN |  X   |      |          | Define variable
-| 12 | SETU |  X   |      |          | Change variable
-| 13 | SETM |  X   |      |          | Modify variable
-| 14 | POPS |  X   |      |          | Pop and discard top of stack
-| 15 | DFND |  X   |      | `I`      | Localize and push block `I`
-| 16 | FN1O |  X   |   5  |          | Monadic call, checking for `·`
-| 17 | FN2O |  X   |   6  |          | Dyadic call, checking for `·`
-| 18 | CHKV |  X   |      |          | Error if top of stack is `·`
-| 19 | TR3O |  X   |  10  |          | Create 3-train, checking for `·`
-| 20 | OP2H |      |      |          | Bind right operand to 2-modifier
-| 21 | LOCO |  X   |      | `D`, `I` | Push local variable `I` from `D` frames up
-| 22 | LOCM |  X   |      | `D`, `I` | Push local variable reference `I` from `D` frames up
-| 23 | VFYM |  X   |      |          | Convert constant to matcher (for headers)
-| 24 | SETH |  X   |  11  |          | Test and set header
-| 25 | RETN |  X   |      |          | Returns top of stack
-| 26 | FLDO |  NS  |      | `I`      | Read field `I` from namespace
-| 27 | FLDM |      |  26  | `I`      | Push mutable field `I` from namespace
-| 28 | NSPM |  NS  |      | `I`      | Mutable target aliases field `I`
-| 29 | RETD |  NS  |  25  |          | Return the running scope's namespace
-| 30 | SYSV |      |   0  | `I`      | Push dynamic system value `I`
-| 31 | LOCU |  X   |  21  | `D`, `I` | Push and clear local variable `I` from `D` frames up
+| 00 | PUSH |  X   |      | `I`      | Push object `I`
+| 01 | DFND |  X   |      | `I`      | Localize and push block `I`
+| 02 | SYSV |      |  00  | `I`      | Push dynamic system value `I`
+| 03 |      |      |      | `D`      | Push return function for lexical depth `D`
+| 06 | POPS |  X   |      |          | Pop and discard top of stack
+| 07 | RETN |  X   |      |          | Returns top of stack
+| 08 | RETD |  NS  |  07  |          | Return the running scope's namespace
+| 0B | ARRO |  X   |      | `N`      | Create length-`N` list
+| 0C | ARRM |  X   |  0B  | `N`      | Create length-`N` reference list
+| 0E |      |  X   |      |          | Merge top of stack (for `[]`)
+| 10 | FN1C |  X   |      |          | Monadic function call
+| 11 | FN2C |  X   |      |          | Dyadic function call
+| 12 | FN1O |  X   |  10  |          | Monadic call, checking for `·`
+| 13 | FN2O |  X   |  13  |          | Dyadic call, checking for `·`
+| 14 | TR2D |  X   |      |          | Create 2-train
+| 15 | TR3D |  X   |      |          | Create 3-train
+| 16 | CHKV |  X   |      |          | Error if top of stack is `·`
+| 17 | TR3O |  X   |  15  |          | Create 3-train, checking for `·`
+| 1A | MD1C |  X   |      |          | 1-modifier call
+| 1B | MD2C |  X   |      |          | 2-modifier call
+| 1C | MD2L |      |      |          | Bind left operand to 2-modifier
+| 1D | MD2R |      |      |          | Bind right operand to 2-modifier
+| 20 | VARO |  X   |      | `D`, `I` | Push local variable `I` from `D` frames up
+| 21 | VARM |  X   |      | `D`, `I` | Push local variable reference `I` from `D` frames up
+| 22 | VARU |  X   |  21  | `D`, `I` | Push and clear local variable `I` from `D` frames up
+| 26 | DYNO |      |      | `I`      | Push named variable `I`
+| 27 | DYNM |      |      | `I`      | Push named variable `I` reference
+| 2A |      |      |  06  |          | Check predicate and drop
+| 2B | VFYM |  X   |      |          | Convert constant to matcher (for headers)
+| 2F | SETH |  X   |  30  |          | Test and set header
+| 30 | SETN |  X   |      |          | Define variable
+| 31 | SETU |  X   |      |          | Change variable
+| 32 | SETM |  X   |      |          | Modify variable
+| 40 | FLDO |  NS  |      | `I`      | Read field `I` from namespace
+| 41 | FLDM |      |  40  | `I`      | Push mutable field `I` from namespace
+| 42 | ALIM |  NS  |      | `I`      | Mutable target aliases field `I`
 
 Stack effects for most instructions are given below. Instructions 16, 17, and 19 are identical to 5, 6, and 10 except that the indicated values in the higher-numbered instructions may be `·`. Instruction 31 is identical to 21 but indicates that the local variable's value will never be used again, which may be useful for optimization. The lower-numbered instructions are not yet emitted by the self-hosted compiler and can be implemented simply by making them identical to the higher-numbered ones; however, it may be possible to make them faster by not checking for Nothing.
 
 |  B | Name | Stack effect          | Comments
 |---:|------|-----------------------|--------
-|  0 | PUSH | `→ (i⊑consts)`        |
-|  3 | ARRO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-1`)
-|  5 | FN1C | `𝕩 𝕤 → (𝕊 𝕩)`         | 16: `𝕩` may be `·`
-|  6 | FN2C | `𝕩 𝕤 𝕨 → (𝕨 𝕊 𝕩)`     | 17: `𝕨` or `𝕩` may be `·`
-|  7 | OP1D | `𝕣 𝕗 → (𝔽 _𝕣)`        |
-|  8 | OP2D | `𝕘 𝕣 𝕗 → (𝔽 _𝕣_ 𝔾)`   |
-|  9 | TR2D | `g f → (F G)`         |
-| 10 | TR3D | `h g f → (F G H)`     | 19: `F` may be `·`
-| 11 | SETN | `x r → (r←x)`         | `r` is a reference; 24: no result
-| 12 | SETU | `x r → (r↩x)`         | `r` is a reference
-| 13 | SETM | `x f r → (r F↩ x)`    | `r` is a reference
-| 14 | POPS | `x →`                 |
-| 15 | DFND | `→ (i⊑blocks)`        | Also sets block's parent scope
-| 20 | OP2H | `𝕘 𝕣 → (_𝕣_ 𝕘)`       |
-| 21 | LOCO | `→ x`                 | Local variable value
-| 22 | LOCM | `→ r`                 | Local variable reference
-| 23 | VFYM | `c → r`               | Constant to match reference
-| 25 | RETN | `x → x`               | Returns from current block
-| 26 | FLDO | `n → n.i`             |
-| 28 | NSPM | `r → s`               | Reference `s` gets field `i` and puts in `r`
-| 29 | RETD | `x? → n`              | Clears stack, dropping 0 or 1 value
+| 00 | PUSH | `→ (i⊑consts)`        |
+| 01 | DFND | `→ (i⊑blocks)`        | Also sets block's parent scope
+| 06 | POPS | `x →`                 |
+| 07 | RETN | `x → x`               | Returns from current block
+| 08 | RETD | `x? → n`              | Clears stack, dropping 0 or 38 value
+| 0B | ARRO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-38`)
+| 10 | FN1C | `𝕩 𝕤 → (𝕊 𝕩)`         | 18: `𝕩` may be `·`
+| 11 | FN2C | `𝕩 𝕤 𝕨 → (𝕨 𝕊 𝕩)`     | 19: `𝕨` or `𝕩` may be `·`
+| 14 | TR2D | `g f → (F G)`         |
+| 15 | TR3D | `h g f → (F G H)`     | 23: `F` may be `·`
+| 1A | MD1C | `𝕣 𝕗 → (𝔽 _𝕣)`        |
+| 1B | MD2C | `𝕘 𝕣 𝕗 → (𝔽 _𝕣_ 𝔾)`   |
+| 1C | MD2L | `𝕣 𝕗 → (𝕗 _𝕣_)`       |
+| 1D | MD2R | `𝕘 𝕣 → (_𝕣_ 𝕘)`       |
+| 20 | VARO | `→ x`                 | Local variable value
+| 21 | VARM | `→ r`                 | Local variable reference
+| 2B | VFYM | `c → r`               | Constant to match reference
+| 30 | SETN | `x r → (r←x)`         | `r` is a reference; 47: no result
+| 31 | SETU | `x r → (r↩x)`         | `r` is a reference
+| 32 | SETM | `x f r → (r F↩ x)`    | `r` is a reference
+| 40 | FLDO | `n → n.i`             |
+| 42 | ALIM | `r → s`               | Reference `s` gets field `i` and puts in `r`
 
 Many instructions just call functions or modifiers or otherwise have fairly obvious implementations. Instructions to handle variables and blocks are more complicated (although very typical of bytecode representations for lexically-scoped languages) and are described in more detail below.
 
-### Local variables: DFND LOCO LOCU LOCM RETN
+### Local variables: DFND VARO VARU VARM RETN
 
 The bytecode representation is designed with the assumption that variables will be stored in frames, one for each time an instance of a block is run. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see [#blocks](#blocks)) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.
 
@@ -124,13 +129,13 @@ A frame is a mutable list of *slots* for variable values. It has slots for any s
 
 When a block is pushed with **DFND**, an instance of the block is created, with its *parent frame* set to be the frame of the currently-executing block. Setting the parent frame when the block is first seen, instead of when it's evaluated, is what distinguishes lexical from dynamic scoping. If it's an immediate block, it's evaluated immediately, and otherwise it's pushed onto the stack. When the block is evaluated, its frame is initialized using any arguments passed to it, the next instruction's index is pushed onto the return stack, and execution moves to the first instruction in the block. When the RETN instruction is encountered, an index is popped from the return stack and execution returns to this location. As an alternative to maintaining an explicit return stack, a block can be implemented as a native function that creates a new execution stack and returns the value in it when the **RETN** instruction is reached. This approach uses the implementation language's call stack for the return stack.
 
-Local variables are manipulated with the **LOCO** (or **LOCU**) and **LOCM** instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by *frame depth* and *slot index*. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.
+Local variables are manipulated with the **VARO** (or **VARU**) and **VARM** instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by *frame depth* and *slot index*. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.
 
-Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with LOCO or LOCU or modified with SETU or SETM only if it *has* been defined.
+Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU or SETM only if it *has* been defined.
 
-### Variable references: ARRM LOCM SETN SETU SETM SETH VFYM
+### Variable references: ARRM VARM SETN SETU SETM SETH VFYM
 
-A *variable reference* indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. **LOCM** pushes a variable reference to the stack.
+A *variable reference* indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. **VARM** pushes a variable reference to the stack.
 
 A *reference list* is a list of variable references or reference lists. It's created with the **ARRM** instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.
 
@@ -140,7 +145,7 @@ The **SETN**, **SETU**, and **SETM** instructions set a value for a reference. I
 
 **SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. **VFYM** converts a BQN value `c` to a special reference: assigning a value `v` to it should check if `v≡c` but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.
 
-### Namespaces: FLDO FLDM NSPM RETD
+### Namespaces: FLDO FLDM ALIM RETD
 
 A *namespace* is the collection of variables in a particular scope, along with an association mapping some exported *symbols* (case- and underscore-normalized strings) to a subset of these. It can be represented using a frame for the variables, plus the variable name list and mask of exported variables from that block's properties in the bytecode. **RETD** finishes executing the block and returns the namespace for that execution.
 
@@ -148,7 +153,7 @@ The variable name list is split into a program-level list of names and a list of
 
 **FLDO** reads a field from a namespace. The parameter `I` is a program-level identifier index for this field. The VM must ensure that the field is exported, possibly by leaving unexported identifiers out of the namespace's lookup table. **FLDM** does the same but pushes a reference to the field, to be modified by assignment.
 
-**NSPM** is used for aliased assignment such as `⟨a‿b⇐c⟩←ns`. It tags a reference with a namespace field, identified with a program-level index. A value assigned to the tagged reference must be a namespace. The relevant field is extracted, and then stored in the original reference.
+**ALIM** is used for aliased assignment such as `⟨a‿b⇐c⟩←ns`. It tags a reference with a namespace field, identified with a program-level index. A value assigned to the tagged reference must be a namespace. The relevant field is extracted, and then stored in the original reference.
 
 ## Runtime
 

@@ -56,7 +56,7 @@
 </thead>
 <tbody>
 <tr>
-<td align="right">0</td>
+<td align="right">00</td>
 <td>PUSH</td>
 <td align="center">X</td>
 <td align="right"></td>
@@ -64,119 +64,7 @@
 <td>Push object <code><span class='Function'>I</span></code></td>
 </tr>
 <tr>
-<td align="right">1</td>
-<td>VARO</td>
-<td align="center"></td>
-<td align="right"></td>
-<td align="left"><code><span class='Function'>I</span></code></td>
-<td>Push named variable <code><span class='Function'>I</span></code></td>
-</tr>
-<tr>
-<td align="right">2</td>
-<td>VARM</td>
-<td align="center"></td>
-<td align="right"></td>
-<td align="left"><code><span class='Function'>I</span></code></td>
-<td>Push named variable <code><span class='Function'>I</span></code> reference</td>
-</tr>
-<tr>
-<td align="right">3</td>
-<td>ARRO</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"><code><span class='Function'>N</span></code></td>
-<td>Create length-<code><span class='Function'>N</span></code> list</td>
-</tr>
-<tr>
-<td align="right">4</td>
-<td>ARRM</td>
-<td align="center">X</td>
-<td align="right">3</td>
-<td align="left"><code><span class='Function'>N</span></code></td>
-<td>Create length-<code><span class='Function'>N</span></code> reference list</td>
-</tr>
-<tr>
-<td align="right">5</td>
-<td>FN1C</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Monadic function call</td>
-</tr>
-<tr>
-<td align="right">6</td>
-<td>FN2C</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Dyadic function call</td>
-</tr>
-<tr>
-<td align="right">7</td>
-<td>OP1D</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>1-modifier call</td>
-</tr>
-<tr>
-<td align="right">8</td>
-<td>OP2D</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>2-modifier call</td>
-</tr>
-<tr>
-<td align="right">9</td>
-<td>TR2D</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Create 2-train</td>
-</tr>
-<tr>
-<td align="right">10</td>
-<td>TR3D</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Create 3-train</td>
-</tr>
-<tr>
-<td align="right">11</td>
-<td>SETN</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Define variable</td>
-</tr>
-<tr>
-<td align="right">12</td>
-<td>SETU</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Change variable</td>
-</tr>
-<tr>
-<td align="right">13</td>
-<td>SETM</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Modify variable</td>
-</tr>
-<tr>
-<td align="right">14</td>
-<td>POPS</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Pop and discard top of stack</td>
-</tr>
-<tr>
-<td align="right">15</td>
+<td align="right">01</td>
 <td>DFND</td>
 <td align="center">X</td>
 <td align="right"></td>
@@ -184,79 +72,31 @@
 <td>Localize and push block <code><span class='Function'>I</span></code></td>
 </tr>
 <tr>
-<td align="right">16</td>
-<td>FN1O</td>
-<td align="center">X</td>
-<td align="right">5</td>
-<td align="left"></td>
-<td>Monadic call, checking for <code><span class='Nothing'>·</span></code></td>
+<td align="right">02</td>
+<td>SYSV</td>
+<td align="center"></td>
+<td align="right">00</td>
+<td align="left"><code><span class='Function'>I</span></code></td>
+<td>Push dynamic system value <code><span class='Function'>I</span></code></td>
 </tr>
 <tr>
-<td align="right">17</td>
-<td>FN2O</td>
-<td align="center">X</td>
-<td align="right">6</td>
-<td align="left"></td>
-<td>Dyadic call, checking for <code><span class='Nothing'>·</span></code></td>
-</tr>
-<tr>
-<td align="right">18</td>
-<td>CHKV</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"></td>
-<td>Error if top of stack is <code><span class='Nothing'>·</span></code></td>
-</tr>
-<tr>
-<td align="right">19</td>
-<td>TR3O</td>
-<td align="center">X</td>
-<td align="right">10</td>
-<td align="left"></td>
-<td>Create 3-train, checking for <code><span class='Nothing'>·</span></code></td>
-</tr>
-<tr>
-<td align="right">20</td>
-<td>OP2H</td>
+<td align="right">03</td>
+<td></td>
 <td align="center"></td>
 <td align="right"></td>
-<td align="left"></td>
-<td>Bind right operand to 2-modifier</td>
+<td align="left"><code><span class='Function'>D</span></code></td>
+<td>Push return function for lexical depth <code><span class='Function'>D</span></code></td>
 </tr>
 <tr>
-<td align="right">21</td>
-<td>LOCO</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
-<td>Push local variable <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
-</tr>
-<tr>
-<td align="right">22</td>
-<td>LOCM</td>
-<td align="center">X</td>
-<td align="right"></td>
-<td align="left"><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
-<td>Push local variable reference <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
-</tr>
-<tr>
-<td align="right">23</td>
-<td>VFYM</td>
+<td align="right">06</td>
+<td>POPS</td>
 <td align="center">X</td>
 <td align="right"></td>
 <td align="left"></td>
-<td>Convert constant to matcher (for headers)</td>
+<td>Pop and discard top of stack</td>
 </tr>
 <tr>
-<td align="right">24</td>
-<td>SETH</td>
-<td align="center">X</td>
-<td align="right">11</td>
-<td align="left"></td>
-<td>Test and set header</td>
-</tr>
-<tr>
-<td align="right">25</td>
+<td align="right">07</td>
 <td>RETN</td>
 <td align="center">X</td>
 <td align="right"></td>
@@ -264,7 +104,223 @@
 <td>Returns top of stack</td>
 </tr>
 <tr>
+<td align="right">08</td>
+<td>RETD</td>
+<td align="center">NS</td>
+<td align="right">07</td>
+<td align="left"></td>
+<td>Return the running scope's namespace</td>
+</tr>
+<tr>
+<td align="right">0B</td>
+<td>ARRO</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"><code><span class='Function'>N</span></code></td>
+<td>Create length-<code><span class='Function'>N</span></code> list</td>
+</tr>
+<tr>
+<td align="right">0C</td>
+<td>ARRM</td>
+<td align="center">X</td>
+<td align="right">0B</td>
+<td align="left"><code><span class='Function'>N</span></code></td>
+<td>Create length-<code><span class='Function'>N</span></code> reference list</td>
+</tr>
+<tr>
+<td align="right">0E</td>
+<td></td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Merge top of stack (for <code><span class='Value'>[]</span></code>)</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td>FN1C</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Monadic function call</td>
+</tr>
+<tr>
+<td align="right">11</td>
+<td>FN2C</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Dyadic function call</td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td>FN1O</td>
+<td align="center">X</td>
+<td align="right">10</td>
+<td align="left"></td>
+<td>Monadic call, checking for <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td align="right">13</td>
+<td>FN2O</td>
+<td align="center">X</td>
+<td align="right">13</td>
+<td align="left"></td>
+<td>Dyadic call, checking for <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td align="right">14</td>
+<td>TR2D</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Create 2-train</td>
+</tr>
+<tr>
+<td align="right">15</td>
+<td>TR3D</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Create 3-train</td>
+</tr>
+<tr>
+<td align="right">16</td>
+<td>CHKV</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Error if top of stack is <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td align="right">17</td>
+<td>TR3O</td>
+<td align="center">X</td>
+<td align="right">15</td>
+<td align="left"></td>
+<td>Create 3-train, checking for <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td align="right">1A</td>
+<td>MD1C</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>1-modifier call</td>
+</tr>
+<tr>
+<td align="right">1B</td>
+<td>MD2C</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>2-modifier call</td>
+</tr>
+<tr>
+<td align="right">1C</td>
+<td>MD2L</td>
+<td align="center"></td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Bind left operand to 2-modifier</td>
+</tr>
+<tr>
+<td align="right">1D</td>
+<td>MD2R</td>
+<td align="center"></td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Bind right operand to 2-modifier</td>
+</tr>
+<tr>
+<td align="right">20</td>
+<td>VARO</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
+<td>Push local variable <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
+</tr>
+<tr>
+<td align="right">21</td>
+<td>VARM</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
+<td>Push local variable reference <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
+</tr>
+<tr>
+<td align="right">22</td>
+<td>VARU</td>
+<td align="center">X</td>
+<td align="right">21</td>
+<td align="left"><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
+<td>Push and clear local variable <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
+</tr>
+<tr>
 <td align="right">26</td>
+<td>DYNO</td>
+<td align="center"></td>
+<td align="right"></td>
+<td align="left"><code><span class='Function'>I</span></code></td>
+<td>Push named variable <code><span class='Function'>I</span></code></td>
+</tr>
+<tr>
+<td align="right">27</td>
+<td>DYNM</td>
+<td align="center"></td>
+<td align="right"></td>
+<td align="left"><code><span class='Function'>I</span></code></td>
+<td>Push named variable <code><span class='Function'>I</span></code> reference</td>
+</tr>
+<tr>
+<td align="right">2A</td>
+<td></td>
+<td align="center"></td>
+<td align="right">06</td>
+<td align="left"></td>
+<td>Check predicate and drop</td>
+</tr>
+<tr>
+<td align="right">2B</td>
+<td>VFYM</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Convert constant to matcher (for headers)</td>
+</tr>
+<tr>
+<td align="right">2F</td>
+<td>SETH</td>
+<td align="center">X</td>
+<td align="right">30</td>
+<td align="left"></td>
+<td>Test and set header</td>
+</tr>
+<tr>
+<td align="right">30</td>
+<td>SETN</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Define variable</td>
+</tr>
+<tr>
+<td align="right">31</td>
+<td>SETU</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Change variable</td>
+</tr>
+<tr>
+<td align="right">32</td>
+<td>SETM</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Modify variable</td>
+</tr>
+<tr>
+<td align="right">40</td>
 <td>FLDO</td>
 <td align="center">NS</td>
 <td align="right"></td>
@@ -272,44 +328,20 @@
 <td>Read field <code><span class='Function'>I</span></code> from namespace</td>
 </tr>
 <tr>
-<td align="right">27</td>
+<td align="right">41</td>
 <td>FLDM</td>
 <td align="center"></td>
-<td align="right">26</td>
+<td align="right">40</td>
 <td align="left"><code><span class='Function'>I</span></code></td>
 <td>Push mutable field <code><span class='Function'>I</span></code> from namespace</td>
 </tr>
 <tr>
-<td align="right">28</td>
-<td>NSPM</td>
+<td align="right">42</td>
+<td>ALIM</td>
 <td align="center">NS</td>
 <td align="right"></td>
 <td align="left"><code><span class='Function'>I</span></code></td>
 <td>Mutable target aliases field <code><span class='Function'>I</span></code></td>
-</tr>
-<tr>
-<td align="right">29</td>
-<td>RETD</td>
-<td align="center">NS</td>
-<td align="right">25</td>
-<td align="left"></td>
-<td>Return the running scope's namespace</td>
-</tr>
-<tr>
-<td align="right">30</td>
-<td>SYSV</td>
-<td align="center"></td>
-<td align="right">0</td>
-<td align="left"><code><span class='Function'>I</span></code></td>
-<td>Push dynamic system value <code><span class='Function'>I</span></code></td>
-</tr>
-<tr>
-<td align="right">31</td>
-<td>LOCU</td>
-<td align="center">X</td>
-<td align="right">21</td>
-<td align="left"><code><span class='Function'>D</span></code>, <code><span class='Function'>I</span></code></td>
-<td>Push and clear local variable <code><span class='Function'>I</span></code> from <code><span class='Function'>D</span></code> frames up</td>
 </tr>
 </tbody>
 </table>
@@ -325,151 +357,157 @@
 </thead>
 <tbody>
 <tr>
-<td align="right">0</td>
+<td align="right">00</td>
 <td>PUSH</td>
 <td><code><span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>consts</span><span class='Paren'>)</span></code></td>
 <td></td>
 </tr>
 <tr>
-<td align="right">3</td>
-<td>ARRO</td>
-<td><code><span class='Value'>x0</span> <span class='Value'>…</span> <span class='Value'>xm</span> <span class='Gets'>→</span> <span class='Bracket'>⟨</span><span class='Value'>x0</span> <span class='Value'>…</span> <span class='Value'>xm</span><span class='Bracket'>⟩</span></code></td>
-<td><code><span class='Function'>N</span></code> total variables (<code><span class='Value'>m</span><span class='Function'>=</span><span class='Value'>n</span><span class='Function'>-</span><span class='Number'>1</span></code>)</td>
-</tr>
-<tr>
-<td align="right">5</td>
-<td>FN1C</td>
-<td><code><span class='Value'>𝕩</span> <span class='Value'>𝕤</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝕊</span> <span class='Value'>𝕩</span><span class='Paren'>)</span></code></td>
-<td>16: <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
-</tr>
-<tr>
-<td align="right">6</td>
-<td>FN2C</td>
-<td><code><span class='Value'>𝕩</span> <span class='Value'>𝕤</span> <span class='Value'>𝕨</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>𝕨</span> <span class='Function'>𝕊</span> <span class='Value'>𝕩</span><span class='Paren'>)</span></code></td>
-<td>17: <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
-</tr>
-<tr>
-<td align="right">7</td>
-<td>OP1D</td>
-<td><code><span class='Value'>𝕣</span> <span class='Value'>𝕗</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Modifier'>_𝕣</span><span class='Paren'>)</span></code></td>
-<td></td>
-</tr>
-<tr>
-<td align="right">8</td>
-<td>OP2D</td>
-<td><code><span class='Value'>𝕘</span> <span class='Value'>𝕣</span> <span class='Value'>𝕗</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Modifier2'>_𝕣_</span> <span class='Function'>𝔾</span><span class='Paren'>)</span></code></td>
-<td></td>
-</tr>
-<tr>
-<td align="right">9</td>
-<td>TR2D</td>
-<td><code><span class='Value'>g</span> <span class='Value'>f</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>F</span> <span class='Function'>G</span><span class='Paren'>)</span></code></td>
-<td></td>
-</tr>
-<tr>
-<td align="right">10</td>
-<td>TR3D</td>
-<td><code><span class='Value'>h</span> <span class='Value'>g</span> <span class='Value'>f</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>F</span> <span class='Function'>G</span> <span class='Function'>H</span><span class='Paren'>)</span></code></td>
-<td>19: <code><span class='Function'>F</span></code> may be <code><span class='Nothing'>·</span></code></td>
-</tr>
-<tr>
-<td align="right">11</td>
-<td>SETN</td>
-<td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>←</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
-<td><code><span class='Value'>r</span></code> is a reference; 24: no result</td>
-</tr>
-<tr>
-<td align="right">12</td>
-<td>SETU</td>
-<td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>↩</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
-<td><code><span class='Value'>r</span></code> is a reference</td>
-</tr>
-<tr>
-<td align="right">13</td>
-<td>SETM</td>
-<td><code><span class='Value'>x</span> <span class='Value'>f</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span> <span class='Function'>F</span><span class='Gets'>↩</span> <span class='Value'>x</span><span class='Paren'>)</span></code></td>
-<td><code><span class='Value'>r</span></code> is a reference</td>
-</tr>
-<tr>
-<td align="right">14</td>
-<td>POPS</td>
-<td><code><span class='Value'>x</span> <span class='Gets'>→</span></code></td>
-<td></td>
-</tr>
-<tr>
-<td align="right">15</td>
+<td align="right">01</td>
 <td>DFND</td>
 <td><code><span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>blocks</span><span class='Paren'>)</span></code></td>
 <td>Also sets block's parent scope</td>
 </tr>
 <tr>
-<td align="right">20</td>
-<td>OP2H</td>
-<td><code><span class='Value'>𝕘</span> <span class='Value'>𝕣</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Modifier2'>_𝕣_</span> <span class='Value'>𝕘</span><span class='Paren'>)</span></code></td>
+<td align="right">06</td>
+<td>POPS</td>
+<td><code><span class='Value'>x</span> <span class='Gets'>→</span></code></td>
 <td></td>
 </tr>
 <tr>
-<td align="right">21</td>
-<td>LOCO</td>
-<td><code><span class='Gets'>→</span> <span class='Value'>x</span></code></td>
-<td>Local variable value</td>
-</tr>
-<tr>
-<td align="right">22</td>
-<td>LOCM</td>
-<td><code><span class='Gets'>→</span> <span class='Value'>r</span></code></td>
-<td>Local variable reference</td>
-</tr>
-<tr>
-<td align="right">23</td>
-<td>VFYM</td>
-<td><code><span class='Value'>c</span> <span class='Gets'>→</span> <span class='Value'>r</span></code></td>
-<td>Constant to match reference</td>
-</tr>
-<tr>
-<td align="right">25</td>
+<td align="right">07</td>
 <td>RETN</td>
 <td><code><span class='Value'>x</span> <span class='Gets'>→</span> <span class='Value'>x</span></code></td>
 <td>Returns from current block</td>
 </tr>
 <tr>
-<td align="right">26</td>
+<td align="right">08</td>
+<td>RETD</td>
+<td><code><span class='Value'>x?</span> <span class='Gets'>→</span> <span class='Value'>n</span></code></td>
+<td>Clears stack, dropping 0 or 38 value</td>
+</tr>
+<tr>
+<td align="right">0B</td>
+<td>ARRO</td>
+<td><code><span class='Value'>x0</span> <span class='Value'>…</span> <span class='Value'>xm</span> <span class='Gets'>→</span> <span class='Bracket'>⟨</span><span class='Value'>x0</span> <span class='Value'>…</span> <span class='Value'>xm</span><span class='Bracket'>⟩</span></code></td>
+<td><code><span class='Function'>N</span></code> total variables (<code><span class='Value'>m</span><span class='Function'>=</span><span class='Value'>n</span><span class='Function'>-</span><span class='Number'>38</span></code>)</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td>FN1C</td>
+<td><code><span class='Value'>𝕩</span> <span class='Value'>𝕤</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝕊</span> <span class='Value'>𝕩</span><span class='Paren'>)</span></code></td>
+<td>18: <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td align="right">11</td>
+<td>FN2C</td>
+<td><code><span class='Value'>𝕩</span> <span class='Value'>𝕤</span> <span class='Value'>𝕨</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>𝕨</span> <span class='Function'>𝕊</span> <span class='Value'>𝕩</span><span class='Paren'>)</span></code></td>
+<td>19: <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td align="right">14</td>
+<td>TR2D</td>
+<td><code><span class='Value'>g</span> <span class='Value'>f</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>F</span> <span class='Function'>G</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">15</td>
+<td>TR3D</td>
+<td><code><span class='Value'>h</span> <span class='Value'>g</span> <span class='Value'>f</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>F</span> <span class='Function'>G</span> <span class='Function'>H</span><span class='Paren'>)</span></code></td>
+<td>23: <code><span class='Function'>F</span></code> may be <code><span class='Nothing'>·</span></code></td>
+</tr>
+<tr>
+<td align="right">1A</td>
+<td>MD1C</td>
+<td><code><span class='Value'>𝕣</span> <span class='Value'>𝕗</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Modifier'>_𝕣</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">1B</td>
+<td>MD2C</td>
+<td><code><span class='Value'>𝕘</span> <span class='Value'>𝕣</span> <span class='Value'>𝕗</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Modifier2'>_𝕣_</span> <span class='Function'>𝔾</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">1C</td>
+<td>MD2L</td>
+<td><code><span class='Value'>𝕣</span> <span class='Value'>𝕗</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>𝕗</span> <span class='Modifier2'>_𝕣_</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">1D</td>
+<td>MD2R</td>
+<td><code><span class='Value'>𝕘</span> <span class='Value'>𝕣</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Modifier2'>_𝕣_</span> <span class='Value'>𝕘</span><span class='Paren'>)</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">20</td>
+<td>VARO</td>
+<td><code><span class='Gets'>→</span> <span class='Value'>x</span></code></td>
+<td>Local variable value</td>
+</tr>
+<tr>
+<td align="right">21</td>
+<td>VARM</td>
+<td><code><span class='Gets'>→</span> <span class='Value'>r</span></code></td>
+<td>Local variable reference</td>
+</tr>
+<tr>
+<td align="right">2B</td>
+<td>VFYM</td>
+<td><code><span class='Value'>c</span> <span class='Gets'>→</span> <span class='Value'>r</span></code></td>
+<td>Constant to match reference</td>
+</tr>
+<tr>
+<td align="right">30</td>
+<td>SETN</td>
+<td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>←</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Value'>r</span></code> is a reference; 47: no result</td>
+</tr>
+<tr>
+<td align="right">31</td>
+<td>SETU</td>
+<td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>↩</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Value'>r</span></code> is a reference</td>
+</tr>
+<tr>
+<td align="right">32</td>
+<td>SETM</td>
+<td><code><span class='Value'>x</span> <span class='Value'>f</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span> <span class='Function'>F</span><span class='Gets'>↩</span> <span class='Value'>x</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Value'>r</span></code> is a reference</td>
+</tr>
+<tr>
+<td align="right">40</td>
 <td>FLDO</td>
 <td><code><span class='Value'>n</span> <span class='Gets'>→</span> <span class='Value'>n.i</span></code></td>
 <td></td>
 </tr>
 <tr>
-<td align="right">28</td>
-<td>NSPM</td>
+<td align="right">42</td>
+<td>ALIM</td>
 <td><code><span class='Value'>r</span> <span class='Gets'>→</span> <span class='Value'>s</span></code></td>
 <td>Reference <code><span class='Value'>s</span></code> gets field <code><span class='Value'>i</span></code> and puts in <code><span class='Value'>r</span></code></td>
-</tr>
-<tr>
-<td align="right">29</td>
-<td>RETD</td>
-<td><code><span class='Value'>x?</span> <span class='Gets'>→</span> <span class='Value'>n</span></code></td>
-<td>Clears stack, dropping 0 or 1 value</td>
 </tr>
 </tbody>
 </table>
 <p>Many instructions just call functions or modifiers or otherwise have fairly obvious implementations. Instructions to handle variables and blocks are more complicated (although very typical of bytecode representations for lexically-scoped languages) and are described in more detail below.</p>
-<h3 id="local-variables-dfnd-loco-locu-locm-retn"><a class="header" href="#local-variables-dfnd-loco-locu-locm-retn">Local variables: DFND LOCO LOCU LOCM RETN</a></h3>
+<h3 id="local-variables-dfnd-varo-varu-varm-retn"><a class="header" href="#local-variables-dfnd-varo-varu-varm-retn">Local variables: DFND VARO VARU VARM RETN</a></h3>
 <p>The bytecode representation is designed with the assumption that variables will be stored in frames, one for each time an instance of a block is run. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see <a href="#blocks">#blocks</a>) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.</p>
 <p>A frame is a mutable list of <em>slots</em> for variable values. It has slots for any special names that are available during the blocks execution followed by the local variables it defines. Special names use the ordering <code><span class='Value'>𝕤𝕩𝕨𝕣𝕗𝕘</span></code>; the first three of these are available in non-immediate blocks while <code><span class='Value'>𝕣</span></code> and <code><span class='Value'>𝕗</span></code> are available in modifiers and <code><span class='Value'>𝕘</span></code> in 2-modifiers specifically.</p>
 <p>When a block is pushed with <strong>DFND</strong>, an instance of the block is created, with its <em>parent frame</em> set to be the frame of the currently-executing block. Setting the parent frame when the block is first seen, instead of when it's evaluated, is what distinguishes lexical from dynamic scoping. If it's an immediate block, it's evaluated immediately, and otherwise it's pushed onto the stack. When the block is evaluated, its frame is initialized using any arguments passed to it, the next instruction's index is pushed onto the return stack, and execution moves to the first instruction in the block. When the RETN instruction is encountered, an index is popped from the return stack and execution returns to this location. As an alternative to maintaining an explicit return stack, a block can be implemented as a native function that creates a new execution stack and returns the value in it when the <strong>RETN</strong> instruction is reached. This approach uses the implementation language's call stack for the return stack.</p>
-<p>Local variables are manipulated with the <strong>LOCO</strong> (or <strong>LOCU</strong>) and <strong>LOCM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
-<p>Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with LOCO or LOCU or modified with SETU or SETM only if it <em>has</em> been defined.</p>
-<h3 id="variable-references-arrm-locm-setn-setu-setm-seth-vfym"><a class="header" href="#variable-references-arrm-locm-setn-setu-setm-seth-vfym">Variable references: ARRM LOCM SETN SETU SETM SETH VFYM</a></h3>
-<p>A <em>variable reference</em> indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. <strong>LOCM</strong> pushes a variable reference to the stack.</p>
+<p>Local variables are manipulated with the <strong>VARO</strong> (or <strong>VARU</strong>) and <strong>VARM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
+<p>Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU or SETM only if it <em>has</em> been defined.</p>
+<h3 id="variable-references-arrm-varm-setn-setu-setm-seth-vfym"><a class="header" href="#variable-references-arrm-varm-setn-setu-setm-seth-vfym">Variable references: ARRM VARM SETN SETU SETM SETH VFYM</a></h3>
+<p>A <em>variable reference</em> indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. <strong>VARM</strong> pushes a variable reference to the stack.</p>
 <p>A <em>reference list</em> is a list of variable references or reference lists. It's created with the <strong>ARRM</strong> instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.</p>
 <p>The <strong>SETN</strong>, <strong>SETU</strong>, and <strong>SETM</strong> instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.</p>
 <p><strong>SETM</strong> additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.</p>
 <p><strong>SETH</strong> is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. <strong>VFYM</strong> converts a BQN value <code><span class='Value'>c</span></code> to a special reference: assigning a value <code><span class='Value'>v</span></code> to it should check if <code><span class='Value'>v</span><span class='Function'>≡</span><span class='Value'>c</span></code> but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.</p>
-<h3 id="namespaces-fldo-fldm-nspm-retd"><a class="header" href="#namespaces-fldo-fldm-nspm-retd">Namespaces: FLDO FLDM NSPM RETD</a></h3>
+<h3 id="namespaces-fldo-fldm-alim-retd"><a class="header" href="#namespaces-fldo-fldm-alim-retd">Namespaces: FLDO FLDM ALIM RETD</a></h3>
 <p>A <em>namespace</em> is the collection of variables in a particular scope, along with an association mapping some exported <em>symbols</em> (case- and underscore-normalized strings) to a subset of these. It can be represented using a frame for the variables, plus the variable name list and mask of exported variables from that block's properties in the bytecode. <strong>RETD</strong> finishes executing the block and returns the namespace for that execution.</p>
 <p>The variable name list is split into a program-level list of names and a list of indices into these names: within-program field accesses can be done with the indices only while cross-program ones must use names. One way to check whether an access is cross-program is to compare the accessor's program-level name list with the one for the accessed namespace as references or pointers. Then a lookup should be performed as appropriate. A persistent lookup table is needed to make this efficient.</p>
 <p><strong>FLDO</strong> reads a field from a namespace. The parameter <code><span class='Function'>I</span></code> is a program-level identifier index for this field. The VM must ensure that the field is exported, possibly by leaving unexported identifiers out of the namespace's lookup table. <strong>FLDM</strong> does the same but pushes a reference to the field, to be modified by assignment.</p>
-<p><strong>NSPM</strong> is used for aliased assignment such as <code><span class='Bracket'>⟨</span><span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span><span class='Gets'>⇐</span><span class='Value'>c</span><span class='Bracket'>⟩</span><span class='Gets'>←</span><span class='Value'>ns</span></code>. It tags a reference with a namespace field, identified with a program-level index. A value assigned to the tagged reference must be a namespace. The relevant field is extracted, and then stored in the original reference.</p>
+<p><strong>ALIM</strong> is used for aliased assignment such as <code><span class='Bracket'>⟨</span><span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span><span class='Gets'>⇐</span><span class='Value'>c</span><span class='Bracket'>⟩</span><span class='Gets'>←</span><span class='Value'>ns</span></code>. It tags a reference with a namespace field, identified with a program-level index. A value assigned to the tagged reference must be a namespace. The relevant field is extracted, and then stored in the original reference.</p>
 <h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
 <p>Primitive functions and modifiers used in a program are stored in its <code><span class='Value'>consts</span></code> array. The compiler needs to be passed a <em>runtime</em> with the value of every primitive so that these functions and modifiers are available.</p>
 <p>While it's perfectly possible to implement the runtime from scratch, the pseudo-BQN files <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r0.bqn">r0.bqn</a> and <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/r1.bqn">r1.bqn</a> implement the full runtime in terms of a <em>core runtime</em> consisting of a smaller number of much simpler functions. <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/pr.bqn">pr.bqn</a> converts this file so that it can be compiled. It changes values in the core runtime to primitives and primitives to generated identifiers, so that the first 22 values in the output's <code><span class='Value'>consts</span></code> array are exactly the core runtime, and no other primitives are required. The result is a list of two elements: first the list of all primitive values, and then a function that can be called to pass in two additional core functions used for inferred properties.</p>
