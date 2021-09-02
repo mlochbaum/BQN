@@ -13,6 +13,6 @@ DCompile⇐{
   name ← ⊑2⊑tok
   blk ← 2(↑∾≍˜∘⊑)¨fblk
   bdy ← {⟨l,n,d,e⟩←𝕩 ⋄ ⟨l,((<"")⥊˜n-≠d)∾d⊏name,n-⊸↑e⟩}¨fbdy
-  ⟨bc,o,blk,⊑blk,bdy,⊑ind,1⊑ind,𝕩⟩
+  ⟨bc,o,blk,⊑blk,bdy,name,⊑ind,1⊑ind,𝕩⟩
 }
 DRun⇐•COMP∘DCompile
