@@ -303,7 +303,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ao←48+(0⌈(1+⊑bG)-˜ai⊏ma+𝕩)∾-hd            # Assignment opcode
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,hq,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
   oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,⥊⍉(11+l⊏aa)≍ll,ao,6¨dr,66¨al,vi-˜(al-1)⊏𝕩
-               24+oa⊏r,23⌊16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
+               24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
