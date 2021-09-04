@@ -39,9 +39,9 @@
   (setq bqn--mode-map (bqn--make-bqn-mode-map)))
 
 (defcustom bqn-mode-map-prefix "s-"
-  "The keymap prefix for ‘bqn--mode-map’ used both to store the new value
-using ‘set-create’ and to update ‘bqn--mode-map’ using
-  `bqn--make-bqn-mode-map'. Kill and re-start your BQN buffers to reflect the change."
+  "The keymap prefix for ‘bqn--mode-map’ used both to store the new value using
+  ‘set-create’ and to update ‘bqn--mode-map’ using `bqn--make-bqn-mode-map'.
+  Kill and re-start your BQN buffers to reflect the change."
   :type 'string
   :group 'bqn
   :set 'bqn--set-mode-map-prefix)
