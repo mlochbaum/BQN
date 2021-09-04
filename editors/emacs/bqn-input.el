@@ -3,8 +3,9 @@
 (require 'cl-lib)
 (require 'bqn-symbols)
 
-(defun bqn--make-key-command-sym (n)
-  (intern (concat "insert-sym-bqn-" n)))
+(eval-and-compile
+  (defun bqn--make-key-command-sym (n)
+    (intern (concat "insert-sym-bqn-" n))))
 
 (cl-macrolet ((make-insert-functions ()
              `(progn
