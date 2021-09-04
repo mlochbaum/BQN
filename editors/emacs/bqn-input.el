@@ -3,8 +3,9 @@
 (require 'cl-lib)
 (require 'bqn-symbols)
 
-(defun bqn--make-key-command-sym (n)
-  (intern (concat "insert-sym-bqn-" n)))
+(eval-and-compile
+  (defun bqn--make-key-command-sym (n)
+    (intern (concat "insert-sym-bqn-" n))))
 
 (cl-macrolet ((make-insert-functions ()
              `(progn
@@ -29,23 +30,22 @@
     (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN")))
     map))
 
-(defun bqn--make-bqn-mode-map ()
-  (bqn--make-base-mode-map bqn-mode-map-prefix))
+;; value gets updated by initialization of bqn-mode-map-prefix
+(defvar bqn--mode-map nil
+  "The keymap for ‘bqn-mode’.")
 
 (defun bqn--set-mode-map-prefix (symbol new)
   "Recreate the prefix and the keymap."
   (set-default symbol new)
-  (setq bqn--mode-map (bqn--make-bqn-mode-map)))
+  (setq bqn--mode-map (bqn--make-base-mode-map new)))
 
 (defcustom bqn-mode-map-prefix "s-"
-  "The keymap prefix for ‘bqn--mode-map’ used both to store the new value
-using ‘set-create’ and to update ‘bqn--mode-map’ using
-  `bqn--make-bqn-mode-map'. Kill and re-start your BQN buffers to reflect the change."
+  "The keymap prefix for ‘bqn--mode-map’ used both to store the new value using
+  ‘set-create’ and to update ‘bqn--mode-map’ using `bqn--make-base-mode-map'.
+  Kill and re-start your BQN buffers to reflect the change."
   :type 'string
   :group 'bqn
-  :set 'bqn--set-mode-map-prefix)
-
-(defvar bqn--mode-map (bqn--make-bqn-mode-map)
-  "The keymap for ‘bqn-mode’.")
+  :set 'bqn--set-mode-map-prefix
+  :initialize 'custom-initialize-set)
 
 (provide 'bqn-input)
