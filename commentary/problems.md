@@ -98,6 +98,9 @@ So it seems a bit strange to rely on it for core language features like `/⁼`. 
 ### Group doesn't include trailing empty groups
 A length can now be specified either in an extra element in any rank-1 component of `𝕨`, or by overtaking, since the result's fill element is an empty group. However, it still seems like it would be pretty easy to end up with a length error when a program using Group encounters unexpected data. It's a fundamental safety-convenience tradeoff, though, because specifying a length has to take more code in the general case.
 
+### Named modifiers use way more space than primitive ones
+`F _m_ G` versus `F∘G`: the syntax is the same but these don't feel the same at all. This is the worst case, as with primitive operands, `+_m_÷` isn't as far from `+∘÷`. It means a style-conscious programmer has to adjust the way they write code depending on whether things are named, and makes named modifiers feel less integrated into the language. A mix of named modifiers with primitive modifiers or trains can also look inconsistent.
+
 ### Prefixes/Suffixes add depth and Windows doesn't
 It's an awkward inconsistency. Prefixes and Suffixes have to have a nested result, but Windows doesn't have to be flat; it's just that making it nested ignores the fact that it does have an array structure.
 
