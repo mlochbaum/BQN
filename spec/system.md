@@ -210,7 +210,7 @@ More accurately the modifier `•_maxTime_` *may* fail if execution of `𝔽` ta
 
 ## Random generation
 
-`•MakeRand` initializes a deterministic pseudorandom number generator with seed value `𝕩`. `•rand`, if it exists, is a globally accessible generator initialized at first use. A random generator has the following member functions:
+`•MakeRand` initializes a deterministic pseudorandom number generator with seed value `𝕩`. `•rand`, if it exists, is a globally accessible generator initialized at first use; this initialization should use randomness from an outside source if available. A random generator has the following member functions:
 
 | Name      | Summary
 |-----------|------------------------------
