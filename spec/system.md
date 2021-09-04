@@ -210,17 +210,17 @@ More accurately the modifier `•_maxTime_` *may* fail if execution of `𝔽` ta
 
 ## Random generation
 
-`•MakeRand` initializes a deterministic pseudorandom number generator with seed value `𝕩`. `•rand`, if it exists, is a globally accessible generator initialized at first use; this initialization should use randomness from an outside source if available. A random generator has the following member functions:
+`•MakeRand` initializes a deterministic pseudorandom number generator with seed value `𝕩`. `•rand`, if it exists, is a globally accessible generator initialized at first use; this initialization should use randomness from an outside source if available. These random generators aren't required to be cryptographically secure and should always be treated as insecure. A random generator has the following member functions:
 
 | Name      | Summary
 |-----------|------------------------------
 | `Range`   | A number, or array of shape `𝕨`, selected from `↕𝕩`
 | `Deal`    | A simple random sample of `𝕨⊣𝕩` elements of `↕𝕩`
-| `Subset`  | A sorted SRS of `𝕨` elements of `↕𝕩`
+| `Subset`  | A sorted SRS of `↕𝕩`, with `𝕨` elements if given
 
 For each of these functions, `𝕩` is a natural number. For `Range`, `𝕨` must be a valid shape if given, and for `Deal` and `Subset` it's a natural number less than or equal to `𝕩`. All selections are made uniformly at random, that is, each possible result is equally likely. A simple random sample (SRS) of `k` elements from list `s` is a list of `k` distinct elements of `s` in any order. Both the choice of elements and their ordering must be uniformly random. [Recommended algorithms](../implementation/primitive/random.md#simple-random-sample) for SRS selection are variants of a partial Knuth shuffle.
 
-When `𝕨` isn't given, `Deal`'s result contains all elements of `↕𝕩`, making it a random shuffle of those values, or random permutation. In `Subset`, setting `𝕨` to `𝕩` would instead always result in the list `↕𝕩`; because this is not useful, `𝕨` must be provided.
+When `𝕨` isn't given, `Deal`'s result contains all elements of `↕𝕩`, making it a random shuffle of those values, or random permutation. In `Subset`, a random choice is made uniformly from the `2⋆𝕩` subsets of `↕𝕩`, so that a subset of any length may be returned.
 
 In `Range`, `𝕩` may be `0`. In this case the result consists of floating-point numbers in the unit interval from 0 to 1. The numbers should have an overall uniform distribution, but their precision and whether the endpoints 0 and 1 are possible may depend on the implementation.
 
