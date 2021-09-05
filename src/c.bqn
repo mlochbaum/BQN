@@ -177,7 +177,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
   "Invalid header structure"_err_(hm/HI) 1⊸»⊸=hm/hc
   hk←3|1-˜(+`bI∾nv)⍋ht←hi⊏𝕩×¬rev⊏sr         # Kind: 0 special, 1 name, 2 compound
-  hma←hm>ha+↩hla←hl∧(0=hr)∧2=hk⋄hr+↩hla     # Lone non-name subject is 𝕩 with 𝕊 omitted
+  hma←hm>ha+↩hla←hl∧(0=hr)∧1≠hk⋄hr+↩hla     # Lone non-name subject is 𝕩 with 𝕊 omitted
   hv←(ha×1+hla<«hc)+(ho×4+«3=hr)+hma×3×1-˜2⌊hr # Special name for position
   "Incorrect special name"_err_(HI) (0=hk)∧ht≠hv+⊑bI
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
