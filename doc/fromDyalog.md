@@ -94,7 +94,7 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>!</code> </td><td><code>×´1+↕</code>            </td><td> <code>-˜(+÷○(×´)⊢)1+↕∘⊣</code></td></tr>
 <tr><td> <code>○</code> </td><td> <code>π⊸×</code>             </td><td> <code>•math</code></td>    </tr>
 <tr><td> <code>~</code> </td><td> <code>¬</code>               </td><td> <code>¬∘∊/⊣</code></td>    </tr>
-<tr><td> <code>?</code> </td><td> <code>r.Range⚇0</code>       </td><td> <code>r.Deal</code> with <code>r←•MakeRand num</code></td></tr>
+<tr><td> <code>?</code> </td><td> <code>•rand.Range⚇0</code>   </td><td> <code>•rand.Deal</code></td></tr>
 <tr><td> <code>⍲</code> </td><td>                              </td><td> <code>¬∘∧</code></td>      </tr>
 <tr><td> <code>⍱</code> </td><td>                              </td><td> <code>¬∘∨</code></td>      </tr>
 <tr><td> <code>⍴</code> </td><td> <code>≢</code>               </td><td> <code>⥊</code></td>        </tr>
