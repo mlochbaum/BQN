@@ -140,7 +140,7 @@ The tables below give approximate implementations of J primitives. J has a whole
 | `}:` | `¯1⊸↓`                  |
 | `".` | `•Eval`                 |
 | `":` | `•Fmt`                  |
-| `?`  | `r.Range⚇0`             | `r.Deal` with `r←•MakeRand num`
+| `?`  | `•rand.Range⚇0`         | `•rand.Deal`
 | `e.` | `><∘∾∊¨⊢`               | `∊`
 | `E.` |                         | `⍷`
 | `i.` | `↕` (`⥊⟜(↕×´)` for lists) | `⊐`
