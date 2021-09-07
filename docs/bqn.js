@@ -563,10 +563,35 @@ let mathns = obj2ns(Math,
 );
 trig.map((_,i)=>{let f=mathns[i],g=mathns[i+trig.length]; f.inverse=g; g.inverse=f;});
 
+let rand = (() => {
+  let reqnat = (e,x) => {
+    if (!isnum(x) || x<0 || x!=Math.floor(x)) throw Error("•rand."+e+" must be a natural number");
+  };
+  let randnat = n => Math.floor(n*Math.random());
+  let range = (x,w) => {
+    reqnat("Range: 𝕩", x);
+    let r = x ? (()=>randnat(x)) : Math.random;
+    return has(w) ? list(Array(w).fill().map(r)) : r();
+  };
+  let deal = (x,w) => {
+    reqnat("Deal: 𝕩", x);
+    if (!has(w)) w=x; else {
+      reqnat("Deal: 𝕨", w); if (w>x) throw Error("•rand.Deal: 𝕨 must be less than or equal to 𝕩");
+    }
+    let r = Array(x).fill().map((_,i)=>i);
+    for (let i=0; i<w; i++) {
+      let j = i + randnat(x-i);
+      let t=r[i]; r[i]=r[j]; r[j]=t;
+    }
+    r.length = w; return list(r);
+  };
+  return makens(["Range", "Deal"], [range, deal]);
+})();
+
 let sysvals = {
   bqn:dynsys_copy(makebqnfn("•BQN",r=>run(...r))), rebqn, primitives,
   type, glyph, decompose, fmt:fmt1, repr, unixtime, listkeys,
-  js:dojs, math:mathns,
+  js:dojs, math:mathns, rand,
   listsys: dynsys(_ => list(Object.keys(sysvals).sort().map(str)))
 };
 
