@@ -573,19 +573,26 @@ let rand = (() => {
     let r = x ? (()=>randnat(x)) : Math.random;
     return has(w) ? list(Array(w).fill().map(r)) : r();
   };
-  let deal = (x,w) => {
-    reqnat("Deal: 𝕩", x);
+  let iota = x => Array(x).fill().map((_,i)=>i);
+  let deal_err = e => (x,w) => {
+    reqnat(e+": 𝕩", x);
     if (!has(w)) w=x; else {
-      reqnat("Deal: 𝕨", w); if (w>x) throw Error("•rand.Deal: 𝕨 must be less than or equal to 𝕩");
+      reqnat(e+": 𝕨", w); if (w>x) throw Error("•rand."+e+": 𝕨 must be less than or equal to 𝕩");
     }
-    let r = Array(x).fill().map((_,i)=>i);
+    let r = iota(x);
     for (let i=0; i<w; i++) {
       let j = i + randnat(x-i);
       let t=r[i]; r[i]=r[j]; r[j]=t;
     }
     r.length = w; return list(r);
   };
-  return makens(["Range", "Deal"], [range, deal]);
+  let deal = deal_err("Deal");
+  let subset = (x,w) => {
+    reqnat("Subset: 𝕩", x);
+    if (!has(w)) return list(iota(x).filter(_=>Math.random()<0.5));
+    return deal_err("Subset")(x,w).sort();
+  };
+  return makens(["range", "deal", "subset"], [range, deal, subset]);
 })();
 
 let sysvals = {
