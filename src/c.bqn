@@ -190,7 +190,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hj←gi⊏˜he/hi⋄hd←2=he/hk
 
   # Block properties
-  HS←H((0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI     # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
+  uru←(rev⊏r=3)∧𝕩=3+⊑bI                     # _𝕣_
+  HS←H(uru+(0‿3‿5‿6+⊑bI)⍋𝕩)⊸=⋄sp←/hf<𝕩 M bI # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
   fx←HS 1⋄fr←(fx∨0⊸<)⊸+ft←2(⊣⌈2×⊢)○HS 3     # Body immediacy ¬fx, type ft, role fr
   "Invalid special names for block header"_err_(ch/0∾/∘CB) (hr<ch/fr)∨(hm/hl)<hx<ch/fx
   ft⌈↩1-˜fr↩hr⌾(ch⊸/)fr⋄fx↩hx⊸⌈⌾(ch⊸/)fx
