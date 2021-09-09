@@ -30,6 +30,7 @@ CharCode←charSet{
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
 }
+swap_undo←CharCode∊⟜mod1⊸/"˜⁼"
 
 vd←1+vi←⊑bN  # Start of identifier numbering (plus dot)
 charRole←4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯1,¯3,¯1‿0,¯2,0,¬/5‿6⟩ # For first vd chars
@@ -169,6 +170,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
   cc←(⍋⍋«co)⊏c∾/cs                          # Case close
   hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh              # Header component indices
+  un←0=us←swap_undo(≠∘⊣-⊐)hi⊏𝕩
+  "Invalid Undo header syntax"_err_(HI) un<(»⊸≥∨(1»un)∧2⊸=)us
+  ut←un/»us⋄hi/˜↩0=us
   hr←(⊏⟜ns×⊏⟜r)rev⊏˜hi                      # And their roles
   hl←2=hn←(1⊸»+«)hc←¯1=hr                   # hl: is label, hc: is :
   "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
@@ -182,8 +186,10 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Incorrect special name"_err_(HI) (0=hk)∧ht≠hv+⊑bI
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
-  cw←1+-⟜«(»ch)<1(⊢<«)cf                    # Body 𝕨: 0 no, 1 allowed, 2 required
-  cw↩(hc/»hla¬⊸×hl⌈ha×1+he←0≠hk)⌾(ch⊸/)cw
+  cw←1+-⟜«(»ch)<1(⊢<«)cf
+  cw↩(hc/»hla¬⊸×hl⌈ha×1+he←0≠hk)⌾(ch⊸/)cw   # Body 𝕨: 0 no, 1 allowed, 2 required
+  "Invalid Undo header syntax"_err_(HI) hm<×ut
+  cu←(hm/ut)⌾(ch⊸/)0¨cw⋄cw⌈↩2×2=cu
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hma>hk≠2
   hx∨↩1=hr⋄hu←(¬he)⌾(hi⊸⊏)hf
@@ -291,7 +297,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   fa←/(fe←hg∨ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op   # Active functions: cases fe are excluded
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
   dy←2≠ny←fa⊏2«no⌈2×¬(tr∧r≥0)∨ro<r=0        # Dyadic
-  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
+  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/hg<𝕩<sep      # Objects to be loaded
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob∾↩(cl-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
@@ -309,7 +315,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   cj←/1+1=ciw←cw⊏˜ci←/cm∨↩fx∧1≠cw
-  ci↩<˘∘‿2⥊(cj⊸⊏⊔˜¯1(↑∾˜cj(⊒∘⊣+⊏)(1<ciw)+↓)2×¯1+`⊏⟜cf∾1˙)ci  # Indices for multi-body blocks
+  cg←¯1(↑∾˜cj(⊒∘⊣+⊏)(4⌊(2×ci⊏cu)+1<ciw)+↓)5×¯1+`(ci⊏cf)∾1
+  ci↩<˘∘‿5⥊cg⊔cj⊏ci  # Indices for multi-body blocks
   fq←⟨cf/ft,cf/¬fx,ci⌾((cf/cm)⊸/)/cf⟩       # Per-function data
   cq←⟨/1∾or≥oc-○≠rt,fsc+≠¨dn,dn,dx⟩         # Per-body data
   ⟨oc∾¯1⊑rc,u,fq,cq,ind⟩                    # Overall output
