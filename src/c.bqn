@@ -314,9 +314,11 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
-  cj←/1+1=ciw←cw⊏˜ci←/cm∨↩fx∧1≠cw
-  cg←¯1(↑∾˜cj(⊒∘⊣+⊏)(4⌊(2×ci⊏cu)+1<ciw)+↓)5×¯1+`(ci⊏cf)∾1
-  ci↩<˘∘‿5⥊cg⊔cj⊏ci  # Indices for multi-body blocks
+  cj←/cv←1+1=ciw←cw⊏˜ci←/cm∨↩fx∧1≠cw
+  ck←4⌊(2×ci⊏cu)+1<ciw
+  cg←¯1+`cif←ci⊏cf
+  ckt←2⌈(cif/·⍋⊏⟜cg)⊸⊏∘⍒⊸⊏cv+ck
+  ci↩ckt/⊸⊔(¯1(↑∾˜cj(⊒∘⊣+⊏)ck+cg⊏↓)0∾+`ckt)⊔cj⊏ci  # Indices for multi-body blocks
   fq←⟨cf/ft,cf/¬fx,ci⌾((cf/cm)⊸/)/cf⟩       # Per-function data
   cq←⟨/1∾or≥oc-○≠rt,fsc+≠¨dn,dn,dx⟩         # Per-body data
   ⟨oc∾¯1⊑rc,u,fq,cq,ind⟩                    # Overall output
