@@ -211,7 +211,7 @@ Indices←{
 IndicesInv←{
   IA 1==𝕩
   IA 1×´Nat⌜𝕩
-  IX (0⊸≤)◶⟨1,1×´(⊢≤○(⊑⟜𝕩)1⊸+)⌜∘↕⟩-˜≠𝕩
+  IX (0⊸≤)◶⟨1,1×´(⊢≤○(⊑⟜𝕩)1⊸+)⌜∘↕⟩1-˜≠𝕩
   GroupLen 𝕩
 }
 SelfClas ← (PermInv∘⍋∘Rep˜⊏˜¯1+`⊢) _self
