@@ -11,7 +11,9 @@ BQN programs manipulate data of seven types:
 - 2-Modifier
 - Namespace
 
-Of these, the first three are considered *data types* and the next three *operation types*. We first describe the operation types and the namespace; the remainder of this page will be dedicated to the data types. A member of any operation type accepts some number of *inputs* and either returns a *result* or causes an error; inputs and the result are values of any type. When a function is given inputs (*called*), it may produce side effects before returning, such as manipulating variables and calling other functions within its scope, or performing I/O.
+Beyond these, an implementation may define [system values](system.md) that create values of other types. The behavior of such values is not specified and is left up to the implementation.
+
+Of the types specified, the first three are considered *data types* and the next three *operation types*. We first describe the operation types and the namespace; the remainder of this page will be dedicated to the data types. A member of any operation type accepts some number of *inputs* and either returns a *result* or causes an error; inputs and the result are values of any type. When a function is given inputs (*called*), it may produce side effects before returning, such as manipulating variables and calling other functions within its scope, or performing I/O.
 - A *function* takes one (monadic call) or two (dyadic call) *arguments*.
 - A *1-modifier* takes one *operand*.
 - A *2-modifier* takes two *operands*.
