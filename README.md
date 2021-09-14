@@ -4,7 +4,7 @@
 
 <center>
 
-[documentation](doc/README.md) • [specification](spec/README.md) • [tutorials](tutorial/README.md) • [implementation](implementation/README.md)
+[documentation](doc/README.md) • [specification](spec/README.md) • [tutorials](tutorial/README.md) • [implementation](implementation/README.md) • [community](community/README.md)
 
 </center>
 
