@@ -8,4 +8,4 @@
 
 *Links contain the encoded art, which is CC-BY 4.0: see the "setup JS" pane.*
 
-["I hope it’s possible to overdose on BQN; that’s my ideal way to go"](https://twitter.com/SPIDERCLlMB/status/1327111382928482304)
+["I hope it’s possible to overdose on BQN; that’s my ideal way to go"](https://nitter.net/SPIDERCLlMB/status/1327111382928482304)
