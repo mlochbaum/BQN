@@ -1,4 +1,4 @@
-*View this file with no extra features whatsoever [here](https://mlochbaum.github.io/BQN/commentary/fanart.html).*
+*View this file with no extra features whatsoever [here](https://mlochbaum.github.io/BQN/community/fanart.html).*
 
 # BQN art
 
