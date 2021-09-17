@@ -11,13 +11,13 @@ The BQN forum consists of a [Matrix](https://matrix.org/) channel, and one room 
 
 #### Matrix
 
-To avoid having to hunt down all these channels they're gathered into the Matrix space linked above. Most clients don't yet support spaces; you can enable them as a beta feature and join the space to see the channels in it. There's nothing special about the channels so once you join one you'll be able to use it from any other Matrix client as well.
+To avoid having to hunt down all these channels they're gathered into the Matrix space linked above. Most clients don't yet support spaces; in Element you can enable them as a beta feature and join the space to see the channels in it. There's nothing special about the channels so once you join one you'll be able to use it from any other Matrix client as well.
 
 Being an open protocol, Matrix allows third-party clients (Element is first-party, created by the protocols designers), and there are many available. Most are lacking in features or otherwise difficult to use. For a desktop client, [Nheko](https://github.com/Nheko-Reborn/nheko) seems to be the best chance of a good experience.
 
 #### BQNBot
 
-BQNBot will run your code from chat! Begin your message with `bqn)` and our friend (designation B-QN) will evaluate the rest and show the output. While putting your code in blocks `` `like this` `` is easier to read, the bot just operates on plain text and doesn't require it. For longer blocks, you can start a new line after `bqn)`, and use a multi-line code block, as shown below.
+BQNBot will run your code from chat! Begin your message with `bqn)` and our friend (designation B-QN) will evaluate the rest and show the output. In all cases `bqn)` has to be at the very start of the message, so start a new one if you say something before it. While putting your code in blocks `` `like this` `` is easier to read, the bot just operates on plain text and doesn't require it. For longer blocks, you can start a new line after `bqn)`, and use a multi-line code block, as shown below.
 
     bqn)
     ```
