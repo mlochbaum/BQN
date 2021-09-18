@@ -26,7 +26,8 @@ PairRec ← {
 Plot ← {
   xy ← 1e300 (⊣-⊸⌈⌊) ⍉> 𝕨 PairRec 𝕩   # organize and clip
   pts ← <∘∾˘ xy
-  win ← -˜`¨ bounds ← (⌊´≍⌈´)¨ pts    # min and range; min and max
+  AB ← {e←(÷5e15)(⊣×⌈´)|𝕩⋄(⌊≍⌈)˝⌾(-⟜0‿e)𝕩} # ensure 0 < window size
+  win ← -˜`¨ bounds ← (AB ⌊´≍⌈´)¨ pts # min and range; min and max
   ar ← 1⍟((÷4)⊸>∨1.5⊸<) ÷˜´ 1⊑¨win    # height÷width
   dim ← width (⊣≍×) ar
   Scale ← ({¬𝕏}⌾(1⊸⊑) {𝕩÷˜𝕨-˜⊢}´¨ win) {𝕎𝕩}¨ ⊢
