@@ -5,7 +5,7 @@
 BQN replaces the Key operator from J or Dyalog APL, and [many forms of partitioning](https://aplwiki.com/wiki/Partition_representations), with a single (ambivalent) Group function `⊔`. This function is somewhat related to the K function `=` of the same name, but results in an array rather than a dictionary.
 
 <!--GEN
-Num ← ·Highlight FmtNum
+Num ← ·Highlight •Repr
 Str ← ·Highlight '"'(∾∾⊣)⊢
 wf ← Num¨ wv ← 0‿¯1‿¯1‿2‿0
 xf ← Str¨ xv ← "zero"‿"one"‿"two"‿"three"‿"four"
