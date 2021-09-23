@@ -68,7 +68,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 10 | FN1C |  X   |      |          | Monadic function call
 | 11 | FN2C |  X   |      |          | Dyadic function call
 | 12 | FN1O |  X   |  10  |          | Monadic call, checking for `·`
-| 13 | FN2O |  X   |  13  |          | Dyadic call, checking for `·`
+| 13 | FN2O |  X   |  11  |          | Dyadic call, checking for `·`
 | 14 | TR2D |  X   |      |          | Create 2-train
 | 15 | TR3D |  X   |      |          | Create 3-train
 | 16 | CHKV |  X   |      |          | Error if top of stack is `·`
@@ -92,7 +92,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 41 | FLDM |      |  40  | `I`      | Push mutable field `I` from namespace
 | 42 | ALIM |  NS  |      | `I`      | Mutable target aliases field `I`
 
-Stack effects for most instructions are given below. Instructions 16, 17, and 19 are identical to 5, 6, and 10 except that the indicated values in the higher-numbered instructions may be `·`. Instruction 31 is identical to 21 but indicates that the local variable's value will never be used again, which may be useful for optimization. The lower-numbered instructions are not yet emitted by the self-hosted compiler and can be implemented simply by making them identical to the higher-numbered ones; however, it may be possible to make them faster by not checking for Nothing.
+Stack effects for most instructions are given below. Instructions `FN1O`, `FN2O`, and `TR3O` are identical to `FN1C`, `FN2C`, and `TR3D` except that the indicated values in the higher-numbered instructions may be `·`. The non-checking instructions can be implemented using the checking ones, but avoiding the check could improve speed. `VARU` is identical to `VARM` but indicates that the local variable's value will never be used again, which may be useful for optimization.
 
 |  B | Name | Stack effect          | Comments
 |---:|------|-----------------------|--------
@@ -100,12 +100,12 @@ Stack effects for most instructions are given below. Instructions 16, 17, and 19
 | 01 | DFND | `→ (i⊑blocks)`        | Also sets block's parent scope
 | 06 | POPS | `x →`                 |
 | 07 | RETN | `x → x`               | Returns from current block
-| 08 | RETD | `x? → n`              | Clears stack, dropping 0 or 38 value
-| 0B | ARRO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-38`)
-| 10 | FN1C | `𝕩 𝕤 → (𝕊 𝕩)`         | 18: `𝕩` may be `·`
-| 11 | FN2C | `𝕩 𝕤 𝕨 → (𝕨 𝕊 𝕩)`     | 19: `𝕨` or `𝕩` may be `·`
+| 08 | RETD | `x? → n`              | Clears stack, dropping 0 or 1 value
+| 0B | ARRO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-1`)
+| 10 | FN1C | `𝕩 𝕤 → (𝕊 𝕩)`         | 12: `𝕩` may be `·`
+| 11 | FN2C | `𝕩 𝕤 𝕨 → (𝕨 𝕊 𝕩)`     | 13: `𝕨` or `𝕩` may be `·`
 | 14 | TR2D | `g f → (F G)`         |
-| 15 | TR3D | `h g f → (F G H)`     | 23: `F` may be `·`
+| 15 | TR3D | `h g f → (F G H)`     | 17: `F` may be `·`
 | 1A | MD1C | `𝕣 𝕗 → (𝔽 _𝕣)`        |
 | 1B | MD2C | `𝕘 𝕣 𝕗 → (𝔽 _𝕣_ 𝔾)`   |
 | 1C | MD2L | `𝕣 𝕗 → (𝕗 _𝕣_)`       |
@@ -113,7 +113,7 @@ Stack effects for most instructions are given below. Instructions 16, 17, and 19
 | 20 | VARO | `→ x`                 | Local variable value
 | 21 | VARM | `→ r`                 | Local variable reference
 | 2B | VFYM | `c → r`               | Constant to match reference
-| 30 | SETN | `x r → (r←x)`         | `r` is a reference; 47: no result
+| 30 | SETN | `x r → (r←x)`         | `r` is a reference; 2F: no result
 | 31 | SETU | `x r → (r↩x)`         | `r` is a reference
 | 32 | SETM | `x f r → (r F↩ x)`    | `r` is a reference
 | 40 | FLDO | `n → n.i`             |
