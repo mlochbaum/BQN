@@ -163,7 +163,7 @@
 <td align="right">13</td>
 <td>FN2O</td>
 <td align="center">X</td>
-<td align="right">13</td>
+<td align="right">11</td>
 <td align="left"></td>
 <td>Dyadic call, checking for <code><span class='Nothing'>·</span></code></td>
 </tr>
@@ -345,7 +345,7 @@
 </tr>
 </tbody>
 </table>
-<p>Stack effects for most instructions are given below. Instructions 16, 17, and 19 are identical to 5, 6, and 10 except that the indicated values in the higher-numbered instructions may be <code><span class='Nothing'>·</span></code>. Instruction 31 is identical to 21 but indicates that the local variable's value will never be used again, which may be useful for optimization. The lower-numbered instructions are not yet emitted by the self-hosted compiler and can be implemented simply by making them identical to the higher-numbered ones; however, it may be possible to make them faster by not checking for Nothing.</p>
+<p>Stack effects for most instructions are given below. Instructions <code><span class='Function'>FN1O</span></code>, <code><span class='Function'>FN2O</span></code>, and <code><span class='Function'>TR3O</span></code> are identical to <code><span class='Function'>FN1C</span></code>, <code><span class='Function'>FN2C</span></code>, and <code><span class='Function'>TR3D</span></code> except that the indicated values in the higher-numbered instructions may be <code><span class='Nothing'>·</span></code>. The non-checking instructions can be implemented using the checking ones, but avoiding the check could improve speed. <code><span class='Function'>VARU</span></code> is identical to <code><span class='Function'>VARM</span></code> but indicates that the local variable's value will never be used again, which may be useful for optimization.</p>
 <table>
 <thead>
 <tr>
@@ -384,25 +384,25 @@
 <td align="right">08</td>
 <td>RETD</td>
 <td><code><span class='Value'>x?</span> <span class='Gets'>→</span> <span class='Value'>n</span></code></td>
-<td>Clears stack, dropping 0 or 38 value</td>
+<td>Clears stack, dropping 0 or 1 value</td>
 </tr>
 <tr>
 <td align="right">0B</td>
 <td>ARRO</td>
 <td><code><span class='Value'>x0</span> <span class='Value'>…</span> <span class='Value'>xm</span> <span class='Gets'>→</span> <span class='Bracket'>⟨</span><span class='Value'>x0</span> <span class='Value'>…</span> <span class='Value'>xm</span><span class='Bracket'>⟩</span></code></td>
-<td><code><span class='Function'>N</span></code> total variables (<code><span class='Value'>m</span><span class='Function'>=</span><span class='Value'>n</span><span class='Function'>-</span><span class='Number'>38</span></code>)</td>
+<td><code><span class='Function'>N</span></code> total variables (<code><span class='Value'>m</span><span class='Function'>=</span><span class='Value'>n</span><span class='Function'>-</span><span class='Number'>1</span></code>)</td>
 </tr>
 <tr>
 <td align="right">10</td>
 <td>FN1C</td>
 <td><code><span class='Value'>𝕩</span> <span class='Value'>𝕤</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>𝕊</span> <span class='Value'>𝕩</span><span class='Paren'>)</span></code></td>
-<td>18: <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
+<td>12: <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
 </tr>
 <tr>
 <td align="right">11</td>
 <td>FN2C</td>
 <td><code><span class='Value'>𝕩</span> <span class='Value'>𝕤</span> <span class='Value'>𝕨</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>𝕨</span> <span class='Function'>𝕊</span> <span class='Value'>𝕩</span><span class='Paren'>)</span></code></td>
-<td>19: <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
+<td>13: <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code> may be <code><span class='Nothing'>·</span></code></td>
 </tr>
 <tr>
 <td align="right">14</td>
@@ -414,7 +414,7 @@
 <td align="right">15</td>
 <td>TR3D</td>
 <td><code><span class='Value'>h</span> <span class='Value'>g</span> <span class='Value'>f</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Function'>F</span> <span class='Function'>G</span> <span class='Function'>H</span><span class='Paren'>)</span></code></td>
-<td>23: <code><span class='Function'>F</span></code> may be <code><span class='Nothing'>·</span></code></td>
+<td>17: <code><span class='Function'>F</span></code> may be <code><span class='Nothing'>·</span></code></td>
 </tr>
 <tr>
 <td align="right">1A</td>
@@ -462,7 +462,7 @@
 <td align="right">30</td>
 <td>SETN</td>
 <td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>←</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
-<td><code><span class='Value'>r</span></code> is a reference; 47: no result</td>
+<td><code><span class='Value'>r</span></code> is a reference; 2F: no result</td>
 </tr>
 <tr>
 <td align="right">31</td>
