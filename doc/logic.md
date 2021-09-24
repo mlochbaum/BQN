@@ -36,7 +36,7 @@ As with logical And and Or, any value and 0 is 0, while any value or 1 is 1. The
 
 ## Why not GCD and LCM?
 
-The main reason for omitting these functions is that they are complicated and, when applied to real or complex numbers, require a significant number of design decisions where there is no obvious choice (for example, whether to use comparison tolerance). On the other hand, these functions are fairly easy to implement, which allows the programmer to control the details, and also add functionality such as the extended GCD. Reference implementations for gcd and lcm are available on [bqncrate](https://mlochbaum.github.io/bqncrate) ([gcd](https://mlochbaum.github.io/bqncrate/?q=gcd), [lcm](https://mlochbaum.github.io/bqncrate/?q=lcm)).
+The main reason for omitting these functions is that they are complicated and, when applied to real or complex numbers, require a significant number of design decisions where there is no obvious choice (for example, whether to use comparison tolerance). On the other hand, these functions are fairly easy to implement, which allows the programmer to control the details, and also add functionality such as the extended GCD. Possible implementations for GCD and LCM are shown in [bqncrate](https://mlochbaum.github.io/bqncrate) ([GCD](https://mlochbaum.github.io/bqncrate/?q=gcd), [LCM](https://mlochbaum.github.io/bqncrate/?q=lcm)).
 
 A secondary reason is that the GCD falls short as an extension of Or, because its identity value 0 is not total. `0∨x`, for a real number `x`, is actually equal to `|x` and not `x`: for example, `0∨¯2` is `2` in APL. This means the identity `0∨x ←→ x` isn't reliable in APL.
 
