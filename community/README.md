@@ -7,7 +7,7 @@ Yes, BQN has users! This page gathers links to work by the community. To get in 
 For code repositories using BQN, see:
 
 - Github repositories [tagged BQN](https://github.com/topics/bqn)
-- [bqn-rest](https://codeberg.org/ndrogers/bqn-rest), for web APIs
+- [bqn-rest](https://codeberg.org/CptJimKirk/bqn-rest), for web APIs
 
 And the links below point to BQN submissions on some sites that encourage shorter-form programming.
 
