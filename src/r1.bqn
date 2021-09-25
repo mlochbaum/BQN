@@ -26,6 +26,7 @@ _glyphLookup_ ← {
 }
 _isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
 IsJoin ← '∾'_isGlyph
+DIsConst ← (4=0⊸⊑)◶0‿('˙'_isGlyph(≠-1˙)⊸⊑)
 
 Split2 ← { s←2⊸×⌜↕(≠𝕩)÷2 ⋄ ⟨s⊏𝕩,(1⊸+⌜s)⊏𝕩⟩ }
 _lookup_ ← {
@@ -471,7 +472,7 @@ structFn ← {
   _sfn_ ← {(𝕎⊢)◶⟨𝕏, 𝕩‿𝕗‿𝕘{𝕨𝕏𝕗}⟩}
   Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
   k‿v ← Split2 ⟨
-    "⊢⊣˜∘○⊸⟜⊘◶",  ⊢
+    "⊢⊣˜∘○⊸⟜⊘◶",  ⊢  # ˙ handled specially
     "=≠≢",        Mon 1 _sfn_ 0
     "<",          Mon 0 _sfn_ 1
     "≍",          Mon 1 _sfn_ 1  # Dyad combines
@@ -493,7 +494,7 @@ structFn ← {
   0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘(0⊑⊢)◶⟨
     SE ⊣ StructPrim 1⊑⊢           #  0 primitive
     E˙                            #  1 block
-    0⊸⊑ Recomp {𝕨˙⊸StructFn⌜1↓𝕩}  #    other operation
+    DIsConst∘⊢◶⟨0⊸⊑ Recomp {𝕨˙⊸StructFn⌜1↓𝕩}, SE{(1⊑𝕩)˙}⟩  # other operation
     SE 1⊑⊢                        # ¯1 constant
   ⟩⟜{Decompose𝕩}
 }
@@ -776,7 +777,7 @@ ReorderAxesInv←{
 _inv_ ← {𝕘⋄𝕨𝔽𝕩}
 DNotInv ← (5=0⊸⊑)◶1‿(inv˙≢(≠-2˙)⊸⊑)
 _undo ← {𝕗 (≢∧INF˙⊸≢)◶0‿(DNotInv∘Decompose⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
-IsConstant ← (3≤Type)◶⟨1 ⋄ (4=0⊸⊑)◶0‿('˙'_isGlyph(≠-1˙)⊸⊑)∘{Decompose𝕩}⊢⟩
+IsConstant ← (3≤Type)◶⟨1 ⋄ DIsConst∘{Decompose𝕩}⊢⟩
 AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
 TrainInverse ← {
   t‿f‿g‿h←𝕩
