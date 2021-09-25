@@ -101,9 +101,9 @@ Some other primitives are essentially the same in J and BQN, but with different 
 |:---:|:---:|:---:|:---:|:----:|:----:|:----:|:----:|:---:|:---:|:-----:|:-----:|
 | BQN | `×` | `÷` | `⋆` | `⋆⁼` | `√`  | `⌊`  | `⌈`  | `⊣` | `⊢` | `⌽`   | `⍉`   |
 
-| J   | `~` | `@:` | `&:` | `&.:` | `:` | `"` | `L:` | `^:` |
-|:---:|:---:|:----:|:----:|:-----:|:---:|:---:|:----:|:----:|
-| BQN | `˜` | `∘`  | `○`  | `⌾`   | `⊘` | `⎉` | `⚇`  | `⍟`  |
+| J   | `~` | `@:` | `&:` | `&.:` | `:` | `"` | `L:` | `^:` | `::` |
+|:---:|:---:|:----:|:----:|:-----:|:---:|:---:|:----:|:----:|:----:|
+| BQN | `˜` | `∘`  | `○`  | `⌾`   | `⊘` | `⎉` | `⚇`  | `⍟`  | `⎊`  |
 
 The tables below give approximate implementations of J primitives. J has a whole lot of complicated primitives that no one uses (some of which are officially deprecated), so not everything is translated here. Operations that only apply to complex numbers are omitted because no BQN implementation currently supports them.
 
