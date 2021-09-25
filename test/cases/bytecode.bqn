@@ -26,6 +26,7 @@
 2  % ({a↩2⋄𝕩}{𝕩⋄a}{a↩3⋄𝕩})a←4 # ordering
 8  % a←3⋄a{𝕩}↩8⋄a          # 50 SETM
 5  % a←4⋄a{𝕨⋄5}↩6          #    returns new value
+1  % a←3⋄a{𝕩⋄1}↩⋄a         # 51 SETC
 4  % a‿b←2‿1⋄a‿b{𝕩‿𝕨}↩4⋄a  #    lists
 
 # Further tests for lexical scoping
