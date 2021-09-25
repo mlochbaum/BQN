@@ -138,7 +138,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
   dl←«⊸∨dc←r=4                              # Dot left
   r-↩(𝕩=⊑bG)>ec←«dc<0≤r+p                   # Role ¯4 for exports: ⊑bG is ⇐
-  "Invalid assignment or stranding use"_err_(↕∘≠) ((¯4⊸<∧≤⟜¯2)r)>ec∧»dc<0≤r
+  "Invalid assignment or stranding use"_err_(↕∘≠) ((¯4⊸<∧≤⟜¯2)r)>(ec∨𝕩=2+⊑bG)∧»dc<0≤r
   "Dot must be followed by a name"_err_(↕∘≠) dc>«𝕩 M vi‿nv
   sr←»⌾(((⍋⊏⟜dl)⊸⊏g)⊸⊏)sl←«⊸∨r=¯2⋄ns←¬sl∨sr # Strand right and left; not stranded
   cp←𝕩=1+⊑bB                                # Closed paren
@@ -237,7 +237,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ls←s∧fo<○IT lo←𝕩=4+⊑bB                    # List Separators: after ⟨lo, not {fo
   "Can't use Nothing (·) in lists"_nerr ne×»lo∨ls
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
-  ma←tr<(𝕩=2+⊑bG)∧«ir≥1                     # Modified assignment
+  mm←𝕩=2+⊑bG⋄ma←tr<mm∧«ir≥1⋄mm∧↩»ps         # Modified assignment; monadic modified
+  "No right-hand side in non-modified assignment"_err_(G) ma<mm
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r⋄ar←at⊏r       # Assignment target; af for actual (non-export) assignment
   "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
@@ -307,7 +308,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
-  ao←48+(0⌈(1+⊑bG)-˜ai⊏ma+𝕩)∾-hd            # Assignment opcode
+  ao←48+(0⌈(1+⊑bG)-˜ai⊏𝕩+ma+mm)∾-hd         # Assignment opcode
   or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,hq,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
   oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,⥊⍉(11+l⊏aa)≍ll,ao,6¨dr,66¨al,vi-˜(al-1)⊏𝕩
                24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
