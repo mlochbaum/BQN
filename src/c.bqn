@@ -237,7 +237,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ls←s∧fo<○IT lo←𝕩=4+⊑bB                    # List Separators: after ⟨lo, not {fo
   "Can't use Nothing (·) in lists"_nerr ne×»lo∨ls
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
-  mm←𝕩=2+⊑bG⋄ma←tr<mm∧«ir≥1⋄mm∧↩»ps         # Modified assignment; monadic modified
+  mm←𝕩=2+⊑bG⋄ma←tr<mm∧«ir≥1⋄mm∧↩1»ps        # Modified assignment; monadic modified
   "No right-hand side in non-modified assignment"_err_(G) ma<mm
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r⋄ar←at⊏r       # Assignment target; af for actual (non-export) assignment
