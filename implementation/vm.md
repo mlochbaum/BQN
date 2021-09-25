@@ -88,6 +88,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 30 | SETN |  X   |      |          | Define variable
 | 31 | SETU |  X   |      |          | Change variable
 | 32 | SETM |  X   |      |          | Modify variable
+| 33 | SETC |  X   |      |          | Monadic modify variable
 | 40 | FLDO |  NS  |      | `I`      | Read field `I` from namespace
 | 41 | FLDM |      |  40  | `I`      | Push mutable field `I` from namespace
 | 42 | ALIM |  NS  |      | `I`      | Mutable target aliases field `I`
@@ -116,6 +117,7 @@ Stack effects for most instructions are given below. Instructions `FN1O`, `FN2O`
 | 30 | SETN | `x r → (r←x)`         | `r` is a reference; 2F: no result
 | 31 | SETU | `x r → (r↩x)`         | `r` is a reference
 | 32 | SETM | `x f r → (r F↩ x)`    | `r` is a reference
+| 33 | SETC | `f r → (r F↩)`        | `r` is a reference
 | 40 | FLDO | `n → n.i`             |
 | 42 | ALIM | `r → s`               | Reference `s` gets field `i` and puts in `r`
 
@@ -131,17 +133,17 @@ When a block is pushed with **DFND**, an instance of the block is created, with 
 
 Local variables are manipulated with the **VARO** (or **VARU**) and **VARM** instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by *frame depth* and *slot index*. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.
 
-Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU or SETM only if it *has* been defined.
+Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU, SETM, or SETC only if it *has* been defined.
 
-### Variable references: ARRM VARM SETN SETU SETM SETH VFYM
+### Variable references: ARRM VARM SETN SETU SETM SETC SETH VFYM
 
 A *variable reference* indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. **VARM** pushes a variable reference to the stack.
 
 A *reference list* is a list of variable references or reference lists. It's created with the **ARRM** instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.
 
-The **SETN**, **SETU**, and **SETM** instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.
+The **SETN**, **SETU**, **SETM**, and **SETC** instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.
 
-**SETM** additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.
+**SETM** and **SETC** additionally need to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.
 
 **SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. **VFYM** converts a BQN value `c` to a special reference: assigning a value `v` to it should check if `v≡c` but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.
 

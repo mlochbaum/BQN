@@ -320,6 +320,14 @@
 <td>Modify variable</td>
 </tr>
 <tr>
+<td align="right">33</td>
+<td>SETC</td>
+<td align="center">X</td>
+<td align="right"></td>
+<td align="left"></td>
+<td>Monadic modify variable</td>
+</tr>
+<tr>
 <td align="right">40</td>
 <td>FLDO</td>
 <td align="center">NS</td>
@@ -477,6 +485,12 @@
 <td><code><span class='Value'>r</span></code> is a reference</td>
 </tr>
 <tr>
+<td align="right">33</td>
+<td>SETC</td>
+<td><code><span class='Value'>f</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span> <span class='Function'>F</span><span class='Gets'>↩</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Value'>r</span></code> is a reference</td>
+</tr>
+<tr>
 <td align="right">40</td>
 <td>FLDO</td>
 <td><code><span class='Value'>n</span> <span class='Gets'>→</span> <span class='Value'>n.i</span></code></td>
@@ -496,12 +510,12 @@
 <p>A frame is a mutable list of <em>slots</em> for variable values. It has slots for any special names that are available during the blocks execution followed by the local variables it defines. Special names use the ordering <code><span class='Value'>𝕤𝕩𝕨𝕣𝕗𝕘</span></code>; the first three of these are available in non-immediate blocks while <code><span class='Value'>𝕣</span></code> and <code><span class='Value'>𝕗</span></code> are available in modifiers and <code><span class='Value'>𝕘</span></code> in 2-modifiers specifically.</p>
 <p>When a block is pushed with <strong>DFND</strong>, an instance of the block is created, with its <em>parent frame</em> set to be the frame of the currently-executing block. Setting the parent frame when the block is first seen, instead of when it's evaluated, is what distinguishes lexical from dynamic scoping. If it's an immediate block, it's evaluated immediately, and otherwise it's pushed onto the stack. When the block is evaluated, its frame is initialized using any arguments passed to it, the next instruction's index is pushed onto the return stack, and execution moves to the first instruction in the block. When the RETN instruction is encountered, an index is popped from the return stack and execution returns to this location. As an alternative to maintaining an explicit return stack, a block can be implemented as a native function that creates a new execution stack and returns the value in it when the <strong>RETN</strong> instruction is reached. This approach uses the implementation language's call stack for the return stack.</p>
 <p>Local variables are manipulated with the <strong>VARO</strong> (or <strong>VARU</strong>) and <strong>VARM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
-<p>Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU or SETM only if it <em>has</em> been defined.</p>
-<h3 id="variable-references-arrm-varm-setn-setu-setm-seth-vfym"><a class="header" href="#variable-references-arrm-varm-setn-setu-setm-seth-vfym">Variable references: ARRM VARM SETN SETU SETM SETH VFYM</a></h3>
+<p>Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU, SETM, or SETC only if it <em>has</em> been defined.</p>
+<h3 id="variable-references-arrm-varm-setn-setu-setm-setc-seth-vfym"><a class="header" href="#variable-references-arrm-varm-setn-setu-setm-setc-seth-vfym">Variable references: ARRM VARM SETN SETU SETM SETC SETH VFYM</a></h3>
 <p>A <em>variable reference</em> indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. <strong>VARM</strong> pushes a variable reference to the stack.</p>
 <p>A <em>reference list</em> is a list of variable references or reference lists. It's created with the <strong>ARRM</strong> instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.</p>
-<p>The <strong>SETN</strong>, <strong>SETU</strong>, and <strong>SETM</strong> instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.</p>
-<p><strong>SETM</strong> additionally needs to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.</p>
+<p>The <strong>SETN</strong>, <strong>SETU</strong>, <strong>SETM</strong>, and <strong>SETC</strong> instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.</p>
+<p><strong>SETM</strong> and <strong>SETC</strong> additionally need to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.</p>
 <p><strong>SETH</strong> is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. <strong>VFYM</strong> converts a BQN value <code><span class='Value'>c</span></code> to a special reference: assigning a value <code><span class='Value'>v</span></code> to it should check if <code><span class='Value'>v</span><span class='Function'>≡</span><span class='Value'>c</span></code> but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.</p>
 <h3 id="namespaces-fldo-fldm-alim-retd"><a class="header" href="#namespaces-fldo-fldm-alim-retd">Namespaces: FLDO FLDM ALIM RETD</a></h3>
 <p>A <em>namespace</em> is the collection of variables in a particular scope, along with an association mapping some exported <em>symbols</em> (case- and underscore-normalized strings) to a subset of these. It can be represented using a frame for the variables, plus the variable name list and mask of exported variables from that block's properties in the bytecode. <strong>RETD</strong> finishes executing the block and returns the namespace for that execution.</p>
