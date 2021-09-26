@@ -24,9 +24,8 @@
 (defun bqn--make-base-mode-map (prefix)
   (let ((map (make-sparse-keymap)))
     (dolist (command bqn--symbols)
-      (let ((key-sequence (caddr command)))
-        (dolist (s (if (listp key-sequence) key-sequence (list key-sequence)))
-          (define-key map (bqn--kbd (concat prefix s)) (bqn--make-key-command-sym (car command))))))
+      (let ((key (single-key-description (string-to-char (caddr command)))))
+        (define-key map (bqn--kbd (concat prefix key)) (bqn--make-key-command-sym (car command)))))
     (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN")))
     map))
 
