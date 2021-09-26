@@ -2,144 +2,144 @@
 
 (defvar bqn--symbols '(;; Top row
                        ;; `
-                       ("high-tilde" "˜" "`")
-                       ("logical-not" "¬" "~")
+                       ("high-tilde" "˜" ?`)
+                       ("logical-not" "¬" ?~)
                        ;; 1
-                       ("breve" "˘" "1")
-                       ("circle-notch" "⎉" "!")
+                       ("breve" "˘" ?1)
+                       ("circle-notch" "⎉" ?!)
                        ;; 2
-                       ("diaeresis" "¨" "2")
-                       ("circled-diaeresis" "⚇" "@")
+                       ("diaeresis" "¨" ?2)
+                       ("circled-diaeresis" "⚇" ?@)
                        ;; 3
-                       ("high-equals" "⁼" "3")
-                       ("circle-star" "⍟" "#")
+                       ("high-equals" "⁼" ?3)
+                       ("circle-star" "⍟" ?#)
                        ;; 4
-                       ("corner" "⌜" "4")
-                       ("circle-corner" "◶" "$")
+                       ("corner" "⌜" ?4)
+                       ("circle-corner" "◶" ?$)
                        ;; 5
-                       ("acute" "´" "5")
-                       ("circle-slash" "⊘" "%")
+                       ("acute" "´" ?5)
+                       ("circle-slash" "⊘" ?%)
                        ;; 6
-                       ("double-acute" "˝" "6")
-                       ("circle-triangle" "⎊" "^")
+                       ("double-acute" "˝" ?6)
+                       ("circle-triangle" "⎊" ?^)
                        ;; 7
-                       ("hydrant" "⍎" "&")
+                       ("hydrant" "⍎" ?&)
                        ;; 8
-                       ("infinity" "∞" "8")
-                       ("thorn" "⍕" "*")
+                       ("infinity" "∞" ?8)
+                       ("thorn" "⍕" ?*)
                        ;; 9
-                       ("high-minus" "¯" "9")
-                       ("open-angle" "⟨" "(")
+                       ("high-minus" "¯" ?9)
+                       ("open-angle" "⟨" ?()
                        ;; 0
-                       ("bullet" "•" "0")
-                       ("close-angle" "⟩" ")")
+                       ("bullet" "•" ?0)
+                       ("close-angle" "⟩" ?))
                        ;; -
-                       ("division-sign" "÷" "-")
-                       ("root" "√" "_")
+                       ("division-sign" "÷" ?-)
+                       ("root" "√" ?_)
                        ;; =
-                       ("multiplication-sign" "×" "=")
-                       ("star" "⋆" "+")
+                       ("multiplication-sign" "×" ?=)
+                       ("star" "⋆" ?+)
 
                        ;; First row
                        ;; q
-                       ("circle-stile" "⌽" "q")
-                       ("down-left-arrow" "↙" "Q")
+                       ("circle-stile" "⌽" ?q)
+                       ("down-left-arrow" "↙" ?Q)
                        ;; w
-                       ("double-w" "𝕨" "w")
-                       ("double-upper-w" "𝕎" "W")
+                       ("double-w" "𝕨" ?w)
+                       ("double-upper-w" "𝕎" ?W)
                        ;; e
-                       ("epsilon" "∊" "e")
-                       ("epsilon-underbar" "⍷" "E")
+                       ("epsilon" "∊" ?e)
+                       ("epsilon-underbar" "⍷" ?E)
                        ;; r
-                       ("up-arrow" "↑" "r")
-                       ("double-r" "𝕣" "R")
+                       ("up-arrow" "↑" ?r)
+                       ("double-r" "𝕣" ?R)
                        ;; t
-                       ("logical-and" "∧" "t")
-                       ("up-grade" "⍋" "T")
+                       ("logical-and" "∧" ?t)
+                       ("up-grade" "⍋" ?T)
                        ;; y
                        ;; u
-                       ("square-cup" "⊔" "u")
+                       ("square-cup" "⊔" ?u)
                        ;; i
-                       ("open-square" "⊏" "i")
-                       ("open-square-underbar" "⊑" "I")
+                       ("open-square" "⊏" ?i)
+                       ("open-square-underbar" "⊑" ?I)
                        ;; o
-                       ("close-square" "⊐" "o")
-                       ("close-square-underbar" "⊒" "O")
+                       ("close-square" "⊐" ?o)
+                       ("close-square-underbar" "⊒" ?O)
                        ;; p
-                       ("pi" "π" "p")
-                       ("iota" "⍳" "P")
+                       ("pi" "π" ?p)
+                       ("iota" "⍳" ?P)
                        ;; [
-                       ("left-arrow" "←" "[")
-                       ("left-tack" "⊣" "{")
+                       ("left-arrow" "←" ?[)
+                       ("left-tack" "⊣" ?{)
                        ;; ]
-                       ("right-arrow" "→" "]")
-                       ("right-tack" "⊢" "}")
+                       ("right-arrow" "→" ?])
+                       ("right-tack" "⊢" ?})
                        ;; \
-                       ("backslash" "\\" "\\")
+                       ("backslash" "\\" ?\\)
 
                        ;; Second row
                        ;; a
-                       ("circle-backslash" "⍉" "a")
-                       ("up-left-arrow" "↖" "A")
+                       ("circle-backslash" "⍉" ?a)
+                       ("up-left-arrow" "↖" ?A)
                        ;; s
-                       ("double-s" "𝕤" "s")
-                       ("double-upper-s" "𝕊" "S")
+                       ("double-s" "𝕤" ?s)
+                       ("double-upper-s" "𝕊" ?S)
                        ;; d
-                       ("up-down-arrow" "↕" "d")
+                       ("up-down-arrow" "↕" ?d)
                        ;; f
-                       ("double-f" "𝕗" "f")
-                       ("double-upper-f" "𝔽" "F")
+                       ("double-f" "𝕗" ?f)
+                       ("double-upper-f" "𝔽" ?F)
                        ;; g
-                       ("double-g" "𝕘" "g")
-                       ("double-upper-g" "𝔾" "G")
+                       ("double-g" "𝕘" ?g)
+                       ("double-upper-g" "𝔾" ?G)
                        ;; h
-                       ("left-loop" "⊸" "h")
-                       ("left-chevron" "«" "H")
+                       ("left-loop" "⊸" ?h)
+                       ("left-chevron" "«" ?H)
                        ;; j
-                       ("jot" "∘" "j")
+                       ("jot" "∘" ?j)
                        ;; k
-                       ("circle" "○" "k")
-                       ("circle-jot" "⌾" "K")
+                       ("circle" "○" ?k)
+                       ("circle-jot" "⌾" ?K)
                        ;; l
-                       ("right-loop" "⟜" "l")
-                       ("right-chevron" "»" "L")
+                       ("right-loop" "⟜" ?l)
+                       ("right-chevron" "»" ?L)
                        ;; ;
-                       ("diamond" "⋄" ";")
-                       ("middle-dot" "·" ":")
+                       ("diamond" "⋄" ?\;)
+                       ("middle-dot" "·" ?:)
                        ;; '
-                       ("left-hook-arrow" "↩" "'")
-                       ("high-dot" "˙" "\"")
+                       ("left-hook-arrow" "↩" ?')
+                       ("high-dot" "˙" ?\")
 
                        ;; Third row
                        ;; z
-                       ("zigzag" "⥊" "z")
+                       ("zigzag" "⥊" ?z)
                        ;; x
-                       ("double-x" "𝕩" "x")
-                       ("double-upper-x" "𝕏" "X")
+                       ("double-x" "𝕩" ?x)
+                       ("double-upper-x" "𝕏" ?X)
                        ;; c
-                       ("down-arrow" "↓" "c")
+                       ("down-arrow" "↓" ?c)
                        ;; v
-                       ("logical-or" "∨" "v")
-                       ("down-grade" "⍒" "V")
+                       ("logical-or" "∨" ?v)
+                       ("down-grade" "⍒" ?V)
                        ;; b
-                       ("left-floor" "⌊" "b")
-                       ("left-ceiling" "⌈" "B")
+                       ("left-floor" "⌊" ?b)
+                       ("left-ceiling" "⌈" ?B)
                        ;; n
                        ;; m
-                       ("identical-to" "≡" "m")
-                       ("not-identical-to" "≢" "M")
+                       ("identical-to" "≡" ?m)
+                       ("not-identical-to" "≢" ?M)
                        ;; ,
-                       ("join" "∾" ",")
-                       ("less-than-or-equal-to" "≤" "<")
+                       ("join" "∾" ?,)
+                       ("less-than-or-equal-to" "≤" ?<)
                        ;; .
-                       ("couple" "≍" ".")
-                       ("greater-than-or-equal-to" "≥" ">")
+                       ("couple" "≍" ?.)
+                       ("greater-than-or-equal-to" "≥" ?>)
                        ;; /
-                       ("not-equal-to" "≠" "/")
-                       ("left-double-arrow" "⇐" "?")
+                       ("not-equal-to" "≠" ?/)
+                       ("left-double-arrow" "⇐" ??)
 
                        ;; Space bar
-                       ("ligature" "‿" " ")
+                       ("ligature" "‿" ? )
                        ))
 
 (provide 'bqn-symbols)
