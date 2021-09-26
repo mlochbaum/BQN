@@ -26,12 +26,8 @@
    (let* ((prefix (string new))
           (bqn--transcription-alist
            (cl-loop for command in bqn--symbols
-                 for key-command = (cl-third command)
-                 append (cl-loop for s in (if (listp key-command)
-                                           key-command
-                                         (list key-command))
-                              collect (cons (concat prefix s)
-                                            (cl-second command))))))
+                    collect (cons (concat prefix (cl-third command))
+                                  (cl-second command)))))
      (quail-map-from-table
       '((default bqn--transcription-alist)))))
   (set-default symbol new))
