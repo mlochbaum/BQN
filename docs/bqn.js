@@ -474,7 +474,7 @@ let fmtErr = e => {
     let to=i=>s.slice(0,i).join('').split('\n').map(l=>Array.from(l));
     let ll=to(i), l=ll.length-1, j=ll[l].length, m=to()[l];
     let k=1,o=i-j,cl=j; while (k<n&&(cl=is[k]-o)<m.length) k++;
-    let ol=k<n; if (pair) { if (k%2) cl=m.length; else { k--; cl++; } }
+    let ol=k<n; if (pair) { if (k%2) cl=m.length; else { cl=is[--k]-o+1; } }
     let c=Array(cl).fill(0); c[j]=1;
     for (let h=1;h<k;h++) c[is[h]-o+(pair?h%2:0)]=1;
     if (pair) for (let h=1;h<cl;h++) c[h]^=c[h-1];
