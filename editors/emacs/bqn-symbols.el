@@ -139,7 +139,7 @@
                        ("left-double-arrow" "⇐" "?")
 
                        ;; Space bar
-                       ("ligature" "‿" "SPC")
+                       ("ligature" "‿" " ")
                        ))
 
 (provide 'bqn-symbols)
