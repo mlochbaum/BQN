@@ -29,10 +29,10 @@
                        ("thorn" "⍕" ?*)
                        ;; 9
                        ("high-minus" "¯" ?9)
-                       ("open-angle" "⟨" ?()
+                       ("open-angle" "⟨" ?\()
                        ;; 0
                        ("bullet" "•" ?0)
-                       ("close-angle" "⟩" ?))
+                       ("close-angle" "⟩" ?\))
                        ;; -
                        ("division-sign" "÷" ?-)
                        ("root" "√" ?_)
@@ -69,10 +69,10 @@
                        ("pi" "π" ?p)
                        ("iota" "⍳" ?P)
                        ;; [
-                       ("left-arrow" "←" ?[)
+                       ("left-arrow" "←" ?\[)
                        ("left-tack" "⊣" ?{)
                        ;; ]
-                       ("right-arrow" "→" ?])
+                       ("right-arrow" "→" ?\])
                        ("right-tack" "⊢" ?})
                        ;; \
                        ("backslash" "\\" ?\\)
