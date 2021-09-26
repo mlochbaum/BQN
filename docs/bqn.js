@@ -208,7 +208,7 @@ let times = (x,w) => {
   throw Error("×: Arguments must be numbers");
 }
 let divide = (x,w) => {
-  if (isnum(x)&&(!has(w)||isnum(w))) return (has(w)?w:1)/x;
+  if (isnum(x)&&(!has(w)||isnum(w))) return (has(w)?w:1)/(x===0?0:x);
   throw Error("÷: Arguments must be numbers");
 }
 let power = (x,w) => {
