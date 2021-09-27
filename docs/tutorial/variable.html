@@ -304,12 +304,19 @@ ERROR
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDiiL7LnOKGqSAw4oC/MQ==">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>∾</span><span class='Modifier'>˜</span><span class='Gets'>↩</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 ⟨ 0 1 2 3 4 ⟩
 </pre>
-<p>But what about functions with only one argument? The syntax isn't the best, but at least it's possible. There still needs to be a value on the right side of the assignment even if it'll be ignored; I use the null character <code><span class='String'>@</span></code> for this. Then to turn a function that takes one argument into one that takes two, we can compose it with a function that takes two arguments and returns one of them. The left one, since the variable to modify is on the left hand side. Perhaps… Left? (<code><span class='Function'>⊣</span></code>)?</p>
+<p>But what about functions with only one argument? It's possible to do this using a dummy right argument such as the null character, <code><span class='String'>@</span></code>. To turn a function that takes one argument into one that takes two, we can compose it with a function that takes two arguments and returns one of them. The left one, since the variable to modify is on the left hand side. Perhaps… Left? (<code><span class='Function'>⊣</span></code>)?</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiY2QiIOKMveKImOKKoyAid3h5eiIKCmEg4oy94oiY4oqj4oapIEA=">↗️</a><pre>    <span class='String'>&quot;abcd&quot;</span> <span class='Function'>⌽</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span> <span class='String'>&quot;wxyz&quot;</span>
 "dcba"
 
     <span class='Value'>a</span> <span class='Function'>⌽</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span><span class='Gets'>↩</span> <span class='String'>@</span>
 ⟨ 4 3 2 1 0 ⟩
+</pre>
+<p>But fortunately, there's a simpler syntax as well: write your one-argument function before <code><span class='Gets'>↩</span></code> with no right hand side. Bit of a Yoda vibe: &quot;<code><span class='Value'>a</span></code> reversed is&quot;.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDijL3ihqkKCmEgNOKKuC3ihqkgICAgICAgICAgICMgQW5kIGJhY2sgYWdhaW4=">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>⌽</span><span class='Gets'>↩</span>
+⟨ 0 1 2 3 4 ⟩
+
+    <span class='Value'>a</span> <span class='Number'>4</span><span class='Modifier2'>⊸</span><span class='Function'>-</span><span class='Gets'>↩</span>           <span class='Comment'># And back again
+</span>⟨ 4 3 2 1 0 ⟩
 </pre>
 <p>Notice that there's no need for parentheses: modifiers bind more strongly than the assignment character. Now what if we want to decrease the last two elements of <code><span class='Value'>a</span></code>? That is, we want to compute the following array while storing it in <code><span class='Value'>a</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LeKfnDTijL4owq8y4oq44oaRKSBhCgphICAgICAgICAgICAgICAgICMgSXQgaGFzbid0IGNoYW5nZWQsIG9mIGNvdXJzZQ==">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>4</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span> <span class='Value'>a</span>
@@ -319,6 +326,6 @@ ERROR
 </span>⟨ 4 3 2 1 0 ⟩
 </pre>
 <p>The code to do this looks the same as what we did with Reverse (<code><span class='Function'>⌽</span></code>). Again we don't have to parenthesize the function, because modifiers associate from left to right, so Under (<code><span class='Modifier2'>⌾</span></code>) binds to its operands before Compose (<code><span class='Modifier2'>∘</span></code>) does.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSAt4p+cNOKMvijCrzLiirjihpEp4oiY4oqj4oapIEA=">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>4</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span><span class='Gets'>↩</span> <span class='String'>@</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSAt4p+cNOKMvijCrzLiirjihpEp4oap">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>4</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Gets'>↩</span>
 ⟨ 4 3 2 ¯3 ¯4 ⟩
 </pre>
