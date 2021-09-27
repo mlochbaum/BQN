@@ -201,11 +201,17 @@ But this changes the value of `a` to a completely unrelated value. What if I wan
 
         a ∾˜↩ 0‿1
 
-But what about functions with only one argument? The syntax isn't the best, but at least it's possible. There still needs to be a value on the right side of the assignment even if it'll be ignored; I use the null character `@` for this. Then to turn a function that takes one argument into one that takes two, we can compose it with a function that takes two arguments and returns one of them. The left one, since the variable to modify is on the left hand side. Perhaps… Left? (`⊣`)?
+But what about functions with only one argument? It's possible to do this using a dummy right argument such as the null character, `@`. To turn a function that takes one argument into one that takes two, we can compose it with a function that takes two arguments and returns one of them. The left one, since the variable to modify is on the left hand side. Perhaps… Left? (`⊣`)?
 
         "abcd" ⌽∘⊣ "wxyz"
 
         a ⌽∘⊣↩ @
+
+But fortunately, there's a simpler syntax as well: write your one-argument function before `↩` with no right hand side. Bit of a Yoda vibe: "`a` reversed is".
+
+        a ⌽↩
+
+        a 4⊸-↩           # And back again
 
 Notice that there's no need for parentheses: modifiers bind more strongly than the assignment character. Now what if we want to decrease the last two elements of `a`? That is, we want to compute the following array while storing it in `a`.
 
@@ -215,4 +221,4 @@ Notice that there's no need for parentheses: modifiers bind more strongly than t
 
 The code to do this looks the same as what we did with Reverse (`⌽`). Again we don't have to parenthesize the function, because modifiers associate from left to right, so Under (`⌾`) binds to its operands before Compose (`∘`) does.
 
-        a -⟜4⌾(¯2⊸↑)∘⊣↩ @
+        a -⟜4⌾(¯2⊸↑)↩
