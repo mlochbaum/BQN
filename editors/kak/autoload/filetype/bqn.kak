@@ -62,7 +62,7 @@ add-highlighter shared/bqn/code/ regex "[{}]" 0:meta
 add-highlighter shared/bqn/code/ regex "[⋄,]" 0:meta
 add-highlighter shared/bqn/code/ regex "[⟨⟩\[\]‿]" 0:magenta
 add-highlighter shared/bqn/code/ regex "[()]" 0:bright-black
-add-highlighter shared/bqn/code/ regex "[:;]" 0:bright-black
+add-highlighter shared/bqn/code/ regex "[:;?]" 0:bright-black
 add-highlighter shared/bqn/code/ regex "[←⇐↩→]" 0:normal
 add-highlighter shared/bqn/code/ regex "·" 0:value
 add-highlighter shared/bqn/code/ regex "@" 0:string

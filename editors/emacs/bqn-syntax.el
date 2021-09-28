@@ -66,7 +66,7 @@
 (defvar bqn--token-syntax-types '((("'.'\\|@" . font-lock-string-face)
                                    ("[{}]" . 'bqn-block-face)
                                    ("[()]" . 'bqn-paren-face)
-                                   ("[:;]" . 'bqn-header-face)
+                                   ("[:;?]" . 'bqn-header-face)
                                    ("[⟨⟩‿]" . 'bqn-list-face)
                                    ("[⋄,]" . 'bqn-separator-face)
                                    ("[←⇐↩→]" . 'bqn-arrow-face)
