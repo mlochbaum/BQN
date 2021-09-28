@@ -100,7 +100,7 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
       case 22:         { r+= "if(undefined==="+rV(rD-1)+")throw Error('Left argument required');";                            break; }
       case 32:case 34: { r+= rP("getv("+ge(num())+","+num()+")");                                                             break; }
       case 33:         { r+= rP("{e:"+ge(num())+",p:"+num()+"}");                                                             break; }
-      case 42:         { let p=rG(); r+="if(1!=="+p+")break;";                                                                break; }
+      case 42:         { let p=rG(); r+="if(1!=="+p+"){if(0!=="+p+")throw Error('Predicate value must be 0 or 1');break;}";   break; }
       case 43:         { let m=rG(); r+=rP("{match:1,v:"+m+"}");                                                              break; }
       case 47:         { let i=rG(),       v=rG(); r+="try{set(1,"+i+","+v+");}catch(e){break;}";                             break; }
       case 48:         { let i=rG(),       v=rG(); r+=rP("set(1,"+i+","+v                       +")");                        break; }
