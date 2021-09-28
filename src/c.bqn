@@ -5,7 +5,7 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   mod1                  # 1-modifier
   mod2                  # 2-modifier
   "⋄,"∾lf               # Separator
-  ":;"                  # Header punctuation
+  ":;?"                 # Header punctuation
   "⇐←↩"                 # Gets
   "(){}⟨⟩"              # Bracket
   "‿"                   # Ligature
@@ -161,13 +161,13 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
 
   # Headers
-  hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH                       # Case header : and separator ;
-  "Punctuation : and ; not allowed outside blocks"_err_(↕∘≠) (∨`b)<hh∨cs
+  hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH⋄qm←𝕩=2+⊑bH            # Case header : and separator ; and predicate ?
+  "Punctuation : ; ? not allowed outside blocks"_err_(↕∘≠) (∨`b)<hh∨cs∨qm
   fi←+`cb←b∨cs⋄H←cb¬∘PN⊢                    # Body index fi; which bodies Have a property
-  ch←H hh
+  cq←(H qm)∨ch←H hh                         # ch: body has : header ; cq: or ? predicate
   cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co                 # cf: body is first; cm: body is one of multiple
-  "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)ch
-  "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ch
+  "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)cq
+  "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓cq
   cc←(⍋⍋«co)⊏c∾/cs                          # Case close
   hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh              # Header component indices
   un←0=us←swap_undo(≠∘⊣-⊐)hi⊏𝕩
@@ -186,7 +186,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Incorrect special name"_err_(HI) (0=hk)∧ht≠hv+⊑bI
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
-  cw←1+-⟜«(»ch)<1(⊢<«)cf
+  cw←1+-⟜«(»cq)<1(⊢<«)cf
   cw↩(hc/»hla¬⊸×hl⌈ha×1+he←0≠hk)⌾(ch⊸/)cw   # Body 𝕨: 0 no, 1 allowed, 2 required
   "Invalid Undo header syntax"_err_(HI) hm<×ut
   cu←(hm/ut)⌾(ch⊸/)0¨cw⋄cw⌈↩2×2=cu
@@ -202,7 +202,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Invalid special names for block header"_err_(ch/0∾/∘CB) (hr<ch/fr)∨(hm/hl)<hx<ch/fx
   ft⌈↩1-˜fr↩hr⌾(ch⊸/)fr⋄fx↩hx⊸⌈⌾(ch⊸/)fx
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
-  "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓cm>fx
+  "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓(»⊸∨cq>ch)<cm>fx
   "Block bodies must be of the same kind"_err_(/CB) 1↓cf<»⊸≠ft
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
   hv-↩(»+`hc)⊏3×¬ch/fx                      # Header variable slot
@@ -251,7 +251,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
   fv←fw⋄fw≥○I1T↩cf                          # If a body fails on 𝕨, later ones won't see 𝕨
   (∨´(1↓fv)⊸<)◶"Invalid use of 𝕨 in monadic case"‿"Unreachable body"_err_(/CB) 1↓fw∧cw=0
-  cw⌈↩2×fw
+  cw⌈↩2×fw⋄cw×↩fx
   nn←fo+`⊸⊏2=cw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn       # 2=cw indicates 𝕨 is never Nothing
   aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   hq←/hp←(g⊏ah)∧𝕩≥nv+vi                     # Header constant
@@ -303,26 +303,29 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
   dr←(hd¬⊸/hj)∾/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo    # Drop (block separator) and return
+  qp←/𝕩=2+⊑bH                               # Predicate
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
   ao←48+(0⌈(1+⊑bG)-˜ai⊏𝕩+ma+mm)∾-hd         # Assignment opcode
-  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,hq,2/l,at,dr,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,⥊⍉(11+l⊏aa)≍ll,ao,6¨dr,66¨al,vi-˜(al-1)⊏𝕩
+  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,hq,2/l,at,dr,qp,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,⥊⍉(11+l⊏aa)≍ll,ao,6¨dr,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
                24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
+  # Indices for multi-body blocks
   cj←/cv←1+1=ciw←cw⊏˜ci←/cm∨↩fx∧1≠cw
   ck←4⌊(2×ci⊏cu)+1<ciw
   cg←¯1+`cif←ci⊏cf
-  ckt←2⌈(cif/·⍋⊏⟜cg)⊸⊏∘⍒⊸⊏cv+ck
-  ci↩ckt/⊸⊔(¯1(↑∾˜cj(⊒∘⊣+⊏)ck+cg⊏↓)0∾+`ckt)⊔cj⊏ci  # Indices for multi-body blocks
-  fq←⟨cf/ft,cf/¬fx,ci⌾((cf/cm)⊸/)/cf⟩       # Per-function data
-  cq←⟨/1∾or≥oc-○≠rt,fsc+≠¨dn,dn,dx⟩         # Per-body data
-  ⟨oc∾¯1⊑rc,u,fq,cq,ind⟩                    # Overall output
+  ckt←(2-¬(cf∧cm)/fx)⌈(cif/·⍋⊏⟜cg)⊸⊏∘⍒⊸⊏cv+ck
+  ci↩ckt/⊸⊔(¯1(↑∾˜cj(⊒∘⊣+⊏)ck+cg⊏↓)0∾+`ckt)⊔cj⊏ci
+  # Output
+  fz←⟨cf/ft,cf/¬fx,ci⌾((cf/cm)⊸/)/cf⟩       # Per-function data
+  cz←⟨/1∾or≥oc-○≠rt,fsc+≠¨dn,dn,dx⟩         # Per-body data
+  ⟨oc∾¯1⊑rc,u,fz,cz,ind⟩                    # Overall output
 }
 
 Compile←{
