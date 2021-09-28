@@ -82,7 +82,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 22 | VARU |  X   |  21  | `D`, `I` | Push and clear local variable `I` from `D` frames up
 | 26 | DYNO |      |      | `I`      | Push named variable `I`
 | 27 | DYNM |      |      | `I`      | Push named variable `I` reference
-| 2A |      |      |  06  |          | Check predicate and drop
+| 2A | PRED |      |  06  |          | Check predicate and drop
 | 2B | VFYM |  X   |      |          | Convert constant to matcher (for headers)
 | 2F | SETH |  X   |  30  |          | Test and set header
 | 30 | SETN |  X   |      |          | Define variable
@@ -135,7 +135,7 @@ Local variables are manipulated with the **VARO** (or **VARU**) and **VARM** ins
 
 Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU, SETM, or SETC only if it *has* been defined.
 
-### Variable references: ARRM VARM SETN SETU SETM SETC SETH VFYM
+### Variable references: ARRM VARM SETN SETU SETM SETC
 
 A *variable reference* indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. **VARM** pushes a variable reference to the stack.
 
@@ -145,7 +145,11 @@ The **SETN**, **SETU**, **SETM**, and **SETC** instructions set a value for a re
 
 **SETM** and **SETC** additionally need to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.
 
+### Bodies: SETH VFYM PRED
+
 **SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. **VFYM** converts a BQN value `c` to a special reference: assigning a value `v` to it should check if `v≡c` but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.
+
+**PRED** drops the top value of the stack, but also checks whether it matches the number 1. If it does match, execution continues; if not, evaluation of the current body ends and evaluation moves to the next eligible body.
 
 ### Namespaces: FLDO FLDM ALIM RETD
 
