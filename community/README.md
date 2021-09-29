@@ -17,6 +17,7 @@ And the links below point to BQN submissions on some sites that encourage shorte
 
 And also:
 
+- Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs.
 - [BQN fan art](fanart.md)
 
 ## Can I help out?
