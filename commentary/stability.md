@@ -2,7 +2,7 @@
 
 # Is BQN stable?
 
-The short answer is that code running online or in CBQN is unlikely to break. In rare cases we add experimental system values (the `•` things) before we're ready to commit to a particular design; read further or check on the forums if you'd like to know the status of a particular system function.
+The short answer is that code running online or in CBQN is unlikely to break. In rare cases we add experimental system values (the `•` things) before we're ready to commit to a particular design; read further or check on the forums if you'd like to know the status of a particular system function. And we are still making some backwards-compatible additions of moderate importance to core BQN: see [this page](https://topanswers.xyz/apl?q=1888). So it's possible that that extra knowledge will be needed to keep up with BQN in the future, but only a small amount.
 
 I have thousands of lines of running BQN code including the self-hosted sources, website generator, and Singeli compiler. There are also now many BQN examples and REPL links [spread](../community/README.md) across the web which would be harder to change. So there is a strong reason to maintain compatibility for common or even moderately used features. Because BQN's been designed in a conservative way, avoiding fiddly decisions by keeping things simple, it seems that few compatibility breaks will be required. The history so far seems to bear this out.
 
