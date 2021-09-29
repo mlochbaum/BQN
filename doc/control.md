@@ -56,14 +56,11 @@ For a more conventional presentation, the condition and action can be placed in 
       a +↩ 10
     }
 
-A final option is to use a [return](block.md#returns) to exit a block early. This is really more of an "unless" statement; to get a proper "if" the condition needs to be negated. Repeat is still the easiest way to do the conditional logic, in this case deciding whether to return.
+The result of any of these if statements is the result of the action if it's performed, and otherwise it's whatever argument was passed to the statement, which is `@` or `10` here.
 
-    {
-      𝕊→⍟(¬a<10) @   # Return @ unless a<10
-      a +↩ 10
-    }
+BQN's syntax for a pure if statement isn't so good, but predicates handle [if-else](#if-else) statements nicely. So in most cases you'd forego the definitions above in favor of an if-else with nothing in the else branch:
 
-In all cases, the result of an if statement is the result of the action if it's performed, and otherwise it's whatever argument was passed to the statement, which is `@` in most examples above.
+    { a<10 ? a+↩10 ; @ }
 
 ## Repeat
 
@@ -73,7 +70,15 @@ Another option is to use a [for-each](#for) statement with an argument of `↕n`
 
 ## If-Else
 
-Despite the name, an if-else statement is most closely related to a [switch-case](#switch-case) statement: in fact, it's just a special case where the two cases are true (`1`) and false (`0`). As a result, we can implement it either with Choose (`◶`) or with [case headers](block.md#case-headers) of `1` and `0`.
+In most cases, the easy way to write an if-else statement is with predicates:
+
+    {
+      threshold < 6 ?
+      a ↩ Small threshold ;  # If predicate was true
+      b ↩ 1 Large threshold  # If it wasn't
+    }
+
+We might also think of an if-else statement as a kind of [switch-case](#switch-case) statement, where the two cases are true (`1`) and false (`0`). As a result, we can implement it either with Choose (`◶`) or with [case headers](block.md#case-headers) of `1` and `0`.
 
 When using Choose, note that the natural ordering places the false case before the true one to match list index ordering. To get the typical if-else order, the condition should be negated or the statements reversed. Here's a function to get an if-else statement by swapping the conditions, and two ways its application might be written.
 
@@ -102,9 +107,15 @@ The result of an if-else statement is just the result of whichever branch was us
 
 ### Chained If-Else
 
-One pattern in imperative languages is to check one condition and apply an action if it succeeds, but check a different condition if it fails, in sequence until some condition succeeds or every one has been checked. Languages might make this pattern easier by making if-else right associative, so that the programmer can write an `if` statement followed by a sequence of `else if` "statements", or might just provide a unified `elif` keyword that works similarly (while this *is* a common pattern, I suspect it's used more often than it's really wanted because of this syntactic support).
+One pattern in imperative languages is to check one condition and apply an action if it succeeds, but check a different condition if it fails, in sequence until some condition succeeds or every one has been checked. Languages might make this pattern easier by making if-else right associative, so that the programmer can write an `if` statement followed by a sequence of `else if` "statements", or might just provide a unified `elif` keyword that works similarly. BQN's predicates work really well for this structure:
 
-In BQN it's possible to nest `IfElse` expressions, but it's also possible to write a control structure that chains them all at one level. For this statement the input will be a sequence of `⟨Test,Action⟩` pairs, followed by a final action to perform if no test succeeds. The first test is always performed; other tests should be wrapped in blocks because otherwise they'll be executed even if an earlier test succeeded.
+    {
+      a<b ? a+↩1 ;
+      a<c ? c-↩1 ;
+            a-↩2
+    }
+
+For a function-based approach, it's possible to nest `IfElse` expressions, but it's also possible to write a control structure that chains them all at one level. For this statement the input will be a sequence of `⟨Test,Action⟩` pairs, followed by a final action to perform if no test succeeds. The first test is always performed; other tests should be wrapped in blocks because otherwise they'll be executed even if an earlier test succeeded.
 
     Test ← {fn←{Cond‿Act 𝕊 else: Cond◶Else‿Act}´𝕩 ⋄ Fn@}
 
