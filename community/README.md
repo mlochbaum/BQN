@@ -8,6 +8,7 @@ For code repositories using BQN, see:
 
 - Github repositories [tagged BQN](https://github.com/topics/bqn)
 - [bqn-rest](https://codeberg.org/CptJimKirk/bqn-rest), for web APIs
+- Josh Holland's [solutions](https://git.sr.ht/~jshholland/trybqn/tree) to TryAPL problems
 
 And the links below point to BQN submissions on some sites that encourage shorter-form programming.
 
