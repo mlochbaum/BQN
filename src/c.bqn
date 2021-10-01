@@ -172,8 +172,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh              # Header component indices
   un←0=us←swap_undo(≠∘⊣-⊐)hi⊏𝕩
   "Invalid Undo header syntax"_err_(HI) un<(»⊸≥∨(1»un)∧2⊸=)us
-  ut←un/»us⋄hi/˜↩0=us
-  hr←(⊏⟜ns×⊏⟜r)rev⊏˜hi                      # And their roles
+  ut←un/»us⋄hi/˜↩0=us                       # Undo type: 0 normal, 1 ⁼, 2 ˜⁼
+  hr←(⊏⟜ns×⊏⟜r)rev⊏˜hi                      # Header component roles
   hl←2=hn←(1⊸»+«)hc←¯1=hr                   # hl: is label, hc: is :
   "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
   ho←(»∨·«(hr=3)∧⊢)hl<hy←2≤hr               # Header operands
@@ -181,17 +181,18 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
   "Invalid header structure"_err_(hm/HI) 1⊸»⊸=hm/hc
   hk←3|1-˜(+`bI∾nv)⍋ht←hi⊏𝕩×¬rev⊏sr         # Kind: 0 special, 1 name, 2 compound
-  hma←hm>ha+↩hla←hl∧(0=hr)∧1≠hk⋄hr+↩hla     # Lone non-name subject is 𝕩 with 𝕊 omitted
-  hv←(ha×1+hla<«hc)+(ho×4+«3=hr)+hma×3×1-˜2⌊hr # Special name for position
+  hma←hm>hla←hl∧(0=hr)∧1≠hk⋄hr+↩hla⋄hl>↩hla # Lone non-name subject is 𝕩 with 𝕊 omitted
+  hv←(hla+ha×1+«hc)+(ho×4+«3=hr)+hma×3×1-˜2⌊hr # Special name for position
   "Incorrect special name"_err_(HI) (0=hk)∧ht≠hv+⊑bI
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
-  hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
-  cw←1+-⟜«(»cq)<1(⊢<«)cf
-  cw↩(hc/»hla¬⊸×hl⌈ha×1+he←0≠hk)⌾(ch⊸/)cw   # Body 𝕨: 0 no, 1 allowed, 2 required
+  hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha       # Header-derived role hr and immediacy ¬hx
   "Invalid Undo header syntax"_err_(HI) hm<×ut
-  cu←(hm/ut)⌾(ch⊸/)0¨cw⋄cw⌈↩2×2=cu
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hma>hk≠2
+  ut/˜↩hm
+  cwh←(2×2=ut)⌈hc/»hl⌈ha×1+he←0≠hk
+  cw←cwh⌾(ch⊸/)1+-⟜«(»cq)<1(⊢<«)cf          # Body 𝕨: 0 no, 1 allowed, 2 required
+  hl/˜↩hm
   hx∨↩1=hr⋄hu←(¬he)⌾(hi⊸⊏)hf
   hj←gi⊏˜he/hi⋄hd←2=he/hk
 
@@ -199,7 +200,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ss←((rev⊏r=3)∧𝕩=3+⊑bI)+(0‿3‿5‿6+⊑bI)⍋𝕩    # Special name (treat _𝕣_ as 4)
   HS←(¯1+`cf)⊏b¬∘PN=⟜ss⋄sp←/hf<𝕩 M bI       # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
   fx←HS 1⋄fr←(fx∨0⊸<)⊸+ft←2(⊣⌈2×⊢)○HS 3     # Body immediacy ¬fx, type ft, role fr
-  "Block header conflicts with special names"_err_(ch/0∾/∘CB) (hr<ch/fr)∨(hm/hl)<hx<ch/fx
+  "Block header conflicts with special names"_err_(ch/0∾/∘CB) (hr<ch/fr)∨hl<hx<ch/fx
   ft⌈↩1-˜fr↩hr⌾(ch⊸/)fr⋄fx↩hx⊸⌈⌾(ch⊸/)fx
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓(»⊸∨cq>ch)<cm>fx
@@ -318,7 +319,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   # Indices for multi-body blocks
   cj←/cv←1+1=ciw←cw⊏˜ci←/cm∨↩fx∧1≠cw
-  ck←4⌊(2×ci⊏cu)+1<ciw
+  ck←4⌊(2×ci⊏ut⌾(ch⊸/)0¨ch)+1<ciw
   cg←¯1+`cif←ci⊏cf
   ckt←(2-¬(cf∧cm)/fx)⌈(cif/·⍋⊏⟜cg)⊸⊏∘⍒⊸⊏cv+ck
   ci↩ckt/⊸⊔(¯1(↑∾˜cj(⊒∘⊣+⊏)ck+cg⊏↓)0∾+`ckt)⊔cj⊏ci
