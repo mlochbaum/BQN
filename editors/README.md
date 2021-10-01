@@ -59,9 +59,9 @@ Then run `:PlugInstall`.
 
 ### Emacs
 
-Add the following two lines to `init.el` (usually `~/.emacs.d/init.el`), replacing the path appropriately.
+Emacs support has moved to [AndersonTorres/bqn-mode](https://github.com/AndersonTorres/bqn-mode). Clone and add the following two lines to `init.el` (usually `~/.emacs.d/init.el`), replacing the path appropriately.
 
-    (add-to-list 'load-path "/path/to/BQN/editors/emacs")
+    (add-to-list 'load-path "/path/to/bqn-mode")
     (require 'gnu-apl-mode)
 
 ### VS Code
