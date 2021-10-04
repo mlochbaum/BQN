@@ -42,8 +42,8 @@ Explain ← {
     "11411314111111131141141441111=111"  # Codes until next opcode
     "111000110000000000022211000000111"  # Arguments
     "000111//2323230323200000122232111"  # Stack values consumed
-    "111000111111110111111111111111111"  # Stack values output
-    "000000001111110101000000100010000"  # Position determiner
+    "111000111111110111111111101111111"  # Stack values output
+    "000000001111110101000000000010000"  # Position determiner
   ⟩
   m ← { # Mask of instruction starts
     n ← (↕≠b)+1+ba(⊣⊏˜≠⊸>×⊢)b
