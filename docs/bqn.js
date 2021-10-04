@@ -136,7 +136,7 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
       if (useenv) { c =          "const e=env;"+c; env.vid=vid; }
       else if (imm) c =          "const e=[...e2];e.vid=vid;e.p=oe;"+c;
       else c = "const fn=(x, w)=>{const e=[...e2];e.vid=vid;e.p=oe;e[0]=fn;e[1]=x;e[2]=w;"+c+"};"+repdf[type]+"return fn;";
-      c="do {"+c+"} while (0);\n";
+      c="do {"+c+"} while (0);\nthrow Error('No matching case');\n";
       def = useenv ? "env" : ("new Array("+vid.length+").fill(null)");
     } else {
       if (imm !== +(ind.length<2)) throw "Internal error: malformed block info";
