@@ -6,7 +6,7 @@ The replicate family of functions contains not just primitives but powerful tool
 
 [General replication](#replicate) is more complex. Branching will slow many useful cases down considerably when using the obvious solution. However, branch-free techniques introduce overhead for larger replication amounts. Hybridizing these seems to be the only way, but it's finicky.
 
-Replicate by a [constant amount](#constant-replicate) (so `𝕨` is a single number) is not too common in itself, but it's notable because it can be the fastest way to implement outer products and scalar dyadics with prefix agreement.
+Replicate by a [constant amount](#constant-replicate) (so `𝕨` is a single number) is not too common in itself, but it's notable because it can be the fastest way to implement outer products and arithmetic with prefix agreement.
 
 ## Indices
 
