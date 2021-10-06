@@ -587,7 +587,14 @@ let rand = (() => {
   let range = (x,w) => {
     reqnat("Range: 𝕩", x);
     let r = x ? (()=>randnat(x)) : Math.random;
-    return has(w) ? list(Array(w).fill().map(r)) : r();
+    if (!has(w)) return r();
+    let n = 1;
+    if (!w.sh) reqnat("Range: 𝕨", n=w);
+    else {
+      if (w.sh.length!==1) throw Error("Range: array 𝕨 must have rank 1");
+      w.map(m => {reqnat("Range: 𝕨 element", m); n*=m;});
+    }
+    return arr(Array(n).fill().map(r), w.sh?w:[m], 0);
   };
   let iota = x => Array(x).fill().map((_,i)=>i);
   let deal_err = e => (x,w) => {
