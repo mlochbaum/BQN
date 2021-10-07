@@ -5,8 +5,9 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">commentary</a></div>
 <h1 id="left-to-right-ordering"><a class="header" href="#left-to-right-ordering">Left to right ordering?</a></h1>
-<p>APL's right-to-left evaluation order is something many programmers ask about, and something I've questioned personally as well. In fact the first significant language I designed, called <a href="https://github.com/mlochbaum/ILanguage">I</a>, used a left to right ordering for all code.</p>
-<p>I settled fairly quickly on sticking to the left to right ordering in BQN. I'm still of (at least) two minds about this, in that I'm fairly sure I prefer writing code from left to right but I'm also worried this won't fit in with other aspects of an APL-family language. BQN is an entirely different project than I is, and it's informed much more by APL than I. So I didn't so much switch to RtL as start over, and not switch back to LtR. I wrote about that in <a href="https://chat.stackexchange.com/transcript/52405?m=57926316#57926316">this message</a> (lots more discussion above).</p>
+<p>APL's right-to-left (RtL) evaluation order is something many programmers ask about, and something I've questioned personally as well. In fact the first significant language I designed, called <a href="https://github.com/mlochbaum/ILanguage">I</a>, used a left to right (LtR) ordering for all code. I hope to work with this ordering again in future languages! And changing BQN's compiler to order things differently wouldn't be too large of a task. But that would be a different language. I'd better stick with BQN for a while instead of building up a pile of partial languages.</p>
+<p>I'm still of (at least) two minds about a left-to-right APL, in that I'm fairly sure I prefer writing code from left to right but I'm also worried this won't fit in with other aspects of an APL-family language. In BQN I decided that changing the order relative to APL was simply too radical. Why the cowardice? Well, I hope it's better described as pragmatism. BQN is designed to avoid losing the good parts of APL\360, up to my own interpretation of course. For a big change like LtR, I honestly can't say whether it leads to a better language, and in the worst case it could make the entire thing unusable. BQN makes a lot of changes, with a few candidates like this (trying to unify functions and modifiers would be another example). But the risk profile for these big unknowns isn't acceptable: only one has to go wrong to ruin my work, and as more are added this goes from possible to likely. So I stuck with relatively smaller changes I was more confident in.</p>
+<p>I've thought about adding some sort of pipe notation (the <code><span class='Value'>$</span></code> character is open) to BQN, but I'm currently against it. It would be complicated and hard to design, and at the end of the day not all that much better than splitting a statement into a sequence of assignments.</p>
 <h2 id="considerations"><a class="header" href="#considerations">Considerations</a></h2>
 <p>English text is read left to right. This in itself is not decisive in either direction: many contend that the way to read a function is first to read the function, then its argument. Although I usually read the other way, I do find that order to be useful sometimes.</p>
 <ul>
@@ -20,5 +21,12 @@
 <li>Function composition is ordered right-to-left.</li>
 <li>Arrows indicating function types and in diagrams are written left-to-right.</li>
 </ul>
-<p>See page 147 of <a href="http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-169.pdf">this report</a> for an interesting argument.</p>
+<p>See page 147 of <a href="http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-169.pdf">this report</a> for an interesting discussion on ordering in mathematics: function notation and diagrams.</p>
 <p>As for programming precedent, stack-based languages such as Forth go from left to right. In Java-style object-oriented programming, methods go from left to right. This style of &quot;method chaining&quot; is particularly prevalent in Javascript.</p>
+<h2 id="other-attempts"><a class="header" href="#other-attempts">Other attempts</a></h2>
+<ul>
+<li>There's an <a href="https://aplwiki.com/wiki/Category:Left_to_right">APL Wiki category</a> that gathers some left-to-right languages. <a href="https://github.com/DennisMitchell/jellylanguage">Jelly</a> is likely the most widely used of these, but being a code golfing language it's explicitly designed for brevity first and usability second.</li>
+<li><a href="https://github.com/smabie/xs">xs</a> is a concatenative (or stack-based) array language not yet on APL Wiki.</li>
+<li>Milan Lajtoš is working on the Fluent language for his &quot;new kind of paper&quot;. It's left-to-right nature is mentioned in <a href="https://mlajtos.mu/posts/new-kind-of-paper-2">this post</a>.</li>
+<li>Adám Brudzewsky and others did some investigation into LtR APL specifically in the <a href="https://topanswers.xyz/apl?q=1660">LPA/NQB thread</a>.</li>
+</ul>
