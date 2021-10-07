@@ -1,0 +1,24 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Left to right ordering?</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">commentary</a></div>
+<h1 id="left-to-right-ordering"><a class="header" href="#left-to-right-ordering">Left to right ordering?</a></h1>
+<p>APL's right-to-left evaluation order is something many programmers ask about, and something I've questioned personally as well. In fact the first significant language I designed, called <a href="https://github.com/mlochbaum/ILanguage">I</a>, used a left to right ordering for all code.</p>
+<p>I settled fairly quickly on sticking to the left to right ordering in BQN. I'm still of (at least) two minds about this, in that I'm fairly sure I prefer writing code from left to right but I'm also worried this won't fit in with other aspects of an APL-family language. BQN is an entirely different project than I is, and it's informed much more by APL than I. So I didn't so much switch to RtL as start over, and not switch back to LtR. I wrote about that in <a href="https://chat.stackexchange.com/transcript/52405?m=57926316#57926316">this message</a> (lots more discussion above).</p>
+<h2 id="considerations"><a class="header" href="#considerations">Considerations</a></h2>
+<p>English text is read left to right. This in itself is not decisive in either direction: many contend that the way to read a function is first to read the function, then its argument. Although I usually read the other way, I do find that order to be useful sometimes.</p>
+<ul>
+<li>Function application is pronounced &quot;f of x&quot;, following the mathematical convention.</li>
+<li>Similarly, composition is pronounced &quot;g of f&quot; or &quot;g compose f&quot;. The alternative &quot;f then g&quot;, however, feels more natural to me.</li>
+<li>Transformation is nearly always given with the initial state first followed by the final state: &quot;from rags to riches&quot;. Sometimes programmers use this convention as well: &quot;png2jpg&quot;.</li>
+</ul>
+<p>Although mathematical functions are usually evaluated right-to-left, infix operations such as basic arithmetic are usually left-to-right. Of note is the fact that infinite series which start at zero and proceed upwards must be thought of as being evaluated in the positive direction, which is universally rendered as rightwards in number lines.</p>
+<ul>
+<li>Function application is written function-first.</li>
+<li>Function composition is ordered right-to-left.</li>
+<li>Arrows indicating function types and in diagrams are written left-to-right.</li>
+</ul>
+<p>See page 147 of <a href="http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-169.pdf">this report</a> for an interesting argument.</p>
+<p>As for programming precedent, stack-based languages such as Forth go from left to right. In Java-style object-oriented programming, methods go from left to right. This style of &quot;method chaining&quot; is particularly prevalent in Javascript.</p>
