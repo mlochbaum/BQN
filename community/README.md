@@ -18,7 +18,7 @@ And the links below point to BQN submissions on some sites that encourage shorte
 
 And also:
 
-- Two reference pages: [compact primitives](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
+- Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [compact everything](https://xj-ix.luxe/wiki/bqn/bqn.txt), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
 - Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs.
 - [BQN fan art](fanart.md)
 
