@@ -2,7 +2,7 @@
 
 # Expression syntax
 
-BQN expressions are the part of [syntax](syntax.md) that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like [blocks](block.md) and [namespaces](namespace.md) around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe [constant](syntax.md#constant) and [array](arrayrepr.md#list-literals) literals, which each form a single subject for grammatical purposes.
+BQN expressions are the part of [syntax](syntax.md) that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like [blocks](block.md) and [namespaces](namespace.md) around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe [constant](syntax.md#constants) and [array](arrayrepr.md#list-literals) literals, which each form a single subject for grammatical purposes.
 
 The [first tutorial](../tutorial/expression.md) also covers how to build and read BQN expressions.
 
@@ -63,4 +63,4 @@ Here is a table of the modifier and function application rules:
 |       | `_c_` |  `G*` | 1-Modifier | Partial application
 |  `F*` | `_c_` |       | 1-Modifier | Partial application
 
-A function with an asterisk indicates that a subject can also be used. Since the role doesn't exist after parting function and subject spellings are indistinguishable in these positions. Modifier applications bind more tightly than functions, and associate left-to-right while functions associate right-to-left.
+A function with an asterisk indicates that a subject can also be used. Since the role doesn't exist after parsing, function and subject spellings are indistinguishable in these positions. Modifier applications bind more tightly than functions, and associate left-to-right while functions associate right-to-left.
