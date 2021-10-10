@@ -2,7 +2,7 @@
 
 # How to run BQN
 
-[CBQN](https://github.com/dzaima/CBQN) is now the primary offline implementation. However, many scripts have been written for dzaima/BQN and they're not all transferred over yet. Scripts in this repository use `bqn` in the `#!` line if self-hosted or dzaima/BQN can run them, and `dbqn` if only dzaima/BQN works.
+[CBQN](https://github.com/dzaima/CBQN) is now the primary offline implementation. However, dzaima/BQN still works, and is used for some testing. Scripts in this repository use `bqn` in the `#!` line if any BQN can run them, and `dbqn` if only dzaima/BQN works.
 
 ### Self-hosted BQN
 
@@ -42,7 +42,7 @@ If compiled with Native Image, `nBQN` can be used directly instead.
 
 #### dzaima+reference BQN
 
-This repository contains a dzaima/BQN script `dzref` that fills in gaps in primitive support with BQN implementations. dzaima/BQN has good enough primitive support that I now almost never use this, but it's still needed for the website generator md.bqn. The command-line arguments are a script to run and followed by the `•args` to supply to it.
+This repository contains a dzaima/BQN script `dzref` that fills in gaps in primitive support with BQN implementations. It was used for md.bqn for a while and is no longer used now. The command-line arguments are a script to run and followed by the `•args` to supply to it.
 
 ### BQN2NGN
 
