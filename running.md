@@ -4,6 +4,8 @@
 
 [CBQN](https://github.com/dzaima/CBQN) is now the primary offline implementation. However, dzaima/BQN still works, and is used for some testing. Scripts in this repository use `bqn` in the `#!` line if any BQN can run them, and `dbqn` if only dzaima/BQN works.
 
+For Nix users, nixpkgs now has repositories for several implementations; `cbqn` is recommended for general use.
+
 ### Self-hosted BQN
 
 See the subsections below for instructions on specific implementations.
