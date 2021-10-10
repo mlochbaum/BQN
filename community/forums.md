@@ -11,9 +11,9 @@ The BQN forum consists of a [Matrix](https://matrix.org/) channel, and one room 
 
 #### Matrix
 
-To avoid having to hunt down all these channels they're gathered into the Matrix space linked above. Most clients don't yet support spaces; in Element you can enable them as a beta feature and join the space to see the channels in it. There's nothing special about the channels so once you join one you'll be able to use it from any other Matrix client as well.
+To avoid having to hunt down all these channels they're gathered into the Matrix space linked above. While Element supports spaces, many other clients don't. But as there's nothing special about the channels, once you join one in Element you'll be able to use it from any other Matrix client as well.
 
-Being an open protocol, Matrix allows third-party clients (Element is first-party, created by the protocols designers), and there are many available. Most are lacking in features or otherwise difficult to use. For a desktop client, [Nheko](https://github.com/Nheko-Reborn/nheko) seems to be the best chance of a good experience.
+Being an open protocol, Matrix allows third-party clients (Element is first-party, created by the protocol's designers), and there are many available. Most are lacking in features or otherwise difficult to use. For a desktop client, [Nheko](https://github.com/Nheko-Reborn/nheko) seems to be the best chance of a good experience, and [FluffyChat](https://fluffychat.im/) should also be usable, although it's more mobile-focused.
 
 #### BQNBot
 
