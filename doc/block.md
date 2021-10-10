@@ -188,6 +188,32 @@ A special rule allows for convenient case-matching syntax for one-argument funct
 
 These case-style headers function exactly the same as if they were preceded by `𝕊`, and can be mixed with other kinds of headers.
 
+### Predicates
+
+Destructuring with a header is quite limited, only allowing matching structure and data with exact equality. A predicate, written with `?`, allows you to test an arbitrary property before evaluating the rest of the body, and also serves as a limited kind of control flow. It can be thought of as an extension to a header, so that for example the following function requires the argument to have a single element and for that element to be less than zero before using the first body `1+𝕩`. Otherwise it moves to the next one, an unconditional `𝕩`.
+
+        CheckPair ← { 𝕊⟨a,b⟩: a<b? "ok" ; "not ok" }
+
+        CheckPair ⟨3,8⟩    # Fails destructuring
+        CheckPair ⟨1,4,5⟩  # Not a pair
+        CheckPair ⟨3,¯1⟩   # Not ascending
+
+The body where the predicate appears doesn't need to start with a header, and there can be other statements before it. In fact, `?` functions just like a separator (like `⋄` or `,`) with a side effect.
+
+        { r←⌽𝕩 ⋄ 't'=⊑r ? r ; 𝕩 }¨ "test"‿"this"
+
+So `r` is the reversed argument, and if its first character (the last one in `𝕩`) is `'t'` then it returns `r`, and otherwise we abandon that line of reasoning and return `𝕩`. This sounds a lot like an if statement. And `{ a<b ? a ; b }`, which computes `a⌊b` the hard way, shows how the syntax can be similar to a ternary operator. But `?;` is more flexible than that. It can support any number of options, with multiple tests for each one—the structure below is "if \_ and \_ then \_; else if \_ then \_; else \_".
+
+        Thing ← { 𝕩≥3? 𝕩≤8? 2|𝕩 ; 𝕩=0? @ ; ∞ }
+
+        (⊢ ≍ Thing¨) ↕10  # Table of arguments and results
+
+This structure is still constrained by the rules of block bodies: each instance of `;` is a separate scope, so that variables defined before a `?` don't survive past the `;`.
+
+        { 0=n←≠𝕩 ? ∞ ; n } "abc"
+
+This is the main drawback of predicates relative to guards in APL dfns (also written with `?`), while the advantage is that it allows multiple expressions, or extra conditions, after a `?`. It's not how I would have designed it if I just wanted to make a syntax for if statements, but it's a natural fit for the header system.
+
 ## Returns
 
 *This feature is not yet included in any BQN implementation.*
