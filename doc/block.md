@@ -202,7 +202,7 @@ The body where the predicate appears doesn't need to start with a header, and th
 
         { r←⌽𝕩 ⋄ 't'=⊑r ? r ; 𝕩 }¨ "test"‿"this"
 
-So `r` is the reversed argument, and if its first character (the last one in `𝕩`) is `'t'` then it returns `r`, and otherwise we abandon that line of reasoning and return `𝕩`. This sounds a lot like an if statement. And `{ a<b ? a ; b }`, which computes `a⌊b` the hard way, shows how the syntax can be similar to a ternary operator. But `?;` is more flexible than that. It can support any number of options, with multiple tests for each one—the structure below is "if \_ and \_ then \_; else if \_ then \_; else \_".
+So `r` is the reversed argument, and if its first character (the last one in `𝕩`) is `'t'` then it returns `r`, and otherwise we abandon that line of reasoning and return `𝕩`. This sounds a lot like an if statement. And `{ a<b ? a ; b }`, which computes `a⌊b` the hard way, shows how the syntax can be similar to a ternary operator. This is an immediate block with multiple bodies, something that makes sense with predicates but not headers. But `?;` offers more possibilities. It can support any number of options, with multiple tests for each one—the structure below is "if \_ and \_ then \_; else if \_ then \_; else \_".
 
         Thing ← { 𝕩≥3? 𝕩≤8? 2|𝕩 ; 𝕩=0? @ ; ∞ }
 
