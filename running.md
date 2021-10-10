@@ -14,7 +14,7 @@ Support in the following languages has been implemented:
 - Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
 - [C](https://github.com/dzaima/CBQN), targetting high performance. Some parts are fast, some are not.
 - dzaima/BQN ([bqn.bqn](bqn.bqn)), mainly for testing.
-- [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical yet: minutes to compile short programs.
+- [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical; a [Rust version](https://github.com/cannadayr/ebqn-rs/) is in progress to fix this.
 
 #### Javascript
 
