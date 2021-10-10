@@ -14,7 +14,7 @@
 <li>Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.</li>
 <li><a href="https://github.com/dzaima/CBQN">C</a>, targetting high performance. Some parts are fast, some are not.</li>
 <li>dzaima/BQN (<a href="https://github.com/mlochbaum/BQN/blob/master/bqn.bqn">bqn.bqn</a>), mainly for testing.</li>
-<li><a href="https://github.com/cannadayr/ebqn">Erlang</a>, intended for embedding. Too slow to be practical yet: minutes to compile short programs.</li>
+<li><a href="https://github.com/cannadayr/ebqn">Erlang</a>, intended for embedding. Too slow to be practical; a <a href="https://github.com/cannadayr/ebqn-rs/">Rust version</a> is in progress to fix this.</li>
 </ul>
 <h4 id="javascript"><a class="header" href="#javascript">Javascript</a></h4>
 <p>The online REPL is <a href="https://mlochbaum.github.io/BQN/try.html">here</a>. The file <a href="https://github.com/mlochbaum/BQN/blob/master/docs/bqn.js">docs/bqn.js</a> is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script <a href="https://github.com/mlochbaum/BQN/blob/master/bqn.js">bqn.js</a>, passing a file and <code><span class='Value'>•args</span></code>, or <code><span class='Function'>-</span><span class='Value'>e</span></code> to execute all remaining arguments directly and print the results. <a href="https://observablehq.com/@lsh/bqn">This notebook</a> shows how to run it in an Observable notebook.</p>
