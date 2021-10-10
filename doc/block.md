@@ -190,7 +190,7 @@ These case-style headers function exactly the same as if they were preceded by `
 
 ### Predicates
 
-Destructuring with a header is quite limited, only allowing matching structure and data with exact equality. A predicate, written with `?`, allows you to test an arbitrary property before evaluating the rest of the body, and also serves as a limited kind of control flow. It can be thought of as an extension to a header, so that for example the following function requires the argument to have a single element and for that element to be less than zero before using the first body `1+𝕩`. Otherwise it moves to the next one, an unconditional `𝕩`.
+Destructuring with a header is quite limited, only allowing matching structure and data with exact equality. A predicate, written with `?`, allows you to test an arbitrary property before evaluating the rest of the body, and also serves as a limited kind of control flow. It can be thought of as an extension to a header, so that for example the following function requires the argument to have two elements and for the first to be less than the second before using the first body. Otherwise it moves to the next body, which is unconditional.
 
         CheckPair ← { 𝕊⟨a,b⟩: a<b? "ok" ; "not ok" }
 
