@@ -19,6 +19,8 @@ BQN expressions consist of subjects, functions, and modifiers arranged in sequen
 
 The four roles (subject, function, two kinds of modifier) describe expressions, not values. When an expression is evaluated, the value's [type](types.md) doesn't have to correspond to its role, and can even change from one evaluation to another. An expression's role is determined entirely by its source code, so it's fixed.
 
+In the table, `?` marks an optional left argument. If there isn't a value in that position, or it's [Nothing](#nothing) (`·`), the middle function will be called with only one argument.
+
 If you're comfortable reading [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) and want to understand things in more detail than described below, you might check the [grammar specification](../spec/grammar.md) as well.
 
 ## Syntactic role
@@ -47,6 +49,18 @@ Variable names can be written in any case and with underscores added, and these 
 Besides these, character, string, and [list literals](arrayrepr.md#list-literals) always have a subject role, and the role of a [block](block.md) is determined by its type, which depends either on the header it has or which special variables it uses.
 
 The role of a compound expression, formed by applying an operation to some inputs, depends on the operation applied. This system is discussed in the remaining sections below.
+
+## Nothing
+
+The character `·` is called Nothing. While it can be easier to think of it as a value, it can't be passed around in variables, and so can also be interpreted as an element of syntax. The special name `𝕨` also functions as Nothing if the block that contains it is called with one argument (the uppercase spelling `𝕎` doesn't, but instead immediately causes an error). Both `·` and `𝕨` have a subject role.
+
+The following rules apply to Nothing:
+- If it's the left argument in a function call, the function is called with no left argument.
+- If it's the right argument, the function isn't called, and "returns" Nothing.
+
+For example, the expression `(F 2 G ·) H I j` is equivalent to `H I j`. But functions and arguments that would be discarded by the second rule are still evaluated, so that for example `(a+↩1) F ·` increments `a` when run.
+
+Nothing can only be used as an argument to a function, or the left argument in a train (it can't be the right argument in a train because a train ends with a function by definition). In another position where a subject could appear, like as an operand or in a list, it causes an error: either at compile time, for `·`, or when the function is called with no left argument, for `𝕨`.
 
 ## Kinds of application
 
