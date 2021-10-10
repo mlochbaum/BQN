@@ -1,9 +1,9 @@
-#! /usr/bin/env dbqn
+#! /usr/bin/env bqn
 
 # WebAssembly backend (very incomplete)
 
 i←"⟨cgl,charSet,Tokenize⟩"
-⟨cgl,charSet,Tokenize⟩ ← ⟨@,@,•Import"src/glyphs.bqn"⟩ •BQN i∾˜•FChars"src/c.bqn"
+⟨cgl,charSet,Tokenize⟩ ← ⟨•path,"",•Import"src/glyphs.bqn"⟩ •BQN i∾˜•FChars"src/c.bqn"
 chF←(⊑cgl)↑charSet
 bF‿b1‿b2‿bS‿bH‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑
