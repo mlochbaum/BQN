@@ -41,7 +41,7 @@
 <tr>
 <td><code><span class='Value'>𝕨</span></code></td>
 <td><code><span class='Function'>𝕎</span></code></td>
-<td>Left <a href="#arguments">argument</a>, or Nothing (<code><span class='Nothing'>·</span></code>)</td>
+<td>Left <a href="#arguments">argument</a>, or <a href="expression.html#nothing">Nothing</a> (<code><span class='Nothing'>·</span></code>)</td>
 </tr>
 <tr>
 <td><code><span class='Value'>𝕤</span></code></td>
@@ -75,7 +75,7 @@
     <span class='Number'>4</span> <span class='Brace'>{</span> <span class='Bracket'>⟨</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Function'>-</span><span class='Value'>𝕨</span><span class='Bracket'>⟩</span> <span class='Brace'>}</span> <span class='Number'>5</span>
 ⟨ 5 ¯4 ⟩
 </pre>
-<p>A function with <code><span class='Value'>𝕨</span></code> in its definition doesn't have to be called with two arguments. If it has only one, then <code><span class='Value'>𝕨</span></code> is given the special value Nothing <code><span class='Nothing'>·</span></code>. This is the only time a variable can ever be Nothing, as an assignment such as <code><span class='Value'>v</span><span class='Gets'>←</span><span class='Nothing'>·</span></code> is not allowed.</p>
+<p>A function with <code><span class='Value'>𝕨</span></code> in its definition doesn't have to be called with two arguments. If it has only one, then <code><span class='Value'>𝕨</span></code> is given the special value <a href="expression.html#nothing">Nothing</a>, or <code><span class='Nothing'>·</span></code>. This is the only time a variable can ever be Nothing, as an assignment such as <code><span class='Value'>v</span><span class='Gets'>←</span><span class='Nothing'>·</span></code> is not allowed.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyB7ICgyw5fwnZWoKS3wnZWpIH0gMQogIHsgKDLDl/CdlagpLfCdlakgfSAx">↗️</a><pre>    <span class='Number'>3</span> <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>×</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='Number'>1</span>
 5
       <span class='Brace'>{</span> <span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>×</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='Number'>1</span>

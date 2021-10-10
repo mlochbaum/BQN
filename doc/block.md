@@ -26,7 +26,7 @@ An immediate block is only ever evaluated once, and can't be used for control fl
 | Lowercase | Uppercase | Meaning
 |-----------|-----------|---------
 | `𝕩`       | `𝕏`       | Right [argument](#arguments)
-| `𝕨`       | `𝕎`       | Left [argument](#arguments), or Nothing (`·`)
+| `𝕨`       | `𝕎`       | Left [argument](#arguments), or [Nothing](expression.md#nothing) (`·`)
 | `𝕤`       | `𝕊`       | Function [self-reference](#self-reference)
 | `𝕗`       | `𝔽`       | Left [operand](#operands)
 | `𝕘`       | `𝔾`       | Right [operand](#operands)
@@ -42,7 +42,7 @@ The names `𝕨` and `𝕩`, and their uppercase spellings, represent function a
         { 𝕩+↩2 ⋄ 0≍𝕩 } 3
         4 { ⟨𝕩⋄-𝕨⟩ } 5
 
-A function with `𝕨` in its definition doesn't have to be called with two arguments. If it has only one, then `𝕨` is given the special value Nothing `·`. This is the only time a variable can ever be Nothing, as an assignment such as `v←·` is not allowed.
+A function with `𝕨` in its definition doesn't have to be called with two arguments. If it has only one, then `𝕨` is given the special value [Nothing](expression.md#nothing), or `·`. This is the only time a variable can ever be Nothing, as an assignment such as `v←·` is not allowed.
 
         3 { (2×𝕨)-𝕩 } 1
           { (2×𝕨)-𝕩 } 1

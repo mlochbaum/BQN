@@ -105,7 +105,7 @@ The possible roles are:
 
 * **Parsing**: Analysis of the tokens of a program, which determines which actions will be taken to evaluate it.
 * [**Expression**](syntax.md#expressions): A piece of code that defines a (not necessarily constant) variable.
-* **Nothing**: A special value-like entity that comes from `·`, `𝕨` in a function with no left argument, or a function called on nothing.
+* [**Nothing**](expression.md#nothing): A special value-like entity that comes from `·`, `𝕨` in a function with no left argument, or a function called on nothing.
 * **Statement**: An expression, or nothing (`·`).
 * **Ligature**: The character `‿`.
 * [**List notation**](arrayrepr.md#brackets): The angle brackets `⟨⟩` or ligatures used to indicate a list.

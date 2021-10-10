@@ -4,7 +4,7 @@
 
 Trains are an important aspect of BQN's [tacit](tacit.md) programming capabilities. In fact, a crucial one: with trains and the [identity functions](identity.md) Left (`⊣`) and Right (`⊢`), a fully tacit program can express any explicit function whose body is a statement with `𝕨` and `𝕩` used only as arguments (that is, there are no assignments and `𝕨` and `𝕩` are not used in operands or lists. Functions with assignments may have too many variables active at once to be directly translated but can be emulated by constructing lists. But it's probably a bad idea). Without trains it isn't possible to have two different functions that each use both arguments to a dyadic function. With trains it's perfectly natural.
 
-BQN's trains are the same as those of Dyalog APL, except that Dyalog is missing the minor convenience of BQN's Nothing (`·`). There are many Dyalog-based documents and videos on trains you can view on the [APL Wiki](https://aplwiki.com/wiki/Train).
+BQN's trains are the same as those of Dyalog APL, except that Dyalog is missing the minor convenience of BQN's [Nothing](expression.md#nothing) (`·`). There are many Dyalog-based documents and videos on trains you can view on the [APL Wiki](https://aplwiki.com/wiki/Train).
 
 ## 2-train, 3-train
 
