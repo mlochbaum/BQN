@@ -70,7 +70,7 @@ Another option is to use a [for-each](#for) statement with an argument of `↕n`
 
 ## If-Else
 
-In most cases, the easy way to write an if-else statement is with predicates:
+In most cases, the easy way to write an if-else statement is with [predicates](block.md#predicates):
 
     {
       threshold < 6 ?

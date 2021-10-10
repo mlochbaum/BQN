@@ -55,7 +55,7 @@
 <p>There's no reason the condition in an if statement from the previous section has to be boolean: it could be any natural number, causing the action to be repeated that many times. If the action is never performed, the result is the statement's argument, and otherwise it's the result of the last time the action was performed.</p>
 <p>Another option is to use a <a href="#for">for-each</a> statement with an argument of <code><span class='Function'>↕</span><span class='Value'>n</span></code>: in this case the result is the list of each action's result.</p>
 <h2 id="if-else"><a class="header" href="#if-else">If-Else</a></h2>
-<p>In most cases, the easy way to write an if-else statement is with predicates:</p>
+<p>In most cases, the easy way to write an if-else statement is with <a href="block.html#predicates">predicates</a>:</p>
 <pre><span class='Brace'>{</span>
   <span class='Value'>threshold</span> <span class='Function'>&lt;</span> <span class='Number'>6</span> <span class='Value'>?</span>
   <span class='Value'>a</span> <span class='Gets'>↩</span> <span class='Function'>Small</span> <span class='Value'>threshold</span> <span class='Value'>;</span>  <span class='Comment'># If predicate was true
