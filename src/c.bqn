@@ -254,7 +254,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   fv←fw⋄fw≥○I1T↩cf                          # If a body fails on 𝕨, later ones won't see 𝕨
   (∨´(1↓fv)⊸<)◶"Invalid use of 𝕨 in monadic case"‿"Unreachable body"_err_(/CB) 1↓fw∧cw=0
   cw⌈↩2×fw⋄cw×↩fx
-  nn←fo+`⊸⊏2=cw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn       # 2=cw indicates 𝕨 is never Nothing
+  nn←g⊏fi⊏2=cw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn        # 2=cw indicates 𝕨 is never Nothing
   aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
   hq←/hp←(g⊏ah)∧𝕩≥nv+vi                     # Header constant
   atc←(hg<ps<«aa∧r≥0)<aid∨hp∨(ps>«𝕩=⊑bL)∨𝕩(=⟜(3+⊑)<M)bB
