@@ -591,7 +591,7 @@ let rand = (() => {
     let n = 1;
     if (!w.sh) reqnat("Range: 𝕨", n=w);
     else {
-      if (w.sh.length!==1) throw Error("Range: array 𝕨 must have rank 1");
+      if (w.sh.length>1) throw Error("Range: array 𝕨 must have rank at most 1");
       w.map(m => {reqnat("Range: 𝕨 element", m); n*=m;});
     }
     return arr(Array(n).fill().map(r), w.sh?w:[m], 0);
