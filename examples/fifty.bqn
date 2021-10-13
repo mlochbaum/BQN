@@ -6,6 +6,7 @@
 
 # Utilities
 Words ← (⊢-˜¬×+`)∘=⟜' '⊸⊔  # Split string on spaces
+Rand ← •rand.Range
 
 # 0
 ArrayLogic ← (>-<)⟜0
@@ -42,7 +43,7 @@ PerfectShuffle ← ⊢⊏˜·⍋∘⍒≠⥊0‿1˜
 ! "IAJBKCLDMENFOGPHQ" ≡ PerfectShuffle "ABCDEFGHIJKLMNOPQ"
 
 # 7
-_quicksort ← {Cmp←𝔽 ⋄ S←{p←𝕩Cmp˜𝕩⊏˜•Rand≠𝕩 ⋄ ∾1‿0‿1𝕩{S⍟𝕨𝕗/˜0𝕏p}¨<‿=‿>}⍟(1<≠)}
+_quicksort ← {Cmp←𝔽 ⋄ S←{p←𝕩Cmp˜𝕩⊏˜Rand≠𝕩 ⋄ ∾1‿0‿1𝕩{S⍟𝕨𝕗/˜0𝕏p}¨<‿=‿>}⍟(1<≠)}
 ! 1‿2‿2‿3‿5‿7‿9‿10‿10‿10‿11‿14‿16 ≡ -_quicksort 2‿2‿7‿10‿10‿11‿3‿10‿14‿5‿9‿1‿16
 ! {
   Cmp ← ≢◶0‿(-´∘⍋∾○<)¨
@@ -81,7 +82,7 @@ IntervalIndex ← 1-˜≠∘⊣(⊣↓⊢⍋⊸⊏+`∘>)⍋∘∾  # Or ⍋, of
 ! 0‿1‿0‿¯1‿4‿4 ≡ "Fi Jay John Morten Roger" IntervalIndex○Words "JD Jd Geoff Anna Scott Zeus"
 
 # 15
-CentralLimit ← { 41 ↑ /⁼ (5×↕40) ⍋ +˝ •Rand 𝕩⥊21 }
+CentralLimit ← { 41 ↑ /⁼ (5×↕40) ⍋ +˝ Rand 𝕩⥊21 }
 # 5‿8 ⥊ CentralLimit 10 1e3
 
 # 17
@@ -146,7 +147,7 @@ SymmetricArray ← ⍉⊸≡ ∧ 1⊸⍉⊸≡
 
 # 25
 NQueens ← {
-  Arr ← {>(⊑⊸⊏⟜𝕩∾1⊸⊑)¨/¬(↕𝕨)∊⎉1𝕩⥊∘+⎉1‿2(-⟜↕¯1⊑≢𝕩)×⌜¯1‿0‿1}
+  Arr ← {>(⊑⊸⊏⟜𝕩∾1⊸⊑)¨/○⥊⟜(↕≢)¬(↕𝕨)∊⎉1𝕩⥊∘+⎉1‿2(-⟜↕¯1⊑≢𝕩)×⌜¯1‿0‿1}
   𝕩 Arr⍟(𝕩-1) ≍˘↕𝕩
 }
 QueenCheck ← {
