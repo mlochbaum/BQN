@@ -186,7 +186,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hv←(hla+ha×1+«hc)+(ho×4+«3=hr)+hma×3×1-˜2⌊hr # Special name for position
   "Incorrect special name"_err_(HI) (0=hk)∧ht≠hv+⊑bI
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
-  hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha       # Header-derived role hr and immediacy ¬hx
+  hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
   "Invalid Undo header syntax"_err_(HI) hm<×ut
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hma>hk≠2
@@ -248,6 +248,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   at∾↩hj⋄ac←«⊸-(ak∾6¨hj)⌾(at⊸⊏)0¨𝕩          # Header assignment is 6 temporarily
   aa←×gac←g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac        # Broadcast ac to the entire target
   ac-↩3×ah←6=ac                             # Assignment is header; 6→3
+  nx⌈↩aa×1=no                               # Prevent assignment to 𝕨 if it's ·
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
   {"Can't return Nothing (·)"_err_(𝕩⊏⍋∘Rev) 2=fw⌈↩nf¬⊸×𝕩⊏nr} 1-˜0∾cc⊏rev
