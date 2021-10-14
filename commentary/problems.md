@@ -7,7 +7,7 @@ Every language has some issues that everyone can agree make programming harder. 
 I've omitted problems that are obviously addressed by speculated extensions. Of course adding A fixes the problem "doesn't have A". Problems that only exist in reference to some existing convention (e.g. unfamiliarity to APLers) are also left out, unless the convention manifests technically (Unicode support).
 
 ### Empty arrays lose type information
-A pretty fundamental problem with dynamically-typed array languages. Prototypes are intended to solve it, but they don't really. It doesn't help that the notion of type is fluid: elements of an array in one moment can be axis lengths in the next; did the numeric value go from not being type information to being type information? Inferred type might help here, particularly the ability of one part of the program to ask another part for type information during compilation. But that needs to be specified if programmers are going to rely on it, which sounds difficult.
+A pretty fundamental problem with dynamically-typed array languages: when computing something (say, a sum) that depends on all elements, if there are no elements then the structure of the result is indeterminate. Shape arithmetic means the shape of a cell is always known, except when using the Rank modifier so that every cell is computed independently. [Fills](../doc/fill.md) are BQN's solution for deeper structure, but they're incomplete. They store only types and not data, but operations like Reshape that use data to determine type are common enough to make this unreliable.
 
 ### Incoherent monad-dyad builtin pairs
 BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason (that is, both function valences match the symbol but they don't match with each other). I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved.
@@ -18,16 +18,16 @@ There's been a lot of work done on this. Still there, still a problem. On the ot
 ### Syntactic type erasure
 A programmer can call a modifier on either a syntactic function or subject, but there's no way to know within the modifier which syntax that operand had. Maybe this is a better design, but it doesn't feel quite right that `f˜` is `f`-Swap if `f` has a function value. The subject syntax suggests it should be Constant. Instead the Constant modifier `˙` has been added partially to mitigate this.
 
-### Control flow substitutes have awkward syntax
-At the moment BQN has no control structures, instead preferring modifiers, function recursion, and headers. When working with pure functions, these can be better than control structures. For more imperative programming they're a lot worse. For example, it's natural to have two arguments for small structures, but that becomes unreadable for larger ones. However, predefined functions acting on functions can cover a lot of ground for the imperative programmer; see [Control flow in BQN](../doc/control.md).
-
-One particular sore point with Repeat (`⍟`) and Choose (`◶`) is that the condition and action(s) always apply to the same set of arguments. Often you'd like them to apply to completely different things: this seems like the sort of thing that split compose `F⊸G⟜H` solved for trains, but here there's no such solution.
-
 ### Search function depth
-The simplest way to define a search function like Index Of is to require the left argument to be a list, and search for an element that matches the right argument. But this means you can only search for one element at a time, which is annoying and doesn't work for Progressive Index Of. So we instead treat the searched argument as a list of major cells. Then we decide to search for cells of the other argument that have the same rank as those cells, since only cells with the same rank can match. That's a little strange for Bins, where it still makes sense to compare cells of different ranks. Furthermore, the result of any search function is always an array. To search for a single element and get an plain number, you need something like `list⊸⊐⌾<elt`.
+The simplest way to define a search function like Index Of is to require `𝕨` to be a list, and search for an element that matches `𝕩`. But this means you can only search for one element at a time, which is annoying and doesn't work for Progressive Index Of. So we instead treat the searched argument as a list of major cells. Then we decide to search for cells of the other argument that have the same rank as those cells, since only cells with the same rank can match. That's a little strange for Bins, where it still makes sense to compare cells of different ranks. Furthermore, the result of any search function is always an array. To search for a single element and get an plain number, you need something like `list⊸⊐⌾<elt`.
 
 ### Right-to-left multi-line functions go upwards
-If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix here is to just say give your functions names and don't do this.
+If you include multiple multi-line functions in what would otherwise be a one-liner, the flow in each function goes top to bottom but the functions are executed bottom to top. I think the fix in BQN is to just say give your functions names and don't do this. But [left to right](ltr.md) programming beckons.
+
+### Control flow substitutes have awkward syntax
+At the moment BQN has no control structures, instead [preferring](../doc/control.md) headers, recursion, and modifiers. When working with pure functions, these can be better than control structures, but it doesn't fit an imperative style so well. With predicates, decision trees are okay but looping code is substantially worse than it is in imperative languages, particularly if tail recursion can't be relied on.
+
+One particular sore point with Repeat (`⍟`) and Choose (`◶`) is that the condition and action(s) always apply to the same set of arguments. Often you'd like them to apply to completely different things: this seems like the sort of thing that split compose `F⊸G⟜H` solved for trains, but here there's no such solution.
 
 ### Tacit and one-line functions are hard to debug
 This problem hasn't manifested yet as BQN has no debugger, but it's something to keep in mind. Traditional line-by-line debuggers don't work when the line is doing so much work. Something like J's dissect or some kind of hybrid would probably do better.
@@ -38,11 +38,11 @@ This includes index-of-last, and searching starting at a particular index, when 
 ### Subtraction, division, and span are backwards
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). The commonly-paired `⌊∘÷` and `|` have opposite orders for this reason. Not really fixable; too much precedent.
 
-### Nothing (`·`) interacts strangely with Before and After
-Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`). It's also a little strange that `v F˜·` is `·`, while `·F v` is `F v`.
-
 ### Can't access array ordering directly
 Only `⍋⍒` use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not *that* difficult: `⥊⊸⍋⌾<` is TAO `≤`).
+
+### Nothing (`·`) interacts strangely with Before and After
+Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`). It's also a little strange that `v F˜·` is `·`, while `·F v` is `F v`.
 
 ### Comparison tolerance
 Kind of necessary for practical programming, but how should it be invoked or controlled? A system variable like `⎕CT`? Per-primitive control? Both? Which primitives should use it?
@@ -53,9 +53,6 @@ Definitely | Maybe      | Definitely not
 
 ### No access to fast high-precision sum
 Fold has a specific order of application, which must be used for `` +` ``. But other orders can be both faster and more precise (in typical cases) by enabling greater parallelism. Generally ties into the question of providing precision control for a program: it could be fixed by a flag that enables BQN to optimize as long as the results will be at least as precise (relative to the same program in infinite precision) as the spec.
-
-### Assert has no way to compute the error message
-In the compiler, error messages could require expensive diagnostics, and in some cases the message includes parts that can only be computed if there's an error (for example, the index of the first failure). However, Assert (`!`) only takes a static error message, so you have to first check a condition, then compute the message, then call Assert with `0` as its right argument. Very ugly. This is generally going to be an issue for high-quality tools built in BQN, where giving the user good errors is a priority.
 
 ### High-rank array notation
 The proposed Dyalog array notation `[]` for high-rank arrays: it's the same as BQN's lists `⟨⟩` except it mixes at the end. This works visually because the bottom level—rows—is written with stranding. It also looks okay with BQN strands but clashes with BQN lists. At that point it becomes apparent that specifying whether something is a high-rank array at the top axes is kind of strange: shouldn't it be the lower axes saying to combine with higher ones?
@@ -74,17 +71,20 @@ Characters `⥊∾⟜⎉⚇˜` and double-struck letters are either missing from
 ### Choose and Repeat have order swapped
 In Choose, the selector goes on the left; in Repeat, the count goes on the right. Could be a strength in some contexts, since you can change Repeat-as-If to Choose if you don't like the ordering, but maybe a language that forces the programmer to make semantic decisions for syntactic reasons is not providing the greatest of services.
 
+### Group doesn't include trailing empty groups
+A length can now be specified either in an extra element in any rank-1 component of `𝕨`, or by overtaking, since the result's fill element is an empty group. However, it still seems like it would be pretty easy to end up with a length error when a program using Group encounters unexpected data. It's a fundamental safety-convenience tradeoff, though, because specifying a length has to take more code in the general case.
+
 ### Index Of privileges the first match
 It could be more sound to look at all matches, but using just the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: `≠∘⊣-1+⌽⊸⊐`.
 
 ### Glyphs that aren't great
-Blanket issue for glyphs that need work. Currently I find `⥊⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
+Blanket issue for unintuitive glyphs. Currently I find `⥊⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
 
 ### Can't mix define and modify in multiple assignment
 Say `a` is a pair and `h` isn't defined yet; how would you set `h` to the first element of `a` and change `a` to be just the second? `h‿a↩a` doesn't work because `h` isn't defined, so the best I have is `h←@⋄h‿a↩a`. A heavier assignment syntax wouldn't break down; BQN could allow `⟨h←,a⟩↩a` but I don't think this merits special syntax.
 
 ### Trains don't like monads
-If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing `⟜`. Largely solved with the "nothing" glyph `·`, which acts like J's Cap (`[:`) in a train, but still a minor frustration.
+If you have the normal mix of monads and dyads you'll need a lot of parentheses and might end up abusing `⟜`. Largely solved with the Nothing syntax `·`, which acts like J's Cap (`[:`) in a train, but still a minor frustration.
 
 ### Under/bind combination is awkward
 It's most common to use Under with dyadic structural functions in the form `…⌾(i⊸F)`, for example where `F` is one of `/` or `↑`. This is frustrating for two reasons: it requires parentheses, and it doesn't allow `i` to be computed tacitly. If there's no left argument then the modifier `{𝔽⌾(𝕨⊸𝔾)𝕩}` can be more useful, but it doesn't cover some useful cases such as mask `a ⊣⌾(u⊸/) b`.
@@ -94,9 +94,6 @@ The most natural ordering for polynomial coefficients and base representations i
 
 ### Inverse is not fully specified
 So it seems a bit strange to rely on it for core language features like `/⁼`. On the other hand, this is a good fit for `⋆⁼` since we are taking an arbitrary branch of a complex function that has many of them. I'm pretty sure it's impossible to solve the issue as stated but it might be possible to move to less hazardous constructs. Structural Under is a start.
-
-### Group doesn't include trailing empty groups
-A length can now be specified either in an extra element in any rank-1 component of `𝕨`, or by overtaking, since the result's fill element is an empty group. However, it still seems like it would be pretty easy to end up with a length error when a program using Group encounters unexpected data. It's a fundamental safety-convenience tradeoff, though, because specifying a length has to take more code in the general case.
 
 ### Named modifiers use way more space than primitive ones
 `F _m_ G` versus `F∘G`: the syntax is the same but these don't feel the same at all. This is the worst case, as with primitive operands, `+_m_÷` isn't as far from `+∘÷`. It means a style-conscious programmer has to adjust the way they write code depending on whether things are named, and makes named modifiers feel less integrated into the language. A mix of named modifiers with primitive modifiers or trains can also look inconsistent.
@@ -127,6 +124,9 @@ You have to scan for headers or double-struck names (and so does a compiler). A 
 ### No one right way to check if a value is an array
 The mathematical approach is `0<≡𝕩`, which can be slow without runtime support, while the efficient approach is `0=•Type𝕩`, which is ugly and uses a system function for something that has nothing at all to do with the system. These are minor flaws, but programmers shouldn't have to hesitate about which one they want to use.
 
+### Assert has no way to compute the error message
+In the compiler, error messages could require expensive diagnostics, and in some cases the message includes parts that can only be computed if there's an error (for example, the index of the first failure). However, Assert (`!`) only takes a static error message, so you have to first check a condition, then compute the message, then call Assert on that. Kind of awkward, but better than it used to be before one-argument Assert was changed to use `𝕩` for the message. The issue generally applies to high-quality tools built in BQN, where giving the user good errors is a priority.
+
 ### Each block body has its own label
 In a block with multiple bodies, the label (the self-name part of the header) refers to the entire block. However, there's no way to give only one label to the entire block. If you want to consistently use the same internal name, then you may have to write it many times. It's also a weird mismatch, conceptually.
 
@@ -139,7 +139,7 @@ Numbers and characters are subsets of a linear space with components "charactern
 Called dyadically, both functions shuffle cells of the right argument around, which is consistent with other selection-type functions. But the monadic case applies to what would be the left argument in the dyadic case.
 
 ### Hard to manipulate the result of a modifier
-Trains and compositions make it easy to work with the results of functions, in some sense. The same can't be said for modifiers: for example, in a non-immediate block modifier, the derived function is `𝕊`, but you can't apply `˜` to it. This seems to call for modifer trains but people who worked with early J are confident they're not worth it. Or were they just not designed right?
+Trains and compositions make it easy to work with the results of functions, in some sense. The same can't be said for modifiers: for example, in a non-immediate block modifier, the derived function is `𝕊`, but you can't apply `˜` to it. This seems to call for modifier trains but people who worked with early J were confident they're not worth it. Except they just added them back. Who knows.
 
 ### Monadic `⊑` versus `>`
 Both pull out elements and reduce the depth. But they face in opposite directions. However, neither should be thought of as the inverse to `<`: that's `<⁼`. And `>` can't reduce the depth to 0, so it's pretty different from `⊑` or `<⁼`.
