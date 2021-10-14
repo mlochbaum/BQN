@@ -32,24 +32,6 @@
 <p>Only <code><span class='Function'>⍋⍒</span></code> use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not <em>that</em> difficult: <code><span class='Function'>⥊</span><span class='Modifier2'>⊸</span><span class='Function'>⍋</span><span class='Modifier2'>⌾</span><span class='Function'>&lt;</span></code> is TAO <code><span class='Function'>≤</span></code>).</p>
 <h3 id="nothing--interacts-strangely-with-before-and-after"><a class="header" href="#nothing--interacts-strangely-with-before-and-after">Nothing (<code><span class='Nothing'>·</span></code>) interacts strangely with Before and After</a></h3>
 <p>Since <code><span class='Value'>𝕨</span><span class='Function'>F</span><span class='Modifier2'>⊸</span><span class='Function'>G</span><span class='Value'>𝕩</span></code> is <code><span class='Paren'>(</span><span class='Function'>F</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Function'>G</span><span class='Value'>𝕩</span></code> and <code><span class='Value'>𝕨</span><span class='Function'>F</span><span class='Modifier2'>⟜</span><span class='Function'>G</span><span class='Value'>𝕩</span></code> is <code><span class='Value'>𝕨</span><span class='Function'>F</span> <span class='Function'>G</span><span class='Value'>𝕩</span></code> in the dyadic case, we might expect these to devolve to <code><span class='Function'>G</span><span class='Value'>𝕩</span></code> and <code><span class='Function'>F</span> <span class='Function'>G</span><span class='Value'>𝕩</span></code> when <code><span class='Value'>𝕨</span></code> is not present. Not so: instead <code><span class='Value'>𝕩</span></code> is substituted for the missing <code><span class='Value'>𝕨</span></code>. And Before and After are also the main places where a programmer might try to use <code><span class='Value'>𝕨</span></code> as an operand, which doesn't work either (the right way is the train <code><span class='Value'>𝕨</span><span class='Function'>F⊢</span></code>). It's also a little strange that <code><span class='Value'>v</span> <span class='Function'>F</span><span class='Modifier'>˜</span><span class='Nothing'>·</span></code> is <code><span class='Nothing'>·</span></code>, while <code><span class='Nothing'>·</span><span class='Function'>F</span> <span class='Value'>v</span></code> is <code><span class='Function'>F</span> <span class='Value'>v</span></code>.</p>
-<h3 id="comparison-tolerance"><a class="header" href="#comparison-tolerance">Comparison tolerance</a></h3>
-<p>Kind of necessary for practical programming, but how should it be invoked or controlled? A system variable like <code><span class='Value'>⎕</span><span class='Function'>CT</span></code>? Per-primitive control? Both? Which primitives should use it?</p>
-<table>
-<thead>
-<tr>
-<th>Definitely</th>
-<th>Maybe</th>
-<th>Definitely not</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code><span class='Function'>=≠≤≥&lt;&gt;</span></code></td>
-<td><code><span class='Function'>≡≢⊐⊒∊⍷|</span></code></td>
-<td><code><span class='Function'>⍋⍒</span></code></td>
-</tr>
-</tbody>
-</table>
 <h3 id="no-access-to-fast-high-precision-sum"><a class="header" href="#no-access-to-fast-high-precision-sum">No access to fast high-precision sum</a></h3>
 <p>Fold has a specific order of application, which must be used for <code><span class='Function'>+</span><span class='Modifier'>`</span></code>. But other orders can be both faster and more precise (in typical cases) by enabling greater parallelism. Generally ties into the question of providing precision control for a program: it could be fixed by a flag that enables BQN to optimize as long as the results will be at least as precise (relative to the same program in infinite precision) as the spec.</p>
 <h3 id="high-rank-array-notation"><a class="header" href="#high-rank-array-notation">High-rank array notation</a></h3>
@@ -65,6 +47,8 @@
 <p>In Choose, the selector goes on the left; in Repeat, the count goes on the right. Could be a strength in some contexts, since you can change Repeat-as-If to Choose if you don't like the ordering, but maybe a language that forces the programmer to make semantic decisions for syntactic reasons is not providing the greatest of services.</p>
 <h3 id="group-doesnt-include-trailing-empty-groups"><a class="header" href="#group-doesnt-include-trailing-empty-groups">Group doesn't include trailing empty groups</a></h3>
 <p>A length can now be specified either in an extra element in any rank-1 component of <code><span class='Value'>𝕨</span></code>, or by overtaking, since the result's fill element is an empty group. However, it still seems like it would be pretty easy to end up with a length error when a program using Group encounters unexpected data. It's a fundamental safety-convenience tradeoff, though, because specifying a length has to take more code in the general case.</p>
+<h3 id="tolerant-comparison"><a class="header" href="#tolerant-comparison">Tolerant comparison</a></h3>
+<p>APL has it and BQN doesn't; after some experience it seems this causes few problems, and the extra effort required for the algorithms that do need it is negligible (anyway, it's better to be aware when your code relies on imprecise equality). APL and J also tolerate inexact indices and lengths, which is also something that could be supported.</p>
 <h3 id="index-of-privileges-the-first-match"><a class="header" href="#index-of-privileges-the-first-match">Index Of privileges the first match</a></h3>
 <p>It could be more sound to look at all matches, but using just the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: <code><span class='Function'>≠</span><span class='Modifier2'>∘</span><span class='Function'>⊣-</span><span class='Number'>1</span><span class='Function'>+⌽</span><span class='Modifier2'>⊸</span><span class='Function'>⊐</span></code>.</p>
 <h3 id="glyphs-that-arent-great"><a class="header" href="#glyphs-that-arent-great">Glyphs that aren't great</a></h3>

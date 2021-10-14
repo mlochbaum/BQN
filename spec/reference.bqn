@@ -2,8 +2,6 @@
 # limited initial functionality. Implementations are designed to be
 # simple and not fast.
 
-# Not yet included: complex numbers or comparison tolerance.
-
 # In some cases an operation is defined with limited functionality at
 # first and later expanded. For convenience, rather than renaming these
 # limited versions, every primitive use refers to the most recent
