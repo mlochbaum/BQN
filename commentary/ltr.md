@@ -8,7 +8,16 @@ I'm still of (at least) two minds about a left-to-right APL, in that I'm fairly 
 
 I've thought about adding some sort of pipe notation (the `$` character is open) to BQN, but I'm currently against it. It would be complicated and hard to design, and at the end of the day not all that much better than splitting a statement into a sequence of assignments.
 
-## Considerations
+## Other attempts
+
+As for programming precedent, stack-based languages such as Forth go from left to right. In Java-style object-oriented programming, methods go from left to right. This style of "method chaining" is particularly prevalent in Javascript.
+
+- There's an [APL Wiki category](https://aplwiki.com/wiki/Category:Left_to_right) that gathers some left-to-right languages. [Jelly](https://github.com/DennisMitchell/jellylanguage) is likely the most widely used of these, but being a code golfing language it's explicitly designed for brevity first and usability second.
+- [xs](https://github.com/smabie/xs) is a concatenative (or stack-based) array language not yet on APL Wiki.
+- Milan Lajtoš is working on the Fluent language for his "new kind of paper". Its LtR nature is mentioned in [this post](https://mlajtos.mu/posts/new-kind-of-paper-2).
+- Adám Brudzewsky and others did some investigation into LtR APL specifically in the [LPA/NQB thread](https://topanswers.xyz/apl?q=1660).
+
+## General considerations
 
 English text is read left to right. This in itself is not decisive in either direction: many contend that the way to read a function is first to read the function, then its argument. Although I usually read the other way, I do find that order to be useful sometimes.
 
@@ -22,13 +31,12 @@ Although mathematical functions are usually evaluated right-to-left, infix opera
 - Function composition is ordered right-to-left.
 - Arrows indicating function types and in diagrams are written left-to-right.
 
-See page 147 of [this report](http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-169.pdf) for an interesting discussion on ordering in mathematics: function notation and diagrams.
+See page 147 of [this report](http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-169.pdf) for a more thorough discussion of how these three contexts interact.
 
-As for programming precedent, stack-based languages such as Forth go from left to right. In Java-style object-oriented programming, methods go from left to right. This style of "method chaining" is particularly prevalent in Javascript.
+## In APL
 
-## Other attempts
+The most pressing problem that LtR ordering would solve is that a sequence of expressions (separated by `,⋄` or newlines) runs in source order, while function applications within an expression go the other way. List notation makes it worse, and with large block functions the order's nearly impossible to follow: instead each one should be named, and then they can be assembled into expressions later.
 
-- There's an [APL Wiki category](https://aplwiki.com/wiki/Category:Left_to_right) that gathers some left-to-right languages. [Jelly](https://github.com/DennisMitchell/jellylanguage) is likely the most widely used of these, but being a code golfing language it's explicitly designed for brevity first and usability second.
-- [xs](https://github.com/smabie/xs) is a concatenative (or stack-based) array language not yet on APL Wiki.
-- Milan Lajtoš is working on the Fluent language for his "new kind of paper". It's left-to-right nature is mentioned in [this post](https://mlajtos.mu/posts/new-kind-of-paper-2).
-- Adám Brudzewsky and others did some investigation into LtR APL specifically in the [LPA/NQB thread](https://topanswers.xyz/apl?q=1660).
+But LtR introduces a similar problem with assignment: the name really needs to be on the left to allow easily scanning definitions, but this conflicts with the evaluation order. Placing the name on the left would also break inline assignment (where an intermediate result is assigned and execution continues), although many people consider this an anti-pattern anyway.
+
+While APL functions run right to left, *modifiers* run left to right. This is harder to learn but it's possible the opposing directions are better for expressivity. On the other hand, if the directions are aligned then it makes sense to unify functions and modifiers. The thing that prevents it in BQN is that a 1-argument function has only a right argument while a 1-modifier uses a left operand: to unify them, `𝕗` would have to correspond to `𝕩` and `𝕘` to `𝕨`, which I consider dangerously confusing.
