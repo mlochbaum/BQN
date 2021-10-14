@@ -27,7 +27,7 @@ Starting with the easiest rules, values with different types are never equal to 
 
         ⟨'a', +, 3⟩ = ⟨-⟜», '+', 3˙⟩
 
-Two characters are equal when they have the same code point. Numeric equality depends on the number system in use, but probably works about how you expect. If you're coming from APL, note that current BQN implementations don't employ comparison tolerance. To see if two floats are roughly equal you'll need to write a tolerant comparison yourself, but how often do you really need to do this?
+Two characters are equal when they have the same code point. Numeric equality depends on the number system in use, but probably works about how you expect. If you're coming from APL, note that BQN doesn't use comparison tolerance. To see if two floats are roughly equal you'll need to write a tolerant comparison yourself, but how often do you really need to do this?
 
         'x' = "wxyz"
 

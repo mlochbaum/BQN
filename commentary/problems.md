@@ -44,13 +44,6 @@ Only `⍋⍒` use array ordering rather than just array equality or numeric orde
 ### Nothing (`·`) interacts strangely with Before and After
 Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`). It's also a little strange that `v F˜·` is `·`, while `·F v` is `F v`.
 
-### Comparison tolerance
-Kind of necessary for practical programming, but how should it be invoked or controlled? A system variable like `⎕CT`? Per-primitive control? Both? Which primitives should use it?
-
-Definitely | Maybe      | Definitely not
------------|------------|---------------
-`=≠≤≥<>`   | `≡≢⊐⊒∊⍷\|` | `⍋⍒`
-
 ### No access to fast high-precision sum
 Fold has a specific order of application, which must be used for `` +` ``. But other orders can be both faster and more precise (in typical cases) by enabling greater parallelism. Generally ties into the question of providing precision control for a program: it could be fixed by a flag that enables BQN to optimize as long as the results will be at least as precise (relative to the same program in infinite precision) as the spec.
 
@@ -73,6 +66,9 @@ In Choose, the selector goes on the left; in Repeat, the count goes on the right
 
 ### Group doesn't include trailing empty groups
 A length can now be specified either in an extra element in any rank-1 component of `𝕨`, or by overtaking, since the result's fill element is an empty group. However, it still seems like it would be pretty easy to end up with a length error when a program using Group encounters unexpected data. It's a fundamental safety-convenience tradeoff, though, because specifying a length has to take more code in the general case.
+
+### Tolerant comparison
+APL has it and BQN doesn't; after some experience it seems this causes few problems, and the extra effort required for the algorithms that do need it is negligible (anyway, it's better to be aware when your code relies on imprecise equality). APL and J also tolerate inexact indices and lengths, which is also something that could be supported.
 
 ### Index Of privileges the first match
 It could be more sound to look at all matches, but using just the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: `≠∘⊣-1+⌽⊸⊐`.

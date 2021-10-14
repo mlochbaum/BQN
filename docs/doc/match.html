@@ -30,7 +30,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oJ2EnLCArLCAz4p+pID0g4p+oLeKfnMK7LCAnKycsIDPLmeKfqQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='String'>'a'</span><span class='Separator'>,</span> <span class='Function'>+</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span><span class='Separator'>,</span> <span class='String'>'+'</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Modifier'>˙</span><span class='Bracket'>⟩</span>
 ⟨ 0 0 0 ⟩
 </pre>
-<p>Two characters are equal when they have the same code point. Numeric equality depends on the number system in use, but probably works about how you expect. If you're coming from APL, note that current BQN implementations don't employ comparison tolerance. To see if two floats are roughly equal you'll need to write a tolerant comparison yourself, but how often do you really need to do this?</p>
+<p>Two characters are equal when they have the same code point. Numeric equality depends on the number system in use, but probably works about how you expect. If you're coming from APL, note that BQN doesn't use comparison tolerance. To see if two floats are roughly equal you'll need to write a tolerant comparison yourself, but how often do you really need to do this?</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J3gnID0gInd4eXoiCgoxLjI1ID0gMSArIDAuMjU=">↗️</a><pre>    <span class='String'>'x'</span> <span class='Function'>=</span> <span class='String'>&quot;wxyz&quot;</span>
 ⟨ 0 1 0 0 ⟩
 
@@ -57,7 +57,7 @@
 <h3 id="block-equality"><a class="header" href="#block-equality">Block equality</a></h3>
 <p>The final point above about block instances is subtler. An instance of a block function or modifier is mutable, meaning that its behavior can change over the course of a program. Consider the following two functions:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RuKAv0cg4oaQIHsgYeKGkDEwIOKLhCB7YSvwnZWpfeKAv3th4oap8J2VqX0gfQoKRiA1ICAgIyBPbmUgcmVzdWx0CkcgOApGIDUgICAjIEFub3RoZXIgcmVzdWx04oCUdGhlIGRlZmluaXRpb24gb2YgaW5zYW5pdHkh">↗️</a><pre>    <span class='Function'>F</span><span class='Ligature'>‿</span><span class='Function'>G</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>a</span><span class='Gets'>←</span><span class='Number'>10</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span><span class='Value'>a</span><span class='Function'>+</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Ligature'>‿</span><span class='Brace'>{</span><span class='Value'>a</span><span class='Gets'>↩</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Brace'>}</span>
-⟨ *function* *function* ⟩
+⟨ (function block) (function block) ⟩
 
     <span class='Function'>F</span> <span class='Number'>5</span>   <span class='Comment'># One result
 </span>15
