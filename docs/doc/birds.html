@@ -1,0 +1,93 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN for birdwatchers</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
+<h1 id="bqn-for-birdwatchers"><a class="header" href="#bqn-for-birdwatchers">BQN for birdwatchers</a></h1>
+<p>Some people consider it reasonable to name <a href="primitive.html#modifiers">combinators</a> after types of birds. <a href="https://www.angelfire.com/tx4/cus/combinator/birds.html">Here's</a> one compendium of such names, albeit still missing the Phoenix or <code><span class='Function'>S</span><span class='String'>'</span></code> combinator <code><span class='Value'>labcd.a</span><span class='Paren'>(</span><span class='Value'>bd</span><span class='Paren'>)(</span><span class='Value'>cd</span><span class='Paren'>)</span></code>. There is something wrong with these people. Some of these birds are not even real. &quot;Quixotic bird&quot;? Have you not heard of a quail? Nonetheless, I don't judge such afflicted souls (certainly not publicly), and have provided this translation table to explain BQN in terms they can understand.</p>
+<table>
+<thead>
+<tr>
+<th align="center">BQN</th>
+<th>Bird</th>
+<th>1</th>
+<th>Bird</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code><span class='Function'>⊣</span></code></td>
+<td>Identity</td>
+<td><code><span class='Function'>I</span></code></td>
+<td>Kestrel</td>
+<td><code><span class='Function'>K</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Function'>⊢</span></code></td>
+<td>Identity</td>
+<td><code><span class='Function'>I</span></code></td>
+<td></td>
+<td><code><span class='Function'>KI</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Modifier2'>∘</span></code></td>
+<td>Bluebird</td>
+<td><code><span class='Function'>B</span></code></td>
+<td>Blackbird</td>
+<td><code><span class='Function'>B</span><span class='Value'>₁</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Modifier2'>○</span></code></td>
+<td>Bluebird</td>
+<td><code><span class='Function'>B</span></code></td>
+<td>~Dovekies</td>
+<td><code><span class='Function'>D</span><span class='Value'>₂</span></code>-like: <code><span class='Value'>labcd.a</span><span class='Paren'>(</span><span class='Value'>bc</span><span class='Paren'>)(</span><span class='Value'>bd</span><span class='Paren'>)</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Modifier'>˙</span></code></td>
+<td>Kestrel</td>
+<td><code><span class='Function'>K</span></code></td>
+<td></td>
+<td><code><span class='Function'>KK</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Modifier2'>⊸</span></code></td>
+<td></td>
+<td><code><span class='Function'>R</span><span class='Value'>*</span><span class='Function'>S</span></code></td>
+<td>Queer</td>
+<td><code><span class='Function'>Q</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Modifier2'>⟜</span></code></td>
+<td>Starling</td>
+<td><code><span class='Function'>S</span></code></td>
+<td>~Dove</td>
+<td><code><span class='Function'>D</span></code>-like: <code><span class='Value'>labcd.ac</span><span class='Paren'>(</span><span class='Value'>bd</span><span class='Paren'>)</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Modifier'>˜</span></code></td>
+<td>Warbler</td>
+<td><code><span class='Function'>W</span></code></td>
+<td>Cardinal</td>
+<td><code><span class='Function'>C</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Value'>k</span> <span class='Function'>G</span> <span class='Function'>H</span></code></td>
+<td>Dove</td>
+<td><code><span class='Function'>D</span></code></td>
+<td>Eagle</td>
+<td><code><span class='Function'>E</span></code></td>
+</tr>
+<tr>
+<td align="center"><code><span class='Function'>F</span> <span class='Function'>G</span> <span class='Function'>H</span></code></td>
+<td>Phoenix</td>
+<td><code><span class='Function'>S</span><span class='String'>'</span></code></td>
+<td>~Bald Eagle</td>
+<td><code><span class='Value'>Ê</span></code>-like: <code><span class='Value'>labcde.a</span><span class='Paren'>(</span><span class='Value'>bde</span><span class='Paren'>)(</span><span class='Value'>cde</span><span class='Paren'>)</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Lambda calculus doesn't have BQN's polymorphism on one or two arguments, so each BQN combinator corresponds to two lambda calculus forms depending on the number of arguments, giving the two columns of birds above.</p>
+<p>Inputs are mapped to lambda calculus arguments according to the ordering <code><span class='Function'>𝔽𝔾</span><span class='Value'>𝕨𝕩</span></code>, and <code><span class='Function'>GFH</span></code> for a 3-train <code><span class='Function'>F</span> <span class='Function'>G</span> <span class='Function'>H</span></code>. For example, when I write that the combination <code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier'>˜</span> <span class='Value'>𝕩</span></code> corresponds to a call of <code><span class='Function'>C</span></code> or <code><span class='Value'>labc.acb</span></code>, <code><span class='Value'>a</span></code> is <code><span class='Function'>𝔽</span></code> and <code><span class='Value'>bc</span></code> are <code><span class='Value'>𝕨𝕩</span></code>.</p>
