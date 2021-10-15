@@ -2,14 +2,14 @@
 
 # BQN for birdwatchers
 
-Some people consider it reasonable to name [combinators](primitive.md#modifiers) after types of birds. [Here's](https://www.angelfire.com/tx4/cus/combinator/birds.html) one compendium of such names, albeit still missing the Phoenix or `S'` combinator `labcd.a(bd)(cd)`. There is something wrong with these people. Some of these birds are not even real. "Quixotic bird"? Have you not heard of a quail? Nonetheless, I don't judge such afflicted souls (certainly not publicly), and have provided this translation table to explain BQN in terms they can understand.
+Some people consider it reasonable to name [combinators](primitive.md#modifiers) after types of birds. [Here's](https://www.angelfire.com/tx4/cus/combinator/birds.html) one compendium of such names, albeit still missing the Phoenix or `S'` combinator `labcd.a(bd)(cd)` ([this one](https://hackage.haskell.org/package/data-aviary-0.4.0/docs/Data-Aviary-Birds.html) has more). There is something wrong with these people. Some of these birds are not even real. "Quixotic bird"? Have you not heard of a quail? Nonetheless, I don't judge such afflicted souls (certainly not publicly), and have provided this translation table to explain BQN in terms they can understand.
 
 | BQN     | Bird      |  1    | Bird        |  2
 |:-------:|-----------|-------|-------------|---------
 | `⊣`     | Identity  | `I`   | Kestrel     | `K`
 | `⊢`     | Identity  | `I`   |             | `KI`
 | `∘`     | Bluebird  | `B`   | Blackbird   | `B₁`
-| `○`     | Bluebird  | `B`   | ~Dovekies   | `D₂`-like: `labcd.a(bc)(bd)`
+| `○`     | Bluebird  | `B`   | Psi?        | `D₂`-like: `labcd.a(bc)(bd)`
 | `˙`     | Kestrel   | `K`   |             | `KK`
 | `⊸`     |           | `R*S` | Queer       | `Q`
 | `⟜`     | Starling  | `S`   | ~Dove       | `D`-like: `labcd.ac(bd)`
