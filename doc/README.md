@@ -14,6 +14,7 @@ References:
 - [Glossary](glossary.md)
 - [BQN-Dyalog dictionary](fromDyalog.md)
 - [BQN-J dictionary](fromJ.md)
+- [BQN as combinatory logic](birds.md)
 
 Concepts:
 - [Context-free grammar](context.md)
