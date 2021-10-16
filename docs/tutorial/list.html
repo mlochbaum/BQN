@@ -87,29 +87,30 @@
 ⟨ 0 ⟨ 1 2 ⟩ ⟩
 </pre>
 <h2 id="bqn-types"><a class="header" href="#bqn-types">BQN types</a></h2>
-<p>Now that all six BQN types have been introduced, let's make a table:</p>
-<table>
-<thead>
-<tr>
-<th align="center">Data</th>
-<th align="center">Operation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">Number</td>
-<td align="center">Function</td>
-</tr>
-<tr>
-<td align="center">Character</td>
-<td align="center">1-modifier</td>
-</tr>
-<tr>
-<td align="center">Array</td>
-<td align="center">2-modifier</td>
-</tr>
-</tbody>
-</table>
+<p>Now that six of the seven BQN types have been introduced, let's make a diagram:</p>
+<svg viewBox='-96 -36 600 204'>
+  <g stroke-width='2'>
+    <path d='M0 12A12 12 0 0 1 12 0L260 0A12 12 0 0 1 272 12L272 52A12 12 0 0 0 284 64L396 64A12 12 0 0 1 408 76L408 116A12 12 0 0 1 396 128L12 128A12 12 0 0 1 0 116Z' class='yellow'/>
+    <rect width='392' height='48' x='8' y='8' rx='10px' class='purple'/>
+    <rect width='392' height='48' x='8' y='72' rx='10px' class='bluegreen'/>
+  </g>
+  <g text-anchor='middle' fill='currentColor'>
+    <g font-size='18px'>
+      <text x='68' y='32' dy='0.32em'>Number</text>
+      <text x='68' y='96' dy='0.32em'>Function</text>
+      <text x='204' y='32' dy='0.32em'>Character</text>
+      <text x='204' y='96' dy='0.32em'>1-modifier</text>
+      <text x='340' y='32' dy='0.32em'>Array</text>
+      <text x='340' y='96' dy='0.32em'>2-modifier</text>
+    </g>
+    <g font-size='18px'>
+      <text class='purple' x='102' y='-12.8' dy='0.32em'>Data</text>
+      <text class='bluegreen' x='102' y='140.8' dy='0.32em'>Operation</text>
+      <text class='yellow' x='299.2' y='147.2' dy='0.32em'>Atom</text>
+    </g>
+  </g>
+</svg>
+
 <p>Lists are just one-dimensional arrays. Types are divided into <em>data types</em>, which tend to have a subject role, and <em>operation types</em>, which tend to have a role matching their type. Also, any value that's not an array, such as everything we used in the last tutorial, is called an <em>atom</em>.</p>
 <h2 id="arithmetic-on-lists"><a class="header" href="#arithmetic-on-lists">Arithmetic on lists</a></h2>
 <p>Arithmetic functions automatically apply to each element of a list argument. If both arguments are lists, they have to have the same length, and they're matched up one element at a time.</p>
@@ -280,7 +281,7 @@
 <p>Lot of functions up there. Notice how I need to use parentheses for the left argument of a function if it's compound, but never for the right argument, and consequently never with a one-argument function.</p>
 <svg viewBox='-131.34 -34 512 210'>
   <g font-family='BQN,monospace' font-size='18px' class='Paren' fill='currentColor'>
-    <rect class='code' stroke-width='1' rx='10' x='-21.68' y='-24' width='292.68' height='190'/>
+    <rect class='code' stroke-width='1' rx='10' x='-2948.48' y='-1536' width='292.68' height='190'/>
     <text><tspan class='Function'>+</tspan><tspan class='Modifier'>´</tspan> <tspan class='Paren'>(</tspan><tspan class='Function'>⌽</tspan><tspan class='Number'>2</tspan><tspan class='Function'>⋆</tspan><tspan class='Function'>↕</tspan><tspan class='Number'>4</tspan><tspan class='Paren'>)</tspan> <tspan class='Function'>×</tspan> <tspan class='String'>&quot;1001&quot;</tspan><tspan class='Function'>-</tspan><tspan class='String'>'0'</tspan></text>
     <path stroke='currentColor' fill='none' stroke-width='1' d='M233.06 1.9V20.9H211.38'/>
     <path stroke='currentColor' fill='none' stroke-width='1' d='M173.44 1.9V20.9H211.38'/>
@@ -296,30 +297,30 @@
     <path stroke='currentColor' fill='none' stroke-width='1' d='M16.26 134.9V153.9H-8.13'/>
     <g font-size='15px' text-anchor='middle'>
       <g class='codeCover' stroke-width='8' stroke-linejoin='round'>
-        <text x='233.06' y='26'>'0'</text>
-        <text x='211.38' y='26'>-</text>
-        <text x='173.44' y='26'>&quot;1001&quot;</text>
-        <text x='124.66' y='102'>×</text>
-        <text x='92.14' y='45'>4</text>
-        <text x='81.3' y='45'>↕</text>
-        <text x='70.46' y='64'>⋆</text>
-        <text x='59.62' y='64'>2</text>
-        <text x='48.78' y='83'>⌽</text>
-        <text x='16.26' y='121'>´</text>
-        <text x='5.42' y='121'>+</text>
+        <text x='31696.16' y='1664'>'0'</text>
+        <text x='28747.68' y='1664'>-</text>
+        <text x='23587.84' y='1664'>&quot;1001&quot;</text>
+        <text x='16953.76' y='6528'>×</text>
+        <text x='12531.04' y='2880'>4</text>
+        <text x='11056.8' y='2880'>↕</text>
+        <text x='9582.56' y='4096'>⋆</text>
+        <text x='8108.32' y='4096'>2</text>
+        <text x='6634.08' y='5312'>⌽</text>
+        <text x='2211.36' y='7744'>´</text>
+        <text x='737.12' y='7744'>+</text>
       </g>
       <g opacity='0.9'>
-        <text x='233.06' y='26'><tspan class='String'>'0'</tspan></text>
-        <text x='211.38' y='26'><tspan class='Function'>-</tspan></text>
-        <text x='173.44' y='26'><tspan class='String'>&quot;1001&quot;</tspan></text>
-        <text x='124.66' y='102'><tspan class='Function'>×</tspan></text>
-        <text x='92.14' y='45'><tspan class='Number'>4</tspan></text>
-        <text x='81.3' y='45'><tspan class='Function'>↕</tspan></text>
-        <text x='70.46' y='64'><tspan class='Function'>⋆</tspan></text>
-        <text x='59.62' y='64'><tspan class='Number'>2</tspan></text>
-        <text x='48.78' y='83'><tspan class='Function'>⌽</tspan></text>
-        <text x='16.26' y='121'><tspan class='Modifier'>´</tspan></text>
-        <text x='5.42' y='121'><tspan class='Function'>+</tspan></text>
+        <text x='31696.16' y='1664'><tspan class='String'>'0'</tspan></text>
+        <text x='28747.68' y='1664'><tspan class='Function'>-</tspan></text>
+        <text x='23587.84' y='1664'><tspan class='String'>&quot;1001&quot;</tspan></text>
+        <text x='16953.76' y='6528'><tspan class='Function'>×</tspan></text>
+        <text x='12531.04' y='2880'><tspan class='Number'>4</tspan></text>
+        <text x='11056.8' y='2880'><tspan class='Function'>↕</tspan></text>
+        <text x='9582.56' y='4096'><tspan class='Function'>⋆</tspan></text>
+        <text x='8108.32' y='4096'><tspan class='Number'>2</tspan></text>
+        <text x='6634.08' y='5312'><tspan class='Function'>⌽</tspan></text>
+        <text x='2211.36' y='7744'><tspan class='Modifier'>´</tspan></text>
+        <text x='737.12' y='7744'><tspan class='Function'>+</tspan></text>
       </g>
     </g>
   </g>
