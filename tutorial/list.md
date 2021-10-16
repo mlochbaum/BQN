@@ -56,13 +56,37 @@ An individual ligature part of BQN syntax, not a value, and it doesn't do someth
 
 ## BQN types
 
-Now that all six BQN types have been introduced, let's make a table:
+Now that six of the seven BQN types have been introduced, let's make a diagram:
 
-Data      | Operation
-:--------:|:---------:
-Number    | Function
-Character | 1-modifier
-Array     | 2-modifier
+<!--GEN
+types ← ⍉"Number"‿"Character"‿"Array"≍"Function"‿"1-modifier"‿"2-modifier"
+sh ← ≢ types
+p ← 96‿38
+dim ← (2×p) + sh × d1 ← 136‿64
+rp ← 8÷d1
+Pos ↩ Pos d1⊸×
+Size ← "width"‿"height" ≍˘ ·FmtNum d1×⊢
+cl ← {"class"‿𝕩}¨ "purple"‿"bluegreen"‿"yellow"
+
+TP ← "text" Attr "dy"‿"0.32em"∾˜Pos⊘(∾⟜Pos)
+ts← (≍⌜´0.5+↕¨sh) TP⊸Enc¨ types
+l ← (cl TP¨ (0.75≍¨1(-≍+)1.2)∾<2.2‿2.3) Enc¨ "Data"‿"Operation"‿"Atom"
+RD← (Size ⟨⊑sh,1⟩-2×rp)∾Pos
+r ← (2↑cl) {"rect" Elt 𝕩∾"rx"‿"10px"≍𝕨}⟜RD¨ 0(rp+≍)¨↕1⊑sh
+
+Round ← {
+  v ← (𝕨⊸×÷+´⌾(×˜))¨ ¯1⊸⌽⊸- 𝕩
+  or← 0< v +´∘×⟜(⌽-⌾⊑)¨ 1⌽v
+  "Z"∾˜ 'M'⌾⊑ ∾ ⥊ (('L'∾Fmt)¨ v+𝕩) ≍˘ or ('A'∾·Fmt(𝕨‿𝕨∾0‿0)∾∾)¨ (1⌽-v)+𝕩
+}
+a ← "path" Elt >⟨"d"‿(12 Round d1⊸×¨ ⥊ ((⊢≍˘1⊸⌽) 0‿2‿3) ≍¨ ↕3),¯1⊑cl⟩
+
+FS ← {𝕩 Enc˜ "g"Attr⟨"font-size",(Fmt𝕨)∾"px"⟩}
+((0‿2-p)∾dim) SVG ⟨
+  "g stroke-width='2'" Enc a‿r
+  "g text-anchor='middle' fill='currentColor'" Enc 18‿18 FS¨ ts‿l
+⟩
+-->
 
 Lists are just one-dimensional arrays. Types are divided into *data types*, which tend to have a subject role, and *operation types*, which tend to have a role matching their type. Also, any value that's not an array, such as everything we used in the last tutorial, is called an *atom*.
 
