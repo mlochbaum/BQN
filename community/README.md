@@ -20,6 +20,7 @@ And also:
 
 - Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [compact everything](https://xj-ix.luxe/wiki/bqn/bqn.txt), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
 - Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs.
+- Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh?tab=notebooks) based on BQN.
 - [BQN fan art](fanart.md)
 
 ## Can I help out?
