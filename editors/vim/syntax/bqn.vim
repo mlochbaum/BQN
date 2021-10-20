@@ -16,7 +16,7 @@ syn match bqnfun "[𝔽𝔾𝕎𝕏𝕊+\-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥�
 syn match bqnsub "[𝕗𝕘𝕨𝕩𝕤]"
 syn match bqnnot "·"
 syn match bqnnul "@"
-syn match bqnnum "\v\c¯?((\d[\d_]*\.)?\d[\d_]*(e¯?\d[\d_]*)?|π|∞)(i¯?((\d[\d_]*\.)?\d[\d_]*(e¯?\d[\d_]*)?|π|∞))?"
+syn match bqnnum "\v\c%(¯_*)?%((\d[\d_]*(\.\d[\d_]*)?|π_*)%(e_*(¯_*)?\d[\d_]*)?|∞_*)(i_*%(¯_*)?%((\d[\d_]*(\.\d[\d_]*)?|π_*)%(e_*(¯_*)?\d[\d_]*)?|∞_*))?"
 syn match bqnsid "\(•\|•\?[a-z][A-Z_a-z0-9π∞¯]*\|𝕣\)"
 syn match bqnfid "•\?[A-Z][A-Z_a-z0-9π∞¯]*"
 syn match bqn1id "\(•\?_[A-Za-z][A-Z_a-z0-9π∞¯]*\|_𝕣\)"
