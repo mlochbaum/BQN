@@ -77,6 +77,7 @@
 <Multi_key> <backslash> <comma> : "∾"
 <Multi_key> <backslash> <period> : "≍"
 <Multi_key> <backslash> <slash> : "≠"
+<Multi_key> <backslash> <Z> : "⋈"
 <Multi_key> <backslash> <X> : "𝕏"
 <Multi_key> <backslash> <V> : "⍒"
 <Multi_key> <backslash> <B> : "⌈"
