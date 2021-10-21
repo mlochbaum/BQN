@@ -55,6 +55,7 @@
 ⥊ Deshape ; Reshape
 ∾ Join ; Join to
 ≍ Solo ; Couple
+⋈ Enlist ; Pair
 ↑ Prefixes ; Take
 ↓ Suffixes ; Drop
 ↕ Range ; Windows
