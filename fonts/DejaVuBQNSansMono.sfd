@@ -19,7 +19,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 0
 CreationTime: 1598643215
-ModificationTime: 1600390422
+ModificationTime: 1634839083
 PfmFamily: 17
 TTFWeight: 400
 TTFWidth: 5
@@ -2308,7 +2308,7 @@ NameList: AGL without afii
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 1
-WinInfo: 8189 19 15
+WinInfo: 8759 19 7
 GridOrder2: 1
 Grid
 1 740 m 25,0,-1
@@ -2431,7 +2431,7 @@ Grid
  0 1901 l 1,5,-1
 EndSplineSet
 AnchorClass2: "cedilla" "'mark' cedilla" "lao-below" "'mark' Mark positioning in Lao" "lao-above" "'mark' Mark positioning in Lao" "above" "'mark' above, below" "below" "'mark' above, below" "rtl-above" "'mark' Mark Positioning in Arabic lookup 5" "Ligature rtl-above" "'mark' Mark Positioning in Arabic lookup 4" "rtl-below" "'mark' Mark Positioning in Arabic lookup 3" "Ligature rtl-below" "'mark' Mark Positioning in Arabic lookup 2" "rtl-above-mark" "'mkmk' Mark to Mark in Arabic lookup 1" "rtl-below-mark" "'mkmk' Mark to Mark in Arabic lookup 0"
-BeginChars: 1114165 3827
+BeginChars: 1114165 3828
 
 StartChar: .notdef
 Encoding: 0 -1 0
@@ -58988,7 +58988,7 @@ EndChar
 StartChar: bullet
 Encoding: 8226 8226 1980
 Width: 1233
-Flags: WO
+Flags: W
 TtInstrs:
 PUSHB_8
  9
@@ -109549,6 +109549,37 @@ LayerCount: 2
 Fore
 Refer: 47 78 S 0.46 0 0 0.46 146.61 837.81 2
 Refer: 45 76 N 0.46 0 0 0.46 551.88 -31.59 2
+EndChar
+
+StartChar: uni22C8
+Encoding: 8904 8904 3827
+Width: 1233
+Flags: WO
+LayerCount: 2
+Fore
+SplineSet
+736.30535413 647.5 m 1025,0,-1
+497.013671875 647.5 m 1025,1,-1
+45.0137262622 143.304215694 m 1,2,-1
+ 45.0137262622 1151.69578431 l 1,3,-1
+ 616.65960051 734.764017317 l 1,4,-1
+ 1188.30566406 1151.6953125 l 1,5,-1
+ 1188.30566406 143.3046875 l 1,6,-1
+ 616.65960051 560.235982683 l 1,7,-1
+ 45.0137262622 143.304215694 l 1,2,-1
+1048.33300781 418.6953125 m 1,8,-1
+ 1048.33300781 876.3046875 l 1,9,-1
+ 735.464688738 648.113142023 l 1,10,-1
+ 736.30535413 647.5 l 1,11,-1
+ 735.464688738 646.886857977 l 1,12,-1
+ 1048.33300781 418.6953125 l 1,8,-1
+497.854159487 648.113011461 m 1,13,-1
+ 184.986273738 876.304215694 l 1,14,-1
+ 184.986273738 418.695784306 l 1,15,-1
+ 497.854159487 646.886988539 l 1,16,-1
+ 497.013671875 647.5 l 1,17,-1
+ 497.854159487 648.113011461 l 1,13,-1
+EndSplineSet
 EndChar
 EndChars
 EndSplineFont
