@@ -174,7 +174,7 @@ Let `v←𝕨𝔽○𝔾𝕩`, so that `v≡𝔾z`. `v` is of course well-define
 - *Structural* Under: If `𝔾` is a structural function (to be defined below) and `v` is compatible with `𝔾` on `𝕩`, then the result is obtained by inserting `v` back into `𝕩`.
 - *Computational* Under: If `𝔾` is provably not a structural function, then the result is `𝔾⁼v` if it is defined.
 
-When implementing, there is no need to implement invertable Under specially: it can be handled as part of the structural and computation cases.
+When implementing, there is no need to implement invertible Under specially: it can be handled as part of the structural and computation cases.
 
 ### Mathematical definition of structural Under
 
