@@ -141,7 +141,7 @@ A left argument for any of the three reduction-based modifiers indicates an init
 
 ### Restructuring
 
-**Enclose** (`<`) forms a unit array that contains its argument.
+**Enclose** (`<`) forms a unit array that contains its argument. **Enlist** and **Pair** (`⋈`) form a 1- or 2-element list of all arguments, that is, `⟨𝕩⟩` or `⟨𝕨,𝕩⟩`.
 
 **Merge** (`>`) combines the outer axes of an array of arrays with inner axes: it requires that all elements of its argument have the same shape, and creates an array such that `(i∾j)⊑>𝕩` is `i⊑j⊑𝕩`. It also accepts atom elements of `𝕩`, converting them to unit arrays, or an atom argument, which is returned unchanged. **Solo** and **Couple** (`≍`) turn one or two arguments into major cells of the result and can be defined easily in terms of Merge.
 

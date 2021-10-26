@@ -199,7 +199,8 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 # LAYER 4: Operators
 
 > ↩ Merge⍟IsArray  ⊘ >
-≍ ← >∘Pair
+⋈ ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
+≍ ← >∘⋈
 ⎉ ← _rankOp_
 ⚇ ← _depthOp_
 ⍟ ↩ _repeat_
@@ -209,7 +210,6 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 
 DropV← {⊑⟜𝕩¨𝕨+↕𝕨-˜≠𝕩}
 Cell ← DropV⟜≢
-Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 
 Merge←(0<≠∘⥊)◶((∾○≢⥊⊢)⟜Fill)‿{
   c←≢⊑𝕩
@@ -228,12 +228,12 @@ _depthOp_←{
   neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽 ⋄ B←{𝕏}⊘{𝕨˙⊸𝕏}
   _d←{
     R←(𝕗+neg)_d
-    𝕨(2⥊(neg∧𝕗≥0)∨(0⌈𝕗)≥Pair○≡)◶(⟨R¨⋄R⟜(𝕩˙)¨∘⊣⟩≍⟨(𝕨 B r)¨∘⊢⋄F⟩)𝕩
+    𝕨(2⥊(neg∧𝕗≥0)∨(0⌈𝕗)≥⋈○≡)◶(⟨R¨⋄R⟜(𝕩˙)¨∘⊣⟩≍⟨(𝕨 B r)¨∘⊢⋄F⟩)𝕩
   }
   𝕨 n _d 𝕩
 }
 _rankOp_←{
-  k←𝕨(Pair○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
+  k←𝕨(⋈○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
   Enc←{
     f←⊑⟜(≢𝕩)¨↕𝕨
     c←×´s←𝕨Cell𝕩
@@ -309,7 +309,7 @@ SelSub←{
 Select←ToArray⊸(SelSub _onAxes_ 1)
 
 JoinTo←{
-  s←𝕨Pair○≢𝕩
+  s←𝕨⋈○≢𝕩
   a←1⌈´k←≠¨s
   ! ∧´1≥a-k
   c←(k¬a)+⟜(↕a-1)⊸⊏¨s
@@ -392,7 +392,7 @@ Join←(0<=)◶{!IsArray𝕩⋄>𝕩}‿{
 
 Group←{
   ! IsArray 𝕩
-  𝕨↩Pair∘ToArray⍟(2>≡)𝕨
+  𝕨↩⋈∘ToArray⍟(2>≡)𝕨
   ! 1==𝕨
   {!∧´Int¨𝕩⋄!∧´¯1≤𝕩}∘⥊¨𝕨
   n←+´r←=¨𝕨
