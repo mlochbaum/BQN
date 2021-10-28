@@ -516,6 +516,37 @@
 <p>A <em>reference list</em> is a list of variable references or reference lists. It's created with the <strong>ARRM</strong> instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.</p>
 <p>The <strong>SETN</strong>, <strong>SETU</strong>, <strong>SETM</strong>, and <strong>SETC</strong> instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.</p>
 <p><strong>SETM</strong> and <strong>SETC</strong> additionally need to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.</p>
+<table>
+<thead>
+<tr>
+<th>Opcode</th>
+<th>Slot must be</th>
+<th>Reads value first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SETN</td>
+<td>Unset</td>
+<td></td>
+</tr>
+<tr>
+<td>SETU</td>
+<td>Set</td>
+<td></td>
+</tr>
+<tr>
+<td>SETM</td>
+<td>Set</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>SETC</td>
+<td>Set</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 <h3 id="bodies-seth-vfym-pred"><a class="header" href="#bodies-seth-vfym-pred">Bodies: SETH VFYM PRED</a></h3>
 <p><strong>SETH</strong> is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. <strong>VFYM</strong> converts a BQN value <code><span class='Value'>c</span></code> to a special reference: assigning a value <code><span class='Value'>v</span></code> to it should check if <code><span class='Value'>v</span><span class='Function'>≡</span><span class='Value'>c</span></code> but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.</p>
 <p><strong>PRED</strong> drops the top value of the stack, but also checks whether it matches the number 1. If it does match, execution continues; if not, evaluation of the current body ends and evaluation moves to the next eligible body.</p>
