@@ -145,6 +145,13 @@ The **SETN**, **SETU**, **SETM**, and **SETC** instructions set a value for a re
 
 **SETM** and **SETC** additionally need to get the current value of a reference. For a variable reference this is its current value (with an error if it's not defined yet); for a reference list it's a list of the values of each reference in the list.
 
+| Opcode | Slot must be | Reads value first
+|--------|--------------|------
+| SETN   | Unset        |
+| SETU   | Set          |
+| SETM   | Set          | Yes
+| SETC   | Set          | Yes
+
 ### Bodies: SETH VFYM PRED
 
 **SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. **VFYM** converts a BQN value `c` to a special reference: assigning a value `v` to it should check if `v≡c` but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.
