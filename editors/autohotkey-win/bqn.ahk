@@ -311,7 +311,12 @@ RAlt & '::
 return
 
 RAlt & z::
+    ShiftState := GetKeyState("Shift", "P")
+    If (ShiftState) {
+        Send, ⋈
+    } Else {
         Send, ⥊
+    }
 return
 
 RAlt & x::
