@@ -1,4 +1,4 @@
-MakeVar ← {𝕤
+MakeVar ← { 𝕊 name:
   v←@
   Get  ⇐ !∘"Runtime: Variable referenced before definition"
   SetU ⇐ !∘"↩: Variable modified before definition"
@@ -12,11 +12,20 @@ MakeVar ← {𝕤
     Get↩SetU↩SetN↩!∘"Internal error: Variable used after clear"
     r
   }
+  GetF ⇐ {𝕩.Field name}  # TODO no env.program access
 }
-MakeEnv ← {
-  vars ⇐ MakeVar¨ ↕𝕨
-  parent ⇐ 𝕩
-  program ⇐ 𝕩.program
+MakeEnv ← { 𝕊p‿v‿n‿e:
+  ns ← v-≠n  # Number of special names
+  vars ⇐ MakeVar¨ (ns⥊¯1) ∾ n
+  parent ⇐ p
+  program ⇐ p.program
+  MakeNS ⇐ {𝕤
+    v ← @ ⊣´¨ n ⊔ ns↓vars  # Lookup table
+    Field ⇐ {𝕨𝕊i:
+      ! program ≡ 𝕨  # TODO cross-program handling
+      i ⊑ v
+    }
+  }
 }
 
 VO ← { d←𝕏@, s←𝕏@, s⊑·{𝕩.vars}{𝕩.parent}⍟d }
@@ -24,8 +33,11 @@ VO ← { d←𝕏@, s←𝕏@, s⊑·{𝕩.vars}{𝕩.parent}⍟d }
 nothing  ← {⇐}
 skipMark ← {⇐}
 
-Namespace ← !
-ReadNS ← !
+Namespace ← {𝕩.MakeNS@}
+ReadNS ← { e‿i 𝕊 𝕩:
+  "Key lookup in non-namespace" ! 6=•Type𝕩
+  (e.program 𝕩.Field i).Get @
+}
 
 ref ← {
   Matcher ⇐ {𝕊 const:
@@ -33,10 +45,22 @@ ref ← {
   }
   Array ⇐ {𝕊 arr:
     Get  ⇐ {𝕩.Get@}¨ arr˙
-    _set ← {arr ≡○≢◶⟨!, 𝕗¨⟩ ⊢}
-    SetN ⇐ {𝕨.SetN𝕩}_set
-    SetU ⇐ {𝕨.SetU𝕩}_set
-    SetQ ⇐ arr ≡○≢◶⟨1, ∨´{𝕨.SetQ𝕩}¨⟩ ⊢
+    _set_ ← {S _𝕣_ e:
+      Err ← {(e∾": "∾𝕩)!e≡@ ⋄ ⟨1⟩}
+      {
+        0=•Type𝕩 ? arr ≡○≢◶⟨Err∘"Target and value shapes don't match", S¨⟩ 𝕩 ;
+        # TODO "Cannot extract non-name from namespace" if 𝕨.GetF doesn't exist
+        6=•Type𝕩 ? S⟜({(𝕨.GetF 𝕩).Get@}⟜𝕩)¨ arr ;
+        Err "Multiple targets but atomic value"
+      }
+    }
+    SetN ⇐    {𝕨.SetN𝕩}_set_"←"
+    SetU ⇐    {𝕨.SetU𝕩}_set_"←"
+    SetQ ⇐ ∨´ {𝕨.SetQ𝕩}_set_@⎊⟨1⟩ # TODO fix GetF errors and avoid ⎊
+  }
+  Alias ⇐ {env‿name 𝕊 r:
+    SetN‿SetU‿SetQ ⇐ r
+    GetF ⇐ {env.program 𝕩.Field name}
   }
 }
 
@@ -49,7 +73,7 @@ MakeStack ← {
   Push ⇐ {s∾↩<𝕩}                 # Push a value
   Pop  ⇐ {t←-𝕩 ⋄ (s↓˜↩t) ⊢ ⌽t↑s} # Pop 𝕩 values; return as list
   Peek ⇐ {𝕤⋄¯1⊑s}                # Return but don't pop top value
-  Ret  ⇐ {rslt↩𝕩 ⋄ cont↩0 ⋄ "Internal compiler error: Wrong stack size"!0=≠s}
+  Ret  ⇐ {rslt↩𝕩 ⋄ cont↩0 ⋄ "Internal compiler error: Wrong stack size"!𝕨≥≠s}
   Skip ⇐ {𝕤⋄       cont↩0}
 }
 
@@ -84,11 +108,11 @@ ops ← ((!∘"Unknown opcode")˙⊣´⊢)¨ ⊔˝ ⍉> ⟨
   42‿(       {s𝕊e: {0:s.Skip@; 1:@; 𝕊:!"Predicate value must be 0 or 1"} ⊑s.Pop 1 }˙)
   43‿(       {s𝕊e: s.Push ref.Matcher ⊑s.Pop 1 }˙)
   # Assignment
-  47‿(       {s𝕊e: s.Skip⍟⊢{r‿  v: r.SetQ v           } s.Pop 2 }˙)  # r:
-  48‿(       {s𝕊e: s.Push { r‿  v: r.SetN v           } s.Pop 2 }˙)  # r  ←v
-  49‿(       {s𝕊e: s.Push { r‿  v: r.SetU v           } s.Pop 2 }˙)  # r  ↩v
-  50‿(       {s𝕊e: s.Push { r‿f‿x: r.SetU (r.Get@)F x } s.Pop 3 }˙)  # r F↩x
-  51‿(       {s𝕊e: s.Push { r‿f  : r.SetU F r.Get@    } s.Pop 2 }˙)  # r F↩
+  47‿(       {s𝕊e: s.Skip⍟⊢{r‿  v: r.SetQ   v           } s.Pop 2 }˙)  # r:
+  48‿(       {s𝕊e: s.Push { r‿  v: r.SetN⊸⊢ v           } s.Pop 2 }˙)  # r  ←v
+  49‿(       {s𝕊e: s.Push { r‿  v: r.SetU⊸⊢ v           } s.Pop 2 }˙)  # r  ↩v
+  50‿(       {s𝕊e: s.Push { r‿f‿x: r.SetU⊸⊢ (r.Get@)F x } s.Pop 3 }˙)  # r F↩x
+  51‿(       {s𝕊e: s.Push { r‿f  : r.SetU⊸⊢ F r.Get@    } s.Pop 2 }˙)  # r F↩
   # Namespaces
   64‿{i←𝕏@ ⋄ {s𝕊e: s.Push e‿i ReadNS    ⊑s.Pop 1 } }
   66‿{i←𝕏@ ⋄ {s𝕊e: s.Push e‿i ref.Alias ⊑s.Pop 1 } }
@@ -112,7 +136,7 @@ RunBC ← { bc‿pos‿env:
 
   bodies ← {start‿vars‿names‿export:
     {parent 𝕊 args:
-      env ← vars MakeEnv parent  # names/export?
+      env ← MakeEnv parent‿vars‿names‿export
       (⊢ {𝕩.SetN 𝕨}¨ ≠↑env.vars˙) args
       RunBC bc‿start‿env
     }
@@ -145,6 +169,7 @@ RunBC ← { bc‿pos‿env:
       }𝕩
       𝕩 Then´⟜(⊏⟜bodies)˜⟜{!∘𝕩}¨ e
     } body
+
     {𝕊 parent:
       Inner Outer {parent˙ 𝕏 ⊢}¨ run
     }
