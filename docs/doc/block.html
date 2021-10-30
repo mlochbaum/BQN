@@ -206,9 +206,9 @@ ERROR
 <h3 id="case-headers"><a class="header" href="#case-headers">Case headers</a></h3>
 <p>A special rule allows for convenient case-matching syntax for one-argument functions. In any function header with one argument, the function name can be omitted as long as the argument is <em>not</em> a plain identifier—it must be <code><span class='Value'>𝕩</span></code> or a compound value like a list to distinguish it from an immediate block label.</p>
 <pre><span class='Function'>Test</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
-  <span class='String'>&quot;abc&quot;</span><span class='Value'>:</span> <span class='String'>&quot;string&quot;</span>
-  <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Value'>b</span><span class='Bracket'>⟩</span><span class='Value'>:</span> <span class='Function'>⌽</span><span class='Value'>𝕩</span>
-  <span class='Number'>5</span><span class='Value'>:</span>     <span class='String'>&quot;number&quot;</span>
+  <span class='String'>&quot;abc&quot;</span><span class='Value'>:</span> <span class='String'>&quot;string&quot;</span> <span class='Value'>;</span>
+  <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Value'>b</span><span class='Bracket'>⟩</span><span class='Value'>:</span> <span class='Function'>⌽</span><span class='Value'>𝕩</span>       <span class='Value'>;</span>
+  <span class='Number'>5</span><span class='Value'>:</span>     <span class='String'>&quot;number&quot;</span> <span class='Value'>;</span>
   <span class='Value'>𝕩:</span>     <span class='String'>&quot;default&quot;</span>
 <span class='Brace'>}</span>
 </pre>
