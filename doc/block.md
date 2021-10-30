@@ -180,9 +180,9 @@ If no header is compatible, the call results in an error.
 A special rule allows for convenient case-matching syntax for one-argument functions. In any function header with one argument, the function name can be omitted as long as the argument is *not* a plain identifier—it must be `𝕩` or a compound value like a list to distinguish it from an immediate block label.
 
     Test ← {
-      "abc": "string"
-      ⟨2,b⟩: ⌽𝕩
-      5:     "number"
+      "abc": "string" ;
+      ⟨2,b⟩: ⌽𝕩       ;
+      5:     "number" ;
       𝕩:     "default"
     }
 
