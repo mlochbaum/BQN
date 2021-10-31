@@ -1,9 +1,10 @@
 Test scripts:
 
   Script            Compiler host   Output host/VM
-- this.bqn          Any
+- this.bqn          Any             Same
+- unit.bqn          Any             Same + repo
 - js                Self-host       Javascript
-- dz_comp           dzaima/BQN      dzaima/BQN
+- dz_comp           dzaima/BQN      dzaima/BQN + repo
 - dz_wasm.js        dzaima/BQN      WebAssembly
 
 this.bqn can be run in any implementation that supports the necessary

@@ -9,7 +9,7 @@ exec ← ((rt⌈2×ref)¬nc)◶⟨
   Native˙                                 # Native
   {𝕤⋄ ⟨DRun⟩←•Import "../dc.bqn" ⋄ DRun}  # Compiled; native runtime
   {𝕤⋄ •Import "../bqn.bqn"}               # Self-hosted
-  {𝕤⋄ •Import "ref.bqn"}                  # Reference implementations
+  {𝕤⋄ ⟨DRun⟩←•Import "../dc.bqn" ⋄ (•Import"ref.bqn")⊸DRun} # Reference implementations
 ⟩ @
 
 Cases ← (0<≠)◶0‿('#'≠⊑)¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
@@ -26,4 +26,4 @@ M ← {e‿b:
   ("!"⊸≡◶⟨<Native,0˙⟩ e) ≢◶""‿Msg <∘Exec⎊0 b
 }
 r ← (M '%'⊸= (∨´⊣)◶⟨"1"≍○<⊢, Trim¨(+`-2⊸×)⊸⊔⟩ ⊢)¨ c
-•Out ("All "∾(⍕≠c)∾" passed!")⍟(0=≠) ¯1↓∾r
+•Out ("All "∾(•Repr≠c)∾" passed!")⍟(0=≠) ¯1↓∾r
