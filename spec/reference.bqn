@@ -204,7 +204,7 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 ⎉ ← _rankOp_
 ⚇ ← _depthOp_
 ⍟ ↩ _repeat_
-˘ ← ⎉¯1
+˘ ← {𝔽⎉¯1}
 ˝ ← _insert
 ` ← _scan
 
