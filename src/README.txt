@@ -27,6 +27,5 @@ e.bqn and p.bqn also require the definitions from svg.bqn; they are
 attached cjs.bqn.
 
 Some of these files are also used elsewhere: pp.bqn preprocesses other
-primitive-defining code in ../test/ref.bqn and ../dzref, and f.bqn is
-used to format results in markdown while e.bqn generates diagrams for
-the tutorials.
+primitive-defining code in ../test/ref.bqn, and f.bqn is used to format
+results in markdown while e.bqn generates diagrams for the tutorials.

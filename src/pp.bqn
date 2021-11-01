@@ -1,6 +1,6 @@
 # Primitive processor
-# Used in dzref and pr.bqn for handling source code with primitive
-# redefinitions.
+# Used in pr.bqn and ../test/ref.bqn for handling source code with
+# primitive redefinitions.
 # Defining a primitive shadows previous definitions, so earlier uses
 # of the primitive still use the old definition.
 # This is handled by using a new name each time it's defined.
