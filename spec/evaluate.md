@@ -8,6 +8,8 @@ Here we assume that the referent of each identifier, or equivalently the connect
 
 Evaluation is an ordered process, and any actions required to evaluate a node always have a specified order unless performing them in any order would have the same effect. Side effects that are relevant to ordering are setting and getting the value of a variable, causing an error, and returning (with `→`) from a block. Errors described in this page are "evaluation errors" and can be caught by the Catch (`⎊`) modifier. For caught errors and returns, evaluation halts without attempting to complete any in-progress node, and is restarted by Catch (for errors) or at the end of the appropriate block evaluation (for returns).
 
+As specified, BQN programs can involve an arbitrary amount of information, but when run there will be memory and possibly other limitations. To accommodate this, any part of evaluation can cause an error, if a resource such as memory, stack memory, or limited execution time is exhausted.
+
 ### Programs and blocks
 
 The result of parsing a valid BQN program is a `PROGRAM`, and the program is run by evaluating this term.
