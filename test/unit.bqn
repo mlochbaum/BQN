@@ -8,17 +8,19 @@ nc‿rt‿ref‿noerr ← "-nocomp"‿"-rt"‿"-ref"‿"-noerr" ∊ opts
 "Can't test runtime without the compiler!" ! ¬nc∧rt∨ref
 
 Native ← •BQN
-ReBQN ← {𝕊 rt:
-  compile ← (•Import "../src/glyphs.bqn") •Import "../src/c.bqn"
+exec ← {
+  nc ? Native ;
+  # Otherwise compiled
+  gl ← •Import "../src/glyphs.bqn"
+  compile ← gl •Import "../src/c.bqn"
   vm ← •Import "../vm.bqn"
-  BQN ← ⟨rt,{𝕊"bqn":BQN}¨⟩⊸(VM Compile)
+  r ← {
+    ref ? •Import "ref.bqn"   ;  # Reference implementations
+    rt  ? •Import "../rt.bqn" ;  # Self-hosted
+    •BQN∘⥊¨ ∾gl                  # Native runtime
+  }
+  BQN ← ⟨r,{𝕊"bqn":BQN}¨⟩⊸(VM Compile)
 }
-exec ← ((rt⌈2×ref)¬nc)◶⟨
-  Native˙                                          # Native
-  {𝕤⋄ ReBQN •BQN∘⥊¨ ∾•Import "../src/glyphs.bqn"}  # Compiled; native runtime
-  {𝕤⋄ ReBQN •Import "../rt.bqn"}                   # Self-hosted
-  {𝕤⋄ ReBQN •Import "ref.bqn"}                     # Reference implementations
-⟩ @
 
 c ← ∾ ((0<≠)◶0‿('#'≠⊑)¨⊸/ · •file.Lines "cases/"⊸∾)¨ files
 c ↩ ('!'≠⊑)¨⊸/⍟noerr c
