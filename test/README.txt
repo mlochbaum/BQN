@@ -11,13 +11,16 @@ to see. There are additional tests here used for development:
 - dzaima        dzaima/BQN        Self + repo
 - wasm.js       bqn               WebAssembly
 
-this.bqn can be run in any implementation that supports the necessary
-system functions (•file.List, •file.Lines, •args, •Out, •BQN, •Repr).
+"bqn" can be any implementation that supports the necessary system
+functions (•file.List, •file.Lines, •args, •Out, •BQN, •Repr).
 
-unit.bqn and dz_comp use the self-hosted compiler ../src/c.bqn by
-default but not the runtime ../src/r*.bqn. Pass -rt to test with the
-runtime, and -nocomp to test dzaima/BQN only (this doesn't pass as of
-the time of writing).
+unit.bqn and dzaima can test components from this repostory, by default
+the compiler only. The following options are supported:
+
+- -nocomp: native execution
+- default: compiler (src/c.bqn)
+- -rt:     compiler and runtime (src/r*.bqn)
+- -ref:    compiler and primitive specification (spec/reference.bqn)
 
 Every script but wasm.js can be run on a specified set of tests by
 passing the test names as arguments. this.bqn and unit.bqn run on all
