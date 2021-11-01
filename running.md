@@ -42,10 +42,6 @@ In this repository and elsewhere, dzaima/BQN scripts are called with `#! /usr/bi
 
 If compiled with Native Image, `nBQN` can be used directly instead.
 
-#### dzaima+reference BQN
-
-This repository contains a dzaima/BQN script `dzref` that fills in gaps in primitive support with BQN implementations. It was used for md.bqn for a while and is no longer used now. The command-line arguments are a script to run and followed by the `•args` to supply to it.
-
 ### BQN2NGN
 
 [BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript build to experiment with the langauge, which is now abandoned.
