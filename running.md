@@ -2,7 +2,7 @@
 
 # How to run BQN
 
-[CBQN](https://github.com/dzaima/CBQN) is now the primary offline implementation. However, dzaima/BQN still works, and is used for some testing. Scripts in this repository use `bqn` in the `#!` line if any BQN can run them, and `dbqn` if only dzaima/BQN works.
+[CBQN](https://github.com/dzaima/CBQN) is now the primary offline implementation, and can be used everywhere in this repository, except test/dzaima which is specifically for testing with dzaima/BQN. Scripts start with `#! /usr/bin/env bqn` in order to look up the user's `bqn` executable.
 
 For Nix users, nixpkgs now has repositories for several implementations; `cbqn` is recommended for general use.
 
