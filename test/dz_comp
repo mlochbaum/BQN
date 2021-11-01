@@ -5,12 +5,17 @@ files ← "simple"‿"syntax"‿"prim"⍟(0=≠) ('-'≠⊑)¨⊸/ •args
 "Can't test runtime without the compiler!" ! ¬nc∧rt∨ref
 
 Native ← •BQN
-exec ← ((rt⌈2×ref)¬nc)◶⟨
-  Native˙                                 # Native
-  {𝕤⋄ ⟨DRun⟩←•Import "../dc.bqn" ⋄ DRun}  # Compiled; native runtime
-  {𝕤⋄ •Import "../bqn.bqn"}               # Self-hosted
-  {𝕤⋄ ⟨DRun⟩←•Import "../dc.bqn" ⋄ (•Import"ref.bqn")⊸DRun} # Reference implementations
-⟩ @
+exec ← {
+  nc ? Native ;
+  # Otherwise compiled
+  ⟨DRun⟩ ← •Import "dc.bqn"
+  r ← {
+    ref ? •Import "ref.bqn"  ;            # Reference implementations
+    rt  ? •Import "dzrt.bqn" ;            # Self-hosted
+    •BQN∘⥊¨ ∾ •Import "../src/glyphs.bqn" # Native runtime
+  }
+  r⊸DRun
+}
 
 Cases ← (0<≠)◶0‿('#'≠⊑)¨⊸/ · •FLines "cases/"∾∾⟜".bqn"
 c ← ∾ Cases¨ files

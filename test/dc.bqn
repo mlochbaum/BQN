@@ -4,8 +4,8 @@
 # multiple bodies, and use variable names instead of counts.
 # Rearrange and make up some names so the bytecode can be run.
 
-glyphs ← •Import∘"src/glyphs.bqn"⍟(0=≠) •args
-compile ← glyphs •Import "src/c.bqn"
+glyphs ← •Import∘"../src/glyphs.bqn"⍟(0=≠) •args
+compile ← glyphs •Import "../src/c.bqn"
 
 special←<˘∘‿2⥊"𝕤𝕩𝕨𝕣𝕗𝕘"
 DCompile⇐{

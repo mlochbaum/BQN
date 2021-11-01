@@ -1,10 +1,9 @@
-# BQN hosted in dzaima/BQN
-# Result is a function that executes BQN code.
+# Runtime hosted in dzaima/BQN
 
-⟨src,need⟩ ← •Import "src/pr.bqn"
+⟨src,need⟩ ← •Import "../src/pr.bqn"
 ⟨DRun⟩     ←      •Import "dc.bqn"
 ⟨DCompile⟩ ← need •Import "dc.bqn"
-glyphs ← ∾ gl ← •Import "src/glyphs.bqn"
+glyphs ← ∾ gl ← •Import "../src/glyphs.bqn"
 
 GroupLen ← {(𝕨⌈≠)⊸↑0•FillFn≠¨⊔𝕩}
 extra ← ⟨ •Type, •FillFn, ⋆⁼, GroupLen, ∾⊔∘⊢, •_fillBy_ ⟩
@@ -21,4 +20,4 @@ sys ← {𝕩⊏˜𝕨⊸⊐}˝⍉>⟨
   "glyph"‿(glyphs⊑˜PrimInd)
   "decompose"‿Decompose
 ⟩
-BQN ← ⟨rt,Sys⟩⊸DRun
+⟨rt,Sys⟩
