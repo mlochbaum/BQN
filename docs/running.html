@@ -5,7 +5,7 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="index.html">BQN</a></div>
 <h1 id="how-to-run-bqn"><a class="header" href="#how-to-run-bqn">How to run BQN</a></h1>
-<p><a href="https://github.com/dzaima/CBQN">CBQN</a> is now the primary offline implementation. However, dzaima/BQN still works, and is used for some testing. Scripts in this repository use <code><span class='Value'>bqn</span></code> in the <code><span class='Comment'>#!</span></code> line if any BQN can run them, and <code><span class='Value'>dbqn</span></code> if only dzaima/BQN works.</p>
+<p><a href="https://github.com/dzaima/CBQN">CBQN</a> is now the primary offline implementation, and can be used everywhere in this repository, except test/dzaima which is specifically for testing with dzaima/BQN. Scripts start with <code><span class='Comment'>#! /usr/bin/env bqn</span></code> in order to look up the user's <code><span class='Value'>bqn</span></code> executable.</p>
 <p>For Nix users, nixpkgs now has repositories for several implementations; <code><span class='Value'>cbqn</span></code> is recommended for general use.</p>
 <h3 id="self-hosted-bqn"><a class="header" href="#self-hosted-bqn">Self-hosted BQN</a></h3>
 <p>See the subsections below for instructions on specific implementations.</p>

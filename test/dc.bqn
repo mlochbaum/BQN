@@ -1,5 +1,3 @@
-#! /usr/bin/env dbqn
-
 # dzaima/BQN block headers have a different format to account for
 # multiple bodies, and use variable names instead of counts.
 # Rearrange and make up some names so the bytecode can be run.
