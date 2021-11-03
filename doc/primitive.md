@@ -39,6 +39,7 @@ Functions that have significant differences from APL equivalents or don't appear
 | `⥊`   | [Deshape](reshape.md)                               | [Reshape](reshape.md)*
 | `∾`   | [Join](join.md)*                                    | [Join to](join.md)
 | `≍`   | [Solo](couple.md)*                                  | [Couple](couple.md)*
+| `⋈`   | [Enlist](pair.md)*                                  | [Pair](pair.md)*
 | `↑`   | [Prefixes](prefixes.md)*                            | [Take](take.md)
 | `↓`   | [Suffixes](prefixes.md)*                            | [Drop](take.md)
 | `↕`   | [Range](range.md)                                   | [Windows](windows.md)*
