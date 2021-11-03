@@ -16,7 +16,7 @@ lg ← "stroke=#3b285c|fill=none|stroke-width=4|stroke-linejoin=round|opacity=0.
 
 Text ← ("text" Attr "dy"‿"0.33em"∾Pos)⊸Enc
 Pd ← ·∾∾¨⟜FmtNum
-Path ← ("path"At⊣) Elt "d"≍○<⊢
+Path ← ("path"At⊣) Elt "d"⋈⊢
 
 pad ← 48‿51 ⋄ sh ← 0‿0
 dim ← (pad-0‿7) + ¯1⊑¨ tx‿ty ← pad+d× ¯1(⊑{⟨↕𝕨,⥊+⌜´(↕¨×·×`⌾⌽1+«)𝕩⟩}↓)≢xt

@@ -44,7 +44,7 @@ b ← (0.4⌈0.2+≠¨zf) {∾"M vhv"∾¨FmtNum (0‿1‿1‿0‿1⊏d)×(⟨�
   tg Ge ∾tp Text¨○∾ tt
   cg Ge ((¯0.8+⊑⊑tx)≍¨3↑ty) Text⟜Highlight¨ "𝕨"‿"𝕩"‿"𝕨⊔𝕩"
   lg Ge (<"xy"≍⌜"12") ("line" Elt ≍˘○⥊)⟜(FmtNum d×⍉)¨ lp
-  bg Ge ("path" Elt "d"≍○<⊢)¨ b
+  bg Ge ("path" Elt "d"⋈⊢)¨ b
 ⟩
 -->
 

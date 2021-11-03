@@ -34,7 +34,7 @@ Gb ← {
 
 Text ← ("text" Attr Pos)⊸Enc
 Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ ·FmtNum d×⊢
-Path ← "path" Elt "d"≍○<⊢
+Path ← "path" Elt "d"⋈⊢
 {
   dim ← 7.5‿2.2 ⋄ sh ← ¯2.3‿¯0.1
   tx ← ↕≠xt ⋄ ty ← 0.7+↕2
@@ -126,7 +126,7 @@ Except for the more sophisticated shape, this result is exactly what you'd get i
   tx ← ↕≠xt ⋄ ty ← 0.7+↕3
 
   da ← "id=gr|gradientUnits=userSpaceOnUse|x1=0|x2=0|y1=14.4|y2=216"
-  Stop ← "stop" Elt "offset"‿"stop-color"≍˘≍○<
+  Stop ← "stop" Elt "offset"‿"stop-color"≍˘⋈
   defs ← "defs" Enc ("linearGradient"At da) Enc "0%"‿"70%" Stop¨ lcol
 
   ((∾˜d)×((-∾+˜)0.5‿0.2)+sh∾dim) SVG defs ∾ g Ge ⟨

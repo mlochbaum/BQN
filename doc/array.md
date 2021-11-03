@@ -25,7 +25,7 @@ pg ← "class=purple|stroke-width=2|style=fill:none"
 
 Text ← ("text" Attr "dy"‿"0.33em"∾Pos)⊸Enc
 Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ FmtNum
-Path ← "path"⊘("path"At⊣) Elt "d"≍○<⊢
+Path ← "path"⊘("path"At⊣) Elt "d"⋈⊢
 Pd ← ·∾∾¨⟜FmtNum
 Rd ← Pos∘⊣ ∾ "width"‿"height"≍˘FmtNum∘⊢
 Rect ← "rect"⊸At⊸Elt

@@ -15,13 +15,13 @@ bg ← "class=bluegreen|stroke-width=3|style=fill:none|opacity=0.7"
 lg ← "class=lilac|stroke-width=2"
 
 Text ← ("text" Attr "dy"‿"0.32em"∾ ·Pos d⊸×)⊸Enc
-Path ← "path" Elt "d"≍○<⊢
+Path ← "path" Elt "d"⋈⊢
 Line ← "line" Elt (⍉"xy"≍⌜"12")≍˘○⥊ ·FmtNum ·d⊸×˘⊢
 
 Brak ← {
   l ← 6‿15
   P ← ∾"M l l "∾¨ ·FmtNum∘⥊ ∾
-  Path ∾ (((-⊸≍0.4)+0‿¯1⊏𝕨)((0‿¯1×l)+d×≍)⌜𝕩) P¨ ≍○<⟜⌽ -⌾⊑⊸≍l
+  Path ∾ (((-⊸≍0.4)+0‿¯1⊏𝕨)((0‿¯1×l)+d×≍)⌜𝕩) P¨ ⋈⟜⌽ -⌾⊑⊸≍l
 }
 
 _pair ← {1(↓𝔽-⊸↓)⊢}
@@ -39,7 +39,7 @@ lp ← 0.35
     ((lp×¯0.5‿1≍1.2‿¯0.5)+≍)¨_pair sp
     ⟨sx {⍉(≍˜𝕨)≍(≍⟜-lp)+𝕩≍1⊑ty}○⊑ sy⟩
   ⟩
-  "text-anchor=end" Ge (¯1.1≍¨ty) Text¨ ≍○<⟜(ft∾(Highlight"´")∾⊢) "𝕩"
+  "text-anchor=end" Ge (¯1.1≍¨ty) Text¨ ⋈⟜(ft∾(Highlight"´")∾⊢) "𝕩"
   (tp∾<(⊑sx)≍1⊑ty) Text¨ xt∾⊏zt
   sp Text¨ (¯1↓xt) ∾⟜ft⊸∾¨ 1↓zt
   bg Ge tx Brak ⊑ty
