@@ -37,8 +37,8 @@
 ⟨ 3 4 5 6 2 ⟩
 </pre>
 <p>In terms of the argument data as given by <a href="reshape.html#deshape">Deshape</a> (<code><span class='Function'>⥊</span></code>), this looks like a simple 2-dimensional transpose: one axis is exchanged with a compound axis made up of the other axes. Here we transpose a rank 3 matrix:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YTMyMiDihpAgM+KAvzLigL8y4qWK4oaVMTIK4omN4peLPOKfnOKNiSBhMzIy">↗️</a><pre>    <span class='Value'>a322</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊↕</span><span class='Number'>12</span>
-    <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span><span class='Modifier2'>⟜</span><span class='Function'>⍉</span> <span class='Value'>a322</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YTMyMiDihpAgM+KAvzLigL8y4qWK4oaVMTIK4ouI4p+c4o2JIGEzMjI=">↗️</a><pre>    <span class='Value'>a322</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊↕</span><span class='Number'>12</span>
+    <span class='Function'>⋈</span><span class='Modifier2'>⟜</span><span class='Function'>⍉</span> <span class='Value'>a322</span>
 ┌─                      
 · ┌─        ┌─          
   ╎  0  1   ╎ 0 4  8    
@@ -53,7 +53,7 @@
                        ┘
 </pre>
 <p>But, ignoring the whitespace and going in reading order, the argument and result have exactly the same element ordering as for the rank 2 matrix <code><span class='Function'>⥊</span><span class='Modifier'>˘</span> <span class='Value'>a322</span></code>:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omN4peLPOKfnOKNiSDipYrLmCBhMzIy">↗️</a><pre>    <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span><span class='Modifier2'>⟜</span><span class='Function'>⍉</span> <span class='Function'>⥊</span><span class='Modifier'>˘</span> <span class='Value'>a322</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouI4p+c4o2JIOKlisuYIGEzMjI=">↗️</a><pre>    <span class='Function'>⋈</span><span class='Modifier2'>⟜</span><span class='Function'>⍉</span> <span class='Function'>⥊</span><span class='Modifier'>˘</span> <span class='Value'>a322</span>
 ┌─                          
 · ┌─            ┌─          
   ╵ 0 1  2  3   ╵ 0 4  8    

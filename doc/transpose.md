@@ -31,11 +31,11 @@ BQN's transpose takes the first axis of `𝕩` and moves it to the end.
 In terms of the argument data as given by [Deshape](reshape.md#deshape) (`⥊`), this looks like a simple 2-dimensional transpose: one axis is exchanged with a compound axis made up of the other axes. Here we transpose a rank 3 matrix:
 
         a322 ← 3‿2‿2⥊↕12
-        ≍○<⟜⍉ a322
+        ⋈⟜⍉ a322
 
 But, ignoring the whitespace and going in reading order, the argument and result have exactly the same element ordering as for the rank 2 matrix `⥊˘ a322`:
 
-        ≍○<⟜⍉ ⥊˘ a322
+        ⋈⟜⍉ ⥊˘ a322
 
 To exchange multiple axes, use the [Repeat](repeat.md) modifier. A negative power moves axes in the other direction, just like how [Rotate](reverse.md#rotate) handles negative left arguments. In particular, to move the last axis to the front, use [Undo](undo.md) (as you might expect, this exactly inverts `⍉`).
 

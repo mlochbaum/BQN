@@ -22,11 +22,11 @@ To reverse along an axis other than the first, use Cells (`˘`) or Rank (`⎉`).
 
         ⌽˘ >"ab"‿"cd"‿"ef"
 
-Reverse is useful for [folding](fold.md) left to right instead of right to left.
+Reverse is useful for [folding](fold.md) left to right instead of right to left (here we use [Pair](pair.md) to show structure).
 
-        ≍○< ´   "abcd"  # Right to left
+        ⋈ ´   "abcd"  # Right to left
 
-        ≍○<˜´ ⌽ "abcd"  # Left to right
+        ⋈˜´ ⌽ "abcd"  # Left to right
 
 Reverse is its own [inverse](undo.md) `⌽⁼`. As a result, `𝔽⌾⌽` reverses the argument, applies `𝔽`, and reverses again. It's a particularly useful pattern with [Scan](scan.md), as it allows scanning from the end rather than the beginning of the array. For example, `` ∨` `` on a list of booleans changes all bits after the first `1` to `1`, but `` ∨`⌾⌽ `` does this to all bits before the last `1`.
 
@@ -40,7 +40,7 @@ Rotate moves elements in a list around cyclically. It can also rotate any number
 
         2 ⌽ "rotate"
 
-        2 (⊢ ≍○< ⌽) 5‿2⥊"rotateCELL"
+        2 (⊢ ⋈ ⌽) 5‿2⥊"rotateCELL"
 
         2 ⌽ 'c'  # No axes to rotate
 
