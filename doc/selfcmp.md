@@ -16,7 +16,7 @@ xl ← ≠ xc ← ⊐ xt ← '''(Highlight∾∾⊣)¨"mississippi"
 xn ← ≠ xu ← xt /˜ xf ← 0= xo ← ⊒ xt
 
 Text ← ("text" Attr "dy"‿"0.32em"∾(Pos d⊸×))⊸Enc
-Path ← "path" Elt "d"≍○<·∾⊣∾¨·FmtNums(d⊏˜∊⟜" Vv")⊸×
+Path ← "path" Elt "d"⋈·∾⊣∾¨·FmtNums(d⊏˜∊⟜" Vv")⊸×
 Rp ← Pos⊸∾⟜("width"‿"height"≍˘FmtNum)○(d⊸×)
 
 tx ← ↕xl ⋄ y ← » yd ← +`0.6+1.2‿1‿xn‿1.8‿1.8

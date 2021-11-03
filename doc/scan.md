@@ -16,13 +16,13 @@ bg ← "class=bluegreen|stroke-width=3|style=fill:none|opacity=0.6"
 lg ← "class=lilac|stroke-width=2"
 
 Text ← ("text" Attr "dy"‿"0.32em"∾ ·Pos d⊸×)⊸Enc
-Path ← "path" Elt "d"≍○<⊢
+Path ← "path" Elt "d"⋈⊢
 Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ ·FmtNum d×⊢
 
 Brak ← {
   l ← 6‿15
   P ← ∾"M l l "∾¨ ·FmtNum∘⥊ ∾
-  Path ∾ (((-⊸≍0.4)+0‿¯1⊏𝕨)((0‿¯1×l)+d×≍)⌜𝕩) P¨ ≍○<⟜⌽ -⌾⊑⊸≍l
+  Path ∾ (((-⊸≍0.4)+0‿¯1⊏𝕨)((0‿¯1×l)+d×≍)⌜𝕩) P¨ ⋈⟜⌽ -⌾⊑⊸≍l
 }
 VL ← ≍˜⊸≍⟜((≍⟜-0.3)⊸+)
 
@@ -37,7 +37,7 @@ dim ← ⟨2.5+≠tx,0.75+1⊑ty⟩ ⋄ sh ← ¯2.3‿0
     ∾ sx {𝕨⊸VL¨⌽⌾(1⊸⊑)<˘ty≍˘𝕩}¨ sy
     sx ((¯1‿¯0.14≍¯0.3‿¯0.07)+≍)¨ sy
   ⟩
-  cg Ge (¯1.1≍¨ty) Text¨ ≍○<⟜(ft∾(Highlight"`")∾⊢) "𝕩"
+  cg Ge (¯1.1≍¨ty) Text¨ ⋈⟜(ft∾(Highlight"`")∾⊢) "𝕩"
   "font-size=21px" Ge (⍉tx≍⌜ty) Text¨ xt≍zt
   "font-size=19px" Ge sx (≍ Text ft˙)¨ sy
   bg Ge tx⊸Brak¨ ty

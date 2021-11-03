@@ -19,7 +19,7 @@ repl ← "div:cont" E ⟨
   ⟩
   "pre:rslt" E """B Q N"""
 ⟩
-repl ∾< ∾(""Enc˜"script"Attr"src"≍○<∾⟜".js")¨"bqn"‿"repl"
+repl ∾< ∾(""Enc˜"script"Attr"src"⋈∾⟜".js")¨"bqn"‿"repl"
 -->
 
 Want to learn and use a modern, powerful language centered on Ken Iverson's array programming paradigm? BQN **now provides**:

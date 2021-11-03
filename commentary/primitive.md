@@ -62,16 +62,16 @@ cg ← "g"At"text-anchor=middle|font-size=19px"
 lg ← "g"At"stroke=currentColor|stroke-width=0.4"
 
 Text ← ("text" Attr "dy"‿"0.35em"∾·Pos d⊸×)⊸Enc
-t ← ((0.63-˜0.36⌊↕3)(0.22⊸+⊸≍¨≍○<≍˜¨)1∾0.5+↕2) Text¨¨ ⟨
+t ← ((0.63-˜0.36⌊↕3)(0.22⊸+⊸≍¨⋈≍˜¨)1∾0.5+↕2) Text¨¨ ⟨
   "Definition"‿"Exact"‿"Fuzzy"
   "Application"‿"Specific"‿"General"
 ⟩
 
 ((-p+d×0.1‿0.3)∾dim) SVG ("g"At"fill=currentColor") Enc ⟨
   "rect" Elt rc ∾ (Pos 0‿0)∾"width"‿"height"≍˘FmtNum 2×d
-  tg Enc "end"‿"middle" ("g"Attr"text-anchor"≍○<⊢)⊸Enc¨ t
+  tg Enc "end"‿"middle" ("g"Attr"text-anchor"⋈⊢)⊸Enc¨ t
   cg Enc (⥊≍⌜˜0.5+↕2) Text¨ "Algorithm"‿""‿"Primitive"‿"Design pattern"
-  lg Enc (<"xy"≍⌜"12") ("line" Elt ≍˘○⥊)⟜(FmtNum d×⊢)¨ ≍○<⟜⌽ 1‿1≍¯0.34‿2.1
+  lg Enc (<"xy"≍⌜"12") ("line" Elt ≍˘○⥊)⟜(FmtNum d×⊢)¨ ⋈⟜⌽ 1‿1≍¯0.34‿2.1
 ⟩
 -->
 

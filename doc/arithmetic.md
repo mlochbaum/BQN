@@ -81,14 +81,14 @@ lg ← "g"At"stroke=currentColor|stroke-width=0.6|opacity=0.5"
 
 Text ← ("text" Attr "dy"‿"0.35em"∾Pos)⊸Enc
 types ← "Number"‿"Character"
-t ← ((1-˜0.65⌊↕3)(0.25⊸+⊸≍¨≍○<≍˜¨)1∾0.5+↕2) (Text¨⟜(<∾types˙))¨ "𝕨"‿"𝕩"
+t ← ((1-˜0.65⌊↕3)(0.25⊸+⊸≍¨⋈≍˜¨)1∾0.5+↕2) (Text¨⟜(<∾types˙))¨ "𝕨"‿"𝕩"
 
 ((-p+d×0.1‿0.3)∾dim) SVG ⟨
   "rect" Elt rc ∾ (Pos 0‿0)∾"width"‿"height"≍˘FmtNum 2×d
   ("rect" Elt hc ∾ ("width"‿"height"≍˘FmtNum d×¬2×hp)∾˜Pos∘+⟜hp)∘≍¨⟜⌽ ↕2
-  tg Enc "end"‿"middle" ("g"Attr"text-anchor"≍○<⊢)⊸Enc¨ t
+  tg Enc "end"‿"middle" ("g"Attr"text-anchor"⋈⊢)⊸Enc¨ t
   cg Enc (⥊≍⌜˜0.5+↕2) Text¨ 2‿1‿1 / Highlight¨ "+ -"‿"+  "‿"  -"
-  lg Enc (<"xy"≍⌜"12") ("line" Elt ≍˘○⥊)⟜(FmtNum d×⊢)¨ ≍○<⟜⌽ 1‿1≍¯0.5‿2.2
+  lg Enc (<"xy"≍⌜"12") ("line" Elt ≍˘○⥊)⟜(FmtNum d×⊢)¨ ⋈⟜⌽ 1‿1≍¯0.5‿2.2
 ⟩
 -->
 

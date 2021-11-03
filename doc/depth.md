@@ -13,7 +13,7 @@ tc ← "text"At"dy=-0.2em|class=Number"
 bc ← "path"At"class=bluegreen|stroke-width=2|style=fill:none|opacity=0.4"
 dc ← "text"At"font-size=18px|text-anchor=start|opacity=0.9"
 
-Path ← bc Elt "d"≍○<⊢
+Path ← bc Elt "d"⋈⊢
 Brak ← {
   P ← ∾"M l l "∾¨ ·FmtNum∘⥊ ∾
   Path (d×⟨0.6×𝕩-0.75,0.4⟩) (-⌾⊑⊸P ∾ P⟜⌽) -⌾⊑⊸≍5‿13

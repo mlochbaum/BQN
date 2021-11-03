@@ -25,10 +25,10 @@ tp ← y ≍˜¨¨ 1‿4/⟨tx,↕lf⟩
 hp ← 0.2‿¯0.45(+⟜(1‿0×sh)≍¯2⊸×⊸+)1‿0×dim
 L0 ← ("xy"≍⌜"12")≍˘○⥊ ·FmtNum d × ·⌽˘ (≍˘⟜-0.08×4≍˜×∘-˜´) + ≍⟜(2↑y)
 LL ← "line" Elt =⟜li "mask"‿"url(#m)"⊸∾⍟⊣ L0∘≍
-Ilg← (1⊸+∾-)∘= <⊸(⊔¨) ∾≍○<∾○(↕∘≠)
+Ilg← (1⊸+∾-)∘= <⊸(⊔¨) ∾⋈∾○(↕∘≠)
 
 lgg ← "linearGradient"At"id=grad|x2=0|y2=1"
-Stop ← "stop" Elt "offset"‿"stop-color"≍˘≍○<
+Stop ← "stop" Elt "offset"‿"stop-color"≍˘⋈
 defs ← "defs" Enc ("mask"At"id=m") Enc ⟨
   lgg Enc "0.6"‿"0.9" Stop¨ "#000"‿"#fff"
   "rect" Elt "fill"‿"url(#grad)" ∾ ((sh⊑⊸≍⊑) Rp dim⊑⊸≍-˜´) 2↑y
