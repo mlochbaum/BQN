@@ -13,7 +13,7 @@ defTok ← (¯1+`·¬·»⊸∧∊⟜idChars)⊸⊔¨ defs
 depend ← <∘/˘ range ∧ > (names∊LC¨)¨ (0=·+`·-˝"{"‿"}"≡⌜⊢)⊸/¨defTok
 order ← {{(𝕨⊸∨𝕊⍟(𝕩<○≠⊢)𝕩∾/)(0»∨`)⊸<𝕨<∧´∘⊏⟜𝕨¨l}⟜/0¨l←𝕩} depend
 
-chrs ← ∾⟜"⋈"⌾⊑ chrs0 ← •Import "../src/glyphs.bqn"
+chrs ← •Import "../src/glyphs.bqn"
 
 def‿keep ← ⊑¨⌾(1⊸⊑) (1=≠)¨⊸⊔ anames
 keep∾↩"⌾⎊"
@@ -26,5 +26,5 @@ GetRepls ← {
 
 ⟨E_proc⟩ ← chrs‿GetRepls •Import "../src/pp.bqn"
 
-rslt ← "⟨"∾"⟩"«∾","⊸∾¨∾chrs0  # Output all primitives
+rslt ← "⟨"∾"⟩"«∾","⊸∾¨∾chrs  # Output all primitives
 •BQN ∾∾⟜(@+10)¨ pre ∾ order∾⟜≠⊸⊏E_proc¨ defs∾<rslt
