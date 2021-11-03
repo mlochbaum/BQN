@@ -21,7 +21,7 @@ Num ← 0⊸≤◶⟨"-"∾FP∘|,FP⟩       # Format number
 glyphs ← •Import "glyphs.bqn"
 _getComp ← { (4+useInd) ↑ (𝕗 •Import "c.bqn"){𝔽} }
 useInd ← "-i"≡⊑args←•args ⋄ args↓˜↩useInd
-Comp ← ((<"runtime" Ind F)¨↕62) glyphs _getComp ⊢
+Comp ← ((<"runtime" Ind F)¨↕≠∾glyphs) glyphs _getComp ⊢
 J ← ∾∾⟜(@+10)¨
 Fconst ← ≡◶⟨@⊸≤◶{Num𝕩}‿Char, Str, ⊑⟩
 Fout ← (≠↑⟨F,Fconst,L =◶⟨F,L(L F¨)¨⟩¨,L ·F¨2⊸↑,F⟩˙) {L𝕎¨𝕩}¨ ⊢

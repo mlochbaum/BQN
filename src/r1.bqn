@@ -1,6 +1,6 @@
 # BQN runtime part 1. Requires:
 #   Type Fill Log GroupLen GroupOrd _fillBy_
-#   +-×÷⋆⌊⌈|<>=≠≤≥≢⊢⊣⥊∾↑↓↕⊏⊑!⌜˙˜´`∘○⊸⟜◶⊘⍟
+#   +-×÷⋆⌊⌈|<>=≠≤≥≢⊢⊣⥊∾⋈↑↓↕⊏⊑!⌜˙˜´`∘○⊸⟜◶⊘⍟
 # Filled in by runtime: glyphs and default PrimInd
 # Provides: all BQN primitives
 
@@ -15,7 +15,6 @@ Nat ← (1=Type)◶⟨0,|∘⌊⊸=⟩
 ToArray ← <⍟IsAtom
 IsSimple ← 1×´IsAtom⌜
 Deshape ← IsArray◶{𝕩Fill⟨𝕩⟩}‿⥊
-Pair ← {⟨𝕩⟩} ⊘ {⟨𝕨,𝕩⟩}
 Cell ← ↓⟜≢
 MatchS ← 1×´=¨
 PermInv ← 1⌜⊸GroupOrd
@@ -77,7 +76,7 @@ Cmp1 ← (0<1×´≢∘⊢)◶⟨1, IsArray∘⊢◶(1-2×≤)‿{𝕨Cmp1𝕩}�
 CmpLen ← {
   e←𝕨-○(1×´0⊸<⌜)𝕩
   𝕨(e=0)◶⟨e,0⟩‿{
-    SM←Cmp0 Pair ≥⊑Pair
+    SM←Cmp0 ⋈ ≥⊑⋈
     c‿r←𝕨SM○≠𝕩
     l←𝕨{
       i←0+´×`𝕨=¨𝕩
@@ -355,17 +354,17 @@ _under_←{
   # Return flat lists ⟨indices,values⟩, or structErr if 𝕨 doesn't capture 𝕩.
   GetInserts←{
     count←1⋄DC←IsArray◶⟨0,1+0⌈´{count+↩¯1+≠d←⥊𝕩⋄DC⌜d}⟩⋄depth←DC𝕩
-    𝕩 (2⌊depth)◶(Pair○Pair)‿(StructConform◶⟨StructErr˙,Pair○⥊⟩)‿{
+    𝕩 (2⌊depth)◶(⋈○⋈)‿(StructConform◶⟨StructErr˙,⋈○⥊⟩)‿{
       Fail←{𝕊‿0}
       # 𝕎 is parent traversal; 𝕩 is current components of ind and val
-      Trav←(IsArray 0⊑⊢)◶⟨Pair, StructConform´∘⊢◶Fail‿{
+      Trav←(IsArray 0⊑⊢)◶⟨⋈, StructConform´∘⊢◶Fail‿{
         Parent←𝕎 ⋄ n←≠0⊑a←⥊⌜𝕩 ⋄ j←¯1
         Child←Trav⟜{𝕩⊸⊑⌜a}
         { j+↩1 ⋄ f←n⊸≤◶⟨𝕊˙⊸Child,Parent˙⟩j ⋄ F 0 }
       }⟩
       next ← 0 Trav 𝕨‿𝕩
       res ← {n‿o←Next𝕩⋄next↩n⋄o}⌜ ↕count
-      (next=fail)◶⟨0⊸⊑⌜ Pair 1⊸⊑⌜, StructErr˙⟩ res
+      (next=fail)◶⟨0⊸⊑⌜ ⋈ 1⊸⊑⌜, StructErr˙⟩ res
     } 𝕨
   }⍟(1-IsStructErr∘⊢)
   Struct←{
@@ -409,7 +408,7 @@ Merge←{
 
 JoinTo←(1<⌈○=)◶(∾○⥊)‿{
   a←1-˜𝕨⌈○=𝕩
-  s←𝕨Pair○≢𝕩
+  s←𝕨⋈○≢𝕩
   "𝕨∾𝕩: Rank of 𝕨 and 𝕩 must differ by at most 1" ! 1×´(a≤≠)⌜s
   c←(≠-a˙)⊸↓⌜s
   "𝕨∾𝕩: Cell shapes of 𝕨 and 𝕩 must match" ! MatchS´c
@@ -563,7 +562,7 @@ ShiftAfter←{
 RangeCheck ← "↕𝕩: 𝕩 must consist of natural numbers"!Nat
 Range ← IsArray◶(↕⊣RangeCheck)‿{
   "↕𝕩: 𝕩 must be a number or list"!1==𝕩 ⋄ RangeCheck⌜𝕩
-  (0⌜𝕩)Fill 0⊸Fill⌜(0<1×´⊢)◶⟨⥊⟜⟨⟩,(<⟨⟩)Pair⊸∾⌜´↕⌜⟩𝕩
+  (0⌜𝕩)Fill 0⊸Fill⌜(0<1×´⊢)◶⟨⥊⟜⟨⟩,(<⟨⟩)⋈⊸∾⌜´↕⌜⟩𝕩
 }
 Windows←{
   "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
@@ -680,7 +679,7 @@ _depthOp_←{
 }
 _rankOp_←{
   Min←<◶⊢‿⊣
-  k←𝕨(Pair○= (0≤⊢)◶⟨Min⟜-,⊣-Min⟩¨ 𝔾_ranks)𝕩
+  k←𝕨(⋈○= (0≤⊢)◶⟨Min⟜-,⊣-Min⟩¨ 𝔾_ranks)𝕩
   Enc←(>⟜0×1+≥⟜=)◶⟨<⊢,EncCell,<⌜_fillBy_<⊢⟩
   Merge ((0⊑k)Enc𝕨) 𝔽_each ((1-˜≠)⊸⊑k)Enc𝕩
 }
@@ -747,7 +746,7 @@ ProgressiveIndexOf ← 0 Fill {
   c←1-˜=𝕨
   "⊒: Rank of 𝕨 must be at least 1" ! 0≤c
   "⊒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
-  𝕨⊐○(Pair¨⟜(≢⥊OccurrenceCount∘⥊) 𝕨⊸⊐)𝕩
+  𝕨⊐○(⋈¨⟜(≢⥊OccurrenceCount∘⥊) 𝕨⊸⊐)𝕩
 }
 
 ReorderChk←{
@@ -883,7 +882,8 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
 ⚇ ← _depthOp_
 ⎉ ← _rankOp_
 ⥊ ↩ Deshape        ⊘ Reshape
-≍ ← >∘Pair _fillBy_ (⊢⊘IF)
+≍ ← >∘⋈ _fillBy_ (⊢⊘IF)
+⋈ ↩ {𝕩Fill⟨𝕩⟩}     ⊘ (⋈○⊑ _fillBy_ IF○<)
 ⍉ ← Transpose      ⊘ ReorderAxes
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 ⍷ ← ∊⊸/            ⊘ Find
