@@ -54,7 +54,7 @@ Most other primitives fit in one of three broad categories as shown in the table
 | `∩`    | `>∾`         | `∾≍»«`
 | `0`    | `≢/⍋⍒∊⊐⊒`    | `⍋⍒⊐⊒∊⍷`
 
-Besides these, there are a few primitives with special fills. [Enclose](enclose.md) (`<`) uses a fill derived directly from `𝕩`, with all numbers replaced by `0` and characters by `' '` (if it contains non-data atoms, the fill doesn't exist). [Range](range.md) (`↕`) does the same, although the reason is less obvious: the result elements don't match `𝕩`, but they have the same structure.
+Besides these, there are a few primitives with special fills. [Enclose](enclose.md) (`<`) uses a fill derived directly from `𝕩`, with all numbers replaced by `0` and characters by `' '` (if it contains non-data atoms, the fill doesn't exist). [Enlist](pair.md) works the same way, while [Pair](pair.md) sets the fill this way based on both `𝕨` and `𝕩`, if they agree. [Range](range.md) (`↕`) does the same, although the reason is less obvious: the result elements don't match `𝕩`, but they have the same structure.
 
 [Prefixes and Suffixes](prefixes.md) (`↑↓`) use `0↑𝕩` for the fill, as do [Group](group.md) and Group Indices (`⊔`) in the single-axis case. Fills for multi-axis `⊔` are more complicated, but follow the rule that variable-length axes are changed to length 0. The *elements* of the result of `⊔` also have a fill specified: the same as `𝕩` for Group, or `0` for Group Indices.
 

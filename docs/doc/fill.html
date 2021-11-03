@@ -21,7 +21,7 @@
 ⟨ ⟨ 0 3 3 3 ⟩ " qrs" ⟩
 
     <span class='Number'>3</span><span class='Function'>↑</span><span class='Bracket'>⟨⟩</span>  <span class='Comment'># Fill unknown
-</span>ERROR
+</span>⟨ 0 0 0 ⟩
 
     <span class='Function'>»</span><span class='Bracket'>⟨⟩</span>   <span class='Comment'># Fill not needed
 </span>⟨⟩
@@ -77,7 +77,7 @@
 </tr>
 </tbody>
 </table>
-<p>Besides these, there are a few primitives with special fills. <a href="enclose.html">Enclose</a> (<code><span class='Function'>&lt;</span></code>) uses a fill derived directly from <code><span class='Value'>𝕩</span></code>, with all numbers replaced by <code><span class='Number'>0</span></code> and characters by <code><span class='String'>' '</span></code> (if it contains non-data atoms, the fill doesn't exist). <a href="range.html">Range</a> (<code><span class='Function'>↕</span></code>) does the same, although the reason is less obvious: the result elements don't match <code><span class='Value'>𝕩</span></code>, but they have the same structure.</p>
+<p>Besides these, there are a few primitives with special fills. <a href="enclose.html">Enclose</a> (<code><span class='Function'>&lt;</span></code>) uses a fill derived directly from <code><span class='Value'>𝕩</span></code>, with all numbers replaced by <code><span class='Number'>0</span></code> and characters by <code><span class='String'>' '</span></code> (if it contains non-data atoms, the fill doesn't exist). <a href="pair.html">Enlist</a> works the same way, while <a href="pair.html">Pair</a> sets the fill this way based on both <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code>, if they agree. <a href="range.html">Range</a> (<code><span class='Function'>↕</span></code>) does the same, although the reason is less obvious: the result elements don't match <code><span class='Value'>𝕩</span></code>, but they have the same structure.</p>
 <p><a href="prefixes.html">Prefixes and Suffixes</a> (<code><span class='Function'>↑↓</span></code>) use <code><span class='Number'>0</span><span class='Function'>↑</span><span class='Value'>𝕩</span></code> for the fill, as do <a href="group.html">Group</a> and Group Indices (<code><span class='Function'>⊔</span></code>) in the single-axis case. Fills for multi-axis <code><span class='Function'>⊔</span></code> are more complicated, but follow the rule that variable-length axes are changed to length 0. The <em>elements</em> of the result of <code><span class='Function'>⊔</span></code> also have a fill specified: the same as <code><span class='Value'>𝕩</span></code> for Group, or <code><span class='Number'>0</span></code> for Group Indices.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NiDihpEg4oaR4oaVMyAgIyBUd28gZmlsbHMgYXQgdGhlIGVuZAoKwrvCqCAz4oC/NOKAvzEgL+KKuOKKlCAiYWJjMDEyM0Ei">↗️</a><pre>    <span class='Number'>6</span> <span class='Function'>↑</span> <span class='Function'>↑↕</span><span class='Number'>3</span>  <span class='Comment'># Two fills at the end
 </span>⟨ ⟨⟩ ⟨ 0 ⟩ ⟨ 0 1 ⟩ ⟨ 0 1 2 ⟩ ⟨⟩ ⟨⟩ ⟩

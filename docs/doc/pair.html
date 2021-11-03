@@ -1,0 +1,65 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Pair</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
+<h1 id="pair"><a class="header" href="#pair">Pair</a></h1>
+<p>The function <code><span class='Function'>⋈</span></code> forms a list of all its arguments. When there's one argument, it's called &quot;Enlist&quot;, and with two, it's called &quot;Pair&quot;.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouIICJlbmxpc3QiICAgICMg4p+o8J2VqeKfqQoKInBhIiDii4ggImlyIiAgICMg4p+o8J2VqCzwnZWp4p+p">↗️</a><pre>    <span class='Function'>⋈</span> <span class='String'>&quot;enlist&quot;</span>    <span class='Comment'># ⟨𝕩⟩
+</span>⟨ "enlist" ⟩
+
+    <span class='String'>&quot;pa&quot;</span> <span class='Function'>⋈</span> <span class='String'>&quot;ir&quot;</span>   <span class='Comment'># ⟨𝕨,𝕩⟩
+</span>⟨ "pa" "ir" ⟩
+</pre>
+<p>It's usually preferable to use <a href="arrayrepr.html#brackets">list notation</a> directly for such arrays, because it's easy to add or remove any number of elements. Pair is useful when a standalone function is needed, for example to be used as an operand.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAvzTigL8xIOKLiOKMnCAibm9ydGgi4oC/InNvdXRoIiAgIyBDYXJ0ZXNpYW4gcHJvZHVjdAoK4ouIwqggIistw5fDtyIgICMgR2x5cGhzIHRvIHN0cmluZ3M=">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span> <span class='Function'>⋈</span><span class='Modifier'>⌜</span> <span class='String'>&quot;north&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;south&quot;</span>  <span class='Comment'># Cartesian product
+</span>┌─                             
+╵ ⟨ 2 "north" ⟩ ⟨ 2 "south" ⟩  
+  ⟨ 4 "north" ⟩ ⟨ 4 "south" ⟩  
+  ⟨ 1 "north" ⟩ ⟨ 1 "south" ⟩  
+                              ┘
+
+    <span class='Function'>⋈</span><span class='Modifier'>¨</span> <span class='String'>&quot;+-×÷&quot;</span>  <span class='Comment'># Glyphs to strings
+</span>⟨ "+" "-" "×" "÷" ⟩
+</pre>
+<p>Another common pattern is to use Pair in a <a href="train.html">train</a>, giving the results from applying each of two functions.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=J2MnICgr4ouILSkgIDHigL8y">↗️</a><pre>    <span class='String'>'c'</span> <span class='Paren'>(</span><span class='Function'>+⋈-</span><span class='Paren'>)</span>  <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+⟨ "de" "ba" ⟩
+</pre>
+<p>For longer lists, this pattern can be extended with the function <code><span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span></code>, which prepends a single element to a list.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImUwIiA84oq44oi+ICJlMSIgPOKKuOKIviAiZTIiIOKLiCAiZTMi">↗️</a><pre>    <span class='String'>&quot;e0&quot;</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span> <span class='String'>&quot;e1&quot;</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span> <span class='String'>&quot;e2&quot;</span> <span class='Function'>⋈</span> <span class='String'>&quot;e3&quot;</span>
+⟨ "e0" "e1" "e2" "e3" ⟩
+</pre>
+<p>However, before making a long list of this sort, consider that your goal might be more easily accomplished with a list of functions.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NiAoKyA84oq44oi+IC0gPOKKuOKIviDDlyDii4ggw7cpIDMKCns28J2VjzN9wqggK+KAvy3igL/Dl+KAv8O3">↗️</a><pre>    <span class='Number'>6</span> <span class='Paren'>(</span><span class='Function'>+</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span> <span class='Function'>-</span> <span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span> <span class='Function'>×</span> <span class='Function'>⋈</span> <span class='Function'>÷</span><span class='Paren'>)</span> <span class='Number'>3</span>
+⟨ 9 3 18 2 ⟩
+
+    <span class='Brace'>{</span><span class='Number'>6</span><span class='Function'>𝕏</span><span class='Number'>3</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>+</span><span class='Ligature'>‿</span><span class='Function'>-</span><span class='Ligature'>‿</span><span class='Function'>×</span><span class='Ligature'>‿</span><span class='Function'>÷</span>
+⟨ 9 3 18 2 ⟩
+</pre>
+<h2 id="pair-versus-couple"><a class="header" href="#pair-versus-couple">Pair versus Couple</a></h2>
+<p>Enlist and Pair closely related to <a href="couple.html">Solo and Couple</a>, in that <code><span class='Function'>⋈</span></code> is equivalent to <code><span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span></code> and <code><span class='Function'>≍</span></code> is equivalent to <code><span class='Function'>&gt;</span><span class='Modifier2'>∘</span><span class='Function'>⋈</span></code>. However, the result of <code><span class='Function'>⋈</span></code> is always a list (rank 1) while Solo or Couple return an array of rank at least 1.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiYyIg4omNICJkZWYiCgoiYWJjIiDii4ggImRlZiI=">↗️</a><pre>    <span class='String'>&quot;abc&quot;</span> <span class='Function'>≍</span> <span class='String'>&quot;def&quot;</span>
+┌─     
+╵"abc  
+  def" 
+      ┘
+
+    <span class='String'>&quot;abc&quot;</span> <span class='Function'>⋈</span> <span class='String'>&quot;def&quot;</span>
+⟨ "abc" "def" ⟩
+</pre>
+<p>And the arguments to Couple must have the same shape, while Enlist takes any two arguments.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiYyIg4omNICJkZWZnIgoKImFiYyIg4ouIICJkZWZnIg==">↗️</a><pre>    <span class='String'>&quot;abc&quot;</span> <span class='Function'>≍</span> <span class='String'>&quot;defg&quot;</span>
+ERROR
+
+    <span class='String'>&quot;abc&quot;</span> <span class='Function'>⋈</span> <span class='String'>&quot;defg&quot;</span>
+⟨ "abc" "defg" ⟩
+</pre>
+<p>The difference is that Couple treats the arguments as cells, and adds a dimension, while Pair treats them as elements, adding a layer of depth. Couple is a &quot;flat&quot; version of Pair, much like Cells (<code><span class='Modifier'>˘</span></code>) is a flat version of Each (<code><span class='Modifier'>¨</span></code>). Pair is more versatile, but—precisely because of its restrictions—Couple may allow more powerful array operations on the result.</p>
+<h2 id="fill-element"><a class="header" href="#fill-element">Fill element</a></h2>
+<p>Enlist and Pair set the result's <a href="fill.html">fill</a> element, while list notation doesn't have to. So the following result is guaranteed:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NCDihpEgImEi4oC/NSDii4ggImIi4oC/Nw==">↗️</a><pre>    <span class='Number'>4</span> <span class='Function'>↑</span> <span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Function'>⋈</span> <span class='String'>&quot;b&quot;</span><span class='Ligature'>‿</span><span class='Number'>7</span>
+⟨ ⟨ "a" 5 ⟩ ⟨ "b" 7 ⟩ ⟨ " " 0 ⟩ ⟨ " " 0 ⟩ ⟩
+</pre>
+<p>This means that <code><span class='Function'>⋈</span></code> may always behave the same as the obvious implementation <code><span class='Brace'>{</span><span class='Bracket'>⟨</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span><span class='Value'>;</span><span class='Bracket'>⟨</span><span class='Value'>𝕨</span><span class='Separator'>,</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span><span class='Brace'>}</span></code>. However, <code><span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span></code> and even <code><span class='Function'>&gt;</span><span class='Modifier2'>∘</span><span class='Brace'>{</span><span class='Bracket'>⟨</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span><span class='Value'>;</span><span class='Bracket'>⟨</span><span class='Value'>𝕨</span><span class='Separator'>,</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span><span class='Brace'>}</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span></code> compute the result fill as <code><span class='Function'>⋈</span></code> does and are identical implementations.</p>
