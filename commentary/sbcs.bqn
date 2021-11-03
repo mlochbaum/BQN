@@ -8,7 +8,7 @@
 # $ bqn sbcs.bqn -ef infile.bqn outfile.bqn  # Encode with SBCS
 # $ bqn sbcs.bqn outfile.bqn                 # Run with SBCS
 
-cs←"×÷⋆√⌊⌈¬∧∨≠≤≥≡≢⊣⊢⥊∾≍↑↓↕«»⌽⍉⍋⍒⊏⊑⊐⊒∊⍷⊔˙˜˘¨⌜⁼´˝∘○⊸⟜⌾⊘◶⎉⚇⍟⎊⋄⇐←↩⟨⟩‿·𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘π∞¯•"
+cs←"×÷⋆√⌊⌈¬∧∨≠≤≥≡≢⊣⊢⥊∾≍⋈↑↓↕«»⌽⍉⍋⍒⊏⊑⊐⊒∊⍷⊔˙˜˘¨⌜⁼´˝∘○⊸⟜⌾⊘◶⎉⚇⍟⎊⋄⇐←↩⟨⟩‿·𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕗𝕘π∞¯•"
 base←@+128
 off←0∾˜cs-base+↕≠cs
 
