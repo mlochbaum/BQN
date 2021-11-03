@@ -31,11 +31,11 @@ ERROR
   fe" 
      ┘
 </pre>
-<p>Reverse is useful for <a href="fold.html">folding</a> left to right instead of right to left.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omN4peLPCDCtCAgICJhYmNkIiAgIyBSaWdodCB0byBsZWZ0CgriiY3il4s8y5zCtCDijL0gImFiY2QiICAjIExlZnQgdG8gcmlnaHQ=">↗️</a><pre>    <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span> <span class='Modifier'>´</span>   <span class='String'>&quot;abcd&quot;</span>  <span class='Comment'># Right to left
+<p>Reverse is useful for <a href="fold.html">folding</a> left to right instead of right to left (here we use <a href="pair.html">Pair</a> to show structure).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouIIMK0ICAgImFiY2QiICAjIFJpZ2h0IHRvIGxlZnQKCuKLiMucwrQg4oy9ICJhYmNkIiAgIyBMZWZ0IHRvIHJpZ2h0">↗️</a><pre>    <span class='Function'>⋈</span> <span class='Modifier'>´</span>   <span class='String'>&quot;abcd&quot;</span>  <span class='Comment'># Right to left
 </span>⟨ 'a' ⟨ 'b' "cd" ⟩ ⟩
 
-    <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span><span class='Modifier'>˜´</span> <span class='Function'>⌽</span> <span class='String'>&quot;abcd&quot;</span>  <span class='Comment'># Left to right
+    <span class='Function'>⋈</span><span class='Modifier'>˜´</span> <span class='Function'>⌽</span> <span class='String'>&quot;abcd&quot;</span>  <span class='Comment'># Left to right
 </span>⟨ ⟨ "ab" 'c' ⟩ 'd' ⟩
 </pre>
 <p>Reverse is its own <a href="undo.html">inverse</a> <code><span class='Function'>⌽</span><span class='Modifier'>⁼</span></code>. As a result, <code><span class='Function'>𝔽</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span></code> reverses the argument, applies <code><span class='Function'>𝔽</span></code>, and reverses again. It's a particularly useful pattern with <a href="scan.html">Scan</a>, as it allows scanning from the end rather than the beginning of the array. For example, <code><span class='Function'>∨</span><span class='Modifier'>`</span></code> on a list of booleans changes all bits after the first <code><span class='Number'>1</span></code> to <code><span class='Number'>1</span></code>, but <code><span class='Function'>∨</span><span class='Modifier'>`</span><span class='Modifier2'>⌾</span><span class='Function'>⌽</span></code> does this to all bits before the last <code><span class='Number'>1</span></code>.</p>
@@ -47,10 +47,10 @@ ERROR
 </pre>
 <h2 id="rotate"><a class="header" href="#rotate">Rotate</a></h2>
 <p>Rotate moves elements in a list around cyclically. It can also rotate any number of axes of the argument array by different amounts at once. That's discussed in the next section; for now we'll stick to a single number for <code><span class='Value'>𝕨</span></code>. It has to be an integer, and <code><span class='Value'>𝕩</span></code> has to be an array with at least one axis.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDijL0gInJvdGF0ZSIKCjIgKOKKoiDiiY3il4s8IOKMvSkgNeKAvzLipYoicm90YXRlQ0VMTCIKCjIg4oy9ICdjJyAgIyBObyBheGVzIHRvIHJvdGF0ZQ==">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⌽</span> <span class='String'>&quot;rotate&quot;</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDijL0gInJvdGF0ZSIKCjIgKOKKoiDii4gg4oy9KSA14oC/MuKliiJyb3RhdGVDRUxMIgoKMiDijL0gJ2MnICAjIE5vIGF4ZXMgdG8gcm90YXRl">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⌽</span> <span class='String'>&quot;rotate&quot;</span>
 "tatero"
 
-    <span class='Number'>2</span> <span class='Paren'>(</span><span class='Function'>⊢</span> <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span> <span class='Function'>⌽</span><span class='Paren'>)</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;rotateCELL&quot;</span>
+    <span class='Number'>2</span> <span class='Paren'>(</span><span class='Function'>⊢</span> <span class='Function'>⋈</span> <span class='Function'>⌽</span><span class='Paren'>)</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;rotateCELL&quot;</span>
 ┌─               
 · ┌─     ┌─      
   ╵"ro   ╵"te    

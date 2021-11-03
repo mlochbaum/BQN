@@ -42,10 +42,7 @@ Above we start with a list of three empty arrays. After merging once we get a sh
 
 A note on the topic of Solo and Couple applied to units. As always, one axis will be added, so that the result is a list (strangely, J's [laminate](https://code.jsoftware.com/wiki/Vocabulary/commaco#dyadic) differs from Couple in this one case, as it will add an axis to get a shape `2‿1` result). For Solo, this is interchangeable with [Deshape](reshape.md) (`⥊`), and either primitive might be chosen for stylistic reasons. For Couple, it is equivalent to [Join-to](join.md) (`∾`), but this is an irregular form of Join-to because it is the only case where Join-to adds an axis to both arguments instead of just one. Couple should be preferred in this case.
 
-The pair function, which creates a list from its arguments, can be written `Pair ← ≍○<`, while `≍` in either valence is `>∘Pair`. As an interesting consequence, `≍ ←→ >∘≍○<`, and the same relationship holds for `Pair`.
-
-        ⟨2,3⟩ ≍○< "abc"  # Pair two values
-        ≍○< "abc"        # Pair one(?) value
+The function [Pair](pair.md) (`⋈`) can be written `≍○<`, while `≍` in either valence is `>∘⋈`. As an interesting consequence, `≍ ←→ >∘≍○<`, and `⋈ ←→ >∘⋈○<`. These two identities have the same form because adding `○<` commutes with adding `>∘`.
 
 ## Definitions
 
