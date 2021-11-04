@@ -12,12 +12,12 @@ pg ← At "class=red|style=fill:none|stroke-width=1"
 pc ← At "class=red|r=4"
 rc ← At "class=code|stroke-width=1|rx=5"
 gr ← "g" At "font-family=BQN,monospace|font-size=18px"
-Path ← "path" Elt ⊣∾"d"≍○<⊢
+Path ← "path" Elt ⊣∾"d"⋈⊢
 
 Pair ← {
   "•Plot: 𝕨 and 𝕩 must consist of rows of numbers" ! 𝕨 ⊢⊘∧○((1≤=)◶⟨0,∧´∘⥊@⊸>⟩) 𝕩
   "•Plot: 𝕨 and 𝕩 must have the same length" ! 𝕨 1⊘(≡○(¯1⊑≢)) 𝕩
-  ⥊ 𝕨 (< (↕¯1⊑≢)⊘⊣ ≍○< ⊢)⎉1 𝕩
+  ⥊ 𝕨 (< (↕¯1⊑≢)⊘⊣ ⋈ ⊢)⎉1 𝕩
 }
 PairRec ← {
   d ← 𝕨≍○≡𝕩

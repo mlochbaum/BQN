@@ -88,7 +88,7 @@ Explain ← {
   (512‿0⊸⌈⊸(⊣∾˜(t+pad)-˜-˜÷2˙)dim+2×t) SVG gr Enc ∾⥊¨⟨
     <"rect" Elt rc∾(Pos-pad)∾"width"‿"height"≍˘FmtNum dim
     <"text" Enc src
-    ("path" Elt ps∾"d"≍○<⊢)¨ pd
-    gt Enc ⟨gb,gf⟩ Enc¨ (1⊸⊑¨ ≍○<○(tp Enc¨⊢) ∾¨) toks
+    ("path" Elt ps∾"d"⋈⊢)¨ pd
+    gt Enc ⟨gb,gf⟩ Enc¨ (1⊸⊑¨ ⋈○(tp Enc¨⊢) ∾¨) toks
   ⟩
 }
