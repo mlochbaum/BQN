@@ -74,7 +74,7 @@ Nathan Rogers suggested that assertion should be made a primitive to elevate it 
 
 #### Context-free grammar
 
-In YAG meetings, I suggested adopting [APL\iv](https://aplwiki.com/wiki/APL%5Civ)'s convention that variable case must match variable type in order to achieve a context-free grammar. Adám, a proponent of case-insensitive names, pointed out that the case might indicate the type the programmer wanted to use instead of the value's type, creating cross roles.
+In YAG meetings, I suggested adopting [APL\iv](https://aplwiki.com/wiki/APL%5Civ)'s convention that variable case must match variable type in order to achieve a context-free grammar. Adám, a proponent of case-insensitive names, pointed out that the case might indicate the type the programmer wanted to use instead of the value's type, creating cross roles. Although I considered swapping subjects and functions, I ended up using exactly the conventions of his APL [style guide](https://abrudz.github.io/style/#nc).
 
 #### Headers
 
