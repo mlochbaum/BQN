@@ -418,37 +418,45 @@ JoinTo←(1<⌈○=)◶(∾○⥊)‿{
 
 Join1←{
   # List of lists
+  "∾𝕩: 𝕩 must have an element with rank at least =𝕩" ! 0<0+´=⌜𝕩
   i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
-  {{e↩a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜Ind≠⌜𝕩
+  {{e↩Deshape a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜Ind≠⌜𝕩
 }
 JoinM←{
   # Multidimensional
-  n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ d←≠0⊑s ⋄ r←=𝕩
-  "∾𝕩: Elements of 𝕩 must all have the same rank" ! 1×´(d=≠)⌜s
-  "∾𝕩: 𝕩 element rank must be at least argument rank" ! d≥r
+  n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ r←=𝕩
   _s0←{s←𝕨⋄F←𝔽⋄{o←s⋄s F↩𝕩⋄o}⌜𝕩}
-  sh←≢𝕩 ⋄ p←1 ⋄ i←j←<0
+  sh←≢𝕩 ⋄ p←1 ⋄ i←j←he←<0
   (Reverse 1×_s0 Reverse sh){
     q←𝕨
     a←𝕩⊑sh
-    m←𝕩⊸⊑⌜s
-    l←m⊏˜q⊸×⌜↕a
-    "∾𝕩: 𝕩 element shapes must be compatible" ! m MatchS ⥊(↕p)⊢⌜l⊣⌜↕q
-    k ← Ind l
+    h←-⟜(1-˜0⌈´rr)⌜rr←=⌜z⊏˜q⊸×⌜↕a
+    "∾𝕩: Incompatible element ranks" ! 1×´0⊸≤⌜h
+    hl←≠ih←q⊸×⌜Ind h
+    sf←s⊏˜⥊((a×q)⊸×⌜↕p)+⌜ih+⌜↕q
+    si←⥊he⊣⌜↕hl×q
+    "∾𝕩: Incompatible element ranks" ! 1×´si<⟜≠¨sf
+    m←si⊑¨sf
+    lf←m⊏˜q⊸×⌜↕hl
+    "∾𝕩: 𝕩 element shapes must be compatible" ! m MatchS ⥊(↕p)⊢⌜lf⊣⌜↕q
+    k ← Ind l←{i←¯1⋄⊢◶1‿{(i+↩𝕩)⊑lf}⌜h}
     c ← (↕≠k)-¨k ⊏ 0+_s0 l
+    he↩ he +⌜ h
     i ↩ (i ×⌜ k⊏l) +¨ i⊢⌜c
     j ↩ j ×⟜a⊸+⌜ k
     p×↩a
   }¨↕r
-  G←(⥊⌜z){𝕨⊑𝕩⊑𝕗}¨
-  i (r<d)◶G‿{
-    t←r↓0⊑s
-    "∾𝕩: 𝕩 element trailing shapes must match" ! 1×´(t MatchS r⊸↓)⌜s
+  d←(=0⊑z)-0⊑he↩⥊he
+  "∾𝕩: 𝕩 element trailing shapes must match" ! he MatchS (=-d˙)⌜z
+  G←(Deshape⌜z){𝕨⊑𝕩⊑𝕗}¨
+  i (0<d)◶G‿{
+    Tr←(≠-d˙)⊸↓⋄t←Tr 0⊑s
+    "∾𝕩: 𝕩 element trailing shapes must match" ! 1×´(t MatchS Tr)⌜s
     ti←t⥊↕tp←×´t⋄(𝕨tp⊸×⊸+⌜ti)G𝕩⊣⌜ti
   } j
 }
 Join←(2⌊=)◶⟨
-  Merge, (1×´(1==)⌜)◶JoinM‿Join1, JoinM
+  Merge, (1×´(1≥=)⌜)◶JoinM‿Join1, JoinM
 ⟩_fillMerge_{
   r←≠𝕨 ⋄ d←≠𝕩
   "∾𝕩: empty 𝕩 fill rank must be at least argument rank" ! d≥r
