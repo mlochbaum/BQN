@@ -2,7 +2,7 @@
 
 # How to cook bacon
 
-*In BQN, bacon is American, or side, bacon. The method described here works best with medium to thick cuts, and leaves the bacon uniformly cooked and crispy. If you prefer parts of your bacon chewy and underdone, seek help elsewhere.*
+*In BQN, bacon is American, or side, bacon, or non-pork imitation of the same. The method described here works best with medium to thick cuts, and leaves the bacon uniformly cooked and crispy. If you prefer parts of your bacon chewy and underdone, seek help elsewhere.*
 
 Begin with a heated pan at least as wide as the length of the bacon. Prefer cast iron. Cook somewhat hotter than medium, but in order to avoid sticking, don't let the pan reach full heat before starting. However, there is never any need to lubricate the pan, as grease from the cooking bacon will soon serve this purpose.
 
