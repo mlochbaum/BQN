@@ -25,7 +25,7 @@ _glyphLookup_ ← {
 }
 _isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
 IsJoin ← '∾'_isGlyph
-DIsConst ← (4=0⊸⊑)◶0‿('˙'_isGlyph(≠-1˙)⊸⊑)
+DIsConst ← (4=0⊸⊑)◶0‿('˙'_isGlyph 2⊸⊑)
 
 Split2 ← { s←2⊸×⌜↕(≠𝕩)÷2 ⋄ ⟨s⊏𝕩,(1⊸+⌜s)⊏𝕩⟩ }
 _lookup_ ← {
@@ -782,7 +782,7 @@ ReorderAxesInv←{
 
 ⁼ ← {Inverse 𝕗}
 _inv_ ← {𝕘⋄𝕨𝔽𝕩}
-DNotInv ← (5=0⊸⊑)◶1‿(inv˙≢(≠-2˙)⊸⊑)
+DNotInv ← (5=0⊸⊑)◶1‿(inv˙≢2⊸⊑)
 _undo ← {𝕗 (≢∧INF˙⊸≢)◶0‿(DNotInv∘Decompose⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
 IsConstant ← (3≤Type)◶⟨1 ⋄ DIsConst∘{Decompose𝕩}⊢⟩
 AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
