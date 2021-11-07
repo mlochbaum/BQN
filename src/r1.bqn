@@ -324,7 +324,7 @@ Replicate←⟨"/"
   RepInd
 ⟩_multiAxis○ToArray _fillBy_ ⊢
 
-IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, DNotInv◶⟨1,1×´·𝕊⌜1↓⊢⟩d˙⟩0⊑d}
+IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, 1×´·𝕊⌜1↓d˙⟩0⊑d}
 hfils ← {𝕏´{0 Fill 𝕏}‿⊢}⌜(⊢∾{𝕏˜}⌜)⊢‿{𝕎{𝕎⊘𝕏}𝕏}
 HomFil ← "=≠≡≢"_glyphLookup_(1‿1‿2‿3‿0⊏hfils)⊸{𝕎𝕩}
 _fillByPure_←{
@@ -781,9 +781,6 @@ ReorderAxesInv←{
 }
 
 ⁼ ← {Inverse 𝕗}
-_inv_ ← {𝕘⋄𝕨𝔽𝕩}
-DNotInv ← (5=0⊸⊑)◶1‿(inv˙≢2⊸⊑)
-_undo ← {𝕗 (≢∧INF˙⊸≢)◶0‿(DNotInv∘Decompose⊢)◶⊢‿{𝕏_inv_(𝕎_invChk_𝕏)} Inverse 𝕗}
 IsConstant ← (3≤Type)◶⟨1 ⋄ DIsConst∘{Decompose𝕩}⊢⟩
 AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
 TrainInverse ← {
@@ -863,6 +860,7 @@ SwapInverse ← INF _lookup_ ⟨
 ⌜ ↩ _table
 ¨ ↩ _each
 Mod1Inverse ← INF˙ _lookup_ ⟨
+  '⁼', {𝕏_invChk_(𝕏{i←Inverse𝕗⋄𝕨I𝕩})}⍟((4=0⊸⊑)◶⟨1,¬·'⁼'_isGlyph 2⊸⊑⟩Decompose)
   '˜', SwapInverse
   '¨', {𝕏⁼¨                     ⊣·IX 0<≡∘⊢}
   '⌜', {𝕏⁼⌜⊘(IA∘0)              ⊣·IX 0<≡∘⊢}
@@ -879,11 +877,11 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
   '⊘', {(𝕎⁼)⊘(𝕏⁼)}
   '⊸', IsConstant∘⊣ ⊣◶{INF⊘𝕏}‿⊢ {𝕎⊸(𝕏⁼)}
   '⟜', {(𝕨IsConstant∘⊢◶⟨IA∘0˙,{𝕩𝕎{SwapInverse𝕗}⊢}⟩𝕩)⊘(𝕏⁼𝕎⁼)}
-⟩ { inv˙⊸=◶⟨𝔽,{𝕏_inv_𝕎}˙⟩ }
+⟩
 
 ´ ← _fold
 ˝ ← _insert
-⁼ ↩ _undo
+⁼ ↩ {i←Inverse𝕗⋄𝕨I𝕩}
 ˘ ← _cells
 ⊑ ↩ First          ⊘ Pick
 ◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
