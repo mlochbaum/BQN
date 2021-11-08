@@ -7,6 +7,7 @@
 Decompose ← {0‿𝕩}
 PrimInd ← {𝕩}
 SetPrims ← {Decompose‿PrimInd ↩ 𝕩}
+SetInv   ← {inverse 𝕏↩}
 
 IsArray ← 0=Type
 IsAtom  ← 1≤Type
