@@ -7,7 +7,7 @@
 Decompose ← {0‿𝕩}
 PrimInd ← {𝕩}
 SetPrims ← {Decompose‿PrimInd ↩ 𝕩}
-SetInv   ← {inverse 𝕏↩}
+SetInv   ← {inverse 𝕏↩ ⋄ {swapInverse 𝕏↩}𝕨}
 
 IsArray ← 0=Type
 IsAtom  ← 1≤Type
@@ -862,7 +862,7 @@ SwapInverse ← INF _lookup_ ⟨
 ¨ ↩ _each
 Mod1Inverse ← INF˙ _lookup_ ⟨
   '⁼', {𝕏_invChk_(𝕏{i←Inverse𝕗⋄𝕨I𝕩})}⍟((4=0⊸⊑)◶⟨1,¬·'⁼'_isGlyph 2⊸⊑⟩Decompose)
-  '˜', SwapInverse
+  '˜', {SwapInverse𝕩}
   '¨', {𝕏⁼¨                     ⊣·IX 0<≡∘⊢}
   '⌜', {𝕏⁼⌜⊘(IA∘0)              ⊣·IX 0<≡∘⊢}
   '˘', {(IX∘IsArray⊸⊢𝕏⁼)˘       ⊣·IX 0<=∘⊢}
