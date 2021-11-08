@@ -17,7 +17,7 @@ GroupLen ← {(𝕨⌈≠)⊸↑0 FillFn≠¨⊔𝕩}
 extra ← ⟨ •Type, FillFn, ⋆⁼, GroupLen, ∾⊔∘⊢, _fillBy_ ⟩
 provide ← { g←𝕩∊glyphs ⋄ (⍋⍋g)⊏extra∾•BQN∘⥊¨g/𝕩 } ∾need
 
-rt‿SetPrims ← VM ⟨provide,!∘0¨⟩ Compile src
+rt‿SetPrims‿SetInv ← VM ⟨provide,!∘0¨⟩ Compile src
 PrimInd ← rt⊸⊐⌾<
 Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
 SetPrims ⟨ Decompose, PrimInd ⟩
