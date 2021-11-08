@@ -157,10 +157,14 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
         fn("if (w===undefined) {\n"+mon+"} else {\n"+dy+"}");
       def = "new Array("+sp+").fill(null)";
       if (imm) c = "const e1=[...e2];"+cases[0];
-      else     c = "const fn="+combine(cases)+repdf[type]
-                 + (type===0?"fn.inverse="+combine(cases.slice(2)):"")
-                 + (type===0&&cases[4]?"fn.sinverse="+fn(cases[4]):"")
-                 + "return fn;";
+      else {
+        c = "const fn="+combine(cases)+repdf[type];
+        if (cases.length > 2) {
+          c += "fn.inverse="+combine(cases.slice(2));
+          if (cases[4]) c += "fn.sinverse="+fn(cases[4]);
+        }
+        c += "return fn;";
+      }
     }
 
     let de2 = "let e2="+def+";"
