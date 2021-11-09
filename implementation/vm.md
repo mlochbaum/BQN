@@ -200,6 +200,7 @@ The contents of a core runtime are given below. The names given are those used i
 |  19 | `` ` ``    |
 |  20 | `_fillBy_` | `𝔽` with result fill computed using `𝔾`
 |  21 | `⊘`        |
+|  22 | `⎊`        |
 |   — | `Decompose`| `•Decompose`
 |   — | `PrimInd`  | Index for primitive `𝕩`
 
