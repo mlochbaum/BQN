@@ -266,7 +266,7 @@ let equals = (x,w) => {
 }
 let table = m1(f => (x,w) => !has(w)
   ? arr(x.map(e=>call(f,e)),x.sh)
-  : arr([].concat.apply([],w.map(d=>x.map(e=>call(f,e,d)))),w.sh.concat(x.sh)));
+  : arr(w.map(d=>x.map(e=>call(f,e,d))).flat(),w.sh.concat(x.sh)));
 let scan = m1(f => (x,w) => {
   let s=x.sh;
   if (!s||s.length===0) throw Error("`: 𝕩 must have rank at least 1");
@@ -556,7 +556,7 @@ let addprimitives = (state, p) => {
     pr[k].push(gl); rt[k].push(val);
   });
   state.glyphs = pr.map(str);
-  state.runtime = list([].concat(...rt));
+  state.runtime = list(rt.flat());
   compgen(state);
 }
 let rerepl = (repl, cmp, state) => {
@@ -576,7 +576,7 @@ let rerepl = (repl, cmp, state) => {
   }
 }
 let primitives = dynsys(state => {
-  let gl=[].concat(...state.glyphs), rt=state.runtime;
+  let gl=state.glyphs.flat(), rt=state.runtime;
   return list(gl.map((g,i) => list([g,rt[i]])));
 });
 
