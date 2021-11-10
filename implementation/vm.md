@@ -184,7 +184,7 @@ The contents of a core runtime are given below. The names given are those used i
 |   3 | `GroupLen` | `≠¨⊔𝕩` for a valid list `𝕩`, with minimum length `𝕨`
 |   4 | `GroupOrd` | `∾⊔𝕩` provided `𝕨` is `l GroupLen 𝕩` (any `l`)
 |   5 | `!`        |
-|   6 | `+`        | On two atoms
+|   6 | `+`        | On one or two atoms
 |   7 | `-`        | On one or two atoms
 |   8 | `×`        | On two atoms
 |   9 | `÷`        | On one or two atoms
