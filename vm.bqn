@@ -1,4 +1,4 @@
-MakeVar ← { 𝕊 name:
+MakeVar ← { program 𝕊 name:
   v←@
   Get  ⇐ !∘"Runtime: Variable referenced before definition"
   SetU ⇐ !∘"↩: Variable modified before definition"
@@ -12,18 +12,18 @@ MakeVar ← { 𝕊 name:
     Get↩SetU↩SetN↩!∘"Internal error: Variable used after clear"
     r
   }
-  GetF ⇐ {𝕩.Field name}  # TODO no env.program access
+  GetF ⇐ {program 𝕩.Field name}
 }
 MakeEnv ← { 𝕊p‿v‿n‿e:
   ns ← v-≠n  # Number of special names
-  vars ⇐ MakeVar¨ (ns⥊¯1) ∾ n
   parent ⇐ p
   program ⇐ p.program
+  vars ⇐ program⊸MakeVar¨ (ns⥊¯1) ∾ n
   MakeNS ⇐ {𝕤
     v ← @ ⊣´¨ n ⊔ ns↓vars  # Lookup table
     Field ⇐ {𝕨𝕊i:
-      ! program ≡ 𝕨  # TODO cross-program handling
-      i ⊑ v
+      cross ← 𝕨 { 𝕨1⊘≡𝕩 ? ⊢ ; ⊑ 𝕩.names ⊐ ⊏⟜𝕨.names } program
+      (Cross i) ⊑ v
     }
   }
 }
@@ -174,10 +174,11 @@ RunBC ← { bc‿pos‿env:
       Inner Outer {parent˙ 𝕏 ⊢}¨ run
     }
   }¨ blockInfo
-  
+
   program ← {
     consts⇐consts
     blocks⇐blocks
+    names⇐0⊑2⊑token
   }
   
   (⊑blocks){𝔽} {program⇐program}
