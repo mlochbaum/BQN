@@ -5,8 +5,8 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="arithmetic-functions"><a class="header" href="#arithmetic-functions">Arithmetic functions</a></h1>
-<p>BQN's arithmetic functions use mostly the same symbols as APL, and the functionality is actually defined by the language implementation's number system and not the specification, so there's not too much to say about them.</p>
-<p>Summary of differences for APLers:</p>
+<p>Since BQN's function syntax was designed to mirror mathematical operators, its arithmetic tends to look a lot like mathematical notation. Individual functions are listed below. As an array language, BQN applies arithmetic element-wise to arrays, a system known as <a href="#pervasion">pervasion</a>. A distinctive feature of BQN is its <a href="#character-arithmetic">character arithmetic</a>, which allows <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> to manipulate characters without explicitly transforming them to numbers.</p>
+<p>Summary of other differences from APL:</p>
 <ul>
 <li>Exponentiation is represented with the star character <code><span class='Function'>⋆</span></code>, since asterisk <code><span class='Value'>*</span></code> is rendered inconsistently across fonts and sometimes appears as a superscript.</li>
 <li>There's a root function <code><span class='Function'>√</span></code>.</li>
@@ -87,7 +87,7 @@
 ⟨ 1 2.718281828459045 7.38905609893065 ⟩
 
     <span class='Function'>√</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span>
-⟨ 0 1 1.4142135623730951 2 ⟩
+⟨ 0 1 1.414213562373095 2 ⟩
 </pre>
 <p>Take note of the difference between the function <code><span class='Function'>-</span></code>, and the &quot;high minus&quot; character <code><span class='Number'>¯</span></code>, which is a part of <a href="syntax.html#constants">numeric notation</a>. Also shown is the number <code><span class='Number'>∞</span></code>, which BQN supports along with <code><span class='Number'>¯∞</span></code> (but depending on implementation BQN may or may not keep track of <code><span class='Number'>¯0</span></code>. Integer optimization loses the distinction so it's best not to rely on it).</p>
 <p>The logarithm is written with Undo: <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>. As with Power, the default base is <em>e</em>, giving a natural logarithm.</p>

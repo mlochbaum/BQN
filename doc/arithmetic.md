@@ -2,9 +2,9 @@
 
 # Arithmetic functions
 
-BQN's arithmetic functions use mostly the same symbols as APL, and the functionality is actually defined by the language implementation's number system and not the specification, so there's not too much to say about them.
+Since BQN's function syntax was designed to mirror mathematical operators, its arithmetic tends to look a lot like mathematical notation. Individual functions are listed below. As an array language, BQN applies arithmetic element-wise to arrays, a system known as [pervasion](#pervasion). A distinctive feature of BQN is its [character arithmetic](#character-arithmetic), which allows `+` and `-` to manipulate characters without explicitly transforming them to numbers.
 
-Summary of differences for APLers:
+Summary of other differences from APL:
 - Exponentiation is represented with the star character `⋆`, since asterisk `*` is rendered inconsistently across fonts and sometimes appears as a superscript.
 - There's a root function `√`.
 - Not uses a different symbol `¬`, and binary logical functions `∧∨` (described on [their own page](logic.md)) are extended linearly in all arguments instead of using GCD or LCM.

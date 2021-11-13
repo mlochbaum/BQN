@@ -2,7 +2,7 @@
 
 # Logic functions: And, Or, Not (also Span)
 
-BQN retains the APL symbols `∧` and `∨` for logical *and* and *or*, and changed APL's `~` to `¬` for *not*, since `~` looks too much like `˜` and `¬` is more common in mathematics today. Like J, BQN extends Not to the linear function `1⊸-`. However, it discards [GCD](https://aplwiki.com/wiki/GCD) and [LCM](https://aplwiki.com/wiki/LCM) as extensions of And and Or, and instead uses bilinear extensions: And is identical to Times (`×`), while Or is `×⌾¬`, following De Morgan's laws (other ways of obtaining a function for Or give an equivalent result—there is only one bilinear extension).
+BQN uses the mathematical symbols `∧` and `∨` for logical *and* and *or*, and `¬` for *not* (APL's `~` is discarded since it looks like `˜`, and is less common in mathematics today). These functions are arithmetically extended to apply to all numbers. In the case of Not, that means the linear function `1⊸-`. The two-argument functions have bilinear extensions: And is identical to Times (`×`), while Or is `×⌾¬`, following De Morgan's laws (other ways of obtaining a function for Or give an equivalent result—there is only one bilinear extension).
 
 If the arguments are probabilities of independent events, then an extended function gives the probability of the boolean function on their outcomes (for example, if *A* occurs with probability `a` and *B* with probability `b` independent of *A*, then *A* or *B* occurs with probability `a∨b`). These extensions have also been used in complexity theory, because they allow mathematicians to transfer a logical circuit from the discrete to the continuous domain in order to use calculus on it.
 
@@ -36,7 +36,7 @@ As with logical And and Or, any value and 0 is 0, while any value or 1 is 1. The
 
 ## Why not GCD and LCM?
 
-The main reason for omitting these functions is that they are complicated and, when applied to real or complex numbers, require a significant number of design decisions where there is no obvious choice (for example, whether to use comparison tolerance). On the other hand, these functions are fairly easy to implement, which allows the programmer to control the details, and also add functionality such as the extended GCD. Possible implementations for GCD and LCM are shown in [bqncrate](https://mlochbaum.github.io/bqncrate) ([GCD](https://mlochbaum.github.io/bqncrate/?q=gcd), [LCM](https://mlochbaum.github.io/bqncrate/?q=lcm)).
+APL provides [GCD](https://aplwiki.com/wiki/GCD) and [LCM](https://aplwiki.com/wiki/LCM) as extensions of And and Or, while BQN doesn't make these functions primitives. The main reason for omitting them functions is that they are complicated and, when applied to real or complex numbers, require a significant number of design decisions where there is no obvious choice (for example, whether to use comparison tolerance). On the other hand, these functions are fairly easy to implement, which allows the programmer to control the details, and also add functionality such as the extended GCD. Possible implementations for GCD and LCM are shown in [bqncrate](https://mlochbaum.github.io/bqncrate) ([GCD](https://mlochbaum.github.io/bqncrate/?q=gcd), [LCM](https://mlochbaum.github.io/bqncrate/?q=lcm)).
 
 A secondary reason is that the GCD falls short as an extension of Or, because its identity value 0 is not total. `0∨x`, for a real number `x`, is actually equal to `|x` and not `x`: for example, `0∨¯2` is `2` in APL. This means the identity `0∨x ←→ x` isn't reliable in APL.
 
