@@ -42,16 +42,25 @@ To join with a separator in between, we might prepend the separator to each stri
 
         1↓∾' '∾¨"time"‿"to"‿"join"‿"some"‿"words"
 
-Join requires each element of its argument to be an array, and their ranks to match exactly. No rank extension is performed.
+Join also extends the rank of a unit element (including an atom) to allow it to fit into the list. The highest-rank element determines the rank of the result.
 
-        ∾"abc"‿'d'‿"ef"  # Includes an atom
-        ∾"abc"‿(<'d')‿"ef"  # Includes a unit
+        ∾"abc"‿'d'‿"ef"‿(<'g')
+
+        ∾"abcd"  # Result has to be rank 0, impossible
 
 However, Join has higher-dimensional uses as well. Given a rank-`m` array of rank-`n` arrays (requiring `m≤n`), it will merge arrays along their first `m` axes. For example, if the argument is a matrix of matrices representing a [block matrix](https://en.wikipedia.org/wiki/Block_matrix), Join will give the corresponding unblocked matrix as its result.
 
         ⊢ m ← (3‿1≍⌜4‿2‿5) ⥊¨ 2‿3⥊↕6
         ∾ m  # Join all that together
 
-Join has fairly strict requirements on the shapes of its argument elements—although less strict than those of Merge, which requires they all have identical shape. Suppose the argument to Join has rank `m`. Each of its elements must have the same rank, `n`, which is at least `m`. The trailing shapes `m↓⟜≢¨𝕩` must all be identical (the trailing shape `m↓≢∾𝕩` of the result will match these shapes as well). The other entries in the leading shapes need not be the same, but the shape of an element along a particular axis must depend only on the location of the element along that axis in the full array. For a list argument this imposes no restriction, since the one leading shape element is allowed to depend on position along the only axis. But for higher ranks the structure quickly becomes more rigid.
+Axes with length 1 in the argument can also be left out, if it's done consistently for all elements in that position. One use of this is to add borders to an array, as in the multiplication table below.
 
-To state this requirement more formally in BQN, we say that there is some list `s` of lists of lengths, so that `(≢¨s)≡≢𝕩`. We require element `i⊑𝕩` to have shape `i⊑¨s`. Then the first `m` axes of the result are `+´¨s`.
+        ⊢ n ← 2‿4‿6 ×{⟨𝕗,𝕩⟩≍⟨𝕨,𝕨𝔽⌜𝕩⟩} 5‿6‿7‿8
+
+        ≢¨ n  # Different ranks but compatible shapes
+
+        ∾ n
+
+Even with the extension, Join has fairly strict requirements on the shapes of its argument elements—although less strict than those of Merge, which requires they all have identical shape. Suppose the argument to Join has rank `m`. The highest element rank (call it `n`) must be at least `m`. The trailing shapes `(-n-m)↑⟜≢¨𝕩` must all be identical (the trailing shape `(-n-m)↑≢∾𝕩` of the result will match these shapes as well). The other entries in the leading shapes need not be the same, but the shape of an element along a particular axis must depend only on the location of the element along that axis in the full array. For a list argument this imposes no restriction, since the one leading shape element is allowed to depend on position along the only axis. But for higher ranks the structure quickly becomes more rigid.
+
+To state this requirement more formally in BQN, we say that there is some list `s` of lists of lengths, so that `(≢¨s)≡≢𝕩`. We require element `i⊑𝕩` to have shape `i⊑¨s`. Then the first `m` axes of the result are `+´¨s`. To handle omitted axes, we change `s` to contain lists of length 0 or 1 instead of lengths, and require `i⊑𝕩` to have shape `∾i⊑¨s` instead. In the result, an omitted axis behaves exactly like a length-1 axis, so the result can be found using shapes derived from `1⊣´¨¨s`.
