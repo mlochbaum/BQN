@@ -116,7 +116,7 @@ gen ← {
 }
 
 _testConsistent_ ← {Match←𝔾
-  v ← <˘⍉> (5⌊´≠¨)⊸((Rand⟜≠⊏⊢)¨) ListVariations¨ a←𝕨≍○<𝕩
+  v ← <˘⍉> (5⌊´≠¨)⊸((Rand⟜≠⊏⊢)¨) ListVariations¨ a←𝕨⋈𝕩
   (ClearRefs@) ⊢ (∧´ ⊏ Match¨ 1⊸↓) (𝕨 (𝔽⊑∘⊢)⊘(𝔽´⊢) Variation¨⟜a)¨ v
 }
 
@@ -128,7 +128,7 @@ _testMonArith ← {
 
 RandDyShape ← {
   Prefix ← (∨`⌾⌽ 𝕩 ≥ ×`)⊸/ (Rand 1+≠)⊸↑
-  (Rand 2) ⌽ ≍○<⟜Prefix RandShape 𝕩
+  (Rand 2) ⌽ ⋈⟜Prefix RandShape 𝕩
 }
 _testDyArith ← {f←𝕗
   ch ← 0<+´≠¨ pmn ← (∊⟜f⥊¨⊢) +‿-‿¬

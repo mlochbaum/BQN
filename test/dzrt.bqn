@@ -10,7 +10,7 @@ provide ← { g←𝕩∊glyphs ⋄ (⍋⍋g)⊏extra∾•BQN∘⥊¨g/𝕩 } �
 
 rt‿SetPrims ← ⟨provide,!∘0¨⟩ DRun src
 PrimInd ← rt⊸⊐⌾<
-Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸≍⟩
+Decompose ← ((≠glyphs)>PrimInd)◶⟨•Decompose,0⊸⋈⟩
 SetPrims ⟨ Decompose, PrimInd ⟩
 
 rt
