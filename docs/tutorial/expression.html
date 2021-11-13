@@ -92,7 +92,7 @@
 
 <p>You could use Power to take square roots and <em>n</em>-th roots, but BQN has a primitive <code><span class='Function'>√</span></code> for this purpose. If no left argument is provided, then it's the Square Root function; with a left argument it's called Root, and raises the right argument to the power of one divided by the left argument.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiaIDIKMyDiiJogMjc=">↗️</a><pre>    <span class='Function'>√</span> <span class='Number'>2</span>
-1.4142135623730951
+1.414213562373095
     <span class='Number'>3</span> <span class='Function'>√</span> <span class='Number'>27</span>
 3
 </pre>
@@ -112,7 +112,7 @@
 <p>I bet if you try hard you'll remember how much you hated learning to do exponentiation before multiplication and division before addition and subtraction. Didn't I tell you Earth was a confusing place? BQN treats all functions—not only primitives, but also the ones you define—the same way. They're evaluated from right to left, and parentheses form subexpressions that are evaluated entirely before they can be used.</p>
 <p>For a longer example, here's an expression for the <a href="https://en.wikipedia.org/wiki/Sphere#Enclosed_volume">volume of a sphere</a> with radius 2.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KDTDtzMpIMOXIM+AIMOXIDLii4Yz">↗️</a><pre>    <span class='Paren'>(</span><span class='Number'>4</span><span class='Function'>÷</span><span class='Number'>3</span><span class='Paren'>)</span> <span class='Function'>×</span> <span class='Number'>π</span> <span class='Function'>×</span> <span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>3</span>
-33.510321638291124
+33.51032163829112
 </pre>
 <p>The evaluation order is diagrammed below, with the function <code><span class='Function'>⋆</span></code> on the first line evaluated first, then <code><span class='Function'>×</span></code> on the next, and so on. The effect of the parentheses is that <code><span class='Function'>÷</span></code> is evaluated before the leftmost <code><span class='Function'>×</span></code>.</p>
 <svg viewBox='-174.7 -34 512 188'>
