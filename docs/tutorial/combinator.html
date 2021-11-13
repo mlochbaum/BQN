@@ -536,7 +536,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaV4oq4w7cgOAoo4oaVOCkgw7cgNw==">↗️</a><pre>    <span class='Function'>↕</span><span class='Modifier2'>⊸</span><span class='Function'>÷</span> <span class='Number'>8</span>
 ⟨ 0 0.125 0.25 0.375 0.5 0.625 0.75 0.875 ⟩
     <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>8</span><span class='Paren'>)</span> <span class='Function'>÷</span> <span class='Number'>7</span>
-⟨ 0 0.14285714285714285 0.2857142857142857 0.42857142857142855 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
+⟨ 0 0.1428571428571428 0.2857142857142857 0.4285714285714285 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
 </pre>
 <p>What function turns 8 into 7? We can bind <code><span class='Number'>1</span></code> to <code><span class='Function'>-</span></code> on the left:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LeKfnDEgOA==">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span> <span class='Number'>8</span>
@@ -544,11 +544,11 @@
 </pre>
 <p>Now we need to apply <code><span class='Function'>↕</span></code> <em>and</em> this function to <code><span class='Number'>8</span></code>, dividing the results. It turns out we can do this using both Before and After. On one side we'll have <code><span class='Function'>↕</span><span class='Number'>8</span></code>, and on the other <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span> <span class='Number'>8</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaV4oq4w7fin5woLeKfnDEpIDg=">↗️</a><pre>    <span class='Function'>↕</span><span class='Modifier2'>⊸</span><span class='Function'>÷</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Number'>8</span>
-⟨ 0 0.14285714285714285 0.2857142857142857 0.42857142857142855 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
+⟨ 0 0.1428571428571428 0.2857142857142857 0.4285714285714285 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
 </pre>
 <p>This structure—Before on the left, After on the right—is also useful with two arguments: I call it &quot;split compose&quot;, and it applies one function to the left argument and another to the right before passing them both to the middle function (if the functions on both sides are the same, that would be Over!). Although it turns out it's not needed in the one-argument case. You'll get the same result just by jamming the functions together. This is called a &quot;train&quot; and we should probably leave it for another tutorial before going too far off the rails.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKGlcO3LeKfnDEpIDg=">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>↕÷-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Number'>8</span>
-⟨ 0 0.14285714285714285 0.2857142857142857 0.42857142857142855 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
+⟨ 0 0.1428571428571428 0.2857142857142857 0.4285714285714285 0.5714285714285714 0.7142857142857143 0.8571428571428571 1 ⟩
 </pre>
 <h2 id="base-decoding-continued"><a class="header" href="#base-decoding-continued">Base decoding continued</a></h2>
 <p>We're speeding up a bit now, so in the examples below it might take some time for you to break down what I did and why. Remember that you can open any expression in the REPL in order to change parts of it or view the syntax. And don't get discouraged just because of how long it takes to understand a line of code! First, you'll surely get faster in fitting the pieces together. Second, a line of BQN often has more code in it than a line in other languages, because primitives have such short names. Think about how much <em>functionality</em> you can read and understand rather than how few <em>lines</em> you get through.</p>
