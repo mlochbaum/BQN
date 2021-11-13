@@ -1,6 +1,6 @@
 func‿mod1‿mod2 ← •args
 lf←@+10
-charSet‿cgl←(∾ ≍○< ≠¨)⟨
+charSet‿cgl←(∾ ⋈ ≠¨)⟨
   func                  # Function
   mod1                  # 1-modifier
   mod2                  # 2-modifier
@@ -18,10 +18,10 @@ charSet‿cgl←(∾ ≍○< ≠¨)⟨
   "•"∾(¯1↓"𝕨")∾" "∾@+9  # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
-bF‿b1‿b2‿bS‿bH‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←≍¨˜⟜(0»+`)cgl
+bF‿b1‿b2‿bS‿bH‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←⋈¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
-bI←bX+≍⟜-5⋄bR←8+⊑bX
+bI←bX+⋈⟜-5⋄bR←8+⊑bX
 Pl←∾⟜("s"/˜1<≠)   # Pluralize
 _tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
 # Convert characters to numbers, mostly the same as tokens
@@ -60,7 +60,7 @@ Tokenize←{System‿vars←𝕨
   is-↩is(-×⊏⟜c)ie                           # Comment → ending newline only
   t←CharCode ie⊏𝕩
   nd←(t=⊑bN)>«t M bD⋄rr←t=bR                # Namespace dot; 𝕣
-  w←»⊸<l←rr∨nd<t M bN(⊣≍-˜)○⊑bW             # Word chars l, start w
+  w←»⊸<l←rr∨nd<t M bN(⊣⋈-˜)○⊑bW             # Word chars l, start w
   us←t=¯1++´bA⋄sy←t=⊑bW                     # Underscore, system dot
   {!⟨/us∧w+`⊸⊏0∾𝕩,"Words can't only have underscores"⟩}⍟(∨´)w(/<1(⊢/«)(∨/⊣))l>us
   wk←(¬w/rr)×na⌊∘÷˜(⊑bA)-˜w/t               # Kind of word from first char
@@ -89,9 +89,9 @@ Tokenize←{System‿vars←𝕨
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   sk←sb/˜p>∨⟜«(M⟜bH∨(3‿5+⊑bB)∊˜p⊸+)(sb-p)⊏t # Keep the first of each group that's not just inside a bracket
   t{is/˜↩𝕨⋄ie/˜↩𝕨⋄𝕨/𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep      # Remove the rest
-  im←(t=bR)∨t M vd≍+´2↑kk                   # Identifier (or 𝕣) mask
+  im←(t=bR)∨t M vd⋈+´2↑kk                   # Identifier (or 𝕣) mask
   r←ir⌾(im⊸/)(vd⌊t)⊏charRole∾0              # Role
-  t+↩(⊑bX)((⊢M≍⟜5)×5+3⊸+⊸≤)t                # Case-insensitive special names
+  t+↩(⊑bX)((⊢M⋈⟜5)×5+3⊸+⊸≤)t                # Case-insensitive special names
   t-↩vi(<+10×=)t                            # Shift . to bX and variables back one
   ⟨t,r,k,is,ie⟩
 }
@@ -99,7 +99,7 @@ Tokenize←{System‿vars←𝕨
 # 𝕩 is a list of tokens that contains the numeric literals, each
 # preceded by 0. Return the numbers.
 ReadNums←{
-  _err_←{(!/⟜𝔾≍○<𝔽)⍟(∨´)}
+  _err_←{(!/⟜𝔾⋈𝔽)⍟(∨´)}
   EChars←⟨"Letter"⊸Pl," """,⊏⟜charSet,""" not allowed in numbers"⟩_tmpl
   e‿d‿n‿p‿i←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for e.¯π∞
   EChars∘(/⟜𝕩)_err_𝕨 (𝕩=bR)∨¬e∨𝕩<⊑bA
@@ -126,7 +126,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
     Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
     ! 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
   }
-  _err_←{(!(∧∘⍉(i≍e˙)⊏⎉1˜/⟜𝔾)≍○<𝔽)⍟(∨´⍟=)}
+  _err_←{(!(∧∘⍉(i≍e˙)⊏⎉1˜/⟜𝔾)⋈𝔽)⍟(∨´⍟=)}
 
   # Bracket and ligature validation and handling
   # Open brackets have role ¯1 and closed ones have role 0
@@ -334,7 +334,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
 Compile←{
   defaults←⟨⟩‿(!∘"System values not supported"¨)‿⟨⟩‿(↕0)
-  prims‿Sys‿vars‿redef ← ∾⟜(≠↓defaults˙) ≍○<⍟(4<≠)𝕨
+  prims‿Sys‿vars‿redef ← ∾⟜(≠↓defaults˙) ⋈⍟(4<≠)𝕨
   ⟨tok,role,val,t0,t1⟩←tx←sys‿vars Tokenize 𝕩
   ⟨oc,prim,blk,bdy,oi⟩←⟨role,⊑val,t0,t1,redef»0¨vars⟩ Parse tok
   ⟨oc, ∾⟨prim⊏prims⟩∾1↓val, <˘⍉>blk, <˘⍉>bdy, oi, tx⟩

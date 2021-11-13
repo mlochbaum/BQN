@@ -7,8 +7,8 @@ rtn ← 2⊸≤◶⥊‿↕ rtt # File numbers included
 glyphs ← •Import "glyphs.bqn"
 
 # Provided values, to be passed in through the constants array
-alias‿def ← (⊑¨ ≍○< 1⊸↓¨) ⟨"&Type","∩Fill","⍣Log",
-                           "$GroupLen","%GroupOrd","⍝_fillBy_"⟩
+alias‿def ← (⊑¨ ⋈ 1⊸↓¨) ⟨"&Type","∩Fill","⍣Log",
+                         "$GroupLen","%GroupOrd","⍝_fillBy_"⟩
 keep ← "!+-×÷⋆⌊=≤≢⥊⊑↕⌜`⊘⎊"
 chrext ← glyphs ∾¨ ((+´·∧`'_'=0‿¯1⊸⊏)¨def) ⊔ alias
 Typ ← chrext⊸((+`≠¨)∘⊣⍋∾⊸⊐)

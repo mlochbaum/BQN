@@ -81,7 +81,7 @@
 
   # Format part of a compound operation; return precedence‿string
   _dispOp_ ← {
-    FmtComp ← Type (3≤⊣)◶⟨0≍○<·𝔽⊢, 𝕊⟩ ⊢
+    FmtComp ← Type (3≤⊣)◶⟨0⋈·𝔽⊢, 𝕊⟩ ⊢
     k ← ⊑ d ← Decomp 𝕩
     p ← k ⊑ "00321111"-'0'
     Paren ← "("∾∾⟜")"
