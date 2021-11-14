@@ -105,7 +105,7 @@ Stack effects for most instructions are given below. Instructions `FN1O`, `FN2O`
 | 0B | ARRO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-1`)
 | 10 | FN1C | `𝕩 𝕤 → (𝕊 𝕩)`         | 12: `𝕩` may be `·`
 | 11 | FN2C | `𝕩 𝕤 𝕨 → (𝕨 𝕊 𝕩)`     | 13: `𝕨` or `𝕩` may be `·`
-| 14 | TR2D | `g f → (F G)`         |
+| 14 | TR2D | `h g → (G H)`         |
 | 15 | TR3D | `h g f → (F G H)`     | 17: `F` may be `·`
 | 1A | MD1C | `𝕣 𝕗 → (𝔽 _𝕣)`        |
 | 1B | MD2C | `𝕘 𝕣 𝕗 → (𝔽 _𝕣_ 𝔾)`   |
