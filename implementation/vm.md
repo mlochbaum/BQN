@@ -247,13 +247,14 @@ Two formatter arguments `Glyph` and `FmtNum` are not part of the runtime. `Glyph
 
 ### Testing
 
-I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next.
+I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next. In order to run test cases before the compiler runs, I strongly recommend building an automated system to compile the test to bytecode using an existing BQN implementation, and run it with the VM being developed.
 
 Because the compiler works almost entirely with lists of numbers, a correct fill implementation is not needed to run the compiler. Instead, you can define `Fill` as `0⊘⊢` and `_fillBy_` as `{𝔽}` to always use a fill element of 0.
 
-* Test core runtime functions directly by calling them within the implementation language.
 * Test the virtual machine with the output of `src/cjs.bqn` on the primitive-less test expressions in [test/cases/bytecode.bqn](../test/cases/bytecode.bqn).
-* Now test the self-hosted compiler by running it directly on small expressions.
-* For a larger test, use [test/cases/prim.bqn](../test/cases/prim.bqn). The result should be an empty list `⟨⟩` indicating no failed tests.
+* There isn't currently a test suite for provided functions (although [test/cases/simple.bqn](../test/cases/simple.bqn) has some suitable tests for arithmetic): your options are to write tests based on knowledge of these functions and primitive tests, or try to load the runtime and work backwards from any failures. The r1 runtime runs code to initialize some primitive lookup tables so failures are likely.
+* Once the runtime is loaded, begin working through the tests in [test/cases/prim.bqn](../test/cases/prim.bqn) with the full runtime but no self-hosted compiler.
+* After primitive tests pass, try to load the compiler, and run it on a short expression. If it runs, you have a complete (not necessarily correct) system, and remaining tests can be run end-to-end!
 * Now, if you haven't already, add a call to `SetPrims`. Test for inferred properties: identity, under, and undo.
 * If all tests pass you can probably compile the compiler.
+* Headers and namespace support aren't required to support the runtime or compiler, but they can be tested as you add them with the header and namespace tests.
