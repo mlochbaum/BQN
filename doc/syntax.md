@@ -25,6 +25,7 @@ Glyph(s)        | Meaning
 `{}`            | [Block](#blocks) such as a function definition
 `:`             | [Block header](block.md#block-headers)
 `;`             | [Block body separator](block.md#multiple-bodies)
+`?`             | [Predicate](block.md#predicates)
 `𝕨𝕎`            | [Left argument](#blocks)
 `𝕩𝕏`            | [Right argument](#blocks)
 `𝕤𝕊`            | [Function self-reference](#blocks)
