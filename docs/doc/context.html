@@ -22,7 +22,7 @@
 <p>This sounds like a distant concern to a master of APL or a computer that has no difficulty memorizing a few dozen glyphs. Quite the opposite: the same concern applies to variables whenever you begin work with an unfamiliar codebase! Many APL programmers even enforce variable name conventions to ensure they know the class of a variable. By having such a system built in, BQN keeps you from having to rely on programmers following a style guide, and also allows greater flexibility, including <a href="functional.html">functional programming</a>, as we'll see later.</p>
 <p>Shouldn't a codebase define all the variables it uses, so we can see their class from the definition? Not always: consider that in a language with libraries, code might be imported from dependencies. Many APLs also have some dynamic features that can allow a variable to have more than one class, such as the <code><span class='Value'>⍺</span><span class='Gets'>←</span><span class='Function'>⊢</span></code> pattern in a dfn that makes <code><span class='Value'>⍺</span></code> an array in the dyadic case but a function in the monadic case. Regardless, searching for a definition somewhere in the code is certainly a lot more work than knowing the class just from looking! One final difficulty is that even one unknown can delay understanding of an entire expression. Suppose in <code><span class='Function'>A</span> <span class='Function'>B</span> <span class='Value'>c</span></code>, <code><span class='Function'>B</span></code> is a function and <code><span class='Value'>c</span></code> is an array, and both values are known to be constant. If <code><span class='Function'>A</span></code> is known to be a function (even if its value is not yet known), its right argument <code><span class='Function'>B</span> <span class='Value'>c</span></code> can be evaluated ahead of time. But if <code><span class='Function'>A</span></code>'s type isn't known, it's impossible to know if this optimization is worth it, because if it is an array, <code><span class='Function'>B</span></code> will instead be called dyadically.</p>
 <h2 id="bqns-spelling-system"><a class="header" href="#bqns-spelling-system">BQN's spelling system</a></h2>
-<p>BQN's expression grammar is a simplified version of the typical APL, removing some oddities like niladic functions and the two-glyph Outer Product operator. Every value can be used in any of four syntactic roles:</p>
+<p>BQN's <a href="expression.html">expression grammar</a> is a simplified version of the typical APL, removing some oddities like niladic functions and the two-glyph Outer Product operator. Every value can be used in any of four syntactic roles:</p>
 <table>
 <thead>
 <tr>
@@ -58,81 +58,7 @@
 <p>BQN's variables use another system, where the spelling indicates how the variable's value is used. A variable spelled with a lowercase first letter, like <code><span class='Value'>var</span></code>, is a subject. Spelled with an uppercase first letter, like <code><span class='Function'>Var</span></code>, it is a function. Underscores are placed where operands apply to indicate a 1-modifier <code><span class='Modifier'>_var</span></code> or 2-modifier <code><span class='Modifier2'>_var_</span></code>. Other than the first letter or underscore, variables are case-insensitive.</p>
 <p>The associations between spelling and syntactic role are considered part of BQN's <a href="../spec/token.html">token formation rules</a>.</p>
 <p>One rule for typing is also best considered to be a pre-parsing rule like the spelling system: the role of a brace construct <code><span class='Brace'>{}</span></code> with no header is determined by which special arguments it uses: it's a subject if there are none, but a <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code> makes it at least a function, an <code><span class='Function'>𝔽</span></code> makes it a 1- or 2-modifier, and a <code><span class='Function'>𝔾</span></code> always makes it a 2-modifier.</p>
-<h2 id="bqns-grammar"><a class="header" href="#bqns-grammar">BQN's grammar</a></h2>
-<p>A formal treatment is included in <a href="../spec/grammar.html">the spec</a>. BQN's grammar—the ways syntactic roles interact—follows the original APL model (plus trains) closely, with allowances for new features like <a href="arrayrepr.html#list-literals">list notation</a>. In order to keep BQN's syntax context-free, the syntactic role of any expression must be known from its contents, just like tokens.</p>
-<p>Here is a table of the APL-derived modifier and function application rules:</p>
-<table>
-<thead>
-<tr>
-<th>left</th>
-<th>main</th>
-<th>right</th>
-<th>output</th>
-<th>name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td><code><span class='Function'>F</span></code></td>
-<td><code><span class='Value'>x</span></code></td>
-<td>Subject</td>
-<td>Monadic function</td>
-</tr>
-<tr>
-<td><code><span class='Value'>w</span></code></td>
-<td><code><span class='Function'>F</span></code></td>
-<td><code><span class='Value'>x</span></code></td>
-<td>Subject</td>
-<td>Dyadic function</td>
-</tr>
-<tr>
-<td></td>
-<td><code><span class='Function'>F</span></code></td>
-<td><code><span class='Function'>G</span></code></td>
-<td>Function</td>
-<td>2-train</td>
-</tr>
-<tr>
-<td><code><span class='Function'>F</span><span class='Value'>*</span></code></td>
-<td><code><span class='Function'>G</span></code></td>
-<td><code><span class='Function'>H</span></code></td>
-<td>Function</td>
-<td>3-train</td>
-</tr>
-<tr>
-<td><code><span class='Function'>F</span><span class='Value'>*</span></code></td>
-<td><code><span class='Modifier'>_m</span></code></td>
-<td></td>
-<td>Function</td>
-<td>1-Modifier</td>
-</tr>
-<tr>
-<td><code><span class='Function'>F</span><span class='Value'>*</span></code></td>
-<td><code><span class='Modifier2'>_c_</span></code></td>
-<td><code><span class='Function'>G</span><span class='Value'>*</span></code></td>
-<td>Function</td>
-<td>2-Modifier</td>
-</tr>
-<tr>
-<td></td>
-<td><code><span class='Modifier2'>_c_</span></code></td>
-<td><code><span class='Function'>G</span><span class='Value'>*</span></code></td>
-<td>1-Modifier</td>
-<td>Partial application</td>
-</tr>
-<tr>
-<td><code><span class='Function'>F</span><span class='Value'>*</span></code></td>
-<td><code><span class='Modifier2'>_c_</span></code></td>
-<td></td>
-<td>1-Modifier</td>
-<td>Partial application</td>
-</tr>
-</tbody>
-</table>
-<p>A function with an asterisk indicates that a subject can also be used: in these positions there is no difference between function and subject spellings. Modifier applications bind more tightly than functions, and associate left-to-right while functions associate right-to-left.</p>
-<p>BQN lists can be written with angle brackets <code><span class='Bracket'>⟨</span><span class='Value'>elt0</span><span class='Separator'>,</span><span class='Value'>elt1</span><span class='Separator'>,</span><span class='Value'>…</span><span class='Bracket'>⟩</span></code> or ligatures <code><span class='Value'>elt0</span><span class='Ligature'>‿</span><span class='Value'>elt1</span><span class='Ligature'>‿</span><span class='Value'>…</span></code>. In either case the elements can have any type, and the result is a subject.</p>
-<p>The statements in a block can also be any role, including the return value at the end. These roles have no effect: outside of braces, an immediate block is a subject, a function always returns a subject, and a modifier always returns a function, regardless of how these objects were defined.</p>
+<p>The syntactic role is a property of an expression, and BQN's grammar determines how roles interact in expressions. In contrast, type is a property of a value, and evaluation rules control what types can be used. This means that roles exist statically in the code (context-free grammar!) while values can change between or within runs of the program. This is necessary to have a context-free grammar with unrestricted dynamic types. Are unrestricted dynamic types useful? Read on…</p>
 <h2 id="mixing-roles"><a class="header" href="#mixing-roles">Mixing roles</a></h2>
 <p>BQN's value types align closely with its syntactic roles: functions, 1-modifiers, and 2-modifiers are all types (<em>operation</em> types) as well as roles, while the other types (<em>data</em> types) are split into numbers, characters, and arrays. This is no accident, and usually values will be used in roles that correspond to their underlying type. However, the ability to use a role that doesn't match the type is also useful.</p>
 <p>Any type can be passed as an argument to a function, or as an operand, by treating it as a subject. This means that BQN fully supports Lisp-style <a href="functional.html">functional programming</a>, where functions can be used as first-class entities.</p>

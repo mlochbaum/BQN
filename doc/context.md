@@ -29,7 +29,7 @@ Shouldn't a codebase define all the variables it uses, so we can see their class
 
 ## BQN's spelling system
 
-BQN's expression grammar is a simplified version of the typical APL, removing some oddities like niladic functions and the two-glyph Outer Product operator. Every value can be used in any of four syntactic roles:
+BQN's [expression grammar](expression.md) is a simplified version of the typical APL, removing some oddities like niladic functions and the two-glyph Outer Product operator. Every value can be used in any of four syntactic roles:
 
 | BQN         | APL              | J
 |-------------|------------------|------
@@ -46,28 +46,7 @@ The associations between spelling and syntactic role are considered part of BQN'
 
 One rule for typing is also best considered to be a pre-parsing rule like the spelling system: the role of a brace construct `{}` with no header is determined by which special arguments it uses: it's a subject if there are none, but a `𝕨` or `𝕩` makes it at least a function, an `𝔽` makes it a 1- or 2-modifier, and a `𝔾` always makes it a 2-modifier.
 
-## BQN's grammar
-
-A formal treatment is included in [the spec](../spec/grammar.md). BQN's grammar—the ways syntactic roles interact—follows the original APL model (plus trains) closely, with allowances for new features like [list notation](arrayrepr.md#list-literals). In order to keep BQN's syntax context-free, the syntactic role of any expression must be known from its contents, just like tokens.
-
-Here is a table of the APL-derived modifier and function application rules:
-
-| left  | main  | right | output     | name
-|-------|-------|-------|------------|------
-|       |  `F`  |  `x`  | Subject    | Monadic function
-|  `w`  |  `F`  |  `x`  | Subject    | Dyadic function
-|       |  `F`  |  `G`  | Function   | 2-train
-|  `F*` |  `G`  |  `H`  | Function   | 3-train
-|  `F*` | `_m`  |       | Function   | 1-Modifier
-|  `F*` | `_c_` |  `G*` | Function   | 2-Modifier
-|       | `_c_` |  `G*` | 1-Modifier | Partial application
-|  `F*` | `_c_` |       | 1-Modifier | Partial application
-
-A function with an asterisk indicates that a subject can also be used: in these positions there is no difference between function and subject spellings. Modifier applications bind more tightly than functions, and associate left-to-right while functions associate right-to-left.
-
-BQN lists can be written with angle brackets `⟨elt0,elt1,…⟩` or ligatures `elt0‿elt1‿…`. In either case the elements can have any type, and the result is a subject.
-
-The statements in a block can also be any role, including the return value at the end. These roles have no effect: outside of braces, an immediate block is a subject, a function always returns a subject, and a modifier always returns a function, regardless of how these objects were defined.
+The syntactic role is a property of an expression, and BQN's grammar determines how roles interact in expressions. In contrast, type is a property of a value, and evaluation rules control what types can be used. This means that roles exist statically in the code (context-free grammar!) while values can change between or within runs of the program. This is necessary to have a context-free grammar with unrestricted dynamic types. Are unrestricted dynamic types useful? Read on…
 
 ## Mixing roles
 
