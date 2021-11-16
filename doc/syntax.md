@@ -55,46 +55,22 @@ The null character (code point 0) has a dedicated literal representation `@`. Th
 
 ## Expressions
 
-*[More discussion](context.md)*
+*[Full documentation](expression.md)*
 
-Like APL, BQN uses four *syntactic roles* for values in expressions:
-* **Subjects**, like APL arrays or J nouns
-* **Functions**, or verbs in J
-* **1-Modifiers**, like APL monadic operators or J adverbs
-* **2-Modifiers**, like APL dyadic operators or J conjunctions.
+BQN expressions are composed of subjects, functions, and modifiers, with parentheses to group parts into subexpressions. Functions can be applied to subjects or grouped into trains, while modifiers can be applied to subjects or functions. The most important kinds of application are:
 
-These roles work exactly like they do in APL, with functions applying to one or two subject arguments, 1-modifiers taking a single function or subject on the left, and 2-modifiers taking a function or subject on each side.
+| example | left  | main  | right | output     | name       | binding
+|---------|-------|-------|-------|------------|------------|---------
+| `↕ 10`  |  `w?` |  `F`  |  `x`  | Subject    | Function   | RtL, looser
+| `+ ⋈ -` |  `F?` |  `G`  |  `H`  | Function   | Train      |
+| `×´`    |  `F`  | `_m`  |       | Function   | 1-Modifier | LtR, tighter
+| `2⊸\|`  |  `F`  | `_c_` |  `G`  | Function   | 2-Modifier |
 
-Unlike APL, in BQN the syntactic role of an identifier is determined purely by the way it's spelled: a lowercase first letter (`name`) makes it a subject, an uppercase first letter (`Name`) makes it a function, and underscores are used for 1-modifiers (`_name`) and 2-modifiers (`_name_`). Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function and its right argument `𝕩` as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:
+The four roles (subject, function, two kinds of modifier) describe expressions, not values. When an expression is evaluated, the value's [type](types.md) doesn't have to correspond to its role, and can even change from one evaluation to another. An expression's role is determined entirely by its source code, so it's fixed.
 
-        ⟨×˜,√⟩ {𝕎𝕩}⌜ 1‿4‿9
+Assignment arrows `←`, `↩`, and `⇐` store expression results in variables: `←` and `⇐` create new variables while `↩` modifies existing ones. The general format is `Name ← Value`, where the two sides have the same role. Additionally, `lhs F↩ rhs` is a shortened form of `lhs ↩ lhs F rhs` and `lhs F↩` expands to `lhs ↩ F lhs`.
 
-BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (`` ˜¨˘⁼⌜´` ``) are all superscript characters, and 2-modifiers (`∘○⊸⟜⌾⊘◶⚇⎉⍟`) all have an unbroken circle (two functions `⌽⍉` have broken circles with lines through them). Every other built-in constant is a function, although the special symbols `¯`, `∞`, and `π` are used as part of numeric literal notation.
-
-### Assignment
-
-Another element that can be included in expressions is assignment, which is written with `←` to *define* (also called "declare" in many other languages) a variable and `↩` to *change* its definition. A variable can only be defined once within a [scope](lexical.md), and can only be changed if it has already been defined. However, it can be shadowed, meaning that it is defined again in an inner scope even though it has a definition in an outer scope already.
-
-        x←1 ⋄ {x←2 ⋄ x↩3 ⋄ x}
-        x
-
-Assignment can be used inline in an expression, and its result is always the value being assigned. The role of the identifier used must match the value being assigned.
-
-        2×a←(Neg←-)3
-        a
-
-### Exports
-
-The double arrow `⇐` is used to export variables from a block or program, causing the result to be a [namespace](namespace.md). There are two ways to export variables. First, `←` in the variable definition can be replaced with `⇐` to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by `⇐` with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.
-
-    ⟨alias⇐a, b, c0‿c1⇐c, b2⇐b⟩←{
-      b‿c⇐   # Non-definition exports can go anywhere
-      a⇐2    # Define and export
-      b←1+a
-      c←b‿"str"
-    }
-
-Fields of the resulting namespace can be accessed either directly using `namespace.field` syntax, or with a destructuring assignment as shown above. This assignment's target is a list where each element specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name (such as `b` above), which gives both, or a combination of the assignment target, then `⇐`, then a name. If `⇐` is never used, the names can be given as a strand with `‿`. To use `⇐` for aliases, bracket syntax `⟨⟩` is needed. Imported names can be repeated and can be spelled with any role (the role is ignored).
+The double arrow `⇐` is used for functionality relating to [namespaces](namespace.md). It has a few purposes: exporting assignment `name⇐value`, plain export `name⇐`, and aliasing `⟨alias⇐field⟩←namespace`. A block that uses it for export returns a namespace rather than the result of its last statement.
 
 ## Lists and blocks
 
