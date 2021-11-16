@@ -123,46 +123,62 @@
 </pre>
 <p>The null character (code point 0) has a dedicated literal representation <code><span class='String'>@</span></code>. This character can be used to directly convert between characters and numeric code points, which among many other uses allows tricky characters to be entered by code point: for example, a non-breaking space is <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>160</span></code>. The character can also be entered as a character literal, but this will display differently in various editors and some tools may have trouble with a file directly containing a null, so it is best to use <code><span class='String'>@</span></code> instead.</p>
 <h2 id="expressions"><a class="header" href="#expressions">Expressions</a></h2>
-<p><em><a href="context.html">More discussion</a></em></p>
-<p>Like APL, BQN uses four <em>syntactic roles</em> for values in expressions:</p>
-<ul>
-<li><strong>Subjects</strong>, like APL arrays or J nouns</li>
-<li><strong>Functions</strong>, or verbs in J</li>
-<li><strong>1-Modifiers</strong>, like APL monadic operators or J adverbs</li>
-<li><strong>2-Modifiers</strong>, like APL dyadic operators or J conjunctions.</li>
-</ul>
-<p>These roles work exactly like they do in APL, with functions applying to one or two subject arguments, 1-modifiers taking a single function or subject on the left, and 2-modifiers taking a function or subject on each side.</p>
-<p>Unlike APL, in BQN the syntactic role of an identifier is determined purely by the way it's spelled: a lowercase first letter (<code><span class='Value'>name</span></code>) makes it a subject, an uppercase first letter (<code><span class='Function'>Name</span></code>) makes it a function, and underscores are used for 1-modifiers (<code><span class='Modifier'>_name</span></code>) and 2-modifiers (<code><span class='Modifier2'>_name_</span></code>). Below, the function <code><span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> treats its left argument <code><span class='Function'>𝕎</span></code> as a function and its right argument <code><span class='Value'>𝕩</span></code> as a subject. With a list of functions, we can make a table of the square and square root of a few numbers:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+ow5fLnCziiJrin6kge/CdlY7wnZWpfeKMnCAx4oC/NOKAvzk=">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Function'>×</span><span class='Modifier'>˜</span><span class='Separator'>,</span><span class='Function'>√</span><span class='Bracket'>⟩</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>⌜</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>9</span>
-┌─         
-╵ 1 16 81  
-  1  2  3  
-          ┘
-</pre>
-<p>BQN's built-in operations also have patterns to indicate the syntactic role: 1-modifiers (<code><span class='Modifier'>˜¨˘⁼⌜´`</span></code>) are all superscript characters, and 2-modifiers (<code><span class='Modifier2'>∘○⊸⟜⌾⊘◶⚇⎉⍟</span></code>) all have an unbroken circle (two functions <code><span class='Function'>⌽⍉</span></code> have broken circles with lines through them). Every other built-in constant is a function, although the special symbols <code><span class='Number'>¯</span></code>, <code><span class='Number'>∞</span></code>, and <code><span class='Number'>π</span></code> are used as part of numeric literal notation.</p>
-<h3 id="assignment"><a class="header" href="#assignment">Assignment</a></h3>
-<p>Another element that can be included in expressions is assignment, which is written with <code><span class='Gets'>←</span></code> to <em>define</em> (also called &quot;declare&quot; in many other languages) a variable and <code><span class='Gets'>↩</span></code> to <em>change</em> its definition. A variable can only be defined once within a <a href="lexical.html">scope</a>, and can only be changed if it has already been defined. However, it can be shadowed, meaning that it is defined again in an inner scope even though it has a definition in an outer scope already.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eOKGkDEg4ouEIHt44oaQMiDii4QgeOKGqTMg4ouEIHh9Cng=">↗️</a><pre>    <span class='Value'>x</span><span class='Gets'>←</span><span class='Number'>1</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span><span class='Value'>x</span><span class='Gets'>←</span><span class='Number'>2</span> <span class='Separator'>⋄</span> <span class='Value'>x</span><span class='Gets'>↩</span><span class='Number'>3</span> <span class='Separator'>⋄</span> <span class='Value'>x</span><span class='Brace'>}</span>
-3
-    <span class='Value'>x</span>
-1
-</pre>
-<p>Assignment can be used inline in an expression, and its result is always the value being assigned. The role of the identifier used must match the value being assigned.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MsOXYeKGkChOZWfihpAtKTMKYQ==">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>×</span><span class='Value'>a</span><span class='Gets'>←</span><span class='Paren'>(</span><span class='Function'>Neg</span><span class='Gets'>←</span><span class='Function'>-</span><span class='Paren'>)</span><span class='Number'>3</span>
-¯6
-    <span class='Value'>a</span>
-¯3
-</pre>
-<h3 id="exports"><a class="header" href="#exports">Exports</a></h3>
-<p>The double arrow <code><span class='Gets'>⇐</span></code> is used to export variables from a block or program, causing the result to be a <a href="namespace.html">namespace</a>. There are two ways to export variables. First, <code><span class='Gets'>←</span></code> in the variable definition can be replaced with <code><span class='Gets'>⇐</span></code> to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by <code><span class='Gets'>⇐</span></code> with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.</p>
-<pre><span class='Bracket'>⟨</span><span class='Value'>alias</span><span class='Gets'>⇐</span><span class='Value'>a</span><span class='Separator'>,</span> <span class='Value'>b</span><span class='Separator'>,</span> <span class='Value'>c0</span><span class='Ligature'>‿</span><span class='Value'>c1</span><span class='Gets'>⇐</span><span class='Value'>c</span><span class='Separator'>,</span> <span class='Value'>b2</span><span class='Gets'>⇐</span><span class='Value'>b</span><span class='Bracket'>⟩</span><span class='Gets'>←</span><span class='Brace'>{</span>
-  <span class='Value'>b</span><span class='Ligature'>‿</span><span class='Value'>c</span><span class='Gets'>⇐</span>   <span class='Comment'># Non-definition exports can go anywhere
-</span>  <span class='Value'>a</span><span class='Gets'>⇐</span><span class='Number'>2</span>    <span class='Comment'># Define and export
-</span>  <span class='Value'>b</span><span class='Gets'>←</span><span class='Number'>1</span><span class='Function'>+</span><span class='Value'>a</span>
-  <span class='Value'>c</span><span class='Gets'>←</span><span class='Value'>b</span><span class='Ligature'>‿</span><span class='String'>&quot;str&quot;</span>
-<span class='Brace'>}</span>
-</pre>
-<p>Fields of the resulting namespace can be accessed either directly using <code><span class='Value'>namespace.field</span></code> syntax, or with a destructuring assignment as shown above. This assignment's target is a list where each element specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name (such as <code><span class='Value'>b</span></code> above), which gives both, or a combination of the assignment target, then <code><span class='Gets'>⇐</span></code>, then a name. If <code><span class='Gets'>⇐</span></code> is never used, the names can be given as a strand with <code><span class='Ligature'>‿</span></code>. To use <code><span class='Gets'>⇐</span></code> for aliases, bracket syntax <code><span class='Bracket'>⟨⟩</span></code> is needed. Imported names can be repeated and can be spelled with any role (the role is ignored).</p>
+<p><em><a href="expression.html">Full documentation</a></em></p>
+<p>BQN expressions are composed of subjects, functions, and modifiers, with parentheses to group parts into subexpressions. Functions can be applied to subjects or grouped into trains, while modifiers can be applied to subjects or functions. The most important kinds of application are:</p>
+<table>
+<thead>
+<tr>
+<th>example</th>
+<th>left</th>
+<th>main</th>
+<th>right</th>
+<th>output</th>
+<th>name</th>
+<th>binding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>↕</span> <span class='Number'>10</span></code></td>
+<td><code><span class='Value'>w?</span></code></td>
+<td><code><span class='Function'>F</span></code></td>
+<td><code><span class='Value'>x</span></code></td>
+<td>Subject</td>
+<td>Function</td>
+<td>RtL, looser</td>
+</tr>
+<tr>
+<td><code><span class='Function'>+</span> <span class='Function'>⋈</span> <span class='Function'>-</span></code></td>
+<td><code><span class='Function'>F</span><span class='Value'>?</span></code></td>
+<td><code><span class='Function'>G</span></code></td>
+<td><code><span class='Function'>H</span></code></td>
+<td>Function</td>
+<td>Train</td>
+<td></td>
+</tr>
+<tr>
+<td><code><span class='Function'>×</span><span class='Modifier'>´</span></code></td>
+<td><code><span class='Function'>F</span></code></td>
+<td><code><span class='Modifier'>_m</span></code></td>
+<td></td>
+<td>Function</td>
+<td>1-Modifier</td>
+<td>LtR, tighter</td>
+</tr>
+<tr>
+<td><code><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>|</span></code></td>
+<td><code><span class='Function'>F</span></code></td>
+<td><code><span class='Modifier2'>_c_</span></code></td>
+<td><code><span class='Function'>G</span></code></td>
+<td>Function</td>
+<td>2-Modifier</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The four roles (subject, function, two kinds of modifier) describe expressions, not values. When an expression is evaluated, the value's <a href="types.html">type</a> doesn't have to correspond to its role, and can even change from one evaluation to another. An expression's role is determined entirely by its source code, so it's fixed.</p>
+<p>Assignment arrows <code><span class='Gets'>←</span></code>, <code><span class='Gets'>↩</span></code>, and <code><span class='Gets'>⇐</span></code> store expression results in variables: <code><span class='Gets'>←</span></code> and <code><span class='Gets'>⇐</span></code> create new variables while <code><span class='Gets'>↩</span></code> modifies existing ones. The general format is <code><span class='Function'>Name</span> <span class='Gets'>←</span> <span class='Function'>Value</span></code>, where the two sides have the same role. Additionally, <code><span class='Value'>lhs</span> <span class='Function'>F</span><span class='Gets'>↩</span> <span class='Value'>rhs</span></code> is a shortened form of <code><span class='Value'>lhs</span> <span class='Gets'>↩</span> <span class='Value'>lhs</span> <span class='Function'>F</span> <span class='Value'>rhs</span></code> and <code><span class='Value'>lhs</span> <span class='Function'>F</span><span class='Gets'>↩</span></code> expands to <code><span class='Value'>lhs</span> <span class='Gets'>↩</span> <span class='Function'>F</span> <span class='Value'>lhs</span></code>.</p>
+<p>The double arrow <code><span class='Gets'>⇐</span></code> is used for functionality relating to <a href="namespace.html">namespaces</a>. It has a few purposes: exporting assignment <code><span class='Value'>name</span><span class='Gets'>⇐</span><span class='Value'>value</span></code>, plain export <code><span class='Value'>name</span><span class='Gets'>⇐</span></code>, and aliasing <code><span class='Bracket'>⟨</span><span class='Value'>alias</span><span class='Gets'>⇐</span><span class='Value'>field</span><span class='Bracket'>⟩</span><span class='Gets'>←</span><span class='Value'>namespace</span></code>. A block that uses it for export returns a namespace rather than the result of its last statement.</p>
 <h2 id="lists-and-blocks"><a class="header" href="#lists-and-blocks">Lists and blocks</a></h2>
 <h3 id="separators"><a class="header" href="#separators">Separators</a></h3>
 <p>The characters <code><span class='Separator'>⋄</span></code> and <code><span class='Separator'>,</span></code> and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a function. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.</p>
