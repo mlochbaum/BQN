@@ -130,7 +130,7 @@ Minimum (`⌊`) returns the larger of its two arguments, and Maximum (`⌈`) ret
 
         ⌽⊸⌈ ↕8
 
-Modulus (`|`) is similar to the modular division operation written `%` in C-like languages, but differs in its handling of negative arguments. It's defined to be `{𝕩-𝕨×⌊𝕩÷𝕨}`, except that the multiplication should always return 0 if its right argument is 0, even if `𝕨` is infinite.
+Modulus (`|`) is similar to the modular division operation written `%` in C-like languages, but it takes the arguments in the opposite order, and differs in its handling of negative arguments. It's defined to be `{𝕩-𝕨×⌊𝕩÷𝕨}`, except that the multiplication should always return 0 if its right argument is 0, even if `𝕨` is infinite.
 
         3 | ↕8
 
