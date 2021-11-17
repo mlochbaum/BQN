@@ -95,6 +95,13 @@ Assignment can be used inline in an expression, and its result is always the val
         2×a←(Neg←-)3
         a
 
+The modification arrow `↩` can also be used to *update* the value of a variable by applying a function. This meaning applies only when there is no expression to the right of `↩` or that expression has a subject role, and there's a function to the left of `↩` (in terms of precedence this function is like an operand—a train must be parenthesized). The two forms of modified assignment are shown below along with equivalent expansions.
+
+| Syntax   | Meaning
+|----------|----------
+| `a F↩`   | `a ↩ F a`
+| `a F↩ b` | `a ↩ a F b`
+
 ### Exports
 
 The double arrow `⇐` is used to export variables from a block or program, causing the result to be a [namespace](namespace.md). There are two ways to export variables. First, `←` in the variable definition can be replaced with `⇐` to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by `⇐` with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.

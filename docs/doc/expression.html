@@ -200,6 +200,25 @@
     <span class='Value'>a</span>
 ¯3
 </pre>
+<p>The modification arrow <code><span class='Gets'>↩</span></code> can also be used to <em>update</em> the value of a variable by applying a function. This meaning applies only when there is no expression to the right of <code><span class='Gets'>↩</span></code> or that expression has a subject role, and there's a function to the left of <code><span class='Gets'>↩</span></code> (in terms of precedence this function is like an operand—a train must be parenthesized). The two forms of modified assignment are shown below along with equivalent expansions.</p>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Value'>a</span> <span class='Function'>F</span><span class='Gets'>↩</span></code></td>
+<td><code><span class='Value'>a</span> <span class='Gets'>↩</span> <span class='Function'>F</span> <span class='Value'>a</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>a</span> <span class='Function'>F</span><span class='Gets'>↩</span> <span class='Value'>b</span></code></td>
+<td><code><span class='Value'>a</span> <span class='Gets'>↩</span> <span class='Value'>a</span> <span class='Function'>F</span> <span class='Value'>b</span></code></td>
+</tr>
+</tbody>
+</table>
 <h3 id="exports"><a class="header" href="#exports">Exports</a></h3>
 <p>The double arrow <code><span class='Gets'>⇐</span></code> is used to export variables from a block or program, causing the result to be a <a href="namespace.html">namespace</a>. There are two ways to export variables. First, <code><span class='Gets'>←</span></code> in the variable definition can be replaced with <code><span class='Gets'>⇐</span></code> to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by <code><span class='Gets'>⇐</span></code> with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.</p>
 <pre><span class='Bracket'>⟨</span><span class='Value'>alias</span><span class='Gets'>⇐</span><span class='Value'>a</span><span class='Separator'>,</span> <span class='Value'>b</span><span class='Separator'>,</span> <span class='Value'>c0</span><span class='Ligature'>‿</span><span class='Value'>c1</span><span class='Gets'>⇐</span><span class='Value'>c</span><span class='Separator'>,</span> <span class='Value'>b2</span><span class='Gets'>⇐</span><span class='Value'>b</span><span class='Bracket'>⟩</span><span class='Gets'>←</span><span class='Brace'>{</span>
