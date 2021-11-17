@@ -67,7 +67,7 @@ Subject expressions are complicated by the possibility of list and namespace ass
     lhs      = s | lhsList | lhsStr
     subExpr  = arg
              | lhs ASGN subExpr
-             | lhs Derv "↩" subExpr       # Modified assignment
+             | lhs Derv "↩" subExpr?      # Modified assignment
 
 A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. As a special rule, a monadic function header specifically can omit the function when the argument is not just a name (as this would conflict with a subject label). The following cases define only headers with arguments, which are assumed to be special cases; there can be any number of these. Headers without arguments can only refer to the general case—note that operands are not pattern matched—so there can be at most two of these kinds of headers, indicating the monadic and dyadic cases.
 
