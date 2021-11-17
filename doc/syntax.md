@@ -15,9 +15,9 @@ Glyph(s)        | Meaning
 `@`             | [Null character](#constants)
 `¯∞π`           | [Used in numeric literals](#constants)
 `()`            | Expression grouping
-`←`             | [Define](#assignment)
-`⇐`             | [Export](#exports)
-`↩`             | [Change](#assignment)
+`←`             | [Define](expression.md#assignment)
+`⇐`             | [Export](expression.md#exports)
+`↩`             | [Change](expression.md#assignment)
 `→`             | [Return](block.md#returns)
 `⋄,` or newline | Statement or element [separator](#separators)
 `⟨⟩`            | [List](#list-notation) (rank-1 array)
