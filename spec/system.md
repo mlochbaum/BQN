@@ -89,7 +89,7 @@ Metadata functions may query information about a file or directory but do not re
 | `Permissions` | Query or set file permissions
 | `Owner`       | Query or set owner user ID and group ID number
 
-Times are Unix timestamps, that is, seconds since the Unix epoch, as used by [time](#time) system values. File permissions on Unix are a three-element list of numbers giving the permissions for the owner, group, and other users. The file type is one of the following characters for the POSIX file types, matching Unix `ls -l` with `'f'` instead of `'-'`.
+Times are Unix timestamps, that is, non-leap seconds since the Unix epoch, as used by [time](#time) system values. File permissions on Unix are a three-element list of numbers giving the permissions for the owner, group, and other users. The file type is one of the following characters for the POSIX file types, matching Unix `ls -l` with `'f'` instead of `'-'`.
 
 - `'f'`: File
 - `'d'`: Directory
@@ -202,7 +202,7 @@ Each function in this section is monadic.
 
 All times are measured in seconds.
 
-The [Unix epoch](https://en.wikipedia.org/wiki/Unix_time) is 1970-01-01 00:00:00 UTC. `•UnixTime` is intended for absolute time measurement and should be implemented with the method that gives the most accurate result at any given time. `•MonoTime` is intended for relative measurement and should use the method that gives the most precise time differences over the course of the program. Its return value must never decrease between calls.
+The [Unix epoch](https://en.wikipedia.org/wiki/Unix_time) is 1970-01-01 00:00:00 UTC, and [Unix time](https://en.wikipedia.org/wiki/Unix_time) is the number of seconds since this epoch, with adjustments for leap seconds. `•UnixTime` is intended for absolute time measurement and should use the source most accurate reflects Unix time when it's called. `•MonoTime` is intended for relative measurement and should use the method that gives the most precise time differences over the course of the program. Its return value must never decrease between calls.
 
 `•_timed` returns the total time taken divided by the number of function calls (`𝕨` if provided and 1 otherwise), including the overhead required for the outer loop that counts iterations (which will typically be negligible in comparison to the BQN code).
 
