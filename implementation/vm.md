@@ -249,7 +249,7 @@ Two formatter arguments `Glyph` and `FmtNum` are not part of the runtime. `Glyph
 
 I recommend roughly the following sequence of tests to get everything working smoothly. It can be very difficult to figure out where in a VM things went wrong, so it's important to work methodically and make sure each component is all right before moving to the next. In order to run test cases before the compiler runs, I strongly recommend building an automated system to compile the test to bytecode using an existing BQN implementation, and run it with the VM being developed.
 
-Because the compiler works almost entirely with lists of numbers, a correct fill implementation is not needed to run the compiler. Instead, you can define `Fill` as `0⊘⊢` and `_fillBy_` as `{𝔽}` to always use a fill element of 0.
+Because the compiler works almost entirely with lists of numbers, a correct fill implementation is not needed to run the compiler. Instead, you can define `Fill` as `0⊘⊢` and `_fillBy_` as `{𝕘⋄𝔽}` to always use a fill element of 0.
 
 * Test the virtual machine with the output of `src/cjs.bqn` on the primitive-less test expressions in [test/cases/bytecode.bqn](../test/cases/bytecode.bqn).
 * There isn't currently a test suite for provided functions (although [test/cases/simple.bqn](../test/cases/simple.bqn) has some suitable tests for arithmetic): your options are to write tests based on knowledge of these functions and primitive tests, or try to load the runtime and work backwards from any failures. The r1 runtime runs code to initialize some primitive lookup tables so failures are likely.
