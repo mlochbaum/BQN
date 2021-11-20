@@ -73,7 +73,7 @@ To ← {
 }
 
 0‿0‿512‿512 SVG gr Enc ∾⟨
-  ⥊<("text"Attr"font-size"‿"24"∾Pos 256‿38) Enc """Functional programming"""
+  ⋈("text"Attr"font-size"‿"24"∾Pos 256‿38) Enc """Functional programming"""
   ('0'+↕∘≠)⊸(Circ¨) cat
   Enc˜⟜("text" Attr ·Pos 10⊸×)´¨ pl
   ∾To¨ arr

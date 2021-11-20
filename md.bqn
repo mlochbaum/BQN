@@ -207,7 +207,7 @@ Markdown ← {filename𝕊𝕩:
     code ← JoinLines 𝕩
 
     # Highlight and unescape html-unsafe characters
-    c‿ci ← extensions◶(2⥊<⟨⟩)‿GetHighlights code
+    c‿ci ← extensions◶(⋈˜⟨⟩)‿GetHighlights code
     em‿e‿ei ← CharEntities code
 
     # If every line is indented by at least 4 additional spaces, we will
@@ -220,7 +220,7 @@ Markdown ← {filename𝕊𝕩:
       g ← 𝕩∊"←↩"
       (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
     }
-    r‿ri ← addRslt◶(2⥊<⟨⟩)‿{
+    r‿ri ← addRslt◶(⋈˜⟨⟩)‿{
       ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⎊("ERROR"∾lf)⍟(0<≠)¨ 𝕩
         1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
     } 𝕩
@@ -361,7 +361,7 @@ Markdown ← {filename𝕊𝕩:
     # If span has both a leading and a trailing space, they are removed.
     remSpace ← I2M ⥊ ((1<-˜˝˘)∧·∧˝˘' '=⊏⟜𝕩)⊸/ -⟜0‿1˘ codeBounds
     codeMask ∧↩ ¬ remSpace
-    ⟨code,codePos⟩ ← codeMask extensions◶(2⥊<⟨⟩)‿GetMultiHighlights 𝕩
+    ⟨code,codePos⟩ ← codeMask extensions◶(⋈˜⟨⟩)‿GetMultiHighlights 𝕩
     include ← ¬ remSpace ∨ ≠` I2M ⥊ ctInds
     codeBounds ↩ ⥊ -⟜1‿0˘ codeBounds
     unused ← actual ∧ include ∧ ¬ codeMask
