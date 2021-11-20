@@ -227,6 +227,20 @@ GroupLen and GroupOrd, short for Group length and Group order, are used to imple
       r
     }
 
+## Compiler arguments
+
+The compiler takes the source code as `𝕩`. The execution environment is passed as `𝕨`, which can contain up to four values:
+- **Runtime**: list of primitive values; see [previous section](#runtime)
+- **System**: function that takes a list of strings and returns corresponding system values
+- **Variables**: names of existing variables in the scope
+- **Depths**: lexical depth of these variables (default `0`; `¯1` for depth 0 but allowing shadowing)
+
+If `𝕨` has length greater than 4 it's assumed to be the runtime only. If the length is less than 4, empty defaults that don't define any values are used for the missing arguments.
+
+The system-value function is passed a list of unique normalized names, meaning that each name is lowercase and contains no underscores. It should return a corresponding list of system values. Because system values are requested on each program run, a function that has access to context such as `•path` can construct appropriate system values on demand.
+
+The variable list is used to create REPLs, but has other uses as well, such as allowing execution to take place within a surrounding scope. It consists of a list of normalized names. The corresponding depth list indicates the lexical depth of each of these, with 0 and -1 indicating that the variable should exist directly in the top-level scope. A typical interactive REPL uses only the value -1, because it allows variables to be shadowed. It maintains a single top-level environment to be used for all evaluations. When the programmer enters a line, it's compiled, then the environment and list of top-level names is extended according to the result.
+
 ## Assembly
 
 The full BQN implementation is made up of the two components above—virtual machine and core runtime—and the compiled runtime, compiler, and formatter. Since the compiler unlikely to work right away, I suggest initially testing the virtual machine on smaller pieces of code compiled by an existing, working, BQN implementation.
