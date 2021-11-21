@@ -35,7 +35,9 @@ Compilation separates blocks so that they are not nested in bytecode. A block co
 
 When the block is evaluated depends on its type and immediateness. An immediate block (0,1) is evaluated as soon as it is pushed; a function (0,0) is evaluated when called on arguments, an immediate modifier (1 or 2, 1) is evaluated when called on operands, and a deferred modifier (1 or 2, 0) creates a derived function when called on operands and is evaluated when this derived function is called on arguments.
 
-The last property can be a single number, or, if it's a deferred block, might be a pair of lists. For a single number the block is always evaluated by evaluating the body with the given index. For a pair, the first element gives the monadic case and the second the dyadic one. A given valence should begin at the first body in the appropriate list, moving to the next one if a header test (SETH instruction) fails.
+The last property can be a single number or a list of lists. A single number indicates the body to be executed, and is used only for blocks with exactly one body. If it's a list of lists, the length is 1 for a block without arguments and 2 or more for a block with arguments (function or deferred modifier). Each element is a list of body indices. After selecting the appropriate list, execution begins at the first body in the appropriate list, moving to the next one if a header test (SETH or PRED instruction) fails. If a test fails but there's no next body, block evaluation is an error.
+
+The five possible cases for a function are monadic, dyadic, inverse monadic (`𝕊⁼x`), inverse dyadic (`w𝕊⁼x`), and swapped-inverse dyadic (`x𝕊˜⁼w`). The first two will always be provided, while the remaining three typically don't exist as they have to be specified with undo headers. The smallest length that covers all possible cases will be used.
 
 #### Bodies
 
