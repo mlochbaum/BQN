@@ -252,8 +252,9 @@ BQN sources are compiled with [cjs.bqn](../src/cjs.bqn), which runs under [dzaim
 ### Structure
 
 The following steps give a working BQN system, assuming a working VM and core runtime:
-* Evaluate the bytecode `$ src/cjs.bqn r`, passing the core runtime `provide` in the constants array. The result is a BQN list of a full runtime, and a function `SetPrims`.
+* Evaluate the bytecode `$ src/cjs.bqn r`, passing the core runtime `provide` in the constants array. The result is a BQN list of a full runtime, a function `SetPrims`, and a function `SetInv`.
 * Optionally, call `SetPrims` on a two-element list `⟨Decompose, PrimInd⟩`.
+* Optionally, call `SetInv` with a function `𝕩` that updates `Inverse` and (more optionally) a function `𝕨` that updates `SwapInverse`.
 * Evaluate the bytecode `$ src/cjs.bqn c`, which uses primitives from the runtime in its constants array. This is the compiler.
 * Evaluate the bytecode `$ src/cjs.bqn f`. This returns a function. Then call it on a four-element list `⟨Type, Decompose, Glyph, FmtNum⟩` to obtain the two-element list `⟨•Fmt, •Repr⟩`.
 
