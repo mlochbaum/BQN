@@ -838,7 +838,8 @@ PrimInverse ← INF _lookup_ ⟨
   '⊢', ⊢
   '⊣', ⊢⊘(⊢⊣IX∘≡)
   '∾', IA∘0 ⊘ {d←𝕩-○=𝕨⋄IX(0⊸≤∧≤⟜1)d⋄l←d◶1‿≠𝕨⋄IX l≤≠𝕩⋄IX 𝕨≡d◶⟨⊏,l⊸↑⟩𝕩⋄l↓𝕩}
-  '≍', {IX 1=≠𝕩⋄⊏𝕩} ⊘ {IX 2=≠𝕩⋄IX 𝕨≡⊏𝕩⋄1⊏𝕩}
+  '≍', {IX  1 =≠𝕩⋄ ⊏𝕩} ⊘ {IX  2 =≠𝕩⋄IX 𝕨≡ ⊏𝕩⋄1⊏𝕩}
+  '⋈', {IX ⟨1⟩≡≢𝕩⋄0⊑𝕩} ⊘ {IX ⟨2⟩≡≢𝕩⋄IX 𝕨≡0⊑𝕩⋄1⊑𝕩}
   '↑', ¯1⊸⊑_invChk_↑ ⊘ (IA∘0)
   '↓',  0⊸⊑_invChk_↓ ⊘ (IA∘0)
   '↕', ≢_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
