@@ -860,8 +860,9 @@ SwapInverse ← INF _lookup_ ⟨
 ⟩
 ⌜ ↩ _table
 ¨ ↩ _each
+CheckInv ← (4=0⊸⊑)◶⟨"+-÷⋆√¬"_glyphLookup_(6=↕7)1⊸⊑,¬·'⁼'_isGlyph 2⊸⊑⟩Decompose
 Mod1Inverse ← INF˙ _lookup_ ⟨
-  '⁼', {𝕏_invChk_(𝕏{i←Inverse𝕗⋄𝕨I𝕩})}⍟((4=0⊸⊑)◶⟨1,¬·'⁼'_isGlyph 2⊸⊑⟩Decompose)
+  '⁼', {𝕏_invChk_(𝕏{i←Inverse𝕗⋄𝕨I𝕩})}⍟CheckInv
   '˜', {SwapInverse𝕩}
   '¨', {𝕏⁼¨                     ⊣·IX 0<≡∘⊢}
   '⌜', {𝕏⁼⌜⊘(IA∘0)              ⊣·IX 0<≡∘⊢}
