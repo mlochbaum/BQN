@@ -2,7 +2,7 @@
 
 # Implementation of random stuff
 
-Not a primitive, but CBQN's `•MakeRand` initializes a random number generator that has some built-in utilities. For clarity we'll call a result of this initialization `rand` in the text below.
+BQN's random number utilities are provided by [system functions](../../spec/system.md#random-generation) and include some with non-obvious implementations. In the text below, `rand` represents any random number generator: `•rand`, or a result of `•MakeRand`.
 
 ## Random number generation
 
