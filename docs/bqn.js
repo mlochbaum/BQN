@@ -571,8 +571,7 @@ let rerepl = (repl, cmp, state) => {
     names.push(...newv.map(i=>pnames[i]));
     redef.push(...newv.map(i=>rd));
     vars .push(...newv.map(i=>null));
-    c.push(vars);
-    return run(...c);
+    return run(...c, vars);
   }
 }
 let primitives = dynsys(state => {
