@@ -205,7 +205,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Block header conflicts with other bodies"_err_(ch/0∾/∘CB) (hr<ch/fr)∨hl<hx<ch/fx
   ft⌈↩1-˜fr↩hr⌾(ch⊸/)fr⋄fx↩hx⊸⌈⌾(ch⊸/)fx
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
-  "Only blocks with explicit arguments can have multiple bodies"_err_(/CB) 1↓(»⊸∨cq>ch)<cm>fx
+  "Unreachable body"_err_(/CB) 1↓(»⊸∨(¬hl)⌾(ch⊸/)cq)<cm>fx
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
   hv-↩(»+`hc)⊏3×¬ch/fx                      # Header variable slot
 
