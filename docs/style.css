@@ -102,6 +102,7 @@ pre, code, textarea, .kb {
 }
 .codeCover {
   stroke: #e3e7e7;
+  user-select: none;
 }
 code {
   padding: 0.15em 0.1em 0.05em;
