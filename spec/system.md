@@ -149,6 +149,14 @@ The following short names can also be provided for file access. They can be prov
 
 `•Repr` attempts to return a string so that `•BQN •Repr 𝕩` matches `𝕩`. If `𝕩` contains any mutable values (operations or namespaces), this is not possible. However, if such a values is stateless, in the sense that they don't access variables outside of their own scopes, it is permissible for `•Repr` to return source code that would create a value with identical behavior.
 
+## Interface
+
+| Name    | Summary
+|---------|----------------------
+| `•SH`   | Execute shell command and return `exitcode‿stdout‿stderr`
+
+The argument to `•SH` is a list of strings giving the command and its arguments (for example `"mv"‿"old"‿"new"`). The command is executed synchronously, and the result is a list of three elements: the command's exit code, text written to stdout, and text written to stderr. In both cases the text is a plain string containing all text emitted by the program. Text is interpreted as UTF-8, with an error if it's not valid UTF-8.
+
 ## Operation properties
 
 | Name         | Summary
