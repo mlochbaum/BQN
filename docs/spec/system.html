@@ -312,6 +312,22 @@
 </table>
 <p><code><span class='Function'>•Out</span></code> prints a string to stdout, with a trailing newline. <code><span class='Function'>•Show</span></code> displays a BQN value to the programmer (the representation is not specified, and does not need to be plain text). <code><span class='Function'>•Fmt</span></code> returns a string (not a character table: lines are separated by linefeeds) indicating how <code><span class='Value'>𝕩</span></code> would be printed by the interactive environment. Both <code><span class='Function'>•Show</span></code> and <code><span class='Function'>•Fmt</span></code> may take a left argument configuring how the value should be formatted.</p>
 <p><code><span class='Function'>•Repr</span></code> attempts to return a string so that <code><span class='Function'>•BQN</span> <span class='Function'>•Repr</span> <span class='Value'>𝕩</span></code> matches <code><span class='Value'>𝕩</span></code>. If <code><span class='Value'>𝕩</span></code> contains any mutable values (operations or namespaces), this is not possible. However, if such a values is stateless, in the sense that they don't access variables outside of their own scopes, it is permissible for <code><span class='Function'>•Repr</span></code> to return source code that would create a value with identical behavior.</p>
+<h2 id="interface"><a class="header" href="#interface">Interface</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>•SH</span></code></td>
+<td>Execute shell command and return <code><span class='Value'>exitcode</span><span class='Ligature'>‿</span><span class='Value'>stdout</span><span class='Ligature'>‿</span><span class='Value'>stderr</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>The argument to <code><span class='Function'>•SH</span></code> is a list of strings giving the command and its arguments (for example <code><span class='String'>&quot;mv&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;old&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;new&quot;</span></code>). The command is executed synchronously, and the result is a list of three elements: the command's exit code, text written to stdout, and text written to stderr. In both cases the text is a plain string containing all text emitted by the program. Text is interpreted as UTF-8, with an error if it's not valid UTF-8.</p>
 <h2 id="operation-properties"><a class="header" href="#operation-properties">Operation properties</a></h2>
 <table>
 <thead>
