@@ -14,7 +14,8 @@ This version of BQN is [implemented](implementation/README.md) mainly in BQN its
 
 Support in the following languages has been implemented:
 - Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
-- [C](https://github.com/dzaima/CBQN), targetting high performance. Some parts are fast, some are not.
+- [C](https://github.com/dzaima/CBQN), targetting high performance. Many parts are fast, some are not.
+- [C++](https://github.com/ashermancinelli/cxbqn), planning to enable GPU use. It works but is still early-stage.
 - BQN ([bqn.bqn](bqn.bqn)), for testing the compiler easily.
 - [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical; a [Rust version](https://github.com/cannadayr/ebqn-rs/) is in progress to fix this.
 
