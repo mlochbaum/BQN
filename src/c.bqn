@@ -178,7 +178,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hl←2=hn←(1⊸»+«)hc←¯1=hr                   # hl: is label, hc: is :
   "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
   ho←(»∨·«(hr=3)∧⊢)hl<hy←2≤hr               # Header operands
-  "Missing operand in header"_err_(HI) ho∧hc∨hy
+  "Missing operand in header"_err_(HI) (ut∧hr=3)∨ho∧hc∨hy
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
   "Invalid header structure"_err_(hm/HI) 1⊸»⊸=hm/hc
   hk←3|1-˜(+`bI∾nv)⍋ht←hi⊏𝕩×¬rev⊏sr         # Kind: 0 special, 1 name, 2 compound
