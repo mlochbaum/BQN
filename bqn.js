@@ -164,8 +164,9 @@ if (!module.parent) {
   } else if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
     let f=arg0, a=list(args.slice(1).map(str));
     exec(s=>bqn_file(sysargs, path.resolve(f),s,a))(fs.readFileSync(f,'utf-8'));
-  } else if (arg0 === '-e') {
+  } else if (arg0 === '-e' || arg0 === '-p') {
     let ev=bqn_nostate(cl_state());
-    args.slice(1).map(exec(s=>show(ev(s))));
+    let evs = arg0!=='-p' ? ev : (s=>show(ev(s)));
+    args.slice(1).map(exec(evs));
   }
 }
