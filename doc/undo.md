@@ -49,8 +49,8 @@ Undo headers are currently supported only by dzaima/BQN.
 Of course BQN will never be able to invert all the functions you could write (if it could you could earn a *lot* of bitcoins, among other feats). But it does recognize some [header](block.md#block-headers) forms that you can use to specify the inverse of a block function. BQN will trust you and won't verify the results your specified inverse gives.
 
     {
-      𝕊𝕩:  𝕩÷𝕩+1
-      𝕊⁼𝕩: 𝕩÷𝕩-1
+      𝕊𝕩:  𝕩÷1+𝕩 ;
+      𝕊⁼𝕩: 𝕩÷1-𝕩
     }
 
 The above function could also be defined with the automatically invertible `1⊸+⌾÷`, but maybe there's a numerical reason to use the definition above. Like a normal header, an undo header reflects the normal use, but it includes `⁼` and possibly `˜` addition to the function and arguments.
