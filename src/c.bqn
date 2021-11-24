@@ -322,9 +322,10 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   # Indices for multi-body blocks
-  cj←/cv←1+1=ciw←cw⊏˜ci←/cm∨↩fx∧1≠cw
-  ck←4⌊(2×ci⊏ut⌾(ch⊸/)0¨ch)+1<ciw
-  cg←¯1+`cif←ci⊏cf
+  cm∨↩(fx∧1≠cw)∨0<ut↩ut⌾(ch⊸/)ch            # Dyad- and inverse-only generate as multiple
+  cj←/cv←1+1=ciw←cw⊏˜ci←/cm                 # Number of copies
+  ck←4⌊(2×ci⊏ut)+1<ciw                      # Position
+  cg←¯1+`cif←ci⊏cf                          # Which block
   ckt←(2-¬(cf∧cm)/fx)⌈(cif/·⍋⊏⟜cg)⊸⊏∘⍒⊸⊏cv+ck
   ci↩ckt/⊸⊔(¯1(↑∾˜cj(⊒∘⊣+⊏)ck+cg⊏↓)0∾+`ckt)⊔cj⊏ci
   # Output
