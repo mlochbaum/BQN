@@ -41,6 +41,7 @@ Fmt‿Repr ← (•Import "src/f.bqn"){𝔽} ⟨
   IsPrim◶⟨tn⊑˜•Type-2˙, Glyph⟩ # Format operation/namespace
   •Repr                        # Format number
 ⟩
+Show ← •Out∘Fmt⊸⊢⊢
 
 # Lookup table
 FindSys ← {
@@ -50,11 +51,15 @@ FindSys ← {
 }
 system ← {𝕨⊸FindSys⊏𝕩˙}´⟨
   "bqn"‿"type"‿"glyph"‿"decompose"‿"repr"‿"fmt"‿"out"‿"show"
-   BQN ‿•Type ‿ Glyph ‿ Decompose ‿ Repr ‿ Fmt ‿•Out ‿(•Out Fmt)
+   BQN ‿•Type ‿ Glyph ‿ Decompose ‿ Repr ‿ Fmt ‿•Out ‿ Show
 ⟩
 
 #⌜
-# Evaluate:
-(BQN¨ ("-e"≡⊑)◶⟨•file.Chars¨, 1⊸↓⟩)⍟(0<≠) •args
+# Evaluate
+{
+  0 < ≠•args ?
+  t ← ⊑ "-e"‿"-p" ⊐ ⊏•args
+  Show⍟(t=1)∘BQN¨ (t<2)◶⟨•file.Chars¨, 1⊸↓⟩ •args
+;@}
 
 BQN  # Return the evaluator so it can be •Include d from BQN
