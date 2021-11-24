@@ -44,8 +44,6 @@ Structural functions like [Take](take.md) and [shifts](shift.md) that remove ele
 
 ## Undo headers
 
-Undo headers are currently supported only by dzaima/BQN.
-
 Of course BQN will never be able to invert all the functions you could write (if it could you could earn a *lot* of bitcoins, among other feats). But it does recognize some [header](block.md#block-headers) forms that you can use to specify the inverse of a block function. BQN will trust you and won't verify the results your specified inverse gives.
 
     {
