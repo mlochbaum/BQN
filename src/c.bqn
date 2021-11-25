@@ -192,11 +192,11 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hma>hk≠2
   "Header with ˜⁼ must have left argument"_err_(HI) (hl<2=ut)>«ha
-  ut/˜↩hm
+  ut/˜↩hm⋄hx∨↩1=hr
+  "Header with ⁼ must take arguments"_err_(hm/HI) hx<×ut
   cwh←(2×2=ut)⌈hc/»hl⌈ha×1+he←0≠hk          # ↓ for just headers
   cw←cwh⌾(ch⊸/)1+-⟜«(»cq)<1(⊢<«)cf          # Body 𝕨: 0 no, 1 allowed, 2 required
-  hl/˜↩hm
-  hx∨↩1=hr⋄hu←(¬he)⌾(hi⊸⊏)hf                # hu: mask of header special names
+  hl/˜↩hm⋄hu←(¬he)⌾(hi⊸⊏)hf                 # hu: mask of header special names
   hj←gi⊏˜he/hi⋄hd←2=he/hk                   # hj: header assignments; hd: which ones destructure
 
   # Block properties
