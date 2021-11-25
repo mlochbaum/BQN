@@ -204,7 +204,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ss+↩(rev⊏r=3)∧𝕩=3+⊑bI                     # Treat _𝕣_ as 3, like 𝕘
   HS←(¯1+`cf)⊏b¬∘PN=⟜ss⋄sp←/hu<𝕩 M bI       # Has-special (𝕤𝕩𝕨/𝕣𝕗/𝕘); indices of specials
   fx←HS 1⋄fr←(fx∨0⊸<)⊸+ft←2(⊣⌈2×⊢)○HS 3     # Body immediacy ¬fx, type ft, role fr
-  "Block header conflicts with other bodies"_err_(ch/0∾/∘CB) (hr<ch/fr)∨hl<hx<ch/fx
+  "Block header type conflict"_err_(ch/0∾/∘CB) (hr<ch/fr)∨hl<hx<ch/fx
   ft⌈↩1-˜fr↩hr⌾(ch⊸/)fr⋄fx↩hx⊸⌈⌾(ch⊸/)fx
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
   "Unreachable body"_err_(/CB) 1↓(»⊸∨(¬hl)⌾(ch⊸/)cq)<cm>fx
