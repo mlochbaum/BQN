@@ -148,6 +148,7 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
         vid.push(v);
         return "do {"+c+"} while (0);\n"
       }
+      if (ind.length===3) ind[3]=[];
       let cases = ind.map((js,i) => {
         let e = js.length?"No matching case":"Left argument "+(i?"not allowed":"required");
         return js.map(g).concat(["throw Error('"+e+"');\n"]).join("");
@@ -161,7 +162,7 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
         c = "const fn="+combine(cases)+repdf[type];
         if (cases.length > 2) {
           c += "fn.inverse="+combine(cases.slice(2));
-          if (cases[4]) c += "fn.sinverse="+fn(cases[4]);
+          if (cases[4]) c += "fn.sinverse="+fn("if(!has(w))throw Error('No matching case');"+cases[4]);
         }
         c += "return fn;";
       }
