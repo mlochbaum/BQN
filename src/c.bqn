@@ -191,6 +191,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Invalid Undo header syntax"_err_(HI) hm<×ut
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hma>hk≠2
+  "Header with ˜⁼ must have left argument"_err_(HI) (hl<2=ut)>«ha
   ut/˜↩hm
   cwh←(2×2=ut)⌈hc/»hl⌈ha×1+he←0≠hk          # ↓ for just headers
   cw←cwh⌾(ch⊸/)1+-⟜«(»cq)<1(⊢<«)cf          # Body 𝕨: 0 no, 1 allowed, 2 required
