@@ -543,10 +543,9 @@ idChars ← ⟨
 
 # Return BQN highlights for an string 𝕩, as an ⟨add,pos⟩ list for Modify
 # (include will be all 1s).
-glyphs ← •Import "src/glyphs.bqn"
-GetHighlights ← {
+hlchars‿classTag ← {
+  func‿mod1‿mod2 ← •Import "src/glyphs.bqn"
   # Characters used by BQN, and the HTML class they are associated with.
-  func‿mod1‿mod2 ← glyphs
   classes‿chars ← <˘ ⍉ ∘‿2⥊⟨
     0             , " "∾@+9‿10  # Should never be highlighted
     "Value"       , "𝕨𝕩𝕗𝕘𝕤"
@@ -566,9 +565,11 @@ GetHighlights ← {
   ⟩
   # Turn non-whitespace classes into ⟨open,close⟩ html tags.
   classTag ← ""‿"" ∾ > {⟨"<span class='"∾𝕩∾"'>","</span>"⟩}¨ 1↓classes
-
+  chars‿classTag
+}
+GetHighlights ← {
   # Find each character's group, sending unknowns to 1 and # to 0.
-  col ← (1-˜≠chars) (⊢-⊣×≤) chars FindGroup 𝕩
+  col ← (1-˜≠hlchars) (⊢-⊣×≤) hlchars FindGroup 𝕩
   col-↩ 4×(𝕩='.')>«𝕩∊'0'+↕10 # Namespace dot: 5→1
 
   # Locate comments and strings.
@@ -589,7 +590,7 @@ GetHighlights ← {
   # Split rows and group into text‿comments
   tc ← ((⊏˘b)⊏c) ∾⟜2⊸⊔ <˘b
   # Color with "String" and "Comment"
-  col ⌈↩ +´ (2‿1-˜≠classes) × ToMask¨ tc
+  col ⌈↩ +´ (2‿1-˜≠classTag) × ToMask¨ tc
 
   # Color numeric literals and identifiers
   id ← col=5                 # ←→ 𝕩∊idChars
