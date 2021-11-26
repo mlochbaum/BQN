@@ -543,9 +543,10 @@ idChars ← ⟨
 
 # Return BQN highlights for an string 𝕩, as an ⟨add,pos⟩ list for Modify
 # (include will be all 1s).
+glyphs ← •Import "src/glyphs.bqn"
 GetHighlights ← {
   # Characters used by BQN, and the HTML class they are associated with.
-  func‿mod1‿mod2 ← •Import "src/glyphs.bqn"
+  func‿mod1‿mod2 ← glyphs
   classes‿chars ← <˘ ⍉ ∘‿2⥊⟨
     0             , " "∾@+9‿10  # Should never be highlighted
     "Value"       , "𝕨𝕩𝕗𝕘𝕤"
