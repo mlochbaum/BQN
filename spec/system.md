@@ -38,6 +38,7 @@ The option `repl` indicates how variables are retained across calls: with "none"
 | `•args`    | Arguments passed to current file
 | `•path`    | Current file's path
 | `•name`    | Current filename
+| `•wdpath`  | Shell's working directory path
 | `•Exit`    | Leave the top-level running program
 
 `•Import` loads another BQN script. The script is evaluated in its own isolated scope, and its result is either the result of the last line, or a module if it exports with `⇐` at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.
@@ -49,6 +50,8 @@ The right argument is a filename, which may be relative or absolute. Relative pa
 `•path` simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.
 
 `•name` gives the name, including the extension, of the file in which it appears. It doesn't include the path.
+
+`•wdpath` returns the path of the current working directory, like the Unix `pwd` command, but including a trailing slash.
 
 `•Exit` immediately terminates the running BQN process. If the argument is a valid return code (on Unix, an integer), it is returned; otherwise, the default return code (the one returned when the end of the program is reached) is used.
 

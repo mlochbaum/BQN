@@ -121,6 +121,7 @@ sysvals.path=dynsys(s=>s.path);
 sysvals.name=dynsys(s=>s.name);
 sysvals.args=dynsys(s=>s.args);
 sysvals.state=dynsys(s=>s.state);
+sysvals.wdpath=dynsys(_=>str(dir(path.resolve('.'))));
 bqn.setexec(update_state, push_state);
 let bqn_file = (st,f,t,w) => bqn_state(st)(
   t, [ str(dir(path.dirname(f))), str(path.basename(f)), w ]
