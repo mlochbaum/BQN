@@ -90,6 +90,10 @@
 <td>Current filename</td>
 </tr>
 <tr>
+<td><code><span class='Value'>•wdpath</span></code></td>
+<td>Shell's working directory path</td>
+</tr>
+<tr>
 <td><code><span class='Function'>•Exit</span></code></td>
 <td>Leave the top-level running program</td>
 </tr>
@@ -100,6 +104,7 @@
 <p><code><span class='Value'>•args</span></code> is the arguments passed as the file was invoked, either from the command line or <code><span class='Function'>•Import</span></code>. For command line calls it is a list of strings.</p>
 <p><code><span class='Value'>•path</span></code> simply gives the path of the file in which it appears. It includes a trailing slash but not the name of the file itself.</p>
 <p><code><span class='Value'>•name</span></code> gives the name, including the extension, of the file in which it appears. It doesn't include the path.</p>
+<p><code><span class='Value'>•wdpath</span></code> returns the path of the current working directory, like the Unix <code><span class='Value'>pwd</span></code> command, but including a trailing slash.</p>
 <p><code><span class='Function'>•Exit</span></code> immediately terminates the running BQN process. If the argument is a valid return code (on Unix, an integer), it is returned; otherwise, the default return code (the one returned when the end of the program is reached) is used.</p>
 <h2 id="files"><a class="header" href="#files">Files</a></h2>
 <p>The system namespace value <code><span class='Value'>•file</span></code> deals with file operations. For the purposes of <code><span class='Value'>•file</span></code>, paths in the filesystem are always strings. As with <code><span class='Function'>•Import</span></code>, file paths may be relative or absolute, and relative paths are relative to <code><span class='Value'>•path</span></code>, except in <code><span class='Value'>•file.</span><span class='Function'>At</span></code> which allows <code><span class='Value'>𝕨</span></code> to specify an alternate base directory. The value <code><span class='Value'>•path</span></code> used for a particular instance of <code><span class='Value'>•file</span></code> is determined by the file that contains that instance.</p>
