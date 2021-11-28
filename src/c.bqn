@@ -21,6 +21,7 @@ charSet‿cgl←(∾ ⋈ ≠¨)⟨
 bF‿b1‿b2‿bS‿bH‿bG‿bB‿bL‿bO‿bX‿bN‿bD‿bA‿bW‿bP←⋈¨˜⟜(0»+`)cgl
 M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
 sep←⊑bS
+pred←2+⊑bH
 bI←bX+⋈⟜-5⋄bR←8+⊑bX
 Pl←∾⟜("s"/˜1<≠)   # Pluralize
 _tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
@@ -134,13 +135,13 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gb←g⊏r=¯1       # Paren (actually any bracket type) depth and grade
   (g⊏p)(>⟜0⊸/ErrMismatchedBrackets⍟≢1-˜<⟜0⊸/)gx←g⊏𝕩
   "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
-  "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧(2+⊑bH)⊸=∨sep⊸=)gbx←gb/gx
-  "Predicates can't be placed inside lists"_err_((sep≠GBX)/gb/G) ((4+⊑bB)⊸=»⊸∧(2+⊑bH)⊸=)sep⊸≠⊸/gbx
+  "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧pred⊸=∨sep⊸=)gbx←gb/gx
+  "Predicates can't be placed inside lists"_err_((sep≠GBX)/gb/G) ((4+⊑bB)⊸=»⊸∧pred⊸=)sep⊸≠⊸/gbx
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
   dl←«⊸∨dc←r=4                              # Dot left
   r-↩(𝕩=⊑bG)>ec←«dc<0≤r+p                   # Role ¯4 for exports: ⊑bG is ⇐
-  "Invalid assignment or stranding use"_err_(↕∘≠) ((¯4⊸<∧≤⟜¯2)r)>(ec∨𝕩=2+⊑bG)∧»dc<0≤r
-  "Dot must be followed by a name"_err_(↕∘≠) dc>«𝕩 M vi‿nv
+  "Invalid assignment or stranding use"_err_(↕≠) ((¯4⊸<∧≤⟜¯2)r)>(ec∨𝕩=2+⊑bG)∧»dc<0≤r
+  "Dot must be followed by a name"_err_(↕≠) dc>«𝕩 M vi‿nv
   sr←»⌾(((⍋⊏⟜dl)⊸⊏g)⊸⊏)sl←«⊸∨r=¯2⋄ns←¬sl∨sr # Strand right and left; not stranded
   cp←𝕩=1+⊑bB                                # Closed paren
   nr←(IT¬cp)⊏(𝕩=2+⊑bI)+2×𝕩=⊑bO              # Nothingness role: 1 for 𝕨, 2 for ·
@@ -162,8 +163,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
 
   # Headers
-  hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH⋄qm←𝕩=2+⊑bH            # Case header : and separator ; and predicate ?
-  "Punctuation : ; ? not allowed outside blocks"_err_(↕∘≠) (∨`b)<hh∨cs∨qm
+  hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH⋄qm←𝕩=pred             # Case header : and separator ; and predicate ?
+  "Punctuation : ; ? not allowed outside blocks"_err_(↕≠) (∨`b)<hh∨cs∨qm
   fi←+`cb←b∨cs⋄H←cb¬∘PN⊢                    # Body index fi; which bodies Have a property
   cq←(H qm)∨ch←H hh                         # ch: body has : header ; cq: or ? predicate
   cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co                 # cf: body is first; cm: body is one of multiple
@@ -235,7 +236,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   tr←1≤er←ir⊏˜IT»ps                         # er: expression role; tr: train or modifier expression
   no←0⌈-ir⋄ne←0⌈-er⋄nei↩g⋄nx⊏˜↩gr           # Nothing value; expression
   "Nothing (·) cannot be assigned"_nerr ne×a
-  "Can't use Nothing (·) as predicate"_nerr ne×𝕩=2+⊑bH
+  "Can't use Nothing (·) as predicate"_nerr ne×𝕩=pred
   oa←⌽/hg<op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3    # op: active modifiers; ro: mod or right operand
   "Missing operand"_nerr op×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
   s←𝕩=sep⋄fo←𝕩∊⟨2+⊑bB,1+⊑bH⟩                # Separators, function open { or ;
@@ -309,7 +310,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
   dr←(hd¬⊸/hj)∾/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo    # Drop (block separator) and return
-  qp←/𝕩=2+⊑bH                               # Predicate
+  qp←/𝕩=pred                                # Predicate
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
   dr∾↩((1+dy)×fn←2=fm←fa⊏ne)/fl             # Turn function applications on · to drops
   fn↩¬fn⋄fa/˜↩fn⋄fl/˜↩fn                    # And remove them
