@@ -90,9 +90,9 @@ Additionally, an inference header doesn't affect evaluation of the function, but
              | headW  ( F | "𝕊" ) "˜"  "⁼" headX
              |        ( F | "𝕊" ) "˜"? "⁼"
 
-A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. For an immediate block there are no inputs, so there can only be one possible case and one body. Functions and modifiers allow any number of "matched" bodies, with headers that have arguments, followed by at most two "main" bodies with either no headers or headers without arguments. If there is one main body, it is ambivalent, but two main bodies refer to the monadic and dyadic cases.
+A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. A non-final expression can be made into a predicate by following it with the separator-like `?`. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. For an immediate block there are no inputs, so there can only be one possible case and one body. Functions and modifiers allow any number of "matched" bodies, with headers that have arguments, followed by at most two "main" bodies with either no headers or headers without arguments. If there is one main body, it is ambivalent, but two main bodies refer to the monadic and dyadic cases.
 
-    BODY     = PROGRAM
+    BODY     = ⋄? ( STMT ⋄ | EXPR ⋄? "?" ⋄? )* STMT ⋄?
     FCase    = ⋄? FuncHead ":" BODY
     _mCase   = ⋄? _m1Head  ":" BODY
     _cCase_  = ⋄? _m2Head_ ":" BODY
