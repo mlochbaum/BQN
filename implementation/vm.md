@@ -88,7 +88,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 27 | DYNM |      |      | `I`      | Push named variable `I` reference
 | 2A | PRED |      |  06  |          | Check predicate and drop
 | 2B | VFYM |  X   |      |          | Convert constant to matcher (for headers)
-| 2C | VNOT |  X   |      |          | Push placeholder assignment matcher
+| 2C | NOTM |  X   |      |          | Push placeholder assignment matcher
 | 2F | SETH |  X   |  30  |          | Test and set header
 | 30 | SETN |  X   |      |          | Define variable
 | 31 | SETU |  X   |      |          | Change variable
@@ -119,6 +119,7 @@ Stack effects for most instructions are given below. Instructions `FN1O`, `FN2O`
 | 20 | VARO | `→ x`                 | Local variable value
 | 21 | VARM | `→ r`                 | Local variable reference
 | 2B | VFYM | `c → r`               | Constant to match reference
+| 2B | NOTM | `→ r`                 | Constant to not-reference
 | 30 | SETN | `x r → (r←x)`         | `r` is a reference; 2F: no result
 | 31 | SETU | `x r → (r↩x)`         | `r` is a reference
 | 32 | SETM | `x f r → (r F↩ x)`    | `r` is a reference
@@ -157,9 +158,9 @@ The **SETN**, **SETU**, **SETM**, and **SETC** instructions set a value for a re
 | SETM   | Set          | Yes
 | SETC   | Set          | Yes
 
-### Bodies: SETH VFYM PRED
+### Bodies: SETH VFYM NOTM PRED
 
-**SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. **VFYM** converts a BQN value `c` to a special reference: assigning a value `v` to it should check if `v≡c` but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.
+**SETH** is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. **VFYM** converts a BQN value `c` to a special reference: assigning a value `v` to it should check if `v≡c` but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment. **NOTM** also creates a special reference, but it takes no inputs and the reference has no effect—it always counts as matching but performs no assignment.
 
 **PRED** drops the top value of the stack, but also checks whether it matches the number 1. If it does match, execution continues; if not, evaluation of the current body ends and evaluation moves to the next eligible body.
 
