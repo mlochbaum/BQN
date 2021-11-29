@@ -2,7 +2,9 @@
 
 # The BQN virtual machine and runtime
 
-BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. The [Javascript environment](../docs/bqn.js) requires about 500 lines of Javascript code including system functions and performance improvements; probably around 250 would be required just to run the core language. This makes it fairly easy to port BQN to new platforms, allowing BQN to be [embedded](../doc/embed.md) within other programming languages and interact with arrays or functions in those languages.
+BQN's self-hosted compiler and runtime mean that only a small amount of native code is needed to run BQN on any given platform. The [Javascript environment](../docs/bqn.js) requires about 600 lines of Javascript code including system functions and performance improvements; probably around 250 would be required just to run the core language. This makes it fairly easy to port BQN to new platforms, allowing BQN to be [embedded](../doc/embed.md) within other programming languages and interact with arrays or functions in those languages.
+
+There's a short [video introduction](https://www.youtube.com/watch?v=FxU5tZZ1gNc) to the VM architecture thanks to Asher Mancinelli.
 
 The way data is represented is part of the VM implementation: it can use native arrays or a custom data structure, depending on what the language supports. An initial implementation will be very slow, but can be improved by replacing functions from the BQN-based runtime with native code. As the VM system can be hard to work with if you're not familiar with it, I advise you to contact me to discuss implementing a VM if you are interested.
 
