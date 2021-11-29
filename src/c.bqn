@@ -318,8 +318,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
   ao←48+(0⌈(1+⊑bG)-˜ai⊏𝕩+ma+mm)∾-hd         # Assignment opcode
-  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,hq,2/l,api,at,dr,qp,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,⥊⍉(11+l⊏aa)≍ll,44¨api,ao,6¨dr,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
+  or←⍋oi←idor∾g⊏˜∾⟨cn,cn,bk,bk,hq,api,2/l,at,dr,qp,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,44¨api,⥊⍉(11+l⊏aa)≍ll,ao,6¨dr,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
                24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
   # Instruction source positions
   MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
