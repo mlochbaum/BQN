@@ -66,7 +66,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 08 | RETD |  NS  |  07  |          | Return the running scope's namespace
 | 0B | ARRO |  X   |      | `N`      | Create length-`N` list
 | 0C | ARRM |  X   |  0B  | `N`      | Create length-`N` reference list
-| 0E |      |  X   |      |          | Merge top of stack (for `[]`)
+| 0E |      |      |      |          | Merge top of stack (for `[]`)
 | 10 | FN1C |  X   |      |          | Monadic function call
 | 11 | FN2C |  X   |      |          | Dyadic function call
 | 12 | FN1O |  X   |  10  |          | Monadic call, checking for `·`
