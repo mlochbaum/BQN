@@ -14,6 +14,7 @@ MakeVar ← { program 𝕊 name:
   }
   GetF ⇐ {program 𝕩.Field name}
 }
+vnot ← { SetU⇐SetN⇐⊢ ⋄ SetQ⇐0˙ }
 MakeEnv ← { 𝕊p‿v‿n‿e:
   ns ← v-≠n  # Number of special names
   parent ⇐ p
@@ -107,6 +108,7 @@ ops ← ((!∘"Unknown opcode")˙⊣´⊢)¨ ⊔˝ ⍉> ⟨
   # Headers
   42‿(       {s𝕊e: {0:s.Skip@; 1:@; 𝕊:!"Predicate value must be 0 or 1"} ⊑s.Pop 1 }˙)
   43‿(       {s𝕊e: s.Push ref.Matcher ⊑s.Pop 1 }˙)
+  44‿(       {s𝕊e: s.Push vnot }˙)
   # Assignment
   47‿(       {s𝕊e: s.Skip⍟⊢{r‿  v: r.SetQ   v           } s.Pop 2 }˙)  # r:
   48‿(       {s𝕊e: s.Push { r‿  v: r.SetN⊸⊢ v           } s.Pop 2 }˙)  # r  ←v
