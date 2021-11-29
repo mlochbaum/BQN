@@ -291,7 +291,7 @@
 </tr>
 <tr>
 <td align="right">2C</td>
-<td>VNOT</td>
+<td>NOTM</td>
 <td align="center">X</td>
 <td align="right"></td>
 <td align="left"></td>
@@ -477,6 +477,12 @@
 <td>Constant to match reference</td>
 </tr>
 <tr>
+<td align="right">2B</td>
+<td>NOTM</td>
+<td><code><span class='Gets'>→</span> <span class='Value'>r</span></code></td>
+<td>Constant to not-reference</td>
+</tr>
+<tr>
 <td align="right">30</td>
 <td>SETN</td>
 <td><code><span class='Value'>x</span> <span class='Value'>r</span> <span class='Gets'>→</span> <span class='Paren'>(</span><span class='Value'>r</span><span class='Gets'>←</span><span class='Value'>x</span><span class='Paren'>)</span></code></td>
@@ -557,8 +563,8 @@
 </tr>
 </tbody>
 </table>
-<h3 id="bodies-seth-vfym-pred"><a class="header" href="#bodies-seth-vfym-pred">Bodies: SETH VFYM PRED</a></h3>
-<p><strong>SETH</strong> is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. <strong>VFYM</strong> converts a BQN value <code><span class='Value'>c</span></code> to a special reference: assigning a value <code><span class='Value'>v</span></code> to it should check if <code><span class='Value'>v</span><span class='Function'>≡</span><span class='Value'>c</span></code> but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment.</p>
+<h3 id="bodies-seth-vfym-notm-pred"><a class="header" href="#bodies-seth-vfym-notm-pred">Bodies: SETH VFYM NOTM PRED</a></h3>
+<p><strong>SETH</strong> is a modification of SETN for use in header destructuring. It differs in that it doesn't place its result on the stack (making it more like SETN followed by POPS), and that if the assignment fails because the reference and value don't conform then it moves on to the next eligible body in the block rather than giving an error. <strong>VFYM</strong> converts a BQN value <code><span class='Value'>c</span></code> to a special reference: assigning a value <code><span class='Value'>v</span></code> to it should check if <code><span class='Value'>v</span><span class='Function'>≡</span><span class='Value'>c</span></code> but do no assignment. Only SETH needs to accept these references, and it should treat non-matching values as failing assignment. <strong>NOTM</strong> also creates a special reference, but it takes no inputs and the reference has no effect—it always counts as matching but performs no assignment.</p>
 <p><strong>PRED</strong> drops the top value of the stack, but also checks whether it matches the number 1. If it does match, execution continues; if not, evaluation of the current body ends and evaluation moves to the next eligible body.</p>
 <h3 id="namespaces-fldo-fldm-alim-retd"><a class="header" href="#namespaces-fldo-fldm-alim-retd">Namespaces: FLDO FLDM ALIM RETD</a></h3>
 <p>A <em>namespace</em> is the collection of variables in a particular scope, along with an association mapping some exported <em>symbols</em> (case- and underscore-normalized strings) to a subset of these. It can be represented using a frame for the variables, plus the variable name list and mask of exported variables from that block's properties in the bytecode. <strong>RETD</strong> finishes executing the block and returns the namespace for that execution.</p>
