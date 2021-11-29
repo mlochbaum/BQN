@@ -86,6 +86,7 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 27 | DYNM |      |      | `I`      | Push named variable `I` reference
 | 2A | PRED |      |  06  |          | Check predicate and drop
 | 2B | VFYM |  X   |      |          | Convert constant to matcher (for headers)
+| 2C | VNOT |  X   |      |          | Push placeholder assignment matcher
 | 2F | SETH |  X   |  30  |          | Test and set header
 | 30 | SETN |  X   |      |          | Define variable
 | 31 | SETU |  X   |      |          | Change variable
