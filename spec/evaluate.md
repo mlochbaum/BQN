@@ -49,12 +49,10 @@ In each case the constituent expressions are evaluated in reverse source order: 
 
 Modifiers that are evaluated when they receive operands are called *immediate*. Other modifiers, including primitives and some kinds of block, simply record the operands and are called *deferred*. The result of applying a deferred modifier once is called a *derived function*.
 
-The following rules always create *derived operations*, either 1-modifiers or derived functions. A derived operation is identified by the rule that created it, and the values of its parts. 
+The rules for trains create another kind of derived function. A derived function is identified by the rule that created it, and the values of its parts.
 | Left       | Center    | Right                 | Result
 |------------|-----------|-----------------------|--------------
-|            | `_mod2_`  | `( subject \| Func )` | `{𝔽 _C_ R}`
-| `Operand`  | `_mod2_`  |                       | `{L _C_ 𝔽}`
 | `Operand`  |  `Derv`   | `Fork`                | `{(𝕨L𝕩)C(𝕨R𝕩)}`
 | `nothing?` |  `Derv`   | `Fork`                | `{     C(𝕨R𝕩)}`
 
-As with applications, all expressions are evaluated in reverse source order before doing anything else. Then a result is formed without calling the center value. Its behavior as a function is described in the rightmost column, using `L`, `C`, and `R` for the results of the expressions in the left, center, and right columns, respectively. For the first two rules (*partial application*), the given operand is bound to the 2-modifier: the result is a 1-modifier that, when called, calls the center 2-modifier with the bound operand on the same side it appeared on and the new operand on the remaining side. A *train* is a function that, when called, calls the right-hand function on all arguments, then the left-hand function, and calls the center function with these results as arguments.
+A *train* is a function that, when called, calls the right-hand function on all arguments, then the left-hand function, and calls the center function with these results as arguments. As with applications, all expressions are evaluated in reverse source order before doing anything else. Then a result is formed without calling the center value. Its behavior as a function is described in the rightmost column, using `L`, `C`, and `R` for the results of the expressions in the left, center, and right columns, respectively.

@@ -24,17 +24,15 @@ Here we define the "atomic" forms of functions and modifiers, which are either s
     list     = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
     subject  = atom | ANY ( "‿" ANY )+
 
-Starting at the highest-order objects, modifiers have fairly simple syntax. In most cases the syntax for `←` and `↩` is the same, but only `↩` can be used for modified assignment. The export arrow `⇐` can be used in the same ways as `←`, but it can also be used at the beginning of a header to force a namespace result, or with no expression on the right in an `EXPORT` statement.
+Starting at the highest-order objects, modifiers have simple syntax. In most cases the syntax for `←` and `↩` is the same, but only `↩` can be used for modified assignment. The export arrow `⇐` can be used in the same ways as `←`, but it can also be used at the beginning of a header to force a namespace result, or with no expression on the right in an `EXPORT` statement.
 
     ASGN     = "←" | "⇐" | "↩"
     _m2Expr_ = _mod2_
              | _c_ ASGN _m2Expr_
     _m1Expr  = _mod1
-             | _mod2_ ( subject | Func )  # Right partial application
-             | Operand _mod2_             # Left partial application
              | _m  ASGN _m1Expr
 
-Functions can be formed by fully applying modifiers or as trains. Modifiers are left-associative, so that the left operand (`Operand`) can include modifier applications but the right operand (`subject | Func`) cannot. Trains are right-associative, but bind less tightly than modifiers. Assignment is not allowed in the top level of a train: it must be parenthesized.
+Functions can be formed by applying modifiers, or with trains. Modifiers are left-associative, so that the left operand (`Operand`) can include modifier applications but the right operand (`subject | Func`) cannot. Trains are right-associative, but bind less tightly than modifiers. Assignment is not allowed in the top level of a train: it must be parenthesized.
 
     Derv     = Func
              | Operand _mod1

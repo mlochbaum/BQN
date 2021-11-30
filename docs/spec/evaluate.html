@@ -64,7 +64,7 @@
 </table>
 <p>In each case the constituent expressions are evaluated in reverse source order: Right, then Called, then Left. Then the expression's result is obtained by calling the Called value on its parameters. A left argument of <code><span class='Value'>nothing</span></code> is not used as a parameter, leaving only a right argument in that case. The type of the Called value must be appropriate to the expression type, as indicated in the &quot;Types&quot; column. For function application, a data type (number, character, or array) is allowed. It is called simply by returning itself. Although the arguments are ignored in this case, they are still evaluated. A braced construct is evaluated by binding the parameter names given in columns L and R to the corresponding values. Then if all parameter levels present have been bound, its body is evaluated to give the result of application.</p>
 <p>Modifiers that are evaluated when they receive operands are called <em>immediate</em>. Other modifiers, including primitives and some kinds of block, simply record the operands and are called <em>deferred</em>. The result of applying a deferred modifier once is called a <em>derived function</em>.</p>
-<p>The following rules always create <em>derived operations</em>, either 1-modifiers or derived functions. A derived operation is identified by the rule that created it, and the values of its parts.</p>
+<p>The rules for trains create another kind of derived function. A derived function is identified by the rule that created it, and the values of its parts.</p>
 <table>
 <thead>
 <tr>
@@ -75,18 +75,6 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td></td>
-<td><code><span class='Modifier2'>_mod2_</span></code></td>
-<td><code><span class='Paren'>(</span> <span class='Value'>subject</span> <span class='Function'>|</span> <span class='Function'>Func</span> <span class='Paren'>)</span></code></td>
-<td><code><span class='Brace'>{</span><span class='Function'>𝔽</span> <span class='Modifier2'>_C_</span> <span class='Function'>R</span><span class='Brace'>}</span></code></td>
-</tr>
-<tr>
-<td><code><span class='Function'>Operand</span></code></td>
-<td><code><span class='Modifier2'>_mod2_</span></code></td>
-<td></td>
-<td><code><span class='Brace'>{</span><span class='Function'>L</span> <span class='Modifier2'>_C_</span> <span class='Function'>𝔽</span><span class='Brace'>}</span></code></td>
-</tr>
 <tr>
 <td><code><span class='Function'>Operand</span></code></td>
 <td><code><span class='Function'>Derv</span></code></td>
@@ -101,4 +89,4 @@
 </tr>
 </tbody>
 </table>
-<p>As with applications, all expressions are evaluated in reverse source order before doing anything else. Then a result is formed without calling the center value. Its behavior as a function is described in the rightmost column, using <code><span class='Function'>L</span></code>, <code><span class='Function'>C</span></code>, and <code><span class='Function'>R</span></code> for the results of the expressions in the left, center, and right columns, respectively. For the first two rules (<em>partial application</em>), the given operand is bound to the 2-modifier: the result is a 1-modifier that, when called, calls the center 2-modifier with the bound operand on the same side it appeared on and the new operand on the remaining side. A <em>train</em> is a function that, when called, calls the right-hand function on all arguments, then the left-hand function, and calls the center function with these results as arguments.</p>
+<p>A <em>train</em> is a function that, when called, calls the right-hand function on all arguments, then the left-hand function, and calls the center function with these results as arguments. As with applications, all expressions are evaluated in reverse source order before doing anything else. Then a result is formed without calling the center value. Its behavior as a function is described in the rightmost column, using <code><span class='Function'>L</span></code>, <code><span class='Function'>C</span></code>, and <code><span class='Function'>R</span></code> for the results of the expressions in the left, center, and right columns, respectively.</p>

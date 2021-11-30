@@ -198,8 +198,6 @@ Each function in this section is monadic.
 | 3-train       |  3   | `f,g,h`
 | 1-mod         |  4   | `𝕗,𝕣`
 | 2-mod         |  5   | `𝕗,𝕣,𝕘`
-| Left partial  |  6   | `𝕗,𝕣`
-| Right partial |  7   | `  𝕣,𝕘`
 
 ## Time
 
