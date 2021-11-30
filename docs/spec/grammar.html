@@ -32,12 +32,10 @@
 </span>         <span class='Function'>|</span> <span class='Function'>Operand</span> <span class='Modifier2'>_mod2_</span>             <span class='Comment'># Left partial application
 </span>         <span class='Function'>|</span> <span class='Modifier'>_m</span>  <span class='Function'>ASGN</span> <span class='Modifier'>_m1Expr</span>
 </pre>
-<p>Functions can be formed by fully applying modifiers, as trains, or with the return token <code><span class='Gets'>→</span></code>, which behaves syntactically like a 1-modifier whose operand must be an identifier. Modifiers are left-associative, so that the left operand (<code><span class='Function'>Operand</span></code>) can include modifier applications but the right operand (<code><span class='Value'>subject</span> <span class='Function'>|</span> <span class='Function'>Func</span></code>) cannot. Trains are right-associative, but bind less tightly than modifiers. Assignment is not allowed in the top level of a train: it must be parenthesized.</p>
+<p>Functions can be formed by fully applying modifiers or as trains. Modifiers are left-associative, so that the left operand (<code><span class='Function'>Operand</span></code>) can include modifier applications but the right operand (<code><span class='Value'>subject</span> <span class='Function'>|</span> <span class='Function'>Func</span></code>) cannot. Trains are right-associative, but bind less tightly than modifiers. Assignment is not allowed in the top level of a train: it must be parenthesized.</p>
 <pre><span class='Function'>Derv</span>     <span class='Function'>=</span> <span class='Function'>Func</span>
          <span class='Function'>|</span> <span class='Function'>Operand</span> <span class='Modifier'>_mod1</span>
          <span class='Function'>|</span> <span class='Function'>Operand</span> <span class='Modifier2'>_mod2_</span> <span class='Paren'>(</span> <span class='Value'>subject</span> <span class='Function'>|</span> <span class='Function'>Func</span> <span class='Paren'>)</span>
-         <span class='Function'>|</span> <span class='Function'>Return</span>
-<span class='Function'>Return</span>   <span class='Function'>=</span> <span class='Paren'>(</span> <span class='Function'>NAME</span> <span class='Function'>|</span> <span class='String'>&quot;𝕊&quot;</span> <span class='Function'>|</span> <span class='String'>&quot;𝕣&quot;</span> <span class='Paren'>)</span> <span class='String'>&quot;→&quot;</span>
 <span class='Function'>Operand</span>  <span class='Function'>=</span> <span class='Value'>subject</span>
          <span class='Function'>|</span> <span class='Function'>Derv</span>
 <span class='Function'>Fork</span>     <span class='Function'>=</span> <span class='Function'>Derv</span>

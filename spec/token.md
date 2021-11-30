@@ -25,6 +25,6 @@ Otherwise, a single character forms a token. Only the specified set of character
 | Primitive 1-Modifier  | `` ˙˜˘¨⌜⁼´˝` ``
 | Primitive 2-Modifier  | `∘○⊸⟜⌾⊘◶⎉⚇⍟⎊`
 | Special name          | `𝕨𝕩𝕗𝕘𝕤𝕎𝕏𝔽𝔾𝕊`
-| Punctuation           | `←⇐↩→(){}⟨⟩‿⋄,.` and newline
+| Punctuation           | `←⇐↩(){}⟨⟩‿⋄,.` and newline
 
 In the BQN [grammar specification](grammar.md), the three primitive classes are grouped into terminals `Fl`, `_ml`, and `_cl`, while the punctuation characters are identified separately as keywords such as `"←"`. The special names are handled specially. The uppercase versions `𝕎𝕏𝔽𝔾𝕊` and lowercase versions `𝕨𝕩𝕗𝕘𝕤` are two spellings of the five underlying inputs and function.

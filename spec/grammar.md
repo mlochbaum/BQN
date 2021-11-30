@@ -34,13 +34,11 @@ Starting at the highest-order objects, modifiers have fairly simple syntax. In m
              | Operand _mod2_             # Left partial application
              | _m  ASGN _m1Expr
 
-Functions can be formed by fully applying modifiers, as trains, or with the return token `→`, which behaves syntactically like a 1-modifier whose operand must be an identifier. Modifiers are left-associative, so that the left operand (`Operand`) can include modifier applications but the right operand (`subject | Func`) cannot. Trains are right-associative, but bind less tightly than modifiers. Assignment is not allowed in the top level of a train: it must be parenthesized.
+Functions can be formed by fully applying modifiers or as trains. Modifiers are left-associative, so that the left operand (`Operand`) can include modifier applications but the right operand (`subject | Func`) cannot. Trains are right-associative, but bind less tightly than modifiers. Assignment is not allowed in the top level of a train: it must be parenthesized.
 
     Derv     = Func
              | Operand _mod1
              | Operand _mod2_ ( subject | Func )
-             | Return
-    Return   = ( NAME | "𝕊" | "𝕣" ) "→"
     Operand  = subject
              | Derv
     Fork     = Derv
