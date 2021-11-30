@@ -154,7 +154,7 @@ A header does not need to include all inputs, as shown by the `F _op_ val:` head
     { _𝕣:  # 1-Modifier
     { _𝕣_: # 2-Modifier
 
-For immediate blocks, this is the only type of header possible, and it must use an identifier as there is no applicable special name. However, this name can't be used, except for [returns](#returns): it doesn't make sense to refer to a value while it is still being computed!
+For immediate blocks, this is the only type of header possible, and it must use an identifier as there is no applicable special name. However, the name can't be used: it doesn't make sense to refer to a value while it is still being computed!
 
 ## Multiple bodies
 
@@ -213,9 +213,3 @@ This structure is still constrained by the rules of block bodies: each instance 
         { 0=n←≠𝕩 ? ∞ ; n } "abc"
 
 This is the main drawback of predicates relative to guards in APL dfns (also written with `?`), while the advantage is that it allows multiple expressions, or extra conditions, after a `?`. It's not how I would have designed it if I just wanted to make a syntax for if statements, but it's a natural fit for the header system.
-
-## Returns
-
-*This feature is not yet included in any BQN implementation.*
-
-The glyph `→` indicates an early return from a block. It must be preceded either by one of the self-reference special names `𝕊` or `𝕣` or by an internal name for a containing block. The combination of name and return token—like `F→`, let's say—is a function that returns from the current instance of the indicated block. If that instance has already returned, then it instead results in an error.

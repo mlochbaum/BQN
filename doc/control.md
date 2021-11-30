@@ -249,17 +249,3 @@ The `While` loop alone allows syntax similar to the `For` loop. Perform any init
         1: c↩1+3×c
       }
     }⟩
-
-### Break and continue
-
-In a `While` or `For` loop, [returns](block.md#returns) can be used for either the break or the continue statement (or, for that matter, a multiline break) if available. Returning from the main body, either with `𝕊→` or a labelled return, is a functional version of a continue statement. To escape from the loop as a whole, it should be wrapped in a labelled immediate block. Returning from that block using its label breaks the loop. For example, the following loop 
-
-    {brk:
-      sum ← 0 ⋄ even ← ⟨⟩
-      While {𝕤⋄sum<100}‿{Cnt:
-        brk→⍟(15≤n) @
-        sum +↩ n
-        Cnt→⍟(2|n) @
-        even ∾↩ n
-      }
-    }
