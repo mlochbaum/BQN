@@ -18,7 +18,6 @@ Glyph(s)        | Meaning
 `←`             | [Define](expression.md#assignment)
 `⇐`             | [Export](expression.md#exports)
 `↩`             | [Change](expression.md#assignment)
-`→`             | [Return](block.md#returns)
 `⋄,` or newline | Statement or element [separator](#separators)
 `⟨⟩`            | [List](#list-notation) (rank-1 array)
 `‿`             | [Strand](#list-notation) (lightweight list syntax)

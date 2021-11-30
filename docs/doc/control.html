@@ -205,15 +205,3 @@
   <span class='Brace'>}</span>
 <span class='Brace'>}</span><span class='Bracket'>⟩</span>
 </pre>
-<h3 id="break-and-continue"><a class="header" href="#break-and-continue">Break and continue</a></h3>
-<p>In a <code><span class='Function'>While</span></code> or <code><span class='Function'>For</span></code> loop, <a href="block.html#returns">returns</a> can be used for either the break or the continue statement (or, for that matter, a multiline break) if available. Returning from the main body, either with <code><span class='Function'>𝕊</span><span class='Gets'>→</span></code> or a labelled return, is a functional version of a continue statement. To escape from the loop as a whole, it should be wrapped in a labelled immediate block. Returning from that block using its label breaks the loop. For example, the following loop</p>
-<pre><span class='Brace'>{</span><span class='Value'>brk:</span>
-  <span class='Value'>sum</span> <span class='Gets'>←</span> <span class='Number'>0</span> <span class='Separator'>⋄</span> <span class='Value'>even</span> <span class='Gets'>←</span> <span class='Bracket'>⟨⟩</span>
-  <span class='Function'>While</span> <span class='Brace'>{</span><span class='Value'>𝕤</span><span class='Separator'>⋄</span><span class='Value'>sum</span><span class='Function'>&lt;</span><span class='Number'>100</span><span class='Brace'>}</span><span class='Ligature'>‿</span><span class='Brace'>{</span><span class='Function'>Cnt</span><span class='Value'>:</span>
-    <span class='Value'>brk</span><span class='Gets'>→</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>15</span><span class='Function'>≤</span><span class='Value'>n</span><span class='Paren'>)</span> <span class='String'>@</span>
-    <span class='Value'>sum</span> <span class='Function'>+</span><span class='Gets'>↩</span> <span class='Value'>n</span>
-    <span class='Function'>Cnt</span><span class='Gets'>→</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>|</span><span class='Value'>n</span><span class='Paren'>)</span> <span class='String'>@</span>
-    <span class='Value'>even</span> <span class='Function'>∾</span><span class='Gets'>↩</span> <span class='Value'>n</span>
-  <span class='Brace'>}</span>
-<span class='Brace'>}</span>
-</pre>
