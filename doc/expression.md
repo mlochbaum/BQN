@@ -78,8 +78,6 @@ Here is a table of the modifier and function application rules:
 |  `F*` |  `G`  |  `H`  | Function   | 3-train
 |  `F*` | `_m`  |       | Function   | 1-Modifier
 |  `F*` | `_c_` |  `G*` | Function   | 2-Modifier
-|       | `_c_` |  `G*` | 1-Modifier | Partial application
-|  `F*` | `_c_` |       | 1-Modifier | Partial application
 
 A function with an asterisk indicates that a subject can also be used. Since the role doesn't exist after parsing, function and subject spellings are indistinguishable in these positions. Modifier applications bind more tightly than functions, and associate left-to-right while functions associate right-to-left.
 
