@@ -65,49 +65,50 @@ Subject expressions are complicated by the possibility of list and namespace ass
              | lhs ASGN subExpr
              | lhs Derv "↩" subExpr?      # Modified assignment
 
-A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. As a special rule, a monadic function header specifically can omit the function when the argument is not just a name (as this would conflict with a subject label). The following cases define only headers with arguments, which are assumed to be special cases; there can be any number of these. Headers without arguments can only refer to the general case—note that operands are not pattern matched—so there can be at most two of these kinds of headers, indicating the monadic and dyadic cases.
+A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. A plain name is called a label and can be used for a block with or without arguments. First we define headers `IMM_HEAD` that include no arguments.
 
     headW    = subject | "𝕨"
     headX    = subject | "𝕩"
     HeadF    = F | "𝕗" | "𝔽"
     HeadG    = F | "𝕘" | "𝔾"
-    Mod1H1   = HeadF ( _m  | "_𝕣"  )
-    Mod2H1   = HeadF ( _c_ | "_𝕣_" ) HeadG
-    FuncHead = headW? ( F | "𝕊" ) headX
-             | sl | "(" subExpr ")" | brSub | list   # subject,
+    FuncLab  = F | "𝕊"
+    Mod1Lab  = _m  | "_𝕣"
+    Mod2Lab  = _c_ | "_𝕣_"
+    FuncName = FuncLab
+    Mod1Name = HeadF Mod1Lab
+    Mod2Name = HeadF Mod2Lab HeadG
+    LABEL    =         FuncLab  | Mod1Lab  | Mod2Lab
+    IMM_HEAD = LABEL | FuncName | Mod1Name | Mod2Name
+
+There are some extra possibilities for a header that specifies arguments. As a special rule, a monadic function header specifically can omit the function when the argument is not just a name (as this would conflict with a subject label). Additionally, an inference header doesn't affect evaluation of the function, but describes how an inferred property ([Undo](inferred.md#undo)) should be computed. Here `"˜"` and `"⁼"` are both specific instances of the `_ml` token.
+
+    ARG_HEAD = LABEL
+             | headW? IMM_HEAD      "⁼"? headX
+             | headW  IMM_HEAD "˜"  "⁼"  headX
+             |        FuncName "˜"? "⁼"
+             | CaseHead
+    CaseHead = sl | "(" subExpr ")" | brSub | list   # subject,
              | ANY ( "‿" ANY )+                      # but not s
-             | UndoHead
-    _m1Head  = headW? Mod1H1 headX
-    _m2Head_ = headW? Mod2H1 headX
 
-Additionally, an inference header doesn't affect evaluation of the function, but describes how an inferred property ([Undo](inferred.md#undo)) should be computed. Here `"˜"` and `"⁼"` are both specific instances of the `_ml` token.
-
-    UndoHead = headW? ( F | "𝕊" )      "⁼" headX
-             | headW  ( F | "𝕊" ) "˜"  "⁼" headX
-             |        ( F | "𝕊" ) "˜"? "⁼"
-
-A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. A non-final expression can be made into a predicate by following it with the separator-like `?`. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. For an immediate block there are no inputs, so there can only be one possible case and one body. Functions and modifiers allow any number of "matched" bodies, with headers that have arguments, followed by at most two "main" bodies with either no headers or headers without arguments. If there is one main body, it is ambivalent, but two main bodies refer to the monadic and dyadic cases.
+A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. A non-final expression can be made into a predicate by following it with the separator-like `?`. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. A block can have any number of bodies with headers. After these there can be bodies without headers—up to one for an immediate block and up to two for a block with arguments. If a block with arguments has one such body, it's ambivalent, but two of them refer to the monadic and dyadic cases.
 
     BODY     = ⋄? ( STMT ⋄ | EXPR ⋄? "?" ⋄? )* STMT ⋄?
-    FCase    = ⋄? FuncHead ":" BODY
-    _mCase   = ⋄? _m1Head  ":" BODY
-    _cCase_  = ⋄? _m2Head_ ":" BODY
-    FMain    = ( ⋄? (  F  |  "𝕊"           ) ":" )? BODY
-    _mMain   = ( ⋄? ( _m  | "_𝕣"  | Mod1H1 ) ":" )? BODY
-    _cMain_  = ( ⋄? ( _c_ | "_𝕣_" | Mod2H1 ) ":" )? BODY
+    IMM_BLK  = "{" ( ⋄? IMM_HEAD ⋄? ":" BODY ";" )* BODY? "}"
+    ARG_BLK  = "{" ( ⋄? ARG_HEAD ⋄? ":" BODY ";" )* ( BODY ( ";" BODY )? )? "}"
+    BLOCK    = IMM_BLOCK | ARG_BLOCK
     brSub    = "{" ( ⋄? s ":" )? BODY "}"
-    BrFunc   = "{" (  FCase  ";" )* (  FCase  |  FMain ( ";"  FMain )? ) "}"
-    _brMod1  = "{" ( _mCase  ";" )* ( _mCase  | _mMain ( ";" _mMain )? ) "}"
-    _brMod2_ = "{" ( _cCase_ ";" )* ( _cCase_ | _cMan_ ( ";" _cMan_ )? ) "}"
+    BrFunc   = BLOCK
+    _brMod1  = BLOCK
+    _brMod2_ = BLOCK
 
-Two additional rules apply to blocks, based on the special name associations in the table below. First, each block allows the special names in its column to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each column is cumulative and a given entry also includes all the entries above it. Second, for `BrFunc`, `_brMod1`, and `_brMod2_` terms, if no header is given, then at least one `BODY` term in it *must* contain one of the names on, and not above, the corresponding row. Otherwise the syntax would be ambiguous, since for example a simple `"{" BODY "}"` sequence could have any type.
+Three additional rules apply to blocks, allowing the ambiguous grammar above to be disambiguated. They are shown in the table below. First, each block type allows the special names in its row to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each of these four columns is cumulative, so that a given entry also includes all the entries above it. Second, a block can't contain one of the tokens from the "label" column of a different row. Third, each `BrFunc`, `_brMod1`, and `_brMod2_` term *must* contain one of the names on, and not above, the corresponding row (including the "label" column).
 
-| Term               | `s`    | `F`    | `_m`    | `_c_`    | other
+| Term               | `s`    | `F`    | `_m`    | `_c_`    | label
 |--------------------|--------|--------|---------|----------|-------
 | `brSub`, `PROGRAM` | None   | None   | None    | None     | None
-| `BrFunc`           | `𝕨𝕩𝕤`  | `𝕎𝕏𝕊`  |         |          | `";"`
-| `_brMod1`          | `𝕗𝕣`   | `𝔽`    | `_𝕣`    |          |
-| `_brMod2_`         | `𝕘`    | `𝔾`    | None    | `_𝕣_`    |
+| `BrFunc`           | `𝕨𝕩𝕤`  | `𝕎𝕏𝕊`  |         |          | `FuncLab`
+| `_brMod1`          | `𝕗𝕣`   | `𝔽`    | `_𝕣`    |          | `Mod1Lab`
+| `_brMod2_`         | `𝕘`    | `𝔾`    | None    | `_𝕣_`    | `Mod2Lab`
 
 The rules for special name can be expressed in BNF by making many copies of all expression rules above. For each "level", or row in the table, a new version of every rule should be made that allows that level but not higher ones, and another version should be made that requires exactly that level. The values themselves should be included in `s`, `F`, `_m`, and `_c_` for these copies. Then the "allowed" rules are made simply by replacing the terms they contain (excluding `brSub` and so on) with the same "allowed" versions, and "required" rules are constructed using both "allowed" and "required" rules. For every part of a production rule, an alternative should be created that requires the relevant name in that part while allowing it in the others. For example, `( subject | nothing )? Derv arg` would be transformed to
 
