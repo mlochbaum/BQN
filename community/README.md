@@ -2,7 +2,12 @@
 
 # BQN community links
 
-Yes, BQN has users! This page gathers links to work by the community. To get in touch, please use our [chat forums](forums.md).
+[Advent of Code](https://adventofcode.com/) 2021 is now running! Solutions are being published by:
+- [Raghu Ranganathan](https://github.com/razetime/AOC2021-BQN)
+- [Caleb Quilley](https://gitlab.com/icen/aoc21/-/tree/main)
+- [Antti Keränen](https://github.com/Detegr/aoc2021)
+
+This page gathers links to work by the community. To get in touch, please use our [chat forums](forums.md).
 
 For code repositories using BQN, see:
 
