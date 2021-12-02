@@ -54,23 +54,25 @@ Subject expressions are complicated by the possibility of list and namespace ass
     nothing  = "·"
              | ( subject | nothing )? Derv nothing
     NAME     = s | F | _m | _c_
-    LHS_ANY  = NAME | "·" | lhsList | "(" LHS_ELT ")"
+    LHS_SUB  = "·" | lhsList | sl
+    LHS_ANY  = NAME | LHS_SUB | "(" LHS_ELT ")"
     LHS_ATOM = LHS_ANY | "(" lhsStr ")"
     LHS_ELT  = LHS_ANY | lhsStr
     LHS_ENTRY= LHS_ELT | lhs "⇐" NAME
     lhsStr   = LHS_ATOM ( "‿" LHS_ATOM )+
     lhsList  = "⟨" ⋄? ( ( LHS_ENTRY ⋄ )* LHS_ENTRY ⋄? )? "⟩"
-    lhs      = s | "·" | lhsList | lhsStr | "(" lhs ")"
+    lhsComp  = LHS_SUB | lhsStr | "(" lhs ")"
+    lhs      = s | lhsComp
     subExpr  = arg
              | lhs ASGN subExpr
              | lhs Derv "↩" subExpr?      # Modified assignment
 
 A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. A plain name is called a label and can be used for a block with or without arguments. First we define headers `IMM_HEAD` that include no arguments.
 
-    headW    = subject | "𝕨"
-    headX    = subject | "𝕩"
-    HeadF    = F | "𝕗" | "𝔽"
-    HeadG    = F | "𝕘" | "𝔾"
+    headW    = lhs | "𝕨"
+    headX    = lhs | "𝕩"
+    HeadF    = lhs | F | "𝕗" | "𝔽"
+    HeadG    = lhs | F | "𝕘" | "𝔾"
     FuncLab  = F | "𝕊"
     Mod1Lab  = _m  | "_𝕣"
     Mod2Lab  = _c_ | "_𝕣_"
@@ -86,9 +88,7 @@ There are some extra possibilities for a header that specifies arguments. As a s
              | headW? IMM_HEAD      "⁼"? headX
              | headW  IMM_HEAD "˜"  "⁼"  headX
              |        FuncName "˜"? "⁼"
-             | xHead
-    xHead    = sl | "(" subExpr ")" | blSub | list   # subject,
-             | ANY ( "‿" ANY )+                      # but not s
+             | lhsComp
 
 A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. A non-final expression can be made into a predicate by following it with the separator-like `?`. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. A block can have any number of bodies with headers. After these there can be bodies without headers—up to one for an immediate block and up to two for a block with arguments. If a block with arguments has one such body, it's ambivalent, but two of them refer to the monadic and dyadic cases.
 
