@@ -250,7 +250,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ak←af+(0≤ar)+(ai⊏ma)+(⊑bG)-˜ai⊏𝕩          # Class of assignment: 1⇐ 2⇐? 3←? 4↩? 5+↩?
   at∾↩hj⋄ac←«⊸-(ak∾6¨hj)⌾(at⊸⊏)0¨𝕩          # Header assignment is 6 temporarily
   aa←×gac←g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac        # Broadcast ac to the entire target
-  api←/ap←aa∧2=no                           # Assignment placeholder
+  api←/(𝕩=⊑bO)∧ap←aa∧2=no                   # Assignment placeholder
   "Can't use Nothing (·) in lists"_nerr (¬ap)×no×(gr⊏¬ns)∨»lo∨ls
   ac-↩3×ah←6=ac                             # Assignment is header; 6→3
   nx⌈↩aa×1=no                               # Prevent assignment to 𝕨 if it's ·
