@@ -164,7 +164,7 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 
 ### Undo headers
 
-An `UndoHead` header specifies how a block function acts when undone. Like ordinary headers, undo headers are searched for a match when a block function `F` is undone, or when `F˜` is undone with two arguments (including the two modifier cases `𝔽⟜k` and `𝔽𝔾k` from the previous section). An `UndoHead` without `"˜"` matches the `F⁼` case while one with `"˜"` matches the `F˜⁼` case. The left and right arguments are matched to `headW` and `headX` as with ordinary headers, and the first matching case is evaluated to give the result of the Undo-derived function.
+An `ARG_HEAD` header containing `"⁼"` specifies how a block function acts when undone. Like ordinary headers, undo headers are searched for a match when a block function `F` is undone, or when `F˜` is undone with two arguments (including the two modifier cases `𝔽⟜k` and `𝔽𝔾k` from the previous section). An `ARG_HEAD` without `"˜"` matches the `F⁼` case while one with `"˜"` matches the `F˜⁼` case. The left and right arguments are matched to `headW` and `headX` as with ordinary headers, and the first matching case is evaluated to give the result of the Undo-derived function.
 
 ## Under
 
