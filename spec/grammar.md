@@ -17,10 +17,10 @@ A program is a list of statements. Almost all statements are expressions. Namesp
 Here we define the "atomic" forms of functions and modifiers, which are either single tokens or enclosed in paired symbols. Stranded lists with `‿`, which binds more tightly than any form of execution, are also included.
 
     ANY      = atom | Func | _mod1 | _mod2_
-    _mod2_   = ( atom "." )? _c_ | _cl_ | "(" _m1Expr_ ")" | _brMod2_
-    _mod1    = ( atom "." )? _m  | _ml  | "(" _m2Expr  ")" | _brMod1
-    Func     = ( atom "." )?  F  |  Fl  | "(" FuncExpr ")" |  BrFunc
-    atom     = ( atom "." )?  s  |  sl  | "(" subExpr  ")" |  brSub | list
+    _mod2_   = ( atom "." )? _c_ | _cl_ | "(" _m1Expr_ ")" | _blMod2_
+    _mod1    = ( atom "." )? _m  | _ml  | "(" _m2Expr  ")" | _blMod1
+    Func     = ( atom "." )?  F  |  Fl  | "(" FuncExpr ")" |  BlFunc
+    atom     = ( atom "." )?  s  |  sl  | "(" subExpr  ")" |  blSub | list
     list     = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
     subject  = atom | ANY ( "‿" ANY )+
 
@@ -86,31 +86,33 @@ There are some extra possibilities for a header that specifies arguments. As a s
              | headW? IMM_HEAD      "⁼"? headX
              | headW  IMM_HEAD "˜"  "⁼"  headX
              |        FuncName "˜"? "⁼"
-             | CaseHead
-    CaseHead = sl | "(" subExpr ")" | brSub | list   # subject,
+             | xHead
+    xHead    = sl | "(" subExpr ")" | blSub | list   # subject,
              | ANY ( "‿" ANY )+                      # but not s
 
 A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. A non-final expression can be made into a predicate by following it with the separator-like `?`. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. A block can have any number of bodies with headers. After these there can be bodies without headers—up to one for an immediate block and up to two for a block with arguments. If a block with arguments has one such body, it's ambivalent, but two of them refer to the monadic and dyadic cases.
 
     BODY     = ⋄? ( STMT ⋄ | EXPR ⋄? "?" ⋄? )* STMT ⋄?
-    IMM_BLK  = "{" ( ⋄? IMM_HEAD ⋄? ":" BODY ";" )* BODY? "}"
-    ARG_BLK  = "{" ( ⋄? ARG_HEAD ⋄? ":" BODY ";" )* ( BODY ( ";" BODY )? )? "}"
-    BLOCK    = IMM_BLOCK | ARG_BLOCK
-    brSub    = "{" ( ⋄? s ":" )? BODY "}"
-    BrFunc   = BLOCK
-    _brMod1  = BLOCK
-    _brMod2_ = BLOCK
+    CASE     = BODY
+    I_CASE   = ⋄? IMM_HEAD ⋄? ":" BODY
+    A_CASE   = ⋄? ARG_HEAD ⋄? ":" BODY
+    IMM_BLK  = "{" ( I_CASE ";" )* ( I_CASE | CASE ) "}"
+    ARG_BLK  = "{" ( A_CASE ";" )* ( A_CASE | CASE ( ";" CASE )? ) "}"
+    blSub    = "{" ( ⋄? s ⋄? ":" )? BODY "}"
+    BlFunc   =           ARG_BLK
+    _blMod1  = IMM_BLK | ARG_BLK
+    _blMod2_ = IMM_BLK | ARG_BLK
 
 Three additional rules apply to blocks, allowing the ambiguous grammar above to be disambiguated. They are shown in the table below. First, each block type allows the special names in its row to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each of these four columns is cumulative, so that a given entry also includes all the entries above it. Second, a block can't contain one of the tokens from the "label" column of a different row. Third, each `BrFunc`, `_brMod1`, and `_brMod2_` term *must* contain one of the names on, and not above, the corresponding row (including the "label" column).
 
 | Term               | `s`    | `F`    | `_m`    | `_c_`    | label
 |--------------------|--------|--------|---------|----------|-------
-| `brSub`, `PROGRAM` | None   | None   | None    | None     | None
-| `BrFunc`           | `𝕨𝕩𝕤`  | `𝕎𝕏𝕊`  |         |          | `FuncLab`
-| `_brMod1`          | `𝕗𝕣`   | `𝔽`    | `_𝕣`    |          | `Mod1Lab`
-| `_brMod2_`         | `𝕘`    | `𝔾`    | None    | `_𝕣_`    | `Mod2Lab`
+| `blSub`, `PROGRAM` | None   | None   | None    | None     | None
+| `BlFunc`           | `𝕨𝕩𝕤`  | `𝕎𝕏𝕊`  |         |          | `FuncLab`
+| `_blMod1`          | `𝕗𝕣`   | `𝔽`    | `_𝕣`    |          | `Mod1Lab`
+| `_blMod2_`         | `𝕘`    | `𝔾`    | None    | `_𝕣_`    | `Mod2Lab`
 
-The rules for special name can be expressed in BNF by making many copies of all expression rules above. For each "level", or row in the table, a new version of every rule should be made that allows that level but not higher ones, and another version should be made that requires exactly that level. The values themselves should be included in `s`, `F`, `_m`, and `_c_` for these copies. Then the "allowed" rules are made simply by replacing the terms they contain (excluding `brSub` and so on) with the same "allowed" versions, and "required" rules are constructed using both "allowed" and "required" rules. For every part of a production rule, an alternative should be created that requires the relevant name in that part while allowing it in the others. For example, `( subject | nothing )? Derv arg` would be transformed to
+The rules for special names can be expressed in BNF by making many copies of all expression rules above. For each "level", or row in the table, a new version of every rule should be made that allows that level but not higher ones, and another version should be made that requires exactly that level. The values themselves should be included in `s`, `F`, `_m`, and `_c_` for these copies. Then the "allowed" rules are made simply by replacing the terms they contain (excluding `blSub` and so on) with the same "allowed" versions, and "required" rules are constructed using both "allowed" and "required" rules. For every part of a production rule, an alternative should be created that requires the relevant name in that part while allowing it in the others. For example, `( subject | nothing )? Derv arg` would be transformed to
 
     arg_req1 = subExpr_req1
              | ( subject_req1 | nothing_req1 ) Derv_allow1 arg_allow1
