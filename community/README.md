@@ -8,9 +8,11 @@
 
 [Alex Dikelsky](https://github.com/AlexDikelsky/puzzles/tree/main/advent_of_code/advent_2021) •
 [Dimitri Lozeve](https://github.com/dlozeve/aoc2021) •
+[Josh Holland](https://git.sr.ht/~jshholland/adventofcode/tree/master/item/2021/) •
 [Antti Keränen](https://github.com/Detegr/aoc2021) •
 [Raghu Ranganathan](https://github.com/razetime/AOC2021-BQN) •
 [Leah Neukirchen](https://github.com/leahneukirchen/adventofcode2021) •
+[Johnny](https://github.com/JohnnyJayJay/adventofcode-21) •
 [frasiyav](https://github.com/frasiyav/AoC2021) •
 [Caleb Quilley](https://gitlab.com/icen/aoc21)
 
