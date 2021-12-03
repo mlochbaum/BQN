@@ -6,10 +6,14 @@
 
 [Advent of Code](https://adventofcode.com/) 2021 is now running! Solutions are being published by:
 
+[Hannu Hartikainen](https://github.com/dancek/bqn-advent2021) •
 [Alex Dikelsky](https://github.com/AlexDikelsky/puzzles/tree/main/advent_of_code/advent_2021) •
 [Dimitri Lozeve](https://github.com/dlozeve/aoc2021) •
 [Josh Holland](https://git.sr.ht/~jshholland/adventofcode/tree/master/item/2021/) •
 [Antti Keränen](https://github.com/Detegr/aoc2021) •
+[Alexander Wood](https://github.com/knightzmc/advent-of-code-2021) •
+[Olodus](https://github.com/Olodus/advent_of_code2021) •
+[Ben Dean](https://github.com/bddean/aoc-2021) •
 [Raghu Ranganathan](https://github.com/razetime/AOC2021-BQN) •
 [Leah Neukirchen](https://github.com/leahneukirchen/adventofcode2021) •
 [Johnny](https://github.com/JohnnyJayJay/adventofcode-21) •
