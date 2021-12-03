@@ -1,5 +1,5 @@
 func‿mod1‿mod2 ← •args
-lf←@+10
+lf←@+10‿13
 charSet‿cgl←(∾ ⋈ ≠¨)⟨
   func                  # Function
   mod1                  # 1-modifier
@@ -44,7 +44,7 @@ Tokenize←{System‿vars←𝕨
   # Resolve comments and strings
   c←𝕩='#'⋄s←/0‿0⊸«⊸∧sm←𝕩='''⋄d←/dm←𝕩='"'
   g←⍋q←∾⟨  s⋄¯1↓d⋄/c⟩ ⋄q↩g⊏q                # Open indices
-  e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`c)⊸//(𝕩=lf)∾1⟩ # Matching close indices
+  e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`c)⊸//(𝕩∊lf)∾1⟩ # Matching close indices
   Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
   St←(≠𝕩)↑·/⁼((≠↑∾⟜≠Se 1∾0¨)q⍋e)⊸/          # All indices → reached mask
   a←St q⋄b←St e⋄f←1≠`ab←a∨b                 # Open/close masks; filter
