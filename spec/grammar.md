@@ -47,12 +47,18 @@ Functions can be formed by applying modifiers, or with trains. Modifiers are lef
     FuncExpr = Train
              | F ASGN FuncExpr
 
-Subject expressions are complicated by the possibility of list and namespace assignment, which share the nodes `lhsList` and `lhsStr` and cannot be completely distinguished until execution. We also define nothing-statements, which have very similar syntax to subject expressions but do not permit assignment.
+Subject expressions consist mainly of function application. We also define nothing-statements, which have very similar syntax to subject expressions but do not permit assignment. They can be used as an `STMT` or in place of a left argument.
 
     arg      = subExpr
              | ( subject | nothing )? Derv arg
     nothing  = "·"
              | ( subject | nothing )? Derv nothing
+    subExpr  = arg
+             | lhs ASGN subExpr
+             | lhs Derv "↩" subExpr?      # Modified assignment
+
+The target of subject assignment can be compound to allow for destructuring. List and namespace assignment share the nodes `lhsList` and `lhsStr` and cannot be completely distinguished until execution. The term `sl` in `LHS_SUB` is used for header inputs below: as an additional rule, it cannot be used in the `lhs` term of a `subExpr` node.
+
     NAME     = s | F | _m | _c_
     LHS_SUB  = "·" | lhsList | sl
     LHS_ANY  = NAME | LHS_SUB | "(" LHS_ELT ")"
@@ -63,9 +69,6 @@ Subject expressions are complicated by the possibility of list and namespace ass
     lhsList  = "⟨" ⋄? ( ( LHS_ENTRY ⋄ )* LHS_ENTRY ⋄? )? "⟩"
     lhsComp  = LHS_SUB | lhsStr | "(" lhs ")"
     lhs      = s | lhsComp
-    subExpr  = arg
-             | lhs ASGN subExpr
-             | lhs Derv "↩" subExpr?      # Modified assignment
 
 A header looks like a name for the thing being headed, or its application to inputs (possibly twice in the case of modifiers). As with assignment, it is restricted to a simple form with no extra parentheses. The full list syntax is allowed for arguments. A plain name is called a label and can be used for a block with or without arguments. First we define headers `IMM_HEAD` that include no arguments.
 
