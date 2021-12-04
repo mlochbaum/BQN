@@ -15,10 +15,11 @@ The following documents are included in the BQN specification. A BQN program is 
 - [Evaluation semantics](evaluate.md)
 - [Primitives](primitive.md): [reference implementations](reference.bqn)
 - [Inferred properties](inferred.md) (identities, fills, Undo, and Under)
+- [Complex numbers](complex.md) optional extension
 - [System-provided values](system.md) (`•`)
 
 In several cases, an implementation can choose between more than one possible behavior.
-- An implementation chooses its number system, which must be an approximation of the real or complex numbers but has no specific requirements. Results of basic numeric operations must be deterministic but are not specified.
+- An implementation chooses its number system, which must be an approximation of the real (can be extended to [complex](complex.md)) numbers but has no specific requirements. Results of basic numeric operations must be deterministic but are not specified.
 - Minimum (`⌊`) and Maximum (`⌈`) may give an error if either argument is a character.
 - Other than the required cases, attempting to use an inferred property can either fail or give a result consistent with the constraints on that property.
 - In some cases there are multiple valid results for Undo. Any of these results, or an error, can be given; if there is no obvious choice of result an error is recommended. The choice must depend only on the inputs to Undo.
