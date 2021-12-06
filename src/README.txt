@@ -23,8 +23,8 @@ Since it defines primitives, the runtime is only sort of BQN. This is
 why pr.bqn is required to process it. It's also compiled with a custom
 primitive set.
 
-e.bqn and p.bqn also require the definitions from svg.bqn; they are
-attached cjs.bqn.
+e.bqn and p.bqn also require the definitions from ../svg.bqn; this file
+is prepended by cjs.bqn.
 
 Some of these files are also used elsewhere: pp.bqn preprocesses other
 primitive-defining code in ../test/ref.bqn, and f.bqn is used to format
