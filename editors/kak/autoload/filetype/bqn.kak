@@ -21,7 +21,7 @@ hook global WinSetOption filetype=bqn %¹
     #               +              +                   + Conjugate      | Add
     #               -              -                   - Negate         | Subtract
     map buffer bqn '='     ':exec i×<ret>' -docstring '× Sign           | Multiply'
-    map buffer bqn <minus> ':exec i÷<ret>' -docstring '÷ Recipical      | Divide'
+    map buffer bqn <minus> ':exec i÷<ret>' -docstring '÷ Reciprocal     | Divide'
     map buffer bqn '+'     ':exec i⋆<ret>' -docstring '⋆ Exponential    | Power'
     map buffer bqn '_'     ':exec i√<ret>' -docstring '√ Square root    | Root'
     map buffer bqn 'b'     ':exec i⌊<ret>' -docstring '⌊ Floor          | Minimum'
@@ -86,7 +86,7 @@ hook global WinSetOption filetype=bqn %¹
     map buffer bqn '['     ':exec i←<ret>' -docstring '← DEFINE'
     map buffer bqn '?'     ':exec i⇐<ret>' -docstring '⇐ EXPORT'
     map buffer bqn "'"     ':exec i↩<ret>' -docstring '↩ CHANGE'
-    map buffer bqn ';'     ':exec i⋄<ret>' -docstring '⋄ SEPERATOR'
+    map buffer bqn ';'     ':exec i⋄<ret>' -docstring '⋄ SEPARATOR'
     map buffer bqn '('     ':exec i⟨<ret>' -docstring '⟨ BEGIN LIST'
     map buffer bqn ')'     ':exec i⟩<ret>' -docstring '⟩ END LIST'
     map buffer bqn <space> ':exec i‿<ret>' -docstring '‿ STRAND'
