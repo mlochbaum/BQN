@@ -21,7 +21,7 @@
 </div>
 <script src='bqn.js'></script><script src='repl.js'></script>
 
-<p>Want to learn and use a modern, powerful language centered on Ken Iverson's array programming paradigm? BQN <strong>now provides</strong>:</p>
+<p>Looking for a modern, powerful language centered on Ken Iverson's array programming paradigm? BQN <strong>now provides</strong>:</p>
 <ul>
 <li>A simple, consistent, and <a href="commentary/stability.html">stable</a> array programming language</li>
 <li>A low-dependency C implementation using bytecode compilation: <a href="running.html">installation</a></li>
@@ -35,7 +35,7 @@
 <li>A standard system to install and use libraries and packages, and support for package managers</li>
 <li>Replace or extend primitives to make a BQN-like language suited for specialized domains</li>
 </ul>
-<p>At present, I think BQN is a good choice for learning array programming, scripting, small- to medium-scale number crunching, and recreational programming.</p>
+<p>At present, I think BQN is a good choice for learning array programming, scripting, medium-scale number crunching, and recreational programming. For some examples of BQN in action, this repository holds the dreaded <a href="https://github.com/mlochbaum/BQN/blob/master/src/c.bqn">self-hosted compiler</a> and the friendlier <a href="https://github.com/mlochbaum/BQN/blob/master/md.bqn">markdown processor</a> used to generate the site. See also my scripts at <a href="https://github.com/mlochbaum/bqn-libs">bqn-libs</a>, this <a href="https://github.com/frasiyav/BQN-Gnuplot/blob/main/Gnuplot.bqn">gnuplot interface</a>, some nicely commented Advent of Code 2021 <a href="https://gitlab.com/icen/aoc21">solutions</a>, or something else from the <a href="community/index.html">community</a> page.</p>
 <h2 id="what-kind-of-name-is-bqn"><a class="header" href="#what-kind-of-name-is-bqn">What kind of name is &quot;BQN&quot;?</a></h2>
 <p>It's three letters, that happen to match the capitals in &quot;Big Questions Notation&quot;. You can pronounce it &quot;bacon&quot;, but are advised to avoid this unless there's puns.</p>
 <h2 id="whats-the-language-like"><a class="header" href="#whats-the-language-like">What's the language like?</a></h2>
@@ -58,7 +58,6 @@
 <li><a href="keymap.html"><strong>New symbols</strong></a> for built-in functionality make the syntactic role of every primitive instantly visible, and aim to be more consistent and intuitive.</li>
 <li>No-nonsense <a href="doc/namespace.html"><strong>namespace syntax</strong></a> encapsulates data and even allows for a little <a href="doc/oop.html">object-oriented programming</a>.</li>
 </ul>
-<p>To see what a BQN program might look like, you can <a href="https://github.com/mlochbaum/BQN/blob/master/src/c.bqn">gaze into the abyss</a> that is the self-hosted compiler, or try the friendlier <a href="https://github.com/mlochbaum/BQN/blob/master/md.bqn">markdown processor</a> used to build this website. Or the collection of scripts at <a href="https://github.com/mlochbaum/bqn-libs">bqn-libs</a>.</p>
 <p>Not sold? See <a href="commentary/why.html">why BQN?</a> for an outline of what all these features add up to in terms of programming power.</p>
 <h2 id="how-do-i-work-with-the-character-set"><a class="header" href="#how-do-i-work-with-the-character-set">How do I work with the character set?</a></h2>
 <p>Right at the beginning, you can use the bar above the online REPL to enter BQN code: hover over a character to see a short description, and click to insert it into the editor. But you'll soon want to skip the clicking and use keyboard input. I type the special characters using a backslash escape, so that, for example, typing <code><span class='Value'>\</span></code> then <code><span class='Value'>z</span></code> writes <code><span class='Function'>⥊</span></code> (the backslash character itself is not used by BQN). The online REPL supports this method out of the box, and the <a href="editors/index.html">editor plugins</a> include or link to ways to enable it for editors, browsers, shells, and so on.</p>

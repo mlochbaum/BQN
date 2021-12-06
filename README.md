@@ -22,7 +22,7 @@ repl ← "div:cont" E ⟨
 repl ∾< ∾(""Enc˜"script"Attr"src"⋈∾⟜".js")¨"bqn"‿"repl"
 -->
 
-Want to learn and use a modern, powerful language centered on Ken Iverson's array programming paradigm? BQN **now provides**:
+Looking for a modern, powerful language centered on Ken Iverson's array programming paradigm? BQN **now provides**:
 
 - A simple, consistent, and [stable](commentary/stability.md) array programming language
 - A low-dependency C implementation using bytecode compilation: [installation](running.md)
@@ -36,7 +36,7 @@ BQN **will provide**:
 - A standard system to install and use libraries and packages, and support for package managers
 - Replace or extend primitives to make a BQN-like language suited for specialized domains
 
-At present, I think BQN is a good choice for learning array programming, scripting, small- to medium-scale number crunching, and recreational programming.
+At present, I think BQN is a good choice for learning array programming, scripting, medium-scale number crunching, and recreational programming. For some examples of BQN in action, this repository holds the dreaded [self-hosted compiler](src/c.bqn) and the friendlier [markdown processor](md.bqn) used to generate the site. See also my scripts at [bqn-libs](https://github.com/mlochbaum/bqn-libs), this [gnuplot interface](https://github.com/frasiyav/BQN-Gnuplot/blob/main/Gnuplot.bqn), some nicely commented Advent of Code 2021 [solutions](https://gitlab.com/icen/aoc21), or something else from the [community](community/README.md) page.
 
 ## What kind of name is "BQN"?
 
@@ -59,8 +59,6 @@ But it's redesigned from the ground up, with many features new to the array para
 * [**Context-free grammar**](doc/context.md) makes it easier for machines and humans to understand code, and naturally leads to [**first-class functions**](doc/functional.md), which can even be used to [reinvent control structures](doc/control.md).
 * [**New symbols**](keymap.md) for built-in functionality make the syntactic role of every primitive instantly visible, and aim to be more consistent and intuitive.
 * No-nonsense [**namespace syntax**](doc/namespace.md) encapsulates data and even allows for a little [object-oriented programming](doc/oop.md).
-
-To see what a BQN program might look like, you can [gaze into the abyss](src/c.bqn) that is the self-hosted compiler, or try the friendlier [markdown processor](md.bqn) used to build this website. Or the collection of scripts at [bqn-libs](https://github.com/mlochbaum/bqn-libs).
 
 Not sold? See [why BQN?](commentary/why.md) for an outline of what all these features add up to in terms of programming power.
 
