@@ -55,6 +55,10 @@ To use vim-plug to install BQN support for vim, add this to your plugin section 
 
 Then run `:PlugInstall`.
 
+#### Neovim interactivity
+
+See [this repository](https://git.sr.ht/~detegr/nvim-bqn) for an additional plugin that provides bindings to run BQN code as you're editing it.
+
 ### Emacs
 
 Emacs support now lives on [museoa/bqn-mode](https://github.com/museoa/bqn-mode). Clone and add the following two lines to your init file (usually `~/.emacs.d/init.el`), replacing the path appropriately.
