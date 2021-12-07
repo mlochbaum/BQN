@@ -11,11 +11,20 @@ for the BQN programming language. For more information
 about the language, see
 https://mlochbaum.github.io/BQN/
 
+This plugin also has descriptions of BQN characters:
+press F1 to toggle a status line that describes the
+one under the cursor. While it tries to adjust vim's
+word boundary behavior to match BQN, characters ˜˘˝
+can't be configured and still incorrectly behave as
+word characters.
+
 KEYMAP                                          *bqn-keymap*
 
 The plugin sets the following keymap when editing BQN
 files, such that the upper symbol is <Leader><key> and
-the lower symbol is <Leader><Shift-key>.
+the lower symbol is <Leader><Shift-key>. The leader
+key defaults to \ and can changed by setting
+g:bqn_prefix_key before loading the keymap.
 
 `˜ 1˘ 2¨ 3⁼ 4⌜ 5´ 6˝ 77 8∞ 9¯ 0• -÷ =×
  ¬  ⎉  ⚇  ⍟  ◶  ⊘  ⎊  ⍎  ⍕  ⟨  ⟩  √  ⋆
