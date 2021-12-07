@@ -11,7 +11,7 @@
 [Dimitri Lozeve](https://github.com/dlozeve/aoc2021) •
 [Antti Keränen](https://github.com/Detegr/aoc2021) •
 [Raghu Ranganathan](https://github.com/razetime/AOC2021-BQN) •
-[Leah Neukirchen](https://github.com/leahneukirchen/adventofcode2021) •
+[Leah Neukirchen](https://github.com/leahneukirchen/adventofcode2021)+[blog](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) •
 [Johnny](https://github.com/JohnnyJayJay/adventofcode-21) •
 [frasiyav](https://github.com/frasiyav/AoC2021) •
 [Caleb Quilley](https://gitlab.com/icen/aoc21)
