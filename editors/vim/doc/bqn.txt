@@ -1,0 +1,36 @@
+*bqn.txt* BQN language support
+
+Author: Marshall Lochbaum and contributors
+License: ISC License
+Repository: https://github.com/mlochbaum/BQN
+
+INTRODUCTION                                    *bqn*
+
+This plugin provides syntax highlighting and a keymap
+for the BQN programming language. For more information
+about the language, see
+https://mlochbaum.github.io/BQN/
+
+KEYMAP                                          *bqn-keymap*
+
+The plugin sets the following keymap when editing BQN
+files, such that the upper symbol is <Leader><key> and
+the lower symbol is <Leader><Shift-key>.
+
+`˜ 1˘ 2¨ 3⁼ 4⌜ 5´ 6˝ 77 8∞ 9¯ 0• -÷ =×
+ ¬  ⎉  ⚇  ⍟  ◶  ⊘  ⎊  ⍎  ⍕  ⟨  ⟩  √  ⋆
+
+    q⌽ w𝕨 e∊ r↑ t∧ yy u⊔ i⊏ o⊐ pπ [← ]→ 
+     ↙  𝕎  ⍷  𝕣  ⍋  Y  U  ⊑  ⊒  ⍳  ⊣  ⊢ 
+
+     a⍉ s𝕤 d↕ f𝕗 g𝕘 h⊸ j∘ k○ l⟜ ;⋄ '↩ \\ 
+      ↖  𝕊  D  𝔽  𝔾  «  J  ⌾  »  ·  ˙  | 
+
+      z⥊ x𝕩 c↓ v∨ b⌊ nn m≡ ,∾ .≍ /≠ 
+       ⋈  𝕏  C  ⍒  ⌈  N  ≢  ≤  ≥  ⇐
+
+A condensed version:
+   ˜˘¨⁼⌜´˝7∞¯•÷× ¬⎉⚇⍟◶⊘⎊⍎⍕⟨⟩√⋆
+   ⌽𝕨∊↑∧y⊔⊏⊐π←→  ↙𝕎⍷𝕣⍋YU⊑⊒⍳⊣⊢
+   ⍉𝕤↕𝕗𝕘⊸∘○⟜⋄↩\  ↖𝕊D𝔽𝔾«J⌾»·˙|
+   ⥊𝕩↓∨⌊n≡∾≍≠    ⋈𝕏C⍒⌈N≢≤≥⇐
