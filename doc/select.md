@@ -56,7 +56,7 @@ The index `𝕨` has to be an integer less than `≠𝕩`. It can be negative, i
 
         0 ⊏ ""
 
-The monadic case First Cell (`⊏𝕩`) is identical to `0⊏𝕩`. It has the same restrictions: `𝕩` must have rank 1 or more, and length 1 or more (this differs from First (`⊑`), which removes the length requirement to return a fill element).
+The monadic case First Cell (`⊏𝕩`) is identical to `0⊏𝕩`. It has the same restrictions: `𝕩` must have rank 1 or more, and length 1 or more.
 
         ⊏ "abc"
 
