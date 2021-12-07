@@ -47,15 +47,13 @@ Copy or symlink all files into the corresponding directories in `~/.vim`. Add th
       au! BufRead,BufNewFile *.bqn setf bqn
       au! BufRead,BufNewFile * if getline(1) =~ '^#!.*bqn$' | setf bqn | endif
 
-Include `syntax on` in your .vimrc for syntax highlighting and `filetype plugin on` for keyboard input.
+Include `syntax on` in your .vimrc for syntax highlighting and `filetype plugin on` for keyboard input. View docs from vim with `:help bqn`.
 
-To use vim-plug to install BQN support for vim, add this to your plugin section
-of your `.vimrc`:
+To use vim-plug to install BQN support for vim, add this to your plugin section of your `.vimrc`:
 
       Plug 'mlochbaum/BQN', {'rtp': 'editors/vim'}
 
 Then run `:PlugInstall`.
-
 
 ### Emacs
 

@@ -29,9 +29,8 @@
 <pre>  <span class='Value'>au</span><span class='Function'>!</span> <span class='Function'>BufRead</span><span class='Separator'>,</span><span class='Function'>BufNewFile</span> <span class='Value'>*.bqn</span> <span class='Value'>setf</span> <span class='Value'>bqn</span>
   <span class='Value'>au</span><span class='Function'>!</span> <span class='Function'>BufRead</span><span class='Separator'>,</span><span class='Function'>BufNewFile</span> <span class='Value'>*</span> <span class='Value'>if</span> <span class='Value'>getline</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>=</span><span class='Value'>~</span> <span class='String'>'</span><span class='Value'>^</span><span class='Comment'>#!.*bqn$' | setf bqn | endif
 </span></pre>
-<p>Include <code><span class='Value'>syntax</span> <span class='Value'>on</span></code> in your .vimrc for syntax highlighting and <code><span class='Value'>filetype</span> <span class='Value'>plugin</span> <span class='Value'>on</span></code> for keyboard input.</p>
-<p>To use vim-plug to install BQN support for vim, add this to your plugin section
-of your <code><span class='Value'>.vimrc</span></code>:</p>
+<p>Include <code><span class='Value'>syntax</span> <span class='Value'>on</span></code> in your .vimrc for syntax highlighting and <code><span class='Value'>filetype</span> <span class='Value'>plugin</span> <span class='Value'>on</span></code> for keyboard input. View docs from vim with <code><span class='Value'>:help</span> <span class='Value'>bqn</span></code>.</p>
+<p>To use vim-plug to install BQN support for vim, add this to your plugin section of your <code><span class='Value'>.vimrc</span></code>:</p>
 <pre>  <span class='Function'>Plug</span> <span class='String'>'</span><span class='Value'>mlochbaum</span><span class='Function'>/BQN</span><span class='String'>'</span><span class='Separator'>,</span> <span class='Brace'>{</span><span class='String'>'</span><span class='Value'>rtp</span><span class='String'>'</span><span class='Value'>:</span> <span class='String'>'</span><span class='Value'>editors</span><span class='Function'>/</span><span class='Value'>vim</span><span class='String'>'</span><span class='Brace'>}</span>
 </pre>
 <p>Then run <code><span class='Value'>:</span><span class='Function'>PlugInstall</span></code>.</p>
