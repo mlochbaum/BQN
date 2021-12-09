@@ -17,7 +17,7 @@ let getrev = names => {
   return names.rev=m;
 }
 let findkey = (ns, names, i) => {
-  let nn=ns.names, ni;
+  let nn=ns.names;
   return ns[nn===names ? i : getrev(nn)[names[i]]];
 }
 let readns_sub = (v, names, i) => {
@@ -142,7 +142,6 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
     } else {
       if (imm !== +(ind.length<2)) throw "Internal error: malformed block info";
       let cache=[]; // Avoid generating a shared case twice
-      let l=0;
       vid=[]; let g = j => {
         let [c,v] = cache[j] || (cache[j] = gen(j));
         c = "const e=[...e1];e.vid=vid["+vid.length+"];e.p=oe;e.length="+v.length+";e.fill(null,"+sp+");"+c;
@@ -550,7 +549,7 @@ let addprimitives = (state, p) => {
   let req = (r,s) => { if (!r) throw Error("•ReBQN 𝕩.primitives: "+s) };
   req(p.sh && p.sh.length===1, "Must be a list");
   req(p.every(e=>e.sh&&e.sh.length===1&&e.sh[0]===2), "Must consist of glyph-primitive pairs");
-  let pr=glyphs.map(_=>[]), l=0, rt=pr.map(_=>[]);
+  let pr=glyphs.map(_=>[]), rt=pr.map(_=>[]);
   p.forEach(([gl,val])=>{
     req(typeof gl==="string", "Glyphs must be characters");
     req(isfunc(val), "Primitives must be operations");
