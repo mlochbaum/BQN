@@ -124,7 +124,7 @@ Combinations ← {𝕨(=∨0=⊣)◶⟨(0∾˘𝕊⌾(-⟜1))∾1+𝕊⟜(-⟜1)
 
 # 23
 ⟨IndexFromCombination⇐Ic,CombinationFromIndex⇐Ci⟩ ← {
-  C ← ((-˜+↕∘⊣)÷○(×´1⊸+)↕∘⊣)˘  # Combination function (APL's dyadic !)
+  C ← ((-˜+↕∘⊣)÷○(×´1⊸+)↕∘⊣)⚇0  # Combination function (APL's dyadic !)
   Ic ⇐ {
     𝕊⁼: 𝕨Ci𝕩;
     m‿n𝕊𝕩:
@@ -191,7 +191,9 @@ Ack ← {
 ! 29 ≡ 3 Ack 2
 
 # 40
-f←{𝕊 _H 𝕩 ? 𝕊 𝕩; ⟨⟩}
+# If _H solves the halting problem (𝔽 _H 𝕩 is 1 iff 𝔽𝕩 halts) then the
+# following function causes a paradox.
+# F←{𝕊 _H 𝕩 ? 𝕊 𝕩; ⟨⟩}
 
 # 42
 Minors ← {(/¨≠⟜<↕≠𝕩)(⍉⊏)⎉0‿∞ 𝕩}⎉2⍟2
@@ -202,18 +204,18 @@ Minors1 ← {𝕊 mat: >{mat ⍉∘{𝕩/˜¬𝕨=↕≠𝕩}´ ⌽𝕩}¨↕≢
 # 43
 S1 ← {
   𝕊 0: ⋈1;
-  (0,t)+(t,0)× 𝕩-1⊣t←𝕊 𝕩-1
+  (0∾t)+(t∾0)× 𝕩-1⊣t←𝕊 𝕩-1
 }
 S2 ← {
   𝕊 0: ⋈1;
-  (0,t)+(t,0)×↕𝕩+1⊣t←𝕊 𝕩-1
+  (0∾t)+(t∾0)×↕𝕩+1⊣t←𝕊 𝕩-1
 }
 ! ⟨ 0, 6, 11, 6, 1 ⟩ ≡ S1 4
-! ⟨ 0, 6, 11, 6, 1 ⟩ ≡ S2 4
+! ⟨ 0, 1,  7, 6, 1 ⟩ ≡ S2 4
 
 # 44
-XEA←{(𝕨∾1‿0) {0=⊑𝕩 ? 𝕨; 𝕩 𝕊 𝕨-𝕩×⌊(⊑𝕨)÷⊑𝕩} (𝕩∾0‿1)}  
-CRT←{
+XEA ← {(𝕨∾1‿0) {0=⊑𝕩 ? 𝕨; 𝕩 𝕊 𝕨-𝕩×⌊(⊑𝕨)÷⊑𝕩} (𝕩∾0‿1)}
+CRT ← {
   m‿r 𝕊 n‿s:
   gcd‿a‿b ← m XEA n
   lcm ← m×n÷gcd
@@ -240,29 +242,26 @@ Sieve←{
   }p
 }
 
-# 47 (given impl is wrong)
-Pg ← {
+# 47
+Pg ← •rand.Deal{
   d ← 𝕩+𝕩
   s ← 𝕩×𝕩
-  t ← (𝕩∾𝕩)↑(𝕩∾d)⥊(1-d)↑(𝕩 •rand.Deal 26)⊏"abcdefghijklmnopqrstuvwxyz"
-  p ← ⍋(s •rand.Deal s)+(-´¨↑𝕩-˜⌽↕d)/s×↕d
-  (⌽↕𝕩)⌽((d-1)⥊1‿0)/⁼(𝕩∾𝕩)⥊p⊏⥊t
+  t ← (𝕩∾𝕩)↑(𝕩∾d)⥊(1-d)↑(𝕩𝔽26)⊏"abcdefghijklmnopqrstuvwxyz"
+  p ← ⍋(s𝔽s)+(-´¨1↓↑𝕩-˜⌽↕d)/s×↕d
+  (⌽↕𝕩)⌽˘((d-1)⥊1‿0)⊸{𝕩⌾(𝕨⊸/)' '¨𝕨}˘(𝕩∾𝕩)⥊p⊏⥊t
 }
+#•Show Pg¨ 4‿5‿6‿7
 
 # 48
 Stick ← {
- c ← •rand.Range¨𝕩⥊3         # where the car is hidden
- i ← •rand.Range¨𝕩⥊3         # your initial choice of door
- +/c=i                       # number of cars that you win
+ c ← 𝕩 •rand.Range 3         # where the car is hidden
+ i ← 𝕩 •rand.Range 3         # your initial choice of door
+ +´c=i                       # number of cars that you win
 }
-
 Change ← {
- c ← •rand.Range¨𝕩⥊3                      # where the car is hidden
- i ← •rand.Range¨𝕩⥊3                      # your initial choice of door
+ c ← 𝕩 •rand.Range 3                      # where the car is hidden
+ i ← 𝕩 •rand.Range 3                      # your initial choice of door
  j ← (c×i≠c)+(3|i+1+•rand.Range¨𝕩⥊2)×i=c  # your changed choice
- +/c=j                                    # number of cars that you win
+ +´c=j                                    # number of cars that you win
 }
-
-# Slow tests:
-# Stick 1e6
-# Change 1e6
+#•Show Stick‿Change {𝕎𝕩}¨ 1e6
