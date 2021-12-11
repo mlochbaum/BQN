@@ -3,6 +3,8 @@
 # Still about APL history though
 # Also not all the functions are here yet
 # https://www.jsoftware.com/papers/50/
+# TODO: 13, 16, 18, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 41, 46, 47, 49, 50
+# Some of the above are purely speculative snippets on the website, and may not be added to this example.
 
 # Utilities
 Words ← (⊢-˜¬×+`)∘=⟜' '⊸⊔  # Split string on spaces
@@ -178,3 +180,89 @@ _pow ← {𝔽´𝔽˜⍟(/2|⌊∘÷⟜2⍟(↕·⌈2⋆⁼⊢)𝕩)𝕨}
 # 38
 Hanoi ← {¯1↓(⥊⊢≍⎉0˜≠⥊⊑⊑⟨1‿5‿2⋄0‿3‿4⟩˜)⍟𝕩⥊1}
 ! 0‿1‿3‿0‿4‿5‿0 ≡ Hanoi 3
+
+# 39
+Ack ← {
+  0 𝕊 𝕩: 1+𝕩;
+  𝕨 𝕊 0: (𝕨-1) 𝕊 1;
+  (𝕨-1) 𝕊 𝕨 𝕊 𝕩-1
+}
+! 9 ≡ 2 Ack 3
+! 29 ≡ 3 Ack 2
+
+# 40
+f←{𝕊 _H 𝕩 ? 𝕊 𝕩; ⟨⟩}
+
+# 42
+Minors ← {(/¨≠⟜<↕≠𝕩)(⍉⊏)⎉0‿∞ 𝕩}⎉2⍟2
+Minors1 ← {𝕊 mat: >{mat ⍉∘{𝕩/˜¬𝕨=↕≠𝕩}´ ⌽𝕩}¨↕≢𝕩}
+! (Minors ≡ Minors1) 3‿4⥊↕12
+! (Minors ≡ Minors1) 4‿4⥊'A'+↕26
+
+# 43
+S1 ← {
+  𝕊 0: ⋈1;
+  (0,t)+(t,0)× 𝕩-1⊣t←𝕊 𝕩-1
+}
+S2 ← {
+  𝕊 0: ⋈1;
+  (0,t)+(t,0)×↕𝕩+1⊣t←𝕊 𝕩-1
+}
+! ⟨ 0, 6, 11, 6, 1 ⟩ ≡ S1 4
+! ⟨ 0, 6, 11, 6, 1 ⟩ ≡ S2 4
+
+# 44
+XEA←{(𝕨∾1‿0) {0=⊑𝕩 ? 𝕨; 𝕩 𝕊 𝕨-𝕩×⌊(⊑𝕨)÷⊑𝕩} (𝕩∾0‿1)}  
+CRT←{
+  m‿r 𝕊 n‿s:
+  gcd‿a‿b ← m XEA n
+  lcm ← m×n÷gcd
+  c ← lcm|gcd÷˜(r×b×n)+(s×a×m)
+  ! (r=m|c)∧(s=n|c)
+  lcm∾c
+}
+! 2‿¯1‿1 ≡ 4 XEA 6
+! 12‿9 ≡ 4‿1 CRT 6‿3
+
+# 46 (not working yet)
+Sieve←{
+  4≥𝕩 ? 𝕩⥊0‿0‿1‿1;
+  𝕊 n:
+  r←⌊√n
+  p ← 2‿3‿5‿7‿11‿13‿17‿19‿23‿29‿31‿37‿41‿43
+  p ↩ •Show (1+⊑(n≤×`p)⊐⥊1)↑p
+  b ← 0⌾(0⊸⊑)⋈ {(m⥊𝕩)>m⥊𝕨↑1 ⊣ m←n⌊𝕨×≢𝕩}´ ⌽1∾p
+  {
+    r<⊑b⊐⥊1 ? b⊣b ↩ 1⌾(𝕩⊸⊑)b;
+    q←⊑b⊐⥊1
+    b ↩ 0⌾((q∾q×/b↑˜⌈n÷q)⊸⊑) b
+    𝕊 𝕩∾q
+  }p
+}
+
+# 47 (given impl is wrong)
+Pg ← {
+  d ← 𝕩+𝕩
+  s ← 𝕩×𝕩
+  t ← (𝕩∾𝕩)↑(𝕩∾d)⥊(1-d)↑(𝕩 •rand.Deal 26)⊏"abcdefghijklmnopqrstuvwxyz"
+  p ← ⍋(s •rand.Deal s)+(-´¨↑𝕩-˜⌽↕d)/s×↕d
+  (⌽↕𝕩)⌽((d-1)⥊1‿0)/⁼(𝕩∾𝕩)⥊p⊏⥊t
+}
+
+# 48
+Stick ← {
+ c ← •rand.Range¨𝕩⥊3         # where the car is hidden
+ i ← •rand.Range¨𝕩⥊3         # your initial choice of door
+ +/c=i                       # number of cars that you win
+}
+
+Change ← {
+ c ← •rand.Range¨𝕩⥊3                      # where the car is hidden
+ i ← •rand.Range¨𝕩⥊3                      # your initial choice of door
+ j ← (c×i≠c)+(3|i+1+•rand.Range¨𝕩⥊2)×i=c  # your changed choice
+ +/c=j                                    # number of cars that you win
+}
+
+# Slow tests:
+# Stick 1e6
+# Change 1e6
