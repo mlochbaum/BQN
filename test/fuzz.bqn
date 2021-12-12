@@ -4,6 +4,7 @@ opts ← {
 help ← 1↓"
 Fuzz testing. Options:
   -h, --help: Print this message and exit
+  -r: Random seed, u for •UnixTime (1)
   -b: Maximum bound (1e3)
   -n: Number of iterations (100)
   -t: Element type (0 3 4 5 6)
@@ -11,16 +12,17 @@ Fuzz testing. Options:
 
 Any number of types or bounds can be given; all combinations are tested."
 
-  o ← "-h"‿"--help"‿"-b"‿"-n"‿"-t"‿"-p"
+  o ← "-h"‿"--help"‿"-b"‿"-n"‿"-t"‿"-p"‿"-r"
   oo ← (≠o) = oi ← o ⊐ a←•args
   •Exit∘•Out∘help⍟(∨´2⊸>) oi
 
   opts ← 2↓o≠⊸↑ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
-  bounds‿num‿types‿prims ⇐ •BQN¨¨⌾(¯1⊸↓) opts
-  "Only one iteration number can be given" ! 1≥≠num
-  num ↩ ≠◶⟨100,+´⟩ num
+  bounds‿num‿types‿prims‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
+  _default_ ← { (∾"Only one "‿𝕘‿" can be given") ! 1≥≠𝕨 ⋄ 𝕩𝔽∘⊣´𝕨 }
+  num ⊢_default_"iteration number"↩ 100
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
   bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
+  seed "u"⊸≡◶⟨•BQN,(2⋆31)|⌊∘•UnixTime⟩_default_"random seed"↩ 1
 
   prims ↩ ((⊢-˜¬×+`+2×·¬∨´)'%'⊸=)¨⊸(⊔○∾) prims
   "At most three %-separated primitive groups allowed" ! 3≥≠prims
@@ -29,7 +31,7 @@ Any number of types or bounds can be given; all combinations are tested."
 
 Squeeze‿ListVariations‿Variation‿ClearRefs ← •internal
 
-⟨Range,Subset⟩ ← •MakeRand 2
+⟨Range,Subset⟩ ← •MakeRand opts.seed
 Rand ← {𝕨 Range 1⌈𝕩}
 _randChoose ← { Rand∘(≠𝕗)◶𝕗 }
 _randUnbounded ← { 𝕊⊸+⍟(1=-)⟜Rand 𝕗 }
