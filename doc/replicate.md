@@ -141,6 +141,6 @@ Finding how many times each index appears in a list of indices is often a useful
 
         ≠¨⊔ 2‿2‿4‿1‿2‿0
 
-        /⁼∧ 2‿2‿4‿1‿2‿0
+        /⁼ 2‿2‿4‿1‿2‿0
 
-For `/⁼` to work, the argument has to be sorted: otherwise it won't be a valid result of `/`. But sorting with `∧` is no problem, and `/⁼∧` will probably be faster than `≠¨⊔` in the absence of special handling for either combination.
+The last of these is an extension defined in the language specification. As we said, the result of Indices is always sorted, so properly there's no argument that could return `2‿2‿4‿1‿2‿0`. But the index-counting function is very useful, so `/⁼` is defined to implicitly sort its argument (which is still required to be a list of natural numbers). Since `/⁼` is implemented as a single operation, it's the best way to perform this counting task.
