@@ -3,7 +3,7 @@
 # Still about APL history though
 # Also not all the functions are here yet
 # https://www.jsoftware.com/papers/50/
-# TODO: 13, 16, 18, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 41, 46, 47, 49, 50
+# TODO: 13, 16, 18, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 41
 # Some of the above are purely speculative snippets on the website, and may not be added to this example.
 
 # Utilities
@@ -243,6 +243,7 @@ Sieve←{
   }p
 }
 ! 2‿3‿5‿7‿11‿13‿17‿19‿23‿29 ≡ /Sieve 30
+! 78498 ≡ +´Sieve 1e6
 
 # 47
 Pg ← •rand.Deal{
@@ -253,6 +254,13 @@ Pg ← •rand.Deal{
   (⌽↕𝕩)⌽˘((d-1)⥊1‿0)⊸{𝕩⌾(𝕨⊸/)' '¨𝕨}˘(𝕩∾𝕩)⥊p⊏⥊t
 }
 #•Show Pg¨ 4‿5‿6‿7
+TestPg ← {n𝕊p:
+  ! (>(«∨»)⍟(↕n)1(⊢∾∾)0⥊˜n-1) ≡ ' '≠p
+  rows ← (<' '⊸≠⊸/)˘p
+  ! ∧´ (<"") (»(∧≡↕∘≠)∘⊒¨⊢) rows
+  ! ∧´∊ ¯1⊑rows
+}
+TestPg⟜Pg¨ 4‿5‿6‿7
 
 # 48
 Stick ← {
@@ -267,3 +275,6 @@ Change ← {
  +´c=j                                    # number of cars that you win
 }
 #•Show Stick‿Change {𝕎𝕩}¨ 1e6
+
+# 49
+# +´(1+↕∞)⋆-s ←→ ×´÷1-(⍭↕∞)⋆-s
