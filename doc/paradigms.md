@@ -12,7 +12,7 @@ When programming in BQN, I almost always use array, tacit, and (slightly impure)
 
 BQN is a **dynamically typed** language with a coarse [type system](types.md) that only distinguishes types when the difference is blindingly obvious. There is a single numeric type and a single unicode character type. A fast implementation such as CBQN will check to see when it can represent the data with a smaller type than the one offered by the language. BQN usually avoids implicit type conversion, with the exception that many primitives automatically convert atoms to unit arrays. The fact that a data value can be applied as a function to return itself could also be considered an implicit conversion.
 
-BQN has no "pointer" or "reference" type, and uses **automatic memory management**. Its data types are **immutable** while operations and namespaces are mutable; mutable data can create reference loops, which the implementation must account for in garbage collection but the programmer doesn't have to worry about.
+BQN has no "pointer" or "reference" type, and uses **automatic memory management**. Its data types are **immutable** while operations and namespaces are [mutable](lexical.md#mutation); mutable data can create reference loops, which the implementation must account for in garbage collection but the programmer doesn't have to worry about.
 
 Dynamic types and garbage collection introduce overhead relative to a statically-typed or manually managed language. The impact of this overhead can be greatly reduced with array programming, because an array of numbers or characters can be stored as a single unit of memory and processed with functions specialized to its element type.
 
