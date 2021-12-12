@@ -50,7 +50,7 @@ This approach can't tell you whether two functions are mathematically different�
 
 ### Block equality
 
-The final point above about block instances is subtler. An instance of a block function or modifier is mutable, meaning that its behavior can change over the course of a program. Consider the following two functions:
+The final point above about block instances is subtler. An instance of a block function or modifier is [mutable](lexical.md#mutation), meaning that its behavior can change over the course of a program. Consider the following two functions:
 
         F‿G ← { a←10 ⋄ {a+𝕩}‿{a↩𝕩} }
 
