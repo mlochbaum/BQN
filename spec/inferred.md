@@ -62,6 +62,8 @@ Fill elements of iteration modifiers such as `¨⌜` are not specified. It is re
 
 The Undo 1-modifier `⁼`, given an operand `𝔽` and argument `𝕩`, and possibly a left argument `𝕨`, finds a value `y` such that `𝕩≡𝕨𝔽y`, that is, an element of the pre-image of `𝕩` under `𝔽` or `𝕨𝔽⊢`. Thus it satisfies the constraint `𝕩 ≡ 𝕨𝔽𝕨𝔽⁼𝕩` (`𝕨𝔽⁼⊢` is a *right inverse* of `𝕨𝔽⊢`) provided `𝔽⁼` and `𝔽` both complete without error. `𝔽⁼` should of course give an error if no inverse element exists, and can also fail if no inverse can be found. It is also preferred for `𝔽⁼` to give an error if there are many choices of inverse with no clear way to choose one of them: for example, `0‿0⍉m` returns the diagonal of matrix `m`; `0‿0⍉⁼2‿3` requires values to be chosen for the off-diagonal elements in its result. It is better to give an error, encouraging the programmer to use a fully-specified approach like `2‿3⌾(0‿0⊸⍉)` applied to a matrix of initial elements, than to return a result that could be very different from other implementations.
 
+If a value `𝕩` isn't in the range of `𝔽`, then no result satisfies the rule for `𝔽⁼𝕩`. As `𝔽⁼𝕩` would then always give an error by the above rules, a BQN implementation with extensions could define it in any way. However, two such extensions are specified: `F⁼⁼` and `F⍟(-n)⁼` are extended to the full domain of `F` and `/⁼` to any list of natural numbers, as noted below.
+
 When working with limited-precision numbers, it may be difficult or impossible to exactly invert the operand function. Instead, it is generally acceptable to perform a computation that, if done with unlimited precision, would exactly invert `𝔽` computed with unlimited precision. This principle is the basis for the numeric inverses specified below. It is also acceptable to find an inverse by numeric methods, provided that the error in the inverse value found relative to an unlimited-precision inverse can be kept close to the inherent error in the implementation's number format.
 
 Regardless of which cases for Undo are supported, the result of a call, and whether it is an error, must depend only on the values of the inputs `𝔽`, `𝕩`, and (if present) `𝕨`.
@@ -88,7 +90,7 @@ Unlike these inverses, the logarithm function—base *e* for `⋆⁼𝕩` and ba
 |-----|-------|-------
 | `⋆` | `Log` | `÷˜○Log`
 
-The following structural functions have unique inverses, except in a few cases. Dyadic `⍉` with repeated axes is excluded, and monadic `<` can only be inverted on a rank-0 array. Dyadic `⊣` is invertible only if the arguments match, and in this case any return value is valid, but in BQN the shared argument value is returned. For `/⁼` the argument must be a list of non-descending natural numbers, and the result's fill element is 0.
+The following structural functions have unique inverses, except in a few cases. Dyadic `⍉` with repeated axes is excluded, and monadic `<` can only be inverted on a rank-0 array. Dyadic `⊣` is invertible only if the arguments match, and in this case any return value is valid, but in BQN the shared argument value is returned. For `/⁼` the argument must be a list of natural numbers (it's extended to handle any such list even though the range consists of non-descending ones), and the result's fill element is 0.
 
 | Fn  | 1                   | 2
 |-----|---------------------|-------
@@ -148,9 +150,9 @@ Inverses of other modifiers and derived functions or modifiers obtained from the
 | `F G`   |                      |
 | `·F G`  |                      |
 | `○`     | `{𝔾⁼(𝔾𝕨)𝔽⁼𝕩}`        |
-| `⁼`     | `{r←𝔽𝕩⋄!𝕩≡𝔽⁼r⋄r}`    |
+| `⁼`     | `{𝔽}`                | Extended: no result check
 | `⌾`     | `{𝔽⁼⌾𝔾}`             | Verify result for computational Under
-| `⍟n`    | `⍟(-n)`              | Atomic number `n`
+| `⍟n`    | `⍟(-n)`              | Atomic number `n`; no check, like `⁼`
 | `⊘`     | `{(𝔽⁼)⊘(𝔾⁼)}`        |
 | `⊸`     | `{𝔽⊸(𝔾⁼)}`           | Dyadic case or constant `𝔽` only
 | `⟜`     | `{𝔾⁼𝔽⁼}`             | Dyadic case
