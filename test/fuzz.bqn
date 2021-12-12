@@ -4,7 +4,7 @@ opts ← {
 help ← 1↓"
 Fuzz testing. Options:
   -h, --help: Print this message and exit
-  -r: Random seed, u for •UnixTime (1)
+  -r: Random seed, u to use •UnixTime then print (1)
   -b: Maximum bound (1e3)
   -n: Number of iterations (100)
   -t: Element type (0 3 4 5 6)
@@ -22,7 +22,7 @@ Any number of types or bounds can be given; all combinations are tested."
   num ⊢_default_"iteration number"↩ 100
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
   bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
-  seed "u"⊸≡◶⟨•BQN,(2⋆31)|⌊∘•UnixTime⟩_default_"random seed"↩ 1
+  seed "u"⊸≡◶⟨•BQN,•Show(2⋆31)|⌊∘•UnixTime⟩_default_"random seed"↩ 1
 
   prims ↩ ((⊢-˜¬×+`+2×·¬∨´)'%'⊸=)¨⊸(⊔○∾) prims
   "At most three %-separated primitive groups allowed" ! 3≥≠prims
