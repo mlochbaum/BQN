@@ -12,11 +12,12 @@
 [dzaima](https://github.com/dzaima/aoc/tree/master/2021/BQN) •
 [Raghu Ranganathan](https://github.com/razetime/AOC2021-BQN) •
 [Leah Neukirchen](https://github.com/leahneukirchen/adventofcode2021)+[blog](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) •
-[frasiyav](https://github.com/frasiyav/AoC2021)
+[frasiyav](https://github.com/frasiyav/AoC2021) •
+[Caleb Quilley](https://gitlab.com/icen/aoc21)
 
 Partial:
+[Andrey Popp](https://github.com/andreypopp/aoc2021) •
 [Johnny](https://github.com/JohnnyJayJay/adventofcode-21) •
-[Caleb Quilley](https://gitlab.com/icen/aoc21) •
 [Alastair Williams](https://github.com/alephno/aoc2021) •
 [Aren Windham](https://github.com/arwn/aoc2021) •
 [Olodus](https://github.com/Olodus/advent_of_code2021) •
