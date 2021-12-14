@@ -528,7 +528,7 @@ let makebqn = (proc,fn) => st => (x,w) => {
   return fn(st.comps(st)(src));
 }
 let makebqnfn = (e,fn) => makebqn((x,w,u,s)=>req1str(e,x,u(s,w)), fn);
-let dynsys_copy = fn => dynsys(st => fn(copy_state(st)));
+let dynsys_copy = fn => dynsys(st => (x,w) => fn(copy_state(st))(x,w));
 
 let rebqn = dynsys_copy(state => (x,w) => {
   let req = (r,s) => { if (!r) throw Error("•ReBQN: "+s) };
