@@ -399,7 +399,8 @@ Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
 
 IF ← ⊢⊣!∘≡  # Intersect fill
 IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
-_fillMerge_ ← {(0<≠∘⥊)◶⟨(𝔾○≢⥊⟨⟩˙)_fillBy_⊢⟜Fill, 𝔽 ⊣_fillBy_⊢ IEF⟩}
+HasFill ← 0=·Fill⊢_fillBy_(@⍟(3≤Type∘⊣))⟜(↕0)
+_fillMerge_ ← {(0<≠∘⥊)◶⟨(𝔾○≢⥊⟨⟩˙)_fillBy_⊢⟜Fill⍟HasFill, 𝔽 ⊣_fillBy_⊢ IEF⟩}
 Merge←{
   c←≢0⊑⥊𝕩
   (">𝕩: Elements of 𝕩 must have matching shapes" ! c =○≠◶0‿MatchS ≢)⌜⥊𝕩
