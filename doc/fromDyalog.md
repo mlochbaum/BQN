@@ -119,7 +119,7 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>⍕</code> </td><td colspan=2><code>•Fmt</code></td>                                   </tr>
 <tr><td> <code>⊥</code> </td><td>                              </td><td> <code>{+⟜(𝕨⊸×)´⌽𝕩}</code>    </td></tr>
 <tr><td> <code>⊤</code> </td><td>                              </td><td> <code>{>𝕨|⌊∘÷`⌾⌽𝕨«˜<𝕩}</code></td></tr>
-<tr><td> <code>⌹</code> </td><td colspan=2><code>+˝∘×⎉1‿∞⁼</code> I guess</td>                      </tr>
+<tr><td> <code>⌹</code> </td><td><code>Inverse</code> from <a href="https://github.com/mlochbaum/bqn-libs/blob/master/matrix.bqn">here</a></td><td><code>Solve</code></td></tr>
 <tr><td> <code>⌷</code> </td><td> N/A                          </td><td> <code>⊏</code></td>        </tr>
 </table>
 
