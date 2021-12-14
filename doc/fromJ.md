@@ -118,7 +118,7 @@ The tables below give approximate implementations of J primitives. J has a whole
 | `*:` | `×˜`                    | `¬∧`
 | `-.` | `¬`                     | `¬∘∊/⊣`
 | `-:` | `÷⟜2`                   | `≡`
-| `%.` |                         | `+˝∘×⎉1‿∞⁼`
+| `%.` | `Inverse` from [here](https://github.com/mlochbaum/bqn-libs/blob/master/matrix.bqn) | `Solve`
 | `$`  | `≢`                     | `⥊`
 | `~.` | `⍷`                     |
 | `~:` | `∊`                     | `≠`
