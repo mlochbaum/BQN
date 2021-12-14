@@ -410,7 +410,7 @@ Markdown ← {filename𝕊𝕩:
       (m/𝕨) ∾˘ (m/i)⊏𝕩
     }
     # The four bracket indices for each link
-    lInds ← 0‿4⊸⥊⍟(0=≠) JoinPairs○FindPairs˝ brak
+    lInds ← JoinPairs○FindPairs˝ brak
     linkPos ← ⊏˘ lInds
     lInds +⎉1↩ 1‿0‿1‿0
     unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
