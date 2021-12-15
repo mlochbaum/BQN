@@ -253,7 +253,7 @@ Pick1←{
   i←0⋄𝕨{i↩(𝕩NormIndP𝕨)+𝕩×i}¨s
   i⊑⥊𝕩
 }⟜ToArray
-Pickd←(IsSimple⥊∘⊣)◶{Pickd⟜𝕩⌜𝕨}‿Pick1
+Pickd←IsArray◶⟨1,IsSimple⥊⟩∘⊣◶{Pickd⟜𝕩⌜𝕨}‿Pick1
 Pick←IsArray∘⊣◶Pick0‿Pickd
 
 _multiAxis←{
