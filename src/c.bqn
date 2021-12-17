@@ -29,7 +29,8 @@ _tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
 CharCode←charSet{
   ErrUnknownChars←!⟨"Unknown character"⊸Pl,": ",⊢⟩_tmpl
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
-  g←⍋𝕗 ⋄ ⊢ Chk g⊏˜1-˜1⌈(g⊏𝕗)⍋⊢
+  (! "Character set conflict: "∾gf/˜0⊸∾)⍟(∨´) 1(↓=-⊸↓)gf←(g←⍋𝕗)⊏𝕗
+  ⊢ Chk g⊏˜1-˜1⌈gf⍋⊢
 }
 swap_undo←CharCode∊⟜mod1⊸/"˜⁼"
 
