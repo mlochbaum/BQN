@@ -28,13 +28,13 @@ Looking for a modern, powerful language centered on Ken Iverson's array programm
 - A low-dependency C implementation using bytecode compilation: [installation](running.md)
 - Basic [system functions](spec/system.md) for common math, file, and IO operations
 - Documentation with examples, visuals, explanations, and rationale for features
+- Replace or extend primitives to make a [BQN-like language](doc/rebqn.md) suited for specialized domains
 
 BQN **will provide**:
 
 - State of the art array performance: takes some time, but I developed many of Dyalog APL's current algorithms and know we'll get there
 - Interfaces to connect with other languages, like a C FFI and JSON and CSV tools
 - A standard system to install and use libraries and packages, and support for package managers
-- Replace or extend primitives to make a BQN-like language suited for specialized domains
 
 At present, I think BQN is a good choice for learning array programming, scripting, medium-scale number crunching, and recreational programming. For some examples of BQN in action, this repository holds the dreaded [self-hosted compiler](src/c.bqn) and the friendlier [markdown processor](md.bqn) used to generate the site. See also my scripts at [bqn-libs](https://github.com/mlochbaum/bqn-libs), this [gnuplot interface](https://github.com/frasiyav/BQN-Gnuplot/blob/main/Gnuplot.bqn), some nicely commented Advent of Code 2021 [solutions](https://gitlab.com/icen/aoc21), or something else from the [community](community/README.md) page.
 

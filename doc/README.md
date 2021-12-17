@@ -69,3 +69,4 @@ Primitives:
 
 Environment:
 - [Embedded BQN](embed.md)
+- [ReBQN](rebqn.md)
