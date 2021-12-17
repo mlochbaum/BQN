@@ -5,21 +5,23 @@
 files‿opts ← 2 ↑ ('-'=⊑)¨⊸⊔ •args
 files ↩ (0<≠)◶⟨1,∨´"all"⊸≡¨⟩◶⟨∾⟜".bqn"¨, •file.List∘"cases"⟩ files
 nc‿rt‿ref‿noerr ← "-nocomp"‿"-rt"‿"-ref"‿"-noerr" ∊ opts
-"Can't test runtime without the compiler!" ! ¬nc∧rt∨ref
 
 Native ← •BQN
+gl ← •Import "../src/glyphs.bqn"
+prim ← {
+  ref ? •Import "ref.bqn"   ;  # Reference implementations
+  rt  ? •Import "../rt.bqn" ;  # Self-hosted
+  ¬nc ? •BQN∘⥊¨ ∾gl         ;  # Native runtime
+  @                            # Just use •BQN
+}
 exec ← {
-  nc ? Native ;
-  # Otherwise compiled
-  gl ← •Import "../src/glyphs.bqn"
+  ¬nc ? # Compiled
   compile ← gl •Import "../src/c.bqn"
   vm ← •Import "../vm.bqn"
-  r ← {
-    ref ? •Import "ref.bqn"   ;  # Reference implementations
-    rt  ? •Import "../rt.bqn" ;  # Self-hosted
-    •BQN∘⥊¨ ∾gl                  # Native runtime
-  }
-  BQN ← ⟨r,{𝕊"bqn":BQN}¨⟩⊸(VM Compile)
+  BQN ← ⟨prim,{𝕊"bqn":BQN}¨⟩⊸(VM Compile)
+; prim≢@ ?
+  •ReBQN {primitives⇐(∾gl)⋈¨prim}
+; Native
 }
 
 c ← ∾ ((0<≠)◶0‿('#'≠⊑)¨⊸/ · •file.Lines "cases/"⊸∾)¨ files
