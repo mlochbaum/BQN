@@ -320,6 +320,7 @@ let fill_by = (f,g) => (x,w) => {
   let a2fill = x => isfunc(x)?x:isnum(x)?0:' ';
   let xf=x.sh?x.fill:a2fill(x);
   if (r.sh&&has(xf)) {
+    r = arr(r.slice(),r.sh);
     try {
       let wf = !has(w) ? w
              : !w.sh ? a2fill(w)
