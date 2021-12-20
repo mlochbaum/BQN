@@ -481,7 +481,7 @@ structFn ← {
   Mon←{𝕏⊘E} ⋄ Dy←{E⊘𝕏}
   k‿v ← Split2 ⟨
     "⊢⊣˜∘○⊸⟜⊘◶",  ⊢  # ˙ handled specially
-    "´˝",         {r←𝕩⋄{E⊘(IsArray∘⊢◶⟨E,𝕗_r⟩)}}
+    "´˝",         {r←𝕩⋄{IsArray∘⊢◶⟨E,𝕗_r⟩}}
     "=≠≢",        Mon 1 _sfn_ 0
     "<",          Mon 0 _sfn_ 1
     "≍",          Mon 1 _sfn_ 1  # Dyad combines
