@@ -6,17 +6,17 @@
 
 [Advent of Code](https://adventofcode.com/) 2021 is now running! Solutions are being published by:
 
-[Hannu Hartikainen](https://github.com/dancek/bqn-advent2021) •
-[Alex Dikelsky](https://github.com/AlexDikelsky/puzzles/tree/main/advent_of_code/advent_2021) •
 [Antti Keränen](https://github.com/Detegr/aoc2021) •
 [dzaima](https://github.com/dzaima/aoc/tree/master/2021/BQN) •
 [Raghu Ranganathan](https://github.com/razetime/AOC2021-BQN) •
 [Leah Neukirchen](https://github.com/leahneukirchen/adventofcode2021)+[blog](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) •
-[frasiyav](https://github.com/frasiyav/AoC2021) •
-[Caleb Quilley](https://gitlab.com/icen/aoc21)
+[frasiyav](https://github.com/frasiyav/AoC2021)
 
 Partial:
+[Hannu Hartikainen](https://github.com/dancek/bqn-advent2021) •
 [Andrey Popp](https://github.com/andreypopp/aoc2021) •
+[Alex Dikelsky](https://github.com/AlexDikelsky/puzzles/tree/main/advent_of_code/advent_2021) •
+[Caleb Quilley](https://gitlab.com/icen/aoc21) •
 [Johnny](https://github.com/JohnnyJayJay/adventofcode-21) •
 [Alastair Williams](https://github.com/alephno/aoc2021) •
 [Aren Windham](https://github.com/arwn/aoc2021) •
