@@ -9,3 +9,90 @@ If you haven't yet used an array language, BQN will present you with new ways of
 If your favorite language is J, you are missing out even more! Array programmers never seem willing to accept that good ideas can come from people other than Iverson and that legends like John McCarthy and Barbara Liskov advanced human knowledge of how to express computation. They did, and being able to casually pass around first-class functions and mutable closures, with namespaces keeping everything organized, is a huge quality of life improvement. Writing APL again is claustrophobic, the syntax worries and constraints in functionality suddenly rushing back. BQN's mutable objects make methods such as graph algorithms that just don't have a good array implementation (no, your O(n³) matrix method doesn't scale) possible, even natural. With bytecode compilation and NaN-boxing, a natural fit for the based array model, it evaluates that scalar code many times faster than APL or J. The Unix-oriented scripting system stretches seamlessly from quick sketch to multi-file program.
 
 BQN has no intention of being the last word in programming, but could be a practical and elegant tool in your kit—even if only used to inform your use of another language. Give it a try!
+
+## Versus APL and J
+
+Here are some more specific comparisons against the two most similar languages to BQN. I'll try to bring up the areas where BQN can be considered worse, but my focus here is definitely on BQN's strong points—I'm not trying to offer an unbiased account.
+
+BQN is more like APL, but adopts some of the developments made by J as well. However, it's much simpler than both, with fewer and less overloaded primitives as well as less special syntax (J has fewer syntactic rules, but more special cases handled during execution that I think *should* have been implemented with syntax).
+
+The major differences are listed on [the front page](../README.md#whats-the-language-like) ("But it's redesigned…"): [based arrays](../doc/based.md), [list notation](../doc/arrayrepr.md), [context-free grammar](../doc/context.md) and [first-class functions](../doc/functional.md), [reworked primitives](../doc/primitive.md), and dedicated [namespace syntax](../doc/namespace.md).
+
+### J
+
+*J is under development again and a moving target. I stopped using it completely shortly after starting work on BQN in 2020, and while I try to keep up to date on language changes, some remarks here might not fit with the experience you'd get starting with J today.*
+
+To me building with J feels like making a tower out of wood and nails by hand: J itself is reliable but I soon don't trust what I'm standing on. J projects start to feel hacky when I have multiple files, locales, or a bit of global state. With BQN I begin to worry about maintainability only when I have enough functions that I can't remember what arguments they expect, and with lexically-scoped variables I simply don't use global state. If you don't reach this scale (in particular, if you use J as a calculator or spreadsheet substitute) you won't feel these concerns, and will have less to gain by moving to BQN. And if you go beyond, you'd need to augment your programs with rigorous documentation and testing in either language.
+
+The biggest difference could be in file loading. If you write a script that depends on other files, and want it to work regardless of the directory it's called from, you need to deal with this. In J, `>{:4!:3 ''` gives the name of the most recently loaded script (the current one, if you put it before any imports), but to make it into a utility you need this glob of what's-going-on:
+
+    cur_script =: {{(4!:3$0) {::~ 4!:4<'y'}}
+
+In BQN it's `•path`. And usually you don't need it because `•Import` resolves paths relative to the file containing it.
+
+J uses numeric codes; BQN uses mostly names. So J's `1&o.` is BQN's `•math.Sin`, and `6!:9` corresponds to BQN's `•MonoTime`.
+
+J uses bytestrings by default, making Unicode handling a significant difficulty ([see](https://code.jsoftware.com/wiki/Vocabulary/uco) `u:`). BQN strings are lists of codepoints, so you don't have to worry about how they're encoded or fight to avoid splitting up UTF-8 bytes that need to go together.
+
+J locales are not first-class values, and BQN namespaces are. I think BQN's namespaces are a lot more convenient to construct, although it is lacking an inheritance mechanism (but J's path system can become confusing quickly). More importantly, BQN namespaces (and closures) are garbage collected. J locales leak unless manually freed by the programmer. More generally, J has no mutable data at all, and to simulate it properly you'd have to write your own tracing garbage collection as the J interpreter doesn't have any. I discussed this issue some in [this J forum thread](http://www.jsoftware.com/pipermail/programming/2021-April/058006.html).
+
+In J, each function has a built-in rank attribute: for example the ranks of `+` are `0 0 0`. This rank is accessed by the "close" compositions `@`, `&`, and `&.`. Choosing the shorter form for the close compositions—for example `@` rather than `@:`—is often considered a mistake within the J community. And function ranks are unreliable: consider that the ranks of `]@:+`, a function that behaves just like `+`, are `_ _ _`. In BQN there aren't any close compositions at all, and no function ranks. J's `&.>` is simply `¨`, and other close compositions, in my opinion, just aren't needed.
+
+Gerunds are J's answer to BQN's first-class functions. For example J's ``(+&3)`(2&*)@.(2&|)`` would be written `2⊸|◶⟨+⟜3,2⊸×⟩` with a list of functions. I think lists of functions are a big improvement, since there's no need to convert between gerund and function, and no worries about arrays that just happen to be valid gerunds (worried about losing the ability to construct gerunds? Constructing tacit functions in BQN is much easier). The usability gap widens because passing J functions around either as values or gerunds has presents some highly idiosyncratic challenges, discussed below.
+
+#### Named functions
+
+Its impact on the programmer is smaller than a lot of the issues above, but this section describes a behavior that I find pretty hard to justify. What does the identifier `fn` indicate in a J expression? The value of `fn` in the current scope, one might suppose. Nope—only if the value is a noun. Let's make it a function.
+
+       fn =: -
+       fn`-
+    ┌──┬─┐
+    │fn│-│
+    └──┴─┘
+
+The tie adverb `` ` `` makes gerund representations of both operands and places them in a list. It returns `'fn';,'-'` here: two different strings for what we'd think of as the same function. But it's just being honest. The value of `fn` really is more like a name than the primitive `-`. To see this we can pass it in to an adverb that defines its own local, totally separate copy of `fn`.
+
+       fn{{u 3}}
+    _3
+       fn{{
+         fn =. %  NB. local assignment
+         u 3
+       }}
+    0.333333
+
+That's right, it is not safe to use `fn` as an operand! Instead you're expected to write `fn f.`, where `f.` ([fix](https://code.jsoftware.com/wiki/Vocabulary/fdot)) is a primitive that recursively expands all the names. Okay, but if you didn't have these weird name wrappers everywhere you wouldn't have to expand them. Why?
+
+       a =: 3 + b
+       b =: a^:(10&<) @: -:
+       b 100
+    15.25
+
+This feature allows tacit recursion and mutual recursion. You can't do this in BQN, because `A ← 3 + B` with no `B` defined is a reference to an undefined identifier. You have to use `{B𝕩}` instead. So this is actually kind of nice. 'Cept it's broken:
+
+       b f.  NB. impossible to fix all the way
+    (3 + b)^:(10&<)@:-:
+
+       b f.{{
+         b =. 2
+         u 100
+       }}
+    |domain error: b
+    |       u 100
+
+A tacit-recursive function can't be called unless its definition is visible, period. We gained the ability to do this cool tacit recursion thing, and all it cost us was… the ability to reliably use functions as values at all, which should be one of the things tacit programming is *good* for.
+
+It gets worse.
+
+       g =: -
+       f =: g
+       g =: |.
+       f i. 3
+    2 1 0
+       <@f i. 3
+    ┌─┬─┬─┐
+    │0│1│2│
+    └─┴─┴─┘
+
+This should not be possible. `f` here doesn't behave like `+`, or quite like `|.`: in fact there is no function that does what `f` does. The result of `f` depends on the entire argument, but `<@f` encloses rank 0 components! How long would it take you to debug an issue like this? It's rare, but I've run into it in my own code and seen similar reports on the forums.
+
+The cause is that the value of `f` here—a named `g` function—is not just a name, but also comes with a function rank. The function rank is set by the assignment `f =: g`, and doesn't change along with `g`. Calling `f` doesn't rely on the rank, but `@` does, so `<@f` effectively becomes `<@|."-`, mixing the two versions of `g`. The only explanation I have for this one is implementation convenience.
