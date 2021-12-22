@@ -6,7 +6,7 @@
 "style" Enc ".Comment { color: inherit; }"
 -->
 
-A guide to help users of J get up to speed with BQN quickly.
+A guide to help users of J get up to speed with BQN quickly. For a higher-level comparison, check [Why BQN?](../commentary/why.md#versus-apl-and-j).
 
 ## Terminology
 

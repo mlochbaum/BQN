@@ -20,13 +20,22 @@ The major differences are listed on [the front page](../README.md#whats-the-lang
 
 In addition to these, BQN's [block system](../doc/block.md) extends APL dfns with headers, adding some very useful functionality: the header specifies block type and argument names, and also allows for simple pattern matching when used with multiple block bodies.
 
-Since this section gets into the details, it's worth highlighting stranding, a feature I think of as an obvious improvement but that many BQN newcomers see as an obvious sign that I don't know what I'm doing! I made a longer argument [here](../doc/arrayrepr.md#why-not-whitespace); the two key points are that stranding is a source of ambiguity that can strike at any time, requiring a correction with `⊢` or `]`, and that typing `‿` is really not hard I promise.
+Since this section gets into the details, it's worth highlighting stranding, a feature I think of as an obvious improvement but that many BQN newcomers see as an obvious sign that I don't know what I'm doing! My full argument for this decision is [here](../doc/arrayrepr.md#why-not-whitespace); the two key points are that stranding is a source of ambiguity that can strike at any time, requiring a correction with `⊢` or `]`, and that typing `‿` is really not hard I promise.
 
 BQN's heavier-weight `⟨⟩` syntax for lists also has its own advantages, because it can be formatted nicely across multiple lines, and also allows functions and modifiers to be used easily as elements. Being able to easily map over a list of functions is surprisingly useful!
 
-BQN has no built-in control structures, which can be quite an adjustment coming from certain styles of APL or J.
+BQN has no built-in control structures, which can be quite an adjustment coming from certain styles of APL or J. The [control structures](../doc/control.md) page gives some ways to write in a more imperative style, but it's definitely not the same.
+
+Primitives in BQN are pure functions that don't depend on interpreter settings. The following kinds of interpreter state don't apply:
+- The index origin is 0.
+- APL and J use approximate comparison in primitives, controlled by a value called the comparison tolerance (`⎕CT` in APL). The choice of which primitives use it and how is kind of arbitrary, and a nonzero comparison tolerance can lead to confusion, bugs, and unavoidable performance problems in code. Nonetheless, I planned to add tolerant comparison to BQN—until I realized that after a year spent programming in BQN I'd hardly noticed its absence, and no one had asked for it either.
+- Random number generation isn't a primitive, but instead uses the global generator `•rand` or an initialized generator `•MakeRand`. This makes managing independent generators easier, and with namespaces [you get](../spec/system.md#random-generation) several convenient functions for different use cases.
+
+Some factors specific to APL or J are given in the sections below.
 
 ### APL
+
+*See also the [BQN-Dyalog APL dictionary](../doc/fromDyalog.md).*
 
 BQN cleans up some awkward syntax left over from when each APL operator was special: the outer product is written `Fn⌜` rather than `∘.fn`, and reduction `Fn´ arr` is separated from compress `b/arr`.
 
@@ -34,13 +43,15 @@ BQN adopts [leading axis theory](../doc/leading.md) as developed in SHARP APL an
 
 Arguably BQN cuts down the set of primitives too much. Base conversion `⊥⊤`, partitioning `⊂⊆`, and matrix division `⌹` are commonly asked-for primitives, but they don't match [my conception](primitive.md) of a primitive. And while each can be implemented (with short snippets, other than `⌹` which requires a library), there's definitely a convenience loss. But there's always [ReBQN](../doc/rebqn.md)…
 
-Dfns are adjusted in a few ways that make them more useful for general-purpose programming. A BQN block always runs to the last statement, so a block like `{Update 𝕩⋄1+x}` won't return early. Tradfns are removed entirely, along with control structures.
+An APL selective assignment `arr[2 3]+←1` should usually be written with Under in BQN: `1⊸+⌾(2‿3⊸⊏)arr` (but the correspondence might not always be so direct). You can think of this as a very fancy At (`@`) operator, that lets you pull out an arbitrary part of an array.
+
+Dfns are adjusted in a few ways that make them more useful for general-purpose programming. A BQN block always runs to the last statement, so a block like `{Update 𝕩 ⋄ 1+x}` won't return early. Writing modification with `↩` makes it clearer which variable's which. Dfns also do a weird shadowing thing where `a←1⋄a←2` makes two different variables; in BQN this is an error because the second should use `↩`. Tradfns are removed entirely, along with control structures.
 
 BQN's namespaces have a dedicated syntax, are *much* easier to create than Dyalog namespaces, and have better performance. I use them all the time, and they feel like a natural part of the language.
 
 ### J
 
-*J is under development again and a moving target. I stopped using it completely shortly after starting work on BQN in 2020, and while I try to keep up to date on language changes, some remarks here might not fit with the experience you'd get starting with J today.*
+*See also the [BQN-J dictionary](../doc/fromJ.md). J is under development again and a moving target. I stopped using it completely shortly after starting work on BQN in 2020, and while I try to keep up to date on language changes, some remarks here might not fit with the experience you'd get starting with J today.*
 
 To me building with J feels like making a tower out of wood and nails by hand: J itself is reliable but I soon don't trust what I'm standing on. J projects start to feel hacky when I have multiple files, locales, or a bit of global state. With BQN I begin to worry about maintainability only when I have enough functions that I can't remember what arguments they expect, and with lexically-scoped variables I simply don't use global state. If you don't reach this scale (in particular, if you use J as a calculator or spreadsheet substitute) you won't feel these concerns, and will have less to gain by moving to BQN. And if you go beyond, you'd need to augment your programs with rigorous documentation and testing in either language.
 
