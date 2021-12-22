@@ -18,6 +18,26 @@ BQN is more like APL, but adopts some of the developments made by J as well. How
 
 The major differences are listed on [the front page](../README.md#whats-the-language-like) ("But it's redesigned…"): [based arrays](../doc/based.md), [list notation](../doc/arrayrepr.md), [context-free grammar](../doc/context.md) and [first-class functions](../doc/functional.md), [reworked primitives](../doc/primitive.md), and dedicated [namespace syntax](../doc/namespace.md).
 
+In addition to these, BQN's [block system](../doc/block.md) extends APL dfns with headers, adding some very useful functionality: the header specifies block type and argument names, and also allows for simple pattern matching when used with multiple block bodies.
+
+Since this section gets into the details, it's worth highlighting stranding, a feature I think of as an obvious improvement but that many BQN newcomers see as an obvious sign that I don't know what I'm doing! I made a longer argument [here](../doc/arrayrepr.md#why-not-whitespace); the two key points are that stranding is a source of ambiguity that can strike at any time, requiring a correction with `⊢` or `]`, and that typing `‿` is really not hard I promise.
+
+BQN's heavier-weight `⟨⟩` syntax for lists also has its own advantages, because it can be formatted nicely across multiple lines, and also allows functions and modifiers to be used easily as elements. Being able to easily map over a list of functions is surprisingly useful!
+
+BQN has no built-in control structures, which can be quite an adjustment coming from certain styles of APL or J.
+
+### APL
+
+BQN cleans up some awkward syntax left over from when each APL operator was special: the outer product is written `Fn⌜` rather than `∘.fn`, and reduction `Fn´ arr` is separated from compress `b/arr`.
+
+BQN adopts [leading axis theory](../doc/leading.md) as developed in SHARP APL and applied in A+ and J. With this it can collapse APL pairs such as `⌽⊖` and `/⌿` to one primitive each, and remove APL's complicated function index mechanism. The Rank modifier `⎉` then applies these primitives to non-leading axes. While this method is required in J and also favored by many users of Dyalog APL, it definitely doesn't enjoy universal support—it can be harder to learn, and less convenient for some common cases. Summing rows with `+/` in APL is quite convenient, and BQN's `+˝⎉1`, or `+˝˘` for matrices, just aren't as nice.
+
+Arguably BQN cuts down the set of primitives too much. Base conversion `⊥⊤`, partitioning `⊂⊆`, and matrix division `⌹` are commonly asked-for primitives, but they don't match [my conception](primitive.md) of a primitive. And while each can be implemented (with short snippets, other than `⌹` which requires a library), there's definitely a convenience loss. But there's always [ReBQN](../doc/rebqn.md)…
+
+Dfns are adjusted in a few ways that make them more useful for general-purpose programming. A BQN block always runs to the last statement, so a block like `{Update 𝕩⋄1+x}` won't return early. Tradfns are removed entirely, along with control structures.
+
+BQN's namespaces have a dedicated syntax, are *much* easier to create than Dyalog namespaces, and have better performance. I use them all the time, and they feel like a natural part of the language.
+
 ### J
 
 *J is under development again and a moving target. I stopped using it completely shortly after starting work on BQN in 2020, and while I try to keep up to date on language changes, some remarks here might not fit with the experience you'd get starting with J today.*
@@ -33,6 +53,10 @@ In BQN it's `•path`. And usually you don't need it because `•Import` resolve
 J uses numeric codes; BQN uses mostly names. So J's `1&o.` is BQN's `•math.Sin`, and `6!:9` corresponds to BQN's `•MonoTime`.
 
 J uses bytestrings by default, making Unicode handling a significant difficulty ([see](https://code.jsoftware.com/wiki/Vocabulary/uco) `u:`). BQN strings are lists of codepoints, so you don't have to worry about how they're encoded or fight to avoid splitting up UTF-8 bytes that need to go together.
+
+But J has its type advantages as well. I miss complex number support in BQN, as it's an optional extension that we haven't yet implemented. And BQN has a hard rule that only one numeric type is exposed to the programmer, which means high-precision integers and rationals aren't allowed at all for a float-based implementation. I think this rule is worth it because J's implicit type conversion is hard to predict and an unexpected numeric type can cause sporadic or subtle program errors.
+
+BQN uses a modifier `⟜` for J's hook, adding `⊸` for a reversed version (which I use nearly twice as often). This frees up the 2-train, which is made equivalent to Atop (`∘`). It's the system Roger Hui came to advocate, since he argued in favor of a hook conjunction [here](https://code.jsoftware.com/wiki/Essays/Hook_Conjunction%3F) and made 2-train an Atop when he brought it to Dyalog APL. As an example, the J hook `(#~0&<:)` to remove negative numbers becomes `0⊸≤⊸/` in BQN.
 
 J locales are not first-class values, and BQN namespaces are. I think BQN's namespaces are a lot more convenient to construct, although it is lacking an inheritance mechanism (but J's path system can become confusing quickly). More importantly, BQN namespaces (and closures) are garbage collected. J locales leak unless manually freed by the programmer. More generally, J has no mutable data at all, and to simulate it properly you'd have to write your own tracing garbage collection as the J interpreter doesn't have any. I discussed this issue some in [this J forum thread](http://www.jsoftware.com/pipermail/programming/2021-April/058006.html).
 
