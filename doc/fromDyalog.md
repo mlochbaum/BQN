@@ -2,7 +2,7 @@
 
 # BQN–Dyalog APL dictionary
 
-A few tables to help users of Dyalog APL (or similar) get started quickly on BQN. Here we assume `⎕ML` is 1 for Dyalog.
+A few tables to help users of Dyalog APL (or similar) get started quickly on BQN. For a higher-level comparison, check [Why BQN?](../commentary/why.md#versus-apl-and-j). Here we assume `⎕ML` is 1 for Dyalog.
 
 ## Terminology
 
