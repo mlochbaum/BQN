@@ -73,7 +73,7 @@ map global bqn '~'     ':exec i¬<ret>' -docstring '¬ Not            | Span'
 map global bqn '<'     ':exec i≤<ret>' -docstring '≤                | LessOrEqual'
 #               <              <                   < Enclose        | LessThan
 #               >              >                   > Merge          | GreaterThan
-map global bqn '>'     ':exec i><ret>' -docstring '>                | GreaterOrEqual'
+map global bqn '>'     ':exec i≥<ret>' -docstring '≥                | GreaterOrEqual'
 #               =              =                   = Rank           | Equal
 map global bqn '/'     ':exec i≠<ret>' -docstring '≠ Length         | NotEqual'
 map global bqn 'm'     ':exec i≡<ret>' -docstring '≡ Depth          | Match'
@@ -150,6 +150,8 @@ map global bqn 'p'     ':exec iπ<ret>' -docstring 'π constant pi'
 map global bqn '8'     ':exec i∞<ret>' -docstring '∞ constant infinity'
 #               @              @                   @ constant null character
 #               #              #                   # COMMENT
+
+map global bqn '\'     ':exec i\<ret>'
 
 # Commands
 # ‾‾‾‾‾‾‾‾
