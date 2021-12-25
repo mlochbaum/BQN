@@ -323,7 +323,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,44¨api,⥊⍉(11+l⊏aa)≍ll,ao,6¨dr,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
                24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
   # Instruction source positions
-  MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨1-˜at,oa,fa⟩
+  MI←-⊸↓˜⟜≠∾g⊏˜⊢⋄oj←(rt-∘≠⊸⌽oi⌊1-˜≠i)Mi∾⟨at-1‿0/˜≠¨ai‿hj,oa,fa⟩
   ind←⟨oj,oj Mi fa⊏IT»¬ro∨ma⟩(¯1∾˜or⊏(≠rt)⊸⌽)⊸⊏¨i‿e
   # Indices for multi-body blocks
   cm∨↩(fx∧1≠cw)∨0<ut↩ut⌾(ch⊸/)ch            # Dyad- and inverse-only generate as multiple
