@@ -6,7 +6,7 @@
 "style" Enc ".Comment,.Function,.Number,.String { color: inherit; }"
 -->
 
-Editor plugins and other tools for allowing BQN input are in [this folder](https://github.com/mlochbaum/BQN/tree/master/editors). Input is always performed with a backslash `\` prefix by default, using the layout shown [here](https://mlochbaum.github.io/BQN/keymap.html). To type an actual backslash, hit the backslash key twice.
+Editor plugins and other tools for allowing BQN input are in [this folder](https://github.com/mlochbaum/BQN/tree/master/editors). Input always uses the layout shown [here](https://mlochbaum.github.io/BQN/keymap.html), and is usually performed with a backslash `\` prefix, but sometimes with a modifier key such as alt. To type an actual backslash, hit the backslash key twice.
 
 [This bookmarklet](https://abrudz.github.io/lb/bqn) enables BQN input in any webpage in your **browser**.
 
@@ -14,11 +14,9 @@ Editor plugins and other tools for allowing BQN input are in [this folder](https
 
 For **Android**, [this fork](https://github.com/dzaima/hackerskeyboard/releases/latest) adds APL and BQN to Hacker's Keyboard.
 
-For **macOS**, there are two keyboard layouts: [one](https://github.com/mlochbaum/BQN/blob/master/editors/BQN.keylayout) uses `Alt` key as the modifier, and [another](https://github.com/mlochbaum/BQN/blob/master/editors/BQN_backslash.keylayout) uses `\` prefix key (this layout works similar to BQN vim keymap).
-
 The file [inputrc](https://github.com/mlochbaum/BQN/blob/master/editors/inputrc) can be copied or appended to `~/.inputrc` to enable backslash input in **bash**, BQN with **rlwrap**, and other software that uses GNU Readline.
 
-If you'd like to contribute files for another editor I'd gladly accept them!
+Support for other editors, OSes, or workflows will be gladly accepted!
 
 ## System-wide
 
@@ -42,10 +40,13 @@ The [XCompose](https://github.com/mlochbaum/BQN/blob/master/editors/XCompose) fi
 
 ### Mac
 
-Copy the keyboard layout file `BQN.keylayout` to `~/Library/Keyboard Layouts/`.
-Navigate to System Preferences > Keyboard > Input Sources > + > Others > BQN.
-Restart and then enable the BQN keyboard with System Preferences > Keyboard > Input Sources > BQN US.
-Don't copy `BQN.keylayout` directly to `/Library/Keyboard Layouts`, as this will silently fail.
+There are two keyboard layouts: [one](https://github.com/mlochbaum/BQN/blob/master/editors/BQN.keylayout) enables BQN keys with the `Alt` modifier, and [another](https://github.com/mlochbaum/BQN/blob/master/editors/BQN_backslash.keylayout) uses the standard `\` prefix.
+
+To install:
+- Copy the appropriate `.keylayout` file to `~/Library/Keyboard Layouts/`.
+- Navigate to System Preferences > Keyboard > Input Sources > + > Others > BQN.
+- Restart, then enable the BQN keyboard with System Preferences > Keyboard > Input Sources > BQN US.
+Don't use the root-based directory `/Library/Keyboard Layouts/` for the first step, as this will silently fail.
 
 ## Text editors
 

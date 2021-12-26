@@ -6,13 +6,12 @@
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a></div>
 <h1 id="editor-support"><a class="header" href="#editor-support">Editor support</a></h1>
 <style>.Comment,.Function,.Number,.String { color: inherit; }</style>
-<p>Editor plugins and other tools for allowing BQN input are in <a href="https://github.com/mlochbaum/BQN/tree/master/editors">this folder</a>. Input is always performed with a backslash <code><span class='Value'>\</span></code> prefix by default, using the layout shown <a href="https://mlochbaum.github.io/BQN/keymap.html">here</a>. To type an actual backslash, hit the backslash key twice.</p>
+<p>Editor plugins and other tools for allowing BQN input are in <a href="https://github.com/mlochbaum/BQN/tree/master/editors">this folder</a>. Input always uses the layout shown <a href="https://mlochbaum.github.io/BQN/keymap.html">here</a>, and is usually performed with a backslash <code><span class='Value'>\</span></code> prefix, but sometimes with a modifier key such as alt. To type an actual backslash, hit the backslash key twice.</p>
 <p><a href="https://abrudz.github.io/lb/bqn">This bookmarklet</a> enables BQN input in any webpage in your <strong>browser</strong>.</p>
 <p><a href="https://gist.github.com/dzaima/35ca0ce12b5e215a62460f00e693984f">This userscript</a> highlights BQN code on <strong>GitHub</strong>.</p>
 <p>For <strong>Android</strong>, <a href="https://github.com/dzaima/hackerskeyboard/releases/latest">this fork</a> adds APL and BQN to Hacker's Keyboard.</p>
-<p>For <strong>macOS</strong>, a keyboard layout can be found <a href="https://github.com/mlochbaum/BQN/blob/master/editors/BQN.keylayout">here</a>.</p>
 <p>The file <a href="https://github.com/mlochbaum/BQN/blob/master/editors/inputrc">inputrc</a> can be copied or appended to <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.inputrc</span></code> to enable backslash input in <strong>bash</strong>, BQN with <strong>rlwrap</strong>, and other software that uses GNU Readline.</p>
-<p>If you'd like to contribute files for another editor I'd gladly accept them!</p>
+<p>Support for other editors, OSes, or workflows will be gladly accepted!</p>
 <h2 id="system-wide"><a class="header" href="#system-wide">System-wide</a></h2>
 <h3 id="xkb-unix"><a class="header" href="#xkb-unix">XKB (Unix)</a></h3>
 <p>The file <a href="https://github.com/mlochbaum/BQN/blob/master/editors/bqn">bqn</a> is for configuring XKB on Linux, or other systems using X11. To use, copy it to <code><span class='Function'>/</span><span class='Value'>usr</span><span class='Function'>/</span><span class='Value'>share</span><span class='Function'>/X11/</span><span class='Value'>xkb</span><span class='Function'>/</span><span class='Value'>symbols</span><span class='Function'>/</span></code>, then run</p>
@@ -25,6 +24,15 @@
 <h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
 <p>Folder <a href="https://github.com/mlochbaum/BQN/tree/master/editors/autohotkey-win">autohotkey-win</a> contains an <a href="https://en.wikipedia.org/wiki/AutoHotKey">AutoHotKey</a> script and the generated .exe file. It runs as an ordinary program that recognizes BQN key combinations system-wide, using the right alt key (to change this, replace <code><span class='Function'>RAlt</span></code> in the script and rebuild). Move it to the startup folder if you'd like to have it running all the time. You can right-click its icon in the system tray to disable it temporarily.</p>
 <p>The <a href="https://github.com/mlochbaum/BQN/blob/master/editors/XCompose">XCompose</a> file, although created for XKB, is also usable with <a href="https://github.com/samhocevar/wincompose">WinCompose</a>.</p>
+<h3 id="mac"><a class="header" href="#mac">Mac</a></h3>
+<p>There are two keyboard layouts: <a href="https://github.com/mlochbaum/BQN/blob/master/editors/BQN.keylayout">one</a> enables BQN keys with the <code><span class='Function'>Alt</span></code> modifier, and <a href="https://github.com/mlochbaum/BQN/blob/master/editors/BQN_backslash.keylayout">another</a> uses the standard <code><span class='Value'>\</span></code> prefix.</p>
+<p>To install:</p>
+<ul>
+<li>Copy the appropriate <code><span class='Value'>.keylayout</span></code> file to <code><span class='Value'>~</span><span class='Function'>/Library/Keyboard</span> <span class='Function'>Layouts/</span></code>.</li>
+<li>Navigate to System Preferences &gt; Keyboard &gt; Input Sources &gt; + &gt; Others &gt; BQN.</li>
+<li>Restart, then enable the BQN keyboard with System Preferences &gt; Keyboard &gt; Input Sources &gt; BQN US.</li>
+</ul>
+<p>Don't use the root-based directory <code><span class='Function'>/Library/Keyboard</span> <span class='Function'>Layouts/</span></code> for the first step, as this will silently fail.</p>
 <h2 id="text-editors"><a class="header" href="#text-editors">Text editors</a></h2>
 <h3 id="vim"><a class="header" href="#vim">Vim</a></h3>
 <p>Copy or symlink all files into the corresponding directories in <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.vim</span></code>. Add the following two lines to <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.vim</span><span class='Function'>/</span><span class='Value'>filetype.vim</span></code>:</p>
