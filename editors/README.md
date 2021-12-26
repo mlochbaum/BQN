@@ -40,6 +40,13 @@ Folder [autohotkey-win](https://github.com/mlochbaum/BQN/tree/master/editors/aut
 
 The [XCompose](https://github.com/mlochbaum/BQN/blob/master/editors/XCompose) file, although created for XKB, is also usable with [WinCompose](https://github.com/samhocevar/wincompose).
 
+### Mac
+
+Copy the keyboard layout file `BQN.keylayout` to `~/Library/Keyboard Layouts/`.
+Navigate to System Preferences > Keyboard > Input Sources > + > Others > BQN.
+Restart and then enable the BQN keyboard with System Preferences > Keyboard > Input Sources > BQN US.
+Don't copy `BQN.keylayout` directly to `/Library/Keyboard Layouts`, as this will silently fail.
+
 ## Text editors
 
 ### Vim
