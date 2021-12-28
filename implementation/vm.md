@@ -210,7 +210,7 @@ The contents of a core runtime are given below. The names given are those used i
 |   — | `Decompose`| `•Decompose`
 |   — | `PrimInd`  | Index for primitive `𝕩`
 
-To define the final two functions, call the second returned element as a function, with argument `Decompose‿PrimInd`. The function `PrimInd` gives the index of `𝕩` in the list of all primitives (defined as `glyphs` in pr.bqn), or the length of the runtime if `𝕩` is not a primitive. The two functions are only needed for computing inferred properties, and are defined by default so that every value is assumed to be a primitive, and `PrimInd` performs a linear search over the returned runtime. If the runtime is used directly, then this means that without setting `Decompose‿PrimInd`, function inferred properties will work slowly and for primitives only; if values from the runtime are wrapped then function inferred properties will not work at all.
+To define the final two functions, call the second returned element as a function, with argument `Decompose‿PrimInd`. The function `PrimInd` gives the index of `𝕩` in the list of all primitives (defined as `glyphs` in pr.bqn), or the length of the runtime if `𝕩` is not a primitive. The two functions are only needed for computing inferred properties, and are defined by default so that every value is assumed to be a primitive, and `PrimInd` performs a linear search over the returned runtime. If the runtime is used directly, then this means that without setting `Decompose‿PrimInd`, function inferred properties will work slowly and for primitives only; if values from the runtime are wrapped then function inferred properties will not work at all. The compiler uses Under with compound right operands, so `Decompose` is needed to self-host.
 
 Remember that `+` and `-` can also work on characters in some circumstances, under the rules of affine characters. Other arithmetic functions should only accept numbers. `=` must work on any atoms including functions and modifiers. `≤` must work on numbers and characters.
 
@@ -257,7 +257,7 @@ BQN sources are compiled with [cjs.bqn](../src/cjs.bqn), which runs under [dzaim
 
 The following steps give a working BQN system, assuming a working VM and core runtime:
 * Evaluate the bytecode `$ src/cjs.bqn r`, passing the core runtime `provide` in the constants array. The result is a BQN list of a full runtime, a function `SetPrims`, and a function `SetInv`.
-* Optionally, call `SetPrims` on a two-element list `⟨Decompose, PrimInd⟩`.
+* Call `SetPrims` on a two-element list `⟨Decompose, PrimInd⟩`.
 * Optionally, call `SetInv` with a function `𝕩` that updates `Inverse` and (more optionally) a function `𝕨` that updates `SwapInverse`.
 * Evaluate the bytecode `$ src/cjs.bqn c`, which uses primitives from the runtime in its constants array. This is the compiler.
 * Evaluate the bytecode `$ src/cjs.bqn f`. This returns a function. Then call it on a four-element list `⟨Type, Decompose, Glyph, FmtNum⟩` to obtain the two-element list `⟨•Fmt, •Repr⟩`.
@@ -275,7 +275,6 @@ Because the compiler works almost entirely with lists of numbers, a correct fill
 * Test the virtual machine with the output of `src/cjs.bqn` on the primitive-less test expressions in [test/cases/bytecode.bqn](../test/cases/bytecode.bqn).
 * There isn't currently a test suite for provided functions (although [test/cases/simple.bqn](../test/cases/simple.bqn) has some suitable tests for arithmetic): your options are to write tests based on knowledge of these functions and primitive tests, or try to load the runtime and work backwards from any failures. The r1 runtime runs code to initialize some primitive lookup tables so failures are likely.
 * Once the runtime is loaded, begin working through the tests in [test/cases/prim.bqn](../test/cases/prim.bqn) with the full runtime but no self-hosted compiler.
-* After primitive tests pass, try to load the compiler, and run it on a short expression. If it runs, you have a complete (not necessarily correct) system, and remaining tests can be run end-to-end!
 * Now, if you haven't already, add a call to `SetPrims`. Test for inferred properties: identity, under, and undo.
-* If all tests pass you can probably compile the compiler.
-* Headers and namespace support aren't required to support the runtime or compiler, but they can be tested as you add them with the header and namespace tests.
+* After primitive and inferred tests pass, try to load the compiler, and run it on a short expression. If it runs, you have a complete (not necessarily correct) system, and remaining tests can be run end-to-end!
+* Headers and namespace support aren't required to support the runtime or compiler, but they can be tested as you add them with the header and namespace tests. Undo headers are tested with the unhead tests.
