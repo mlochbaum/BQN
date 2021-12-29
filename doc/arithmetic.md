@@ -124,7 +124,7 @@ Now the monadic function symbols resemble those used in mathematics. In the case
 
 Floor (`⌊`) returns the largest integer less than or equal to the argument, and Ceiling (`⌈`) returns the smallest one greater than or equal to it. For this purpose `¯∞` and `∞` are treated as integers, so that the floor or ceiling of an infinity is itself. Absolute value removes the argument's sign by negating it if it is less than 0, so that its result is always non-negative.
 
-Minimum (`⌊`) returns the larger of its two arguments, and Maximum (`⌈`) returns the smaller. These functions are loosely related to Floor and Ceiling in their use of comparison, and can be defined similarly: for example, the minimum of two numbers of the largest number less than or equal to both of them. To take the minimum or maximum of an entire list, use a [fold](fold.md).
+Minimum (`⌊`) returns the smaller of its two arguments, and Maximum (`⌈`) returns the larger. These functions are loosely related to Floor and Ceiling in their use of comparison, and can be defined similarly: for example, the minimum of two numbers is the largest number less than or equal to both of them. To take the minimum or maximum of an entire list, use a [fold](fold.md).
 
         3 ⌊ ↕8
 
