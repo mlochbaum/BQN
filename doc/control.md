@@ -223,7 +223,7 @@ To begin with, are you sure you don't want a for-each loop instead? In BQN that'
     Fn¨ ↕n     # for (𝕩=0; 𝕩<n; 𝕩++)
     Fn¨ k↓↕n   # for (𝕩=k; 𝕩<n; 𝕩++)  with 0≤k
     Fn¨ k+↕n-k # for (𝕩=k; 𝕩<n; 𝕩++)  with k≤n
-    Fn¨ ⌽n     # for (𝕩=n; --𝕩; )
+    Fn¨ ⌽↕n    # for (𝕩=n; --𝕩; )
 
 Very well… a for loop is just a while loop with some extra pre- and post-actions.
 
