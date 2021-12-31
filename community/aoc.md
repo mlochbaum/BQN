@@ -31,6 +31,36 @@
 
 </center>
 
+<!--GEN
+nam ← ⟨"Raghu","dzaima","Hannu","frasiyav","Leah","Antti","Caleb","Alex","Andrey","Johnny","Ben","Alvin","Josh","Alastair","Olodus","Aren","Dimitri","Alexander","Mathias","m-lima","Dunya","Benjamin"⟩
+sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14‿15‿17‿18‿20‿21‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿20‿21,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14,1‿2‿3‿5‿6‿7‿11‿12‿13‿15‿17‿20,1‿2‿3‿4‿5‿6‿7‿9‿10,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6‿7,1‿3‿6‿7‿9,1‿2‿3‿9,6‿7‿9,1‿3,⟨3⟩,⟨3⟩,⟨1⟩,⟨1⟩,⟨1⟩⟩
+
+Ge ← "g"⊸At⊸Enc
+
+w ← (w0←90) + (tw←20) × 0.4+m←25
+h ← (h0←56) + (th←18) ×     n←≠nam
+wh ← w‿h
+out← 40‿10
+
+pa ← "class=Paren|stroke=currentColor|fill=none"
+rc ← At "class=code|stroke-width=1|rx=6"
+gt ← "stroke-width=1|font-size=14px|fill=currentColor"
+Path ← "path" Elt "d"⊸⋈⊘(⊣∾"d"⋈⊢)
+
+bar ← (/¯∞⊸»<-⟜1)⊸(⊏⋈¨«˜⟜≠-⊣)¨ sol-1
+
+((-out÷2)∾wh+out) SVG gt Ge ∾⥊¨ ⟨
+  <"rect" Elt rc∾(Pos 0‿0)∾"width"‿"height"≍˘FmtNum wh
+  pa Ge Path¨ <∘∾˘("M "⊸∾˘"VH")∾¨FmtNum ((=⌜˜↕2)×w0‿(h0-6))∾˘⌽wh
+  "text-anchor=middle" Ge ⟨
+    ("text" Attr "font-size"‿"20px"∾Pos⟨w0+tw×m÷2,h0-32⟩) Enc "Day"
+    "font-size=11px" Ge ((w0+tw×0.5+↕m)Pos∘⋈¨h0-10) "text"⊸Attr⊸Enc¨ FmtNum 1+↕25
+  ⟩
+  (10 Pos∘⋈¨h0+th×0.5+↕n) "text"⊸Attr⊸Enc¨ nam
+  "stroke-width=6|class=green" Ge Path¨ (∾("M h"⥊˜≠)∾¨FmtNum)¨ (h0+th×0.25+↕n) (∾((w0+⊑∘⊢)∾⊣∾1⊑⊢)¨)¨ tw×bar
+⟩
+-->
+
 In addition to these, Leah wrote two blog posts explaining her solutions for [day 6](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) and [day 9](https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html).
 
 The number of solutions for each of the 25 days is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2021/stats). The BQN solutions are scaled to be visible here: there are 6839 times more valid AoC submissions than published BQN solutions overall.
@@ -43,11 +73,8 @@ width ← 256
 pad   ← 40‿40
 pad1  ← 40‿10+pad
 
-pa ← At "class=Paren|stroke=currentColor"
 pc ← At "class=red|r=4"
-rc ← At "class=code|stroke-width=1|rx=6"
-gr ← "g" At "stroke-width=1|font-size=13px|text-anchor=end|fill=currentColor"
-Path ← "path" Elt ⊣∾"d"⋈⊢
+gr ← "stroke-width=1|font-size=13px|text-anchor=end|fill=currentColor"
 
 col ← "class"⊸⋈¨"red"‿"green"
 lab ← "Solutions in:"‿"Anything"‿"BQN"
@@ -56,14 +83,14 @@ ar  ← ÷2
 dim ← width (⊣≍×) ar
 Scale ← ¬⌾(1⊸⊑) ÷⟜win
 line ← (/≠¨⊏xy) ⊔ FmtNum ⍉> dim×Scale pts
-((-pad1÷2)∾dim+pad1) SVG gr Enc ∾⥊¨ ⟨
+((-pad1÷2)∾dim+pad1) SVG gr Ge ∾⥊¨ ⟨
   <"rect" Elt rc∾(Pos-pad÷2)∾"width"‿"height"≍˘FmtNum dim+pad
   ((col∾¨⊢)⌾(1⊸↓)(Pos(⊑dim)⊸⋈)¨18×0.5+↕3) "text"⊸Attr⊸Enc¨ lab
-  ("g" At "text-anchor=middle|opacity=0.8") Enc "text"⊸Attr⊸Enc˜´¨ ⟨
+  "text-anchor=middle|opacity=0.8" Ge "text"⊸Attr⊸Enc˜´¨ ⟨
     ⟨"day", "dy"‿"1em"∾Pos dim×0.5‿1⟩
     ⟨"count", "transform"‿"rotate(-90)"∾"dy"‿"-0.35em"∾Pos ⌽dim×0‿¯0.5⟩
   ⟩
-  pa⊸Path¨ ((0⊸≤∧≤⟜1)/·<∘∾˘("M "⊸∾˘"VH")∾¨·FmtNum dim(×∾˘⌽∘⊣)(=⌜˜↕2)⊸×) Scale 0
+  <pa At⊸Path ∾("M VH")∾¨FmtNum dim(×∾⌽∘⊣)1‿0×Scale 0
   col ≍⟜"style"‿"fill:none"⊸Path⟜('M'⌾⊑∘∾·⥊ "L "∾¨⎉1⊢)¨ line
 ⟩
 -->
