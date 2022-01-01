@@ -78,7 +78,7 @@ Emacs support now lives on [museoa/bqn-mode](https://github.com/museoa/bqn-mode)
 
 ### VS Code
 
-See [this repository](https://github.com/razetime/bqn-vscode).
+See [this repository](https://github.com/razetime/bqn-vscode), or install directly through [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=razetime.bqn-language&ssr=false#overview) or [Open VSX Registry](https://open-vsx.org/extension/razetime/bqn-language).
 
 ### Kakoune
 
