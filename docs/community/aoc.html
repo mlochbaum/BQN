@@ -5,20 +5,20 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">community</a></div>
 <h1 id="advent-of-code"><a class="header" href="#advent-of-code">Advent of Code</a></h1>
-<p><a href="https://adventofcode.com/2021">Advent of Code 2021</a> saw great participation by the BQN community, with a total of 227 solutions published by 22 programmers. They can be found in these repositories:</p>
+<p><a href="https://adventofcode.com/2021">Advent of Code 2021</a> saw great participation by the BQN community, with a total of 229 solutions published by 22 programmers. They can be found in these repositories:</p>
 <center>
 
-<p><a href="https://github.com/razetime/AOC2021-BQN">Raghu Ranganathan</a> •
-<a href="https://github.com/dzaima/aoc/tree/master/2021/BQN">dzaima</a> •
+<p><a href="https://github.com/dzaima/aoc/tree/master/2021/BQN">dzaima</a> •
 <a href="https://github.com/dancek/bqn-advent2021">Hannu Hartikainen</a> •
+<a href="https://github.com/razetime/AOC2021-BQN">Raghu Ranganathan</a> •
 <a href="https://github.com/frasiyav/AoC2021">frasiyav</a> •
 <a href="https://github.com/leahneukirchen/adventofcode2021">Leah Neukirchen</a> •
 <a href="https://github.com/Detegr/aoc2021">Antti Keränen</a> •
 <a href="https://gitlab.com/icen/aoc21">Caleb Quilley</a> •
 <a href="https://github.com/AlexDikelsky/puzzles/tree/main/advent_of_code/advent_2021">Alex Dikelsky</a> •
 <a href="https://github.com/andreypopp/aoc2021">Andrey Popp</a> •
-<a href="https://github.com/JohnnyJayJay/adventofcode-21">Johnny</a> •
 <a href="https://github.com/alvinvoo/aoc2021">Alvin Voo</a> •
+<a href="https://github.com/JohnnyJayJay/adventofcode-21">Johnny</a> •
 <a href="https://github.com/bddean/aoc-2021">Ben Dean</a> •
 <a href="https://git.sr.ht/~jshholland/adventofcode/tree/master/item/2021">Josh Holland</a> •
 <a href="https://github.com/alephno/aoc2021/tree/main/BQN">Alastair Williams</a> •
@@ -32,6 +32,7 @@
 <a href="https://github.com/Camto/Advent-of-Code-2021/tree/master/BQN">Benjamin Applegate</a></p>
 </center>
 
+<p>Below, problems solved in BQN are shown in green, and problems solved in other languages in dark red.</p>
 <svg viewBox='-20 -5 638 462'>
   <g stroke-width='1' font-size='14px' fill='currentColor'>
     <rect class='code' stroke-width='1' rx='6' x='0' y='0' width='598' height='452'/>
@@ -69,17 +70,17 @@
         <text x='580' y='46'>25</text>
       </g>
     </g>
-    <text x='10' y='65'>Raghu</text>
-    <text x='10' y='83'>dzaima</text>
-    <text x='10' y='101'>Hannu</text>
+    <text x='10' y='65'>dzaima</text>
+    <text x='10' y='83'>Hannu</text>
+    <text x='10' y='101'>Raghu</text>
     <text x='10' y='119'>frasiyav</text>
     <text x='10' y='137'>Leah</text>
     <text x='10' y='155'>Antti</text>
     <text x='10' y='173'>Caleb</text>
     <text x='10' y='191'>Alex</text>
     <text x='10' y='209'>Andrey</text>
-    <text x='10' y='227'>Johnny</text>
-    <text x='10' y='245'>Alvin</text>
+    <text x='10' y='227'>Alvin</text>
+    <text x='10' y='245'>Johnny</text>
     <text x='10' y='263'>Ben</text>
     <text x='10' y='281'>Josh</text>
     <text x='10' y='299'>Alastair</text>
@@ -91,18 +92,18 @@
     <text x='10' y='407'>m-lima</text>
     <text x='10' y='425'>Dunya</text>
     <text x='10' y='443'>Benjamin</text>
-    <g stroke-width='6' class='green'>
+    <g stroke-width='6' class='green' opacity='0.9'>
       <path d='M90 60.5h500'/>
-      <path d='M90 78.5h500'/>
-      <path d='M90 96.5h440M550 96.5h40'/>
+      <path d='M90 78.5h440M550 78.5h40'/>
+      <path d='M90 96.5h440M570 96.5h20'/>
       <path d='M90 114.5h440'/>
       <path d='M90 132.5h220M330 132.5h60M410 132.5h40M470 132.5h40M550 132.5h40'/>
       <path d='M90 150.5h360M470 150.5h40'/>
-      <path d='M90 168.5h300'/>
+      <path d='M90 168.5h360'/>
       <path d='M90 186.5h220M330 186.5h40'/>
       <path d='M90 204.5h60M170 204.5h60M290 204.5h60M370 204.5h20M410 204.5h20M470 204.5h20'/>
-      <path d='M90 222.5h140M250 222.5h40'/>
-      <path d='M90 240.5h180'/>
+      <path d='M90 222.5h200'/>
+      <path d='M90 240.5h140M250 240.5h40'/>
       <path d='M90 258.5h140'/>
       <path d='M90 276.5h140'/>
       <path d='M90 294.5h20M130 294.5h20M190 294.5h40M250 294.5h20'/>
@@ -115,13 +116,24 @@
       <path d='M90 420.5h20'/>
       <path d='M90 438.5h20'/>
     </g>
+    <g stroke-width='6' class='red' opacity='0.2'>
+      <path d='M310 132.5h20M390 132.5h20M450 132.5h20M510 132.5h40'/>
+      <path d='M310 186.5h20'/>
+      <path d='M230 240.5h20'/>
+      <path d='M110 294.5h20'/>
+      <path d='M90 330.5h100M230 330.5h20M270 330.5h60'/>
+      <path d='M110 348.5h20M170 348.5h60M250 348.5h40M310 348.5h120M470 348.5h40'/>
+      <path d='M90 366.5h40'/>
+      <path d='M90 384.5h40'/>
+      <path d='M110 402.5h320'/>
+    </g>
   </g>
 </svg>
 
 <p>In addition to these, Leah wrote two blog posts explaining her solutions for <a href="https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html">day 6</a> and <a href="https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html">day 9</a>.</p>
-<p>The number of solutions for each of the 25 days is plotted below, along with totals from AoC's <a href="https://adventofcode.com/2021/stats">stats page</a>. The BQN solutions are scaled to be visible here: there are 6878 times more valid AoC submissions than published BQN solutions overall.</p>
+<p>The number of BQN solutions for each of the 25 days is plotted below, along with totals from AoC's <a href="https://adventofcode.com/2021/stats">stats page</a>. The BQN solutions are scaled to be visible here: there are 6852 times more valid AoC submissions than published BQN solutions overall.</p>
 <svg viewBox='-40 -25 336 178'>
-  <g stroke-width='1' font-size='13px' text-anchor='end' fill='currentColor'>
+  <g stroke-width='1.2' font-size='13px' text-anchor='end' fill='currentColor'>
     <rect class='code' stroke-width='1' rx='6' x='-20' y='-20' width='296' height='168'/>
     <text x='256' y='9'>Solutions in:</text>
     <text class='red' x='256' y='27'>Anything</text>
@@ -131,8 +143,8 @@
       <text transform='rotate(-90)' dy='-0.35em' x='-64' y='0'>count</text>
     </g>
     <path class='Paren' stroke='currentColor' fill='none' d='M0 0V128H256'/>
-    <path class='red' style='fill:none' d='M0 0L10.667 21.201L21.333 34.213L32 67.1L42.667 74.725L53.333 74.447L64 77.543L74.667 82.882L85.333 86.443L96 90.67L106.667 95.277L117.333 99.452L128 98.901L138.667 98.781L149.333 105.086L160 109.227L170.667 109.303L181.333 114.53L192 119.164L202.667 115.632L213.333 113.952L224 116.585L234.667 120.152L245.333 121.807L256 119.926'/>
-    <path class='green' style='fill:none' d='M0 49.908L10.667 70.458L21.333 54.018L32 78.678L42.667 74.568L53.333 66.348L64 66.348L74.667 91.009L85.333 74.568L96 91.009L106.667 91.009L117.333 99.229L128 91.009L138.667 95.119L149.333 95.119L160 107.449L170.667 99.229L181.333 103.339L192 111.559L202.667 99.229L213.333 103.339L224 111.559L234.667 119.78L245.333 111.559L256 111.559'/>
+    <path class='red' style='fill:none' d='M0 0L10.667 21.17L21.333 34.178L32 67.058L42.667 74.674L53.333 74.374L64 77.46L74.667 82.812L85.333 86.374L96 90.599L106.667 95.201L117.333 99.374L128 98.814L138.667 98.696L149.333 104.997L160 109.138L170.667 109.2L181.333 114.426L192 119.051L202.667 115.534L213.333 113.85L224 116.467L234.667 119.998L245.333 121.627L256 119.719'/>
+    <path class='green' style='fill:none' d='M0 50.406L10.667 70.826L21.333 54.49L32 78.993L42.667 74.909L53.333 66.742L64 66.742L74.667 91.245L85.333 74.909L96 87.161L106.667 91.245L117.333 99.413L128 91.245L138.667 95.329L149.333 95.329L160 103.497L170.667 95.329L181.333 99.413L192 111.664L202.667 99.413L213.333 103.497L224 111.664L234.667 123.916L245.333 115.748L256 111.664'/>
   </g>
 </svg>
 
