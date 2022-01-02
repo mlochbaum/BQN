@@ -2,21 +2,21 @@
 
 # How to run BQN
 
-[CBQN](https://github.com/dzaima/CBQN) is now the primary offline implementation, and can be used everywhere in this repository, except test/dzaima which is specifically for testing with dzaima/BQN. Scripts start with `#! /usr/bin/env bqn` in order to look up the user's `bqn` executable.
+[CBQN](https://github.com/dzaima/CBQN) is the primary offline implementation. Scripts in this repository start with `#! /usr/bin/env bqn` in order to look up the user's `bqn` executable, which is expected to be CBQN.
 
-For Nix users, nixpkgs now has repositories for several implementations; `cbqn` is recommended for general use. Similarly, in Arch Linux, `cbqn-git` from the AUR is recommended (but I have no contact with the maintainer, so it's entirely unofficial).
+Third-party packages to build some BQN implementations are available for both Nix and Arch Linux. For general use I recommend `cbqn` from nixpkgs (Nix) and `cbqn-git` from the AUR (Arch).
 
 ### Self-hosted BQN
 
 See the subsections below for instructions on specific implementations.
 
-This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all primitives except a few cases of structural Under (`⌾`), and is missing some minor syntax features such as derived 1-modifiers and block returns.
+This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all syntax specified so far, and all primitives except a few cases of structural Under (`⌾`). System value support varies at it's implemented separately in each host.
 
 Support in the following languages has been implemented:
+- [C](https://github.com/dzaima/CBQN), targetting high performance. Usually fairly fast.
 - Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
-- [C](https://github.com/dzaima/CBQN), targetting high performance. Many parts are fast, some are not.
-- [C++](https://github.com/ashermancinelli/cxbqn), planning to enable GPU use. It works but is still early-stage.
-- BQN ([bqn.bqn](bqn.bqn)), for testing the compiler easily.
+- BQN ([bqn.bqn](bqn.bqn)), for testing without a build step.
+- [C++](https://github.com/ashermancinelli/cxbqn), planning to enable GPU use. Still slow; some cool features.
 - [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical; a [Rust version](https://github.com/cannadayr/ebqn-rs/) is in progress to fix this.
 
 #### Javascript
@@ -33,9 +33,9 @@ CBQN uses the self-hosted runtime to achieve full primitive coverage, and implem
 
 ### dzaima/BQN
 
-[dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL, and should be easy to run on desktop Linux and Android. It may be abandoned as dzaima is now working on CBQN. It has almost complete syntax support but incomplete primitive support: major missing functionality is dyadic Depth (`⚇`), Windows (`↕`), and many cases of set functions (`⊐⊒∊⍷`, mostly with rank >1).
+[dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL, and should be easy to run on desktop Linux and Android. It was historically the main implementation, but is now updated only to stay up to date with language changes. It has almost complete syntax support but incomplete primitive support: major missing functionality is dyadic Depth (`⚇`), Windows (`↕`), and many cases of set functions (`⊐⊒∊⍷`, mostly with rank >1).
 
-In this repository and elsewhere, dzaima/BQN scripts are called with `#! /usr/bin/env dbqn`. This requires an executable file `dbqn` somewhere in your path with the following contents:
+To get an executable that works like CBQN, make a script with the following contents. Scripts may use `#! /usr/bin/env dbqn` to run with dzaima/BQN specifically, but this is rare now (in this repository, only `test/dzaima` does it).
 
     #! /bin/bash
 
