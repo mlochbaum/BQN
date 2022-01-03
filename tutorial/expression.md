@@ -149,7 +149,7 @@ Addition and subtraction with affine characters have all the same algebraic prop
 
 ## Modifiers
 
-Functions are nice and all, but to really bring us into the space age BQN has a second level of function called *modifiers* (the space age in this case is when operators were introduced to APL in the early 60s—hey, did you know the [second APL conference](https://aplwiki.com/wiki/APL_conference#1970) was held at Goddard Space Flight Center?). While functions apply to subjects, modifiers can apply to functions *or* subjects, and return functions. For example, the 1-modifier `˜` modifies one function by swapping the arguments before calling it (Swap), or copying the right argument to the left if there's only one (Self).
+Functions are nice and all, but to really bring us into the space age BQN has a second level of function called *modifiers* (the space age in this case is when operators were introduced to APL in the early 60s—hey, did you know the [second APL conference](https://aplwiki.com/wiki/APL_conference#1970) was held at Goddard Space Flight Center?). While functions apply to subjects, modifiers can apply to functions *or* subjects, and return functions. For example, the 1-modifier `˜` modifies one function—that's where the 1 comes from—by swapping the arguments before calling it (Swap), or copying the right argument to the left if there's only one (Self).
 
         2 -˜ 'd'  # Subtract from
         +˜ 3      # Add to itself
@@ -185,7 +185,7 @@ With three examples you may have noticed that 1-modifiers tend to cluster at the
 
 ## 2-modifiers
 
-Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop `∘`, which works a lot like mathematical composition, except that it's extended to use one or two arguments. These arguments are passed to the function on the right, and the result is passed to the function on the left. So the function on the left is only ever called with one argument.
+Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop `∘`, which composes two functions as in mathematics. The resulting function allows one or two arguments like any BQN function: these are all passed to the function on the right, and the result of that application is passed to the function on the left. So the function on the left is only ever called with one argument.
 
         3 ×˜∘+ 4  # Square of 3 plus 4
         -∘(×˜) 5  # Negative square of 5
