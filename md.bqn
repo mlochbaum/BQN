@@ -176,7 +176,7 @@ Markdown ← {filename𝕊𝕩:
   # First we classify each line based on the type of block it can start.
   ClassifyLine ← (0<≠)◶(0‿0)‿{
     ind ← ⊑ lineChars FindGroup ⊏𝕩
-    getLen ← ind ⊑ lineClas∾⟨0˜⟩
+    getLen ← ind ⊑ lineClas∾⟨0⟩
     l ← GetLen 𝕩
     ⟨ind ∧ l>0 ⋄ l⟩
   }
