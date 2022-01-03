@@ -41,7 +41,7 @@ ParenthesesNesting ← +`1‿¯1‿0⊏˜"()"⊐⊢
 }
 
 # 6
-PerfectShuffle ← ⊢⊏˜·⍋∘⍒≠⥊0‿1˜
+PerfectShuffle ← ⊢⊏˜·⍋∘⍒≠⥊0‿1˙
 ! "IAJBKCLDMENFOGPHQ" ≡ PerfectShuffle "ABCDEFGHIJKLMNOPQ"
 
 # 7
@@ -177,7 +177,7 @@ _pow ← {𝔽´𝔽˜⍟(/2|⌊∘÷⟜2⍟(↕1+·⌊2⋆⁼⊢)𝕩)𝕨}
 ! 847288609443 ≡ 3 ×_pow 25
 
 # 38
-Hanoi ← {¯1↓(⥊⊢≍⎉0˜≠⥊⊑⊑⟨1‿5‿2⋄0‿3‿4⟩˜)⍟𝕩⥊1}
+Hanoi ← {¯1↓(⥊⊢≍⎉0˜≠⥊⊑⊑⟨1‿5‿2⋄0‿3‿4⟩˙)⍟𝕩⥊1}
 ! 0‿1‿3‿0‿4‿5‿0 ≡ Hanoi 3
 
 # 39
