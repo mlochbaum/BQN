@@ -56,7 +56,7 @@ ref ← {
       }
     }
     SetN ⇐    {𝕨.SetN𝕩}_set_"←"
-    SetU ⇐    {𝕨.SetU𝕩}_set_"←"
+    SetU ⇐    {𝕨.SetU𝕩}_set_"↩"
     SetQ ⇐ ∨´ {𝕨.SetQ𝕩}_set_@⎊⟨1⟩ # TODO fix GetF errors and avoid ⎊
   }
   Alias ⇐ {env‿name 𝕊 r:
