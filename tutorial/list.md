@@ -48,10 +48,12 @@ Finally, *strand notation* is a shortcut for simple lists, like one that just li
 
 Strand notation is shorter and looks less cluttered in this example. As with lists, anything goes in a strand, but if it's the result of a function or operator, or another strand, then it has to be put in parentheses first. With one set of parentheses, a strand will be just as long as the equivalent bracketed list, and with two you're better off using the list.
 
-An individual ligature part of BQN syntax, not a value, and it doesn't do something specific like a function does. It's the sequence of ligatures that makes whatever they join together into a list. So if we parenthesize either ligature below, we get a different result! Ligatures aren't right-associative or left-associative.
+An individual ligature is part of BQN syntax, not a value, and it doesn't do something specific like a function does. It's the sequence of ligatures that makes whatever they join together into a list. So if we parenthesize either ligature below, we get a different result! Ligatures aren't right-associative or left-associative.
 
         0‿1‿2
+
         (0‿1)‿2
+
         0‿(1‿2)
 
 ## BQN types
@@ -111,15 +113,15 @@ This list application works recursively, so that lists of lists (and so on) are 
 ## Some list functions
 
 <!--GEN
-Primitives ⟨"≍%.%Solo%Couple", "∾%,%%Join To", "⌽%q%Reverse%Rotate"⟩
+Primitives ⟨"⋈%.%Enlist%Pair", "∾%,%%Join To", "⌽%q%Reverse%Rotate"⟩
 -->
 Let's introduce a few primitives to work with lists.
 
-Make one or two atom arguments into a list with `≍`, pronounced Solo in the one-argument case and Couple in the two-argument case. This might not seem to merit a symbol but there's more to come. Don't call it on lists and ponder the results, igniting a hunger for ever more dimensions.
+Make one or two arguments into a list with `⋈`, pronounced Enlist in the one-argument case and Pair in the two-argument case. This is kind of the same thing as list notation, and in fact I'd write the two examples below as list literals. But BQN is set up to get the most out of functions, so it's very useful to have a function version of that special syntax for lists built in.
 
-        ≍ 4
+        ⋈ "elt"
 
-        2 ≍ 4
+        2 ⋈ 4
 
 Concatenate lists with Join To (`∾`). The little chain link symbol—technically "inverted lazy S"—is my favorite in BQN. Hook those lists together!
 
@@ -129,7 +131,7 @@ Concatenate lists with Join To (`∾`). The little chain link symbol—technical
 
         "plural" ∾ 's'
 
-The last two examples show that you can join a list to an atom, making it the first or last element of the result. This is a little suspect because if you decide the data being stored is more complicated and start using a list instead of an atom, then it will no longer be used as a single element but rather a subsection of the result. So I would only use that shortcut for something like a numeric literal that's clearly an atom and will stay that way, and otherwise wrap those atomic arguments in some `⟨⟩` brackets. Join will even work with two atoms, but in that case I'd say it makes more sense to use Couple instead.
+The last two examples show that you can join a list to an atom, making it the first or last element of the result. This is a little suspect because if you decide the data being stored is more complicated and start using a list instead of an atom, then it will no longer be used as a single element but rather a subsection of the result. So I would only use that shortcut for something like a numeric literal that's clearly an atom and will stay that way, and otherwise wrap those atomic arguments in some `⟨⟩` brackets. Join will even work with two atoms, but in that case it makes more sense to use Pair instead.
 
 Reverse (`⌽`) puts the list back to front.
 
@@ -151,7 +153,7 @@ The 1-modifier Each (`¨`) applies its operand to every element of a list argume
 
         "string"‿"list"‿"array" ∾¨ 's'
 
-        "abc" ≍¨ ⌽ "abc"
+        "abc" ⋈¨ ⌽ "abc"
 
 Fold (`´`) is the higher-order function also known as reduce or accumulate. It applies its operand function between each pair of elements in a list argument. For example, `+´` gives the sum of a list and `×´` gives its product.
 
@@ -171,7 +173,7 @@ You can fold with the Join To function to join several lists together:
 
         ∾´ ⟨ "con", "cat", "enat", "e" ⟩
 
-But you shouldn't! Just `∾` will do the job for you—with no left argument it's just called "Join" (it's like Javascript's `.join()`, but with no separator and not specific to strings). And it could do more jobs if you had more dimensions. But I'm sure that's the furthest thing from your mind.
+But you shouldn't! Just `∾` will do the job for you—with no left argument it's just called "Join" (it's like Javascript's `.join()`, but with no separator and not specific to strings). And it could do more jobs if you had more dimensions. But let's not push it.
 
         ∾ ⟨ "con", "cat", "enat", "e" ⟩
 
@@ -188,7 +190,7 @@ Almost. It's really close. There are just two things missing, so I'll cover thos
 
 Natural numbers in BQN start at 0. I'll get to the second function in a moment, but first let's consider how we'd decode just one number in binary. I'll pick a smaller one: 9 is 1001 in binary. Like the first 1 in decimal 1001 counts for one thousand or `10⋆3`, the first one in binary 1001 counts for 8, which is `2⋆3`. We can put each number next to its place value like this:
 
-        8‿4‿2‿1 ≍¨ 1‿0‿0‿1
+        8‿4‿2‿1 ⋈¨ 1‿0‿0‿1
 
 To get the value we multiply each number by its place value and then add them up.
 
@@ -262,7 +264,7 @@ We introduced a few new primitives. The links below go to the full documentation
 Glyph | 1 arg                        | 2 args
 ------|------------------------------|--------
 `∾`   | [Join](../doc/join.md)       | [Join To](../doc/join.md)
-`≍`   | [Solo](../doc/couple.md)     | [Couple](../doc/couple.md)
+`⋈`   | [Enlist](../doc/pair.md)     | [Pair](../doc/pair.md)
 `⌽`   | [Reverse](../doc/reverse.md) | [Rotate](../doc/reverse.md#rotate)
 `↕`   | [Range](../doc/range.md)     |
 `¨`   | [Each](../doc/map.md)        | [Each](../doc/map.md#each)

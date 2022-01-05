@@ -14,13 +14,13 @@
 <p>Like that.</p>
 <h2 id="defining-variables"><a class="header" href="#defining-variables">Defining variables</a></h2>
 <p>BQN uses the left-pointing arrow <code><span class='Gets'>←</span></code> to define variables, as shown above. Most of the time it's best to use it in a plain way, with just the name and its definition, but it's also possible to define multiple variables using list notation, or to define a variable as part of a larger expression that continues to the left (in terms of precedence, <code><span class='Gets'>←</span></code> behaves like a function, but it isn't one—it's a part of syntax).</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cGnigL9l4oC/dGVuIOKGkCDin6ggz4AsIOKLhjEsIDEwIOKfqQoKdGVuIMOXIHBpCgp0aHJlZSDiiY0gdGVuIC0gdGhyZWUg4oaQIDM=">↗️</a><pre>    <span class='Value'>pi</span><span class='Ligature'>‿</span><span class='Value'>e</span><span class='Ligature'>‿</span><span class='Value'>ten</span> <span class='Gets'>←</span> <span class='Bracket'>⟨</span> <span class='Number'>π</span><span class='Separator'>,</span> <span class='Function'>⋆</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>10</span> <span class='Bracket'>⟩</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cGnigL9l4oC/dGVuIOKGkCDin6ggz4AsIOKLhjEsIDEwIOKfqQoKdGVuIMOXIHBpCgp0aHJlZSDii4ggdGVuIC0gdGhyZWUg4oaQIDM=">↗️</a><pre>    <span class='Value'>pi</span><span class='Ligature'>‿</span><span class='Value'>e</span><span class='Ligature'>‿</span><span class='Value'>ten</span> <span class='Gets'>←</span> <span class='Bracket'>⟨</span> <span class='Number'>π</span><span class='Separator'>,</span> <span class='Function'>⋆</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>10</span> <span class='Bracket'>⟩</span>
 ⟨ 3.141592653589793 2.718281828459045 10 ⟩
 
     <span class='Value'>ten</span> <span class='Function'>×</span> <span class='Value'>pi</span>
 31.41592653589793
 
-    <span class='Value'>three</span> <span class='Function'>≍</span> <span class='Value'>ten</span> <span class='Function'>-</span> <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>3</span>
+    <span class='Value'>three</span> <span class='Function'>⋈</span> <span class='Value'>ten</span> <span class='Function'>-</span> <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>3</span>
 ⟨ 3 7 ⟩
 </pre>
 <p>A variable can't be defined twice in the same <em>scope</em>. Later we'll work with functions and other pieces of code that create their own scopes, but for now all you need to know is that all the code in a tutorial runs in the same scope. So <code><span class='Value'>three</span></code> is already defined, and can't be defined again.</p>
@@ -194,7 +194,7 @@ ERROR
 </svg>
 
 <p>Well, the function Pick (<code><span class='Function'>⊑</span></code>) isn't doing anything too special here: the left argument is an index and it picks the element at that index from the right argument (which has to be a list, although there's a more complicated case with a compound left argument that we won't talk about now). Elements of a list are numbered starting at 0. This matches with the Range (<code><span class='Function'>↕</span></code>) function we saw earlier, in that the value of Range's result at a particular index is equal to that index. As an illustration, we can pair up each element of a list with its index by calling Range on the list's length.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKGlTMpIOKJjcKoICJCUU4iCgoxIOKKkSAiQlFOIg==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>3</span><span class='Paren'>)</span> <span class='Function'>≍</span><span class='Modifier'>¨</span> <span class='String'>&quot;BQN&quot;</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KOKGlTMpIOKLiMKoICJCUU4iCgoxIOKKkSAiQlFOIg==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>3</span><span class='Paren'>)</span> <span class='Function'>⋈</span><span class='Modifier'>¨</span> <span class='String'>&quot;BQN&quot;</span>
 ⟨ ⟨ 0 'B' ⟩ ⟨ 1 'Q' ⟩ ⟨ 2 'N' ⟩ ⟩
 
     <span class='Number'>1</span> <span class='Function'>⊑</span> <span class='String'>&quot;BQN&quot;</span>
