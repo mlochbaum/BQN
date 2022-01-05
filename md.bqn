@@ -543,6 +543,8 @@ idChars ← ⟨
 
 # Return BQN highlights for an string 𝕩, as an ⟨add,pos⟩ list for Modify
 # (include will be all 1s).
+# 𝕨 indicates a character from 𝕩 is a divider, which ends comments and
+# can't be contained in string literals.
 hlchars‿classTag ← {
   func‿mod1‿mod2 ← •Import "src/glyphs.bqn"
   # Characters used by BQN, and the HTML class they are associated with.
@@ -574,17 +576,19 @@ GetHighlights ← {
 
   # Locate comments and strings.
   c ← 𝕩='#'
-  le← /(𝕩=lf)∾1
+  le← / (𝕨 ⊢⊘∨ 𝕩=lf) ∾ 1
   # Line endings (le) end every comment (/c) on the line, so take a copy
   # for each # before that line but not the previous.
   ce← le /˜ -⟜» c/⊸⍋le
   # A single quote can only be used if there's another two places down.
   s ← /0‿0⊸«⊸∧𝕩='''
   d ← /𝕩='"'
-  css ← ⟨ s   ⋄ ¯1↓d ⋄ /c ⟩ # Comment or string start
-  cse ← ⟨ 2+s ⋄  1↓d ⋄ ce ⟩ # Corresponding end indices
+  css ← ∾ ⟨ s   ⋄ ¯1↓d ⋄ /c ⟩ # Comment or string start
+  cse ← ∾ ⟨ 2+s ⋄  1↓d ⋄ ce ⟩ # Corresponding end indices
+  # If 𝕨 is given, filter out strings with ends in different divisions.
+  {css‿cse <∘=○(⊏⟜(+`0∾𝕩))´⊸(/¨)↩} 𝕨
   # Now b is a table of (start,end) pairs
-  b ← css Trace○∾ cse
+  b ← css Trace cse
   # Given a list of pairs, get a mask indicating included regions
   ToMask ← (≠`∨⊢) (≠𝕩)↑/⁼∘∾
   # Split rows and group into text‿comments
@@ -604,21 +608,28 @@ GetHighlights ← {
   col↩ («col) ⊣⌾((id«⊸∧𝕩='•')⊸/) col
 
   # Tags are placed at boundaries between different colors
-  boundary ← ¯1⊸»⊸≠ col
+  boundary ← (»𝕨) ⊢⊘∨ ¯1⊸»⊸≠ col
   bcol ← boundary / col
   # Windows gives us rows of start,end where the end position of one
   # color is the start of the next
   # Subtract one to place before the starting character
-  pos ← 2 ↕ 1-˜/boundary∾1
+  bp  ← 1-˜/boundary∾1
+  # Comments naturally end on dividers but need to stop before them
+  pos ← (-0‿1∧⌜˜(1↓bp)⊏𝕨) + 2↕bp
   # Remove class 0 regions, as these don't use tags
   (⥊ (0<bcol)⊸/)¨ ⟨bcol⊏classTag, pos⟩
 }
 
 # Return highlights for areas in 𝕩 where 𝕨 is true.
+# Highlights all regions at once with a ' ' divider before each.
 GetMultiHighlights ← {
-  start ← »⊸< 𝕨
-  groups ← (1 -˜ 𝕨 × +` start) ⊔ 𝕩
-  <∘∾˘ ⍉ ((≠≍2˙) ⥊ ·> (/start) {𝕨⊸+⌾(1⊸⊑)𝕩}⟜GetHighlights¨ ⊢) groups
+  ¬∨´𝕨 ? ⋈˜⟨⟩ ;      # No code → no highlights
+  mask ← «⊸∨ 𝕨       # Places to highlight, including dividers
+  div  ← ¬ mask / 𝕨  # Indicate the dividers
+  c‿pos ← div GetHighlights ' '¨⌾(div⊸/) mask / 𝕩
+  # Add an adjustment that expands dividers back to original size
+  adj ← div ((1-˜⍋⟜pos) ⊏ -˜)○/ mask > 𝕨
+  ⟨c, pos + adj⟩
 }
 
 
