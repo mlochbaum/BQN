@@ -64,14 +64,14 @@ sh ← ≢ types
 p ← 96‿38
 dim ← (2×p) + sh × d1 ← 136‿64
 rp ← 8÷d1
-Pos ↩ Pos d1⊸×
+Posd ← Pos d1⊸×
 Size ← "width"‿"height" ≍˘ ·FmtNum d1×⊢
 cl ← {"class"‿𝕩}¨ "purple"‿"bluegreen"‿"yellow"
 
-TP ← "text" Attr "dy"‿"0.32em"∾˜Pos⊘(∾⟜Pos)
+TP ← "text" Attr "dy"‿"0.32em"∾˜Posd⊘(∾⟜Posd)
 ts← (≍⌜´0.5+↕¨sh) TP⊸Enc¨ types
 l ← (cl TP¨ (0.75≍¨1(-≍+)1.2)∾<2.2‿2.3) Enc¨ "Data"‿"Operation"‿"Atom"
-RD← (Size ⟨⊑sh,1⟩-2×rp)∾Pos
+RD← (Size ⟨⊑sh,1⟩-2×rp)∾Posd
 r ← (2↑cl) {"rect" Elt 𝕩∾"rx"‿"10px"≍𝕨}⟜RD¨ 0(rp+≍)¨↕1⊑sh
 
 Round ← {
