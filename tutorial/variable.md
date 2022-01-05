@@ -18,7 +18,7 @@ BQN uses the left-pointing arrow `←` to define variables, as shown above. Most
 
         ten × pi
 
-        three ≍ ten - three ← 3
+        three ⋈ ten - three ← 3
 
 A variable can't be defined twice in the same *scope*. Later we'll work with functions and other pieces of code that create their own scopes, but for now all you need to know is that all the code in a tutorial runs in the same scope. So `three` is already defined, and can't be defined again.
 
@@ -122,7 +122,7 @@ DrawEval "-⟜1⌾(2⊸⊑) ""BQN"""
 
 Well, the function Pick (`⊑`) isn't doing anything too special here: the left argument is an index and it picks the element at that index from the right argument (which has to be a list, although there's a more complicated case with a compound left argument that we won't talk about now). Elements of a list are numbered starting at 0. This matches with the Range (`↕`) function we saw earlier, in that the value of Range's result at a particular index is equal to that index. As an illustration, we can pair up each element of a list with its index by calling Range on the list's length.
 
-        (↕3) ≍¨ "BQN"
+        (↕3) ⋈¨ "BQN"
 
         1 ⊑ "BQN"
 

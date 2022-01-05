@@ -151,10 +151,10 @@ This is a very common pattern, and a sensible language should have a better way 
 
         "string" =○≠ "sting"
 
-Let's use the list formation function Solo/Couple (`≍`) to see what happens more clearly:
+Let's use the list formation function Enlist/Pair (`⋈`) to see what happens more clearly:
 
-        "string" ≍○≠ "sting"
-        ≍○≠ "sting"
+        "string" ⋈○≠ "sting"
+        ⋈○≠ "sting"
 
 Atop always applies its right operand once, passing every argument (that is, one or two of them) in that call. Over calls its right operand on each argument individually. The results are then all used as arguments to the left operand. If there's only one argument, Atop and Over turn out to be the same: both of them call the right operand, then the left, like ordinary mathematical composition. Here are the two together for comparison.
 

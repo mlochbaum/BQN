@@ -304,10 +304,10 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InN0cmluZyIgPeKXi+KJoCAic3Rpbmci">↗️</a><pre>    <span class='String'>&quot;string&quot;</span> <span class='Function'>=</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
 0
 </pre>
-<p>Let's use the list formation function Solo/Couple (<code><span class='Function'>≍</span></code>) to see what happens more clearly:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InN0cmluZyIg4omN4peL4omgICJzdGluZyIK4omN4peL4omgICJzdGluZyI=">↗️</a><pre>    <span class='String'>&quot;string&quot;</span> <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
+<p>Let's use the list formation function Enlist/Pair (<code><span class='Function'>⋈</span></code>) to see what happens more clearly:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=InN0cmluZyIg4ouI4peL4omgICJzdGluZyIK4ouI4peL4omgICJzdGluZyI=">↗️</a><pre>    <span class='String'>&quot;string&quot;</span> <span class='Function'>⋈</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
 ⟨ 6 5 ⟩
-    <span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
+    <span class='Function'>⋈</span><span class='Modifier2'>○</span><span class='Function'>≠</span> <span class='String'>&quot;sting&quot;</span>
 ⟨ 5 ⟩
 </pre>
 <p>Atop always applies its right operand once, passing every argument (that is, one or two of them) in that call. Over calls its right operand on each argument individually. The results are then all used as arguments to the left operand. If there's only one argument, Atop and Over turn out to be the same: both of them call the right operand, then the left, like ordinary mathematical composition. Here are the two together for comparison.</p>

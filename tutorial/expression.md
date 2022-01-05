@@ -181,7 +181,7 @@ Another 1-modifier, which at the moment is tremendously useless, is Constant `˙
 
 Well, I guess it's not pedagogically useless, as it does demonstrate that a modifier can be applied to subjects as well as functions. Even though `3` is a subject, `3˙` is a function, and can be applied to and ignore the two arguments `2` and `4`.
 
-With three examples you may have noticed that 1-modifiers tend to cluster at the top of the screen. In fact, every primitive 1-modifer is a superscript character: we've covered `˜⁼˙`, and the remaining array-based modifiers `` ˘¨⌜´˝` `` will show up later.
+With three examples you may have noticed that 1-modifiers tend to cluster at the top of the line. In fact, every primitive 1-modifer is a superscript character: we've covered `˜⁼˙`, and the remaining array-based modifiers `` ˘¨⌜´˝` `` will show up later.
 
 ## 2-modifiers
 
