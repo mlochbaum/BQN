@@ -415,7 +415,7 @@ Markdown ← {filename𝕊𝕩:
     lInds +⎉1↩ 1‿0‿1‿0
     unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
     linkGroup ← 1 -˜ (⊣×>)○(+`I2M)´ (≠⊸⥊⟜↕∾⊢)⟜2⊸⊔ ⥊lInds
-    links ← ProcLink¨˝˘ ∘‿2 ⥊ linkGroup ⊔ 𝕩
+    links ← ⥊ ProcLink¨˝˘ ∘‿2 ⥊ linkGroup ⊔ 𝕩
 
     # Emphasis (still rudimentary)
     eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
