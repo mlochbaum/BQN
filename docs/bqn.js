@@ -16,6 +16,10 @@ let getrev = names => {
   m={}; names.forEach((s,i)=>m[s]=i);
   return names.rev=m;
 }
+let nsget = x => {
+  let rev = getrev(x.ns.names);
+  return s => (i=>has(i)?x[x.ns[i]]:i)(rev[s]);
+}
 let findkey = (ns, names, i) => {
   let nn=ns.names;
   return ns[nn===names ? i : getrev(nn)[names[i]]];
@@ -535,9 +539,7 @@ let rebqn = dynsys_copy(state => (x,w) => {
   let req = (r,s) => { if (!r) throw Error("•ReBQN: "+s) };
   req(!has(w), "𝕨 not allowed");
   req(x.ns, "𝕩 must be a namespace");
-  let rev = getrev(x.ns.names);
-  let [repl,primitives] = ["repl","primitives"]
-    .map(s=>(i=>has(i)?x[x.ns[i]]:i)(rev[s]));
+  let [repl,primitives] = ["repl","primitives"].map(nsget(x));
 
   if (has(primitives)) { addprimitives(state, primitives); }
   let cmp = makebqnfn("•ReBQN evaluation", r=>r)(state);
@@ -593,7 +595,29 @@ let nsns = (() => {
     if (has(w)||!x.ns) throw Error("•ns.Keys: Takes one namespace argument");
     return list(listkeys(x).map(str));
   }
-  return makens(["keys"], [keys]);
+  let req1name = (e,x,w) => req1str(e,x,w).replaceAll("_","").toLowerCase();
+  let getq = (e,x,w) => {
+    if (!has(w)||!w.ns) throw Error(e+": 𝕨 must be a namespace");
+    return nsget(w)(req1name("•ns."+e,x));
+  }
+  let hasq = (x,w) => +has(getq("Has",x,w));
+  let get = (x,w) => {
+    let v = getq("Get",x,w);
+    if (!has(v)) throw Error("•ns.Get: key not found");
+    return v;
+  }
+  let map = (x,w) => {
+    if (has(w)||!x.ns) throw Error("•ns.Map: Takes one namespace argument");
+    let g=nsget(x), getq = (e,x,w)=>g(req1name("Namespace map."+e,x,w));
+    let hasq = (x,w) => +has(getq("Has",x,w));
+    let get = (x,w) => {
+      let v = getq("Get",x);
+      if (has(v)) return v; if (has(w)) return w;
+      throw Error("Namespace map.Has: key not found");
+    }
+    return makens(["has","get"], [hasq,get]);
+  }
+  return makens(["keys","has","get","map"], [keys,hasq,get,map]);
 })();
 
 let rand = (() => {
