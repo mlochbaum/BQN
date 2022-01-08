@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/community/aoc.html).*
+*View this file with graphs and stuff [here](https://mlochbaum.github.io/BQN/community/aoc.html).*
 
 # Advent of Code
 
@@ -31,7 +31,7 @@
 
 </center>
 
-Below, problems solved in BQN are shown in green, and problems solved in other languages in dark red.
+Below, problems solved in BQN are shown in green, and problems solved in other languages in faint red.
 
 <!--GEN
 nam ← ⟨"dzaima","Hannu","Raghu","frasiyav","Leah","Antti","Caleb","Alex","Alvin","Andrey","Johnny","Josh","Ben","Alastair","Olodus","Aren","Dimitri","Alexander","Mathias","m-lima","Dunya","Benjamin"⟩
@@ -108,3 +108,5 @@ Just how okay is BQN? Hannu makes a case for optimism in [this blog post](https:
 All three non-dzaimas of the last paragraph are essentially array outsiders, with little or no experience with languages like J or APL. In fact I think this describes the majority of Adventurers in BQN (although the list also includes array junkies like Raghu and Leah, and they've predictably made it further than most participants). Reaching out to a general programming audience wasn't initially a goal of BQN because I didn't think it *was* within reach. I realized this was wrong, and began to adjust course, in the early days, but am pleased to continue getting even more wrong.
 
 With all this said, a handful of reports about recreational programming is a pretty poor basis for judging a programming language. Advent of Code was more useful as a checkup on BQN and its environment, resulting in fixes to documentation and implementation. And dzaima improved various aspects of performance as a way to cheat in speed battles with ngn/k.
+
+BQN did do okay in terms of performance. At times programmers on the forum commented about having slow solutions (tens of seconds) or having to rewrite an obviously unsatisfactory algorithm. I don't think anyone mentioned having to switch languages for performance reasons, which is good news for an implementation as young as CBQN. But also not a surprise, as it's pretty fast with scalar code for an interpreter: about 10 times slower than C when I've measured it. Array code is usually faster, but can be slower. A particular problem was that in-place mutation `⌾(i⊸⊑)` is only fast for very simple cases. Of course, this problem only arises because BQN's arrays are immutable, highlighting that immutable arrays, despite being perfect in every way, can be a pain. In a serious application you might be willing to endure more pain and use a mutable array object, to ensure good performance.
