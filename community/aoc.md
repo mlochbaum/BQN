@@ -2,7 +2,7 @@
 
 # Advent of Code
 
-[Advent of Code 2021](https://adventofcode.com/2021) saw great participation by the BQN community, with a total of 229 solutions published by 22 programmers. They can be found in these repositories:
+[Advent of Code 2021](https://adventofcode.com/2021) saw great participation by the BQN community, with a total of 233 solutions published by 22 programmers. They can be found in these repositories:
 
 <center>
 
@@ -14,11 +14,11 @@
 [Antti Keränen](https://github.com/Detegr/aoc2021) •
 [Caleb Quilley](https://gitlab.com/icen/aoc21) •
 [Alex Dikelsky](https://github.com/AlexDikelsky/puzzles/tree/main/advent_of_code/advent_2021) •
-[Andrey Popp](https://github.com/andreypopp/aoc2021) •
 [Alvin Voo](https://github.com/alvinvoo/aoc2021) •
+[Andrey Popp](https://github.com/andreypopp/aoc2021) •
 [Johnny](https://github.com/JohnnyJayJay/adventofcode-21) •
-[Ben Dean](https://github.com/bddean/aoc-2021) •
 [Josh Holland](https://git.sr.ht/~jshholland/adventofcode/tree/master/item/2021) •
+[Ben Dean](https://github.com/bddean/aoc-2021) •
 [Alastair Williams](https://github.com/alephno/aoc2021/tree/main/BQN) •
 [Olodus](https://github.com/Olodus/advent_of_code2021) •
 [Aren Windham](https://github.com/arwn/aoc2021) •
@@ -34,8 +34,8 @@
 Below, problems solved in BQN are shown in green, and problems solved in other languages in dark red.
 
 <!--GEN
-nam ← ⟨"dzaima","Hannu","Raghu","frasiyav","Leah","Antti","Caleb","Alex","Andrey","Alvin","Johnny","Ben","Josh","Alastair","Olodus","Aren","Dimitri","Alexander","Mathias","m-lima","Dunya","Benjamin"⟩
-sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14‿15‿17‿18‿20‿21‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿20‿21,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14,1‿2‿3‿5‿6‿7‿11‿12‿13‿15‿17‿20,1‿2‿3‿4‿5‿6‿7‿8‿9‿10,1‿2‿3‿4‿5‿6‿7‿9‿10,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6‿7,1‿3‿6‿7‿9,1‿2‿3‿9,6‿7‿9,1‿3,⟨3⟩,⟨3⟩,⟨1⟩,⟨1⟩,⟨1⟩⟩
+nam ← ⟨"dzaima","Hannu","Raghu","frasiyav","Leah","Antti","Caleb","Alex","Alvin","Andrey","Johnny","Josh","Ben","Alastair","Olodus","Aren","Dimitri","Alexander","Mathias","m-lima","Dunya","Benjamin"⟩
+sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14‿15‿17‿18‿20‿21‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿20‿21,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13,1‿2‿3‿5‿6‿7‿11‿12‿13‿15‿17‿20,1‿2‿3‿4‿5‿6‿7‿9‿10,1‿2‿3‿4‿5‿6‿7‿8,1‿2‿3‿4‿5‿6‿7,1‿3‿6‿7‿9,1‿2‿3‿9,6‿7‿9,1‿3,⟨3⟩,⟨3⟩,⟨1⟩,⟨1⟩,⟨1⟩⟩
 als ← ⟨⟨⟩,⟨⟩,⟨⟩,⟨⟩,12‿16‿19‿22‿23,⟨⟩,⟨⟩,⟨12⟩,⟨⟩,⟨⟩,⟨8⟩,⟨⟩,⟨⟩,⟨2⟩,⟨⟩,1‿2‿3‿4‿5‿8‿10‿11‿12,2‿5‿6‿7‿9‿10‿12‿13‿14‿15‿16‿17‿20‿21,1‿2,1‿2,2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17,⟨⟩,⟨⟩⟩
 
 Ge ← "g"⊸At⊸Enc
@@ -69,11 +69,11 @@ Bars ← (Path·∾("M h"⥊˜≠)∾¨FmtNum)¨ Bp
 
 In addition to these, Leah wrote two blog posts explaining her solutions for [day 6](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) and [day 9](https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html).
 
-The number of BQN solutions for each of the 25 days is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2021/stats). The BQN solutions are scaled to be visible here: there are 6852 times more valid AoC submissions than published BQN solutions overall.
+The number of BQN solutions for each of the 25 days is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2021/stats). The BQN solutions are scaled to be visible here: there are 6828 times more valid AoC submissions than published BQN solutions overall.
 
 <!--GEN
-aoc ← 214772‿179251‿157424‿102255‿89476‿89979‿84801‿75821‿69845‿62756‿55033‿48032‿48971‿49169‿38597‿31649‿31545‿22776‿15016‿20917‿23743‿19352‿13426‿10693‿13895
-bqn ← 19‿14‿18‿12‿13‿15‿15‿9‿13‿10‿9‿7‿9‿8‿8‿6‿8‿7‿4‿7‿6‿4‿1‿3‿4
+aoc ← 216674‿180919‿158947‿103328‿90474‿90994‿85767‿76680‿70735‿63588‿55790‿48720‿49705‿49938‿39291‿32266‿32163‿23402‿15577‿21483‿24367‿19970‿14037‿11463‿14737
+bqn ← 19‿14‿18‿12‿13‿15‿15‿10‿13‿10‿10‿8‿10‿8‿8‿6‿8‿7‿4‿7‿6‿4‿1‿3‿4
 
 width ← 256
 pad   ← 40‿40
