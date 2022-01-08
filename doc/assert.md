@@ -15,7 +15,7 @@ To pass, the right argument must be exactly the number `1`; any other value caus
 Assert can take a left argument, which gives a message to be associated with the error. It's typical to use a string for the left argument in order to display it to the programmer, but the left argument can be any value.
 
         "Message" ! 0
-        ⟨∘,"abc",˜⟩ ! '0'  # Okay this is not a very helpful printout
+        ⟨∘,"abc",˜⟩ ! '0'
 
 ### Computing the error message on demand
 
