@@ -147,7 +147,7 @@
 ⟨ 135 136 137 145 146 147 235 236 237 245 246 247 135 136 137 ⟩
 
     <span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>0</span>
-ERROR
+<span class='Error'>Error: ⥊: Empty 𝕩 and non-empty result</span>
 </pre>
 <p>Reshape is the idiomatic way to make an array filled with a constant value (that is, where all elements are the same) when you know what shape it should have. For an atom element, reshape it directly; for an arbitrary element, first <a href="enclose.html">enclose</a> it to create a unit, and then reshape it.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAvzQg4qWKIDAKCjUg4qWKIDwgInN0cmluZyI=">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Number'>0</span>
@@ -181,7 +181,7 @@ ERROR
 <p>These values are just BQN primitives of course. They're not called by Reshape or anything like that; the primitives are just chosen to suggest the corresponding functionality.</p>
 <p>Here's an example of the four cases. If we try to turn five elements into two rows, <code><span class='Modifier2'>∘</span></code> gives an error, <code><span class='Function'>⌊</span></code> drops the last element, <code><span class='Function'>⌽</span></code> uses the first element again, and <code><span class='Function'>↑</span></code> uses a fill element (like <code><span class='Number'>6</span><span class='Function'>↑</span><span class='String'>&quot;abcde&quot;</span></code> would).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAv+KImCDipYogImFiY2RlIgoKMuKAv+KMiiDipYogImFiY2RlIgoKMuKAv+KMvSDipYogImFiY2RlIgoKMuKAv+KGkSDipYogImFiY2RlIg==">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;abcde&quot;</span>
-ERROR
+<span class='Error'>Error: ⥊: Shape must be exact when reshaping with ∘</span>
 
     <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>⌊</span> <span class='Function'>⥊</span> <span class='String'>&quot;abcde&quot;</span>
 ┌─    

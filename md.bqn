@@ -220,8 +220,9 @@ Markdown ← {filename𝕊𝕩:
       g ← 𝕩∊"←↩"
       (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
     }
+    ShowErr ← lf∾˜"span class='Error'"Html"Error: "∾(∧`lf⊸≠)⊸/⎊•Repr
     r‿ri ← addRslt◶(⋈˜⟨⟩)‿{
-      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⎊("ERROR"∾lf)⍟(0<≠)¨ 𝕩
+      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⎊(ShowErr∘•CurrentError)⍟(0<≠)¨ 𝕩
         1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
     } 𝕩
 

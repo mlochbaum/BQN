@@ -57,9 +57,9 @@
 </pre>
 <p>If <code><span class='Value'>𝕩</span></code> is empty then First results in an error, like Pick.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRICIiCuKKkSDiiaLPgA==">↗️</a><pre>    <span class='Function'>⊑</span> <span class='String'>&quot;&quot;</span>
-ERROR
+<span class='Error'>Error: ⊑: Argument cannot be empty</span>
     <span class='Function'>⊑</span> <span class='Function'>≢</span><span class='Number'>π</span>
-ERROR
+<span class='Error'>Error: ⊑: Argument cannot be empty</span>
 </pre>
 <p>In APL it's common to get the last element of a list with an idiom that translates to <code><span class='Function'>⊑⌽</span></code>, or First-<a href="reverse.html">Reverse</a>. In BQN the most straightforward way is to select with index <code><span class='Number'>¯1</span></code> instead. I also sometimes use <a href="fold.html">Fold</a> with the Right <a href="identity.html">identity function</a>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqR4oy9ICJsYXN0IgrCrzHiipEgImxhc3QiCuKKosK0ICJsYXN0Ig==">↗️</a><pre>    <span class='Function'>⊑⌽</span> <span class='String'>&quot;last&quot;</span>
@@ -84,7 +84,7 @@ ERROR
 </pre>
 <p>These indices have to be lists, since if they're numbers it just looks like <code><span class='Value'>𝕨</span></code> is one list index.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMiwxLDAswq8x4p+pIOKKkSAiYWJjIiAgIyDwnZWpIGRvZXNuJ3QgaGF2ZSByYW5rIDQhCgrin6gyLDEsMCzCrzHin6kg4qWKwqjiirjiipEgImFiYyIKCuKfqDIsMSwwLMKvMeKfqSDiio8gImFiYyIgICMgQmV0dGVyIHdheQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span> <span class='Function'>⊑</span> <span class='String'>&quot;abc&quot;</span>  <span class='Comment'># 𝕩 doesn't have rank 4!
-</span>ERROR
+</span><span class='Error'>Error: ⊑: Picking item at wrong rank (index 2‿1‿0‿¯1 in array of shape ⟨3⟩)</span>
 
     <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>¯1</span><span class='Bracket'>⟩</span> <span class='Function'>⥊</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span> <span class='String'>&quot;abc&quot;</span>
 "cbac"
@@ -124,5 +124,5 @@ ERROR
               ┘
 
     <span class='Bracket'>⟨⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Bracket'>⟩</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>⊑</span> <span class='Value'>a</span>  <span class='Comment'># 1 isn't a valid index
-</span>ERROR
+</span><span class='Error'>Error: ⊑: 𝕨 contained list with mixed-type elements</span>
 </pre>
