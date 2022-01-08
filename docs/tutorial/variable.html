@@ -25,7 +25,7 @@
 </pre>
 <p>A variable can't be defined twice in the same <em>scope</em>. Later we'll work with functions and other pieces of code that create their own scopes, but for now all you need to know is that all the code in a tutorial runs in the same scope. So <code><span class='Value'>three</span></code> is already defined, and can't be defined again.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4oaQIDQ=">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>4</span>
-ERROR
+<span class='Error'>Error: Redefinition</span>
 </pre>
 <p>It's a little crazy to call them variables if the definition can never change, right? Doesn't &quot;variable&quot; <em>mean</em> &quot;able to change&quot;? Fortunately, this is one way in which BQN isn't crazy. You can <em>modify</em> a variable's value with the arrow <code><span class='Gets'>↩</span></code> provided it's already been defined. This never does anything to the original value: that value stays the same; it's just (probably) not the value of the modified variable any more.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4oapIDQKCnRocmVlID0gMyAgICMgV2FpdCB3aHkgZGlkIEkgZG8gdGhhdAoKMyA9IHRocmVlIOKGqSAzCgpmb3VyIOKGqSAzICAgICMgZm91ciBpc24ndCBkZWZpbmVkIHlldA==">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>↩</span> <span class='Number'>4</span>
@@ -37,12 +37,12 @@ ERROR
 1
 
     <span class='Value'>four</span> <span class='Gets'>↩</span> <span class='Number'>3</span>    <span class='Comment'># four isn't defined yet
-</span>ERROR
+</span><span class='Error'>Error: Undefined identifier</span>
 </pre>
 <p>It's an odd distinction to have when your program is just one long sequence of statements, because there's only ever one arrow you can use: it just changes annoyingly after you define the variable for the first time. With multiple scopes this isn't the case: if you start a new scope inside another, then you'll still be able to use variables from the outside scope. Then <code><span class='Gets'>↩</span></code> lets you change the value of one of these variables while <code><span class='Gets'>←</span></code> allows you to define your own. If you're coming from a typical curly-brace language, you'd say that <code><span class='Gets'>←</span></code> both declares and assigns a variable, while <code><span class='Gets'>↩</span></code> only assigns it.</p>
 <h2 id="variable-roles"><a class="header" href="#variable-roles">Variable roles</a></h2>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QlFOIOKGkCAiW21hbnkgcGFnZXMgb2Ygc3BlY2lmaWNhdGlvbl0i">↗️</a><pre>    <span class='Function'>BQN</span> <span class='Gets'>←</span> <span class='String'>&quot;[many pages of specification]&quot;</span>
-ERROR
+<span class='Error'>Error: Role of the two sides in assignment must match</span>
 </pre>
 <p>What's going on? Does BQN not know about capital letters? Does it object to self-reference? Why is &quot;<code><span class='Function'>BQN</span></code>&quot; green?</p>
 <p>If you open that statement in the online REPL, you'll see the more informative message &quot;Role of the two sides in assignment must match&quot; (<em>assignment</em> means anything written with a leftward arrow—either definition or modification). This is still cryptic but at least a &quot;role&quot; is something we've heard about before.</p>
@@ -65,7 +65,7 @@ ERROR
 -3{𝔽}
 
     <span class='Function'>-</span> <span class='Modifier'>_three</span>
-ERROR
+<span class='Error'>Error: Interpreting non-1-modifier as 1-modifier</span>
 </pre>
 <p>Now might be a good time to <a href="expression.html#one-or-two-arguments">review</a> the earlier material on roles, experiment, and see if you can puzzle out what's happening here. Or a good time to keep reading until the horrifying distortions these texts inevitably wrap around your existence become apparent, so I'll explain that all these names do represent the same value—they all refer to the same variable—but they have different syntactic roles. Just as the same person might sometimes stand in front of the counter to order a coffee and sometimes stand behind it pouring coffee, the same variable is spelled different ways to indicate what it might be doing right now. There's a spelling for each role:</p>
 <table>

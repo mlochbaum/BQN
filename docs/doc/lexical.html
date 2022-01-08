@@ -62,7 +62,7 @@
 </pre>
 <p>Each scope can only define a given name once. Trying to shadow a name that's in the current scope and not a higher one gives an error at compilation.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyBpbmPihpAzIOKLhCBpbmPihpA0IH0=">↗️</a><pre>    <span class='Brace'>{</span> <span class='Value'>inc</span><span class='Gets'>←</span><span class='Number'>3</span> <span class='Separator'>⋄</span> <span class='Value'>inc</span><span class='Gets'>←</span><span class='Number'>4</span> <span class='Brace'>}</span>
-ERROR
+<span class='Error'>Error: Redefinition</span>
 </pre>
 <p>Let's go all in on shadowing and make a modifier that creates its own copies of <code><span class='Value'>counter</span></code> and <code><span class='Value'>inc</span></code>, returning a custom version of the <code><span class='Function'>Count</span></code> function above.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=X21ha2VDb3VudCDihpAgeyBjb3VudGVy4oC/aW5j4oaQ8J2VlyDii4QgeyBjb3VudGVyICvihqkg8J2VqSDDlyBpbmMgfSB9CgpDM183IOKGkCAz4oC/NyBfbWFrZUNvdW50ICAjIFN0YXJ0IGF0IDM7IGluYyBieSA3CgpDM183IDAKQzNfNyAxCkNvdW50IDAgICMgT2xkIGNvdW50ZXIgc3RheXMgdGhlIHNhbWU=">↗️</a><pre>    <span class='Modifier'>_makeCount</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>counter</span><span class='Ligature'>‿</span><span class='Value'>inc</span><span class='Gets'>←</span><span class='Value'>𝕗</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span> <span class='Value'>counter</span> <span class='Function'>+</span><span class='Gets'>↩</span> <span class='Value'>𝕩</span> <span class='Function'>×</span> <span class='Value'>inc</span> <span class='Brace'>}</span> <span class='Brace'>}</span>
@@ -85,7 +85,7 @@ ERROR
 </pre>
 <p>But you'll still get an error if the variable is used before its definition is run. Unlike the single-level case, this is a runtime error and only appears when the variable is actually accessed.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyAyK2QgfSDii4QgZOKGkMKvMg==">↗️</a><pre>    <span class='Brace'>{</span> <span class='Number'>2</span><span class='Function'>+</span><span class='Value'>d</span> <span class='Brace'>}</span> <span class='Separator'>⋄</span> <span class='Value'>d</span><span class='Gets'>←</span><span class='Number'>¯2</span>
-ERROR
+<span class='Error'>Error: Reading variable before its defined</span>
 </pre>
 <p>Why define things this way? It's easier to see if you imagine the variable used is also a function. It's normal for a function to call other functions defined at the top level, of course. And it would be pretty unpleasant for BQN to enforce a specific ordering for them. It would also make recursive functions impossible except by using <code><span class='Function'>𝕊</span></code>, and mutually recursive ones completely impossible. A simple rule that makes all these things just work smoothly seems much better than any alternative.</p>
 <h2 id="closures"><a class="header" href="#closures">Closures</a></h2>
@@ -140,6 +140,6 @@ ERROR
 </pre>
 <p>Only code with access to a variable can modify it! This means that if none of the code in a variable's scope modifies it, then the variable is a constant in each environment that contains it (not necessarily across environments). That is, constant once it's defined: it's still possible to get an error if the variable is accessed before being defined.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyB7IGEgfSDii4QgYeKGkDQgfQ==">↗️</a><pre>    <span class='Brace'>{</span> <span class='Brace'>{</span> <span class='Value'>a</span> <span class='Brace'>}</span> <span class='Separator'>⋄</span> <span class='Value'>a</span><span class='Gets'>←</span><span class='Number'>4</span> <span class='Brace'>}</span>
-ERROR
+<span class='Error'>Error: Reading variable before its defined</span>
 </pre>
 <p>With lexical scoping, variable mutation automatically leads to mutable data. This is because a function or modifier that depends on the variable value changes its behavior when the variable changes. For further discussion see the documentation on <a href="oop.html#mutability">mutable objects</a>.</p>

@@ -20,7 +20,7 @@
      ┘
 
     <span class='Function'>⌽</span> <span class='String'>'c'</span>
-ERROR
+<span class='Error'>Error: ⌽: Argument cannot be a unit</span>
 </pre>
 <p>You can't reverse an atom or rank-0 array because it has no axes to reverse along, or it could be said no ordering to reverse.</p>
 <p>To reverse along an axis other than the first, use Cells (<code><span class='Modifier'>˘</span></code>) or Rank (<code><span class='Modifier2'>⎉</span></code>).</p>
@@ -62,7 +62,7 @@ ERROR
                 ┘
 
     <span class='Number'>2</span> <span class='Function'>⌽</span> <span class='String'>'c'</span>  <span class='Comment'># No axes to rotate
-</span>ERROR
+</span><span class='Error'>Error: ⌽: 𝕩 must have rank at least 1 for atom 𝕨</span>
 </pre>
 <p>Elements are always rotated to the left, so that entry <code><span class='Value'>i</span></code> of the result is entry <code><span class='Value'>𝕨</span><span class='Function'>+</span><span class='Value'>i</span></code> of the argument—or rather, entry <code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>|</span><span class='Value'>𝕨</span><span class='Function'>+</span><span class='Value'>i</span></code> to enable elements to cycle around. This can be seen directly by using the <a href="range.html">range</a> <code><span class='Function'>↕</span><span class='Value'>n</span></code> as an argument: then the value of <code><span class='Value'>𝕩</span></code> at index <code><span class='Value'>i</span></code> is just <code><span class='Value'>i</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDijL0g4oaVNg==">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⌽</span> <span class='Function'>↕</span><span class='Number'>6</span>
@@ -91,7 +91,7 @@ ERROR
 </pre>
 <p>Rotate also allows <code><span class='Value'>𝕨</span></code> to be a list (or unit array) of integers, in which case they're matched with <a href="leading.html">leading axes</a> of <code><span class='Value'>𝕩</span></code>. This means the length of <code><span class='Value'>𝕨</span></code> can't be larger than the rank of <code><span class='Value'>𝕩</span></code>, or there wouldn't be enough axes to match. This rule also explains why <code><span class='Value'>𝕩</span></code> has to have rank one or more when <code><span class='Value'>𝕨</span></code> is an atom, because <code><span class='Value'>𝕨</span></code> is treated as the one-element list <code><span class='Function'>⥊</span><span class='Value'>𝕨</span></code> in that case.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAvzTigL8yIOKMvSAianVzdCBhIGxpc3Qi">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⌽</span> <span class='String'>&quot;just a list&quot;</span>
-ERROR
+<span class='Error'>Error: 𝕨⌽𝕩: Length of compound 𝕨 must be at most rank of 𝕩</span>
 </pre>
 <p>The expression below rotates the first (vertical) axis of <code><span class='Value'>tab</span></code> by one element, and second by two. So the line of capital letters goes from being one away from the top, up to the top, and the column with <code><span class='String'>'2'</span></code> goes from horizontal index 2 to index 0.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MeKAvzIg4oy9IHRhYg==">↗️</a><pre>    <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⌽</span> <span class='Value'>tab</span>

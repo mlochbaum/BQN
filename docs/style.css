@@ -194,6 +194,7 @@ kbd {
 .Number       { color: #6f251f; }
 .Comment      { color: #32328b; }
 .String       { color: #2d7583; }
+.Error        { color: #ee3030; }
 
 a:link        { color: #0b39dc; text-decoration-color: #0b39dc91; }
 a:visited     { color: #3d155f; }
@@ -229,6 +230,7 @@ a:visited     { color: #3d155f; }
   .Number     { color: #a73227; }
   .Comment    { color: #3f3daa; }
   .String     { color: #3e99ab; }
+  .Error      { color: #a50d0d; }
 
   a:link      { color: #5592d9; text-decoration-color: #508dd978; }
   a:visited   { color: #8781c1; }

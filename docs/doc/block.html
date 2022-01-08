@@ -201,7 +201,7 @@
 </pre>
 <p>If no header is compatible, the call results in an error.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyBDYXNlQWRkIDM=">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>CaseAdd</span> <span class='Number'>3</span>
-ERROR
+<span class='Error'>Error: No header matched arguments</span>
 </pre>
 <h3 id="case-headers"><a class="header" href="#case-headers">Case headers</a></h3>
 <p>A special rule allows for convenient case-matching syntax for one-argument functions. In any function header with one argument, the function name can be omitted as long as the argument is <em>not</em> a plain identifier—it must be <code><span class='Value'>𝕩</span></code> or a compound value like a list to distinguish it from an immediate block label.</p>
@@ -239,6 +239,6 @@ ERROR
 </pre>
 <p>This structure is still constrained by the rules of block bodies: each instance of <code><span class='Value'>;</span></code> is a separate scope, so that variables defined before a <code><span class='Value'>?</span></code> don't survive past the <code><span class='Value'>;</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyAwPW7ihpDiiaDwnZWpID8g4oieIDsgbiB9ICJhYmMi">↗️</a><pre>    <span class='Brace'>{</span> <span class='Number'>0</span><span class='Function'>=</span><span class='Value'>n</span><span class='Gets'>←</span><span class='Function'>≠</span><span class='Value'>𝕩</span> <span class='Value'>?</span> <span class='Number'>∞</span> <span class='Value'>;</span> <span class='Value'>n</span> <span class='Brace'>}</span> <span class='String'>&quot;abc&quot;</span>
-ERROR
+<span class='Error'>Error: Undefined identifier</span>
 </pre>
 <p>This is the main drawback of predicates relative to guards in APL dfns (also written with <code><span class='Value'>?</span></code>), while the advantage is that it allows multiple expressions, or extra conditions, after a <code><span class='Value'>?</span></code>. It's not how I would have designed it if I just wanted to make a syntax for if statements, but it's a natural fit for the header system.</p>

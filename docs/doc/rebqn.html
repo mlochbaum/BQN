@@ -46,7 +46,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ZG9Ob3Qg4oaQIOKAolJlQlFOIHtyZXBs4oeQImxvb3NlIn0KCkRvTm90ICJiIiAjIHN1cnByaXNlZCB3aGVuIHRoaXMgZmFpbHM=">↗️</a><pre>    <span class='Value'>doNot</span> <span class='Gets'>←</span> <span class='Function'>•ReBQN</span> <span class='Brace'>{</span><span class='Value'>repl</span><span class='Gets'>⇐</span><span class='String'>&quot;loose&quot;</span><span class='Brace'>}</span>
 
     <span class='Function'>DoNot</span> <span class='String'>&quot;b&quot;</span> <span class='Comment'># surprised when this fails
-</span>ERROR
+</span><span class='Error'>Error: Undefined identifier</span>
 </pre>
 <p>The difference in <code><span class='String'>&quot;strict&quot;</span></code> and <code><span class='String'>&quot;loose&quot;</span></code> is that a loose REPL can define a variable again, which just changes its value (under the covers, the <code><span class='Gets'>←</span></code> is treated as a <code><span class='Gets'>↩</span></code>).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RG8gImEg4oaQIMKvMSIKRG8gImEg4oaQIGLigL9hIgoKKOKAolJlQlFOIHtyZXBs4oeQInN0cmljdCJ9KeKOikDCqCAiYeKGkDEi4oC/ImHihpAyIiAgIyBTZWNvbmQgb25lIGVycm9ycw==">↗️</a><pre>    <span class='Function'>Do</span> <span class='String'>&quot;a ← ¯1&quot;</span>
