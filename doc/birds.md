@@ -25,4 +25,4 @@ Inputs are mapped to lambda calculus arguments according to the ordering `𝔽�
 
 **List of combinator bird compendiums:**
 * [Angelfire Combinator Birds](https://www.angelfire.com/tx4/cus/combinator/birds.html)
-* [Fantasy Land Birds](https://github.com/fantasyland/fantasy-birds)
+* [Lähteenmäki Combinator Birds](https://blog.lahteenmaki.net/combinator-birds.html)
