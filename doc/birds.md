@@ -12,7 +12,7 @@ Some people consider it reasonable to name [combinators](primitive.md#modifiers)
 | `○`     | Bluebird  | `B`   | Psi          | `ψ`
 | `˙`     | Kestrel   | `K`   |              | `KK`
 | `⊸`     |           | `BSC` | ~Dove        | `D`-like: `labcd.a(bc)d`
-| `⟜`     | Starling  | `S`   | Dove         | `D`
+| `⟜`     | Starling  | `S`   | ~Dove        | `D`-like: `labcd.ac(bd)`
 | `˜`     | Warbler   | `W`   | Cardinal     | `C`
 | `k G H` | Dove      | `D`   | Eagle        | `E`
 | `F G H` | Phoenix   | `S'`  | Golden Eagle | `Ê`-like: `labcde.a(bde)(cde)`
