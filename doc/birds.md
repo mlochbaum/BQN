@@ -24,6 +24,5 @@ Lambda calculus doesn't have BQN's polymorphism on one or two arguments, so each
 Inputs are mapped to lambda calculus arguments according to the ordering `𝔽𝔾𝕨𝕩`, and `GFH` for a 3-train `F G H`. For example, when I write that the combination `𝕨 𝔽˜ 𝕩` corresponds to a call of `C` or `labc.acb`, `a` is `𝔽` and `bc` are `𝕨𝕩`.
 
 **List of combinator bird compendiums:**
-1. [Angelfire Combinator Birds](https://www.angelfire.com/tx4/cus/combinator/birds.html)
-2. [Fantasy Land Birds](https://github.com/fantasyland/fantasy-birds)
-3. [Lähteenmäki Combinator Birds](https://blog.lahteenmaki.net/combinator-birds.html)
+* [Angelfire Combinator Birds](https://www.angelfire.com/tx4/cus/combinator/birds.html)
+* [Fantasy Land Birds](https://github.com/fantasyland/fantasy-birds)
