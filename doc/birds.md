@@ -11,7 +11,7 @@ Some people consider it reasonable to name [combinators](primitive.md#modifiers)
 |   `∘`   | Bluebird | `B`      | Blackbird    | `B₁`                           |
 |   `○`   | Bluebird | `B`      | Psi          | `ψ`                            |
 |   `˙`   | Kestrel  | `K`      |              | `KK`                           |
-|   `⊸`   |          | `B1CBSC` | ~Dove        | `D`-like: `labcd.b(ac)d`       |
+|   `⊸`   |          | `B₁CBSC` | Queer        | `Q`                            |
 |   `⟜`   | Starling | `S`      | ~Dove        | `D`-like: `labcd.ac(bd)`       |
 |   `˜`   | Warbler  | `W`      | Cardinal     | `C`                            |
 | `k G H` | Dove     | `D`      | Eagle        | `E`                            |
