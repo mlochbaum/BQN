@@ -2,7 +2,7 @@
 
 # Advent of Code
 
-[Advent of Code 2021](https://adventofcode.com/2021) saw great participation by the BQN community, with a total of 233 solutions published by 22 programmers. They can be found in these repositories:
+[Advent of Code 2021](https://adventofcode.com/2021) saw great participation by the BQN community, with a total of 234 solutions published by 22 programmers. They can be found in these repositories:
 
 <center>
 
@@ -13,8 +13,8 @@
 [Leah Neukirchen](https://github.com/leahneukirchen/adventofcode2021) •
 [Antti Keränen](https://github.com/Detegr/aoc2021) •
 [Caleb Quilley](https://gitlab.com/icen/aoc21) •
-[Alex Dikelsky](https://github.com/AlexDikelsky/puzzles/tree/main/advent_of_code/advent_2021) •
 [Alvin Voo](https://github.com/alvinvoo/aoc2021) •
+[Alex Dikelsky](https://github.com/AlexDikelsky/puzzles/tree/main/advent_of_code/advent_2021) •
 [Andrey Popp](https://github.com/andreypopp/aoc2021) •
 [Johnny](https://github.com/JohnnyJayJay/adventofcode-21) •
 [Josh Holland](https://git.sr.ht/~jshholland/adventofcode/tree/master/item/2021) •
@@ -34,9 +34,9 @@
 Below, problems solved in BQN are shown in green, and problems solved in other languages in faint red.
 
 <!--GEN
-nam ← ⟨"dzaima","Hannu","Raghu","frasiyav","Leah","Antti","Caleb","Alex","Alvin","Andrey","Johnny","Josh","Ben","Alastair","Olodus","Aren","Dimitri","Alexander","Mathias","m-lima","Dunya","Benjamin"⟩
-sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14‿15‿17‿18‿20‿21‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿20‿21,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13,1‿2‿3‿5‿6‿7‿11‿12‿13‿15‿17‿20,1‿2‿3‿4‿5‿6‿7‿9‿10,1‿2‿3‿4‿5‿6‿7‿8,1‿2‿3‿4‿5‿6‿7,1‿3‿6‿7‿9,1‿2‿3‿9,6‿7‿9,1‿3,⟨3⟩,⟨3⟩,⟨1⟩,⟨1⟩,⟨1⟩⟩
-als ← ⟨⟨⟩,⟨⟩,⟨⟩,⟨⟩,12‿16‿19‿22‿23,⟨⟩,⟨⟩,⟨12⟩,⟨⟩,⟨⟩,⟨8⟩,⟨⟩,⟨⟩,⟨2⟩,⟨⟩,1‿2‿3‿4‿5‿8‿10‿11‿12,2‿5‿6‿7‿9‿10‿12‿13‿14‿15‿16‿17‿20‿21,1‿2,1‿2,2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17,⟨⟩,⟨⟩⟩
+nam ← ⟨"dzaima","Hannu","Raghu","frasiyav","Leah","Antti","Caleb","Alvin","Alex","Andrey","Johnny","Josh","Ben","Alastair","Olodus","Aren","Dimitri","Alexander","Mathias","m-lima","Dunya","Benjamin"⟩
+sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14‿15‿17‿18‿20‿21‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿20‿21,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14,1‿2‿3‿5‿6‿7‿11‿12‿13‿15‿17‿20,1‿2‿3‿4‿5‿6‿7‿9‿10,1‿2‿3‿4‿5‿6‿7‿8,1‿2‿3‿4‿5‿6‿7,1‿3‿6‿7‿9,1‿2‿3‿9,6‿7‿9,1‿3,⟨3⟩,⟨3⟩,⟨1⟩,⟨1⟩,⟨1⟩⟩
+als ← ⟨⟨⟩,⟨⟩,⟨⟩,⟨⟩,12‿16‿19‿22‿23,⟨⟩,⟨⟩,⟨⟩,⟨12⟩,⟨⟩,⟨8⟩,⟨⟩,⟨⟩,⟨2⟩,⟨⟩,1‿2‿3‿4‿5‿8‿10‿11‿12,2‿5‿6‿7‿9‿10‿12‿13‿14‿15‿16‿17‿20‿21,1‿2,1‿2,2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17,⟨⟩,⟨⟩⟩
 
 Ge ← "g"⊸At⊸Enc
 
@@ -67,13 +67,13 @@ Bars ← (Path·∾("M h"⥊˜≠)∾¨FmtNum)¨ Bp
 ⟩
 -->
 
-In addition to these, Leah wrote two blog posts explaining her solutions for [day 6](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) and [day 9](https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html).
+Some wrote about aspects of the Advent experience: Leah explained her solutions for [day 6](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) and [day 9](https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html), Hannu [reflected](https://hannuhartikainen.fi/blog/advent-of-bqn/) on the choice of BQN, and Raghu [commented on](https://razetime.github.io/blog1/2022/01/09/aoc-bqn.html) each problem.
 
-The number of BQN solutions for each of the 25 days is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2021/stats). The BQN solutions are scaled to be visible here: there are 6828 times more valid AoC submissions than published BQN solutions overall.
+The number of BQN solutions for each of the 25 days is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2021/stats). The BQN solutions are scaled to be visible here: there are 6827 times more valid AoC submissions than published BQN solutions overall.
 
 <!--GEN
-aoc ← 216674‿180919‿158947‿103328‿90474‿90994‿85767‿76680‿70735‿63588‿55790‿48720‿49705‿49938‿39291‿32266‿32163‿23402‿15577‿21483‿24367‿19970‿14037‿11463‿14737
-bqn ← 19‿14‿18‿12‿13‿15‿15‿10‿13‿10‿10‿8‿10‿8‿8‿6‿8‿7‿4‿7‿6‿4‿1‿3‿4
+aoc ← 217224‿181389‿159388‿103644‿90769‿91314‿86089‿76948‿71024‿63865‿56022‿48928‿49937‿50161‿39483‿32456‿32350‿23568‿15719‿21624‿24531‿20149‿14206‿11655‿14959
+bqn ← 19‿14‿18‿12‿13‿15‿15‿10‿13‿10‿10‿8‿10‿9‿8‿6‿8‿7‿4‿7‿6‿4‿1‿3‿4
 
 width ← 256
 pad   ← 40‿40
@@ -103,7 +103,7 @@ line ← (/≠¨⊏xy) ⊔ FmtNum ⍉> dim×Scale pts
 
 The BQN counts fall off much less than the average. Most likely this is because programmers who decide to try AoC in a crazy new language like BQN tend to be more committed to the task, but BQN also has to meet some minimum bar to enable these crazy people to continue.
 
-Just how okay is BQN? Hannu makes a case for optimism in [this blog post](https://hannuhartikainen.fi/blog/advent-of-bqn/). Hannu writes that BQN's slogan "might be the best [further glowing praise/context]", in stark contrast to that time [Bryce and Conor agreed](https://adspthepodcast.com/2021/12/17/Episode-56.html) that it was a bad slogan. And Andrey offers [suspiciously positive comments](https://news.ycombinator.com/item?id=29521264) as well. The list includes "good text editor support", but Johnny remarked on the forums that he didn't manage a good editor/REPL setup—a second contradiction, meaning that I can now prove the Riemann hypothesis in *two* independent ways. Johnny also cited little support for string handling and low-information error messages as obstacles. I like that these aren't tied to the core language, and can eventually be improved, even though it won't be easy. dzaima complained about frequent confusion between functions and immediate blocks, and right-to-left folds being the much less useful direction. I dislike that dzaima is right a lot.
+Just how okay is BQN? Hannu [made the case](https://hannuhartikainen.fi/blog/advent-of-bqn/) for optimism. Hannu writes that BQN's slogan "might be the best [further glowing praise/context]", in stark contrast to that time [Bryce and Conor agreed](https://adspthepodcast.com/2021/12/17/Episode-56.html) that it was a bad slogan. And Andrey offers [suspiciously positive comments](https://news.ycombinator.com/item?id=29521264) as well. The list includes "good text editor support", but Johnny remarked on the forums that he didn't manage a good editor/REPL setup—a second contradiction, meaning that I can now prove the Riemann hypothesis in *two* independent ways. Johnny also cited little support for string handling and low-information error messages as obstacles. I like that these aren't tied to the core language, and can eventually be improved, even though it won't be easy. dzaima complained about frequent confusion between functions and immediate blocks, and right-to-left folds being the much less useful direction. I dislike that dzaima is right a lot.
 
 All three non-dzaimas of the last paragraph are essentially array outsiders, with little or no experience with languages like J or APL. In fact I think this describes the majority of Adventurers in BQN (although the list also includes array junkies like Raghu and Leah, and they've predictably made it further than most participants). Reaching out to a general programming audience wasn't initially a goal of BQN because I didn't think it *was* within reach. I realized this was wrong, and began to adjust course, in the early days, but am pleased to continue getting even more wrong.
 
