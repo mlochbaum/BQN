@@ -33,6 +33,8 @@ And also:
 
 *Links contain the encoded art, which is CC-BY 4.0: see the "setup JS" pane.*
 
+And razetime designed a [desktop background](https://gist.github.com/razetime/22e8161d089afcfb7baa08045e590ef5) based on the BQN logo and character set.
+
 ## Can I help out?
 
 Certainly! There are never enough hours in the day and contributors from beginner to advanced programmers are all welcome. If you're interested I recommend you ask on the forums first to get a feel for what exactly is needed.
