@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/greatequal.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/greaterthanorequalto.html).*
 
 # Greater Than or Equal To (`≥`)
     

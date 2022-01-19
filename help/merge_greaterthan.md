@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/merge_great.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/merge_greaterthan.html).*
 
 # Greater Than (`>`)
     

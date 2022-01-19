@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/lessequal.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/lessthanorequalto.html).*
 
 # Lesser Than or Equal To (`≤`)
     

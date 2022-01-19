@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/enclose_less.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/enclose_lessthan.html).*
 
 # Lesser Than (`<`)
     

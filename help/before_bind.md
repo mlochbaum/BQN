@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/before_bindleft.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/before_bind.html).*
 
 # Multimap (`⊸`)
     

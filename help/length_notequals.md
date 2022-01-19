@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/length_notequal.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/length_notequals.html).*
 
 # Not Equal (`≠`)
     
