@@ -1,0 +1,36 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Left Pointing Double Angle Quotation (`«`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="left-pointing-double-angle-quotation-"><a class="header" href="#left-pointing-double-angle-quotation-">Left Pointing Double Angle Quotation (<code><span class='Function'>«</span></code>)</a></h1>
+<h2 id="--shift-before"><a class="header" href="#--shift-before"><code><span class='Function'>«</span> <span class='Value'>𝕩</span></code>: Shift Before</a></h2>
+<p>Remove the first element of <code><span class='Value'>𝕩</span></code>,  add a cell of fill values to the end of the first axis of <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgNzggwqsgMeKAvzLigL8zCgogICDCqyAx4oC/MuKAvzMKCiAgIMKrIDPigL8zIOKliiA5">↗️</a><pre>       <span class='Number'>78</span> <span class='Function'>«</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+⟨ 2 3 78 ⟩
+
+       <span class='Function'>«</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+⟨ 2 3 0 ⟩
+
+       <span class='Function'>«</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Number'>9</span>
+┌─       
+╵ 9 9 9  
+  9 9 9  
+  0 0 0  
+        ┘
+</pre>
+<h2 id="---shift-before"><a class="header" href="#---shift-before"><code><span class='Value'>𝕨</span> <span class='Function'>«</span> <span class='Value'>𝕩</span></code>: Shift Before</a></h2>
+<p>Remove the first <code><span class='Function'>≠</span><span class='Value'>𝕨</span></code> (length) major cells from <code><span class='Value'>𝕩</span></code>, join <code><span class='Value'>𝕨</span></code> to the end of <code><span class='Value'>𝕩</span></code>. Ranks must match.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgOOKAvzUgwqsgMeKAvzLigL8zCgogICBhIOKGkCAz4oC/MyDipYogOQoKICAgMeKAvzLigL8zIMKrIGE=">↗️</a><pre>       <span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Function'>«</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+⟨ 3 8 5 ⟩
+
+       <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Number'>9</span>
+
+       <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>«</span> <span class='Value'>a</span>
+┌─       
+╵ 9 9 9  
+  9 9 9  
+  1 2 3  
+        ┘
+</pre>
