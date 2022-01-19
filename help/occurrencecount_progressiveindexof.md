@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/occcount_progindex.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/occurrencecount_progressiveindexof.html).*
 
 # Square Original Of or Equal To (`⊒`)
     

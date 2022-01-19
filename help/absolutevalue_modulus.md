@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/abs_modulus.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/absolutevalue_modulus.html).*
 
 # Pipe (`|`)
     
