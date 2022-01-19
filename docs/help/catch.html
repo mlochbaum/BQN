@@ -1,0 +1,17 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Circled Triangle Down (`⎊`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="circled-triangle-down-"><a class="header" href="#circled-triangle-down-">Circled Triangle Down (<code><span class='Modifier2'>⎊</span></code>)</a></h1>
+<h2 id="-----catch"><a class="header" href="#-----catch"><code><span class='Function'>𝔽</span><span class='Modifier2'>⎊</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>, <code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier2'>⎊</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Catch</a></h2>
+<p>Apply <code><span class='Function'>𝔽</span></code> to the arguments.</p>
+<p>If an error happens when <code><span class='Function'>𝔽</span></code> is applied, cancel its execution, apply <code><span class='Function'>𝔾</span></code> to the arguments and return the results.</p>
+<p>Otherwise, return the results of <code><span class='Function'>𝔽</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAg4oi+4o6KeyJlcnJvciBvY2N1cnJlZCB3aXRoIGFyZ3VtZW50OiAi4oi+4oCiRm10IPCdlal9IDEKCiAgIOKIvuKOinsiZXJyb3Igb2NjdXJyZWQgd2l0aCBhcmd1bWVudDogIuKIvuKAokZtdCDwnZWpfSDin6jin6gxLDLin6ksIOKfqDMsNOKfqeKfqQ==">↗️</a><pre>       <span class='Function'>∾</span><span class='Modifier2'>⎊</span><span class='Brace'>{</span><span class='String'>&quot;error occurred with argument: &quot;</span><span class='Function'>∾•Fmt</span> <span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>1</span>
+"error occurred with argument: 1"
+
+       <span class='Function'>∾</span><span class='Modifier2'>⎊</span><span class='Brace'>{</span><span class='String'>&quot;error occurred with argument: &quot;</span><span class='Function'>∾•Fmt</span> <span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Bracket'>⟨⟨</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩</span><span class='Separator'>,</span> <span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩⟩</span>
+⟨ 1 2 3 4 ⟩
+</pre>

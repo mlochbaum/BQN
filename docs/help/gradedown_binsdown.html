@@ -1,0 +1,29 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Del Stile (`⍒`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="del-stile-"><a class="header" href="#del-stile-">Del Stile (<code><span class='Function'>⍒</span></code>)</a></h1>
+<h2 id="--grade-down"><a class="header" href="#--grade-down"><code><span class='Function'>⍒</span> <span class='Value'>𝕩</span></code>: Grade Down</a></h2>
+<p>Indices of <code><span class='Value'>𝕩</span></code> that would sort its major cells in descending order.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgYSDihpAgMeKAvzLigL8zCgogICDijZIgYQoKICAgKOKNkmEpIOKKjyBh">↗️</a><pre>       <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+
+       <span class='Function'>⍒</span> <span class='Value'>a</span>
+⟨ 2 1 0 ⟩
+
+       <span class='Paren'>(</span><span class='Function'>⍒</span><span class='Value'>a</span><span class='Paren'>)</span> <span class='Function'>⊏</span> <span class='Value'>a</span>
+⟨ 3 2 1 ⟩
+</pre>
+<h2 id="---bins-down"><a class="header" href="#---bins-down"><code><span class='Value'>𝕨</span> <span class='Function'>⍒</span> <span class='Value'>𝕩</span></code>: Bins Down</a></h2>
+<p>Binary search for each element of <code><span class='Value'>𝕩</span></code> in <code><span class='Value'>𝕨</span></code>, and return the index found, if any.</p>
+<h2 id="-must-be-sorted-in-descending-order"><a class="header" href="#-must-be-sorted-in-descending-order"><code><span class='Value'>𝕨</span></code> must be sorted in descending order.</a></h2>
+<p><a href="https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion">Right Pervasive.</a></p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgN+KAvzXigL804oC/MyDijZIgMgoKICAgN+KAvzXigL804oC/MyDijZIgMuKAvzY=">↗️</a><pre>       <span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⍒</span> <span class='Number'>2</span>
+┌·   
+· 4  
+    ┘
+
+       <span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⍒</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span>
+⟨ 4 1 ⟩
+</pre>
