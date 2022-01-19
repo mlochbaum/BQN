@@ -1,0 +1,35 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Not Equal (`≠`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="not-equal-"><a class="header" href="#not-equal-">Not Equal (<code><span class='Function'>≠</span></code>)</a></h1>
+<h2 id="--length"><a class="header" href="#--length"><code><span class='Function'>≠</span> <span class='Value'>𝕩</span></code>: Length</a></h2>
+<p>Length of the first dimension of <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICDiiaAgMwoKICDiiaAg4p+oMSwgMiwgM+KfqQoKICDiiaAgM+KAvzTigL814qWKMAoKICDiiaAgMeKAvzTigL814qWKMAoKICDiiaAgNOKAvzTigL814qWKMA==">↗️</a><pre>      <span class='Function'>≠</span> <span class='Number'>3</span>
+1
+
+      <span class='Function'>≠</span> <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>2</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Bracket'>⟩</span>
+3
+
+      <span class='Function'>≠</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Function'>⥊</span><span class='Number'>0</span>
+3
+
+      <span class='Function'>≠</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Function'>⥊</span><span class='Number'>0</span>
+1
+
+      <span class='Function'>≠</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Function'>⥊</span><span class='Number'>0</span>
+4
+</pre>
+<h2 id="---not-equal-to"><a class="header" href="#---not-equal-to"><code><span class='Value'>𝕨</span> <span class='Function'>≠</span> <span class='Value'>𝕩</span></code>: Not Equal To</a></h2>
+<p><a href="https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion">Pervasive.</a></p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAxIOKJoCAzCgogIDLigL8z4oC/MCDiiaAgM+KAvzHigL8wCgogICdhJyDiiaAgJ2En">↗️</a><pre>      <span class='Number'>1</span> <span class='Function'>≠</span> <span class='Number'>3</span>
+1
+
+      <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>0</span> <span class='Function'>≠</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+⟨ 1 1 0 ⟩
+
+      <span class='String'>'a'</span> <span class='Function'>≠</span> <span class='String'>'a'</span>
+0
+</pre>

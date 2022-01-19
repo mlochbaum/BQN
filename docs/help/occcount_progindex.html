@@ -1,0 +1,26 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Square Original Of or Equal To (`⊒`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="square-original-of-or-equal-to-"><a class="header" href="#square-original-of-or-equal-to-">Square Original Of or Equal To (<code><span class='Function'>⊒</span></code>)</a></h1>
+<h2 id="--occurrence-count"><a class="header" href="#--occurrence-count"><code><span class='Function'>⊒</span> <span class='Value'>𝕩</span></code>: Occurrence Count</a></h2>
+<p>Number of times each major cell of <code><span class='Value'>𝕩</span></code> appears before itself.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgIOKKkiAgIDLigL834oC/MeKAvzjigL8x4oC/N+KAvzHigL844oC/MuKAvzjigL80CgogICAg4omN4p+c4oqSIDLigL834oC/MeKAvzjigL8x4oC/N+KAvzHigL844oC/MuKAvzjigL80">↗️</a><pre>        <span class='Function'>⊒</span>   <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+⟨ 0 0 0 0 1 1 2 1 1 2 0 ⟩
+
+        <span class='Function'>≍</span><span class='Modifier2'>⟜</span><span class='Function'>⊒</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+┌─                       
+╵ 2 7 1 8 1 7 1 8 2 8 4  
+  0 0 0 0 1 1 2 1 1 2 0  
+                        ┘
+</pre>
+<h2 id="---progressive-index-of"><a class="header" href="#---progressive-index-of"><code><span class='Value'>𝕨</span> <span class='Function'>⊒</span> <span class='Value'>𝕩</span></code>: Progressive Index Of</a></h2>
+<p>Index of the first unused match of each major cell of <code><span class='Value'>𝕩</span></code> in <code><span class='Value'>𝕨</span></code>. If there are no more matches left, length of <code><span class='Value'>𝕨</span></code> is placed in that position.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgICJhYWEiIOKKkiAiYWFhYWEiCgogICAgImFhYWJiIiDiipIgImFiYWJhYmFiYWIi">↗️</a><pre>        <span class='String'>&quot;aaa&quot;</span> <span class='Function'>⊒</span> <span class='String'>&quot;aaaaa&quot;</span>
+⟨ 0 1 2 3 3 ⟩
+
+        <span class='String'>&quot;aaabb&quot;</span> <span class='Function'>⊒</span> <span class='String'>&quot;ababababab&quot;</span>
+⟨ 0 3 1 4 2 5 5 5 5 5 ⟩
+</pre>
