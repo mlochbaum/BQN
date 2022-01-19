@@ -1,0 +1,47 @@
+SymN (`S`)
+
+`S 𝕩`: Monad  
+
+Description
+```
+Ex
+```
+
+`𝕨 S 𝕩`: Dyad
+
+Description
+```
+Ex
+```
+
+SymN (`S`)
+
+`𝔽 S 𝕩`: 1mod
+
+Description
+```
+Ex
+```
+`𝕨 𝔽 S 𝕩`: 1mod
+
+Description
+```
+Ex
+```
+
+
+SymN (`S`)
+
+`𝔽 S 𝔾 𝕩`: 2mod
+
+Description
+```
+Ex
+```
+
+`𝕨 𝔽 S 𝔾 𝕩`: 2mod
+
+Description
+```
+Ex
+```
