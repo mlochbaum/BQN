@@ -86,11 +86,12 @@ sysvals.setplot = (x,w) => { startPlot(); setPlot(x,w); }
 
 let keymode=0; // 1 for prefix
 let prefix='\\';
+let modified=ev=>ev.shiftKey||ev.ctrlKey||ev.altKey||ev.metaKey;
 doc.code.onkeydown = ev => {
   let k = ev.which;
   if (16<=k && k<=20) {
     return;
-  } if (k==13 && (ev.shiftKey||ev.ctrlKey||ev.altKey||ev.metaKey)) { // *-enter
+  } if (k==13 && modified(ev)) { // *-enter
     repl(); return false;
   } if (keymode) {
     keymode = 0;
@@ -128,6 +129,7 @@ let setPrefix = () => {
     let c = Array.from(d)[1];
     let t = d.slice(1+c.length).replace(';','\n');
     let k = revkeys[c]; if (k) t += '\n'+prefix+(k==='"'?'&quot;':k);
+    x.hashelp = i < 64;
     x.title = primhelp[c] = t;
   });
 }
@@ -135,7 +137,14 @@ setPrefix();
 doc.kb.onmousedown = ev => {
   let t = ev.target;
   if (t.nodeName === 'SPAN') {
-    return typeChar(doc.code, t.textContent, ev);
+    if (ev.button || modified(ev)) {
+      let name = t.title.toLowerCase().replace(/ |\n\\.*/g,'')
+                                      .replace(/[\n/]/g,'_');
+      if (t.hashelp) window.open('help/'+name+'.html');
+      return false;
+    } else {
+      return typeChar(doc.code, t.textContent, ev);
+    }
   }
 }
 
