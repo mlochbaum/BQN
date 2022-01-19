@@ -123,10 +123,12 @@ ReadNums←{
 
 Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ErrMismatchedBrackets←{
-    Lcs ← ∧○(0<≠)◶⟨0, ¯1 ⊑ 0¨∘⊢ {𝕩⌈⌈`𝕨+»𝕩}˝ =⌜⟜⌽⟩
-    _mis_ ← {"Missing "∾𝕗∾" "∾charSet⊏˜𝕘+⊢/˜≠∘⊣=⊒}
-    Msg ← >○≠◶⟨"opening"_mis_ 0, "closing"_mis_ 1˜⟩
-    ! 𝕨 (Lcs<⌊○≠)◶⟨Msg,"Malformed bracket nesting"⟩ 𝕩
+    # Horrible stack-based algorithm
+    S←⊑⟜𝕩 ⋄ K‿D←{⋈∾¨⟜(𝕏⋈)˜}¨↓‿↑     # Select; Keep; Discard
+    Ma←⋈¯1⊸↓⌾⊑ ⋄ DT←¯1‿0⊸(↓¨∾¨·⌽↑¨) # Match; Discard Top
+    Upd ← {𝕨(2|S)◶⟨K,(0<≠∘⊑∘⊢)◶⟨D,(1≠-○S⟜(¯1⊑⊑))◶⟨Ma⊢, D∾𝕊⟜DT⟩⟩⟩𝕩}
+    i ← ((⊑⊢⊐⌊´)≠¨)⊸⊑ ∾¨ (⋈⋈˜↕0) ((64⌊≠)⊸↑·(∊⊑¨)⊸/·∾Upd¨)´⌽ /𝕩 M bB
+    ("Unmatched bracket" Pl i) _err_ i 1
   }
   _err_←{(!(∧∘⍉(i≍e˙)⊏⎉1˜/⟜𝔾)⋈𝔽)⍟(∨´⍟=)}
 
@@ -134,8 +136,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   # Open brackets have role ¯1 and closed ones have role 0
   "Empty program" ! 0<≠𝕩
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gb←g⊏r=¯1       # Paren (actually any bracket type) depth and grade
-  (g⊏p)(>⟜0⊸/ErrMismatchedBrackets⍟≢1-˜<⟜0⊸/)gx←g⊏𝕩
-  "Swapped open and closed brackets" ! 0≤(⊑g)⊑pd
+  ErrMismatchedBrackets∘𝕩⍟¬ (g⊏p)(>⟜0⊸/≡1-˜<⟜0⊸/)gx←g⊏𝕩
+  "Swapped open and closed brackets"_err_(1↑G) 0>(⊑g)⊑pd
   "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧pred⊸=∨sep⊸=)gbx←gb/gx
   "Predicates can't be placed inside lists"_err_((sep≠GBX)/gb/G) ((4+⊑bB)⊸=»⊸∧pred⊸=)sep⊸≠⊸/gbx
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
