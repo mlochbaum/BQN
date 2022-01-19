@@ -1,0 +1,26 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Identical To (`≡`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="identical-to-"><a class="header" href="#identical-to-">Identical To (<code><span class='Function'>≡</span></code>)</a></h1>
+<h2 id="--depth"><a class="header" href="#--depth"><code><span class='Function'>≡</span> <span class='Value'>𝕩</span></code>: Depth</a></h2>
+<p>Highest level of nesting in <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICDiiaEgMuKAvzPigL80CgogIOKJoSDin6gyLDwzLDQsPDw8NeKfqQoKICDiiaEgOQ==">↗️</a><pre>      <span class='Function'>≡</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+1
+
+      <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Function'>&lt;</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Function'>&lt;&lt;&lt;</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
+4
+
+      <span class='Function'>≡</span> <span class='Number'>9</span>
+0
+</pre>
+<h2 id="---match"><a class="header" href="#---match"><code><span class='Value'>𝕨</span> <span class='Function'>≡</span> <span class='Value'>𝕩</span></code>: Match</a></h2>
+<p>Does <code><span class='Value'>𝕨</span></code> exactly match <code><span class='Value'>𝕩</span></code>?</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAxIOKJoSDin6gx4p+pCgogIOKfqDHin6kg4omhIOKfqDHin6k=">↗️</a><pre>      <span class='Number'>1</span> <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Bracket'>⟩</span>
+0
+
+      <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Bracket'>⟩</span>
+1
+</pre>

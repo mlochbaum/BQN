@@ -1,0 +1,19 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Circle Star (`⍟`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="circle-star-"><a class="header" href="#circle-star-">Circle Star (<code><span class='Modifier2'>⍟</span></code>)</a></h1>
+<h2 id="-----repeat"><a class="header" href="#-----repeat"><code><span class='Function'>𝔽</span><span class='Modifier2'>⍟</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>, <code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier2'>⍟</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Repeat</a></h2>
+<p>Apply <code><span class='Function'>𝔾</span></code> to <code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code> and apply <code><span class='Function'>𝔽</span></code> to <code><span class='Value'>𝕩</span></code> that may times. If <code><span class='Value'>𝕨</span></code> is given, keep it as a constant left argument.</p>
+<p>If <code><span class='Function'>𝔾</span></code> returns an array, give <code><span class='Function'>𝔽</span><span class='Modifier2'>⍟</span><span class='Value'>𝕩</span></code> for each element.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgMSAr4o2f4oqiIDQKCiAgIDEgK+KNnzHigL8y4oC/MyA0CgogICAzIOKIvuKNn3viiaDwnZWpfSDin6g0LDUsNuKfqQ==">↗️</a><pre>       <span class='Number'>1</span> <span class='Function'>+</span><span class='Modifier2'>⍟</span><span class='Function'>⊢</span> <span class='Number'>4</span>
+8
+
+       <span class='Number'>1</span> <span class='Function'>+</span><span class='Modifier2'>⍟</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Number'>4</span>
+⟨ 5 6 7 ⟩
+
+       <span class='Number'>3</span> <span class='Function'>∾</span><span class='Modifier2'>⍟</span><span class='Brace'>{</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Bracket'>⟨</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Separator'>,</span><span class='Number'>6</span><span class='Bracket'>⟩</span>
+⟨ 3 3 3 4 5 6 ⟩
+</pre>

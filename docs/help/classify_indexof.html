@@ -1,0 +1,31 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Square Original Of (`⊐`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="square-original-of-"><a class="header" href="#square-original-of-">Square Original Of (<code><span class='Function'>⊐</span></code>)</a></h1>
+<h2 id="--classify--"><a class="header" href="#--classify--"><code><span class='Function'>⊐</span> <span class='Value'>𝕩</span></code>: Classify</a></h2>
+<p>First index of each major cell of <code><span class='Value'>𝕩</span></code> in <code><span class='Value'>𝕩</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAg4oqQIDXigL824oC/MuKAvzLigL814oC/MQoKICAgYSDihpAgM+KAvzMg4qWKIDDigL8x4oC/MuKAvznigL8w4oC/OeKAvzDigL8x4oC/MgoKICAg4oqQIGE=">↗️</a><pre>       <span class='Function'>⊐</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+⟨ 0 1 2 2 0 3 ⟩
+
+       <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+
+       <span class='Function'>⊐</span> <span class='Value'>a</span>
+⟨ 0 1 0 ⟩
+</pre>
+<h2 id="---index-of"><a class="header" href="#---index-of"><code><span class='Value'>𝕨</span> <span class='Function'>⊐</span> <span class='Value'>𝕩</span></code>: Index Of</a></h2>
+<p>First index of each major cell of <code><span class='Value'>𝕩</span></code> in <code><span class='Value'>𝕨</span></code>. Rank of <code><span class='Value'>𝕩</span></code> must be at least cell rank of 𝕨`.</p>
+<p>If a cell is not found in <code><span class='Value'>𝕨</span></code>, that position will contain the length of <code><span class='Value'>𝕨</span></code> (<code><span class='Function'>≠</span><span class='Value'>𝕨</span></code>).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgNeKAvzbigL8y4oC/MuKAvzXigL8xIOKKkCA14oC/MuKAvzHigL82CgogICBhIOKGkCAz4oC/MyDipYogMOKAvzHigL8y4oC/OeKAvzDigL854oC/MOKAvzHigL8yCgogICBhIOKKkCDin6g54oC/MOKAvznin6k=">↗️</a><pre>       <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span> <span class='Function'>⊐</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>6</span>
+⟨ 0 2 5 1 ⟩
+
+       <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+<span class='Error'>Error: Redefinition</span>
+
+       <span class='Value'>a</span> <span class='Function'>⊐</span> <span class='Bracket'>⟨</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Bracket'>⟩</span>
+┌·   
+· 3  
+    ┘
+</pre>
