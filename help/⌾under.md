@@ -1,4 +1,6 @@
-Circle Jot (`⌾`)
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/⌾under.html).*
+
+# Circle Jot (`⌾`)
 
 `𝔽⌾𝔾 𝕩`, `𝕨 𝔽⌾𝔾 𝕩`: Under
 
@@ -10,11 +12,11 @@ Where `𝔾` must be
 
 1. A function invertible by `⁼` (Undo)
 2. A structural modification
-```
-   9⌾(1⊸⊑) 1‿2‿3
-⟨ 1 9 3 ⟩
-   √⁼ (√1) + (√9)
-16
-   1 +⌾√ 9
-16
-```
+
+       9⌾(1⊸⊑) 1‿2‿3
+    ⟨ 1 9 3 ⟩
+       √⁼ (√1) + (√9)
+    16
+       1 +⌾√ 9
+    16
+

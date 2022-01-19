@@ -1,0 +1,31 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Exclamation Mark (`!`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="exclamation-mark-"><a class="header" href="#exclamation-mark-">Exclamation Mark (<code><span class='Function'>!</span></code>)</a></h1>
+<p><code><span class='Function'>!</span> <span class='Value'>𝕩</span></code>: Assert</p>
+<p>Throw an error if <code><span class='Value'>𝕩</span></code> is not 1.</p>
+<pre>   <span class='Function'>!</span> <span class='Number'>1</span>
+<span class='Number'>1</span>
+   <span class='Function'>!</span> <span class='Number'>2</span>
+<span class='Function'>Error</span><span class='Value'>:</span> <span class='Function'>Assertion</span> <span class='Value'>error</span>
+<span class='Value'>at</span> <span class='Function'>!</span> <span class='Number'>2</span>
+   <span class='Value'>^</span>
+   <span class='Function'>!</span> <span class='String'>&quot;hello&quot;</span>
+<span class='Function'>Error</span><span class='Value'>:</span> <span class='Value'>hello</span>
+<span class='Value'>at</span> <span class='Function'>!</span> <span class='String'>&quot;hello&quot;</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>!</span> <span class='Value'>𝕩</span></code>: Dyad</p>
+<p>Throw an error with message <code><span class='Value'>𝕨</span></code> if <code><span class='Value'>𝕩</span></code> is not 1.</p>
+<pre>   <span class='String'>&quot;hi&quot;</span> <span class='Function'>!</span> <span class='Number'>1</span>
+<span class='Number'>1</span>
+   <span class='String'>&quot;two&quot;</span> <span class='Function'>!</span> <span class='Number'>2</span>
+<span class='Function'>Error</span><span class='Value'>:</span> <span class='Value'>two</span>
+<span class='Value'>at</span> <span class='String'>&quot;two&quot;</span> <span class='Function'>!</span> <span class='Number'>2</span>
+         <span class='Value'>^</span>
+   <span class='String'>&quot;hello error&quot;</span> <span class='Function'>!</span> <span class='String'>&quot;hello&quot;</span>
+<span class='Function'>Error</span><span class='Value'>:</span> <span class='Value'>hello</span> <span class='Value'>error</span>
+<span class='Value'>at</span> <span class='String'>&quot;hello error&quot;</span> <span class='Function'>!</span> <span class='String'>&quot;hello&quot;</span>
+</pre>

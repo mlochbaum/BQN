@@ -1,0 +1,26 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Times (`×`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="times-"><a class="header" href="#times-">Times (<code><span class='Function'>×</span></code>)</a></h1>
+<p><code><span class='Function'>×</span> <span class='Value'>𝕩</span></code>: Sign</p>
+<p>Sign of <code><span class='Value'>𝕩</span></code>.</p>
+<ul>
+<li><code><span class='Number'>¯1</span></code> if <code><span class='Value'>𝕩</span> <span class='Function'>&lt;</span> <span class='Number'>0</span></code></li>
+<li><code><span class='Number'>0</span></code> if <code><span class='Value'>𝕩</span> <span class='Function'>=</span> <span class='Number'>0</span></code></li>
+<li><code><span class='Number'>1</span></code> if <code><span class='Value'>𝕩</span> <span class='Function'>&gt;</span> <span class='Number'>0</span></code></li>
+</ul>
+<p><a href="https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion">Pervasive.</a></p>
+<pre>  <span class='Function'>×</span> <span class='Number'>¯5</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+<span class='Bracket'>⟨</span> <span class='Number'>¯1</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>×</span> <span class='Value'>𝕩</span></code>: Multiply</p>
+<p><code><span class='Value'>𝕨</span></code> multiplied by <code><span class='Value'>𝕩</span></code>.</p>
+<p><a href="https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion">Pervasive.</a></p>
+<pre>  <span class='Number'>1</span> <span class='Function'>×</span> <span class='Number'>2</span>
+<span class='Number'>2</span>
+  <span class='Number'>2</span> <span class='Function'>×</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+<span class='Bracket'>⟨</span> <span class='Number'>4</span> <span class='Number'>6</span> <span class='Number'>8</span> <span class='Bracket'>⟩</span>
+</pre>

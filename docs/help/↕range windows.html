@@ -1,0 +1,50 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Up Down Arrow (`↕`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="up-down-arrow-"><a class="header" href="#up-down-arrow-">Up Down Arrow (<code><span class='Function'>↕</span></code>)</a></h1>
+<p><code><span class='Function'>↕</span> <span class='Value'>𝕩</span></code>: Range</p>
+<p>Return all indices to index into an array of shape <code><span class='Value'>𝕩</span></code>, in the shape described by <code><span class='Value'>𝕩</span></code>.</p>
+<p>When given a single number, range from 0 to <code><span class='Value'>𝕩</span><span class='Function'>-</span><span class='Number'>1</span></code>.</p>
+<pre>   <span class='Function'>↕</span> <span class='Number'>4</span>
+<span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span>
+   <span class='Function'>↕</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span>
+<span class='Value'>┌─</span>                                         
+<span class='Value'>╵</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>2</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span>  
+  <span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span>  
+  <span class='Bracket'>⟨</span> <span class='Number'>2</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>2</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>2</span> <span class='Number'>2</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>2</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span>  
+  <span class='Bracket'>⟨</span> <span class='Number'>3</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>3</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>3</span> <span class='Number'>2</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>3</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>3</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span>  
+                                          <span class='Value'>┘</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>↕</span> <span class='Value'>𝕩</span></code>: Windows</p>
+<p>Overlapping slices of <code><span class='Value'>𝕩</span></code> which are of shape <code><span class='Value'>𝕨</span></code>.</p>
+<pre>   <span class='Number'>5</span> <span class='Function'>↕</span> <span class='String'>&quot;abcdefg&quot;</span>
+<span class='Value'>┌─</span>       
+<span class='Value'>╵</span><span class='String'>&quot;abcde  
+  bcdef  
+  cdefg&quot;</span> 
+        <span class='Value'>┘</span>
+   <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Function'>⥊↕</span><span class='Number'>9</span>
+<span class='Value'>┌─</span>       
+<span class='Value'>╵</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+  <span class='Number'>3</span> <span class='Number'>4</span> <span class='Number'>5</span>  
+  <span class='Number'>6</span> <span class='Number'>7</span> <span class='Number'>8</span>  
+        <span class='Value'>┘</span>
+   <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>↕</span> <span class='Value'>a</span>
+<span class='Value'>┌─</span>     
+<span class='Value'>┆</span> <span class='Number'>0</span> <span class='Number'>1</span>  
+  <span class='Number'>3</span> <span class='Number'>4</span>  
+       
+  <span class='Number'>1</span> <span class='Number'>2</span>  
+  <span class='Number'>4</span> <span class='Number'>5</span>  
+       
+       
+  <span class='Number'>3</span> <span class='Number'>4</span>  
+  <span class='Number'>6</span> <span class='Number'>7</span>  
+       
+  <span class='Number'>4</span> <span class='Number'>5</span>  
+  <span class='Number'>7</span> <span class='Number'>8</span>  
+      <span class='Value'>┘</span>
+</pre>

@@ -1,0 +1,25 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Lesser Than (`<`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="lesser-than-"><a class="header" href="#lesser-than-">Lesser Than (<code><span class='Function'>&lt;</span></code>)</a></h1>
+<p><code><span class='Function'>&lt;</span> <span class='Value'>𝕩</span></code>: Enclose</p>
+<p>Create a unit array containing <code><span class='Value'>𝕩</span></code>. (<code><span class='Paren'>(</span><span class='Function'>≢</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Function'>≡</span> <span class='Bracket'>⟨⟩</span></code>)</p>
+<pre>  <span class='Function'>&lt;</span><span class='Number'>1</span>
+<span class='Value'>┌</span><span class='Nothing'>·</span>   
+<span class='Nothing'>·</span> <span class='Number'>1</span>  
+    <span class='Value'>┘</span>
+
+  <span class='Function'>≢&lt;</span><span class='Number'>1</span>
+<span class='Bracket'>⟨⟩</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>&lt;</span> <span class='Value'>𝕩</span></code>: Lesser Than</p>
+<p><code><span class='Value'>𝕨</span></code> and <code><span class='Value'>𝕩</span></code> can both be either numbers or characters.</p>
+<p><a href="https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion">Pervasive.</a></p>
+<pre>  <span class='Number'>1</span> <span class='Function'>&lt;</span> <span class='Number'>3</span>
+<span class='Number'>1</span>
+  <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>0</span> <span class='Function'>&lt;</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>0</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span>
+</pre>

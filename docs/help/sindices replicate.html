@@ -1,0 +1,22 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Solidus (`/`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="solidus-"><a class="header" href="#solidus-">Solidus (<code><span class='Function'>/</span></code>)</a></h1>
+<p><code><span class='Function'>/</span> <span class='Value'>𝕩</span></code>: Indices</p>
+<p>Repeat the index of each element in <code><span class='Value'>𝕩</span></code> by the element's value. <code><span class='Value'>𝕩</span></code> must be rank 1.</p>
+<pre>   <span class='Function'>/</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+<span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Number'>2</span> <span class='Number'>2</span> <span class='Bracket'>⟩</span>
+   <span class='Function'>/</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+<span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>2</span> <span class='Bracket'>⟩</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>/</span> <span class='Value'>𝕩</span></code>: Replicate</p>
+<p>Repeat each major cell in <code><span class='Value'>𝕩</span></code> by the corresponding element in <code><span class='Value'>𝕨</span></code>.</p>
+<p>Atomic <code><span class='Value'>𝕨</span></code> applies to all elements.</p>
+<pre>   <span class='Number'>3</span> <span class='Function'>/</span> <span class='String'>&quot;copy&quot;</span>
+<span class='String'>&quot;cccooopppyyy&quot;</span>
+   <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span> <span class='Function'>/</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span>
+</pre>

@@ -1,0 +1,35 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Multimap (`⊸`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="multimap-"><a class="header" href="#multimap-">Multimap (<code><span class='Modifier2'>⊸</span></code>)</a></h1>
+<p><code><span class='Value'>𝕗</span><span class='Modifier2'>⊸</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Bind Left</p>
+<p>Supply <code><span class='Value'>𝕗</span></code> as a left argument to <code><span class='Function'>𝔾</span></code> (<code><span class='Value'>𝕗</span> <span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>).</p>
+<p><code><span class='Value'>𝕗</span></code> must be a value, <code><span class='Function'>𝔾</span></code> must be dyadic.</p>
+<pre>   <span class='Number'>3</span><span class='Modifier2'>⊸</span><span class='Function'>-</span> <span class='Number'>9</span>
+<span class='Number'>¯6</span>
+   <span class='Number'>3</span> <span class='Function'>-</span> <span class='Number'>9</span>
+<span class='Number'>¯6</span>
+</pre>
+<p><code><span class='Function'>𝔽</span><span class='Modifier2'>⊸</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Before</p>
+<p>Apply <code><span class='Function'>𝔽</span></code> to <code><span class='Value'>𝕩</span></code>, and supply it as a left argument to <code><span class='Function'>𝔾</span></code> (<code><span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>).</p>
+<p><code><span class='Function'>𝔽</span></code> must be monadic, <code><span class='Function'>𝔾</span></code> must be dyadic.</p>
+<pre>   <span class='Function'>-</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Number'>9</span>
+<span class='Number'>0</span>
+   <span class='Function'>-</span> <span class='Function'>+</span> <span class='Number'>9</span>
+<span class='Number'>¯9</span>
+   <span class='Paren'>(</span><span class='Function'>-</span> <span class='Number'>9</span><span class='Paren'>)</span> <span class='Function'>+</span> <span class='Number'>9</span>
+<span class='Number'>0</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier2'>⊸</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Dyadic Before</p>
+<p>Apply <code><span class='Function'>𝔽</span></code> to <code><span class='Value'>𝕨</span></code>, and supply it as a left argument to <code><span class='Function'>𝔾</span></code> (<code><span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Value'>𝕨</span><span class='Paren'>)</span> <span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>).</p>
+<p><code><span class='Function'>𝔽</span></code> must be monadic, <code><span class='Function'>𝔾</span></code> must be dyadic.</p>
+<pre>   <span class='Number'>2</span> <span class='Function'>-</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Number'>1</span>
+<span class='Number'>¯1</span>
+   <span class='Number'>2</span> <span class='Function'>-</span> <span class='Function'>+</span> <span class='Number'>1</span>
+<span class='Number'>1</span>
+   <span class='Paren'>(</span><span class='Function'>-</span> <span class='Number'>2</span><span class='Paren'>)</span> <span class='Function'>+</span> <span class='Number'>1</span>
+<span class='Number'>¯1</span>
+</pre>

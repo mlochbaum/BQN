@@ -1,0 +1,37 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Element Of (`∊`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="element-of-"><a class="header" href="#element-of-">Element Of (<code><span class='Function'>∊</span></code>)</a></h1>
+<p><code><span class='Function'>∊</span> <span class='Value'>𝕩</span></code>: Unique Mask</p>
+<p>Mark the first occurrence of each major cell in <code><span class='Value'>𝕩</span></code> with a 1, and all other occurrences with a 0.</p>
+<pre>   <span class='Function'>∊</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>5</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>1</span> <span class='Number'>1</span> <span class='Number'>0</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span>
+   <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>9</span>
+<span class='Value'>┌─</span>       
+<span class='Value'>╵</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+  <span class='Number'>3</span> <span class='Number'>4</span> <span class='Number'>5</span>  
+  <span class='Number'>6</span> <span class='Number'>7</span> <span class='Number'>8</span>  
+        <span class='Value'>┘</span>
+   <span class='Function'>∊</span> <span class='Value'>a</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>1</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>∊</span> <span class='Value'>𝕩</span></code>: Member Of</p>
+<p>Is each element in <code><span class='Value'>𝕨</span></code> a major cell of <code><span class='Value'>𝕩</span></code>?</p>
+<pre>   <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>∊</span> <span class='Function'>↕</span><span class='Number'>9</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span>
+   <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>9</span>
+<span class='Value'>┌─</span>       
+<span class='Value'>╵</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+  <span class='Number'>3</span> <span class='Number'>4</span> <span class='Number'>5</span>  
+  <span class='Number'>6</span> <span class='Number'>7</span> <span class='Number'>8</span>  
+        <span class='Value'>┘</span>
+   <span class='Bracket'>⟨</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Bracket'>⟩</span> <span class='Function'>∊</span> <span class='Value'>a</span>
+<span class='Value'>┌</span><span class='Nothing'>·</span>   
+<span class='Nothing'>·</span> <span class='Number'>0</span>  
+    <span class='Value'>┘</span>
+   <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Bracket'>⟩</span> <span class='Function'>∊</span> <span class='Value'>a</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span>
+</pre>

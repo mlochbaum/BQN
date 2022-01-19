@@ -1,0 +1,42 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Barb (`⥊`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="barb-"><a class="header" href="#barb-">Barb (<code><span class='Function'>⥊</span></code>)</a></h1>
+<p><code><span class='Function'>⥊</span> <span class='Value'>𝕩</span></code>: Deshape</p>
+<p>Put all elements of <code><span class='Value'>𝕩</span></code> in a rank 1 array, converting to array if necessary.</p>
+<pre>  <span class='Function'>⥊</span> <span class='Number'>1</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span>
+  <span class='Function'>⥊</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>≍</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>⥊</span> <span class='Value'>𝕩</span></code>: Reshape</p>
+<p>Put all elements of <code><span class='Value'>𝕩</span></code> in an array of shape <code><span class='Value'>𝕨</span></code>, adding or removing elements if necessary.</p>
+<p>A single element in <code><span class='Value'>𝕩</span></code> can be a function, which will be replaced with an appropriate length:</p>
+<ul>
+<li><code><span class='Modifier2'>∘</span></code> Exact fit</li>
+<li><code><span class='Function'>⌊</span></code> Round length down, discarding elements</li>
+<li><code><span class='Function'>⌽</span></code> Round length up</li>
+<li><code><span class='Function'>↑</span></code> Round length up, and use element fill to add extra elements.</li>
+</ul>
+<pre>  <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Number'>3</span>
+<span class='Value'>┌─</span>       
+<span class='Value'>╵</span> <span class='Number'>3</span> <span class='Number'>3</span> <span class='Number'>3</span>  
+  <span class='Number'>3</span> <span class='Number'>3</span> <span class='Number'>3</span>  
+  <span class='Number'>3</span> <span class='Number'>3</span> <span class='Number'>3</span>  
+        <span class='Value'>┘</span>
+  <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>⌽</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⥊</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+<span class='Value'>┌─</span>     
+<span class='Value'>╎</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+       
+  <span class='Number'>3</span> <span class='Number'>1</span>  
+      <span class='Value'>┘</span>
+  <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>↑</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⥊</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+<span class='Value'>┌─</span>     
+<span class='Value'>╎</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+       
+  <span class='Number'>3</span> <span class='Number'>0</span>  
+      <span class='Value'>┘</span>
+</pre>

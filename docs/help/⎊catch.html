@@ -1,0 +1,16 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Circled Triangle Down (`⎊`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="circled-triangle-down-"><a class="header" href="#circled-triangle-down-">Circled Triangle Down (<code><span class='Modifier2'>⎊</span></code>)</a></h1>
+<p><code><span class='Function'>𝔽</span><span class='Modifier2'>⎊</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>, <code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier2'>⎊</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Catch</p>
+<p>Apply <code><span class='Function'>𝔽</span></code> to the arguments.</p>
+<p>If an error happens when <code><span class='Function'>𝔽</span></code> is applied, cancel its execution, apply <code><span class='Function'>𝔾</span></code> to the arguments and return the results.</p>
+<p>Otherwise, return the results of <code><span class='Function'>𝔽</span></code>.</p>
+<pre>   <span class='Function'>∾</span><span class='Modifier2'>⎊</span><span class='Brace'>{</span><span class='String'>&quot;error occurred with argument: &quot;</span><span class='Function'>∾•Fmt</span> <span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>1</span>
+<span class='String'>&quot;error occurred with argument: 1&quot;</span>
+   <span class='Function'>∾</span><span class='Modifier2'>⎊</span><span class='Brace'>{</span><span class='String'>&quot;error occurred with argument: &quot;</span><span class='Function'>∾•Fmt</span> <span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Bracket'>⟨⟨</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩</span><span class='Separator'>,</span> <span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩⟩</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span>
+</pre>
