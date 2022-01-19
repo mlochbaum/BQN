@@ -1,0 +1,23 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Circle Jot (`⌾`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="circle-jot-"><a class="header" href="#circle-jot-">Circle Jot (<code><span class='Modifier2'>⌾</span></code>)</a></h1>
+<p><code><span class='Function'>𝔽</span><span class='Modifier2'>⌾</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>, <code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier2'>⌾</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Under</p>
+<ul>
+<li>Apply transformation <code><span class='Function'>𝔾</span></code> to all arguments</li>
+<li>Apply <code><span class='Function'>𝔽</span></code> to the transformed arguments</li>
+<li>Undo transformation <code><span class='Function'>𝔾</span></code></li>
+</ul>
+<p>Where <code><span class='Function'>𝔾</span></code> must be</p>
+<p>1. A function invertible by <code><span class='Modifier'>⁼</span></code> (Undo)
+2. A structural modification</p>
+<pre>   <span class='Number'>9</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span><span class='Paren'>)</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+<span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>9</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span>
+   <span class='Function'>√</span><span class='Modifier'>⁼</span> <span class='Paren'>(</span><span class='Function'>√</span><span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>+</span> <span class='Paren'>(</span><span class='Function'>√</span><span class='Number'>9</span><span class='Paren'>)</span>
+<span class='Number'>16</span>
+   <span class='Number'>1</span> <span class='Function'>+</span><span class='Modifier2'>⌾</span><span class='Function'>√</span> <span class='Number'>9</span>
+<span class='Number'>16</span>
+</pre>

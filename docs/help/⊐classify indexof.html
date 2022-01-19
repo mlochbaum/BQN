@@ -1,0 +1,36 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Square Original Of (`⊐`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="square-original-of-"><a class="header" href="#square-original-of-">Square Original Of (<code><span class='Function'>⊐</span></code>)</a></h1>
+<p><code><span class='Function'>⊐</span> <span class='Value'>𝕩</span></code>: Classify</p>
+<p>First index of each major cell of <code><span class='Value'>𝕩</span></code> in <code><span class='Value'>𝕩</span></code>.</p>
+<pre>   <span class='Function'>⊐</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+<span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Number'>2</span> <span class='Number'>0</span> <span class='Number'>3</span> <span class='Bracket'>⟩</span>
+   <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+<span class='Value'>┌─</span>       
+<span class='Value'>╵</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+  <span class='Number'>9</span> <span class='Number'>0</span> <span class='Number'>9</span>  
+  <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+        <span class='Value'>┘</span>
+   <span class='Function'>⊐</span> <span class='Value'>a</span>
+<span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span>
+</pre>
+<p><code><span class='Value'>𝕨</span> <span class='Function'>⊐</span> <span class='Value'>𝕩</span></code>: Index Of</p>
+<p>First index of each major cell of <code><span class='Value'>𝕩</span></code> in <code><span class='Value'>𝕨</span></code>. Rank of <code><span class='Value'>𝕩</span></code> must be at least cell rank of 𝕨`.</p>
+<p>If a cell is not found in <code><span class='Value'>𝕨</span></code>, that position will contain the length of <code><span class='Value'>𝕨</span></code> (<code><span class='Function'>≠</span><span class='Value'>𝕨</span></code>).</p>
+<pre>   <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span> <span class='Function'>⊐</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>6</span>
+<span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>2</span> <span class='Number'>5</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span>
+   <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span>
+<span class='Value'>┌─</span>       
+<span class='Value'>╵</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+  <span class='Number'>9</span> <span class='Number'>0</span> <span class='Number'>9</span>  
+  <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span>  
+        <span class='Value'>┘</span>
+   <span class='Value'>a</span> <span class='Function'>⊐</span> <span class='Bracket'>⟨</span><span class='Number'>9</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>9</span><span class='Bracket'>⟩</span>
+<span class='Value'>┌</span><span class='Nothing'>·</span>   
+<span class='Nothing'>·</span> <span class='Number'>3</span>  
+    <span class='Value'>┘</span>
+</pre>

@@ -1,0 +1,38 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Circled Horizontal Bar With Notch (`⎉`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="circled-horizontal-bar-with-notch-"><a class="header" href="#circled-horizontal-bar-with-notch-">Circled Horizontal Bar With Notch (<code><span class='Modifier2'>⎉</span></code>)</a></h1>
+<p><code><span class='Function'>𝔽</span><span class='Modifier2'>⎉</span><span class='Value'>𝕘</span> <span class='Value'>𝕩</span></code>, <code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier2'>⎉</span><span class='Value'>𝕘</span> <span class='Value'>𝕩</span></code>: Rank</p>
+<p>Apply <code><span class='Function'>𝔽</span></code> to cells at ranks given in <code><span class='Value'>𝕘</span></code>.</p>
+<p>The ranks applied are given by the following:</p>
+<ul>
+<li><code><span class='Modifier2'>⎉</span> <span class='Value'>c</span></code>    Rank-c cells of <code><span class='Value'>𝕩</span></code> (monadic) or both arguments (dyadic)</li>
+<li><code><span class='Modifier2'>⎉</span> <span class='Value'>b</span><span class='Ligature'>‿</span><span class='Value'>c</span></code>   ⍝ Rank-b cells of <code><span class='Value'>𝕨</span></code> and rank-c cells of <code><span class='Value'>𝕩</span></code> (dyadic)</li>
+<li><code><span class='Modifier2'>⎉</span> <span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span><span class='Ligature'>‿</span><span class='Value'>c</span></code>   ⍝ Rank-a cells of <code><span class='Value'>𝕩</span></code> (monadic), b-cells of <code><span class='Value'>𝕨</span></code> and c-cells of <code><span class='Value'>𝕩</span></code> (dyadic)</li>
+</ul>
+<pre>   <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊</span><span class='String'>&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>
+<span class='Value'>┌─</span>      
+<span class='Value'>╎</span><span class='String'>&quot;ABCD  
+  EFGH  
+        
+ ·IJKL  
+  MNOP  
+        
+ ·QRST  
+  UVWX&quot;</span> 
+       <span class='Value'>┘</span>
+   <span class='Function'>⌽</span><span class='Modifier2'>⎉</span><span class='Number'>2</span> <span class='Value'>a</span>
+<span class='Value'>┌─</span>      
+<span class='Value'>╎</span><span class='String'>&quot;EFGH  
+  ABCD  
+        
+ ·MNOP  
+  IJKL  
+        
+ ·UVWX  
+  QRST&quot;</span> 
+       <span class='Value'>┘</span>
+</pre>
