@@ -4,7 +4,7 @@
     
 ## `⋆ 𝕩`: Exponential  
     
-## `e` (Euler's constant) to the power of `𝕩`.
+`e` (Euler's constant) to the power of `𝕩`.
     
 [Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
     
@@ -14,7 +14,7 @@
     
 ## `𝕨 ⋆ 𝕩`: Power
     
-## `𝕨` to the power of `𝕩`.
+`𝕨` to the power of `𝕩`.
     
 [Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
     

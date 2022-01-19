@@ -16,7 +16,7 @@ Create a unit array containing `𝕩`. (`(≢𝕩) ≡ ⟨⟩`)
     
 ## `𝕨 < 𝕩`: Lesser Than
     
-## `𝕨` and `𝕩` can both be either numbers or characters.
+`𝕨` and `𝕩` can both be either numbers or characters.
     
 [Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
     

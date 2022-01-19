@@ -12,7 +12,7 @@
     
 ## `𝕨 √ 𝕩`: Root
     
-## `𝕨`th root of `𝕩`.
+`𝕨`th root of `𝕩`.
     
 [Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
     

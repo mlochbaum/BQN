@@ -14,7 +14,7 @@ Gives `1 ÷ 𝕩`.
     
 ## `𝕨 ÷ 𝕩`: Divide
     
-## `𝕨` divided by `𝕩`.
+`𝕨` divided by `𝕩`.
     
 [Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
 

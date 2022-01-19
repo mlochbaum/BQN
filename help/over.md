@@ -6,7 +6,7 @@
     
 Apply `𝔾` to `𝕩`, then apply `𝔽` (`𝔽 𝔾 𝕩`).
     
-## `𝔽` and `𝔾` must be monadic.
+`𝔽` and `𝔾` must be monadic.
     
            -○- 5
 
@@ -18,7 +18,7 @@ Apply `𝔾` to `𝕩`, then apply `𝔽` (`𝔽 𝔾 𝕩`).
     
 Apply `𝔾` to `𝕨` and `𝕩`, then apply `𝔽` to them (`(𝔾 𝕨) 𝔽 (𝔾 𝕩)`).
     
-## `𝔽` must be dyadic, `𝔾` must be monadic.
+`𝔽` must be dyadic, `𝔾` must be monadic.
     
            1 +○- 2
 
