@@ -18,7 +18,7 @@ Supply `𝕗` as a left argument to `𝔾` (`𝕗 𝔾 𝕩`).
     
 Apply `𝔽` to `𝕩`, and supply it as a left argument to `𝔾` (`(𝔽 𝕩) 𝔾 𝕩`). 
     
-## `𝔽` must be monadic, `𝔾` must be dyadic.
+`𝔽` must be monadic, `𝔾` must be dyadic.
     
            -⊸+ 9
 
@@ -32,7 +32,7 @@ Apply `𝔽` to `𝕩`, and supply it as a left argument to `𝔾` (`(𝔽 𝕩)
     
 Apply `𝔽` to `𝕨`, and supply it as a left argument to `𝔾` (`(𝔽 𝕨) 𝔾 𝕩`).
     
-## `𝔽` must be monadic, `𝔾` must be dyadic.
+`𝔽` must be monadic, `𝔾` must be dyadic.
     
            2 -⊸+ 1
 

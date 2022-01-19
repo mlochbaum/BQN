@@ -19,7 +19,7 @@ Indices of `𝕩` that would sort its major cells in ascending order.
     
 Binary search for each element of `𝕩` in `𝕨`, and return the index found, if any. 
     
-## `𝕨` must be sorted in ascending order.
+`𝕨` must be sorted in ascending order.
     
            3‿4‿5‿7 ⍋ 2
 

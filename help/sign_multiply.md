@@ -17,7 +17,7 @@ Sign of `𝕩`.
     
 ## `𝕨 × 𝕩`: Multiply
     
-## `𝕨` multiplied by `𝕩`.
+`𝕨` multiplied by `𝕩`.
     
 [Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
     

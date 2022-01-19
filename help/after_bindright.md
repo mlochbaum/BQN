@@ -20,7 +20,7 @@ Supply `𝕘` as a right argument to `𝔽` (`𝕩 𝔽 𝕘`).
     
 Apply `𝔾` to `𝕩`, and supply it as a right argument to `𝔽` (`𝕩 𝔽 (𝔾 𝕩)`). 
     
-## `𝔽` must be dyadic, `𝔾` must be monadic.
+`𝔽` must be dyadic, `𝔾` must be monadic.
     
            ×⟜- 9
 
@@ -34,7 +34,7 @@ Apply `𝔾` to `𝕩`, and supply it as a right argument to `𝔽` (`𝕩 𝔽 
     
 Apply `𝔾` to `𝕩`, and supply it as a right argument to `𝔽` (`𝕨 𝔽 (𝔾 𝕩)`). 
     
-## `𝔽` must be dyadic, `𝔾` must be monadic.
+`𝔽` must be dyadic, `𝔾` must be monadic.
     
            2 ×⟜- 1
 

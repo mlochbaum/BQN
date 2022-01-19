@@ -18,7 +18,7 @@ Indices of `𝕩` that would sort its major cells in descending order.
     
 Binary search for each element of `𝕩` in `𝕨`, and return the index found, if any. 
     
-## `𝕨` must be sorted in descending order.
+`𝕨` must be sorted in descending order.
     
 [Right Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
     
