@@ -2,7 +2,7 @@
 
 # Grave (`` ` ``)
     
-## ``𝔽` 𝕩``: Fold
+## ``𝔽` 𝕩``: Scan
     
 Scan over `𝕩` with `𝔽` from left to right, producing intermediate values.
     

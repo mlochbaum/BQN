@@ -1,0 +1,19 @@
+#!/usr/bin/env cbqn
+
+thing ← {
+    data ← •FLines 𝕩
+    names ← (⊣∾", "∾⊢)´{(¬·∧`' '⊸=)⊸/⌾⌽(2+⊑/':'=𝕩)↓𝕩}¨("## "≡3⊸↑)¨⊸/data
+    t‿d ←  ∾/¨(⊏data)=¨"()"
+    sym ← "`"∾˜"`"∾{'`':"` ` `"; '|':"\"∾𝕩 ; 𝕩}¯3⊑2⊑data
+    •Show  "| " ∾ sym ∾ " | [" ∾ names ∾ "]("∾((t+1)↓d↑⊑data)∾ ") |"
+}¨•args
+
+head ← ⟨
+"*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/index.html).*"
+⟨⟩
+"# REPL Help"
+⟨⟩
+"| Symbol | Link |"
+"|--------|------|"
+⟩
+"index.md.tmp" •FLines head ∾ thing #rename once you have a proper file.

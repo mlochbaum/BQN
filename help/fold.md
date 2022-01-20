@@ -5,7 +5,9 @@
 ## `𝔽´ 𝕩`: Fold
     
 Fold over `𝕩` with `𝔽` from right to left i.e. Insert `𝔽` between the elements of `𝕩`.
-    
+
+`𝕩` must be a simple list (`1 = =𝕩`).
+
            +´ 1‿2‿3
 
            1+2+3
