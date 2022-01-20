@@ -22,13 +22,13 @@ Negative numbers drop from the end.
     
            3 ↓ 1‿3‿5‿67
 
-           a ← 4‿4 ⥊ ↕16
+           b ← 4‿4 ⥊ ↕16
 
-           3‿3 ↓ a
+           3‿3 ↓ b
 
-           5‿5 ↓ a
+           5‿5 ↓ b
 
 
-           3‿¯3 ↓ a
+           3‿¯3 ↓ b
 
     

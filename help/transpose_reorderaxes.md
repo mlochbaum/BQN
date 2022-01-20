@@ -20,8 +20,8 @@ Move the first axis of `𝕩` to the end.
     
 Rearrange the axes of `𝕩` as per the axis indices in `𝕨`.
     
-           ≢ a ← 2‿3‿4‿5‿6 ⥊1
+           ≢ b ← 2‿3‿4‿5‿6 ⥊1
 
-           ≢ 1‿3‿2‿0‿4 ⍉ a
+           ≢ 1‿3‿2‿0‿4 ⍉ b
 
     

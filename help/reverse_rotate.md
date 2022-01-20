@@ -20,8 +20,8 @@ Move the first `𝕨` elements of `𝕩` to its end. Negative `𝕨` reverses th
     
            2 ⌽ 1‿2‿3
 
-           a ← 3‿3 ⥊ ↕9
+           b ← 3‿3 ⥊ ↕9
 
-           2 ⌽ a
+           2 ⌽ b
 
     
