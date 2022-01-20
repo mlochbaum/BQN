@@ -20,8 +20,8 @@ Select the major cells of `𝕨` at the indices in `𝕩`.
     
            2‿0 ⊏ ⟨1, 2, 3⟩
 
-           a ← 3‿3 ⥊ ↕9
+           b ← 3‿3 ⥊ ↕9
 
-           2‿0 ⊏ a
+           2‿0 ⊏ b
 
     
