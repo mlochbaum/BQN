@@ -1,0 +1,15 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Full Stop (`.`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="full-stop-"><a class="header" href="#full-stop-">Full Stop (<code><span class='Value'>.</span></code>)</a></h1>
+<h2 id="ns--name-namespace-field"><a class="header" href="#ns--name-namespace-field"><code><span class='Value'>ns</span> <span class='Value'>.</span> <span class='Value'>name</span></code>: Namespace Field</a></h2>
+<p>Access a field with name <code><span class='Value'>name</span></code> in namespace <code><span class='Value'>ns</span></code>. Field must have been exported with <code><span class='Gets'>⇐</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=e2Hih5AxfSAuIGEKCntG4oeQLX0uRiA1">↗️</a><pre>    <span class='Brace'>{</span><span class='Value'>a</span><span class='Gets'>⇐</span><span class='Number'>1</span><span class='Brace'>}</span> <span class='Value'>.</span> <span class='Value'>a</span>
+1
+
+    <span class='Brace'>{</span><span class='Function'>F</span><span class='Gets'>⇐</span><span class='Function'>-</span><span class='Brace'>}</span><span class='Value'>.</span><span class='Function'>F</span> <span class='Number'>5</span>
+¯5
+</pre>

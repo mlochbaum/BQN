@@ -15,7 +15,7 @@ Throw an error if `𝕩` is not 1.
 
     
     
-## `𝕨 ! 𝕩`: Dyad
+## `𝕨 ! 𝕩`: Assert With Message
     
 Throw an error with message `𝕨` if `𝕩` is not 1.
     
