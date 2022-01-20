@@ -54,9 +54,11 @@ if (doc.doexplain) doc.doexplain.onclick = () => {
       e.innerHTML = s?drawEval(s,c).map(l=>l.join("")).join("\n"):'';
       setTimeout(() => {
         e.querySelectorAll('tspan').forEach(t => {
-          let h = primhelp[t.textContent];
+          let c = t.textContent, h = primhelp[c];
           if (!h) return;
           t.innerHTML = t.textContent+'<title>'+h+'</title>';
+          t.classList.add('clickable');
+          t.onclick = ev => { window.open('help/'+helpurl[c]+'.html'); }
         });
       }, 0);
     }
