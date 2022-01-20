@@ -2,7 +2,7 @@
 
 # Left Tack (`⊣`)
     
-## `⊣ 𝕩`: 
+## `⊣ 𝕩`: Identity
     
 Return `𝕩`.
     

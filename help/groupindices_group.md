@@ -6,7 +6,7 @@
     
 Group the indices of the major cells of `𝕩` by their respective values.
     
-## `𝕩` must consist of integers. Groups start from 0. 
+`𝕩` must consist of integers. Groups start from 0. 
     
            ⊔ 4‿5‿6‿6‿4‿7‿5
 
