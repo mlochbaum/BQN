@@ -1,0 +1,16 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Left Parenthesis (`(`)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="left-parenthesis-"><a class="header" href="#left-parenthesis-">Left Parenthesis (<code><span class='Paren'>(</span></code>)</a></h1>
+<h2 id="--begin-expression"><a class="header" href="#--begin-expression"><code><span class='Paren'>(</span> <span class='Value'>...</span></code>: Begin Expression</a></h2>
+<p>Starts an expression, and only one expression. Must end with a corresponding <code><span class='Paren'>)</span></code>.</p>
+<p><code><span class='Paren'>(</span></code> gives higher precedence to the expression in it, and BQN will evaluate expressions in <code><span class='Paren'>()</span></code> first.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MSArIDIgLSAzCgooMSArIDIpIC0gMw==">↗️</a><pre>    <span class='Number'>1</span> <span class='Function'>+</span> <span class='Number'>2</span> <span class='Function'>-</span> <span class='Number'>3</span>
+0
+
+    <span class='Paren'>(</span><span class='Number'>1</span> <span class='Function'>+</span> <span class='Number'>2</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Number'>3</span>
+0
+</pre>
