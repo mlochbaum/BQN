@@ -12,7 +12,7 @@ Apply `𝔽` to `𝕩`.
 
     
     
-## `𝕨 𝔽⊘𝔾 𝕩`: Valences
+## `𝕨 𝔽⊘𝔾 𝕩`: Dyadic Valences
     
 Apply `𝔾` to `𝕨` and `𝕩`.
     
