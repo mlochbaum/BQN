@@ -6,7 +6,7 @@
     
 Round `𝕩` up.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           ⌈ 1.2‿π‿3‿7.89
 
@@ -16,7 +16,7 @@ Round `𝕩` up.
     
 Maximum of `𝕨` and `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           1 ⌈ 2
 

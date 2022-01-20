@@ -6,7 +6,7 @@
     
 Additive Inverse of `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           - 1
 
@@ -17,7 +17,7 @@ Additive Inverse of `𝕩`.
     
 Subtract `𝕩` from `𝕨`. `𝕨` and `𝕩` can be characters or integers.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           1 - 2
 

@@ -20,7 +20,7 @@ Binary search for each element of `𝕩` in `𝕨`, and return the index found, 
     
 `𝕨` must be sorted in descending order.
     
-[Right Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Right Pervasive.](../doc/arithmetic.md#pervasion)
     
            7‿5‿4‿3 ⍒ 2
 

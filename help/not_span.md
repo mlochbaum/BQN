@@ -6,7 +6,7 @@
     
 Logical Not of `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           ¬ 0
 
@@ -18,7 +18,7 @@ Logical Not of `𝕩`.
     
 Count of numbers in the inclusive range from `𝕩` to `𝕨`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           3 ¬ 1
 
