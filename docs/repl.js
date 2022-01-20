@@ -117,7 +117,7 @@ let syncls={ v:"Value", f:"Function", m:"Modifier", d:"Modifier2", n:"Number", g
 let keydesc='f+Conjugate;Add_f-Negate;Subtract_f×Sign;Multiply_f÷Reciprocal;Divide_f⋆Exponential;Power_f√Square Root;Root_f⌊Floor;Minimum_f⌈Ceiling;Maximum_f∧Sort Up;And_f∨Sort Down;Or_f¬Not;Span_f|Absolute Value;Modulus_f≤Less Than or Equal to_f<Enclose;Less Than_f>Merge;Greater Than_f≥Greater Than or Equal to_f=Rank;Equals_f≠Length;Not Equals_f≡Depth;Match_f≢Shape;Not Match_f⊣Identity;Left_f⊢Identity;Right_f⥊Deshape;Reshape_f∾Join;Join to_f≍Solo;Couple_f⋈Enlist;Pair_f↑Prefixes;Take_f↓Suffixes;Drop_f↕Range;Windows_f«Shift Before_f»Shift After_f⌽Reverse;Rotate_f⍉Transpose;Reorder axes_f/Indices;Replicate_f⍋Grade Up;Bins Up_f⍒Grade Down;Bins Down_f⊏First Cell;Select_f⊑First;Pick_f⊐Classify;Index of_f⊒Occurrence Count;Progressive Index of_f∊Mark First;Member of_f⍷Deduplicate;Find_f⊔Group Indices;Group_f!Assert;Assert with message_m˙Constant_m˜Self/Swap_d∘Atop_d○Over_d⊸Before/Bind_d⟜After/Bind_d⌾Under_d⊘Valences_d◶Choose_d⎊Catch_d⎉Rank_m˘Cells_d⚇Depth_m¨Each_m⌜Table_d⍟Repeat_m⁼Undo_m´Fold_m˝Insert_m`Scan_g←Define_g⇐Export_g↩Change_s⋄Separator_s,Separator_v.Namespace field_p(Begin expression_p)End expression_k{Begin block_k}End block_b⟨Begin list_b⟩End list_l‿Strand_n·Nothing_v•System_v𝕨Left argument_f𝕎Left argument (as function)_v𝕩Right argument_f𝕏Right argument (as function)_v𝕗Modifier left operand (as subject)_f𝔽Modifier left operand_v𝕘2-modifier right operand (as subject)_f𝔾2-modifier right operand_v𝕤Current function (as subject)_f𝕊Current function_m𝕣Current modifier_n¯Minus_nπPi_n∞Infinity_a@Null character_c#Comment'.split(/[\n_]/);
 let kk=Array.from('`123456890-=~!@#$%^&*()_+qwertuiop[]QWERTIOP{}asdfghjkl;ASFGHKL:"zxcvbm,./ZXVBM<>? \'');
 let kv=Array.from('˜˘¨⁼⌜´˝∞¯•÷×¬⎉⚇⍟◶⊘⎊⍎⍕⟨⟩√⋆⌽𝕨∊↑∧⊔⊏⊐π←→↙𝕎⍷𝕣⍋⊑⊒⍳⊣⊢⍉𝕤↕𝕗𝕘⊸∘○⟜⋄↖𝕊𝔽𝔾«⌾»·˙⥊𝕩↓∨⌊≡∾≍≠⋈𝕏⍒⌈≢≤≥⇐‿↩');
-let keys={}, revkeys={}, primhelp={};
+let keys={}, revkeys={}, primhelp={}, helpurl={};
 kk.map((k,i)=>{keys[k]=kv[i];revkeys[kv[i]]=k;});
 doc.kb.innerHTML = keydesc
   .map(d=>'<span class="'+syncls[d[0]]+'">'+Array.from(d)[1]+'</span>')
@@ -128,6 +128,8 @@ let setPrefix = () => {
     let d = keydesc[i];
     let c = Array.from(d)[1];
     let t = d.slice(1+c.length).replace(';','\n');
+    helpurl[c] = t.toLowerCase().replace(/ (\(.*)?/g,'')
+                                .replace(/[\n/]/g,'_');
     let k = revkeys[c]; if (k) t += '\n'+prefix+(k==='"'?'&quot;':k);
     x.title = primhelp[c] = t;
   });
@@ -136,14 +138,13 @@ setPrefix();
 doc.kb.onmousedown = ev => {
   let t = ev.target;
   if (t.nodeName === 'SPAN') {
+    let c = t.textContent;
     if (ev.button || modified(ev)) {
-      let name = t.title.toLowerCase().replace(/ (\(.*)?|\n\\.*/g,'')
-                                      .replace(/[\n/]/g,'_');
-      window.open('help/'+name+'.html');
-      return false;
+      window.open('help/'+helpurl[c]+'.html');
     } else {
-      return typeChar(doc.code, t.textContent, ev);
+      typeChar(doc.code, c, ev);
     }
+    return false;
   }
 }
 
