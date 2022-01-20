@@ -6,7 +6,7 @@
     
 Supply `𝕘` as a right argument to `𝔽` (`𝕩 𝔽 𝕘`).
     
-## `𝕘` must be a value, `F` must be dyadic.
+`𝕘` must be a value, `F` must be dyadic.
     
            -⟜3 9
 

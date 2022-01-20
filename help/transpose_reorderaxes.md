@@ -16,7 +16,7 @@ Move the first axis of `𝕩` to the end.
 
     
     
-## `𝕨 ⍉ 𝕩`: Dyad
+## `𝕨 ⍉ 𝕩`: Reorder Axes
     
 Rearrange the axes of `𝕩` as per the axis indices in `𝕨`.
     
