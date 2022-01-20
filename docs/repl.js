@@ -129,7 +129,6 @@ let setPrefix = () => {
     let c = Array.from(d)[1];
     let t = d.slice(1+c.length).replace(';','\n');
     let k = revkeys[c]; if (k) t += '\n'+prefix+(k==='"'?'&quot;':k);
-    x.hashelp = i < 64; // comment out after patch for double struck
     x.title = primhelp[c] = t;
   });
 }
@@ -138,9 +137,9 @@ doc.kb.onmousedown = ev => {
   let t = ev.target;
   if (t.nodeName === 'SPAN') {
     if (ev.button || modified(ev)) {
-      let name = t.title.toLowerCase().replace(/ |\n\\.*/g,'')
+      let name = t.title.toLowerCase().replace(/ (\(.*)?|\n\\.*/g,'')
                                       .replace(/[\n/]/g,'_');
-      if (t.hashelp) window.open('help/'+name+'.html');
+      window.open('help/'+name+'.html');
       return false;
     } else {
       return typeChar(doc.code, t.textContent, ev);
