@@ -151,6 +151,7 @@ textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
   fill: #272e30;
   cursor: pointer;
 }
+.clickable { cursor: pointer; }
 
 .replLink {
   float: right;
