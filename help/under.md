@@ -10,8 +10,8 @@
     
 Where `𝔾` must be 
     
-1. A function invertible by `⁼` (Undo)
-2. A structural modification
+- A function invertible by `⁼` (Undo)
+- A structural modification
     
            9⌾(1⊸⊑) 1‿2‿3
 
