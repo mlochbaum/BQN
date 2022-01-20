@@ -21,7 +21,7 @@ Length of the first dimension of `𝕩`.
     
 ## `𝕨 ≠ 𝕩`: Not Equal To
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           1 ≠ 3
 

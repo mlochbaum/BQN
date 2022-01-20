@@ -14,7 +14,7 @@ Sort array `𝕩` in ascending order.
     
 Logical And of `𝕨` and `𝕩`. 
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           1 ∧ 1
 

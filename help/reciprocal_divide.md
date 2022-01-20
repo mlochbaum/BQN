@@ -6,7 +6,7 @@
     
 Gives `1 ÷ 𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           ÷ 5
 
@@ -16,7 +16,7 @@ Gives `1 ÷ 𝕩`.
     
 `𝕨` divided by `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
 
         5 ÷ 4
 

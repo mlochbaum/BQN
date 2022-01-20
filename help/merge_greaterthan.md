@@ -26,7 +26,7 @@ Returns atomic values as is.
     
 `𝕨` and `𝕩` can both be either numbers or characters.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           1 > 3
 

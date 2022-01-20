@@ -9,7 +9,7 @@ Sign of `𝕩`.
 - `0` if `𝕩 = 0`
 - `1` if `𝕩 > 0`
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           × ¯5‿0‿5‿1
 
@@ -19,7 +19,7 @@ Sign of `𝕩`.
     
 `𝕨` multiplied by `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           1 × 2
 

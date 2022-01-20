@@ -4,7 +4,7 @@
     
 ## `√ 𝕩`: Square root  
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           √ 2
 
@@ -14,7 +14,7 @@
     
 `𝕨`th root of `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           2 √ 2
 

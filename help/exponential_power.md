@@ -6,7 +6,7 @@
     
 `e` (Euler's constant) to the power of `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           ⋆ 0‿1‿2‿3
 
@@ -16,7 +16,7 @@
     
 `𝕨` to the power of `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           2 ⋆ 5
 

@@ -6,7 +6,7 @@
     
 Absolute Value of `𝕩`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           | ¯2
 
@@ -18,7 +18,7 @@ Absolute Value of `𝕩`.
     
 Remainder of `𝕩` divided by `𝕨`.
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           1 | 3
 

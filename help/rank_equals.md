@@ -19,7 +19,7 @@ Returns the number of dimensions in `𝕩`.
     
 ## `𝕨 = 𝕩`: Equal To
     
-[Pervasive.](https://mlochbaum.github.io/BQN/doc/arithmetic.html#pervasion)
+[Pervasive.](../doc/arithmetic.md#pervasion)
     
           1 = 3
 
