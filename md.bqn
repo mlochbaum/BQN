@@ -660,12 +660,13 @@ ConvertFile ← {
   isInd ← "README" ≡ ¯1⊑parts
   RQ ← {'"'¨⌾(('''=𝕩)⊸/)𝕩}
   Link ← RQ {∾⟨"<link href='",root,𝕩,"' rel='",𝕨,"'/>"⟩}
+  Clean ← "`` ` ``"⊸⍷ ∨´∘⊣◶⟨'`'⊸≠⊸/⊢,≠⊸(1≠`-⊸↑≠↑)˜/⊢⟩ ⊢  # Help pages have backticks in titles
   h1 ← (2≤≠)◶0‿("# "≡2⊸↑)¨⊸/md
   "Wrong number of titles in "‿𝕩 ∾⊸! 1=≠h1
   head ← "head" Html lf∾JoinLines "  "⊸∾¨⟨
     "shortcut icon' type='image/x-icon" Link "favicon.ico"
     "stylesheet" Link "style.css"
-    "title" Html ("BQN"∾":"⊸(¬∘∊/⊣)∾" "∾⊢)⍟(¬·∨´"BQN"⍷⊢) 2↓⊑h1
+    "title" Html ("BQN"∾":"⊸(¬∘∊/⊣)∾" "∾⊢)⍟(¬·∨´"BQN"⍷⊢) Clean 2↓⊑h1
   ⟩
   repo ← "("∾")"∾˜ "a href='"‿repoURL‿"'" ∾⊸Html "github"
   crumbs ← up ("a href='"∾∾⟜"index.html'")⊸Html¨○((-isInd)⊸↓) (<"BQN")»parts
