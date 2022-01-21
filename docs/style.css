@@ -73,14 +73,14 @@ table th {
   font-family: f3270;
   src: url(3270_sub.woff2) format('woff2');
 }
-pre.DejaVu , .DejaVu  .kb span, .DejaVu  .code, .DejaVu  .rslt { font-family:BQNMod,monospace; }
-pre.BQN386 , .BQN386  .kb span, .BQN386  .code, .BQN386  .rslt { font-family:BQN,monospace; }
-pre.Iosevka, .Iosevka .kb span, .Iosevka .code, .Iosevka .rslt { font-family:Iosevka,f3270,monospace; }
-pre.Julia  , .Julia   .kb span, .Julia   .code, .Julia   .rslt { font-family:JuliaMono,monospace; }
-pre.Fairfax, .Fairfax .kb span, .Fairfax .code, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
-.Fairfax .kb span { line-height:1.25; }
-pre.f3270  , .f3270   .kb span, .f3270   .code, .f3270   .rslt { font-family:f3270,monospace; font-size:1rem; line-height:1.1; }
-.f3270 .kb span { line-height:1.4; }
+pre.DejaVu , .DejaVu  .key, .DejaVu  .code, .DejaVu  .rslt { font-family:BQNMod,monospace; }
+pre.BQN386 , .BQN386  .key, .BQN386  .code, .BQN386  .rslt { font-family:BQN,monospace; }
+pre.Iosevka, .Iosevka .key, .Iosevka .code, .Iosevka .rslt { font-family:Iosevka,f3270,monospace; }
+pre.Julia  , .Julia   .key, .Julia   .code, .Julia   .rslt { font-family:JuliaMono,monospace; }
+pre.Fairfax, .Fairfax .key, .Fairfax .code, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
+.Fairfax .key { line-height:1.25; }
+pre.f3270  , .f3270   .key, .f3270   .code, .f3270   .rslt { font-family:f3270,monospace; font-size:1rem; line-height:1.1; }
+.f3270 .key { line-height:1.4; }
 
 code, kbd, svg text {
   white-space: pre;
@@ -126,11 +126,12 @@ textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
   padding: 0.3em 0;
   position: relative;
 }
-.kb span, .kb div {
+.key, .kb div {
   cursor: default;
   padding: 1px;
 }
-.kb a {
+a.key { text-decoration:none; }
+.kb a:not(.key) {
   margin-left: 0.8em;
   font-size: 0.8em; vertical-align: 0.08em; opacity: 0.8;
 }
@@ -181,26 +182,26 @@ kbd {
   box-shadow: -0.02em 0.05em 0 0 currentColor;
 }
 
-.Value        { color: #1f2020; }
-.Function     { color: #1f7229; }
-.Modifier     { color: #7b3b60; }
-.Modifier2    { color: #857614; }
-.Gets         { color: #16170a; }
-.Paren        { color: #585f5b; }
-.Ligature,
-.Separator,
-.Bracket      { color: #30241f; }
-.Brace        { color: #9130ad; }
-.Nothing,
-.Number       { color: #6f251f; }
-.Comment      { color: #32328b; }
-.String       { color: #2d7583; }
-.Error        { color: #ee3030; }
-
 a:link        { color: #0b39dc; text-decoration-color: #0b39dc91; }
 a:visited     { color: #3d155f; }
 
-.kb span:hover{ background-color: #bce; }
+.Value     ,a.Value        { color: #1f2020; }
+.Function  ,a.Function     { color: #1f7229; }
+.Modifier  ,a.Modifier     { color: #7b3b60; }
+.Modifier2 ,a.Modifier2    { color: #857614; }
+.Gets      ,a.Gets         { color: #16170a; }
+.Paren     ,a.Paren        { color: #585f5b; }
+.Ligature  ,a.Ligature,
+.Separator ,a.Separator,
+.Bracket   ,a.Bracket      { color: #30241f; }
+.Brace     ,a.Brace        { color: #9130ad; }
+.Nothing   ,a.Nothing,
+.Number    ,a.Number       { color: #6f251f; }
+.Comment   ,a.Comment      { color: #32328b; }
+.String    ,a.String       { color: #2d7583; }
+.Error     ,a.Error        { color: #ee3030; }
+
+.key:hover { background-color: #bce; }
 .kb.prefix { background-color: #cee; }
 
 @media (prefers-color-scheme: dark) {
@@ -214,27 +215,27 @@ a:visited     { color: #3d155f; }
   code        { border-color: #0c0d0e; background-color: #0f1011; }
   table td, th{ border-color: #636967; }
   table th    { border-color: #88918c; background-color: #292a2b; }
-  .kb span:hover { background-color: #237; }
+  .key:hover  { background-color: #237; }
   .kb.prefix  { background-color: #1e2430; }
-
-  .Value      { color: #b2b9bb; }
-  .Function   { color: #3aa548; }
-  .Modifier   { color: #93428b; }
-  .Modifier2  { color: #998819; }
-  .Gets       { color: #cccdcb; }
-  .Paren      { color: #5a524a; }
-  .Ligature,
-  .Separator,
-  .Bracket    { color: #9c7dc1; }
-  .Brace      { color: #862f9e; }
-  .Nothing,
-  .Number     { color: #a73227; }
-  .Comment    { color: #3f3daa; }
-  .String     { color: #3e99ab; }
-  .Error      { color: #bb0e0e; }
 
   a:link      { color: #5592d9; text-decoration-color: #508dd978; }
   a:visited   { color: #8781c1; }
+
+  .Value     ,a.Value      { color: #b2b9bb; }
+  .Function  ,a.Function   { color: #3aa548; }
+  .Modifier  ,a.Modifier   { color: #93428b; }
+  .Modifier2 ,a.Modifier2  { color: #998819; }
+  .Gets      ,a.Gets       { color: #cccdcb; }
+  .Paren     ,a.Paren      { color: #5a524a; }
+  .Ligature  ,a.Ligature,
+  .Separator ,a.Separator,
+  .Bracket   ,a.Bracket    { color: #9c7dc1; }
+  .Brace     ,a.Brace      { color: #862f9e; }
+  .Nothing   ,a.Nothing,
+  .Number    ,a.Number     { color: #a73227; }
+  .Comment   ,a.Comment    { color: #3f3daa; }
+  .String    ,a.String     { color: #3e99ab; }
+  .Error     ,a.Error      { color: #bb0e0e; }
 }
 
 svg tspan {

@@ -58,7 +58,7 @@ if (doc.doexplain) doc.doexplain.onclick = () => {
           if (!h) return;
           t.innerHTML = t.textContent+'<title>'+h+'</title>';
           t.classList.add('clickable');
-          t.onclick = ev => { window.open('help/'+helpurl[c]+'.html'); }
+          t.onclick = ev => { window.open(helpurl[c]); }
         });
       }, 0);
     }
@@ -122,33 +122,24 @@ let kv=Array.from('˜˘¨⁼⌜´˝∞¯•÷×¬⎉⚇⍟◶⊘⎊⍎⍕⟨⟩�
 let keys={}, revkeys={}, primhelp={}, helpurl={};
 kk.map((k,i)=>{keys[k]=kv[i];revkeys[kv[i]]=k;});
 doc.kb.innerHTML = keydesc
-  .map(d=>'<span class="'+syncls[d[0]]+'">'+Array.from(d)[1]+'</span>')
+  .map(d=>'<a class="key '+syncls[d[0]]+'">'+Array.from(d)[1]+'</a>')
   .concat(['<a href="keymap.html" target="_blank">map</a>'])
   .join("&#8203;"); // zero-width space
 let setPrefix = () => {
-  doc.kb.querySelectorAll("span").forEach((x,i) => {
+  doc.kb.querySelectorAll("a.key").forEach((x,i) => {
     let d = keydesc[i];
     let c = Array.from(d)[1];
     let t = d.slice(1+c.length).replace(';','\n');
-    helpurl[c] = t.toLowerCase().replace(/ (\(.*)?/g,'')
-                                .replace(/[\n/]/g,'_');
+    let h = t.toLowerCase().replace(/ (\(.*)?/g,'')
+                           .replace(/[\n/]/g,'_');
     let k = revkeys[c]; if (k) t += '\n'+prefix+(k==='"'?'&quot;':k);
     x.title = primhelp[c] = t;
+    x.href = helpurl[c] = 'help/'+h+'.html';
+    x.onclick = ev => ev.button || modified(ev) ? true
+                    : typeChar(doc.code, c, ev);
   });
 }
 setPrefix();
-doc.kb.onmousedown = ev => {
-  let t = ev.target;
-  if (t.nodeName === 'SPAN') {
-    let c = t.textContent;
-    if (ev.button || modified(ev)) {
-      window.open('help/'+helpurl[c]+'.html');
-    } else {
-      typeChar(doc.code, c, ev);
-    }
-    return false;
-  }
-}
 
 let appendHTML = (e,a) => e.insertAdjacentHTML('beforeend', a);
 appendHTML(doc.kb, '<div class="kbext"></div>');
