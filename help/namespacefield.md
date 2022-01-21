@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/field.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/namespacefield.html).*
 
 # Full Stop (`.`)
 
