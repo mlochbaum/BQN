@@ -5,7 +5,7 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
 <h1 id="acute-accent-"><a class="header" href="#acute-accent-">Acute Accent (<code><span class='Modifier'>´</span></code>)</a></h1>
-<h2 id="--fold"><a class="header" href="#--fold"><code><span class='Function'>𝔽</span><span class='Modifier'>´</span> <span class='Value'>𝕩</span></code>: Fold</a></h2>
+<h2 id="𝔽-𝕩-fold"><a class="header" href="#𝔽-𝕩-fold"><code><span class='Function'>𝔽</span><span class='Modifier'>´</span> <span class='Value'>𝕩</span></code>: Fold</a></h2>
 <p>Fold over <code><span class='Value'>𝕩</span></code> with <code><span class='Function'>𝔽</span></code> from right to left i.e. Insert <code><span class='Function'>𝔽</span></code> between the elements of <code><span class='Value'>𝕩</span></code>.</p>
 <p><code><span class='Value'>𝕩</span></code> must be a simple list (<code><span class='Number'>1</span> <span class='Function'>=</span> <span class='Function'>=</span><span class='Value'>𝕩</span></code>).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgK8K0IDHigL8y4oC/MwoKICAgMSsyKzMKCiAgIC3CtCAx4oC/MuKAvzMKCiAgIDEtMi0z">↗️</a><pre>       <span class='Function'>+</span><span class='Modifier'>´</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
@@ -20,7 +20,7 @@
        <span class='Number'>1</span><span class='Function'>-</span><span class='Number'>2</span><span class='Function'>-</span><span class='Number'>3</span>
 2
 </pre>
-<h2 id="---fold-with-initial"><a class="header" href="#---fold-with-initial"><code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier'>´</span> <span class='Value'>𝕩</span></code>: Fold With initial</a></h2>
+<h2 id="𝕨-𝔽-𝕩-fold-with-initial"><a class="header" href="#𝕨-𝔽-𝕩-fold-with-initial"><code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier'>´</span> <span class='Value'>𝕩</span></code>: Fold With initial</a></h2>
 <p>Monadic fold, but use <code><span class='Value'>𝕨</span></code> as initial right argument.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgNSArwrQgMeKAvzLigL8zCgogICAxKzIrMys1CgogICA1IC3CtCAx4oC/MuKAvzMKCiAgIDEtMi0zLTU=">↗️</a><pre>       <span class='Number'>5</span> <span class='Function'>+</span><span class='Modifier'>´</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
 11
