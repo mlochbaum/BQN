@@ -250,13 +250,13 @@ Markdown ← {filename𝕊𝕩:
     f ← <⟜« tail            # Character before trailing hashes
     𝕩 /˜↩ ¬ f (⊑⟨"\"," ",""⟩⊐<f/𝕩)◶⟨⊣,⊢,⊢,0¨⊢⟩ tail
     𝕩 Trim↩
-    # Add an id, containing only a-z, digits, and hyphens
+    # Add an id, usually containing only a-z, digits, and hyphens
     Slugify ← {
       𝕩 ↩ '-'¨⌾((𝕩=' ')⊸/) 𝕩  # Replace spaces with dashes
       bounds ← ⥊ "Aa"+⌜0‿26   # Of the upper and lowercase alphabet
       # Lowercase alphabetic characters and remove special characters
       b ← bounds ⍋ 𝕩
-      ((2|b)∨∊⟜("-"∾'0'+↕10))⊸/ 𝕩+32×1=b
+      ((2|b)∨∊⟜("-𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕣𝕗𝕘π⍳"∾'0'+↕10))⊸/ 𝕩+32×1=b
     }
     ExtHtml ← 𝕩{
       s←Slugify 𝕗 ⋄ Q ← """"⊸(∾∾⊣)
