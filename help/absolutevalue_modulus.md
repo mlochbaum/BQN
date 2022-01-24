@@ -1,27 +1,25 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/absolutevalue_modulus.html).*
 
 # Pipe (`|`)
-    
-## `| 𝕩`: Absolute Value  
-    
+
+## `| 𝕩`: Absolute Value
+
 Absolute Value of `𝕩`.
-    
+
 [Pervasive.](../doc/arithmetic.md#pervasion)
-    
+
           | ¯2
 
           | 1‿3‿¯4‿3
 
-    
-    
+
+
 ## `𝕨 | 𝕩`: Modulus
-    
+
 Remainder of `𝕩` divided by `𝕨`.
-    
+
 [Pervasive.](../doc/arithmetic.md#pervasion)
-    
+
           1 | 3
 
           2 | 3‿4‿¯5
-
-    

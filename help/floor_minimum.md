@@ -1,25 +1,23 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/floor_minimum.html).*
 
 # Left Floor (`⌊`)
-    
-## `⌊ 𝕩`: Floor  
-    
+
+## `⌊ 𝕩`: Floor
+
 Round `𝕩` down.
-    
+
 [Pervasive.](../doc/arithmetic.md#pervasion)
-    
+
           ⌊ 1.2‿π‿3‿7.89
 
-    
-    
+
+
 ## `𝕨 ⌊ 𝕩`: Minimum
-    
+
 Minimum of `𝕨` and `𝕩`.
-    
+
 [Pervasive.](../doc/arithmetic.md#pervasion)
-    
+
           1 ⌊ 2
 
           2‿3 ⌊ 4‿2
-
-    

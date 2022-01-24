@@ -7,4 +7,4 @@
 A variable assigned to the current modifier block. Underscores must be added to the beginning and/or end (`_𝕣`, `_𝕣_`) to use the modifier with the correct role.
 
 
-        +{𝕣⊣𝕩} 4        
+        +{𝕣⊣𝕩} 4

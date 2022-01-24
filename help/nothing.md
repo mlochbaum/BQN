@@ -19,5 +19,3 @@ For Block header pattern matching syntax, Nothing can be used to indicate an unu
         F ← {𝕊 a‿·‿b: a∾b}
 
         F 1‿2‿3
-
-        

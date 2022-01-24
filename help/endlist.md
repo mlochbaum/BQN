@@ -10,5 +10,3 @@ Ends a list started by a `⟨`. See [Begin List](beginlist.md) for more details.
         ⟨1, 2, 3⟩
 
         ⟨+ ⋄ - ⋄ 56⟩
-
-        
