@@ -12,5 +12,3 @@ Must end with a corresponding `⟩`.
         ⟨1, 2, 3⟩
 
         ⟨+ ⋄ - ⋄ 56⟩
-
-        

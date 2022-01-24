@@ -4,7 +4,7 @@
 
 ## `‿`: Strand
 
-Create a list via [strand notation](../doc/arrayrepr.md#strands). 
+Create a list via [strand notation](../doc/arrayrepr.md#strands).
 
 Placing `‿` between valid BQN expressions will create a list out of the end results of those expressions.
 
@@ -12,5 +12,3 @@ Placing `‿` between valid BQN expressions will create a list out of the end re
         1‿2‿3
 
         +‿-‿56
-
-        
