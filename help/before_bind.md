@@ -6,7 +6,7 @@
     
 Supply `𝕗` as a left argument to `𝔾` (`𝕗 𝔾 𝕩`).
     
-`𝕗` must be a value, `𝔾` must be dyadic.
+`𝕗` is a constant, `𝔾` must be dyadic.
     
            3⊸- 9
 
