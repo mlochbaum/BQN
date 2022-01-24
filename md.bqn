@@ -249,6 +249,7 @@ Markdown ← {filename𝕊𝕩:
     tail ← ∧`⌾⌽ trsp∨𝕩='#'  # Mask of trailing hashes
     f ← <⟜« tail            # Character before trailing hashes
     𝕩 /˜↩ ¬ f (⊑⟨"\"," ",""⟩⊐<f/𝕩)◶⟨⊣,⊢,⊢,0¨⊢⟩ tail
+    𝕩 Trim↩
     # Add an id, containing only a-z, digits, and hyphens
     Slugify ← {
       𝕩 ↩ '-'¨⌾((𝕩=' ')⊸/) 𝕩  # Replace spaces with dashes
@@ -261,7 +262,7 @@ Markdown ← {filename𝕊𝕩:
       s←Slugify 𝕗 ⋄ Q ← """"⊸(∾∾⊣)
       (𝕨 ∾ " id="∾Q s) Html ("a class=""header"" href="∾Q"#"∾s) Html 𝕩
     }
-    tag extensions◶Html‿ExtHtml ProcInline Trim 𝕩
+    tag extensions◶Html‿ExtHtml ProcInline 𝕩
   }⟜⊑
 
   # List items start with a bullet (unordered) or number (ordered).
