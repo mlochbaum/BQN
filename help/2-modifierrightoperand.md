@@ -4,6 +4,6 @@
 
 ## `𝔾`: 2-Modifier Right operand
 
-A variable assigned to the right operand of a 2-modifier block. `𝕘` can be used to access the right operand as a value.
+A variable assigned to the right operand of a 2-modifier block. `𝕘` can be used to access the right operand as a subject.
 
         5 +{𝕘}3 1

@@ -4,6 +4,6 @@
 
 ## `𝔽`: Modifier Left operand
 
-A variable assigned to the left operand of a modifier block. `𝕗` can be used to access the left operand as a value.
+A variable assigned to the left operand of a modifier block. `𝕗` can be used to access the left operand as a subject.
 
         5 +{𝕗⊣𝕨} 1

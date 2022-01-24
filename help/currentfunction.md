@@ -4,7 +4,7 @@
 
 ## `𝕊`: Current Function
 
-A variable assigned to the current function block. `𝕤` can be used to access the current function block as a value.
+A variable assigned to the current function block. `𝕤` can be used to access the current function block as a subject.
 
 `𝕊` can be used for recursion.
 
