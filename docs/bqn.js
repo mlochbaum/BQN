@@ -292,8 +292,16 @@ let scan = m1(f => (x,w) => {
   return arr(r,s,x.fill);
 });
 let cases = m2((f,g) => (x,w)=>has(w)?call(g,x,w):call(f,x,w));
-let catches = m2((f,g) =>
-  (x,w)=>{try{return call(f,x,w);}catch(e){return call(g,x,w);}});
+let save_error;
+let catches = m2((f,g) => (x,w) => {
+  try {
+    return call(f,x,w);
+  } catch (e) {
+    let c = save_error; save_error = e;
+    try { return call(g,x,w); }
+    finally { save_error = c; }
+  }
+});
 let group_len = (x,w) => { // ≠¨⊔ for a valid list argument
   let l=x.reduce((a,b)=>Math.max(a,b),(w||0)-1);
   let r=Array(l+1).fill(0);
@@ -481,9 +489,10 @@ let [fmt1,repr] = run(
 )(list([type, decompose, repop, fmtnum]));
 let fmt = x => unstr(fmt1(x));
 
+let errHasSrc = (w,a) => w&&w.loc||(!a&&w.sh&&w.sh[0]===2);
 let fmtErr = e => {
-  let r=e.kind, w=e.message, loc=[];
-  while (w&&w.loc||(r!=='!'&&w.sh&&w.sh[0]===2)) {
+  let a=e.kind==='!', w=e.message, loc=[];
+  while (errHasSrc(w,a)) {
     let s=w.src, is; [is,w]=w;
     let n=is.sh?is.sh[0]:0, i=n?is[0]:is;
     let pair=n&&is.sh.length>1; if (pair) n*=2;
@@ -497,9 +506,16 @@ let fmtErr = e => {
     let add = ['',m.join(''),c.map(t=>t?'^':' ').join('')];
     loc = add.concat(ol?['(and other lines)']:[], loc);
   }
-  if (r==='!') w=w?fmt(w).replace(/^/gm,'! '):'! Error';
+  if (a) w=w?fmt(w).replace(/^/gm,'! '):'! Error';
   else w=w.sh?w.join(''):w;
   return [w].concat(loc).join('\n');
+}
+let currenterror = (x,w) => {
+  let e=save_error;
+  if (!has(e)) throw Error("No error is currently caught by ⎊");
+  let a=e.kind==='!'; w=e.message;
+  while (errHasSrc(w,a)) w=w[1];
+  return a||w.sh ? w : str(w);
 }
 
 let dynsys = f => { f.dynamic=1; return f; }
@@ -661,7 +677,7 @@ let rand = (() => {
 
 let sysvals = {
   bqn:dynsys_copy(makebqnfn("•BQN",r=>run(...r))), rebqn, primitives,
-  type, glyph, decompose, fmt:fmt1, repr, unixtime,
+  type, glyph, decompose, fmt:fmt1, repr, currenterror, unixtime,
   js:dojs, math:mathns, ns:nsns, rand,
   listsys: dynsys(_ => list(Object.keys(sysvals).sort().map(str)))
 };
