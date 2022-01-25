@@ -11,7 +11,7 @@ Sign of `𝕩`.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          × ¯5‿0‿5‿1
+        × ¯5‿0‿5‿1
 
 
 
@@ -21,6 +21,6 @@ Sign of `𝕩`.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          1 × 2
+        1 × 2
 
-          2 × 2‿3‿4
+        2 × 2‿3‿4

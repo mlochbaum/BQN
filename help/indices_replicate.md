@@ -6,9 +6,9 @@
 
 Repeat the index of each element in `𝕩` by the element's value. `𝕩` must be rank 1.
 
-           / 1‿2‿3
+        / 1‿2‿3
 
-           / 1‿0‿1
+        / 1‿0‿1
 
 
 
@@ -18,6 +18,6 @@ Repeat each major cell in `𝕩` by the corresponding element in `𝕨`.
 
 Unit `𝕨` applies to all elements.
 
-           3 / "copy"
+        3 / "copy"
 
-           1‿0‿1 / 1‿2‿3
+        1‿0‿1 / 1‿2‿3

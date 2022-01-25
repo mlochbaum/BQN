@@ -6,13 +6,13 @@
 
 Move the first axis of `𝕩` to the end.
 
-           a ← 3‿3 ⥊ ↕9
+        a ← 3‿3 ⥊ ↕9
 
-           ⍉ a
+        ⍉ a
 
-           b ← 1‿2‿3 ⥊ ↕6
+        b ← 1‿2‿3 ⥊ ↕6
 
-           ≢⍉ b
+        ≢⍉ b
 
 
 
@@ -20,6 +20,6 @@ Move the first axis of `𝕩` to the end.
 
 Rearrange the axes of `𝕩` as per the axis indices in `𝕨`.
 
-           ≢ c ← 2‿3‿4‿5‿6 ⥊1
+        ≢ c ← 2‿3‿4‿5‿6 ⥊1
 
-           ≢ 1‿3‿2‿0‿4 ⍉ c
+        ≢ 1‿3‿2‿0‿4 ⍉ c

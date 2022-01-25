@@ -6,12 +6,12 @@
 
 Apply `𝔽` to the arguments and use the result to [pick](first_pick.md#𝕨--𝕩-pick) (`⊑`) a function from list `𝕘`. Apply the picked function to the arguments.
 
-           F ← ⊢◶+‿-‿÷‿×
+        F ← ⊢◶+‿-‿÷‿×
 
-           F 0
+        F 0
 
-           F 1
+        F 1
 
-           F 2
+        F 2
 
-           F 3
+        F 3

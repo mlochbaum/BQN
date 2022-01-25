@@ -6,11 +6,11 @@
 
 Suffixes of array `𝕩` along its first axis.
 
-           ↓ 1‿2‿3‿4
+        ↓ 1‿2‿3‿4
 
-           a ← 3‿3 ⥊ ↕9
+        a ← 3‿3 ⥊ ↕9
 
-           ↓ a
+        ↓ a
 
 
 
@@ -20,13 +20,13 @@ For each integer in `𝕨`, drop that many elements from the beginning of each d
 
 Negative numbers drop from the end.
 
-           3 ↓ 1‿3‿5‿67
+        3 ↓ 1‿3‿5‿67
 
-           b ← 4‿4 ⥊ ↕16
+        b ← 4‿4 ⥊ ↕16
 
-           3‿3 ↓ b
+        3‿3 ↓ b
 
-           5‿5 ↓ b
+        5‿5 ↓ b
 
 
-           3‿¯3 ↓ b
+        3‿¯3 ↓ b

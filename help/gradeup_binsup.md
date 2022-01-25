@@ -6,11 +6,11 @@
 
 Indices of `𝕩` that would sort its major cells in ascending order.
 
-           a ← 3‿2‿1
+        a ← 3‿2‿1
 
-           ⍋ a
+        ⍋ a
 
-           (⍋a) ⊏ a
+        (⍋a) ⊏ a
 
 
 
@@ -21,6 +21,6 @@ Binary search for each cell of `𝕩` in `𝕨`, returning the number of major c
 
 `𝕨` must be sorted in ascending order.
 
-           3‿4‿5‿7 ⍋ 2
+        3‿4‿5‿7 ⍋ 2
 
-           3‿4‿5‿7 ⍋ 2‿6
+        3‿4‿5‿7 ⍋ 2‿6

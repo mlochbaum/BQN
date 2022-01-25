@@ -8,9 +8,9 @@ Return all indices that would index into an array of shape `𝕩`.
 
 When given a single number, range from `0` to `𝕩-1`.
 
-           ↕ 4
+        ↕ 4
 
-           ↕ 4‿5
+        ↕ 4‿5
 
 
 
@@ -18,8 +18,8 @@ When given a single number, range from `0` to `𝕩-1`.
 
 Overlapping slices from `𝕩` of shape `𝕨`.
 
-           5 ↕ "abcdefg"
+        5 ↕ "abcdefg"
 
-           a ← 3‿3⥊↕9
+        a ← 3‿3⥊↕9
 
-           2‿2 ↕ a
+        2‿2 ↕ a

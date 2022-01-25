@@ -7,13 +7,13 @@
 Returns the number of dimensions in `𝕩`.
 
 
-          = 0
+        = 0
 
-          = 3⥊0
+        = 3⥊0
 
-          = 3‿3⥊0
+        = 3‿3⥊0
 
-          3‿3‿3 ⥊ ⟨⟨0⟩⟩
+        3‿3‿3 ⥊ ⟨⟨0⟩⟩
 
 
 
@@ -21,8 +21,8 @@ Returns the number of dimensions in `𝕩`.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          1 = 3
+        1 = 3
 
-          2‿3‿0 = 3‿1‿0
+        2‿3‿0 = 3‿1‿0
 
-          'a' = 'a'
+        'a' = 'a'

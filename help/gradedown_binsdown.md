@@ -6,11 +6,11 @@
 
 Indices of `𝕩` that would sort its major cells in descending order.
 
-           a ← 1‿2‿3
+        a ← 1‿2‿3
 
-           ⍒ a
+        ⍒ a
 
-           (⍒a) ⊏ a
+        (⍒a) ⊏ a
 
 
 
@@ -22,6 +22,6 @@ Binary search for each cell of `𝕩` in `𝕨`, returning the number of major c
 
 [Right Pervasive.](../doc/arithmetic.md#pervasion)
 
-           7‿5‿4‿3 ⍒ 2
+        7‿5‿4‿3 ⍒ 2
 
-           7‿5‿4‿3 ⍒ 2‿6
+        7‿5‿4‿3 ⍒ 2‿6

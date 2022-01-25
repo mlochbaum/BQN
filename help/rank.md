@@ -13,6 +13,6 @@ The ranks applied are given by the following:
 - `⎉ a‿b‿c`   ⍝ Rank-a cells of `𝕩` (monadic), b-cells of `𝕨` and c-cells of `𝕩` (dyadic)
 
 
-           a ← 3‿2‿4⥊"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        a ← 3‿2‿4⥊"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-           ⌽⎉2 a
+        ⌽⎉2 a

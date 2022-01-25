@@ -6,9 +6,9 @@
 
 Supplies `𝕩` as a left argument to `𝔽` (`𝕩 𝔽 𝕩`).
 
-           1 + 1
+        1 + 1
 
-           +˜ 1
+        +˜ 1
 
 
 
@@ -16,6 +16,6 @@ Supplies `𝕩` as a left argument to `𝔽` (`𝕩 𝔽 𝕩`).
 
 Swaps the arguments of `𝔽` (`𝕩 𝔽 𝕨`).
 
-           1 - 2
+        1 - 2
 
-           1 -˜ 2
+        1 -˜ 2

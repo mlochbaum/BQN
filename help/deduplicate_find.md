@@ -6,11 +6,11 @@
 
 Unique major cells of `𝕩`.
 
-           ⍷ 4‿5‿6‿6‿4‿7‿5
+        ⍷ 4‿5‿6‿6‿4‿7‿5
 
-           a ← 3‿3 ⥊ ↕6
+        a ← 3‿3 ⥊ ↕6
 
-           ⍷ a
+        ⍷ a
 
 
 
@@ -20,12 +20,12 @@ Mark the top left location of the occurrences of `𝕨` in `𝕩` with a 1, and 
 
 Result is the same shape as `(≢𝕨)↕x`.
 
-           "string" ⍷ "substring"
+        "string" ⍷ "substring"
 
-           "loooooong" ⍷ "short"
+        "loooooong" ⍷ "short"
 
-           b ← 7 (4|⋆˜)⌜○↕ 9
+        b ← 7 (4|⋆˜)⌜○↕ 9
 
-           c ← (0‿3‿0≍0‿1‿0)
+        c ← (0‿3‿0≍0‿1‿0)
 
-           c ⍷ b
+        c ⍷ b

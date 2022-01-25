@@ -6,11 +6,11 @@
 
 Reverse `𝕩` along the first axis.
 
-           ⌽ 1‿2‿3
+        ⌽ 1‿2‿3
 
-           a ← 3‿3 ⥊ ↕9
+        a ← 3‿3 ⥊ ↕9
 
-           ⌽ a
+        ⌽ a
 
 
 
@@ -18,8 +18,8 @@ Reverse `𝕩` along the first axis.
 
 Move the first `𝕨` elements of `𝕩` to its end. Negative `𝕨` reverses the direction of rotation.
 
-           2 ⌽ 1‿2‿3
+        2 ⌽ 1‿2‿3
 
-           b ← 3‿3 ⥊ ↕9
+        b ← 3‿3 ⥊ ↕9
 
-           2 ⌽ b
+        2 ⌽ b

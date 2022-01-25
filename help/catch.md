@@ -10,6 +10,6 @@ If an error happens when `𝔽` is applied, cancel its execution, apply `𝔾` t
 
 Otherwise, return the result of `𝔽`.
 
-           ∾⎊{"error occurred with argument: "∾•Fmt 𝕩} 1
+        ∾⎊{"error occurred with argument: "∾•Fmt 𝕩} 1
 
-           ∾⎊{"error occurred with argument: "∾•Fmt 𝕩} ⟨⟨1,2⟩, ⟨3,4⟩⟩
+        ∾⎊{"error occurred with argument: "∾•Fmt 𝕩} ⟨⟨1,2⟩, ⟨3,4⟩⟩

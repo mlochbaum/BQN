@@ -8,11 +8,11 @@ Join all elements of `𝕩` together.
 
 Element ranks must be compatible.
 
-           ∾ ⟨1‿2, 3, 4‿5⟩
+        ∾ ⟨1‿2, 3, 4‿5⟩
 
-           m ← (3‿1≍⌜4‿2‿5) ⥊¨ 2‿3⥊↕6
+        m ← (3‿1≍⌜4‿2‿5) ⥊¨ 2‿3⥊↕6
 
-           ∾ m
+        ∾ m
 
 
 
@@ -20,10 +20,10 @@ Element ranks must be compatible.
 
 Join `𝕨` to `𝕩` along the first axis.
 
-           "abcd" ∾ "EFG"
+        "abcd" ∾ "EFG"
 
-           a ← 3‿3 ⥊ ↕9
+        a ← 3‿3 ⥊ ↕9
 
-           c ← 4‿3 ⥊ ↕12
+        c ← 4‿3 ⥊ ↕12
 
-           a∾c
+        a∾c
