@@ -7,14 +7,14 @@
 Invert the function `𝔽`, or use its defined inverse. Not all functions have inverses.
 
 
-           1 - 2
+        1 - 2
 
-           1 -⁼ 2
+        1 -⁼ 2
 
-           √ 16
+        √ 16
 
-           √⁼ 4
+        √⁼ 4
 
-           ⋆ 1
+        ⋆ 1
 
-           ⋆⁼ 2.718281828459045
+        ⋆⁼ 2.718281828459045

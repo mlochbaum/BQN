@@ -6,11 +6,11 @@
 
 Prefixes of array `𝕩` along its first axis.
 
-           ↑ 1‿2‿3‿4
+        ↑ 1‿2‿3‿4
 
-           a ← 3‿3 ⥊ ↕9
+        a ← 3‿3 ⥊ ↕9
 
-           ↑ a
+        ↑ a
 
 
 
@@ -22,12 +22,12 @@ Negative numbers take from the end.
 
 If any of the elements in `𝕨` are greater than the length of their respective dimension, the dimension is extended with a fill value.
 
-          3 ↑ 1‿3‿5‿67
+        3 ↑ 1‿3‿5‿67
 
-          b ← 4‿4 ⥊ ↕16
+        b ← 4‿4 ⥊ ↕16
 
-          3‿3 ↑ b
+        3‿3 ↑ b
 
-          5‿5 ↑ b
+        5‿5 ↑ b
 
-          3‿¯3 ↑ b
+        3‿¯3 ↑ b

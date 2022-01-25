@@ -6,11 +6,11 @@
 
 Throw an error if `𝕩` is not 1.
 
-           ! 1
+        ! 1
 
-           ! 2
+        ! 2
 
-           ! "hello"
+        ! "hello"
 
 
 
@@ -19,8 +19,8 @@ Throw an error if `𝕩` is not 1.
 
 Throw an error with message `𝕨` if `𝕩` is not 1.
 
-           "hi" ! 1
+        "hi" ! 1
 
-           "two" ! 2
+        "two" ! 2
 
-           "hello error" ! "hello"
+        "hello error" ! "hello"

@@ -6,9 +6,9 @@
 
 Complex conjugate of `𝕩`. BQN doesn't support complex numbers yet, so it has no effect.
 
-          + 1
+        + 1
 
-          + ¯1
+        + ¯1
 
 
 ## `𝕨 + 𝕩`: Add
@@ -17,8 +17,8 @@ Complex conjugate of `𝕩`. BQN doesn't support complex numbers yet, so it has 
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          1 + 2
+        1 + 2
 
-          1 + 2‿3‿4
+        1 + 2‿3‿4
 
-          'a' + 4
+        'a' + 4

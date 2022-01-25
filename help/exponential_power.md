@@ -8,7 +8,7 @@
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          ⋆ 0‿1‿2‿3
+        ⋆ 0‿1‿2‿3
 
 
 
@@ -18,8 +18,8 @@
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          2 ⋆ 5
+        2 ⋆ 5
 
-          8‿5‿9 ⋆ 2
+        8‿5‿9 ⋆ 2
 
-          2‿3 ⋆ 3‿¯4
+        2‿3 ⋆ 3‿¯4

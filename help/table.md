@@ -6,6 +6,6 @@
 
 Apply `𝔽` between every possible pair of the elements of the arguments.
 
-           1‿2‿3‿4 +⌜ 4‿5‿6‿7
+        1‿2‿3‿4 +⌜ 4‿5‿6‿7
 
-           "abc" ∾⌜ "xyz"
+        "abc" ∾⌜ "xyz"

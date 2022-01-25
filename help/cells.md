@@ -6,9 +6,9 @@
 
 Apply `𝔽` to/between the major cells of the arguments. (`𝔽⎉¯1`)
 
-           a ← 3‿3 ⥊ ↕9
+        a ← 3‿3 ⥊ ↕9
 
 
-           <˘ a
+        <˘ a
 
-           a ≍˘ a
+        a ≍˘ a

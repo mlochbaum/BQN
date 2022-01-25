@@ -13,8 +13,8 @@ Where `𝔾` must be
 - A function invertible by `⁼` (Undo)
 - A structural modification
 
-           9⌾(1⊸⊑) 1‿2‿3
+        9⌾(1⊸⊑) 1‿2‿3
 
-           √⁼ (√1) + (√9)
+        √⁼ (√1) + (√9)
 
-           1 +⌾√ 9
+        1 +⌾√ 9

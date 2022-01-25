@@ -7,22 +7,22 @@
 <h1 id="delta-stile-"><a class="header" href="#delta-stile-">Delta Stile (<code><span class='Function'>⍋</span></code>)</a></h1>
 <h2 id="-𝕩-grade-up"><a class="header" href="#-𝕩-grade-up"><code><span class='Function'>⍋</span> <span class='Value'>𝕩</span></code>: Grade Up</a></h2>
 <p>Indices of <code><span class='Value'>𝕩</span></code> that would sort its major cells in ascending order.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgYSDihpAgM+KAvzLigL8xCgogICDijYsgYQoKICAgKOKNi2EpIOKKjyBh">↗️</a><pre>       <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgM+KAvzLigL8xCgrijYsgYQoKKOKNi2EpIOKKjyBh">↗️</a><pre>    <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 
-       <span class='Function'>⍋</span> <span class='Value'>a</span>
+    <span class='Function'>⍋</span> <span class='Value'>a</span>
 ⟨ 2 1 0 ⟩
 
-       <span class='Paren'>(</span><span class='Function'>⍋</span><span class='Value'>a</span><span class='Paren'>)</span> <span class='Function'>⊏</span> <span class='Value'>a</span>
+    <span class='Paren'>(</span><span class='Function'>⍋</span><span class='Value'>a</span><span class='Paren'>)</span> <span class='Function'>⊏</span> <span class='Value'>a</span>
 ⟨ 1 2 3 ⟩
 </pre>
 <h2 id="𝕨--𝕩-bins-up"><a class="header" href="#𝕨--𝕩-bins-up"><code><span class='Value'>𝕨</span> <span class='Function'>⍋</span> <span class='Value'>𝕩</span></code>: Bins Up</a></h2>
 <p>Binary search for each cell of <code><span class='Value'>𝕩</span></code> in <code><span class='Value'>𝕨</span></code>, returning the number of major cells in <code><span class='Value'>𝕨</span></code> less than or equal to that cell.</p>
 <p><code><span class='Value'>𝕨</span></code> must be sorted in ascending order.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgM+KAvzTigL814oC/NyDijYsgMgoKICAgM+KAvzTigL814oC/NyDijYsgMuKAvzY=">↗️</a><pre>       <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>7</span> <span class='Function'>⍋</span> <span class='Number'>2</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAvzTigL814oC/NyDijYsgMgoKM+KAvzTigL814oC/NyDijYsgMuKAvzY=">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>7</span> <span class='Function'>⍋</span> <span class='Number'>2</span>
 ┌·   
 · 0  
     ┘
 
-       <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>7</span> <span class='Function'>⍋</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span>
+    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>7</span> <span class='Function'>⍋</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>6</span>
 ⟨ 0 3 ⟩
 </pre>

@@ -8,7 +8,7 @@ Gives `1 ÷ 𝕩`.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          ÷ 5
+        ÷ 5
 
 
 

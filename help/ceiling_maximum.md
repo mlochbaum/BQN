@@ -8,7 +8,7 @@ Round `𝕩` up to the nearest integer.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          ⌈ 1.2‿π‿3‿7.89
+        ⌈ 1.2‿π‿3‿7.89
 
 
 
@@ -18,6 +18,6 @@ Maximum of `𝕨` and `𝕩`.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          1 ⌈ 2
+        1 ⌈ 2
 
-          2‿3 ⌈ 4‿2
+        2‿3 ⌈ 4‿2

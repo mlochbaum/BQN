@@ -11,13 +11,13 @@ All elements must have the same rank.
 Returns atomic values as is.
 
 
-          a ← ⟨⟨1, 2⟩, ⟨3, 4⟩⟩
+        a ← ⟨⟨1, 2⟩, ⟨3, 4⟩⟩
 
-          >a
+        >a
 
-          ≢a
+        ≢a
 
-          ≢>a
+        ≢>a
 
 
 
@@ -28,8 +28,8 @@ Returns atomic values as is.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          1 > 3
+        1 > 3
 
-          2‿3‿0 > 3‿1‿0
+        2‿3‿0 > 3‿1‿0
 
-          'a' > 'b'
+        'a' > 'b'

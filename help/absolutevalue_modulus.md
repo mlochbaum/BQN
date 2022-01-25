@@ -8,9 +8,9 @@ Absolute Value of `𝕩`.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          | ¯2
+        | ¯2
 
-          | 1‿3‿¯4‿3
+        | 1‿3‿¯4‿3
 
 
 
@@ -20,6 +20,6 @@ Remainder of `𝕩` divided by `𝕨`.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
-          1 | 3
+        1 | 3
 
-          2 | 3‿4‿¯5
+        2 | 3‿4‿¯5

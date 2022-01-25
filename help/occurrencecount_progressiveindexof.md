@@ -6,9 +6,9 @@
 
 Number of times each major cell of `𝕩` has occurred before the current position.
 
-            ⊒   2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
+        ⊒   2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
 
-            ≍⟜⊒ 2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
+        ≍⟜⊒ 2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
 
 
 
@@ -16,6 +16,6 @@ Number of times each major cell of `𝕩` has occurred before the current positi
 
 Index of the first unused match of each major cell of `𝕩` in `𝕨`. If there are no more matches left, the length of `𝕨` is placed in that position.
 
-            "aaa" ⊒ "aaaaa"
+        "aaa" ⊒ "aaaaa"
 
-            "aaabb" ⊒ "ababababab"
+        "aaabb" ⊒ "ababababab"

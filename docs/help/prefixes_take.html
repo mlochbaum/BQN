@@ -7,12 +7,12 @@
 <h1 id="up-arrow-"><a class="header" href="#up-arrow-">Up Arrow (<code><span class='Function'>↑</span></code>)</a></h1>
 <h2 id="-𝕩-prefixes"><a class="header" href="#-𝕩-prefixes"><code><span class='Function'>↑</span> <span class='Value'>𝕩</span></code>: Prefixes</a></h2>
 <p>Prefixes of array <code><span class='Value'>𝕩</span></code> along its first axis.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAg4oaRIDHigL8y4oC/M+KAvzQKCiAgIGEg4oaQIDPigL8zIOKliiDihpU5CgogICDihpEgYQ==">↗️</a><pre>       <span class='Function'>↑</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaRIDHigL8y4oC/M+KAvzQKCmEg4oaQIDPigL8zIOKliiDihpU5CgrihpEgYQ==">↗️</a><pre>    <span class='Function'>↑</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
 ⟨ ⟨⟩ ⟨ 1 ⟩ ⟨ 1 2 ⟩ ⟨ 1 2 3 ⟩ ⟨ 1 2 3 4 ⟩ ⟩
 
-       <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>9</span>
+    <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>9</span>
 
-       <span class='Function'>↑</span> <span class='Value'>a</span>
+    <span class='Function'>↑</span> <span class='Value'>a</span>
 ┌─                                    
 · ↕0‿3 ┌─        ┌─        ┌─         
        ╵ 0 1 2   ╵ 0 1 2   ╵ 0 1 2    
@@ -25,19 +25,19 @@
 <p>For each integer in <code><span class='Value'>𝕨</span></code>, take that many elements from each dimension of <code><span class='Value'>𝕩</span></code>.</p>
 <p>Negative numbers take from the end.</p>
 <p>If any of the elements in <code><span class='Value'>𝕨</span></code> are greater than the length of their respective dimension, the dimension is extended with a fill value.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAzIOKGkSAx4oC/M+KAvzXigL82NwoKICBiIOKGkCA04oC/NCDipYog4oaVMTYKCiAgM+KAvzMg4oaRIGIKCiAgNeKAvzUg4oaRIGIKCiAgM+KAv8KvMyDihpEgYg==">↗️</a><pre>      <span class='Number'>3</span> <span class='Function'>↑</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>67</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDihpEgMeKAvzPigL814oC/NjcKCmIg4oaQIDTigL80IOKliiDihpUxNgoKM+KAvzMg4oaRIGIKCjXigL81IOKGkSBiCgoz4oC/wq8zIOKGkSBi">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>↑</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>67</span>
 ⟨ 1 3 5 ⟩
 
-      <span class='Value'>b</span> <span class='Gets'>←</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>16</span>
+    <span class='Value'>b</span> <span class='Gets'>←</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>4</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>16</span>
 
-      <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>↑</span> <span class='Value'>b</span>
+    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>↑</span> <span class='Value'>b</span>
 ┌─        
 ╵ 0 1  2  
   4 5  6  
   8 9 10  
          ┘
 
-      <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Function'>↑</span> <span class='Value'>b</span>
+    <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Function'>↑</span> <span class='Value'>b</span>
 ┌─               
 ╵  0  1  2  3 0  
    4  5  6  7 0  
@@ -46,7 +46,7 @@
    0  0  0  0 0  
                 ┘
 
-      <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>¯3</span> <span class='Function'>↑</span> <span class='Value'>b</span>
+    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>¯3</span> <span class='Function'>↑</span> <span class='Value'>b</span>
 ┌─         
 ╵ 1  2  3  
   5  6  7  
