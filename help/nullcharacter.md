@@ -4,9 +4,9 @@
 
 ## `@`: Null Character
 
-Null character, codepoint 0 in ASCII. Has the status of any other character.
+Null character, code point 0 in ASCII. A shortcut character literal.
 
-Can be added to any positive integer to get its character equivalent.
+Add to a code point number to get that character.
 
 
         @+50

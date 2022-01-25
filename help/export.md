@@ -4,7 +4,7 @@
 
 ## `n ⇐ v`: Export Definition
 
-Define a variable with name `n` and export it from the current namespace or program's scope.
+Define a variable with name `n` and export it from the current namespace.
 
         ns ← { exported ⇐ 5, unexported ← 0}
         ns.exported
@@ -12,7 +12,7 @@ Define a variable with name `n` and export it from the current namespace or prog
 
 ## `𝕨 ⇐`: Export names
 
-Export the names given in `𝕩` from the current namespace or program's scope. Names must be defined.
+Export the names given in `𝕩` from the current namespace. Names must be defined somewhere in the scope.
 
         ns1 ← { ⟨alsoexported⟩⇐, exported ⇐ 5, alsoexported ← 0}
         ns1.exported

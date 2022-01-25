@@ -4,9 +4,9 @@
 
 ## `↕ 𝕩`: Range
 
-Return all indices to index into an array of shape `𝕩`, in the shape described by `𝕩`.
+Return all indices that would index into an array of shape `𝕩`.
 
-When given a single number, range from 0 to `𝕩-1`.
+When given a single number, range from `0` to `𝕩-1`.
 
            ↕ 4
 
@@ -16,7 +16,7 @@ When given a single number, range from 0 to `𝕩-1`.
 
 ## `𝕨 ↕ 𝕩`: Windows
 
-Overlapping slices of `𝕩` which are of shape `𝕨`.
+Overlapping slices from `𝕩` of shape `𝕨`.
 
            5 ↕ "abcdefg"
 

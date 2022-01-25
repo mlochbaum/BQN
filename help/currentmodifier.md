@@ -4,7 +4,6 @@
 
 ## `𝕣`: Current Modifier
 
-A variable assigned to the current modifier block. Underscores must be added to the beginning and/or end (`_𝕣`, `_𝕣_`) to use the modifier with the correct role.
-
+A variable assigned to the current modifier block. Add underscores to the beginning and/or end (`_𝕣`, `_𝕣_`) to use it in a modifier role.
 
         +{𝕣⊣𝕩} 4

@@ -39,11 +39,10 @@ Symbols are listed in alphabetical order of page name, ignoring syntactical role
 | `⋈` | [Enlist, Pair](enlist_pair.md) |
 | `⋆` | [Exponential, Power](exponential_power.md) |
 | `⇐` | [Export Definition, Export names](export.md) |
-| `.` | [Namespace Field](field.md) |
 | `⊏` | [First Cell, Select](firstcell_select.md) |
 | `⊑` | [First, Pick](first_pick.md) |
 | `⌊` | [Floor, Minimum](floor_minimum.md) |
-| `´` | [Fold, Fold With initial](fold.md) |
+| `´` | [Fold, Fold With Initial](fold.md) |
 | `⍒` | [Grade Down, Bins Down](gradedown_binsdown.md) |
 | `⍋` | [Grade Up, Bins Up](gradeup_binsup.md) |
 | `≥` | [Greater Than or Equal To](greaterthanorequalto.md) |
@@ -52,15 +51,16 @@ Symbols are listed in alphabetical order of page name, ignoring syntactical role
 | `⊢` | [Identity, Right](identity_right.md) |
 | `/` | [Indices, Replicate](indices_replicate.md) |
 | `∞` | [Infinity](infinity.md) |
-| `˝` | [Insert, Insert With initial](insert.md) |
-| `∾` | [Join, Join](join_jointo.md) |
+| `˝` | [Insert, Insert With Initial](insert.md) |
+| `∾` | [Join, Join To](join_jointo.md) |
 | `𝕨` | [Left Argument](leftargument.md) |
 | `≠` | [Length, Not Equal To](length_notequals.md) |
 | `≤` | [Lesser Than or Equal To](lessthanorequalto.md) |
-| `∊` | [Unique Mask, Member Of](markfirst_memberof.md) |
+| `∊` | [Mark Firsts, Member Of](markfirst_memberof.md) |
 | `>` | [Merge, Greater Than](merge_greaterthan.md) |
 | `¯` | [Minus](minus.md) |
 | `𝔽` | [Modifier Left operand](modifierleftoperand.md) |
+| `.` | [Namespace Field](namespacefield.md) |
 | `-` | [Negate, Subtract](negate_subtract.md) |
 | `·` | [Nothing](nothing.md) |
 | `¬` | [Logical Not, Span](not_span.md) |
@@ -74,12 +74,11 @@ Symbols are listed in alphabetical order of page name, ignoring syntactical role
 | `⎉` | [Rank](rank.md) |
 | `÷` | [Reciprocal, Divide](reciprocal_divide.md) |
 | `⍟` | [Repeat](repeat.md) |
-| `⌽` | [Reverse, Dyad](reverse_rotate.md) |
+| `⌽` | [Reverse, Rotate](reverse_rotate.md) |
 | `𝕩` | [Right Argument](rightargument.md) |
 | `` ` `` | [Scan, Scan With initial](scan.md) |
 | `˜` | [Self, Swap](self_swap.md) |
-| `,` | [Separator](separator1.md) |
-| `⋄` | [Separator](separator.md) |
+| `,` or `⋄` | [Separator](separator.md) |
 | `≢` | [Shape, Not Match](shape_notmatch.md) |
 | `»` | [Shift After, Shift After](shiftafter.md) |
 | `«` | [Shift Before, Shift Before](shiftbefore.md) |
@@ -91,7 +90,7 @@ Symbols are listed in alphabetical order of page name, ignoring syntactical role
 | `‿` | [Strand](strand.md) |
 | `↓` | [Suffixes, Drop](suffixes_drop.md) |
 | `•` | [System](system.md) |
-| `⌜` | [Each](table.md) |
+| `⌜` | [Table](table.md) |
 | `⍉` | [Transpose, Reorder Axes](transpose_reorderaxes.md) |
 | `⌾` | [Under](under.md) |
 | `⁼` | [Undo](undo.md) |

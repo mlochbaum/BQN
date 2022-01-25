@@ -4,7 +4,7 @@
 
 ## `#`: Comment
 
-Create a comment that extends till the end of a line.
+Create a comment that extends to the end of the line.
 
 Anything written in comments is ignored.
 

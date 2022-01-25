@@ -6,6 +6,6 @@
 
 Returns a function that will always return `𝕗`.
 
-           "hello" (1 ˙) 2
+           "hello" 1˙ 2
 
-           "hello" ({𝕨+𝕩} ˙) 2
+           "hello" {𝕨+𝕩}˙ 2

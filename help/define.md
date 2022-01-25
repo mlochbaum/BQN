@@ -6,7 +6,7 @@
 
 Defines a new variable with name `n` and value `v`.
 
-Variable `n` must not already exist.
+Variable `n` must not already exist in the scope.
 
         ⊢ a ← 1
 

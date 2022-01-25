@@ -4,7 +4,7 @@
 
 ## `∞`: Infinity
 
-Mathematical constant Infinity. Shares the same status as other numbers, can be negative (`¯∞`).
+Mathematical constant Infinity, a numeric literal. Can be negative (`¯∞`).
 
 
         ∞

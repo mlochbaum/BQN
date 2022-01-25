@@ -1,15 +1,15 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/separator.html).*
 
-# Diamond (`⋄`)
+# Comma (`,`) and Diamond (`⋄`)
 
-## `⋄`: Separator
+## `,` or `⋄`: Separator
 
-Separates statements in blocks⋄ programs and arrays.
+Separates statements in blocks, programs, and arrays. Characters `,` and `⋄` are interchangeable with each other and with newline.
 
-        a ← 3 ⋄ ⊢ b ← 2
+        a ← 3 , ⊢ b ← 2
 
-        1 ⋄ 2 ⋄ 3
+        1 ⋄ 2 , 3
 
-        ⟨1 ⋄ 2 ⋄ 3⟩
+        ⟨1 , 2 ⋄ 3⟩
 
         {1 ⋄ 2 ⋄ 3}

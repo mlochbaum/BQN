@@ -17,7 +17,7 @@ Indices of `𝕩` that would sort its major cells in ascending order.
 
 ## `𝕨 ⍋ 𝕩`: Bins Up
 
-Binary search for each element of `𝕩` in `𝕨`, and return the index found, if any.
+Binary search for each cell of `𝕩` in `𝕨`, returning the number of major cells in `𝕨` less than or equal to that cell.
 
 `𝕨` must be sorted in ascending order.
 

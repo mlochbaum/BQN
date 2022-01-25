@@ -2,7 +2,7 @@
 
 # Element Of (`∊`)
 
-## `∊ 𝕩`: Unique Mask
+## `∊ 𝕩`: Mark Firsts
 
 Mark the first occurrence of each major cell in `𝕩` with a 1, and all other occurrences with a 0.
 
@@ -16,7 +16,7 @@ Mark the first occurrence of each major cell in `𝕩` with a 1, and all other o
 
 ## `𝕨 ∊ 𝕩`: Member Of
 
-Is each element in `𝕨` a major cell of `𝕩`?
+Is each cell in `𝕨` a major cell of `𝕩`?
 
            ⟨1⟩ ∊ ↕9
 

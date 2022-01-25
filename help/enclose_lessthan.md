@@ -4,7 +4,7 @@
 
 ## `< 𝕩`: Enclose
 
-Create a unit array containing `𝕩`. (`(≢𝕩) ≡ ⟨⟩`)
+Create a unit array containing `𝕩`. (`(≢<𝕩) ≡ ⟨⟩`)
 
 
           <1

@@ -5,7 +5,7 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
 <h1 id="element-of-"><a class="header" href="#element-of-">Element Of (<code><span class='Function'>∊</span></code>)</a></h1>
-<h2 id="-𝕩-unique-mask"><a class="header" href="#-𝕩-unique-mask"><code><span class='Function'>∊</span> <span class='Value'>𝕩</span></code>: Unique Mask</a></h2>
+<h2 id="-𝕩-mark-firsts"><a class="header" href="#-𝕩-mark-firsts"><code><span class='Function'>∊</span> <span class='Value'>𝕩</span></code>: Mark Firsts</a></h2>
 <p>Mark the first occurrence of each major cell in <code><span class='Value'>𝕩</span></code> with a 1, and all other occurrences with a 0.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAg4oiKIDTigL814oC/NuKAvzbigL804oC/N+KAvzUKCiAgIGEg4oaQIDPigL8zIOKliiDihpU5CgogICDiiIogYQ==">↗️</a><pre>       <span class='Function'>∊</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>5</span>
 ⟨ 1 1 1 0 0 1 0 ⟩
@@ -16,7 +16,7 @@
 ⟨ 1 1 1 ⟩
 </pre>
 <h2 id="𝕨--𝕩-member-of"><a class="header" href="#𝕨--𝕩-member-of"><code><span class='Value'>𝕨</span> <span class='Function'>∊</span> <span class='Value'>𝕩</span></code>: Member Of</a></h2>
-<p>Is each element in <code><span class='Value'>𝕨</span></code> a major cell of <code><span class='Value'>𝕩</span></code>?</p>
+<p>Is each cell in <code><span class='Value'>𝕨</span></code> a major cell of <code><span class='Value'>𝕩</span></code>?</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAg4p+oMeKfqSDiiIog4oaVOQoKICAgYiDihpAgM+KAvzMg4qWKIOKGlTkKCiAgIOKfqDDigL8x4oC/MuKfqSDiiIogYgoKICAg4p+oMeKAvzMg4qWKIDDigL8x4oC/MuKfqSDiiIogYg==">↗️</a><pre>       <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>∊</span> <span class='Function'>↕</span><span class='Number'>9</span>
 ⟨ 1 ⟩
 
