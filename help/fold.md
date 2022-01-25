@@ -17,7 +17,7 @@ Fold over `𝕩` with `𝔽` from right to left i.e. Insert `𝔽` between the e
            1-2-3
 
 
-## `𝕨 𝔽´ 𝕩`: Fold With initial
+## `𝕨 𝔽´ 𝕩`: Fold With Initial
 
 Monadic fold, but use `𝕨` as initial right argument.
 

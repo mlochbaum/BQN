@@ -16,7 +16,7 @@ Element ranks must be compatible.
 
 
 
-## `𝕨 ∾ 𝕩`: Join
+## `𝕨 ∾ 𝕩`: Join To
 
 Join `𝕨` to `𝕩` along the first axis.
 

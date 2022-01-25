@@ -16,7 +16,7 @@ Repeat the index of each element in `𝕩` by the element's value. `𝕩` must b
 
 Repeat each major cell in `𝕩` by the corresponding element in `𝕨`.
 
-Atomic `𝕨` applies to all elements.
+Unit `𝕨` applies to all elements.
 
            3 / "copy"
 

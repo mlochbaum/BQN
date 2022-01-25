@@ -4,7 +4,7 @@
 
 ## `⥊ 𝕩`: Deshape
 
-Put all elements of `𝕩` in a rank 1 array, converting to array if necessary.
+Put all elements of `𝕩` in a rank 1 array, promoting to an array if necessary.
 
               ⥊ 1
 
@@ -14,7 +14,7 @@ Put all elements of `𝕩` in a rank 1 array, converting to array if necessary.
 
 ## `𝕨 ⥊ 𝕩`: Reshape
 
-Put all elements of `𝕩` in an array of shape `𝕨`, adding or removing elements if necessary.
+Put all elements of `𝕩` in an array of shape `𝕨`, removing elements or repeating them cyclically if necessary.
 
 A single element in `𝕩` can be a function, which will be replaced with an appropriate length:
 - `∘` Exact fit

@@ -4,7 +4,7 @@
 
 ## `⌊ 𝕩`: Floor
 
-Round `𝕩` down.
+Round `𝕩` down to the nearest integer.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 

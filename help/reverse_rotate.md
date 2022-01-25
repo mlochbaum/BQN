@@ -4,7 +4,7 @@
 
 ## `⌽ 𝕩`: Reverse
 
-Reverse the first axis of `𝕩`.
+Reverse `𝕩` along the first axis.
 
            ⌽ 1‿2‿3
 
@@ -14,7 +14,7 @@ Reverse the first axis of `𝕩`.
 
 
 
-## `𝕨 ⌽ 𝕩`: Dyad
+## `𝕨 ⌽ 𝕩`: Rotate
 
 Move the first `𝕨` elements of `𝕩` to its end. Negative `𝕨` reverses the direction of rotation.
 

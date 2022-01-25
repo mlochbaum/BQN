@@ -2,7 +2,7 @@
 
 # Top Left Corner (`⌜`)
 
-## `𝕨 𝔽⌜ 𝕩`: Each
+## `𝕨 𝔽⌜ 𝕩`: Table
 
 Apply `𝔽` between every possible pair of the elements of the arguments.
 

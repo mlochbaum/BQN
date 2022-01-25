@@ -15,7 +15,7 @@ Additive Inverse of `𝕩`.
 
 ## `𝕨 - 𝕩`: Subtract
 
-Subtract `𝕩` from `𝕨`. `𝕨` and `𝕩` can be characters or integers.
+Subtract `𝕩` from `𝕨`. `𝕨` and `𝕩` can be characters or numbers.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 

@@ -6,7 +6,7 @@
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
 <h1 id="double-acute-accent-"><a class="header" href="#double-acute-accent-">Double Acute Accent (<code><span class='Modifier'>˝</span></code>)</a></h1>
 <h2 id="𝔽-𝕩-insert"><a class="header" href="#𝔽-𝕩-insert"><code><span class='Function'>𝔽</span><span class='Modifier'>˝</span> <span class='Value'>𝕩</span></code>: Insert</a></h2>
-<p>Fold over <code><span class='Value'>𝕩</span></code> with <code><span class='Function'>𝔽</span></code> from right to left i.e. Insert <code><span class='Function'>𝔽</span></code> between the major cells of <code><span class='Value'>𝕩</span></code>.</p>
+<p>Fold over cells of <code><span class='Value'>𝕩</span></code> with <code><span class='Function'>𝔽</span></code> from end to start, that is, insert <code><span class='Function'>𝔽</span></code> between the major cells of <code><span class='Value'>𝕩</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgYSDihpAgM+KAvzMg4qWKIOKGlTkKCiAgICvLnSBhCgogICAw4oC/MeKAvzIgKyAz4oC/NOKAvzUgKyA24oC/N+KAvzg=">↗️</a><pre>       <span class='Value'>a</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>9</span>
 
        <span class='Function'>+</span><span class='Modifier'>˝</span> <span class='Value'>a</span>
@@ -15,7 +15,7 @@
        <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>+</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Function'>+</span> <span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>8</span>
 ⟨ 9 12 15 ⟩
 </pre>
-<h2 id="𝕨-𝔽-𝕩-insert-with-initial"><a class="header" href="#𝕨-𝔽-𝕩-insert-with-initial"><code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier'>˝</span> <span class='Value'>𝕩</span></code>: Insert With initial</a></h2>
+<h2 id="𝕨-𝔽-𝕩-insert-with-initial"><a class="header" href="#𝕨-𝔽-𝕩-insert-with-initial"><code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier'>˝</span> <span class='Value'>𝕩</span></code>: Insert With Initial</a></h2>
 <p>Monadic insert, but use <code><span class='Value'>𝕨</span></code> as initial right argument.</p>
 <p>If</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgYiDihpAgM+KAvzMg4qWKIOKGlTkKCiAgIDHigL8x4oC/MSAry50gYgoKICAgMSAry50gYgoKICAgMOKAvzHigL8yICsgM+KAvzTigL81ICsgNuKAvzfigL84ICsgMeKAvzHigL8x">↗️</a><pre>       <span class='Value'>b</span> <span class='Gets'>←</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>⥊</span> <span class='Function'>↕</span><span class='Number'>9</span>

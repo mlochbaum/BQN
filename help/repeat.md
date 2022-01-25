@@ -4,9 +4,9 @@
 
 ## `𝔽⍟𝔾 𝕩`, `𝕨 𝔽⍟𝔾 𝕩`: Repeat
 
-Apply `𝔾` to `𝕨` and `𝕩` and apply `𝔽` to `𝕩` that may times. If `𝕨` is given, keep it as a constant left argument.
+Apply `𝔾` to `𝕨` and `𝕩`, then apply `𝔽` to `𝕩` that may times. If `𝕨` is given, use it each time as a constant left argument.
 
-If `𝔾` returns an array, give `𝔽⍟𝕩` for each element.
+If `𝔾` returns an array, give `𝔽⍟𝕩` for each of its elements.
 
            1 +⍟⊢ 4
 

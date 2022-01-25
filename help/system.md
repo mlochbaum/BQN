@@ -4,6 +4,6 @@
 
 ## `•`: System
 
-A prefix for system functions. `•listSys` gives a list of system values added in any BQN implementation.
+A prefix for system functions. `•listSys` gives a list of defined system value names.
 
 `•` is ignored when determining the role of the system value.

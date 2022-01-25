@@ -4,7 +4,7 @@
 
 ## `⌈ 𝕩`: Ceiling
 
-Round `𝕩` up.
+Round `𝕩` up to the nearest integer.
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 

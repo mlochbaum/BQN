@@ -4,6 +4,8 @@
 
 ## `+ 𝕩`: Conjugate
 
+Complex conjugate of `𝕩`. BQN doesn't support complex numbers yet, so it has no effect.
+
           + 1
 
           + ¯1

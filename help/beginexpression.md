@@ -6,7 +6,7 @@
 
 Starts an expression, and only one expression. Must end with a corresponding `)`.
 
-`(` gives higher precedence to the expression in it, and BQN will evaluate expressions in `()` first.
+`(` supercedes any precedence order, so that an expression in `()` is evaluated fully before it can be used in the outer context.
 
         1 + 2 - 3
 

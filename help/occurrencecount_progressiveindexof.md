@@ -4,7 +4,7 @@
 
 ## `⊒ 𝕩`: Occurrence Count
 
-Number of times each major cell of `𝕩` appears before itself.
+Number of times each major cell of `𝕩` has occurred before the current position.
 
             ⊒   2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
 
@@ -14,7 +14,7 @@ Number of times each major cell of `𝕩` appears before itself.
 
 ## `𝕨 ⊒ 𝕩`: Progressive Index Of
 
-Index of the first unused match of each major cell of `𝕩` in `𝕨`. If there are no more matches left, length of `𝕨` is placed in that position.
+Index of the first unused match of each major cell of `𝕩` in `𝕨`. If there are no more matches left, the length of `𝕨` is placed in that position.
 
             "aaa" ⊒ "aaaaa"
 

@@ -4,7 +4,7 @@
 
 ## `π`: Pi
 
-Mathematical constant pi. Shares the same status as other numbers, can be negative (`¯π`).
+The mathematical constant pi, a numeric literal. Can be negative (`¯π`).
 
 
         π

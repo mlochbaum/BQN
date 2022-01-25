@@ -6,9 +6,9 @@
 
 Apply `𝔽` to the arguments.
 
-If an error happens when `𝔽` is applied, cancel its execution, apply `𝔾` to the arguments and return the results.
+If an error happens when `𝔽` is applied, cancel its execution, apply `𝔾` to the arguments and return its result.
 
-Otherwise, return the results of `𝔽`.
+Otherwise, return the result of `𝔽`.
 
            ∾⎊{"error occurred with argument: "∾•Fmt 𝕩} 1
 
