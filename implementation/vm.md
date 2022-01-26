@@ -12,7 +12,7 @@ The way data is represented is part of the VM implementation: it can use native 
 
 The BQN implementation here and dzaima/BQN share a stack-based object code format used to represent compiled code. This format is a list of numbers of unspecified precision (small precision will limit the length of list literals and number of locals per block, blocks, and constants). Previously it was encoded as bytes with the [LEB128](https://en.wikipedia.org/wiki/LEB128) format; while it no longer has anything to do with bytes it's called a "bytecode" because this is shorter than "object code".
 
-The self-hosted compiler uses a simpler, and less capable, format for block and variable data than dzaima/BQN. Only this format is described here; [dc.bqn](../dc.bqn) adapts it to be compatible with dzaima/BQN.
+The self-hosted compiler uses a simpler, and less capable, format for block and variable data than dzaima/BQN. Only this format is described here; [dc.bqn](../test/dc.bqn) adapts it to be compatible with dzaima/BQN.
 
 dzaima/BQN can interpret bytecode or convert it to [JVM](https://en.wikipedia.org/wiki/Java_virtual_machine) bytecode, while the Javascript VM previously interpreted bytecode but now always compiles it. Since interpretation is a simpler strategy, it may be helpful to use the [old Javascript bytecode interpreter](https://github.com/mlochbaum/BQN/blob/f74d9223ef880f2914030c2375f680dcc7e8c92b/bqn.js#L36) as a reference (for bytecode execution only) when implementing a BQN virtual machine.
 
