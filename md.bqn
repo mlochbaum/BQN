@@ -553,7 +553,7 @@ hlchars‿classTag ← {
   classes‿chars ← <˘ ⍉ ∘‿2⥊⟨
     0             , " "∾@+9‿10  # Should never be highlighted
     "Value"       , "𝕨𝕩𝕗𝕘𝕤"
-    "Function"    , func∾¯1⊏˘5‿2⥊"𝕎𝕏𝔽𝔾𝕊"
+    "Function"    , func∾"𝕎𝕏𝔽𝔾𝕊"
     "Modifier"    , mod1
     "Modifier2"   , mod2
     "Number"      , ∾idChars       # Will be classified among ↑↑ later
