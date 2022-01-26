@@ -10,11 +10,9 @@ The way data is represented is part of the VM implementation: it can use native 
 
 ## Bytecode
 
-The BQN implementation here and dzaima/BQN share a stack-based object code format used to represent compiled code. This format is a list of numbers of unspecified precision (small precision will limit the length of list literals and number of locals per block, blocks, and constants). Previously it was encoded as bytes with the [LEB128](https://en.wikipedia.org/wiki/LEB128) format; while it no longer has anything to do with bytes it's called a "bytecode" because this is shorter than "object code".
+BQN source code is compiled to stack-based object code. This format is a list of numbers of unspecified precision (small precision will limit the length of list literals and number of locals per block, blocks, and constants). Previously it was encoded as bytes with the [LEB128](https://en.wikipedia.org/wiki/LEB128) format; while it no longer has anything to do with bytes it's called a "bytecode" because this is shorter than "object code".
 
-The self-hosted compiler uses a simpler, and less capable, format for block and variable data than dzaima/BQN. Only this format is described here; [dc.bqn](../test/dc.bqn) adapts it to be compatible with dzaima/BQN.
-
-dzaima/BQN can interpret bytecode or convert it to [JVM](https://en.wikipedia.org/wiki/Java_virtual_machine) bytecode, while the Javascript VM previously interpreted bytecode but now always compiles it. Since interpretation is a simpler strategy, it may be helpful to use the [old Javascript bytecode interpreter](https://github.com/mlochbaum/BQN/blob/f74d9223ef880f2914030c2375f680dcc7e8c92b/bqn.js#L36) as a reference (for bytecode execution only) when implementing a BQN virtual machine.
+Various VMs might interpret or further compile the bytecode: for example CBQN compiles to native code with function calls in x86 and interprets if this is unavailable, and the online version always compiles to JS. For reference, [vm.bqn](../vm.bqn) sticks to a simple design and should be easiest to read.
 
 ### Components
 
@@ -55,7 +53,7 @@ The program's symbol list is included in the tokenization information `t`: it is
 
 ### Instructions
 
-The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the "used" column. Instructions marked `NS` are used only in programs with namespaces, and so are not needed to support the compiler or self-hosted runtime. Similarly, `SETH` is only needed in programs with destructuring headers.
+The following instructions are defined (those without names are tentatively reserved only). The ones emitted by the self-hosted BQN compiler are marked in the "used" column. Instructions marked "NS" are used only in programs with namespaces, and those marked "HE" are used only with headers `:` or predicates `?`. Only those marked "X" are needed to support the compiler and self-hosted runtime.
 
 |  B | Name | Used | Like | Args     | Description
 |---:|------|:----:|-----:|:---------|------------
@@ -86,10 +84,10 @@ The following instructions are defined by dzaima/BQN. The ones emitted by the se
 | 22 | VARU |  X   |  21  | `D`, `I` | Push and clear local variable `I` from `D` frames up
 | 26 | DYNO |      |      | `I`      | Push named variable `I`
 | 27 | DYNM |      |      | `I`      | Push named variable `I` reference
-| 2A | PRED |      |  06  |          | Check predicate and drop
-| 2B | VFYM |  X   |      |          | Convert constant to matcher (for headers)
-| 2C | NOTM |  X   |      |          | Push placeholder assignment matcher
-| 2F | SETH |  X   |  30  |          | Test and set header
+| 2A | PRED |  HE  |  06  |          | Check predicate and drop
+| 2B | VFYM |  HE  |      |          | Convert constant to matcher (for headers)
+| 2C | NOTM |  HE  |      |          | Push placeholder assignment matcher
+| 2F | SETH |  HE  |  30  |          | Test and set header
 | 30 | SETN |  X   |      |          | Define variable
 | 31 | SETU |  X   |      |          | Change variable
 | 32 | SETM |  X   |      |          | Modify variable
@@ -131,7 +129,7 @@ Many instructions just call functions or modifiers or otherwise have fairly obvi
 
 ### Local variables: DFND VARO VARU VARM RETN
 
-The bytecode representation is designed with the assumption that variables will be stored in frames, one for each time an instance of a block is run. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see [#blocks](#blocks)) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.
+The bytecode representation is designed with the assumption that variables will be stored in frames, one for each time an instance of a block is run. A new frame is created when the block is evaluated (see [#blocks](#blocks)) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.
 
 A frame is a mutable list of *slots* for variable values. It has slots for any special names that are available during the blocks execution followed by the local variables it defines. Special names use the ordering `𝕤𝕩𝕨𝕣𝕗𝕘`; the first three of these are available in non-immediate blocks while `𝕣` and `𝕗` are available in modifiers and `𝕘` in 2-modifiers specifically.
 
@@ -253,7 +251,7 @@ The variable list is used to create REPLs, but has other uses as well, such as a
 
 The full BQN implementation is made up of the two components above—virtual machine and core runtime—and the compiled runtime, compiler, and formatter. Since the compiler unlikely to work right away, I suggest initially testing the virtual machine on smaller pieces of code compiled by an existing, working, BQN implementation.
 
-BQN sources are compiled with [cjs.bqn](../src/cjs.bqn), which runs under [dzaima/BQN](https://github.com/dzaima/BQN/) as a Unix-style script. It has two modes. If given a command-line argument `r`, `c`, or `fmt`, it compiles one of the source files. With any other command-line arguments, it will compile each one, and format it as a single line of output. The output is in a format designed for Javascript, but it can be adjusted to work in other languages either by text replacement on the output or changes to the formatting functions in cjs.bqn.
+BQN sources can be compiled with [cjs.bqn](../src/cjs.bqn). It has two modes. If given a command-line argument `r`, `c`, or `fmt`, it compiles one of the source files. With any other command-line arguments, it will compile each one, and format it as a single line of output. The output is in a format designed for Javascript. VMs in other languages generally copy and modify cjs.bqn to work with the new language (for example cc.bqn in CBQN).
 
 ### Structure
 

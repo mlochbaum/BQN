@@ -9,9 +9,8 @@
 <p>There's a short <a href="https://www.youtube.com/watch?v=FxU5tZZ1gNc">video introduction</a> to the VM architecture thanks to Asher Mancinelli.</p>
 <p>The way data is represented is part of the VM implementation: it can use native arrays or a custom data structure, depending on what the language supports. An initial implementation will be very slow, but can be improved by replacing functions from the BQN-based runtime with native code. As the VM system can be hard to work with if you're not familiar with it, I advise you to contact me to discuss implementing a VM if you are interested.</p>
 <h2 id="bytecode"><a class="header" href="#bytecode">Bytecode</a></h2>
-<p>The BQN implementation here and dzaima/BQN share a stack-based object code format used to represent compiled code. This format is a list of numbers of unspecified precision (small precision will limit the length of list literals and number of locals per block, blocks, and constants). Previously it was encoded as bytes with the <a href="https://en.wikipedia.org/wiki/LEB128">LEB128</a> format; while it no longer has anything to do with bytes it's called a &quot;bytecode&quot; because this is shorter than &quot;object code&quot;.</p>
-<p>The self-hosted compiler uses a simpler, and less capable, format for block and variable data than dzaima/BQN. Only this format is described here; <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../test/dc.bqn">dc.bqn</a> adapts it to be compatible with dzaima/BQN.</p>
-<p>dzaima/BQN can interpret bytecode or convert it to <a href="https://en.wikipedia.org/wiki/Java_virtual_machine">JVM</a> bytecode, while the Javascript VM previously interpreted bytecode but now always compiles it. Since interpretation is a simpler strategy, it may be helpful to use the <a href="https://github.com/mlochbaum/BQN/blob/f74d9223ef880f2914030c2375f680dcc7e8c92b/bqn.js#L36">old Javascript bytecode interpreter</a> as a reference (for bytecode execution only) when implementing a BQN virtual machine.</p>
+<p>BQN source code is compiled to stack-based object code. This format is a list of numbers of unspecified precision (small precision will limit the length of list literals and number of locals per block, blocks, and constants). Previously it was encoded as bytes with the <a href="https://en.wikipedia.org/wiki/LEB128">LEB128</a> format; while it no longer has anything to do with bytes it's called a &quot;bytecode&quot; because this is shorter than &quot;object code&quot;.</p>
+<p>Various VMs might interpret or further compile the bytecode: for example CBQN compiles to native code with function calls in x86 and interprets if this is unavailable, and the online version always compiles to JS. For reference, <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../vm.bqn">vm.bqn</a> sticks to a simple design and should be easiest to read.</p>
 <h3 id="components"><a class="header" href="#components">Components</a></h3>
 <p>The complete bytecode for a program consists of the following:</p>
 <ul>
@@ -44,7 +43,7 @@
 <p>The starting index refers to the position in bytecode where execution starts in order to evaluate the block. Different bodies will always have the same set of special names, but the variables they define are unrelated, so of course they can have different counts. The given number of variables includes special names, but list of names and export mask don't.</p>
 <p>The program's symbol list is included in the tokenization information <code><span class='Value'>t</span></code>: it is <code><span class='Number'>0</span><span class='Function'>⊑</span><span class='Number'>2</span><span class='Function'>⊑</span><span class='Value'>t</span></code>. Since the entire program (the source code passed in one compiler call) uses this list, namespace field accesses can be performed with indices alone within a program. The symbol list is needed for cross-program access, for example if <code><span class='Function'>•BQN</span></code> returns a namespace.</p>
 <h3 id="instructions"><a class="header" href="#instructions">Instructions</a></h3>
-<p>The following instructions are defined by dzaima/BQN. The ones emitted by the self-hosted BQN compiler are marked in the &quot;used&quot; column. Instructions marked <code><span class='Function'>NS</span></code> are used only in programs with namespaces, and so are not needed to support the compiler or self-hosted runtime. Similarly, <code><span class='Function'>SETH</span></code> is only needed in programs with destructuring headers.</p>
+<p>The following instructions are defined (those without names are tentatively reserved only). The ones emitted by the self-hosted BQN compiler are marked in the &quot;used&quot; column. Instructions marked &quot;NS&quot; are used only in programs with namespaces, and those marked &quot;HE&quot; are used only with headers <code><span class='Value'>:</span></code> or predicates <code><span class='Value'>?</span></code>. Only those marked &quot;X&quot; are needed to support the compiler and self-hosted runtime.</p>
 <table>
 <thead>
 <tr>
@@ -276,7 +275,7 @@
 <tr>
 <td align="right">2A</td>
 <td>PRED</td>
-<td align="center"></td>
+<td align="center">HE</td>
 <td align="right">06</td>
 <td align="left"></td>
 <td>Check predicate and drop</td>
@@ -284,7 +283,7 @@
 <tr>
 <td align="right">2B</td>
 <td>VFYM</td>
-<td align="center">X</td>
+<td align="center">HE</td>
 <td align="right"></td>
 <td align="left"></td>
 <td>Convert constant to matcher (for headers)</td>
@@ -292,7 +291,7 @@
 <tr>
 <td align="right">2C</td>
 <td>NOTM</td>
-<td align="center">X</td>
+<td align="center">HE</td>
 <td align="right"></td>
 <td align="left"></td>
 <td>Push placeholder assignment matcher</td>
@@ -300,7 +299,7 @@
 <tr>
 <td align="right">2F</td>
 <td>SETH</td>
-<td align="center">X</td>
+<td align="center">HE</td>
 <td align="right">30</td>
 <td align="left"></td>
 <td>Test and set header</td>
@@ -522,7 +521,7 @@
 </table>
 <p>Many instructions just call functions or modifiers or otherwise have fairly obvious implementations. Instructions to handle variables and blocks are more complicated (although very typical of bytecode representations for lexically-scoped languages) and are described in more detail below.</p>
 <h3 id="local-variables-dfnd-varo-varu-varm-retn"><a class="header" href="#local-variables-dfnd-varo-varu-varm-retn">Local variables: DFND VARO VARU VARM RETN</a></h3>
-<p>The bytecode representation is designed with the assumption that variables will be stored in frames, one for each time an instance of a block is run. dzaima/BQN has facilities to give frame slots names, in order to support dynamic execution, but self-hosted BQN doesn't. A new frame is created when the block is evaluated (see <a href="#blocks">#blocks</a>) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.</p>
+<p>The bytecode representation is designed with the assumption that variables will be stored in frames, one for each time an instance of a block is run. A new frame is created when the block is evaluated (see <a href="#blocks">#blocks</a>) and in general has to be cleaned up by garbage collection, because a lexical closure might need to refer to the frame even after the corresponding block finishes. Lexical closures can form loops, so simple reference counting can leak memory, but it could be used in addition to less frequent tracing garbage collection or another strategy.</p>
 <p>A frame is a mutable list of <em>slots</em> for variable values. It has slots for any special names that are available during the blocks execution followed by the local variables it defines. Special names use the ordering <code><span class='Value'>𝕤𝕩𝕨𝕣𝕗𝕘</span></code>; the first three of these are available in non-immediate blocks while <code><span class='Value'>𝕣</span></code> and <code><span class='Value'>𝕗</span></code> are available in modifiers and <code><span class='Value'>𝕘</span></code> in 2-modifiers specifically.</p>
 <p>When a block is pushed with <strong>DFND</strong>, an instance of the block is created, with its <em>parent frame</em> set to be the frame of the currently-executing block. Setting the parent frame when the block is first seen, instead of when it's evaluated, is what distinguishes lexical from dynamic scoping. If it's an immediate block, it's evaluated immediately, and otherwise it's pushed onto the stack. When the block is evaluated, its frame is initialized using any arguments passed to it, the next instruction's index is pushed onto the return stack, and execution moves to the first instruction in the block. When the RETN instruction is encountered, an index is popped from the return stack and execution returns to this location. As an alternative to maintaining an explicit return stack, a block can be implemented as a native function that creates a new execution stack and returns the value in it when the <strong>RETN</strong> instruction is reached. This approach uses the implementation language's call stack for the return stack.</p>
 <p>Local variables are manipulated with the <strong>VARO</strong> (or <strong>VARU</strong>) and <strong>VARM</strong> instructions, which load the value of a variable and a reference to it (see the next section) respectively. These instructions reference variables by <em>frame depth</em> and <em>slot index</em>. The frame depth indicates in which frame the variable is found: the current frame has depth 0, its block's parent frame has depth 1, and so on. The slot index is an index within that frame.</p>
@@ -744,7 +743,7 @@
 <p>The variable list is used to create REPLs, but has other uses as well, such as allowing execution to take place within a surrounding scope. It consists of a list of normalized names. The corresponding depth list indicates the lexical depth of each of these, with 0 and -1 indicating that the variable should exist directly in the top-level scope. A typical interactive REPL uses only the value -1, because it allows variables to be shadowed. It maintains a single top-level environment to be used for all evaluations. When the programmer enters a line, it's compiled, then the environment and list of top-level names is extended according to the result.</p>
 <h2 id="assembly"><a class="header" href="#assembly">Assembly</a></h2>
 <p>The full BQN implementation is made up of the two components above—virtual machine and core runtime—and the compiled runtime, compiler, and formatter. Since the compiler unlikely to work right away, I suggest initially testing the virtual machine on smaller pieces of code compiled by an existing, working, BQN implementation.</p>
-<p>BQN sources are compiled with <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/cjs.bqn">cjs.bqn</a>, which runs under <a href="https://github.com/dzaima/BQN/">dzaima/BQN</a> as a Unix-style script. It has two modes. If given a command-line argument <code><span class='Value'>r</span></code>, <code><span class='Value'>c</span></code>, or <code><span class='Value'>fmt</span></code>, it compiles one of the source files. With any other command-line arguments, it will compile each one, and format it as a single line of output. The output is in a format designed for Javascript, but it can be adjusted to work in other languages either by text replacement on the output or changes to the formatting functions in cjs.bqn.</p>
+<p>BQN sources can be compiled with <a href="https://github.com/mlochbaum/BQN/blob/master/implementation/../src/cjs.bqn">cjs.bqn</a>. It has two modes. If given a command-line argument <code><span class='Value'>r</span></code>, <code><span class='Value'>c</span></code>, or <code><span class='Value'>fmt</span></code>, it compiles one of the source files. With any other command-line arguments, it will compile each one, and format it as a single line of output. The output is in a format designed for Javascript. VMs in other languages generally copy and modify cjs.bqn to work with the new language (for example cc.bqn in CBQN).</p>
 <h3 id="structure"><a class="header" href="#structure">Structure</a></h3>
 <p>The following steps give a working BQN system, assuming a working VM and core runtime:</p>
 <ul>
