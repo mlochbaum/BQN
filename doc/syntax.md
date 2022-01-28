@@ -14,6 +14,7 @@ Glyph(s)        | Meaning
 `'"`            | [Character or string literal](#constants)
 `@`             | [Null character](#constants)
 `¯∞π`           | [Used in numeric literals](#constants)
+`·`             | [Nothing](expression.md#nothing)
 `()`            | Expression grouping
 `←`             | [Define](expression.md#assignment)
 `⇐`             | [Export](expression.md#exports)
