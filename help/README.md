@@ -18,7 +18,7 @@ Symbols are listed in alphabetical order of page name, ignoring syntactical role
 | `⎊` | [Catch](catch.md) |
 | `⌈` | [Ceiling, Maximum](ceiling_maximum.md) |
 | `˘` | [Cells](cells.md) |
-| `←` | [Change](change.md) |
+| `↩` | [Change](change.md) |
 | `◶` | [Choose](choose.md) |
 | `⊐` | [Classify, Index Of](classify_indexof.md) |
 | `#` | [Comment](comment.md) |
