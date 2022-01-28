@@ -3,6 +3,7 @@
 # Element Of (`∊`)
 
 ## `∊ 𝕩`: Mark Firsts
+[→full documentation](../doc/selfcmp.md#mark-firsts)
 
 Mark the first occurrence of each major cell in `𝕩` with a 1, and all other occurrences with a 0.
 
@@ -15,6 +16,7 @@ Mark the first occurrence of each major cell in `𝕩` with a 1, and all other o
 
 
 ## `𝕨 ∊ 𝕩`: Member Of
+[→full documentation](../doc/search.md#member-of)
 
 Is each cell in `𝕨` a major cell of `𝕩`?
 

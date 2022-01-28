@@ -3,6 +3,7 @@
 # Leftwards Arrow (`←`)
 
 ## `n ← v`: Define
+[→full documentation](../doc/expression.md#assignment)
 
 Defines a new variable with name `n` and value `v`.
 

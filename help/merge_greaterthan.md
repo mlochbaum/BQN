@@ -3,6 +3,7 @@
 # Greater Than (`>`)
 
 ## `> 𝕩`: Merge
+[→full documentation](../doc/couple.md)
 
 Add the rank of an element of `𝕩` to the rank of `𝕩`.
 
@@ -23,6 +24,7 @@ Returns atomic values as is.
 
 
 ## `𝕨 > 𝕩`: Greater Than
+[→full documentation](../doc/arithmetic.md#comparisons)
 
 `𝕨` and `𝕩` can both be either numbers or characters.
 

@@ -3,6 +3,7 @@
 # Divide (`÷`)
 
 ## `÷ 𝕩`: Reciprocal
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 Gives `1 ÷ 𝕩`.
 
@@ -13,6 +14,7 @@ Gives `1 ÷ 𝕩`.
 
 
 ## `𝕨 ÷ 𝕩`: Divide
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 `𝕨` divided by `𝕩`.
 

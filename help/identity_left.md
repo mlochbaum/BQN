@@ -3,6 +3,7 @@
 # Left Tack (`⊣`)
 
 ## `⊣ 𝕩`: Identity
+[→full documentation](../doc/identity.md)
 
 Return `𝕩`.
 
@@ -11,6 +12,7 @@ Return `𝕩`.
 
 
 ## `𝕨 ⊣ 𝕩`: Left
+[→full documentation](../doc/identity.md)
 
 Return `𝕨`.
 

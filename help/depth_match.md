@@ -3,6 +3,7 @@
 # Identical To (`≡`)
 
 ## `≡ 𝕩`: Depth
+[→full documentation](../doc/depth.md)
 
 Highest level of nesting in `𝕩`.
 
@@ -15,6 +16,7 @@ Highest level of nesting in `𝕩`.
 
 
 ## `𝕨 ≡ 𝕩`: Match
+[→full documentation](../doc/match.md)
 
 Does `𝕨` exactly match `𝕩`?
 

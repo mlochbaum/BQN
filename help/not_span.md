@@ -3,6 +3,7 @@
 # Not (`¬`)
 
 ## `¬ 𝕩`: Logical Not
+[→full documentation](../doc/logic.md)
 
 Logical Not of `𝕩`.
 
@@ -15,6 +16,7 @@ Logical Not of `𝕩`.
 
 
 ## `𝕨 ¬ 𝕩`: Span
+[→full documentation](../doc/logic.md)
 
 Count of numbers in the inclusive range from `𝕩` to `𝕨`.
 

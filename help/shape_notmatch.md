@@ -3,6 +3,7 @@
 # Not Identical To (`≢`)
 
 ## `≢ 𝕩`: Shape
+[→full documentation](../doc/shape.md)
 
 Length of each dimension of x.
 
@@ -15,6 +16,7 @@ Length of each dimension of x.
 
 
 ## `𝕨 ≢ 𝕩`: Not Match
+[→full documentation](../doc/match.md)
 
 Does `𝕨` not exactly match `𝕩`?
 

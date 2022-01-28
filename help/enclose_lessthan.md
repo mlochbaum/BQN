@@ -3,6 +3,7 @@
 # Lesser Than (`<`)
 
 ## `< 𝕩`: Enclose
+[→full documentation](../doc/enclose.md)
 
 Create a unit array containing `𝕩`. (`(≢<𝕩) ≡ ⟨⟩`)
 
@@ -15,6 +16,7 @@ Create a unit array containing `𝕩`. (`(≢<𝕩) ≡ ⟨⟩`)
 
 
 ## `𝕨 < 𝕩`: Lesser Than
+[→full documentation](../doc/arithmetic.md#comparisons)
 
 `𝕨` and `𝕩` can both be either numbers or characters.
 

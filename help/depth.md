@@ -3,6 +3,7 @@
 # Circle With Two Dots (`⚇`)
 
 ## `𝔽⚇𝕘 𝕩`, `𝕨 𝔽⚇𝕘 𝕩`: Depth
+[→full documentation](../doc/depth.md#the-depth-modifier)
 
 Apply `𝔽` to the cells of the arguments at depth given in `𝕘`.
 

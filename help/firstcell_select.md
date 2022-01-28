@@ -3,6 +3,7 @@
 # Square Image Of (`⊏`)
 
 ## `⊏ 𝕩`: First Cell
+[→full documentation](../doc/select.md)
 
 First major cell of `𝕩`.
 
@@ -15,6 +16,7 @@ First major cell of `𝕩`.
 
 
 ## `𝕨 ⊏ 𝕩`: Select
+[→full documentation](../doc/select.md)
 
 Select the major cells of `𝕨` at the indices in `𝕩`.
 

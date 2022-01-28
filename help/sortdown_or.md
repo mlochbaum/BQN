@@ -3,6 +3,7 @@
 # Logical Or (`∨`)
 
 ## `∨ 𝕩`: Sort Down
+[→full documentation](../doc/order.md#sort)
 
 Sort array `𝕩` in descending order.
 
@@ -11,6 +12,7 @@ Sort array `𝕩` in descending order.
 
 
 ## `𝕨 ∨ 𝕩`: Logical Or
+[→full documentation](../doc/logic.md)
 
 Logical Or of `𝕨` and `𝕩`.
 

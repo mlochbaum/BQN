@@ -3,6 +3,7 @@
 # Root (`√`)
 
 ## `√ 𝕩`: Square root
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
@@ -11,6 +12,7 @@
 
 
 ## `𝕨 √ 𝕩`: Root
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 `𝕨`th root of `𝕩`.
 

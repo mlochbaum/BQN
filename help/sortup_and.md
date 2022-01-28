@@ -3,6 +3,7 @@
 # Logical And (`∧`)
 
 ## `∧ 𝕩`: Sort Up
+[→full documentation](../doc/order.md#sort)
 
 Sort array `𝕩` in ascending order.
 
@@ -11,6 +12,7 @@ Sort array `𝕩` in ascending order.
 
 
 ## `𝕨 ∧ 𝕩`: Logical And
+[→full documentation](../doc/logic.md)
 
 Logical And of `𝕨` and `𝕩`.
 

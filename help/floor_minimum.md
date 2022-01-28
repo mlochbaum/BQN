@@ -3,6 +3,7 @@
 # Left Floor (`⌊`)
 
 ## `⌊ 𝕩`: Floor
+[→full documentation](../doc/arithmetic.md#additional-arithmetic)
 
 Round `𝕩` down to the nearest integer.
 
@@ -13,6 +14,7 @@ Round `𝕩` down to the nearest integer.
 
 
 ## `𝕨 ⌊ 𝕩`: Minimum
+[→full documentation](../doc/arithmetic.md#additional-arithmetic)
 
 Minimum of `𝕨` and `𝕩`.
 

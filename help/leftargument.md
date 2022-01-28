@@ -3,6 +3,7 @@
 # Mathematical Double-struck W (`𝕨`)
 
 ## `𝕨`: Left Argument
+[→full documentation](../doc/syntax.md#blocks)
 
 A variable assigned to the left argument of a block. `𝕎` can be used to access the left argument as a function.
 

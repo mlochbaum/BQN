@@ -3,6 +3,7 @@
 # Greater Than or Equal To (`≥`)
 
 ## `𝕨 ≥ 𝕩`: Greater Than or Equal To
+[→full documentation](../doc/arithmetic.md#comparisons)
 
 `𝕨` and `𝕩` can both be either numbers or characters.
 

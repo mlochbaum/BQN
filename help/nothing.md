@@ -3,6 +3,7 @@
 # Middle Dot (`·`)
 
 ## `·`: Nothing
+[→full documentation](../doc/expression.md#nothing)
 
 ### In Trains
 

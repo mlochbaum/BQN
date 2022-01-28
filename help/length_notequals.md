@@ -3,6 +3,7 @@
 # Not Equal (`≠`)
 
 ## `≠ 𝕩`: Length
+[→full documentation](../doc/shape.md)
 
 Length of the first dimension of `𝕩`.
 
@@ -20,6 +21,7 @@ Length of the first dimension of `𝕩`.
 
 
 ## `𝕨 ≠ 𝕩`: Not Equal To
+[→full documentation](../doc/arithmetic.md#comparisons)
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 

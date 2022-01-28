@@ -3,6 +3,7 @@
 # Star (`⋆`)
 
 ## `⋆ 𝕩`: Exponential
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 `e` (Euler's constant) to the power of `𝕩`.
 
@@ -13,6 +14,7 @@
 
 
 ## `𝕨 ⋆ 𝕩`: Power
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 `𝕨` to the power of `𝕩`.
 

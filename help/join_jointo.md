@@ -3,6 +3,7 @@
 # Lazy S (`∾`)
 
 ## `∾ 𝕩`: Join
+[→full documentation](../doc/join.md)
 
 Join all elements of `𝕩` together.
 
@@ -17,6 +18,7 @@ Element ranks must be compatible.
 
 
 ## `𝕨 ∾ 𝕩`: Join To
+[→full documentation](../doc/join.md)
 
 Join `𝕨` to `𝕩` along the first axis.
 

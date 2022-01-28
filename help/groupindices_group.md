@@ -3,6 +3,7 @@
 # Square Cup (`⊔`)
 
 ## `⊔ 𝕩`: Group Indices
+[→full documentation](../doc/group.md)
 
 Group the indices of the major cells of `𝕩` by their respective values.
 
@@ -15,6 +16,7 @@ Group the indices of the major cells of `𝕩` by their respective values.
 
 
 ## `𝕨 ⊔ 𝕩`: Group
+[→full documentation](../doc/group.md)
 
 Group the major cells of `𝕩` by their respective indices in `𝕨`.
 

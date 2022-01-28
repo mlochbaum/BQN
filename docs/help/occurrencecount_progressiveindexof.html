@@ -6,6 +6,7 @@
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
 <h1 id="square-original-of-or-equal-to-"><a class="header" href="#square-original-of-or-equal-to-">Square Original Of or Equal To (<code><span class='Function'>⊒</span></code>)</a></h1>
 <h2 id="-𝕩-occurrence-count"><a class="header" href="#-𝕩-occurrence-count"><code><span class='Function'>⊒</span> <span class='Value'>𝕩</span></code>: Occurrence Count</a></h2>
+<p><a class="fulldoc" href="../doc/selfcmp.html#occurrence-count">→full documentation</a></p>
 <p>Number of times each major cell of <code><span class='Value'>𝕩</span></code> has occurred before the current position.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqSICAgMuKAvzfigL8x4oC/OOKAvzHigL834oC/MeKAvzjigL8y4oC/OOKAvzQKCuKJjeKfnOKKkiAy4oC/N+KAvzHigL844oC/MeKAvzfigL8x4oC/OOKAvzLigL844oC/NA==">↗️</a><pre>    <span class='Function'>⊒</span>   <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Ligature'>‿</span><span class='Number'>4</span>
 ⟨ 0 0 0 0 1 1 2 1 1 2 0 ⟩
@@ -17,6 +18,7 @@
                         ┘
 </pre>
 <h2 id="𝕨--𝕩-progressive-index-of"><a class="header" href="#𝕨--𝕩-progressive-index-of"><code><span class='Value'>𝕨</span> <span class='Function'>⊒</span> <span class='Value'>𝕩</span></code>: Progressive Index Of</a></h2>
+<p><a class="fulldoc" href="../doc/search.html#progressive-index-of">→full documentation</a></p>
 <p>Index of the first unused match of each major cell of <code><span class='Value'>𝕩</span></code> in <code><span class='Value'>𝕨</span></code>. If there are no more matches left, the length of <code><span class='Value'>𝕨</span></code> is placed in that position.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFhYSIg4oqSICJhYWFhYSIKCiJhYWFiYiIg4oqSICJhYmFiYWJhYmFiIg==">↗️</a><pre>    <span class='String'>&quot;aaa&quot;</span> <span class='Function'>⊒</span> <span class='String'>&quot;aaaaa&quot;</span>
 ⟨ 0 1 2 3 3 ⟩

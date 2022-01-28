@@ -3,6 +3,7 @@
 # Superscript Equals Sign (`⁼`)
 
 ## `𝔽⁼ 𝕩`, `𝕨 𝔽⁼ 𝕩`: Undo
+[→full documentation](../doc/undo.md)
 
 Invert the function `𝔽`, or use its defined inverse. Not all functions have inverses.
 
