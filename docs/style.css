@@ -189,6 +189,7 @@ kbd {
 a:link        { color: #0b39dc; text-decoration-color: #0b39dc91; }
 a:visited     { color: #3d155f; }
 
+.Head      ,a.Head,
 .Value     ,a.Value        { color: #1f2020; }
 .Function  ,a.Function     { color: #1f7229; }
 .Modifier  ,a.Modifier     { color: #7b3b60; }
@@ -225,6 +226,7 @@ a:visited     { color: #3d155f; }
   a:link      { color: #5592d9; text-decoration-color: #508dd978; }
   a:visited   { color: #8781c1; }
 
+  .Head      ,a.Head,
   .Value     ,a.Value      { color: #b2b9bb; }
   .Function  ,a.Function   { color: #3aa548; }
   .Modifier  ,a.Modifier   { color: #93428b; }

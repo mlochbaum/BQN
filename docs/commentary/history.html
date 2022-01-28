@@ -140,7 +140,7 @@
 <td align="right">-05</td>
 <td><a href="https://aplwiki.com/wiki/Ngn/apl">ngn/apl</a></td>
 <td>Nikolov</td>
-<td>Multiple function bodies <code><span class='Value'>;</span></code></td>
+<td>Multiple function bodies <code><span class='Head'>;</span></code></td>
 <td></td>
 </tr>
 <tr>
@@ -161,14 +161,14 @@
 <td align="right"></td>
 <td></td>
 <td>dzaima</td>
-<td>Inverse headers <code><span class='Function'>𝕊</span><span class='Modifier'>⁼</span><span class='Value'>:</span></code></td>
+<td>Inverse headers <code><span class='Function'>𝕊</span><span class='Modifier'>⁼</span><span class='Head'>:</span></code></td>
 <td><a href="https://chat.stackexchange.com/transcript/52405?m=54639280#54639280">0</a>, <a href="https://chat.stackexchange.com/transcript/message/55860071#55860071">1</a></td>
 </tr>
 <tr>
 <td align="right"></td>
 <td></td>
 <td>w/ dzaima</td>
-<td>Headers <code><span class='Value'>:</span></code></td>
+<td>Headers <code><span class='Head'>:</span></code></td>
 <td><a href="https://chat.stackexchange.com/transcript/52405?m=54768112#54768112">0</a>, <a href="https://chat.stackexchange.com/transcript/message/54776688#54776688">1</a></td>
 </tr>
 <tr>
@@ -213,7 +213,7 @@
 <h4 id="double-struck-special-names"><a class="header" href="#double-struck-special-names">Double-struck special names</a></h4>
 <p>There was a lot of discussion about names for arguments at YAG (no one liked alpha and omega); I think Nathan Rogers suggested using Unicode's mathematical variants of latin letters and I picked out the double-struck ones. My impression is that we were approaching a general concensus that &quot;w&quot; and &quot;x&quot; were the best of several bad choices of argument letters, but that I was the first to commit to them.</p>
 <h4 id="assert-primitive"><a class="header" href="#assert-primitive">Assert primitive</a></h4>
-<p>Nathan Rogers suggested that assertion should be made a primitive to elevate it to a basic part of the language. I used J's <code><span class='Value'>assert</span></code> often enough for this idea to make sense immediately, but I think it was new to me. He suggested the dagger character; I changed this to the somewhat similar-looking <code><span class='Function'>!</span></code>. The error-trapping modifier <code><span class='Modifier2'>⎊</span></code> is identical to J's <code><span class='Value'>::</span></code>, but J only has the function <code><span class='Value'>[:</span></code> to unconditionally throw an error, with no way to set a message.</p>
+<p>Nathan Rogers suggested that assertion should be made a primitive to elevate it to a basic part of the language. I used J's <code><span class='Value'>assert</span></code> often enough for this idea to make sense immediately, but I think it was new to me. He suggested the dagger character; I changed this to the somewhat similar-looking <code><span class='Function'>!</span></code>. The error-trapping modifier <code><span class='Modifier2'>⎊</span></code> is identical to J's <code><span class='Head'>::</span></code>, but J only has the function <code><span class='Value'>[</span><span class='Head'>:</span></code> to unconditionally throw an error, with no way to set a message.</p>
 <h4 id="context-free-grammar"><a class="header" href="#context-free-grammar">Context-free grammar</a></h4>
 <p>In YAG meetings, I suggested adopting <a href="https://aplwiki.com/wiki/APL%5Civ">APL\iv</a>'s convention that variable case must match variable type in order to achieve a context-free grammar. Adám, a proponent of case-insensitive names, pointed out that the case might indicate the type the programmer wanted to use instead of the value's type, creating cross roles. Although I considered swapping subjects and functions, I ended up using exactly the conventions of his APL <a href="https://abrudz.github.io/style/#nc">style guide</a>.</p>
 <h4 id="headers"><a class="header" href="#headers">Headers</a></h4>

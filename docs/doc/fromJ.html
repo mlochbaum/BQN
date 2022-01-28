@@ -61,18 +61,18 @@
 <td><code><span class='String'>'</span></code> creates characters</td>
 </tr>
 <tr>
-<td><code><span class='Function'>=</span><span class='Value'>.</span></code> and <code><span class='Function'>=</span><span class='Value'>:</span></code></td>
+<td><code><span class='Function'>=</span><span class='Value'>.</span></code> and <code><span class='Function'>=</span><span class='Head'>:</span></code></td>
 <td><code><span class='Gets'>←</span></code> and <code><span class='Gets'>↩</span></code></td>
 <td><code><span class='Gets'>←</span></code> to define; <code><span class='Gets'>↩</span></code> to modify</td>
 </tr>
 <tr>
-<td><code><span class='Number'>3</span> <span class='Value'>:…</span></code> or <code><span class='Brace'>{{</span><span class='Value'>…</span><span class='Brace'>}}</span></code></td>
+<td><code><span class='Number'>3</span> <span class='Head'>:</span><span class='Value'>…</span></code> or <code><span class='Brace'>{{</span><span class='Value'>…</span><span class='Brace'>}}</span></code></td>
 <td><code><span class='Brace'>{</span><span class='Value'>…</span><span class='Brace'>}</span></code></td>
 <td></td>
 </tr>
 <tr>
-<td><code><span class='Value'>:</span></code></td>
-<td><code><span class='Value'>;</span></code></td>
+<td><code><span class='Head'>:</span></code></td>
+<td><code><span class='Head'>;</span></code></td>
 <td>To separate function cases</td>
 </tr>
 <tr>
@@ -96,7 +96,7 @@
 <td></td>
 </tr>
 <tr>
-<td><code><span class='Value'>[:</span></code></td>
+<td><code><span class='Value'>[</span><span class='Head'>:</span></code></td>
 <td><code><span class='Nothing'>·</span></code></td>
 <td>Cap</td>
 </tr>
@@ -133,11 +133,11 @@
 <td align="center"><code><span class='Value'>*</span></code></td>
 <td align="center"><code><span class='Value'>%</span></code></td>
 <td align="center"><code><span class='Value'>^</span></code></td>
-<td align="center"><code><span class='Value'>%:</span></code></td>
+<td align="center"><code><span class='Value'>%</span><span class='Head'>:</span></code></td>
 <td align="center"><code><span class='Function'>&lt;</span><span class='Value'>.</span></code></td>
 <td align="center"><code><span class='Function'>&gt;</span><span class='Value'>.</span></code></td>
-<td align="center"><code><span class='Function'>&lt;</span><span class='Value'>:</span></code></td>
-<td align="center"><code><span class='Function'>&gt;</span><span class='Value'>:</span></code></td>
+<td align="center"><code><span class='Function'>&lt;</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Function'>&gt;</span><span class='Head'>:</span></code></td>
 <td align="center"><code><span class='Value'>[</span></code></td>
 <td align="center"><code><span class='Value'>]</span></code></td>
 </tr>
@@ -156,10 +156,10 @@
 <tbody>
 <tr>
 <td align="center">J</td>
-<td align="center"><code><span class='Separator'>,</span><span class='Value'>:</span></code></td>
-<td align="center"><code><span class='Separator'>,</span><span class='Value'>&amp;:</span><span class='Function'>&lt;</span></code></td>
+<td align="center"><code><span class='Separator'>,</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Separator'>,</span><span class='Value'>&amp;</span><span class='Head'>:</span><span class='Function'>&lt;</span></code></td>
 <td align="center"><code><span class='Function'>|</span><span class='Value'>.</span></code></td>
-<td align="center"><code><span class='Function'>|</span><span class='Value'>:</span></code></td>
+<td align="center"><code><span class='Function'>|</span><span class='Head'>:</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -181,15 +181,15 @@
 <tbody>
 <tr>
 <td align="center">Monad</td>
-<td align="center"><code><span class='Function'>/</span><span class='Value'>:~</span></code></td>
-<td align="center"><code><span class='Value'>\:~</span></code></td>
+<td align="center"><code><span class='Function'>/</span><span class='Head'>:</span><span class='Value'>~</span></code></td>
+<td align="center"><code><span class='Value'>\</span><span class='Head'>:</span><span class='Value'>~</span></code></td>
 <td align="center"><code><span class='Function'>-</span><span class='Value'>.</span></code></td>
 <td align="center"><code><span class='Comment'>#@$</span></code></td>
 <td align="center"><code><span class='Comment'>#</span></code></td>
 <td align="center"><code><span class='Function'>L</span><span class='Value'>.</span></code></td>
 <td align="center"><code><span class='Value'>$</span></code></td>
 <td align="center"><code><span class='Separator'>,</span></code></td>
-<td align="center"><code><span class='Value'>;</span></code></td>
+<td align="center"><code><span class='Head'>;</span></code></td>
 </tr>
 <tr>
 <td align="center">Dyad</td>
@@ -197,9 +197,9 @@
 <td align="center"><code><span class='Function'>+</span><span class='Value'>.</span></code></td>
 <td align="center"><code><span class='Function'>+-</span><span class='Value'>.</span></code></td>
 <td align="center"><code><span class='Function'>=</span></code></td>
-<td align="center"><code><span class='Value'>~:</span></code></td>
-<td align="center"><code><span class='Function'>-</span><span class='Value'>:</span></code></td>
-<td align="center"><code><span class='Function'>-</span><span class='Value'>.</span><span class='String'>@</span><span class='Function'>-</span><span class='Value'>:</span></code></td>
+<td align="center"><code><span class='Value'>~</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Function'>-</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Function'>-</span><span class='Value'>.</span><span class='String'>@</span><span class='Function'>-</span><span class='Head'>:</span></code></td>
 <td align="center"><code><span class='Value'>$</span></code></td>
 <td align="center"><code><span class='Separator'>,</span></code></td>
 </tr>
@@ -256,22 +256,22 @@
 <tbody>
 <tr>
 <td align="center">Monad</td>
-<td align="center"><code><span class='Function'>/</span><span class='Value'>:</span></code></td>
-<td align="center"><code><span class='Function'>/</span><span class='Value'>:</span></code></td>
+<td align="center"><code><span class='Function'>/</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Function'>/</span><span class='Head'>:</span></code></td>
 <td align="center"><code><span class='Brace'>{</span><span class='Value'>.</span></code></td>
-<td align="center"><code><span class='Number'>0</span><span class='Brace'>{</span><span class='Value'>::</span><span class='Separator'>,</span></code></td>
+<td align="center"><code><span class='Number'>0</span><span class='Brace'>{</span><span class='Head'>::</span><span class='Separator'>,</span></code></td>
 <td align="center"><code><span class='Value'>i.~~.</span></code></td>
 <td align="center"><code><span class='Value'>…</span></code></td>
-<td align="center"><code><span class='Value'>~:</span></code></td>
+<td align="center"><code><span class='Value'>~</span><span class='Head'>:</span></code></td>
 <td align="center"><code><span class='Value'>~.</span></code></td>
 <td align="center"><code><span class='Function'>&lt;/</span><span class='Value'>.i.</span><span class='String'>@</span><span class='Comment'>#</span></code></td>
 </tr>
 <tr>
 <td align="center">Dyad</td>
 <td align="center"><code><span class='Function'>I</span><span class='Value'>.</span></code></td>
-<td align="center"><code><span class='Function'>I</span><span class='Value'>.&amp;:</span><span class='Function'>-</span></code></td>
+<td align="center"><code><span class='Function'>I</span><span class='Value'>.&amp;</span><span class='Head'>:</span><span class='Function'>-</span></code></td>
 <td align="center"><code><span class='Brace'>{</span></code></td>
-<td align="center"><code><span class='Brace'>{</span><span class='Value'>::</span></code></td>
+<td align="center"><code><span class='Brace'>{</span><span class='Head'>::</span></code></td>
 <td align="center"><code><span class='Value'>i.</span></code></td>
 <td align="center"><code><span class='Value'>…</span></code></td>
 <td align="center"><code><span class='Value'>e.</span></code></td>
@@ -300,12 +300,12 @@
 <td align="center">J</td>
 <td align="center"><code><span class='String'>&quot;</span><span class='Modifier2'>_</span></code></td>
 <td align="center"><code><span class='Value'>~</span></code></td>
-<td align="center"><code><span class='String'>@</span><span class='Value'>:</span></code></td>
-<td align="center"><code><span class='Value'>&amp;:</span></code></td>
-<td align="center"><code><span class='Value'>&amp;.:</span></code></td>
-<td align="center"><code><span class='Value'>:</span></code></td>
+<td align="center"><code><span class='String'>@</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Value'>&amp;</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Value'>&amp;.</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Head'>:</span></code></td>
 <td align="center"><code><span class='String'>@</span><span class='Value'>.</span></code></td>
-<td align="center"><code><span class='Value'>::</span></code></td>
+<td align="center"><code><span class='Head'>::</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -336,9 +336,9 @@
 <td align="center"><code><span class='Function'>/</span><span class='Value'>\</span></code></td>
 <td align="center"><code><span class='String'>&quot;</span><span class='Modifier'>_1</span></code></td>
 <td align="center"><code><span class='String'>&quot;</span></code></td>
-<td align="center"><code><span class='Function'>L</span><span class='Value'>:</span></code></td>
-<td align="center"><code><span class='Value'>^:</span></code></td>
-<td align="center"><code><span class='Value'>^:</span><span class='Modifier'>_1</span></code></td>
+<td align="center"><code><span class='Function'>L</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Value'>^</span><span class='Head'>:</span></code></td>
+<td align="center"><code><span class='Value'>^</span><span class='Head'>:</span><span class='Modifier'>_1</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -357,13 +357,13 @@
 <td><code><span class='String'>@</span><span class='Function'>+↕</span><span class='Number'>256</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Value'>a:</span></code></td>
+<td><code><span class='Value'>a</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>&lt;↕</span><span class='Number'>0</span></code></td>
 </tr>
 </tbody>
 </table>
 <p>Functions <code><span class='Function'>+</span></code> <code><span class='Function'>-</span></code> <code><span class='Function'>|</span></code> <code><span class='Function'>&lt;</span></code> <code><span class='Function'>&gt;</span></code> are the same in both languages.</p>
-<p>Some other primitives are essentially the same in J and BQN, but with different spellings (but <a href="transpose.html">transpose</a> behaves differently; J's dyadic <code><span class='Function'>|</span><span class='Value'>:</span></code> is more like <code><span class='Function'>⍉</span><span class='Modifier'>⁼</span></code>):</p>
+<p>Some other primitives are essentially the same in J and BQN, but with different spellings (but <a href="transpose.html">transpose</a> behaves differently; J's dyadic <code><span class='Function'>|</span><span class='Head'>:</span></code> is more like <code><span class='Function'>⍉</span><span class='Modifier'>⁼</span></code>):</p>
 <table>
 <thead>
 <tr>
@@ -372,13 +372,13 @@
 <th align="center"><code><span class='Value'>%</span></code></th>
 <th align="center"><code><span class='Value'>^</span></code></th>
 <th align="center"><code><span class='Value'>^.</span></code></th>
-<th align="center"><code><span class='Value'>%:</span></code></th>
+<th align="center"><code><span class='Value'>%</span><span class='Head'>:</span></code></th>
 <th align="center"><code><span class='Function'>&lt;</span><span class='Value'>.</span></code></th>
 <th align="center"><code><span class='Function'>&gt;</span><span class='Value'>.</span></code></th>
 <th align="center"><code><span class='Value'>[</span></code></th>
 <th align="center"><code><span class='Value'>]</span></code></th>
 <th align="center"><code><span class='Function'>|</span><span class='Value'>.</span></code></th>
-<th align="center"><code><span class='Function'>|</span><span class='Value'>:</span></code></th>
+<th align="center"><code><span class='Function'>|</span><span class='Head'>:</span></code></th>
 </tr>
 </thead>
 <tbody>
@@ -403,14 +403,14 @@
 <tr>
 <th align="center">J</th>
 <th align="center"><code><span class='Value'>~</span></code></th>
-<th align="center"><code><span class='String'>@</span><span class='Value'>:</span></code></th>
-<th align="center"><code><span class='Value'>&amp;:</span></code></th>
-<th align="center"><code><span class='Value'>&amp;.:</span></code></th>
-<th align="center"><code><span class='Value'>:</span></code></th>
+<th align="center"><code><span class='String'>@</span><span class='Head'>:</span></code></th>
+<th align="center"><code><span class='Value'>&amp;</span><span class='Head'>:</span></code></th>
+<th align="center"><code><span class='Value'>&amp;.</span><span class='Head'>:</span></code></th>
+<th align="center"><code><span class='Head'>:</span></code></th>
 <th align="center"><code><span class='String'>&quot;</span></code></th>
-<th align="center"><code><span class='Function'>L</span><span class='Value'>:</span></code></th>
-<th align="center"><code><span class='Value'>^:</span></code></th>
-<th align="center"><code><span class='Value'>::</span></code></th>
+<th align="center"><code><span class='Function'>L</span><span class='Head'>:</span></code></th>
+<th align="center"><code><span class='Value'>^</span><span class='Head'>:</span></code></th>
+<th align="center"><code><span class='Head'>::</span></code></th>
 </tr>
 </thead>
 <tbody>
@@ -444,12 +444,12 @@
 <td><code><span class='Function'>=</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>&lt;</span><span class='Value'>:</span></code></td>
+<td><code><span class='Function'>&lt;</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span></code></td>
 <td><code><span class='Function'>≤</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>&gt;</span><span class='Value'>:</span></code></td>
+<td><code><span class='Function'>&gt;</span><span class='Head'>:</span></code></td>
 <td><code><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>+</span></code></td>
 <td><code><span class='Function'>≥</span></code></td>
 </tr>
@@ -459,7 +459,7 @@
 <td><code><span class='Function'>∨</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>+</span><span class='Value'>:</span></code></td>
+<td><code><span class='Function'>+</span><span class='Head'>:</span></code></td>
 <td><code><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>×</span></code></td>
 <td><code><span class='Function'>¬∨</span></code></td>
 </tr>
@@ -469,7 +469,7 @@
 <td><code><span class='Function'>∧</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Value'>*:</span></code></td>
+<td><code><span class='Value'>*</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>×</span><span class='Modifier'>˜</span></code></td>
 <td><code><span class='Function'>¬∧</span></code></td>
 </tr>
@@ -479,7 +479,7 @@
 <td><code><span class='Function'>¬</span><span class='Modifier2'>∘</span><span class='Function'>∊/⊣</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>-</span><span class='Value'>:</span></code></td>
+<td><code><span class='Function'>-</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>÷</span><span class='Modifier2'>⟜</span><span class='Number'>2</span></code></td>
 <td><code><span class='Function'>≡</span></code></td>
 </tr>
@@ -499,7 +499,7 @@
 <td></td>
 </tr>
 <tr>
-<td><code><span class='Value'>~:</span></code></td>
+<td><code><span class='Value'>~</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>∊</span></code></td>
 <td><code><span class='Function'>≠</span></code></td>
 </tr>
@@ -514,12 +514,12 @@
 <td><code><span class='Function'>∾</span><span class='Modifier'>˘</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Separator'>,</span><span class='Value'>:</span></code></td>
+<td><code><span class='Separator'>,</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>≍</span></code></td>
 <td></td>
 </tr>
 <tr>
-<td><code><span class='Value'>;</span></code></td>
+<td><code><span class='Head'>;</span></code></td>
 <td><code><span class='Function'>∾</span></code></td>
 <td><code><span class='Function'>∾</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>&lt;</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>≥≡</span><span class='Paren'>))</span></code></td>
 </tr>
@@ -544,12 +544,12 @@
 <td><code><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Paren'>(</span><span class='Function'>+÷</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>´</span><span class='Paren'>)</span><span class='Function'>⊢</span><span class='Paren'>)</span><span class='Number'>1</span><span class='Function'>+↕</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>/</span><span class='Value'>:</span></code></td>
+<td><code><span class='Function'>/</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>⍋</span></code></td>
 <td><code><span class='Function'>⍋</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Value'>\:</span></code></td>
+<td><code><span class='Value'>\</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>⍒</span></code></td>
 <td><code><span class='Function'>⍒</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span></code></td>
 </tr>
@@ -564,12 +564,12 @@
 <td><code><span class='Function'>↑</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Brace'>{</span><span class='Value'>:</span></code></td>
+<td><code><span class='Brace'>{</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>⊢</span><span class='Modifier'>˝</span></code></td>
 <td></td>
 </tr>
 <tr>
-<td><code><span class='Brace'>{</span><span class='Value'>::</span></code></td>
+<td><code><span class='Brace'>{</span><span class='Head'>::</span></code></td>
 <td></td>
 <td><code><span class='Function'>⊑</span></code></td>
 </tr>
@@ -579,7 +579,7 @@
 <td><code><span class='Function'>↓</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Brace'>}</span><span class='Value'>:</span></code></td>
+<td><code><span class='Brace'>}</span><span class='Head'>:</span></code></td>
 <td><code><span class='Number'>¯1</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span></code></td>
 <td></td>
 </tr>
@@ -589,12 +589,12 @@
 <td></td>
 </tr>
 <tr>
-<td><code><span class='String'>&quot;</span><span class='Value'>:</span></code></td>
+<td><code><span class='String'>&quot;</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>•Fmt</span></code></td>
 <td></td>
 </tr>
 <tr>
-<td><code><span class='Value'>?</span></code></td>
+<td><code><span class='Head'>?</span></code></td>
 <td><code><span class='Value'>•rand.</span><span class='Function'>Range</span><span class='Modifier2'>⚇</span><span class='Number'>0</span></code></td>
 <td><code><span class='Value'>•rand.</span><span class='Function'>Deal</span></code></td>
 </tr>
@@ -614,7 +614,7 @@
 <td><code><span class='Function'>⊐</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Value'>i:</span></code></td>
+<td><code><span class='Value'>i</span><span class='Head'>:</span></code></td>
 <td><code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Function'>↕</span><span class='Number'>1</span><span class='Function'>+</span><span class='Number'>2</span><span class='Function'>×</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
 <td><code><span class='Function'>≠</span><span class='Modifier2'>∘</span><span class='Function'>⊣-</span><span class='Number'>1</span><span class='Function'>+⌽</span><span class='Modifier2'>⊸</span><span class='Function'>⊐</span></code></td>
 </tr>
@@ -673,11 +673,11 @@
 <td><code><span class='Value'>x</span> <span class='Function'>F</span><span class='Modifier'>˝</span><span class='Modifier2'>∘</span><span class='Function'>G</span><span class='Modifier2'>⎉</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>∞</span> <span class='Value'>y</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>F</span> <span class='Value'>:.</span> <span class='Function'>G</span></code></td>
-<td><code><span class='Brace'>{</span><span class='Function'>𝕊</span><span class='Value'>:</span> <span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩;</span> <span class='Function'>𝕊</span><span class='Modifier'>⁼</span><span class='Value'>:</span> <span class='Value'>𝕨</span><span class='Function'>G</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td><code><span class='Function'>F</span> <span class='Head'>:</span><span class='Value'>.</span> <span class='Function'>G</span></code></td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝕊</span><span class='Head'>:</span> <span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩</span><span class='Head'>;</span> <span class='Function'>𝕊</span><span class='Modifier'>⁼</span><span class='Head'>:</span> <span class='Value'>𝕨</span><span class='Function'>G</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Function'>&lt;</span><span class='Value'>;.</span><span class='Modifier'>_1</span></code></td>
+<td><code><span class='Function'>&lt;</span><span class='Head'>;</span><span class='Value'>.</span><span class='Modifier'>_1</span></code></td>
 <td><code><span class='Paren'>((</span><span class='Number'>1</span><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Function'>¬×+</span><span class='Modifier'>`</span><span class='Paren'>)</span><span class='Function'>=</span><span class='Modifier2'>⟜</span><span class='Function'>⊏</span><span class='Modifier2'>⊘</span><span class='Function'>⊣</span><span class='Paren'>)</span><span class='Function'>⊔⊢</span></code></td>
 </tr>
 <tr>

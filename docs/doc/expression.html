@@ -22,7 +22,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code><span class='Value'>w?</span></code></td>
+<td><code><span class='Value'>w</span><span class='Head'>?</span></code></td>
 <td><code><span class='Function'>F</span></code></td>
 <td><code><span class='Value'>x</span></code></td>
 <td>Subject</td>
@@ -30,7 +30,7 @@
 <td>RtL, looser</td>
 </tr>
 <tr>
-<td><code><span class='Function'>F</span><span class='Value'>?</span></code></td>
+<td><code><span class='Function'>F</span><span class='Head'>?</span></code></td>
 <td><code><span class='Function'>G</span></code></td>
 <td><code><span class='Function'>H</span></code></td>
 <td>Function</td>
@@ -56,7 +56,7 @@
 </tbody>
 </table>
 <p>The four roles (subject, function, two kinds of modifier) describe expressions, not values. When an expression is evaluated, the value's <a href="types.html">type</a> doesn't have to correspond to its role, and can even change from one evaluation to another. An expression's role is determined entirely by its source code, so it's fixed.</p>
-<p>In the table, <code><span class='Value'>?</span></code> marks an optional left argument. If there isn't a value in that position, or it's <a href="#nothing">Nothing</a> (<code><span class='Nothing'>·</span></code>), the middle function will be called with only one argument.</p>
+<p>In the table, <code><span class='Head'>?</span></code> marks an optional left argument. If there isn't a value in that position, or it's <a href="#nothing">Nothing</a> (<code><span class='Nothing'>·</span></code>), the middle function will be called with only one argument.</p>
 <p>If you're comfortable reading <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> and want to understand things in more detail than described below, you might check the <a href="../spec/grammar.html">grammar specification</a> as well.</p>
 <h2 id="syntactic-role"><a class="header" href="#syntactic-role">Syntactic role</a></h2>
 <p><em>This issue is approached from a different angle in <a href="context.html">Context free grammar</a>.</em></p>
