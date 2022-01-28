@@ -563,6 +563,7 @@ hlchars‿classTag ← {
     "Paren"       , "()"
     "Bracket"     , "⟨⟩"
     "Brace"       , "{}"
+    "Head"        , ":;?"
     "Ligature"    , "‿"
     "Nothing"     , "·"
     "Separator"   , "⋄,"
