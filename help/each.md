@@ -3,6 +3,7 @@
 # Diaresis (`¨`)
 
 ## `𝔽¨ 𝕩`, `𝕨 𝔽¨ 𝕩`: Each
+[→full documentation](../doc/map.md)
 
 Apply `𝔽` to/between the elements of the arguments. (`𝔽⚇¯1`)
 

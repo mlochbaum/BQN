@@ -3,6 +3,7 @@
 # Delta Stile (`⍋`)
 
 ## `⍋ 𝕩`: Grade Up
+[→full documentation](../doc/order.md#grade)
 
 Indices of `𝕩` that would sort its major cells in ascending order.
 
@@ -16,6 +17,7 @@ Indices of `𝕩` that would sort its major cells in ascending order.
 
 
 ## `𝕨 ⍋ 𝕩`: Bins Up
+[→full documentation](../doc/order.md#bins)
 
 Binary search for each cell of `𝕩` in `𝕨`, returning the number of major cells in `𝕨` less than or equal to that cell.
 

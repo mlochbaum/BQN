@@ -3,6 +3,7 @@
 # Grave (`` ` ``)
 
 ## ``𝔽` 𝕩``: Scan
+[→full documentation](../doc/scan.md)
 
 Scan over `𝕩` with `𝔽` from left to right, producing intermediate values.
 

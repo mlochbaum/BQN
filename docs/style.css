@@ -24,6 +24,10 @@ h1, h2, h3, h4 {
 a:link.header, a:visited.header {
   text-decoration:none; color:inherit;
 }
+a.fulldoc {
+  float: right;
+  margin-top: -2.7em;
+}
 .header { position:relative; }
 .header:before {
   position: absolute;

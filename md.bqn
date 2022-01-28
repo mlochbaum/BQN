@@ -370,7 +370,9 @@ Markdown ← {filename𝕊𝕩:
 
     # Links
     ProcLink ← {text 𝕊 target:
-      ∾⟨"<a href=""",AdjustTarget ⥊target,""">",ProcInline text,"</a>"⟩
+      t ← ∾⟨"a",{extensions?'→'≡⊑text?" class=""fulldoc""";""}
+            " href=""",AdjustTarget ⥊target,""""⟩
+      t Html ProcInline text
     }
     ghPath ← blobURL∾path
     AdjustTarget ← {

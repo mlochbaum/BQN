@@ -3,6 +3,7 @@
 # Tape (`≍`)
 
 ## `≍ 𝕩`: Solo
+[→full documentation](../doc/couple.md)
 
 Add a dimension to `𝕩`.
 
@@ -23,6 +24,7 @@ Add a dimension to `𝕩`.
 
 
 ## `𝕨 ≍ 𝕩`: Couple
+[→full documentation](../doc/couple.md)
 
 Join `𝕨` and `𝕩` along a newly created axis.
 

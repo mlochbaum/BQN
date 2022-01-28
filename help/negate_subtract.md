@@ -3,6 +3,7 @@
 # Minus (`-`)
 
 ## `- 𝕩`: Negate
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 Additive Inverse of `𝕩`.
 
@@ -14,6 +15,7 @@ Additive Inverse of `𝕩`.
 
 
 ## `𝕨 - 𝕩`: Subtract
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 Subtract `𝕩` from `𝕨`. `𝕨` and `𝕩` can be characters or numbers.
 

@@ -3,6 +3,7 @@
 # Leftward Double Arrow (`⇐`)
 
 ## `n ⇐ v`: Export Definition
+[→full documentation](../doc/expression.md#exports)
 
 Define a variable with name `n` and export it from the current namespace.
 
@@ -11,6 +12,7 @@ Define a variable with name `n` and export it from the current namespace.
         ns.unexported
 
 ## `𝕨 ⇐`: Export names
+[→full documentation](../doc/expression.md#exports)
 
 Export the names given in `𝕩` from the current namespace. Names must be defined somewhere in the scope.
 

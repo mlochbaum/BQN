@@ -3,6 +3,7 @@
 # Down Arrow (`↓`)
 
 ## `↓ 𝕩`: Suffixes
+[→full documentation](../doc/prefixes.md)
 
 Suffixes of array `𝕩` along its first axis.
 
@@ -15,6 +16,7 @@ Suffixes of array `𝕩` along its first axis.
 
 
 ## `𝕨 ↓ 𝕩`: Drop
+[→full documentation](../doc/take.md)
 
 For each integer in `𝕨`, drop that many elements from the beginning of each dimension of `𝕩`.
 

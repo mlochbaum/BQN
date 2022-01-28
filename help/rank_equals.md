@@ -3,6 +3,7 @@
 # Equal (`=`)
 
 ## `= 𝕩`: Rank
+[→full documentation](../doc/shape.md)
 
 Returns the number of dimensions in `𝕩`.
 
@@ -18,6 +19,7 @@ Returns the number of dimensions in `𝕩`.
 
 
 ## `𝕨 = 𝕩`: Equal To
+[→full documentation](../doc/arithmetic.md#comparisons)
 
 [Pervasive.](../doc/arithmetic.md#pervasion)
 

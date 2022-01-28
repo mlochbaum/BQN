@@ -3,6 +3,7 @@
 # Circle Backslash (`⍉`)
 
 ## `⍉ 𝕩`: Transpose
+[→full documentation](../doc/transpose.md)
 
 Move the first axis of `𝕩` to the end.
 
@@ -17,6 +18,7 @@ Move the first axis of `𝕩` to the end.
 
 
 ## `𝕨 ⍉ 𝕩`: Reorder Axes
+[→full documentation](../doc/transpose.md)
 
 Rearrange the axes of `𝕩` as per the axis indices in `𝕨`.
 

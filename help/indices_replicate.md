@@ -3,6 +3,7 @@
 # Solidus (`/`)
 
 ## `/ 𝕩`: Indices
+[→full documentation](../doc/replicate.md#indices)
 
 Repeat the index of each element in `𝕩` by the element's value. `𝕩` must be rank 1.
 
@@ -13,6 +14,7 @@ Repeat the index of each element in `𝕩` by the element's value. `𝕩` must b
 
 
 ## `𝕨 / 𝕩`: Replicate
+[→full documentation](../doc/replicate.md)
 
 Repeat each major cell in `𝕩` by the corresponding element in `𝕨`.
 

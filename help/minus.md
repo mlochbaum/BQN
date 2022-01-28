@@ -3,6 +3,7 @@
 # Macron (`¯`)
 
 ## `¯`: Minus
+[→full documentation](../doc/syntax.md#constants)
 
 Prefix before numbers to indicate that they are negative.
 

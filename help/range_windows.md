@@ -3,6 +3,7 @@
 # Up Down Arrow (`↕`)
 
 ## `↕ 𝕩`: Range
+[→full documentation](../doc/range.md)
 
 Return all indices that would index into an array of shape `𝕩`.
 
@@ -15,6 +16,7 @@ When given a single number, range from `0` to `𝕩-1`.
 
 
 ## `𝕨 ↕ 𝕩`: Windows
+[→full documentation](../doc/windows.md)
 
 Overlapping slices from `𝕩` of shape `𝕨`.
 

@@ -3,6 +3,7 @@
 # Number Sign (`#`)
 
 ## `#`: Comment
+[→full documentation](../doc/syntax.md#comments)
 
 Create a comment that extends to the end of the line.
 

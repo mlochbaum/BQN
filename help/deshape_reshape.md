@@ -3,6 +3,7 @@
 # Barb (`⥊`)
 
 ## `⥊ 𝕩`: Deshape
+[→full documentation](../doc/reshape.md)
 
 Put all elements of `𝕩` in a rank 1 array, promoting to an array if necessary.
 
@@ -13,6 +14,7 @@ Put all elements of `𝕩` in a rank 1 array, promoting to an array if necessary
 
 
 ## `𝕨 ⥊ 𝕩`: Reshape
+[→full documentation](../doc/reshape.md)
 
 Put all elements of `𝕩` in an array of shape `𝕨`, removing elements or repeating them cyclically if necessary.
 

@@ -3,6 +3,7 @@
 # Square Image Of Or Equal To (`⊑`)
 
 ## `⊑ 𝕩`: First
+[→full documentation](../doc/pick.md#first)
 
 First element of `𝕩`.
 
@@ -15,6 +16,7 @@ First element of `𝕩`.
 
 
 ## `𝕨 ⊑ 𝕩`: Pick
+[→full documentation](../doc/pick.md)
 
 Pick the element of `𝕨` at index `𝕩`.
 

@@ -3,6 +3,7 @@
 # Double Acute Accent (`˝`)
 
 ## `𝔽˝ 𝕩`: Insert
+[→full documentation](../doc/fold.md)
 
 Fold over cells of `𝕩` with `𝔽` from end to start, that is, insert `𝔽` between the major cells of `𝕩`.
 
@@ -14,6 +15,7 @@ Fold over cells of `𝕩` with `𝔽` from end to start, that is, insert `𝔽` 
 
 
 ## `𝕨 𝔽˝ 𝕩`: Insert With Initial
+[→full documentation](../doc/fold.md#initial-element)
 
 Monadic insert, but use `𝕨` as initial right argument.
 

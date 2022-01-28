@@ -3,6 +3,7 @@
 # Circle Star (`⍟`)
 
 ## `𝔽⍟𝔾 𝕩`, `𝕨 𝔽⍟𝔾 𝕩`: Repeat
+[→full documentation](../doc/repeat.md)
 
 Apply `𝔾` to `𝕨` and `𝕩`, then apply `𝔽` to `𝕩` that may times. If `𝕨` is given, use it each time as a constant left argument.
 

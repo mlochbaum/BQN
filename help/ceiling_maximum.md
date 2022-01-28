@@ -3,6 +3,7 @@
 # Left Ceiling (`⌈`)
 
 ## `⌈ 𝕩`: Ceiling
+[→full documentation](../doc/arithmetic.md#additional-arithmetic)
 
 Round `𝕩` up to the nearest integer.
 
@@ -13,6 +14,7 @@ Round `𝕩` up to the nearest integer.
 
 
 ## `𝕨 ⌈ 𝕩`: Maximum
+[→full documentation](../doc/arithmetic.md#additional-arithmetic)
 
 Maximum of `𝕨` and `𝕩`.
 

@@ -3,6 +3,7 @@
 # Pipe (`|`)
 
 ## `| 𝕩`: Absolute Value
+[→full documentation](../doc/arithmetic.md#additional-arithmetic)
 
 Absolute Value of `𝕩`.
 
@@ -15,6 +16,7 @@ Absolute Value of `𝕩`.
 
 
 ## `𝕨 | 𝕩`: Modulus
+[→full documentation](../doc/arithmetic.md#additional-arithmetic)
 
 Remainder of `𝕩` divided by `𝕨`.
 

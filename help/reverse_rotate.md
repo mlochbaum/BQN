@@ -3,6 +3,7 @@
 # Circle Stile (`⌽`)
 
 ## `⌽ 𝕩`: Reverse
+[→full documentation](../doc/reverse.md)
 
 Reverse `𝕩` along the first axis.
 
@@ -15,6 +16,7 @@ Reverse `𝕩` along the first axis.
 
 
 ## `𝕨 ⌽ 𝕩`: Rotate
+[→full documentation](../doc/reverse.md#rotate)
 
 Move the first `𝕨` elements of `𝕩` to its end. Negative `𝕨` reverses the direction of rotation.
 

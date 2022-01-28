@@ -3,6 +3,7 @@
 # Epsilon Underbar (`⍷`)
 
 ## `⍷ 𝕩`: Deduplicate
+[→full documentation](../doc/selfcmp.md#deduplicate)
 
 Unique major cells of `𝕩`.
 
@@ -15,6 +16,7 @@ Unique major cells of `𝕩`.
 
 
 ## `𝕨 ⍷ 𝕩`: Find
+[→full documentation](../doc/find.md)
 
 Mark the top left location of the occurrences of `𝕨` in `𝕩` with a 1, and other locations with 0.
 

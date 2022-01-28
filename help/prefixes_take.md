@@ -3,6 +3,7 @@
 # Up Arrow (`↑`)
 
 ## `↑ 𝕩`: Prefixes
+[→full documentation](../doc/prefixes.md)
 
 Prefixes of array `𝕩` along its first axis.
 
@@ -15,6 +16,7 @@ Prefixes of array `𝕩` along its first axis.
 
 
 ## `𝕨 ↑ 𝕩`: Take
+[→full documentation](../doc/take.md)
 
 For each integer in `𝕨`, take that many elements from each dimension of `𝕩`.
 

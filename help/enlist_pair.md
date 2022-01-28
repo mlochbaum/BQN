@@ -3,6 +3,7 @@
 # Bow Tie (`⋈`)
 
 ## `⋈ 𝕩`: Enlist
+[→full documentation](../doc/pair.md)
 
 Put `𝕩` in a single element list. (`⟨𝕩⟩`)
 
@@ -13,6 +14,7 @@ Put `𝕩` in a single element list. (`⟨𝕩⟩`)
 
 
 ## `𝕨 ⋈ 𝕩`: Pair
+[→full documentation](../doc/pair.md)
 
 Put `𝕨` and `𝕩` in a two element list. (`⟨𝕨, 𝕩⟩`)
 

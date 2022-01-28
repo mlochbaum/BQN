@@ -3,6 +3,7 @@
 # Times (`×`)
 
 ## `× 𝕩`: Sign
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 Sign of `𝕩`.
 - `¯1` if `𝕩 < 0`
@@ -16,6 +17,7 @@ Sign of `𝕩`.
 
 
 ## `𝕨 × 𝕩`: Multiply
+[→full documentation](../doc/arithmetic.md#basic-arithmetic)
 
 `𝕨` multiplied by `𝕩`.
 

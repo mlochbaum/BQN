@@ -3,6 +3,7 @@
 # Square Original Of (`⊐`)
 
 ## `⊐ 𝕩`: Classify
+[→full documentation](../doc/selfcmp.md#classify)
 
 Translate major cells of `𝕩` to unique ID numbers based on first occurrence.
 
@@ -15,6 +16,7 @@ Translate major cells of `𝕩` to unique ID numbers based on first occurrence.
 
 
 ## `𝕨 ⊐ 𝕩`: Index Of
+[→full documentation](../doc/search.md#index-of)
 
 First index of each major cell of `𝕩` in `𝕨`. Rank of `𝕩` must be at least cell rank of `𝕨`.
 

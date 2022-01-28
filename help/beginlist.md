@@ -3,6 +3,7 @@
 # Mathematical Left Angle Bracket (`⟨`)
 
 ## `⟨ ...`: Begin list
+[→full documentation](../doc/syntax.md#list-notation)
 
 Starts a list. Inner elements must be separated by `,` or `⋄`.
 Lists can be nested in other lists.

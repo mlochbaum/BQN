@@ -6,6 +6,7 @@
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
 <h1 id="leftward-double-arrow-"><a class="header" href="#leftward-double-arrow-">Leftward Double Arrow (<code><span class='Gets'>⇐</span></code>)</a></h1>
 <h2 id="n--v-export-definition"><a class="header" href="#n--v-export-definition"><code><span class='Value'>n</span> <span class='Gets'>⇐</span> <span class='Value'>v</span></code>: Export Definition</a></h2>
+<p><a class="fulldoc" href="../doc/expression.html#exports">→full documentation</a></p>
 <p>Define a variable with name <code><span class='Value'>n</span></code> and export it from the current namespace.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=bnMg4oaQIHsgZXhwb3J0ZWQg4oeQIDUsIHVuZXhwb3J0ZWQg4oaQIDB9Cm5zLmV4cG9ydGVkCm5zLnVuZXhwb3J0ZWQ=">↗️</a><pre>    <span class='Value'>ns</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>exported</span> <span class='Gets'>⇐</span> <span class='Number'>5</span><span class='Separator'>,</span> <span class='Value'>unexported</span> <span class='Gets'>←</span> <span class='Number'>0</span><span class='Brace'>}</span>
     <span class='Value'>ns.exported</span>
@@ -14,6 +15,7 @@
 <span class='Error'>Error: No key found</span>
 </pre>
 <h2 id="𝕨--export-names"><a class="header" href="#𝕨--export-names"><code><span class='Value'>𝕨</span> <span class='Gets'>⇐</span></code>: Export names</a></h2>
+<p><a class="fulldoc" href="../doc/expression.html#exports">→full documentation</a></p>
 <p>Export the names given in <code><span class='Value'>𝕩</span></code> from the current namespace. Names must be defined somewhere in the scope.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=bnMxIOKGkCB7IOKfqGFsc29leHBvcnRlZOKfqeKHkCwgZXhwb3J0ZWQg4oeQIDUsIGFsc29leHBvcnRlZCDihpAgMH0KbnMxLmV4cG9ydGVkCm5zMS5hbHNvZXhwb3J0ZWQ=">↗️</a><pre>    <span class='Value'>ns1</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Bracket'>⟨</span><span class='Value'>alsoexported</span><span class='Bracket'>⟩</span><span class='Gets'>⇐</span><span class='Separator'>,</span> <span class='Value'>exported</span> <span class='Gets'>⇐</span> <span class='Number'>5</span><span class='Separator'>,</span> <span class='Value'>alsoexported</span> <span class='Gets'>←</span> <span class='Number'>0</span><span class='Brace'>}</span>
     <span class='Value'>ns1.exported</span>

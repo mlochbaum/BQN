@@ -3,6 +3,7 @@
 # Undertie (`‿`)
 
 ## `‿`: Strand
+[→full documentation](../doc/syntax.md#list-notation)
 
 Create a list via [strand notation](../doc/arrayrepr.md#strands).
 

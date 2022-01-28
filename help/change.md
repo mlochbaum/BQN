@@ -3,6 +3,7 @@
 # Leftwards Arrow With Hook (`↩`)
 
 ## `n ↩ v`: Change
+[→full documentation](../doc/expression.md#assignment)
 
 Changes the value of variable with name `n` to value `v`.
 

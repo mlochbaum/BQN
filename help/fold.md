@@ -3,6 +3,7 @@
 # Acute Accent (`´`)
 
 ## `𝔽´ 𝕩`: Fold
+[→full documentation](../doc/fold.md)
 
 Fold over `𝕩` with `𝔽` from right to left i.e. Insert `𝔽` between the elements of `𝕩`.
 
@@ -18,6 +19,7 @@ Fold over `𝕩` with `𝔽` from right to left i.e. Insert `𝔽` between the e
 
 
 ## `𝕨 𝔽´ 𝕩`: Fold With Initial
+[→full documentation](../doc/fold.md#initial-element)
 
 Monadic fold, but use `𝕨` as initial right argument.
 
