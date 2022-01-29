@@ -4,7 +4,7 @@
 
 ## `𝔽⎉𝕘 𝕩`, `𝕨 𝔽⎉𝕘 𝕩`: Rank
 
-Apply `𝔽` to cells at ranks given in `𝕘`.
+Apply `𝔽` to cells at ranks given in `𝕘`. Non-negative numbers indicate the rank of the cell and negative ones indicate the difference from full rank.
 
 The ranks applied are given by the following:
 

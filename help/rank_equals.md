@@ -21,6 +21,8 @@ Returns the number of dimensions in `𝕩`.
 ## `𝕨 = 𝕩`: Equal To
 [→full documentation](../doc/arithmetic.md#comparisons)
 
+Do argument atoms match?
+
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
         1 = 3
