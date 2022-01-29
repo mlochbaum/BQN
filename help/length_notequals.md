@@ -23,6 +23,8 @@ Length of the first dimension of `𝕩`.
 ## `𝕨 ≠ 𝕩`: Not Equal To
 [→full documentation](../doc/arithmetic.md#comparisons)
 
+Do argument atoms not match?
+
 [Pervasive.](../doc/arithmetic.md#pervasion)
 
         1 ≠ 3

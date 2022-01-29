@@ -7,6 +7,10 @@
 <h1 id="middle-dot-"><a class="header" href="#middle-dot-">Middle Dot (<code><span class='Nothing'>·</span></code>)</a></h1>
 <h2 id="-nothing"><a class="header" href="#-nothing"><code><span class='Nothing'>·</span></code>: Nothing</a></h2>
 <p><a class="fulldoc" href="../doc/expression.html#nothing">→full documentation</a></p>
+<p>Indicates no value. If a left argument is Nothing, the function is called with no left argument, and if the right is Nothing, it's not called and &quot;returns&quot; Nothing.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wrcg4oy9ICJhYmMiICAjIFJldmVyc2UgaW5zdGVhZCBvZiBSb3RhdGU=">↗️</a><pre>    <span class='Nothing'>·</span> <span class='Function'>⌽</span> <span class='String'>&quot;abc&quot;</span>  <span class='Comment'># Reverse instead of Rotate
+</span>"cba"
+</pre>
 <h3 id="in-trains"><a class="header" href="#in-trains">In Trains</a></h3>
 <p>Nothing can serve as a left argument in a train to string together multiple monadic functions.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KC0rLSkgNQoKKC3CtystKSA1">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>-+-</span><span class='Paren'>)</span> <span class='Number'>5</span>
@@ -15,8 +19,8 @@
     <span class='Paren'>(</span><span class='Function'>-</span><span class='Nothing'>·</span><span class='Function'>+-</span><span class='Paren'>)</span> <span class='Number'>5</span>
 5
 </pre>
-<h3 id="in-block-headers"><a class="header" href="#in-block-headers">In Block Headers</a></h3>
-<p>For Block header pattern matching syntax, Nothing can be used to indicate an unused value.</p>
+<h3 id="destructuring"><a class="header" href="#destructuring">Destructuring</a></h3>
+<p>For pattern matching in assignment or a block header, Nothing indicates an unused value.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RiDihpAge/CdlYogYeKAv8K34oC/YjogYeKIvmJ9CgpGIDHigL8y4oC/Mw==">↗️</a><pre>    <span class='Function'>F</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Function'>𝕊</span> <span class='Value'>a</span><span class='Ligature'>‿</span><span class='Nothing'>·</span><span class='Ligature'>‿</span><span class='Value'>b</span><span class='Head'>:</span> <span class='Value'>a</span><span class='Function'>∾</span><span class='Value'>b</span><span class='Brace'>}</span>
 
     <span class='Function'>F</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>

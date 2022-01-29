@@ -5,11 +5,9 @@
 ## `> 𝕩`: Merge
 [→full documentation](../doc/couple.md)
 
-Add the rank of an element of `𝕩` to the rank of `𝕩`.
+Combine an array of arrays into one array. All elements of `𝕩` must have the same rank, and the result rank is that plus the rank of `𝕩`.
 
-All elements must have the same rank.
-
-Returns atomic values as is.
+Returns and boxed atoms unchanged.
 
 
         a ← ⟨⟨1, 2⟩, ⟨3, 4⟩⟩
