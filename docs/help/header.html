@@ -1,0 +1,25 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN Colon (:)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="colon-"><a class="header" href="#colon-">Colon (<code><span class='Head'>:</span></code>)</a></h1>
+<h2 id="-header"><a class="header" href="#-header"><code><span class='Head'>:</span></code>: Header</a></h2>
+<p><a class="fulldoc" href="../doc/block.html#block-headers">→full documentation</a></p>
+<p>Placed at the end of a block header. A header has syntax that matches the way the block is called. It indicates the block type, and number and structure of inputs.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Inh5IiB7YeKAv2IgX29wIGM6IGJ9IOKIng==">↗️</a><pre>    <span class='String'>&quot;xy&quot;</span> <span class='Brace'>{</span><span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span> <span class='Modifier'>_op</span> <span class='Value'>c</span><span class='Head'>:</span> <span class='Value'>b</span><span class='Brace'>}</span> <span class='Number'>∞</span>
+'y'
+</pre>
+<p>Multiple bodies are searched in order to find one with a matching header.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RiDihpAge20gRm4gbjogbStGbiBuOyAg8J2Vim46IDLDl247ICDwnZWK4oG88J2VqTog8J2VqcO3Mn0KCkYgMyAgICAgICMg8J2Vim4KCkbigbwgNiAgICAgIyDwnZWK4oG88J2VqQoKMTAgRiAzICAgIyBtIEZuIG4=">↗️</a><pre>    <span class='Function'>F</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Value'>m</span> <span class='Function'>Fn</span> <span class='Value'>n</span><span class='Head'>:</span> <span class='Value'>m</span><span class='Function'>+Fn</span> <span class='Value'>n</span><span class='Head'>;</span>  <span class='Function'>𝕊</span><span class='Value'>n</span><span class='Head'>:</span> <span class='Number'>2</span><span class='Function'>×</span><span class='Value'>n</span><span class='Head'>;</span>  <span class='Function'>𝕊</span><span class='Modifier'>⁼</span><span class='Value'>𝕩</span><span class='Head'>:</span> <span class='Value'>𝕩</span><span class='Function'>÷</span><span class='Number'>2</span><span class='Brace'>}</span>
+
+    <span class='Function'>F</span> <span class='Number'>3</span>      <span class='Comment'># 𝕊n
+</span>6
+
+    <span class='Function'>F</span><span class='Modifier'>⁼</span> <span class='Number'>6</span>     <span class='Comment'># 𝕊⁼𝕩
+</span>3
+
+    <span class='Number'>10</span> <span class='Function'>F</span> <span class='Number'>3</span>   <span class='Comment'># m Fn n
+</span>16
+</pre>

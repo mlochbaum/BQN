@@ -1,0 +1,21 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Semicolon (;)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="semicolon-"><a class="header" href="#semicolon-">Semicolon (<code><span class='Head'>;</span></code>)</a></h1>
+<h2 id="-next-body"><a class="header" href="#-next-body"><code><span class='Head'>;</span></code>: Next Body</a></h2>
+<p><a class="fulldoc" href="../doc/block.html#multiple-bodies">→full documentation</a></p>
+<p>End the current block body and start a new one. <a href="header.html">Headers</a> (<code><span class='Head'>:</span></code>) and <a href="predicate.html">predicates</a> (<code><span class='Head'>?</span></code>) can control which body is evaluated. A function can have two headers without these, indicating the monadic and dyadic cases.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyB7IPCdlanDtzIgOyAt8J2VqOKAv/CdlakgfSA0ICAgIyBNb25hZGljIGFuZCBkeWFkaWMgY2FzZXMKCkYg4oaQIHvwnZWKYeKAv2I6IGEtYjsg8J2VimHigL9i4oC/YzogYitjfQoKRiA14oC/MiAgICAgICAgICAgICAgICAjIE1hdGNoZXMgZmlyc3QgaGVhZGVyCgpGIDHigL8z4oC/NiAgICAgICAgICAgICAgIyBNYXRjaGVzIHNlY29uZCBoZWFkZXI=">↗️</a><pre>    <span class='Number'>3</span> <span class='Brace'>{</span> <span class='Value'>𝕩</span><span class='Function'>÷</span><span class='Number'>2</span> <span class='Head'>;</span> <span class='Function'>-</span><span class='Value'>𝕨</span><span class='Ligature'>‿</span><span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='Number'>4</span>   <span class='Comment'># Monadic and dyadic cases
+</span>⟨ ¯3 ¯4 ⟩
+
+    <span class='Function'>F</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Function'>𝕊</span><span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span><span class='Head'>:</span> <span class='Value'>a</span><span class='Function'>-</span><span class='Value'>b</span><span class='Head'>;</span> <span class='Function'>𝕊</span><span class='Value'>a</span><span class='Ligature'>‿</span><span class='Value'>b</span><span class='Ligature'>‿</span><span class='Value'>c</span><span class='Head'>:</span> <span class='Value'>b</span><span class='Function'>+</span><span class='Value'>c</span><span class='Brace'>}</span>
+
+    <span class='Function'>F</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>2</span>                <span class='Comment'># Matches first header
+</span>3
+
+    <span class='Function'>F</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>6</span>              <span class='Comment'># Matches second header
+</span>9
+</pre>
