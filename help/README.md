@@ -47,6 +47,7 @@ Symbols are listed in alphabetical order of page name, ignoring syntactical role
 | `⍋` | [Grade Up, Bins Up](gradeup_binsup.md) |
 | `≥` | [Greater Than or Equal To](greaterthanorequalto.md) |
 | `⊔` | [Group Indices, Group](groupindices_group.md) |
+| `:` | [Header](header.md) |
 | `⊣` | [Identity, Left](identity_left.md) |
 | `⊢` | [Identity, Right](identity_right.md) |
 | `/` | [Indices, Replicate](indices_replicate.md) |
@@ -62,12 +63,14 @@ Symbols are listed in alphabetical order of page name, ignoring syntactical role
 | `𝔽` | [Modifier Left operand](modifierleftoperand.md) |
 | `.` | [Namespace Field](namespacefield.md) |
 | `-` | [Negate, Subtract](negate_subtract.md) |
+| `;` | [Next Body](nextbody.md) |
 | `·` | [Nothing](nothing.md) |
 | `¬` | [Logical Not, Span](not_span.md) |
 | `@` | [Null Character](nullcharacter.md) |
 | `⊒` | [Occurrence Count, Progressive Index Of](occurrencecount_progressiveindexof.md) |
 | `○` | [Atop, Over](over.md) |
 | `π` | [Pi](pi.md) |
+| `?` | [Predicate](predicate.md) |
 | `↑` | [Prefixes, Take](prefixes_take.md) |
 | `↕` | [Range, Windows](range_windows.md) |
 | `=` | [Rank, Equal To](rank_equals.md) |

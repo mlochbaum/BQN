@@ -1,0 +1,21 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Question Mark (?)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="question-mark-"><a class="header" href="#question-mark-">Question Mark (<code><span class='Head'>?</span></code>)</a></h1>
+<h2 id="-predicate"><a class="header" href="#-predicate"><code><span class='Head'>?</span></code>: Predicate</a></h2>
+<p><a class="fulldoc" href="../doc/block.html#predicates">→full documentation</a></p>
+<p>Follows a statement in a block, which must return 0 or 1. If it's 0, stop the current body and evaluate the next eligible one instead. Variables defined before the <code><span class='Head'>?</span></code> stay if execution continues (1) but don't carry over to other bodies (0).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ezAgPyAzIDsgNH0KCk1pbiDihpAge/Cdlag88J2VqSA/IPCdlaggOyDwnZWpfQoKMyBNaW4gNQoKNCBNaW4gMg==">↗️</a><pre>    <span class='Brace'>{</span><span class='Number'>0</span> <span class='Head'>?</span> <span class='Number'>3</span> <span class='Head'>;</span> <span class='Number'>4</span><span class='Brace'>}</span>
+4
+
+    <span class='Function'>Min</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Function'>&lt;</span><span class='Value'>𝕩</span> <span class='Head'>?</span> <span class='Value'>𝕨</span> <span class='Head'>;</span> <span class='Value'>𝕩</span><span class='Brace'>}</span>
+
+    <span class='Number'>3</span> <span class='Function'>Min</span> <span class='Number'>5</span>
+3
+
+    <span class='Number'>4</span> <span class='Function'>Min</span> <span class='Number'>2</span>
+2
+</pre>
