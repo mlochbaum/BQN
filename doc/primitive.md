@@ -81,12 +81,13 @@ Choose isn't really a combinator since it calls the function `⊑`, and Under is
 
 Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: in each case the 1-modifier happens to be the same as the 2-modifier with a right operand of `¯1`.
 
-1-Modifier | Name                                  | 2-Modifier | Name
------------|---------------------------------------|------------|--------
-`˘`        | Cells                                 | `⎉`        | [Rank](https://aplwiki.com/wiki/Rank_(operator))
-`¨`        | [Each](map.md)                        | `⚇`        | [Depth](depth.md#the-depth-modifier)
-`⌜`        | [Table](map.md)                       |
-`⁼`        | [Undo](undo.md)                       | `⍟`        | [Repeat](repeat.md)
-`´`        | [Fold](fold.md)                       |
-`˝`        | [Insert](fold.md)                     |
-`` ` ``    | [Scan](scan.md)                       |
+| 1-Modifier | Name                                  | 2-Modifier | Name
+|------------|---------------------------------------|------------|--------
+| `˘`        | Cells                                 | `⎉`        | [Rank](https://aplwiki.com/wiki/Rank_(operator))
+| `¨`        | [Each](map.md)                        | `⚇`        | [Depth](depth.md#the-depth-modifier)
+| `⌜`        | [Table](map.md)                       |
+| `⁼`        | [Undo](undo.md)                       | `⍟`        | [Repeat](repeat.md)
+| `´`        | [Fold](fold.md)                       |
+| `˝`        | [Insert](fold.md)                     |
+| `` ` ``    | [Scan](scan.md)                       |
+|            |                                       | `⎊`        | [Catch](assert.md#catch)

@@ -3,6 +3,7 @@
 # Circled Triangle Down (`⎊`)
 
 ## `𝔽⎊𝔾 𝕩`, `𝕨 𝔽⎊𝔾 𝕩`: Catch
+[→full documentation](../doc/assert.md#catch)
 
 Apply `𝔽` to the arguments.
 

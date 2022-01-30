@@ -37,7 +37,7 @@ Primitives:
 - [Arithmetic](arithmetic.md) (`+-×÷⋆√⌊⌈|≤<>≥=≠`)
 - [Array depth](depth.md) (`≡` and `⚇`)
 - [Array dimensions](shape.md) (`≢=≠`)
-- [Assert](assert.md) (`!`)
+- [Assert and Catch](assert.md) (`!` and `⎊`)
 - [Deshape and Reshape](reshape.md) (`⥊`)
 - [Enclose](enclose.md) (`<`)
 - [Find](find.md) (`⍷`)
