@@ -18,6 +18,7 @@ Nothing can serve as a left argument in a train to string together multiple mona
         (-·+-) 5
 
 ### Destructuring
+[→full documentation](../doc/expression.md#destructuring)
 
 For pattern matching in assignment or a block header, Nothing indicates an unused value.
 
