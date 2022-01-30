@@ -40,11 +40,11 @@ The double arrow `⇐` is used to export variables from a block or file, making 
 
 ## Imports
 
-There are also two ways to get values out of a namespace, such as `example` defined above. First, it might be used in a destructuring assignment like the one below. This assignment's target looks like a list, where each entry specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name, like `b`, which gives both, or an aliasing expression like `b2⇐b`. In this case, the value `b` from the namespace is used, but it's given the name `b2` instead of `b`. Imported names can be repeated—but the variables defined can't—and all the names can be spelled with any role (the role is ignored).
+There are also two ways to get values out of a namespace, such as `example` defined above. First, it might be used in a [destructuring](expression.md#destructuring) assignment like the one below. This assignment's target looks like a list, where each entry specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name, like `b`, which gives both, or an aliasing expression like `b2⇐b`. In this case, the value `b` from the namespace is used, but it's given the name `b2` instead of `b`. Imported names can be repeated—but the variables defined can't—and all the names can be spelled with any role (the role is ignored).
 
     ⟨alias⇐a, b, c0‿c1⇐c, b2⇐b⟩ ← example
 
-If aliasing with `⇐` is never used, the names can be given as a strand with `‿`.
+If aliasing with `⇐` is never used (or each use is parenthesized), the names can be given as a strand with `‿`.
 
     c‿a ← example
 

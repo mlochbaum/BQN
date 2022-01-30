@@ -81,7 +81,7 @@ Here is a table of the modifier and function application rules:
 
 A function with an asterisk indicates that a subject can also be used. Since the role doesn't exist after parsing, function and subject spellings are indistinguishable in these positions. Modifier applications bind more tightly than functions, and associate left-to-right while functions associate right-to-left.
 
-### Assignment
+## Assignment
 
 Another element that can be included in expressions is assignment, which is written with `←` to *define* (also called "declare" in many other languages) a variable and `↩` to *change* its definition. A variable can only be defined once within a [scope](lexical.md), and can only be changed if it has already been defined. However, it can be shadowed, meaning that it is defined again in an inner scope even though it has a definition in an outer scope already.
 
@@ -99,6 +99,24 @@ The modification arrow `↩` can also be used to *update* the value of a variabl
 |----------|----------
 | `a F↩`   | `a ↩ F a`
 | `a F↩ b` | `a ↩ a F b`
+
+### Destructuring
+
+The left hand side of assignment in a subject expression can be *compound*, so that assigned values are extracted from lists or namespaces. This is called a *destructuring* assignment. The most common case is list destructuring: the left hand side's written as a list, and the value on the right has to be a list of the same length. Assignments are made element-wise, and the elements can destructure things further.
+
+        ⟨q‿r,s⟩ ← ⟨"qr",↕4⟩
+
+        r
+
+        s
+
+Namespace destructuring uses an overlapping syntax, fully described in [its own section](namespace.md#imports). The left hand side is a list of names or aliases `to⇐from`.
+
+        q‿r ↩ {q⇐2+r⇐0.5} ⋄ q
+
+With destructuring, you might want to discard some values from the right hand side rather than assign them any name. There's special syntax for this: use Nothing (`·`) for a placeholder non-name in the appropriate position, like `·‿y‿· ← list`.
+
+        · ← 6   # Doesn't do anything
 
 ### Exports
 

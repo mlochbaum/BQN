@@ -134,10 +134,10 @@ Unlike these assignments, the header also constrains what inputs the block can t
 
 ### Destructuring
 
-Arguments, but not operands, allow destructuring like assignment does. While assignment only tolerates lists of variables, header destructuring also allows constants. The argument must match the given structure, including the constants where they appear, or an error results.
+Arguments and operands allow [destructuring](expression.md#destructuring) like assignment does. While assignment only tolerates lists of variables, header destructuring also allows constants. The argument must match the given structure, including the constants where they appear, or an error results.
 
-        Destruct ← { 𝕊 a‿1‿⟨b,2⟩: a≍b }
-        Destruct       5‿1‿⟨7,2⟩
+        Destruct ← { 𝕊 a‿1‿⟨b,·,2⟩: a≍b }
+        Destruct       5‿1‿⟨7,π,2⟩
 
 ### Special names in headers
 
