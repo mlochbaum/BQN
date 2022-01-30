@@ -3,7 +3,7 @@
 # Exclamation Mark (`!`)
 
 ## `! 𝕩`: Assert
-[→full documentation](../doc/assert.md)
+[→full documentation](../doc/assert.md#assert)
 
 Throw an error if `𝕩` is not 1.
 
@@ -17,7 +17,7 @@ Throw an error if `𝕩` is not 1.
 
 
 ## `𝕨 ! 𝕩`: Assert With Message
-[→full documentation](../doc/assert.md)
+[→full documentation](../doc/assert.md#assert)
 
 Throw an error with message `𝕨` if `𝕩` is not 1.
 

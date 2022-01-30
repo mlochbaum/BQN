@@ -1,10 +1,12 @@
 <head>
   <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
   <link href="../style.css" rel="stylesheet"/>
-  <title>BQN: Assert</title>
+  <title>BQN: Assert and Catch</title>
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
-<h1 id="assert"><a class="header" href="#assert">Assert</a></h1>
+<h1 id="assert-and-catch"><a class="header" href="#assert-and-catch">Assert and Catch</a></h1>
+<p>BQN provides some simple facilities for dealing with errors. Errors are an unusual sort of control flow; if possible, prefer to work with functions that return normally.</p>
+<h2 id="assert"><a class="header" href="#assert">Assert</a></h2>
 <p>BQN takes the position that errors exist to indicate exceptional conditions that the developer of a given program didn't expect. However, the types of errors that BQN naturally checks for, such as mismatched shapes in Couple (<code><span class='Function'>≍</span></code>), aren't always enough to detect exceptional conditions. Issues like numeric values that don't make physical sense will slip right through. BQN makes it easy for a programmer to check for these sorts of problems by building in the primitive Assert, written <code><span class='Function'>!</span></code>. This function checks whether <code><span class='Value'>𝕩</span></code> matches <code><span class='Number'>1</span></code>: if it does, then it does nothing and returns <code><span class='Value'>𝕩</span></code>, and otherwise it gives an error.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ISAyPTIgICMgUGFzc2VkCiEgMj0zICAjIEZhaWxlZA==">↗️</a><pre>    <span class='Function'>!</span> <span class='Number'>2</span><span class='Function'>=</span><span class='Number'>2</span>  <span class='Comment'># Passed
 </span>1
@@ -30,3 +32,18 @@
 <li>Write a function <code><span class='Function'>Message</span></code> to compute the message, and call <code><span class='Value'>𝕨</span> <span class='Function'>Message</span><span class='Modifier2'>⊸</span><span class='Function'>!</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>≢</span><span class='Paren'>)</span> <span class='Value'>𝕩</span></code> or similar instead of <code><span class='Function'>!</span></code>.</li>
 <li>If the error will be caught elsewhere in the program, use a closure for the message and evaluate it when caught. With a function <code><span class='Function'>Message</span></code> as above, <code><span class='Value'>message</span> <span class='Function'>!</span> <span class='Value'>𝕩</span></code> works, and <code><span class='Brace'>{</span><span class='Value'>…</span><span class='Brace'>}</span><span class='Modifier'>˙</span><span class='Modifier2'>⊸</span><span class='Function'>!</span> <span class='Value'>𝕩</span></code> is a convenient syntax for block functions.</li>
 </ul>
+<h2 id="catch"><a class="header" href="#catch">Catch</a></h2>
+<p>The <code><span class='Function'>Catch</span></code> modifier allows you to handle errors in BQN (at present, it's the only way to do so). It evaluates the function <code><span class='Function'>𝔽</span></code> normally. If this function completes without an error, Catch just returns that result. If not, it stops the error, and calls <code><span class='Function'>𝔾</span></code> with the original arguments instead.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oy94o6KJ3gnICJhYmNkIiAgIyBObyBlcnJvcgoK4oy94o6KJ3gnIDIgICAgICAgIyBDYW4ndCByZXZlcnNlIGEgdW5pdAoKMC41IOKMveKOiuKKoyDihpU2ICAgICMgQSB0d28tYXJndW1lbnQgZXhhbXBsZQ==">↗️</a><pre>    <span class='Function'>⌽</span><span class='Modifier2'>⎊</span><span class='String'>'x'</span> <span class='String'>&quot;abcd&quot;</span>  <span class='Comment'># No error
+</span>"dcba"
+
+    <span class='Function'>⌽</span><span class='Modifier2'>⎊</span><span class='String'>'x'</span> <span class='Number'>2</span>       <span class='Comment'># Can't reverse a unit
+</span>'x'
+
+    <span class='Number'>0.5</span> <span class='Function'>⌽</span><span class='Modifier2'>⎊</span><span class='Function'>⊣</span> <span class='Function'>↕</span><span class='Number'>6</span>    <span class='Comment'># A two-argument example
+</span>0.5
+</pre>
+<p>Catch doesn't know anything about what an error <em>is</em>, just whether there was one or not. In fact, the idea of error message doesn't feature at all in core BQN: it's purely part of the language environment. So you need a system value to access information about the error. Right now the only one is <code><span class='Function'>•CurrentError</span></code>, which is a function that returns a message for the error currently caught (if any).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oy94o6K4oCiQ3VycmVudEVycm9yIDI=">↗️</a><pre>    <span class='Function'>⌽</span><span class='Modifier2'>⎊</span><span class='Function'>•CurrentError</span> <span class='Number'>2</span>
+"⌽: Argument cannot be a unit"
+</pre>
