@@ -24,6 +24,7 @@ And also:
 - Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs.
 - Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh?tab=notebooks) based on BQN.
 - [BQN-80](https://dancek.github.io/bqn-80): make animations with BQN.
+- Razetime's [alternative REPL](https://razetime.github.io/bqn-repl/) works as a continuous session instead of re-evaluating each time.
 
 ### Fan art
 
