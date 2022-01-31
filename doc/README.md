@@ -25,6 +25,7 @@ Concepts:
 - [Array indices](indices.md)
 - [Fill elements](fill.md)
 - [The leading axis model](leading.md)
+- [Tacit programming](tacit.md)
 - [Function trains](train.md)
 - [Blocks](block.md) (including function and modifier definition)
 - [Lexical scoping](lexical.md)

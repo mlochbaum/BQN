@@ -44,7 +44,7 @@ Here `⊢` ends up being used as `𝕎`. A similar case might be a function or p
 
 ## In tacit functions
 
-In a tacit context, `⊣` is roughly equivalent to `𝕨` and `⊢` to `𝕩`. In some (not too common) cases, it's even possible to translate a block function to tacit code directly by replacing the variables in this way.
+In a [tacit](tacit.md) context, `⊣` is roughly equivalent to `𝕨` and `⊢` to `𝕩`. In some (not too common) cases, it's even possible to translate a block function to tacit code directly by replacing the variables in this way.
 
         3 {𝕩-𝕨÷1+𝕩} 5
         3 (⊢-⊣÷1+⊢) 5
