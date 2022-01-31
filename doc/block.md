@@ -2,7 +2,7 @@
 
 # Blocks
 
-In BQN, a *block* is any piece of code surrounded with curly braces `{}`. Blocks can be used simply to group statements, or can define functions or modifiers. They are the sole large-scale structure used to organize programs.
+In BQN, a *block* is any piece of code surrounded with curly braces `{}`. Blocks can be used simply to group statements, or can define functions or modifiers. They are the sole large-scale structure used to organize programs. An important aspect of organization is [namespaces](namespace.md), which are created with blocks but not discussed on this page.
 
 Blocks are most commonly used to define functions by including one of the special names for arguments, `𝕨` or `𝕩`. With the operands `𝔽` or `𝔾`, they can also define 1-modifiers or 2-modifiers.
 
@@ -16,7 +16,7 @@ Because they use [lexical scoping](lexical.md), blocks can also be used to encap
 
 ## Headerless blocks
 
-In the simplest case a block is just a list of statements, which are executed to *evaluate* the block. A block with no special names like `𝕨` or `𝕩` is called an *immediate block*, and is evaluated as soon as it is reached. The only think such a block does is group some statements, and create a scope for them so that definitions made there are discarded when the block finishes. Even this small amount of functionality could be useful; as an example the following program can build up an array from named components without polluting the rest of the program with those names.
+In the simplest case a block is just a list of statements, which are executed to *evaluate* the block. A block with no special names like `𝕨` or `𝕩` is called an *immediate block*, and is evaluated as soon as it is reached. The only thing such a block does is group some statements, and create a scope for them so that definitions made there are discarded when the block finishes. Even this small amount of functionality could be useful; as an example the following program can build up an array from named components without polluting the rest of the program with those names.
 
         updown ← { up←↕5 ⋄ down←⌽up ⋄ up∾down }
         updown
@@ -32,11 +32,11 @@ An immediate block is only ever evaluated once, and can't be used for control fl
 | `𝕘`       | `𝔾`       | Right [operand](#operands)
 | `𝕣`       | none      | Modifier [self-reference](#self-reference)
 
-Of these, `𝕣` is sort of a "more special" character, as we'll discuss below. Except for `𝕣`, every special name is a single character and can't have underscores added to spell it as a modifier, allowing a modifier to be applied to a special name with no spacing as in `𝕗_m`, something that can't be done with ordinary names.
+Of these, `𝕣` is sort of a "more special" character, as we'll discuss below. Except for `𝕣`, every special name is a single character and can't have underscores added to spell it as a modifier. This allows a modifier to be applied to a special name with no spacing, as in `𝕗_m`, where it couldn't be with ordinary names.
 
 ### Arguments
 
-The names `𝕨` and `𝕩`, and their uppercase spellings, represent function arguments. As the argument to a function is typically data, it's more common to use the lowercase forms for these. Either of these names will turn an immediate block into a function (or an immediate modifier into a deferred one; see the next section). Instead of being evaluated as soon as it appears in the source, a function is evaluated when it's called, with the special names set to appropriate values. Unlike in Dyalog APL's dfns, their values can be changed like ordinary variables.
+The names `𝕨` and `𝕩`, and their uppercase spellings, represent function arguments. As the argument to a function is typically data, it's more common to use the lowercase forms for these. Having either of these names turns an immediate block into a function (or an immediate modifier into a deferred one; see the next section). Instead of being evaluated as soon as it appears in the source, a function is evaluated when it's called, with the special names set to appropriate values. Their values can be changed like ordinary variables.
 
         {'c'=𝕩} "abcd"
         { 𝕩+↩2 ⋄ 0≍𝕩 } 3
@@ -118,8 +118,8 @@ Its syntax mirrors an application of the block. As suggested by the positioning,
     { 𝕊𝕩:
       …
 
-    # An immediate or deferred 2-modifier
-    { F _op_ val:
+    # An immediate 2-modifier with some destructuring
+    { F _op_ ·‿val:
       …
 
 In all cases special names still work just like in a headerless function. In this respect the effect of the header is the same as a series of assignments at the beginning of a function, such as the following translation of the second header above:
@@ -147,24 +147,24 @@ The name `𝕨` in this context can refer to either a left argument or no left a
 
 ### Short headers
 
-A header does not need to include all inputs, as shown by the `F _op_ val:` header above. The simplest case, when no inputs are given, is called a *label*. While it doesn't restrict the inputs, a label specifies the type of the block and gives an internal name that can be used to refer to it.
+A header can also be a plain name with no inputs, called a *label*. A label specifies the type of the block and gives an internal name that can be used to refer to it, but doesn't specify the inputs.
 
     { b:   # Block
     { 𝕊:   # Function
     { _𝕣:  # 1-Modifier
     { _𝕣_: # 2-Modifier
 
-For immediate blocks, this is the only type of header possible, and it must use an identifier as there is no applicable special name. However, the name can't be used: it doesn't make sense to refer to a value while it is still being computed!
+For immediate blocks, this is the only type of header possible, and it must use an identifier as there is no applicable special name. However, the name can't be used in code: it doesn't make sense to refer to a value while it is still being computed!
 
 ## Multiple bodies
 
-Blocks that define functions and deferred modifiers can include more than one body, separated by semicolons `;`. The body used for a particular evaluation is chosen based on the arguments the the block. One special case applies when there are exactly two bodies either without headers or with labels only: in this case, the first applies when there is one argument and the second when there are two.
+Blocks can include more than one body, separated by semicolons `;`. The body used for a particular evaluation is chosen based on the arguments the the block. One special case is that functions and deferred modifiers can have two headerless bodies (that is, no headers or predicates—see below): the first applies when there's one argument and the second when there are two.
 
         Ambiv ← { ⟨1,𝕩⟩ ; ⟨2,𝕨,𝕩⟩ }
         Ambiv 'a'
         'a' Ambiv 'b'
 
-Bodies before the last two must have headers that include arguments. When a block that includes this type of header is called, its headers are checked in order for compatibility with the arguments. The first body with a compatible header is used.
+Bodies with headers come before any that don't have them. When a block is called, its headers are checked in order for compatibility with the arguments, and the first body with a compatible header is used.
 
         CaseAdd ← { 2𝕊3:0‿5 ; 2𝕊𝕩:⟨1,2+𝕩⟩ ; 𝕊𝕩:2‿𝕩 }
         2 CaseAdd 3
