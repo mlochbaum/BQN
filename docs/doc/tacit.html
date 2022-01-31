@@ -1,0 +1,213 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Tacit (point-free) programming</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
+<h1 id="tacit-point-free-programming"><a class="header" href="#tacit-point-free-programming">Tacit (point-free) programming</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/Tacit_programming">Tacit programming</a> (<a href="https://aplwiki.com/wiki/Tacit_programming">APL Wiki</a>) is a general term used to refer to ways to define functions that don't refer to arguments directly (say, with identifiers). Instead, tacit programs are built up by combining smaller functions together; we'll discuss the ways BQN offers to combine functions on this page. Since primitive functions like those returning the left (<code><span class='Function'>⊣</span></code>) and right (<code><span class='Function'>⊢</span></code>) arguments, and selection functions (<code><span class='Function'>⊏⊑</span></code>), are available as building blocks, tacit programming doesn't keep the programmer from pinpointing a specific part of the input, as the description might lead you to believe. Nonetheless, it has its limitations. In larger tacit programs, moving values to the right place is tedious and error-prone because of the lack of a convenient labelling mechanism, and important context tends to disappear in a sea of symbols.</p>
+<p>In smaller amounts—portions of a line—tacit programming can be the clearest way to express an idea, particularly when just one or two variables are used a few times. Consider the following three expressions to filter only the positive values from a list:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=bCDihpAgMOKAvzXigL/CrzLigL8x4oC/wq8z4oC/wq80CgooMDxsKS9sCnsoMDzwnZWpKS/wnZWpfSBsCjDiirg84oq4LyBs">↗️</a><pre>    <span class='Value'>l</span> <span class='Gets'>←</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>¯2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>¯3</span><span class='Ligature'>‿</span><span class='Number'>¯4</span>
+
+    <span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>&lt;</span><span class='Value'>l</span><span class='Paren'>)</span><span class='Function'>/</span><span class='Value'>l</span>
+⟨ 5 1 ⟩
+    <span class='Brace'>{</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>&lt;</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>/</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Value'>l</span>
+⟨ 5 1 ⟩
+    <span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span><span class='Modifier2'>⊸</span><span class='Function'>/</span> <span class='Value'>l</span>
+⟨ 5 1 ⟩
+</pre>
+<p>The first of these expressions is the most direct, but with the variable name buried inside, it can't be used on an intermediate value and its input will have to be named. The other two forms stand alone as functions, so they can easily be placed anywhere in a program, even as an operand. But with even the small amount of structure added by a BQN anonymous function, the second method has more organization than action! The third, tacit, version strips away most of the organizing syntax to leave us with the essential pieces <code><span class='Number'>0</span></code>, <code><span class='Function'>&lt;</span></code>, and <code><span class='Function'>/</span></code> joined by combinators. The explicit function uses <code><span class='Value'>𝕩</span></code> as a sort of pronoun (&quot;I want the elements of it where it's greater than zero&quot;), while the tacit one elides it (&quot;give me the elements greater than zero&quot;).</p>
+<p>The ability to easily combine tacit and &quot;explicit&quot; programming such as statements or anonymous functions, far from being only a way to mitigate the disadvantages of these two methods, brings new advantages that no single paradigm could accomplish. Purely tacit programming <em>requires</em> programs to use <em>no</em> local variable names, but partly tacit programming <em>allows</em> them to use <em>fewer</em> names. That means names can be used only for the parts of a program that represent clean, human-understandable concepts. Another possible stategic choice is to use the fact that variables in a tacit expression are expanded as it's formed but those inside a block aren't. So <code><span class='Function'>F</span><span class='Gets'>←</span><span class='Value'>a</span><span class='Modifier2'>⊸</span><span class='Function'>+</span></code> can be chosen to &quot;freeze&quot; the value of <code><span class='Value'>a</span></code> in <code><span class='Function'>F</span></code> without having to use an extra variable, while <code><span class='Function'>F</span><span class='Gets'>←</span><span class='Brace'>{</span><span class='Value'>a</span><span class='Function'>+</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> uses the current value of <code><span class='Value'>a</span></code> each time <code><span class='Function'>F</span></code> is called.</p>
+<p>The rest of this page describes BQN's tacit programming facilities. Deciding when to use them is a matter of taste, and experience.</p>
+<h2 id="trains"><a class="header" href="#trains">Trains</a></h2>
+<p>In modern APL and its relatives, the backbone of tacit infrastructure is the <em>function train</em>. Trains can take some practice to understand and use well, so they're described in more depth on <a href="train.html">a dedicated page</a>. The idea of trains is that you can &quot;apply&quot; a function to other functions, forming a composed function where it will actually apply to their results. So a typical use is to pair two functions as shown below: the pair <code><span class='Function'>»</span><span class='Ligature'>‿</span><span class='Function'>«</span></code> is never formed, but the result of applying <code><span class='Function'>T</span></code> is a pair.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=VCDihpAgwrsg4ouIIMKrICAgICMgUGFpciBib3RoIHNoaWZ0IGZ1bmN0aW9ucwpUICAgICAgICAgICAgIyBOb3RoaW5nIGhhcHBlbnMgeWV0Li4uCgpUICJhYmMiICAgICAgIyBOb3cgaXQgZm9ybXMgYSBwYWlyCgonWCcgVCAiYWJjIiAgIyBFYWNoIHNoaWZ0IGdldHMgYm90aCBhcmd1bWVudHM=">↗️</a><pre>    <span class='Function'>T</span> <span class='Gets'>←</span> <span class='Function'>»</span> <span class='Function'>⋈</span> <span class='Function'>«</span>    <span class='Comment'># Pair both shift functions
+</span>    <span class='Function'>T</span>            <span class='Comment'># Nothing happens yet...
+</span>»⋈«
+
+    <span class='Function'>T</span> <span class='String'>&quot;abc&quot;</span>      <span class='Comment'># Now it forms a pair
+</span>⟨ " ab" "bc " ⟩
+
+    <span class='String'>'X'</span> <span class='Function'>T</span> <span class='String'>&quot;abc&quot;</span>  <span class='Comment'># Each shift gets both arguments
+</span>⟨ "Xab" "bcX" ⟩
+</pre>
+<h2 id="identity-functions"><a class="header" href="#identity-functions">Identity functions</a></h2>
+<p>If you use trains even a little you'll quickly find the need to get an argument without applying any function to it. Take the pattern <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>G</span><span class='Value'>𝕨</span><span class='Brace'>}</span></code> for example. You might expect <code><span class='Modifier2'>⊸⟜</span></code> (discussed below) to handle this, but they don't: in those combinators, the first function to be applied always has one argument, but <code><span class='Function'>F</span></code> here has two. Instead, a good way to fit this into a tacit form is to note that <code><span class='Value'>𝕨</span><span class='Function'>⊣</span><span class='Value'>𝕩</span></code> is defined to be <code><span class='Value'>𝕨</span></code>, and substitute backwards to give <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>G</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>⊣</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Brace'>}</span></code>, which now has the form of a train <code><span class='Function'>F</span> <span class='Function'>G</span> <span class='Function'>⊣</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=IndoYXRzaW4iIHso8J2VqOKIivCdlakpL/Cdlah9ICJpbnRlcnNlY3QiCgoid2hhdHNpbiIgKOKIii/iiqMpICJpbnRlcnNlY3Qi">↗️</a><pre>    <span class='String'>&quot;whatsin&quot;</span> <span class='Brace'>{</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>∊</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>/</span><span class='Value'>𝕨</span><span class='Brace'>}</span> <span class='String'>&quot;intersect&quot;</span>
+"tsin"
+
+    <span class='String'>&quot;whatsin&quot;</span> <span class='Paren'>(</span><span class='Function'>∊/⊣</span><span class='Paren'>)</span> <span class='String'>&quot;intersect&quot;</span>
+"tsin"
+</pre>
+<p>The functions <code><span class='Function'>⊣⊢</span></code> are as simple as they come, but are discussed quite a bit on <a href="identity.html">their own page</a>. A definition is that <code><span class='Function'>⊢</span></code> is <code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> and <code><span class='Function'>⊣</span></code> is <code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Head'>;</span><span class='Value'>𝕨</span><span class='Brace'>}</span></code>, so that <code><span class='Function'>⊢</span></code> returns its right argument, and <code><span class='Function'>⊣</span></code> returns its left argument but will settle for the right one if there's just one.</p>
+<h2 id="combinators"><a class="header" href="#combinators">Combinators</a></h2>
+<svg viewBox='0 0 850 530'>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Atop</text>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>∘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(425,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Over</text>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>○</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>○</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(705,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Constant</text>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕗</tspan><tspan class='Modifier'>˙</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='57'><tspan class='Value'>𝕗</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Value'>𝕗</tspan><tspan class='Modifier'>˙</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='57'><tspan class='Value'>𝕗</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,280)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Before</text>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q41.6 57 0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L-32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M-32 57L-32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C40 57 32 51.3 32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='57'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(425,280)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>After</text>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q-41.6 57 0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C-40 57 -32 51.3 -32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L32 57'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M32 57L32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='32' y='57'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+  <g font-size='20px' text-anchor='middle' transform='translate(705,280)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Self/Swap</text>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier'>˜</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q-41.6 57 0 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q41.6 57 0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier'>˜</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C-40 28.5 0 57 32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C40 28.5 0 57 -32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+

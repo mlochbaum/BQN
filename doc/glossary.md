@@ -130,4 +130,4 @@ The possible roles are:
 * [**Header**](block.md#block-headers): A preface to a body in a block function or modifier indicating possible inputs, which is followed by a colon `:`.
 * [**Label**](block.md#short-headers): A header consisting of a single name.
 * **Body**: One sequence of statements in a block. Bodies, possibly preceded by headers, are separated by semicolons `;`.
-* **Tacit**: Code that defines functions or modifiers without using blocks.
+* [**Tacit**](tacit.md): Code that defines functions without using blocks.

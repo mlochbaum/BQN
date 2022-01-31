@@ -51,7 +51,7 @@ BQN aims to remove irregular and burdensome aspects of the APL tradition, and pu
 
 It incorporates concepts developed over years of APL practice:
 * With the [**leading axis model**](doc/leading.md), simpler primitives span the same functionality.
-* [Trains](doc/train.md) and combinators enable **tacit programming**.
+* [Trains](doc/train.md) and combinators enable [**tacit programming**](doc/tacit.md).
 * Lightweight [**anonymous functions**](doc/block.md) (like [dfns](https://aplwiki.com/wiki/Dfn)) borrow some power from Lisp.
 
 But it's redesigned from the ground up, with many features new to the array paradigm:
