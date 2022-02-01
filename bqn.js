@@ -109,6 +109,19 @@ sysvals.file = dynsys(state => {
   return makens(Object.keys(files), Object.values(files));
 });
 
+sysvals.getline = () => {
+  let l = 1024, b = Buffer.alloc(l);
+  let fd = fs.openSync("/dev/stdin", "rs");
+  let r = '';
+  do {
+    let n = fs.readSync(fd, b, 0, b.length);
+    if (!n) return '\0';
+    r += b.toString('utf-8', 0, n);
+  } while (r[r.length-1]!=='\n');
+  fs.closeSync(fd);
+  return str(r.slice(0,-1));
+}
+
 sysargs.resolve = sysargs.parres = getres();
 let push_state = st => { st.parres = st.resolve; }
 let update_state = (st,w) => {
