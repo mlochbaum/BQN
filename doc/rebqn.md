@@ -71,3 +71,22 @@ What's allowed? The format for `primitives` is a list of pairs, where each pair 
 Above, `^` becomes a 1-modifier, so that it modifies `%` rather than being called directly on `1‿2` as a function.
 
 The glyph can be any character that's not being used by BQN already. Characters like `c` or `⟩` or `:` will result in an error, as they'd break BQN syntax. Other than that, the sky's the limit! Or rather, the Unicode consortium is the limit. If they don't recognize your symbol, you're going to have to petition to make it an emoji or something. Oh well.
+
+## Run as an executable
+
+Of course, calling a function on a string isn't a great interface for programming. But BQN has the facilities to turn such a function into a proper script, which can then be run much like the BQN executable. The following example takes a filename followed by the `•args` to be passed in, or runs as a REPL if given no arguments.
+
+    #! /usr/bin/env bqn
+    calcFns ← ⟨'+'‿+, '-'‿-, '*'‿×, '/'‿(↕⊘÷)⟩
+    calc ← •ReBQN {primitives⇐calcFns, repl⇐"loose"}
+    {
+      # Run on a file
+      0 < ≠•args ?
+        f ← •wdpath •file.At ⊑•args
+        path‿name ← (∧`⌾⌽'/'⊸≠)⊸⊔f
+        ⟨path,name,1↓•args⟩ Calc •file.Chars f
+
+      # Run as REPL
+      ; _while_ ← {𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}
+        •GetLine∘•Show∘Calc _while_ (@⊸≢) •GetLine@
+    }
