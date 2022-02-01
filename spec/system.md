@@ -234,3 +234,42 @@ When `𝕨` isn't given, `Deal`'s result contains all elements of `↕𝕩`, mak
 In `Range`, `𝕩` may be `0`. In this case the result consists of floating-point numbers in the unit interval from 0 to 1. The numbers should have an overall uniform distribution, but their precision and whether the endpoints 0 and 1 are possible may depend on the implementation.
 
 Ranges up to `2⋆32` must be supported (that is, a maximum integer result of `(2⋆32)-1`) if the number system accommodates it. In implementations based on double-precision floats it's preferable but not required to support ranges up to `2⋆53`.
+
+## Bitwise operations
+
+The system value `•bits` gives functions for efficiently applying bitwise and two's complement integer operations to arrays of data. These functions should compute result values with native CPU instructions, preferably SIMD if available.
+
+| Name     | Args | Type | Behavior
+|----------|------|------|---------
+| `_not`   | 1    | bit  | `¬`
+| `_and`   | 2    | bit  | `∧`
+| `_or`    | 2    | bit  | `∨`
+| `_neg`   | 1    | int  | `-`
+| `_add`   | 2    | int  | `+`
+| `_sub`   | 2    | int  | `-`
+| `_mul`   | 2    | int  | `×`
+
+An operation is exposed as a 1-modifier that takes up to four numbers for its operand:
+- Operation width
+- Result element width
+- Right argument element width
+- Left argument element width
+The operand is extended to length 3 for monadic operations, and 4 for dyadic operations, by repeating the last element (like `»⟜(4⥊⊢´)`). It must be a number, or array of numbers with rank at most 1.
+
+An example call is `a 16‿1•bit._add b`, to perform 16-bit additions on two boolean arrays with a boolean result.
+
+Widths correspond to little-endian binary representations according to the following table, where "boolean" indicates value 0 or 1, "signed integer" indicates two's complement representation, and "character" is a code point in an unsigned representation. Either type may be used for an argument, but the result will always use a primary type.
+
+| Width | Primary type    | Also
+|-------|-----------------|------
+| 1     | Boolean         |
+| 8     | Signed integer  | Character
+| 16    | Signed integer  | Character
+| 32    | Signed integer  | Character
+| 64    | IEEE 754 double |
+
+An argument must be an array of numbers or an array of characters. Its elements must fit into the appropriate type. The "cell size" is the length in bits of a 1-cell, that is, `width×¯1⊑1∾≢arg`, and must be a multiple of the operation width. Both arguments must have the same cell size, and the same leading shape `¯1↓≢arg`. The result shape is this leading shape followed by the cell size divided by the result element width.
+
+To apply a bitwise operation, each argument is represented as a stream of bits based on the width given for it, then split into units whose width is the operation width. The operation is applied to these units. The result is again treated as a stream of bits and split according to the result width, with each unit forming a result element.
+
+Another tool is provided for performing direct conversions, with no operation applied. The 1-modifier `•bit._cast` takes a two-element operand and one argument, for example `⟨8,16‿'c'⟩•bit._cast ints` to convert each pair of numbers in `ints` into a 2-byte character. Each element of `𝕗` is a number or number-character pair giving width and type. The argument is encoded according to the first and decoded according to the second.
