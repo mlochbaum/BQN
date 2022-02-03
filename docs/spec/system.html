@@ -513,7 +513,7 @@
 <p>In <code><span class='Function'>Range</span></code>, <code><span class='Value'>𝕩</span></code> may be <code><span class='Number'>0</span></code>. In this case the result consists of floating-point numbers in the unit interval from 0 to 1. The numbers should have an overall uniform distribution, but their precision and whether the endpoints 0 and 1 are possible may depend on the implementation.</p>
 <p>Ranges up to <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>32</span></code> must be supported (that is, a maximum integer result of <code><span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>32</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Number'>1</span></code>) if the number system accommodates it. In implementations based on double-precision floats it's preferable but not required to support ranges up to <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>53</span></code>.</p>
 <h2 id="bitwise-operations"><a class="header" href="#bitwise-operations">Bitwise operations</a></h2>
-<p>The system value <code><span class='Value'>•bits</span></code> gives functions for efficiently applying bitwise and two's complement integer operations to arrays of data. These functions should compute result values with native CPU instructions, preferably SIMD if available.</p>
+<p>The system namespace <code><span class='Value'>•bits</span></code> gives functions for efficiently applying bitwise and two's complement integer operations to arrays of data. These functions should compute result values with native CPU instructions, preferably SIMD if available.</p>
 <table>
 <thead>
 <tr>
@@ -543,32 +543,44 @@
 <td><code><span class='Function'>∨</span></code></td>
 </tr>
 <tr>
+<td><code><span class='Modifier'>_xor</span></code></td>
+<td>2</td>
+<td>bit</td>
+<td><code><span class='Function'>≠</span></code></td>
+</tr>
+<tr>
 <td><code><span class='Modifier'>_neg</span></code></td>
 <td>1</td>
-<td>int</td>
+<td>integer</td>
 <td><code><span class='Function'>-</span></code></td>
 </tr>
 <tr>
 <td><code><span class='Modifier'>_add</span></code></td>
 <td>2</td>
-<td>int</td>
+<td>integer</td>
 <td><code><span class='Function'>+</span></code></td>
 </tr>
 <tr>
 <td><code><span class='Modifier'>_sub</span></code></td>
 <td>2</td>
-<td>int</td>
+<td>integer</td>
 <td><code><span class='Function'>-</span></code></td>
 </tr>
 <tr>
 <td><code><span class='Modifier'>_mul</span></code></td>
 <td>2</td>
-<td>int</td>
+<td>integer</td>
+<td><code><span class='Function'>×</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Modifier'>_mulu</span></code></td>
+<td>2</td>
+<td>unsigned</td>
 <td><code><span class='Function'>×</span></code></td>
 </tr>
 </tbody>
 </table>
-<p>An operation is exposed as a 1-modifier that takes up to four numbers for its operand:</p>
+<p>An operation is exposed as a 1-modifier that takes up to four numbers for its operand.</p>
 <ul>
 <li>Operation width</li>
 <li>Result element width</li>
@@ -577,7 +589,9 @@
 </ul>
 <p>The operand is extended to length 3 for monadic operations, and 4 for dyadic operations, by repeating the last element (like <code><span class='Function'>»</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Number'>4</span><span class='Function'>⥊⊢</span><span class='Modifier'>´</span><span class='Paren'>)</span></code>). It must be a number, or array of numbers with rank at most 1.</p>
 <p>An example call is <code><span class='Value'>a</span> <span class='Number'>16</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Value'>•bit.</span><span class='Modifier'>_add</span> <span class='Value'>b</span></code>, to perform 16-bit additions on two boolean arrays with a boolean result.</p>
-<p>Widths correspond to little-endian binary representations according to the following table, where &quot;boolean&quot; indicates value 0 or 1, &quot;signed integer&quot; indicates two's complement representation, and &quot;character&quot; is a code point in an unsigned representation. Either type may be used for an argument, but the result will always use a primary type.</p>
+<p>To apply a bitwise operation, each argument is represented as a stream of bits based on the width given for it, then split into units whose width is the operation width. The operation is applied to these units. The result is again treated as a stream of bits and split according to the result width, with each unit forming a result element.</p>
+<p>The operation width, along with the &quot;Type&quot; column above, determines what operation is performed. For bit operations it has no effect, except to constrain the argument sizes according to the shape rules below. Integer (meaning signed) and unsigned operations support widths of 8 and above, and should support higher values such as 128 if available.</p>
+<p>Argument and result widths correspond to little-endian binary representations according to the following table (operation widths don't—see the &quot;type&quot; field in the table above). Here &quot;boolean&quot; indicates value 0 or 1, &quot;signed integer&quot; indicates two's complement representation, and &quot;character&quot; is a code point in an unsigned representation. Either type may be used for an argument, but the result will always use a primary type.</p>
 <table>
 <thead>
 <tr>
@@ -615,5 +629,4 @@
 </tbody>
 </table>
 <p>An argument must be an array of numbers or an array of characters. Its elements must fit into the appropriate type. The &quot;cell size&quot; is the length in bits of a 1-cell, that is, <code><span class='Value'>width</span><span class='Function'>×</span><span class='Number'>¯1</span><span class='Function'>⊑</span><span class='Number'>1</span><span class='Function'>∾≢</span><span class='Value'>arg</span></code>, and must be a multiple of the operation width. Both arguments must have the same cell size, and the same leading shape <code><span class='Number'>¯1</span><span class='Function'>↓≢</span><span class='Value'>arg</span></code>. The result shape is this leading shape followed by the cell size divided by the result element width.</p>
-<p>To apply a bitwise operation, each argument is represented as a stream of bits based on the width given for it, then split into units whose width is the operation width. The operation is applied to these units. The result is again treated as a stream of bits and split according to the result width, with each unit forming a result element.</p>
 <p>Another tool is provided for performing direct conversions, with no operation applied. The 1-modifier <code><span class='Value'>•bit.</span><span class='Modifier'>_cast</span></code> takes a two-element operand and one argument, for example <code><span class='Bracket'>⟨</span><span class='Number'>8</span><span class='Separator'>,</span><span class='Number'>16</span><span class='Ligature'>‿</span><span class='String'>'c'</span><span class='Bracket'>⟩</span><span class='Value'>•bit.</span><span class='Modifier'>_cast</span> <span class='Value'>ints</span></code> to convert each pair of numbers in <code><span class='Value'>ints</span></code> into a 2-byte character. Each element of <code><span class='Value'>𝕗</span></code> is a number or number-character pair giving width and type. The argument is encoded according to the first and decoded according to the second.</p>
