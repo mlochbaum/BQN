@@ -16,7 +16,8 @@
 <li>Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.</li>
 <li>BQN (<a href="https://github.com/mlochbaum/BQN/blob/master/bqn.bqn">bqn.bqn</a>), for testing without a build step.</li>
 <li><a href="https://github.com/ashermancinelli/cxbqn">C++</a>, planning to enable GPU use. Still slow; some cool features.</li>
-<li><a href="https://github.com/cannadayr/ebqn">Erlang</a>, intended for embedding. Too slow to be practical; a <a href="https://github.com/cannadayr/ebqn-rs/">Rust version</a> is in progress to fix this.</li>
+<li><a href="https://github.com/cannadayr/rsbqn/">Rust</a>, for embedding in Erlang (the <a href="https://github.com/cannadayr/ebqn">Erlang</a> version is abandoned as too slow).</li>
+<li><a href="https://git.sr.ht/~andreypopp/BQN.jl">Julia</a> embedding, with common primitives implemented natively. Slow startup.</li>
 </ul>
 <h4 id="javascript"><a class="header" href="#javascript">Javascript</a></h4>
 <p>The online REPL is <a href="https://mlochbaum.github.io/BQN/try.html">here</a>. The file <a href="https://github.com/mlochbaum/BQN/blob/master/docs/bqn.js">docs/bqn.js</a> is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script <a href="https://github.com/mlochbaum/BQN/blob/master/bqn.js">bqn.js</a>, passing a file and <code><span class='Value'>•args</span></code>, or <code><span class='Function'>-</span><span class='Value'>e</span></code> to execute all remaining arguments directly and print the results. <a href="https://observablehq.com/@lsh/bqn">This notebook</a> shows how to run it in an Observable notebook.</p>

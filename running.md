@@ -17,7 +17,8 @@ Support in the following languages has been implemented:
 - Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
 - BQN ([bqn.bqn](bqn.bqn)), for testing without a build step.
 - [C++](https://github.com/ashermancinelli/cxbqn), planning to enable GPU use. Still slow; some cool features.
-- [Erlang](https://github.com/cannadayr/ebqn), intended for embedding. Too slow to be practical; a [Rust version](https://github.com/cannadayr/ebqn-rs/) is in progress to fix this.
+- [Rust](https://github.com/cannadayr/rsbqn/), for embedding in Erlang (the [Erlang](https://github.com/cannadayr/ebqn) version is abandoned as too slow).
+- [Julia](https://git.sr.ht/~andreypopp/BQN.jl) embedding, with common primitives implemented natively. Slow startup.
 
 #### Javascript
 
