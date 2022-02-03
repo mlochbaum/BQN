@@ -217,6 +217,16 @@ The [Unix epoch](https://en.wikipedia.org/wiki/Unix_time) is 1970-01-01 00:00:00
 
 More accurately the modifier `•_maxTime_` *may* fail if execution of `𝔽` takes over `𝕨𝔾𝕩` seconds, and should fail as quickly as it is practically able to. The most likely way to implement this modifier is to interrupt execution at the given time. If `𝔽` completes before the interrupt there is no need to measure the amount of time it actually took.
 
+## Math
+
+System namespace `•math` contains mathematical utilities that are not easily implemented with basic arithmetic, analogous to C's `math.h`.
+
+Constants `ln10⇐⋆⁼10`, `ln2⇐⋆⁼2`, `log10e⇐÷⋆⁼10`, `log2e⇐÷⋆⁼2` computed in full precision.
+
+Other correctly-rounded arithmetic: monadic `Cbrt⇐3⊸√`, `Log2⇐2⋆⁼⊢`, `Log10⇐10⋆⁼⊢`, `Log1p⇐⋆⁼1⊸+`, `Expm1⇐1-˜⋆`; dyadic `Hypot⇐+⌾(×˜)`.
+
+Standard trigonometric functions `Sin`, `Cos`, `Tan`, `Sinh`, `Cosh`, `Tanh`, with inverses preceded by `a` (`ASin`, etc.) and accessable with `⁼`. Additionally, the dyadic function `ATan2` giving the angle of vector `𝕨‿𝕩` relative to `1‿0`. All trig functions measure angles in radians.
+
 ## Random generation
 
 `•MakeRand` initializes a deterministic pseudorandom number generator with seed value `𝕩`. `•rand`, if it exists, is a globally accessible generator initialized at first use; this initialization should use randomness from an outside source if available. These random generators aren't required to be cryptographically secure and should always be treated as insecure. A random generator has the following member functions:
