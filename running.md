@@ -22,7 +22,14 @@ Support in the following languages has been implemented:
 
 #### Javascript
 
-The online REPL is [here](https://mlochbaum.github.io/BQN/try.html). The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script [bqn.js](bqn.js), passing a file and `•args`, or `-e` to execute all remaining arguments directly and print the results. [This notebook](https://observablehq.com/@lsh/bqn) shows how to run it in an Observable notebook.
+The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script [bqn.js](bqn.js), passing a file and `•args`, or `-e` to execute all remaining arguments directly and print the results.
+
+Several sites run using JS-based BQN:
+- [The main online REPL](https://mlochbaum.github.io/BQN/try.html).
+- Razetime's [alternative](https://razetime.github.io/bqn-repl/) runs as a continuous session so you can save results.
+- [do-stuff-online](https://dso.surge.sh/) considers BQN to be a stuff (it's like Try It Online).
+- This [Observable notebook](https://observablehq.com/@lsh/bqn) can be imported into other notebooks.
+- [BQN-80](https://dancek.github.io/bqn-80): make animations with BQN.
 
 #### CBQN
 
@@ -46,4 +53,4 @@ If compiled with Native Image, `nBQN` can be used directly instead.
 
 ### BQN2NGN
 
-[BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript build to experiment with the langauge, which is now abandoned.
+[BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript built to experiment with the langauge. It's now abandoned.
