@@ -8,11 +8,7 @@ Supports ← {
   r ← {("!"⊸≡◶⟨<Native,0˙⟩𝕨) ≢ <∘Exec⎊0𝕩}´¨ c
   f‿e ← +` 2↑/⁼ r / ("!"≡⊑)¨c
   W ← ∾⟜(∾⟜" of "⊸∾○•Repr⟜(≠c))
-  {
-    e=0 ? "Passing" ;
-    f=0 ? "Ignores errors: " W e ;
-    "Failed " W e
-  }
+  f 0⊸≠◶⟨"Passing", 0⊸≠◶"Ignores errors: "‿"Failed "⊸W⟩ e
 }
 Row ← {∾"| "‿𝕨‿" | "‿𝕩}
 head ← ⋈⟜(⊢+'|'⊸≠×'-'⊸-) "Feature     " Row "Support"
