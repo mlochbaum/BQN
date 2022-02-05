@@ -17,7 +17,7 @@ Support in the following languages has been implemented:
 - Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
 - BQN ([bqn.bqn](bqn.bqn)), for testing without a build step.
 - [C++](https://github.com/ashermancinelli/cxbqn), planning to enable GPU use. Still slow; some cool features.
-- [Rust](https://github.com/cannadayr/rsbqn/), for embedding in Erlang (the [Erlang](https://github.com/cannadayr/ebqn) version is abandoned as too slow).
+- [Rust](https://github.com/cannadayr/rsbqn/), motivated by web use (an [Erlang](https://github.com/cannadayr/ebqn) version is abandoned as too slow).
 - [Julia](https://git.sr.ht/~andreypopp/BQN.jl) embedding, with common primitives implemented natively. Slow startup.
 
 #### Javascript
@@ -27,7 +27,7 @@ The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be lo
 Several sites run using JS-based BQN:
 - [The main online REPL](https://mlochbaum.github.io/BQN/try.html).
 - Razetime's [alternative](https://razetime.github.io/bqn-repl/) runs as a continuous session so you can save results.
-- [do-stuff-online](https://dso.surge.sh/) considers BQN to be a stuff (it's like Try It Online).
+- [Do Stuff Online](https://dso.surge.sh/) considers BQN to be a stuff (it's like Try It Online).
 - This [Observable notebook](https://observablehq.com/@lsh/bqn) can be imported into other notebooks.
 - [BQN-80](https://dancek.github.io/bqn-80): make animations with BQN.
 
