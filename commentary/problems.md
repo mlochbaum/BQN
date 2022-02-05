@@ -38,9 +38,6 @@ This includes index-of-last, and searching starting at a particular index, when 
 ### Subtraction, division, and span are backwards
 The left argument feels much more like the primary one in these cases (indeed, this matches the typical left-to-right ordering of binary operators in mathematics). The commonly-paired `⌊∘÷` and `|` have opposite orders for this reason. Not really fixable; too much precedent.
 
-### Can't access array ordering directly
-Only `⍋⍒` use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is more difficult than it should be (but not *that* difficult: `⥊⊸⍋⌾<` is TAO `≤`).
-
 ### Nothing (`·`) interacts strangely with Before and After
 Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`). It's also a little strange that `v F˜·` is `·`, while `·F v` is `F v`.
 
@@ -72,6 +69,9 @@ APL has it and BQN doesn't; after some experience it seems this causes few probl
 
 ### Index Of privileges the first match
 It could be more sound to look at all matches, but using just the first one is too convenient. J has an index-of-last function; in BQN you have to reverse the left argument and then do arithmetic: `≠∘⊣-1+⌽⊸⊐`.
+
+### Can't access array ordering directly
+Only `⍋⍒` use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is not hard but also not obvious: `⍋⌾⋈` is TAO `≤`.
 
 ### Glyphs that aren't great
 Blanket issue for unintuitive glyphs. Currently I find `⥊⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
