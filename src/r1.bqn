@@ -423,12 +423,13 @@ Join1←{
   i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
   {{e↩Deshape a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜Ind≠⌜𝕩
 }
+_s0←{s←𝕨⋄F←𝔽⋄{o←s⋄s F↩𝕩⋄o}⌜𝕩}
+Stride←Reverse 1 ×_s0 Reverse
 JoinM←{
   # Multidimensional
   n←≠z←⥊𝕩 ⋄ s←≢⌜z ⋄ r←=𝕩
-  _s0←{s←𝕨⋄F←𝔽⋄{o←s⋄s F↩𝕩⋄o}⌜𝕩}
   sh←≢𝕩 ⋄ p←1 ⋄ i←j←he←<0
-  (Reverse 1×_s0 Reverse sh){
+  (Stride sh){
     q←𝕨
     a←𝕩⊑sh
     h←-⟜(1-˜0⌈´rr)⌜rr←=⌜z⊏˜q⊸×⌜↕a
@@ -709,6 +710,11 @@ _repeat_←{
   (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
 }
 
+ReorderAxesSub←{
+  l‿s←𝕨⊸Group1⌜⋈⟜Stride≢𝕩
+  (⌊´⌜l) (0<≠∘⊢)◶⟨⥊,((<0)+⌜´s(<+´)⊸(×⌜)⟜↕¨⊣)⊸⊏⟩ ⥊𝕩
+} _fillBy_ ⊢ ⟜ ToArray
+
 ÷ ↩ ÷ _perv
 ⋆ ↩ ⋆ _perv
 √ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)
@@ -765,9 +771,6 @@ ReorderChk←{
   "𝕨⍉𝕩: Length of 𝕨 must not exceed rank of 𝕩" ! 𝕨≤○≠≢𝕩
   "𝕨⍉𝕩: 𝕨 must consist of natural numbers" ! 1∧´Nat⌜⥊𝕨
 }
-ReorderAxesSub←{
-  (𝕨⊸⊏Pick𝕩˙)⌜↕⌊´⌜𝕨⊔≢𝕩
-} _fillBy_ ⊢
 ReorderAxes←{
   𝕨 ReorderChk 𝕩
   𝕨↩⥊𝕨
