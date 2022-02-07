@@ -226,6 +226,24 @@ TransposeInv←{
   (⥊𝕩)⊏˜(↕l)+⟜(l⊸×)⌜c⥊↕1×´c
 }_fillBy_⊢⍟{IX IsArray𝕩⋄0<=𝕩}
 
+_reorderAxesSub_←{
+  "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
+  𝕨↩Deshape𝕨 ⋄ 𝕩↩ToArray𝕩
+  "𝕨⍉𝕩: Length of 𝕨 must not exceed rank of 𝕩" ! (≠𝕨)≤r←=𝕩
+  "𝕨⍉𝕩: 𝕨 must consist of valid axis indices" ! 1∧´(Nat∧<⟜r)⌜𝕨
+  r𝔽↩n←GroupLen𝕨
+  a←𝔾 𝕨∾(Indices 0⊸=⌜n)∾{𝕩⊸+⌜↕r-𝕩}≠n
+  l‿s←a⊸Group1⌜⋈⟜Stride≢𝕩
+  (⌊´⌜l) (0<≠∘⊢)◶⟨⥊,((<0)+⌜´s(<+´)⊸(×⌜)⟜↕¨⊣)⊸⊏⟜⥊⟩ _fillBy_ ⊢ 𝕩
+}
+HandleDupAxes←{
+  r←𝕨-0+´(0⌈-⟜1)⌜𝕩
+  "𝕨⍉𝕩: Skipped result axis" ! (≠𝕩)≤r
+  r
+}
+ReorderAxes ← HandleDupAxes _reorderAxesSub_ ⊢
+ReorderAxesInv ← {IA 1≥0⌈´𝕩⋄𝕨} _reorderAxesSub_ PermInv
+
 Prefixes←{
   "↑𝕩: 𝕩 must have rank at least 1" ! 1≤=𝕩
   0⊸⊑⊸Fill ↕⊸⊏⟜𝕩⌜ ↕1+≠𝕩
@@ -710,11 +728,6 @@ _repeat_←{
   (Nat n)◶Multi‿{𝕩(B f)∘⊢´↕n} 𝕩
 }
 
-ReorderAxesSub←{
-  l‿s←𝕨⊸Group1⌜⋈⟜Stride≢𝕩
-  (⌊´⌜l) (0<≠∘⊢)◶⟨⥊,((<0)+⌜´s(<+´)⊸(×⌜)⟜↕¨⊣)⊸⊏⟩ ⥊𝕩
-} _fillBy_ ⊢ ⟜ ToArray
-
 ÷ ↩ ÷ _perv
 ⋆ ↩ ⋆ _perv
 √ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)
@@ -764,26 +777,6 @@ ProgressiveIndexOf ← 0 Fill {
   "⊒: Rank of 𝕨 must be at least 1" ! 0≤c
   "⊒: Rank of 𝕩 must be at least cell rank of 𝕨" ! c≤=𝕩
   𝕨⊐○(⋈¨⟜(≢⥊OccurrenceCount∘⥊) 𝕨⊸⊐)𝕩
-}
-
-ReorderChk←{
-  "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
-  "𝕨⍉𝕩: Length of 𝕨 must not exceed rank of 𝕩" ! 𝕨≤○≠≢𝕩
-  "𝕨⍉𝕩: 𝕨 must consist of natural numbers" ! 1∧´Nat⌜⥊𝕨
-}
-ReorderAxes←{
-  𝕨 ReorderChk 𝕩
-  𝕨↩⥊𝕨
-  r←(=𝕩)-0+´¬∊𝕨
-  "𝕨⍉𝕩: Skipped result axis" ! 1∧´𝕨<r
-  (𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
-}
-ReorderAxesInv←{
-  𝕨 ReorderChk 𝕩
-  𝕨↩⥊𝕨
-  r←=𝕩
-  IA 1∧´(∊∧<⟜r)𝕨
-  (PermInv 𝕨∾𝕨(¬∘∊˜/⊢)↕r) ReorderAxesSub 𝕩
 }
 
 ⁼ ← {Inverse 𝕗}
