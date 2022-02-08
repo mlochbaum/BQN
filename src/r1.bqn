@@ -1,6 +1,6 @@
 # BQN runtime part 1. Requires:
 #   Type Fill Log GroupLen GroupOrd _fillBy_
-#   +-×÷⋆⌊⌈|<>=≠≤≥≢⊢⊣⥊∾⋈↑↓↕⊏⊑!⌜˙˜´`∘○⊸⟜◶⊘⍟
+#   +-×÷⋆⌊⌈|<>=≠≤≥≢⊢⊣⥊∾⋈↑↓↕⊏⊑!⌜˙˜¨´`∘○⊸⟜◶⊘⍟
 # Filled in by runtime: glyphs and default PrimInd
 # Provides: all BQN primitives
 
