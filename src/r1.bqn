@@ -232,7 +232,7 @@ _reorderAxesSub_←{
   "𝕨⍉𝕩: Length of 𝕨 must not exceed rank of 𝕩" ! (≠𝕨)≤r←=𝕩
   "𝕨⍉𝕩: 𝕨 must consist of valid axis indices" ! 1∧´(Nat∧<⟜r)⌜𝕨
   r𝔽↩n←GroupLen𝕨
-  a←𝔾 𝕨∾(Indices 0⊸=⌜n)∾{𝕩⊸+⌜↕r-𝕩}≠n
+  a←𝔾 𝕨∾(Ind 0⊸=⌜n)∾{𝕩⊸+⌜↕r-𝕩}≠n
   l‿s←a⊸Group1⌜⋈⟜Stride≢𝕩
   (⌊´⌜l) (0<≠∘⊢)◶⟨⥊,((<0)+⌜´s(<+´)⊸(×⌜)⟜↕¨⊣)⊸⊏⟜⥊⟩ _fillBy_ ⊢ 𝕩
 }
@@ -681,9 +681,44 @@ Group1←{
   SX←((n==𝕩)◶{c←1×´t←n↓s⋄𝕩⊏˜(c⊸×⊸+)⌜⟜(t⥊↕c)}‿{⊏⟜𝕩} ⥊𝕩)∘⊣ _fillBy_ ⊢⟜𝕩
   (SX⟨⟩) Fill dr SX _group ⥊𝕨
 }○ToArray
+GroupM←{
+  "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
+  n←0+´r←=⌜𝕨
+  "𝕨⊔𝕩: Total rank of 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
+  ld←(Join1≢⌜𝕨)-¨n↑≢𝕩
+  "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! 1×´ld((0≤⊣)×≤)¨r Rep 1⊸=⌜r
+  dr←r⌊¨(0+_s0 r)⊏ld∾⟨0⟩
+  l←dr-˜⟜≠¨𝕨↩Deshape⌜𝕨 ⋄ LS←∾⟜(n Cell 𝕩) Reshape 𝕩˙
+  S←⊏⟜(LS⟨1×´l⟩)
+  (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨
+    S _group○(0⊸⊑)
+    S⌜ ·+⌜⌜´ (Stride l) {𝕨⊸×⌜⌜𝕩}¨ ⊢_group¨
+  ⟩ 𝕨
+}
 GroupGen←{
   "𝕨⊔𝕩: 𝕩 must be an array" ! IsArray 𝕩
   𝕨(2≤≡𝕨)◶Group1‿GroupM𝕩
+}
+
+GroupIndsInv ← {
+  IA 1==𝕩
+  IX 1×´(1==)⌜𝕩
+  j←Join1 𝕩
+  IA 1×´(1≠=)⌜j
+  IX 1×´Nat⌜j
+  {IX𝕨<𝕩⋄𝕨}´⍟(0<≠)⌜𝕩
+  g←GroupLen j
+  IX 1×´≤⟜1⌜g
+  o←Ind 1⊸-⌜g
+  (PermInv j∾o)⊏(Ind≠⌜𝕩)∾¯1⌜o
+}
+GroupInv ← {
+  IA 1==𝕨
+  IA 1×´Nat⌜𝕨
+  l←GroupLen𝕨
+  IX l=○≠𝕩
+  IX l MatchS ≠⌜𝕩
+  (PermInv l GroupOrd 𝕨) ⊏ Join 𝕩
 }
 
 ValidateRanks←{
@@ -747,42 +782,6 @@ _repeat_←{
 - ↩ - _perv
 ¬ ← 1+-
 
-⥊ ↩ Deshape        ⊘ ⥊
-/ ← Indices        ⊘ Replicate
-» ← ShiftBefore
-« ← ShiftAfter
-∾ ↩ Join           ⊘ JoinTo
-
-GroupM←{
-  "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
-  n←0+´r←=⌜𝕨
-  "𝕨⊔𝕩: Total rank of 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
-  ld←(Join≢⌜𝕨)-n↑≢𝕩
-  "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! 1∧´(0⊸≤∧≤⟜(r/1=r))ld
-  dr←r⌊(0»+`r)⊏ld∾⟨0⟩
-  l←dr-˜≠⌜𝕨↩⥊⌜𝕨 ⋄ LS←∾⟜(n Cell 𝕩) Reshape 𝕩˙
-  S←⊏⟜(LS⟨1×´l⟩)
-  (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨S _group○(0⊸⊑), S⌜ ·+⌜⌜´ (Stride l) × ⊢_group¨⟩ 𝕨
-}
-GroupIndsInv ← {
-  IA 2=≡𝕩
-  IX 1∧´1==⌜𝕩
-  j←∾𝕩
-  IX 1∧´Nat⌜j
-  IX 1∧´j>∾¯1⊸»⌜𝕩
-  g←GroupLen j
-  IX 1∧´g≤1
-  o←/¬g
-  (⍋j∾o)⊏(/≠⌜𝕩)∾¯1⌜o
-}
-GroupInv ← {
-  IA 1==𝕨
-  IA 1∧´Nat⌜𝕨
-  i←GroupInds𝕨
-  IX i≡○(≠⌜)𝕩
-  i ⍋⊸⊏○∾ 𝕩
-}
-
 ⊐ ← SelfClas       ⊘ (1 _search)
 
 ProgressiveIndexOf ← 0 Fill {
@@ -808,7 +807,7 @@ FuncInverse ← (0⊸⊑ ⊣◶⟨
   1⊸⊑    {𝕏𝕨}⟜{Mod1Inverse𝕩} 2⊸⊑         # 4 1-modifier
   1‿3⊸⊏ {𝕏´𝕨}⟜{Mod2Inverse𝕩} 2⊸⊑         # 5 2-modifier
 ⟩ ⊢) {Decompose𝕩}
-Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿(!∘"Cannot invert modifier"))
+Inverse ← Type◶(3‿1‿2 Rep {⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿(!∘"Cannot invert modifier"))
 
 IA ← "⁼: Inverse failed"⊸!
 IX ← "⁼: Inverse does not exist"⊸!
@@ -857,6 +856,9 @@ SwapInverse ← INF _lookup_ ⟨
 ⟩
 ⌜ ↩ _table
 ¨ ↩ _each
+∾ ↩ Join           ⊘ JoinTo
+» ← ShiftBefore
+« ← ShiftAfter
 Mod1Inverse ← INF˙ _lookup_ ⟨
   '⁼', ⊢
   '˜', {SwapInverse𝕩}
@@ -888,8 +890,9 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
 ⥊ ↩ Deshape        ⊘ Reshape
 ≍ ← >∘⋈ _fillBy_ (⊢⊘IF)
 ⋈ ↩ {𝕩Fill⟨𝕩⟩}     ⊘ (⋈○⊑ _fillBy_ IF○<)
+/ ← Indices        ⊘ Replicate
 ⊔ ← GroupInds      ⊘ GroupGen
 ⍉ ← Transpose      ⊘ ReorderAxes
 ∊ ← ⊢_self         ⊘ (0 _search˜)
-⍷ ← ∊⊸/            ⊘ Find
+⍷ ← ∊⊸Rep          ⊘ Find
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
