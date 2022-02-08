@@ -358,16 +358,7 @@ structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
 _under_←{
   val←𝕨𝔽○𝔾𝕩
   # Construct indices
-  Inds ← IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩
-  _s ← {
-    f‿a‿i←𝕗   # Path, array reference, indices
-    st‿d‿o←𝕩  # Function, input depth, output is structural
-    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩⋄a↩𝕩⊑⥊a}⍟(d>IsArray) i
-    {f‿a‿𝕩 _s}⍟o g
-  }
-  IsStruct ← (4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ Decompose
-  sf ← isStruct StructFn 𝕘 ⋄ SR ← ¯1‿⟨𝕩⟩‿0 _s
-  root‿ind ← IsStruct◶⟨0‿StructErr,0‿2⊏1⊑Decompose⟩ SF sr
+  root‿ind ← 𝕘 StructInds 𝕩
 
   # Traverse indices 𝕩 and values 𝕨.
   # Return flat lists ⟨indices,values⟩, or structErr if 𝕨 doesn't capture 𝕩.
@@ -492,14 +483,24 @@ Recompose ← ⊣◶⟨
   {F‿m←𝕩⋄F _m}       # 4 1-modifier
   {F‿m‿G←𝕩⋄F _m_ G}  # 5 2-modifier
 ⟩
-structFn ← {
+structInds ← {
   E←StructErr˙
   _errIf←{⊢⊘×○(1-𝔽)◶⟨StructErr˙,𝕏⟩}
   SE ← IsStructErr _errIf⍟(3≥Type)
 
-  _amb_ ← {(𝕎⊢)◶⟨𝕏, 𝕩‿𝕗‿𝕘{𝕨𝕏𝕗}⟩}
-  _mon_ ← {(𝕨𝕗_amb_𝕘𝕩)⊘(𝕎_errIf𝕩)}
-  _dy_  ← {(𝕎_errIf𝕩)⊘(𝕨𝕗_amb_𝕘𝕩)}
+  Inds ← IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩
+  _s ← {
+    f‿a‿i←𝕗   # Path, array reference, indices
+    st‿d‿o←𝕩  # Function, input depth, output is structural
+    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩⋄a↩𝕩⊑⥊a}⍟(d>IsArray) i
+    {f‿a‿𝕩 _s}⍟o g
+  }
+  IsStruct ← (4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ {Decompose𝕩}
+  NS ← IsStruct _errIf
+
+  _amb_ ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕗‿𝕘{𝕨𝕏𝕗}⟩}
+  _mon_ ← {(𝕗_amb_𝕘𝕩)⊘(NS𝕩)}
+  _dy_  ← {(NS𝕩)⊘(𝕗_amb_𝕘𝕩)}
   k‿v ← Split2 ⟨
     "⊢⊣˜∘○⊸⟜⊘◶",  ⊢  # ˙ handled specially
     "´˝",         {r←𝕩⋄{IsArray∘⊢◶⟨E,𝕗_r⟩}}
@@ -513,20 +514,22 @@ structFn ← {
   # "˘⎉¨⌜",
   # "⚇",
   ⟩
-  SP ← (Join1 k)_glyphLookup_((k≠⌜⊸/v)∾⟨{
-    NS ← 𝕎 _errIf
-    (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩ 𝕩
-  }⟩)
-  StructPrim ← {p←SP𝕩⋄𝕨P𝕩}
+  NSPrim ← (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩
+  SP ← (Join1 k)_glyphLookup_((k≠⌜⊸/v)∾⟨NSPrim⟩)
 
   Recomp ← (E˙=≥⟜3⊸⊑)◶⟨Recompose,E˙⟩
 
-  0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘(0⊑⊢)◶⟨
-    SE ⊣ StructPrim 1⊑⊢           #  0 primitive
+  SFN ← 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘(0⊑⊢)◶⟨
+    SE · {p←SP𝕩⋄P𝕩} 1⊑⊢           #  0 primitive
     E˙                            #  1 block
-    DIsConst∘⊢◶⟨0⊸⊑ Recomp {𝕨˙⊸StructFn⌜1↓𝕩}, SE{(1⊑𝕩)˙}⟩  # other operation
+    DIsConst◶⟨0⊸⊑ Recomp {SFN⌜1↓𝕩}, SE{(1⊑𝕩)˙}⟩  # other operation
     SE 1⊑⊢                        # ¯1 constant
   ⟩⟜{Decompose𝕩}
+
+  {
+    sf ← SFN 𝕨 ⋄ SR ← ¯1‿⟨𝕩⟩‿0 _s
+    IsStruct◶⟨0‿StructErr,0‿2⊏1⊑Decompose⟩ SF sr
+  }
 }
 
 _takeDrop←{
