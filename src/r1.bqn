@@ -748,11 +748,10 @@ _repeat_←{
 ¬ ← 1+-
 
 ⥊ ↩ Deshape        ⊘ ⥊
-↕ ↩ Range          ⊘ Windows
-⌽ ← Reverse        ⊘ Rotate
 / ← Indices        ⊘ Replicate
 » ← ShiftBefore
 « ← ShiftAfter
+∾ ↩ Join           ⊘ JoinTo
 
 GroupM←{
   "𝕨⊔𝕩: Compound 𝕨 must be a list" ! 1==𝕨
@@ -763,14 +762,28 @@ GroupM←{
   dr←r⌊(0»+`r)⊏ld∾⟨0⟩
   l←dr-˜≠⌜𝕨↩⥊⌜𝕨 ⋄ LS←∾⟜(n Cell 𝕩) Reshape 𝕩˙
   S←⊏⟜(LS⟨1×´l⟩)
-  (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨S _group○(0⊸⊑), S⌜ ·+⌜⌜´ (⌽×`1»⌽l) × ⊢_group¨⟩ 𝕨
+  (LS 0⌜𝕨) Fill dr (1≠≠∘⊢)◶⟨S _group○(0⊸⊑), S⌜ ·+⌜⌜´ (Stride l) × ⊢_group¨⟩ 𝕨
+}
+GroupIndsInv ← {
+  IA 2=≡𝕩
+  IX 1∧´1==⌜𝕩
+  j←∾𝕩
+  IX 1∧´Nat⌜j
+  IX 1∧´j>∾¯1⊸»⌜𝕩
+  g←GroupLen j
+  IX 1∧´g≤1
+  o←/¬g
+  (⍋j∾o)⊏(/≠⌜𝕩)∾¯1⌜o
+}
+GroupInv ← {
+  IA 1==𝕨
+  IA 1∧´Nat⌜𝕨
+  i←GroupInds𝕨
+  IX i≡○(≠⌜)𝕩
+  i ⍋⊸⊏○∾ 𝕩
 }
 
-↑ ↩ Prefixes       ⊘ Take
-↓ ↩ Suffixes       ⊘ Drop
-⊔ ← GroupInds      ⊘ GroupGen
 ⊐ ← SelfClas       ⊘ (1 _search)
-∊ ← ⊢_self         ⊘ (0 _search˜)
 
 ProgressiveIndexOf ← 0 Fill {
   c←1-˜=𝕨
@@ -797,30 +810,15 @@ FuncInverse ← (0⊸⊑ ⊣◶⟨
 ⟩ ⊢) {Decompose𝕩}
 Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿(!∘"Cannot invert modifier"))
 
-∾ ↩ Join           ⊘ JoinTo
 IA ← "⁼: Inverse failed"⊸!
 IX ← "⁼: Inverse does not exist"⊸!
 INF← "⁼: Inverse not found"!0˙
 _invChk_ ← {i←𝕨𝔽𝕩⋄IX 𝕩≡𝕨𝔾i⋄i}
-GroupIndsInv ← {
-  IA 2=≡𝕩
-  IX 1∧´1==⌜𝕩
-  j←∾𝕩
-  IX 1∧´Nat⌜j
-  IX 1∧´j>∾¯1⊸»⌜𝕩
-  g←GroupLen j
-  IX 1∧´g≤1
-  o←/¬g
-  (⍋j∾o)⊏(/≠⌜𝕩)∾¯1⌜o
-}
-GroupInv ← {
-  IA 1==𝕨
-  IA 1∧´Nat⌜𝕨
-  i←⊔𝕨
-  IX i≡○(≠⌜)𝕩
-  i ⍋⊸⊏○∾ 𝕩
-}
+↕ ↩ Range          ⊘ Windows
 ⊏ ↩ FirstCell      ⊘ Select _fillBy_ ⊢
+⌽ ← Reverse        ⊘ Rotate
+↑ ↩ Prefixes       ⊘ Take
+↓ ↩ Suffixes       ⊘ Drop
 PrimInverse ← INF _lookup_ ⟨
   '+', +⊘(-˜)
   '-', -
@@ -872,7 +870,7 @@ Mod1Inverse ← INF˙ _lookup_ ⟨
 Mod2Inverse ← INF˙ _lookup_ ⟨
   '∘', AtopInverse
   '○', {Fi←𝕎⁼⋄𝕏⁼ Fi⊘(𝕏⊸Fi)}
-  '⌾', {𝕎⁼⌾𝕏}  # Need to verify for computation Under
+  '⌾', {𝕎⁼⌾𝕏}  # Need to verify for computational Under
   '⍟', Int∘⊢◶⟨IA∘0˙,{𝕎⍟(-𝕩)}⟩
   '⊘', {(𝕎⁼)⊘(𝕏⁼)}
   '⊸', IsConstant∘⊣ ⊣◶{INF⊘𝕏}‿⊢ {𝕎⊸(𝕏⁼)}
@@ -890,6 +888,8 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
 ⥊ ↩ Deshape        ⊘ Reshape
 ≍ ← >∘⋈ _fillBy_ (⊢⊘IF)
 ⋈ ↩ {𝕩Fill⟨𝕩⟩}     ⊘ (⋈○⊑ _fillBy_ IF○<)
+⊔ ← GroupInds      ⊘ GroupGen
 ⍉ ← Transpose      ⊘ ReorderAxes
-⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
+∊ ← ⊢_self         ⊘ (0 _search˜)
 ⍷ ← ∊⊸/            ⊘ Find
+⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
