@@ -352,32 +352,96 @@ _fillByPure_←{
 _each  ← {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
 _table ← {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
 
-StructErr←{𝕩}
-IsStructErr ← (3=Type)◶⟨0,StructErr˙⊸=⟩
-structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
-_under_←{
-  val←𝕨𝔽○𝔾𝕩
-  # Construct indices
-  root‿ind ← 𝕘 StructInds 𝕩
+match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
+  ⟨=○IsArray, 0⟩
+  ⟨IsArray∘⊢, =⟩
+  ⟨=○=      , 0⟩
+  ⟨MatchS○≢ , 0⟩
+  {1×´⥊𝕨Match¨𝕩}
+⟩
+Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
+
+Join1←{
+  # List of lists
+  "∾𝕩: 𝕩 must have an element with rank at least =𝕩" ! 0<0+´=⌜𝕩
+  i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
+  {{e↩Deshape a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜/≠⌜𝕩
+}
+
+under←{
+  Err←{𝕩}
+  IsErr ← (3=Type)◶⟨0,Err˙⊸=⟩
+  E ← Err˙
+  _errIf ← {⊢⊘×○(1-𝔽)◶⟨Err˙,𝕏⟩}
+  SE ← IsErr _errIf⍟(3≥Type)
+
+  Inds ← IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩
+  _s ← {
+    f‿a‿i←𝕗   # Path, array reference, indices
+    st‿d‿o←𝕩  # Function, input depth, output is structural
+    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩⋄a↩𝕩⊑⥊a}⍟(d>IsArray) i
+    {f‿a‿𝕩 _s}⍟o g
+  }
+  IsStruct ← (4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ {Decompose𝕩}
+  NS ← IsStruct _errIf
+
+  _amb_ ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕗‿𝕘{𝕨𝕏𝕗}⟩}
+  _mon_ ← {(𝕗_amb_𝕘𝕩)⊘(NS𝕩)}
+  _dy_  ← {(NS𝕩)⊘(𝕗_amb_𝕘𝕩)}
+  k‿v ← Split2 ⟨
+    "⊢⊣˜∘○⊸⟜⊘◶",  ⊢  # ˙ handled specially
+    "´˝",         {r←𝕩⋄{IsArray∘⊢◶⟨E,𝕗_r⟩}}
+    "=≠≢",        1 _mon_ 0
+    "<⋈",         0 _mon_ 1
+    "≍",          1 _mon_ 1  # Dyad combines
+    "↕/»«⊔",      1 _dy_  1
+    "⥊↑↓⌽⍉⊏⊑",    1 _amb_ 1
+  # ">",          2 _mon_ 1
+  # "∾",          2 _mon_ 1  # Dyad combines
+  # "˘⎉¨⌜",
+  # "⚇",
+  ⟩
+  NSPrim ← (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩
+  SP ← (Join1 k)_glyphLookup_((k≠⌜⊸/v)∾⟨NSPrim⟩)
+
+  Recompose ← ⊣◶⟨
+    ⊢                  # 0 primitive
+    ⊢                  # 1 block
+    {𝕎𝕏}´⊢             # 2-train
+    {F‿G‿H←𝕩⋄F G H}    # 3-train
+    {F‿m←𝕩⋄F _m}       # 4 1-modifier
+    {F‿m‿G←𝕩⋄F _m_ G}  # 5 2-modifier
+  ⟩
+  Recomp ← (E˙=≥⟜3⊸⊑)◶⟨Recompose,E˙⟩
+
+  SFN ← 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘(0⊑⊢)◶⟨
+    SE · {p←SP𝕩⋄P𝕩} 1⊑⊢           #  0 primitive
+    E˙                            #  1 block
+    DIsConst◶⟨0⊸⊑ Recomp {SFN⌜1↓𝕩}, SE{(1⊑𝕩)˙}⟩  # other operation
+    SE 1⊑⊢                        # ¯1 constant
+  ⟩⟜{Decompose𝕩}
 
   # Traverse indices 𝕩 and values 𝕨.
-  # Return flat lists ⟨indices,values⟩, or structErr if 𝕨 doesn't capture 𝕩.
-  GetInserts←{
+  # Return flat lists ⟨indices,values⟩, or err if 𝕨 doesn't capture 𝕩.
+  conform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
+  GetInserts ← {
     count←1⋄DC←IsArray◶⟨0,1+0⌈´{count+↩¯1+≠d←⥊𝕩⋄DC⌜d}⟩⋄depth←DC𝕩
-    𝕩 (2⌊depth)◶(⋈○⋈)‿(StructConform◶⟨StructErr˙,⋈○⥊⟩)‿{
+    𝕩 (2⌊depth)◶(⋈○⋈)‿(Conform◶⟨Err˙,⋈○⥊⟩)‿{
       Fail←{𝕊‿0}
       # 𝕎 is parent traversal; 𝕩 is current components of ind and val
-      Trav←(IsArray 0⊑⊢)◶⟨⋈, StructConform´∘⊢◶Fail‿{
+      Trav←(IsArray 0⊑⊢)◶⟨⋈, Conform´∘⊢◶Fail‿{
         Parent←𝕎 ⋄ n←≠0⊑a←⥊⌜𝕩 ⋄ j←¯1
         Child←Trav⟜{𝕩⊸⊑⌜a}
         { j+↩1 ⋄ f←n⊸≤◶⟨𝕊˙⊸Child,Parent˙⟩j ⋄ F 0 }
       }⟩
       next ← 0 Trav 𝕨‿𝕩
       res ← {n‿o←Next𝕩⋄next↩n⋄o}⌜ ↕count
-      (next=fail)◶⟨0⊸⊑⌜ ⋈ 1⊸⊑⌜, StructErr˙⟩ res
+      (next=fail)◶⟨0⊸⊑⌜ ⋈ 1⊸⊑⌜, Err˙⟩ res
     } 𝕨
-  }⍟(1-IsStructErr∘⊢)
-  Struct←{
+  }⍟(1-IsErr∘⊢)
+
+  _insert ← {
+    root←𝕗
     i‿v←𝕨
     Set1←𝕨⊸{
       𝕩↩ToArray𝕩
@@ -390,19 +454,16 @@ _under_←{
     }
     _at_ ← {(↕≠𝕩)𝔽⍟((𝔾𝕩)=⊣)¨𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
-    IsArray∘root◶⟨0⊑v˙, Set⟩ 𝕩
-  } _fillBy_ ⊢
-  IsStructErr◶⟨Struct⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val GetInserts ind
-}
+    IsArray∘root◶⟨0⊑v˙, Set⟩ _fillBy_ ⊢ 𝕩
+  }
 
-match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
-  ⟨=○IsArray, 0⟩
-  ⟨IsArray∘⊢, =⟩
-  ⟨=○=      , 0⟩
-  ⟨MatchS○≢ , 0⟩
-  {1×´⥊𝕨Match¨𝕩}
-⟩
-Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
+  {
+    val←𝕨𝔽○𝔾𝕩
+    sf ← SFN 𝕘 ⋄ SR ← ¯1‿⟨𝕩⟩‿0 _s
+    root‿ind ← IsStruct◶⟨0‿Err,0‿2⊏1⊑Decompose⟩ SF sr
+    IsErr◶⟨root _insert⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val GetInserts ind
+  }
+}
 
 ≡ ← Depth          ⊘ Match
 ≢ ↩ IsArray◶(↕0)‿≢ ⊘ (1-Match)
@@ -427,12 +488,6 @@ JoinTo←(1<⌈○=)◶(∾○⥊)‿{
   (⟨l⟩∾0⊑c)⥊𝕨∾○⥊𝕩
 }○ToArray _fillBy_ IF
 
-Join1←{
-  # List of lists
-  "∾𝕩: 𝕩 must have an element with rank at least =𝕩" ! 0<0+´=⌜𝕩
-  i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
-  {{e↩Deshape a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜/≠⌜𝕩
-}
 _s0←{s←𝕨⋄F←𝔽⋄{o←s⋄s F↩𝕩⋄o}⌜𝕩}
 Stride←Reverse 1 ×_s0 Reverse
 JoinM←{
@@ -474,63 +529,6 @@ Join←(2⌊=)◶⟨
   "∾𝕩: empty 𝕩 fill rank must be at least argument rank" ! d≥r
   (↕d)(r≤⊣)◶⟨⊑⟜𝕨⊸×,⊢⟩¨𝕩
 } ⊣ "∾𝕩: 𝕩 must be an array"!IsArray
-
-Recompose ← ⊣◶⟨
-  ⊢                  # 0 primitive
-  ⊢                  # 1 block
-  {𝕎𝕏}´⊢             # 2-train
-  {F‿G‿H←𝕩⋄F G H}    # 3-train
-  {F‿m←𝕩⋄F _m}       # 4 1-modifier
-  {F‿m‿G←𝕩⋄F _m_ G}  # 5 2-modifier
-⟩
-structInds ← {
-  E←StructErr˙
-  _errIf←{⊢⊘×○(1-𝔽)◶⟨StructErr˙,𝕏⟩}
-  SE ← IsStructErr _errIf⍟(3≥Type)
-
-  Inds ← IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩
-  _s ← {
-    f‿a‿i←𝕗   # Path, array reference, indices
-    st‿d‿o←𝕩  # Function, input depth, output is structural
-    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩⋄a↩𝕩⊑⥊a}⍟(d>IsArray) i
-    {f‿a‿𝕩 _s}⍟o g
-  }
-  IsStruct ← (4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ {Decompose𝕩}
-  NS ← IsStruct _errIf
-
-  _amb_ ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕗‿𝕘{𝕨𝕏𝕗}⟩}
-  _mon_ ← {(𝕗_amb_𝕘𝕩)⊘(NS𝕩)}
-  _dy_  ← {(NS𝕩)⊘(𝕗_amb_𝕘𝕩)}
-  k‿v ← Split2 ⟨
-    "⊢⊣˜∘○⊸⟜⊘◶",  ⊢  # ˙ handled specially
-    "´˝",         {r←𝕩⋄{IsArray∘⊢◶⟨E,𝕗_r⟩}}
-    "=≠≢",        1 _mon_ 0
-    "<⋈",         0 _mon_ 1
-    "≍",          1 _mon_ 1  # Dyad combines
-    "↕/»«⊔",      1 _dy_  1
-    "⥊↑↓⌽⍉⊏⊑",    1 _amb_ 1
-  # ">",          2 _mon_ 1
-  # "∾",          2 _mon_ 1  # Dyad combines
-  # "˘⎉¨⌜",
-  # "⚇",
-  ⟩
-  NSPrim ← (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩
-  SP ← (Join1 k)_glyphLookup_((k≠⌜⊸/v)∾⟨NSPrim⟩)
-
-  Recomp ← (E˙=≥⟜3⊸⊑)◶⟨Recompose,E˙⟩
-
-  SFN ← 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘(0⊑⊢)◶⟨
-    SE · {p←SP𝕩⋄P𝕩} 1⊑⊢           #  0 primitive
-    E˙                            #  1 block
-    DIsConst◶⟨0⊸⊑ Recomp {SFN⌜1↓𝕩}, SE{(1⊑𝕩)˙}⟩  # other operation
-    SE 1⊑⊢                        # ¯1 constant
-  ⟩⟜{Decompose𝕩}
-
-  {
-    sf ← SFN 𝕨 ⋄ SR ← ¯1‿⟨𝕩⟩‿0 _s
-    IsStruct◶⟨0‿StructErr,0‿2⊏1⊑Decompose⟩ SF sr
-  }
-}
 
 _takeDrop←{
   take ← 1 - 𝕗
