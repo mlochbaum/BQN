@@ -4,6 +4,9 @@
 # Filled in by runtime: glyphs and default PrimInd
 # Provides: all BQN primitives
 
+Ind1 ← { 0 Fill +`(0⌈≠-1˙)⊸↑GroupLen+`𝕩 }
+/ ← Ind1 ⊘ (Ind1⊸⊏)  # LIMITED to natural number list 𝕩/𝕨
+
 Decompose ← {0‿𝕩}
 PrimInd ← {𝕩}
 SetPrims ← {Decompose‿PrimInd ↩ 𝕩}
@@ -202,19 +205,17 @@ Find←{
   0 Fill (𝕨 Match (⥊𝕩)⊏˜i+⌜<)⌜ j
 }○ToArray
 
-Ind ← { 0 Fill +`(0⌈≠-1˙)⊸↑GroupLen+`𝕩 }
-Rep ← Ind⊸⊏
 Indices←{
   "/𝕩: 𝕩 must have rank 1" ! 1==𝕩
   "/𝕩: 𝕩 must consist of natural numbers" ! 1×´Nat⌜𝕩
-  Ind 𝕩
+  / 𝕩
 }
 IndicesInv←{
   IA 1==𝕩
   IA 1×´Nat⌜𝕩
   GroupLen 𝕩
 }
-SelfClas ← (PermInv∘⍋∘Rep˜⊏˜¯1+`⊢) _self
+SelfClas ← (PermInv∘⍋∘/˜⊏˜¯1+`⊢) _self
 OccurrenceCount ← ↕∘≠⊸(⊣-¨·⌈`×¨) _self
 
 Transpose←(0<=)◶⟨ToArray,{
@@ -232,7 +233,7 @@ _reorderAxesSub_←{
   "𝕨⍉𝕩: Length of 𝕨 must not exceed rank of 𝕩" ! (≠𝕨)≤r←=𝕩
   "𝕨⍉𝕩: 𝕨 must consist of valid axis indices" ! 1∧´(Nat∧<⟜r)⌜𝕨
   r𝔽↩n←GroupLen𝕨
-  a←𝔾 𝕨∾(Ind 0⊸=⌜n)∾{𝕩⊸+⌜↕r-𝕩}≠n
+  a←𝔾 𝕨∾(/0⊸=⌜n)∾{𝕩⊸+⌜↕r-𝕩}≠n
   l‿s←a⊸Group1⌜⋈⟜Stride≢𝕩
   (⌊´⌜l) (0<≠∘⊢)◶⟨⥊,((<0)+⌜´s(<+´)⊸(×⌜)⟜↕¨⊣)⊸⊏⟜⥊⟩ _fillBy_ ⊢ 𝕩
 }
@@ -332,7 +333,7 @@ RepInd←(2⌊=∘⊣)◶{
 }‿{
   "𝕨/𝕩: Lengths of components of 𝕨 must match 𝕩" ! 𝕩=≠𝕨
   "𝕨/𝕩: 𝕨 must consist of natural numbers" ! 1×´|∘⌊⊸=⌜𝕨
-  Ind 𝕨
+  / 𝕨
 }‿{
   "𝕨/𝕩: Components of 𝕨 must have rank 0 or 1" ! 0˙
 }
@@ -439,7 +440,7 @@ Join1←{
   # List of lists
   "∾𝕩: 𝕩 must have an element with rank at least =𝕩" ! 0<0+´=⌜𝕩
   i←j←¯1 ⋄ e←⟨⟩ ⋄ a←𝕩
-  {{e↩Deshape a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜Ind≠⌜𝕩
+  {{e↩Deshape a⊑˜i↩𝕩⋄j↩¯1}⍟(1-i⊸=)𝕩⋄(j↩j+1)⊑e}⌜/≠⌜𝕩
 }
 _s0←{s←𝕨⋄F←𝔽⋄{o←s⋄s F↩𝕩⋄o}⌜𝕩}
 Stride←Reverse 1 ×_s0 Reverse
@@ -452,14 +453,14 @@ JoinM←{
     a←𝕩⊑sh
     h←-⟜(1-˜0⌈´rr)⌜rr←=⌜z⊏˜q⊸×⌜↕a
     "∾𝕩: Incompatible element ranks" ! 1×´0⊸≤⌜h
-    hl←≠ih←q⊸×⌜Ind h
+    hl←≠ih←q⊸×⌜/h
     sf←s⊏˜⥊((a×q)⊸×⌜↕p)+⌜ih+⌜↕q
     si←⥊he⊣⌜↕hl×q
     "∾𝕩: Incompatible element ranks" ! 1×´si<⟜≠¨sf
     m←si⊑¨sf
     lf←m⊏˜q⊸×⌜↕hl
     "∾𝕩: 𝕩 element shapes must be compatible" ! m MatchS ⥊(↕p)⊢⌜lf⊣⌜↕q
-    k ← Ind l←{i←¯1⋄⊢◶1‿{(i+↩𝕩)⊑lf}⌜h}
+    k ← / l←{i←¯1⋄⊢◶1‿{(i+↩𝕩)⊑lf}⌜h}
     c ← (↕≠k)-¨k ⊏ 0+_s0 l
     he↩ he +⌜ h
     i ↩ (i ×⌜ k⊏l) +¨ i⊢⌜c
@@ -511,7 +512,7 @@ structFn ← {
   # "˘⎉¨⌜",
   # "⚇",
   ⟩
-  SP ← (Join1 k)_glyphLookup_((k≠⌜⊸Rep v)∾⟨{
+  SP ← (Join1 k)_glyphLookup_((k≠⌜⊸/v)∾⟨{
     NS ← 𝕎 _errIf
     (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩ 𝕩
   }⟩)
@@ -686,7 +687,7 @@ GroupM←{
   n←0+´r←=⌜𝕨
   "𝕨⊔𝕩: Total rank of 𝕨 must be at most rank of 𝕩" ! n≤=𝕩
   ld←(Join1≢⌜𝕨)-¨n↑≢𝕩
-  "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! 1×´ld((0≤⊣)×≤)¨r Rep 1⊸=⌜r
+  "𝕨⊔𝕩: Lengths of 𝕨 must equal to 𝕩, or one more only in a rank-1 component" ! 1×´ld((0≤⊣)×≤)¨r/1⊸=⌜r
   dr←r⌊¨(0+_s0 r)⊏ld∾⟨0⟩
   l←dr-˜⟜≠¨𝕨↩Deshape⌜𝕨 ⋄ LS←∾⟜(n Cell 𝕩) Reshape 𝕩˙
   S←⊏⟜(LS⟨1×´l⟩)
@@ -709,8 +710,8 @@ GroupIndsInv ← {
   {IX𝕨<𝕩⋄𝕨}´⍟(0<≠)⌜𝕩
   g←GroupLen j
   IX 1×´≤⟜1⌜g
-  o←Ind 1⊸-⌜g
-  (PermInv j∾o)⊏(Ind≠⌜𝕩)∾¯1⌜o
+  o←/1⊸-⌜g
+  (PermInv j∾o)⊏(/≠⌜𝕩)∾¯1⌜o
 }
 GroupInv ← {
   IA 1==𝕨
@@ -807,7 +808,7 @@ FuncInverse ← (0⊸⊑ ⊣◶⟨
   1⊸⊑    {𝕏𝕨}⟜{Mod1Inverse𝕩} 2⊸⊑         # 4 1-modifier
   1‿3⊸⊏ {𝕏´𝕨}⟜{Mod2Inverse𝕩} 2⊸⊑         # 5 2-modifier
 ⟩ ⊢) {Decompose𝕩}
-Inverse ← Type◶(3‿1‿2 Rep {⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿(!∘"Cannot invert modifier"))
+Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿(!∘"Cannot invert modifier"))
 
 IA ← "⁼: Inverse failed"⊸!
 IX ← "⁼: Inverse does not exist"⊸!
@@ -879,7 +880,7 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
   '⟜', {(𝕨IsConstant∘⊢◶⟨IA∘0˙,{𝕩𝕎{SwapInverse𝕗}⊢}⟩𝕩)⊘(𝕏⁼𝕎⁼)}
 ⟩
 
-´ ← _fold
+´ ↩ _fold
 ˝ ← _insert
 ⁼ ↩ {i←Inverse𝕗⋄𝕨I𝕩}
 ˘ ← _cells
@@ -890,9 +891,9 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
 ⥊ ↩ Deshape        ⊘ Reshape
 ≍ ← >∘⋈ _fillBy_ (⊢⊘IF)
 ⋈ ↩ {𝕩Fill⟨𝕩⟩}     ⊘ (⋈○⊑ _fillBy_ IF○<)
-/ ← Indices        ⊘ Replicate
 ⊔ ← GroupInds      ⊘ GroupGen
 ⍉ ← Transpose      ⊘ ReorderAxes
 ∊ ← ⊢_self         ⊘ (0 _search˜)
-⍷ ← ∊⊸Rep          ⊘ Find
+⍷ ← ∊⊸/            ⊘ Find
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
+/ ↩ Indices        ⊘ Replicate
