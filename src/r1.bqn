@@ -358,16 +358,16 @@ structConform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
 _under_←{
   val←𝕨𝔽○𝔾𝕩
   # Construct indices
-  Inds ← IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩ 𝕩 ⊑⟜⥊⍟(IsArray⊢)´ Reverse
-  _s_ ← {
-    f←𝕗
-    st‿d‿o←𝕩
-    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩}⍟(d>IsArray) 𝕘
-    {f _s_ 𝕩}⍟o g
+  Inds ← IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩
+  _s ← {
+    f‿a‿i←𝕗   # Path, array reference, indices
+    st‿d‿o←𝕩  # Function, input depth, output is structural
+    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩⋄a↩𝕩⊑⥊a}⍟(d>IsArray) i
+    {f‿a‿𝕩 _s}⍟o g
   }
-  IsStruct ← (5=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ Decompose
-  sf ← isStruct StructFn 𝕘 ⋄ SR ← ¯1 _s_ 0
-  root‿ind ← IsStruct◶⟨0‿StructErr,1‿3⊏Decompose⟩ SF sr
+  IsStruct ← (4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ Decompose
+  sf ← isStruct StructFn 𝕘 ⋄ SR ← ¯1‿⟨𝕩⟩‿0 _s
+  root‿ind ← IsStruct◶⟨0‿StructErr,0‿2⊏1⊑Decompose⟩ SF sr
 
   # Traverse indices 𝕩 and values 𝕨.
   # Return flat lists ⟨indices,values⟩, or structErr if 𝕨 doesn't capture 𝕩.
@@ -504,7 +504,7 @@ structFn ← {
     "⊢⊣˜∘○⊸⟜⊘◶",  ⊢  # ˙ handled specially
     "´˝",         {r←𝕩⋄{IsArray∘⊢◶⟨E,𝕗_r⟩}}
     "=≠≢",        1 _mon_ 0
-    "<",          0 _mon_ 1
+    "<⋈",         0 _mon_ 1
     "≍",          1 _mon_ 1  # Dyad combines
     "↕/»«⊔",      1 _dy_  1
     "⥊↑↓⌽⍉⊏⊑",    1 _amb_ 1
