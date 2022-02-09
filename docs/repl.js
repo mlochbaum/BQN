@@ -107,7 +107,6 @@ doc.code.onkeydown = ev => {
   }
 }
 let typeChar = (t, c, ev) => {
-  ev.preventDefault();
   let v = t.value;
   let i = t.selectionStart;
   t.value = v.slice(0,i)+c+v.slice(t.selectionEnd);
@@ -135,6 +134,7 @@ let setPrefix = () => {
     let k = revkeys[c]; if (k) t += '\n'+prefix+(k==='"'?'&quot;':k);
     x.title = primhelp[c] = t;
     x.href = helpurl[c] = 'help/'+h+'.html';
+    x.onmousedown = ev => ev.preventDefault(); // don't take focus
     x.onclick = ev => ev.button || modified(ev) ? true
                     : typeChar(doc.code, c, ev);
   });
