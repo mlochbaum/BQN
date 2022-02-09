@@ -103,7 +103,7 @@ doc.code.onkeydown = ev => {
   } else if (ev.key==prefix) {
     keymode = 1;
     doc.kb.classList.add('prefix');
-    ev.preventDefault();
+    return false;
   }
 }
 let typeChar = (t, c, ev) => {
@@ -134,7 +134,7 @@ let setPrefix = () => {
     let k = revkeys[c]; if (k) t += '\n'+prefix+(k==='"'?'&quot;':k);
     x.title = primhelp[c] = t;
     x.href = helpurl[c] = 'help/'+h+'.html';
-    x.onmousedown = ev => ev.preventDefault(); // don't take focus
+    x.onmousedown = ev => false; // don't take focus
     x.onclick = ev => ev.button || modified(ev) ? true
                     : typeChar(doc.code, c, ev);
   });
