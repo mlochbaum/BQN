@@ -68,6 +68,9 @@ It's an awkward inconsistency. Prefixes and Suffixes have to have a nested resul
 ### Converting a function expression to a subject is tricky
 You can name it, you can write `⊑⟨Expr⟩` or `(Expr)˙0`, and if it doesn't use special names you can write `{Expr}`. All of these are at least a little awkward in reasonable cases. Should there be a dedicated syntax? Note that going the other way, from subject to function, isn't too bad: the modifier `{𝔽}` does it, as does `○⊢`.
 
+### Can't Reduce or Scan over arrays jointly
+Each allows you to move along two arrays simultaneously (sure, three isn't good, but you can usually split into two Each-ed functions). Reduce and Scan are stuck with one, so you might need to pass in a list of tuples. Scan also encourages you to pack a few values into the result, leaving you the same annoying structure. A nested-transpose primitive, similar to `<˘⍉>`, would help a lot.
+
 ### Axis ordering is big-endian
 The most natural ordering for polynomial coefficients and base representations is little-endian, because it aligns element `i` of the list with power `i` of the argument or base. It also allows a forward scan instead of a reverse one. Array axes go the other way. However, there are advantages to this ordering as well. For example, it's common to act only on the first few axes, so having them at the beginning of the array is good (`≠a ←→ ⊑∘≢a`).
 
@@ -77,6 +80,9 @@ So it seems a bit strange to rely on it for core language features like `/⁼` (
 ### Choose and Repeat have order swapped
 In Choose, the selector goes on the left; in Repeat, the count goes on the right. Could be a strength in some contexts, since you can change Repeat-as-If to Choose if you don't like the ordering, but maybe a language that forces the programmer to make semantic decisions for syntactic reasons is not providing the greatest of services.
 
+### Have to enclose Scan initial element
+The most common case for Scan is of course applying to a list. Here there can only be one element, but it has to go in a unit array to keep Scan general. The reductions dodge this by leaving out the APL2 style, and Scan hits it dead on.
+
 ### Can't mix define and modify in multiple assignment
 Say `a` is a pair and `h` isn't defined yet; how would you set `h` to the first element of `a` and change `a` to be just the second? `h‿a↩a` doesn't work because `h` isn't defined, so the best I have is `h←@⋄h‿a↩a`. A heavier assignment syntax wouldn't break down; BQN could allow `⟨h←,a⟩↩a` but I don't think this merits special syntax.
 
@@ -85,6 +91,9 @@ APL has it and BQN doesn't; after some experience it seems this causes few probl
 
 ### Named modifiers use way more space than primitive ones
 `F _m_ G` versus `F∘G`: the syntax is the same but these don't feel the same at all. This is the worst case, as with primitive operands, `+_m_÷` isn't as far from `+∘÷`. It means a style-conscious programmer has to adjust the way they write code depending on whether things are named, and makes named modifiers feel less integrated into the language. A mix of named modifiers with primitive modifiers or trains can also look inconsistent.
+
+### Return value prevents optimization
+Run something like `a←↕1e6 ⋄ {a-⌾(𝕩⊸⊑)↩}¨↕100` and you'll get poor performance in current CBQN. This is because `a` is part of the function result to be used by `¨`, creating a reference and preventing in-place updates. The function needs to return something else, with `⋄@` at the end maybe. Various strategies could fix this by tracking whether the result will be needed.
 
 ### Can't always transfer ambivalence in tacit code
 For example, there's no tacit equivalent of the old APL (NARS) `∘`, which in explicit BQN is simply `{𝕨𝔽𝔾𝕩}`. Similarly, `{(𝔽𝕨)𝔾𝕩}` is missing. The contrast with Atop and Over, which work very smoothly, can be jarring and make it harder to get an intuition for what the code is doing.
@@ -181,14 +190,16 @@ Scan moves along the array so that it uses results as left arguments, which is o
 ### Bins is inconsistent with Index of
 In Dyalog APL, Interval Index is identical to Index Of if the left argument has no duplicate cells and every right argument cell intolerantly matches a left argument cell. In BQN they're off by one—Bins is one larger. But all the caveats for the Dyalog relation indicate this might not be so fundamental.
 
+### Empty left argument to Select
+Select chooses whether `𝕨` maps to axes of `𝕩` or selects from the first axis based only on its depth. An empty array has depth 1, so it selects no major cells. However, it could also select from no axes (a no-op) and in some contexts the other behavior would be surprising.
+
+There's a similar problem with `⟨⟩` as a left argument to `⊑`: it could be a list of no indices, or a length-0 index. Currently it's treated as an index, causing errors when `𝕨` is a variable-length list of indices. This could be mostly fixed with backwards compatibility by choosing the other way when `𝕩` has nonzero rank.
+
 ### Special names other than 𝕣 can't be written as modifiers
 I decided that it was better to allow `𝕨_m_𝕩` to work with no spaces than to allow `_𝕩` to be a modifier, and this rule also helps keep tokenization simple. But to apply `𝕩` as a modifier you have to give it a different name. Could actually be a good thing in that it encourages you to stick to functions, as they're nicer in lots of other ways.
 
 ### Exact result of Power is unspecified
 The other arithmetic functions round to nearest, and compound functions such as `⊥` have been removed. But Power makes no guarantees, and the result could change over time based on different special code. Dyadic logarithm is similar, but expected because of its inverse status.
-
-### Empty left argument to Select
-Select chooses whether the left argument maps to right argument axes or selects from the first axis only based on its depth. Without prototypes an empty array has depth 1, so it selects no major cells. However, it could also select from no axes (a no-op) and in some contexts the other behavior would be surprising.
 
 ### Unclear primitive names
 Blanket issue for names that I don't find informative: "Solo", "Bins", "Find", and "Group".
