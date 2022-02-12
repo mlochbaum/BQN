@@ -1,5 +1,14 @@
+# Create a variable slot.
+# A slot also functions as a variable reference, one kind of reference.
+# References support some of the following fields:
+# - Get:  Get value
+# - GetC: Get value, and clear the slot (variable only)
+# - SetU: Define value
+# - SetN: Change value
+# - SetQ: Set value and return 0 if possible, and return 1 if not
+# - GetF: Get corresponding field from namespace 𝕩
 MakeVar ← { program 𝕊 name:
-  v←@
+  v←@  # Value
   Get  ⇐ !∘"Runtime: Variable referenced before definition"
   SetU ⇐ !∘"↩: Variable modified before definition"
   SetN ⇐ {
@@ -14,12 +23,22 @@ MakeVar ← { program 𝕊 name:
   }
   GetF ⇐ {program 𝕩.Field name}
 }
-vnot ← { SetU⇐SetN⇐⊢ ⋄ SetQ⇐0˙ }
-MakeEnv ← { 𝕊p‿v‿n‿e:
+
+# Create an environment: essentially, a list of variable slots and a
+# reference to the parent environment.
+MakeEnv ← { 𝕊⟨
+    p  # Parent environment
+    v  # Total number of slots (special names plus named variables)
+    n  # ID numbers of named variables
+    e  # Which named variables are exported
+  ⟩:
   ns ← v-≠n  # Number of special names
   parent ⇐ p
-  program ⇐ p.program
-  vars ⇐ program⊸MakeVar¨ (ns⥊¯1) ∾ n
+  program ⇐ p.program  # Determines the meaning of ID numbers
+  vars ⇐ program⊸MakeVar¨ (ns⥊¯1) ∾ n  # Variables
+  # Return a namespace for this environment.
+  # A namespace is represented as a namespace with one field, Field.
+  # 𝕨 ns.Field 𝕩 returns the value of the field with ID 𝕩 in program 𝕨.
   MakeNS ⇐ {𝕤
     v ← @ ⊣´¨ n ⊔○(e⊸/) ns↓vars  # Lookup table
     Field ⇐ {𝕨𝕊i:
@@ -29,9 +48,12 @@ MakeEnv ← { 𝕊p‿v‿n‿e:
   }
 }
 
+# Return a function that reads the variable from slot s at depth d.
+# The input is taken from the bytecode stream.
 VO ← { d←𝕏@, s←𝕏@, s⊑·{𝕩.vars}{𝕩.parent}⍟d }
 
-nothing  ← {⇐}
+# Constants
+nothing  ← {⇐}  # Used when 𝕨 is ·
 skipMark ← {⇐}
 
 Namespace ← {𝕩.MakeNS@}
@@ -63,6 +85,8 @@ ref ← {
     SetN‿SetU‿SetQ ⇐ r
     GetF ⇐ {env.program 𝕩.Field name}
   }
+  # Destructuring placeholder ·
+  not ⇐ { SetU⇐SetN⇐⊢ ⋄ SetQ⇐0˙ }
 }
 
 Get ← {𝕩.Get @}⚇0
@@ -108,7 +132,7 @@ ops ← ((!∘"Unknown opcode")˙⊣´⊢)¨ ⊔˝ ⍉> ⟨
   # Headers
   42‿(       {s𝕊e: {0:s.Skip@; 1:@; 𝕊:!"Predicate value must be 0 or 1"} ⊑s.Pop 1 }˙)
   43‿(       {s𝕊e: s.Push ref.Matcher ⊑s.Pop 1 }˙)
-  44‿(       {s𝕊e: s.Push vnot }˙)
+  44‿(       {s𝕊e: s.Push ref.not }˙)
   # Assignment
   47‿(       {s𝕊e: s.Skip⍟⊢{r‿  v: r.SetQ   v           } s.Pop 2 }˙)  # r:
   48‿(       {s𝕊e: s.Push { r‿  v: r.SetN⊸⊢ v           } s.Pop 2 }˙)  # r  ←v
