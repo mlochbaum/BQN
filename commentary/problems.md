@@ -4,7 +4,7 @@
 
 Every language has some issues that everyone can agree make programming harder. Sometimes there is a simple solution that has not yet been discovered; sometimes the problem is inherent to the language because it's caused by fundamental choices (or anywhere in between). Below are problems I have identified in BQN, ordered from what I consider the most severe to the least. This is independent of whether the issue can be solved—if it somehow went away, how much better would the language be?
 
-I've omitted problems that are obviously addressed by speculated extensions. Of course adding A fixes the problem "doesn't have A". Problems that only exist in reference to some existing convention (e.g. unfamiliarity to APLers) are also left out, unless the convention manifests technically (Unicode support).
+This list is meant to be specific, so it addresses particular features rather than overall philosophy, and only includes missing functionality if some feature would be expected to provide it but doesn't. Problems that only exist in reference to some existing convention (e.g. unfamiliarity to APLers) are also left out, unless the convention manifests technically (Unicode support).
 
 ### Empty arrays lose type information
 A pretty fundamental problem with dynamically-typed array languages: when computing something (say, a sum) that depends on all elements, if there are no elements then the structure of the result is indeterminate. Shape arithmetic means the shape of a cell is always known, except when using the Rank modifier so that every cell is computed independently. [Fills](../doc/fill.md) are BQN's solution for deeper structure, but they're incomplete. They store only types and not data, but operations like Reshape that use data to determine type are common enough to make this unreliable.
@@ -34,6 +34,14 @@ A programmer can call a modifier on either a syntactic function or subject, but 
 ### Group doesn't include trailing empty groups
 A length can now be specified either in an extra element in any rank-1 component of `𝕨`, or by overtaking, since the result's fill element is an empty group. However, it still seems like it would be pretty easy to end up with a length error when a program using Group encounters unexpected data. It's a fundamental safety-convenience tradeoff, though, because specifying a length has to take more code in the general case.
 
+### Variable-length loops
+If the intended length of a loop isn't known before it begins, it can't be implemented with BQN primitives. The sensible way to handle such loops should be recursion… except that BQN implementations have stack limits. Some of them could support tail recursion, but for others it would be pretty hard and the result would be a lot of fragmentation. So uglier techniques are required, like `•_while_`, or the [low-stack recursion](../doc/control.md#low-stack-version) that no one could be expected to invent.
+
+### An unmatched predicate loses locals
+For example `{0≤a←𝕩-2 ? a ; -a}` doesn't compile: the `;` separates bodies and the second one never defines `a`. This can be fixed by enclosing in an immediate block, which might then require you to reassign some special names. So it's only ever a syntactic difficulty, but it gets pretty annoying at times.
+
+The root cause is repurposing the header-body system for an if-else thing (I found it quite surprising for this to be the worst issue caused by the approach). It can't be fixed with an extension, because the variable might really not be defined: consider `{l𝕊𝕩: a←+´l⋄⊑l?0 ; a}`. If called with no left argument, it will go into the second case, never seeing an `a←`.
+
 ### Hard to search part of an array or in a different order
 This includes index-of-last, and searching starting at a particular index, when the desired result indices are to the array to be seached *before* it is modified. Given indices `i` into an array `𝕨` (for example `⌽↕≠𝕨` or `a+↕b`), this section can be searched with `(i∾≠𝕨)⊏˜(i⊏𝕨)⊐𝕩`. But this is clunky and difficult for the implementation to optimize.
 
@@ -61,6 +69,9 @@ Characters `⥊∾⟜⎉⚇˜` and double-struck letters are either missing from
 If you want to repeat 3 major cells until there are 7 of them, or combine the first 4 axes of a rank-6 array, what's your best option? Nothing's too good: you could compute a full shape for Reshape, enclose cells and merge afterwards (for example `7⊸⥊⌾(<˘)`), use Select to reshape one axis to multiple, or use `∾˝` to merge two axes (with possible empty-array issues). This is particularly dangerous with computed-length reshapes like `2‿∘⥊…`, since the idea of splitting off a length-2 axis from an array's first axis is generally useful, but this version has an implicit Deshape first.
 
 J's Reshape analogue (`$`) only ever applies to the first axis. I now think this is probably a better primitive to have overall, as `$⟜⥊` gives the APL behavior back and is rarely needed. It's not an intuitive pair with Deshape though.
+
+### Long trains are hard for humans to parse
+In a train consisting only of functions, the behavior of a function (whether it's applied directly to arguments, or to the results of other functions) is determined by its distance from the right side of the train. With a longer train it gets easy to lose track of whether the distance is even or odd. Sure, any bit of syntax gets hard when you put too much of it on a line, but it's notable that with trains this happens very quickly. The length where difficulty begins varies from about 4 to 8 parts, depending on the reader. A train of only functions is the worst case, as subjects can only go in one position and thus serve as anchors.
 
 ### Prefixes/Suffixes add depth and Windows doesn't
 It's an awkward inconsistency. Prefixes and Suffixes have to have a nested result, but Windows doesn't have to be flat; it's just that making it nested ignores the fact that it does have an array structure.
@@ -140,7 +151,7 @@ It's unergonomic, and also quadratic in a naive runtime. The problem of course i
 Called dyadically, both functions shuffle cells of the right argument around, which is consistent with other selection-type functions. But the monadic case applies to what would be the left argument in the dyadic case.
 
 ### High-rank array notation awkwardness
-The notation `[]` will be added for high-rank arrays, the same as BQN's lists `⟨⟩` except it mixes at the end. It looks okay with BQN strands but clashes with BQN lists. At that point it becomes apparent that specifying whether something is a high-rank array at the top axes is kind of strange: shouldn't it be the lower axes saying to combine with higher ones? A more concrete point of awkwardness is that literal notations can only form arrays with rank 1 or more: syntax with `<` and `[]` would be complete over non-empty arrays.
+The notation `[]` will be added for high-rank arrays, the same as BQN's lists `⟨⟩` except it mixes at the end. It looks okay with BQN strands but clashes with BQN lists. At that point it becomes apparent that specifying whether something is a high-rank array at the top axes is kind of strange: shouldn't it be the lower axes saying to combine with higher ones? A more concrete point of awkwardness is that literal notations can only form arrays with rank 1 or more, preventing unit arrays from being destructured. Syntax with `<` and `[]` would be complete over non-empty arrays.
 
 ### Assert has no way to compute the error message
 In the compiler, error messages could require expensive diagnostics, and in some cases the message includes parts that can only be computed if there's an error (for example, the index of the first failure). However, Assert (`!`) only takes a static error message, so you have to first check a condition, then compute the message, then call Assert on that. Kind of awkward, but better than it used to be before one-argument Assert was changed to use `𝕩` for the message. The issue generally applies to high-quality tools built in BQN, where giving the user good errors is a priority.
@@ -197,6 +208,9 @@ There's a similar problem with `⟨⟩` as a left argument to `⊑`: it could be
 
 ### Special names other than 𝕣 can't be written as modifiers
 I decided that it was better to allow `𝕨_m_𝕩` to work with no spaces than to allow `_𝕩` to be a modifier, and this rule also helps keep tokenization simple. But to apply `𝕩` as a modifier you have to give it a different name. Could actually be a good thing in that it encourages you to stick to functions, as they're nicer in lots of other ways.
+
+### Nothing in header is something in body
+Since `·` is used for an ignored value in destructuring, the header `·𝕊𝕩:` indicates that `𝕨` has some value, that is, that it's not `·`.
 
 ### Exact result of Power is unspecified
 The other arithmetic functions round to nearest, and compound functions such as `⊥` have been removed. But Power makes no guarantees, and the result could change over time based on different special code. Dyadic logarithm is similar, but expected because of its inverse status.
