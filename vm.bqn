@@ -35,16 +35,17 @@ ref ← {
     Get  ⇐ {𝕩.Get@}¨ arr˙
     _set_ ← {S _𝕣_ e:
       Err ← {(e∾": "∾𝕩)!e≡@ ⋄ ⟨1⟩}
+      c ← (e≡@) ⊑ {𝔽}‿{𝔽⎊1} # GetF or Get in F can error
+      F ← {⟨G⇐GetF⟩𝕊𝕩:(G𝕩).Get@ ; !Err"Cannot extract non-name from namespace"}
       {
         0=•Type𝕩 ? arr ≡○≢◶⟨Err∘"Target and value shapes don't match", S¨⟩ 𝕩 ;
-        # TODO "Cannot extract non-name from namespace" if 𝕨.GetF doesn't exist
-        6=•Type𝕩 ? S⟜({(𝕨.GetF 𝕩).Get@}⟜𝕩)¨ arr ;
+        6=•Type𝕩 ? (⊢ S F⟜𝕩)_c¨ arr ;
         Err "Multiple targets but atomic value"
       }
     }
     SetN ⇐    {𝕨.SetN𝕩}_set_"←"
     SetU ⇐    {𝕨.SetU𝕩}_set_"↩"
-    SetQ ⇐ ∨´ {𝕨.SetQ𝕩}_set_@⎊⟨1⟩ # TODO fix GetF errors and avoid ⎊
+    SetQ ⇐ ∨´ {𝕨.SetQ𝕩}_set_@
   }
   Alias ⇐ {env‿name 𝕊 r:
     SetN‿SetU‿SetQ ⇐ r
