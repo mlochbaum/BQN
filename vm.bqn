@@ -21,7 +21,7 @@ MakeEnv ← { 𝕊p‿v‿n‿e:
   program ⇐ p.program
   vars ⇐ program⊸MakeVar¨ (ns⥊¯1) ∾ n
   MakeNS ⇐ {𝕤
-    v ← @ ⊣´¨ n ⊔ ns↓vars  # Lookup table
+    v ← @ ⊣´¨ n ⊔○(e⊸/) ns↓vars  # Lookup table
     Field ⇐ {𝕨𝕊i:
       cross ← 𝕨 { 𝕨1⊘≡𝕩 ? ⊢ ; ⊑ 𝕩.names ⊐ ⊏⟜𝕨.names } program
       (Cross i) ⊑ v
