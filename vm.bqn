@@ -24,6 +24,36 @@ MakeVar ← { program 𝕊 name:
   GetF ⇐ {program 𝕩.Field name}
 }
 
+# Other kinds of references, and reference utilities
+ref ← {
+  # Constant-matching reference, like 𝕊2: in a header
+  Matcher ⇐ {𝕊 const:
+    SetQ ⇐ const˙ ≢ ⊢
+  }
+  # Array destructuring ⟨a,b,c⟩←
+  Array ⇐ {𝕊 arr:
+    Get  ⇐ {𝕩.Get@}¨ arr˙
+    _set_ ← {S _𝕣_ e:
+      Err ← {(e∾": "∾𝕩)!e≡@ ⋄ ⟨1⟩}
+      {
+        0=•Type𝕩 ? arr ≡○≢◶⟨Err∘"Target and value shapes don't match", S¨⟩ 𝕩 ;
+        # TODO "Cannot extract non-name from namespace" if 𝕨.GetF doesn't exist
+        6=•Type𝕩 ? S⟜({(𝕨.GetF 𝕩).Get@}⟜𝕩)¨ arr ;
+        Err "Multiple targets but atomic value"
+      }
+    }
+    SetN ⇐    {𝕨.SetN𝕩}_set_"←"
+    SetU ⇐    {𝕨.SetU𝕩}_set_"↩"
+    SetQ ⇐ ∨´ {𝕨.SetQ𝕩}_set_@⎊⟨1⟩ # TODO fix GetF errors and avoid ⎊
+  }
+  Alias ⇐ {env‿name 𝕊 r:
+    SetN‿SetU‿SetQ ⇐ r
+    GetF ⇐ {env.program 𝕩.Field name}
+  }
+  # Destructuring placeholder ·
+  not ⇐ { SetU⇐SetN⇐⊢ ⋄ SetQ⇐0˙ }
+}
+
 # Create an environment: essentially, a list of variable slots and a
 # reference to the parent environment.
 MakeEnv ← { 𝕊⟨
@@ -52,44 +82,16 @@ MakeEnv ← { 𝕊⟨
 # The input is taken from the bytecode stream.
 VO ← { d←𝕏@, s←𝕏@, s⊑·{𝕩.vars}{𝕩.parent}⍟d }
 
-# Constants
-nothing  ← {⇐}  # Used when 𝕨 is ·
-skipMark ← {⇐}
-
-Namespace ← {𝕩.MakeNS@}
-ReadNS ← { e‿i 𝕊 𝕩:
+Namespace ← {𝕩.MakeNS@}  # Namespace from environment
+# Read field 𝕨 from program 𝕩, where 𝕨 is the environment and index
+GetField ← { e‿i 𝕊 𝕩:
   "Key lookup in non-namespace" ! 6=•Type𝕩
   (e.program 𝕩.Field i).Get @
 }
 
-ref ← {
-  Matcher ⇐ {𝕊 const:
-    SetQ ⇐ const˙ ≢ ⊢
-  }
-  Array ⇐ {𝕊 arr:
-    Get  ⇐ {𝕩.Get@}¨ arr˙
-    _set_ ← {S _𝕣_ e:
-      Err ← {(e∾": "∾𝕩)!e≡@ ⋄ ⟨1⟩}
-      {
-        0=•Type𝕩 ? arr ≡○≢◶⟨Err∘"Target and value shapes don't match", S¨⟩ 𝕩 ;
-        # TODO "Cannot extract non-name from namespace" if 𝕨.GetF doesn't exist
-        6=•Type𝕩 ? S⟜({(𝕨.GetF 𝕩).Get@}⟜𝕩)¨ arr ;
-        Err "Multiple targets but atomic value"
-      }
-    }
-    SetN ⇐    {𝕨.SetN𝕩}_set_"←"
-    SetU ⇐    {𝕨.SetU𝕩}_set_"↩"
-    SetQ ⇐ ∨´ {𝕨.SetQ𝕩}_set_@⎊⟨1⟩ # TODO fix GetF errors and avoid ⎊
-  }
-  Alias ⇐ {env‿name 𝕊 r:
-    SetN‿SetU‿SetQ ⇐ r
-    GetF ⇐ {env.program 𝕩.Field name}
-  }
-  # Destructuring placeholder ·
-  not ⇐ { SetU⇐SetN⇐⊢ ⋄ SetQ⇐0˙ }
-}
-
-Get ← {𝕩.Get @}⚇0
+# Constants
+nothing  ← {⇐}  # Used when 𝕨 is ·
+skipMark ← {⇐}
 
 MakeStack ← {
   s ← 𝕩                          # Stack (a list)
@@ -140,7 +142,7 @@ ops ← ((!∘"Unknown opcode")˙⊣´⊢)¨ ⊔˝ ⍉> ⟨
   50‿(       {s𝕊e: s.Push { r‿f‿x: r.SetU⊸⊢ (r.Get@)F x } s.Pop 3 }˙)  # r F↩x
   51‿(       {s𝕊e: s.Push { r‿f  : r.SetU⊸⊢ F r.Get@    } s.Pop 2 }˙)  # r F↩
   # Namespaces
-  64‿{i←𝕏@ ⋄ {s𝕊e: s.Push e‿i ReadNS    ⊑s.Pop 1 } }
+  64‿{i←𝕏@ ⋄ {s𝕊e: s.Push e‿i GetField  ⊑s.Pop 1 } }
   66‿{i←𝕏@ ⋄ {s𝕊e: s.Push e‿i ref.Alias ⊑s.Pop 1 } }
 ⟩
 
