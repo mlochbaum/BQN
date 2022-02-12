@@ -71,7 +71,7 @@ Like blocks, it can be valuable to optimize derived functions if they are run ma
 
 Compound arithmetic functions like `+´`, `` ⌈` ``, or `=⌜` are essential to array programming, and have fast SIMD implementations, so they need to be recognized wherever they are found.
 
-In addition to these, there are patterns like `≠¨∘⊔` that can be implemented faster than their components, and bindings like `l⊸⊐` where a computation (here, a hash table) on the left argument can be saved. These can be handled by inspecting the function. However, it's more robust to convert it to a canonical form, so this possibility should also be considered.
+In addition to these, there are patterns like ``∨`∘≠`` that can be implemented faster than their components, and bindings like `l⊸⊐` where a computation (here, a hash table) on the left argument can be saved. These can be handled by inspecting the function. However, it's more robust to convert it to a canonical form, so this possibility should also be considered.
 
 Tacit code can be converted to [SSA](https://en.wikipedia.org/wiki/Static_single_assignment_form) form very easily. To translate it into stack-based bytecode it would need a way to reuse values from the stack in multiple places; instructions to duplicate or extract a value from higher in the stack are an obvious candidate. Either of these forms is a natural step on the way to native compilation, and a bytecode representation would make it easier to optimize mixed tacit and explicit code—but it's easier to do the optimizations on SSA-form rather than stack-based code, so perhaps the right path is to convert both bytecode and derived functions to SSA.
 
