@@ -375,29 +375,35 @@ under←{
   _errIf ← {⊢⊘×○(1-𝔽)◶⟨Err˙,𝕏⟩}
   SE ← IsErr _errIf⍟(3≥Type)
 
-  Inds ← IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩
+  Expand ← {
+    f‿a‿i‿q←𝕩 ⋄ e←i⊑⥊a
+    ⟨IsArray◶⟨⟨⟩,∾⟜⟨i⟩⟩f,e,IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩e,q⟩
+  }
   _s ← {
-    f‿a‿i←𝕗   # Path, array reference, indices
-    st‿d‿o←𝕩  # Function, input depth, output is structural
-    g←𝕨 St Inds∘{f↩f(IsArray⊣)◶⟨⟩‿∾⟨𝕩⟩⋄a↩𝕩⊑⥊a}⍟(d>IsArray) i
-    {f‿a‿𝕩 _s}⍟o g
+    ⟨st,d‿o⟩←𝕩  # Function, input depth, output is structural
+    f‿a‿i‿q←Expand⍟(d>·IsArray 2⊑⊢)𝕗   # Path, array reference, indices
+    {f‿a‿𝕩‿(q⌈1<o) _s}⍟(0<o) 𝕨 St i
   }
   IsStruct ← (4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ {Decompose𝕩}
   NS ← IsStruct _errIf
+  InitS ← {¯1‿⟨𝕩⟩‿0‿0 _s}
 
-  _amb_ ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕗‿𝕘{𝕨𝕏𝕗}⟩}
-  _mon_ ← {(𝕗_amb_𝕘𝕩)⊘(NS𝕩)}
-  _dy_  ← {(NS𝕩)⊘(𝕗_amb_𝕘𝕩)}
+  _amb ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕗{𝕨𝕏𝕗}⟩}
+  _mon ← {(𝕗_amb𝕩)⊘(NS𝕩)}
+  _dy  ← {(NS𝕩)⊘(𝕗_amb𝕩)}
   k‿v ← Split2 ⟨
     "⊢⊣˜∘○⊸⟜⊘◶",  ⊢  # ˙ handled specially
     "´˝",         {r←𝕩⋄{IsArray∘⊢◶⟨E,𝕗_r⟩}}
-    "=≠≢",        1 _mon_ 0
-    "<⋈",         0 _mon_ 1
-    "≍",          1 _mon_ 1  # Dyad combines
-    "↕/»«⊔",      1 _dy_  1
-    "⥊↑↓⌽⍉⊏⊑",    1 _amb_ 1
-  # ">",          2 _mon_ 1
-  # "∾",          2 _mon_ 1  # Dyad combines
+    "=≠≢",        1‿0 _mon
+    "<⋈",         0‿2 _mon
+    "≍",          1‿1 _mon  # Dyad combines
+    "↕/»«",       1‿1 _dy
+    "⊔",          1‿2 _dy
+    "⥊⌽⍉⊏",       1‿1 _amb
+    "↑↓",         {(1‿2 _amb𝕩)⊘(1‿1 _amb𝕩)}
+    "⊑",          1‿2 _amb
+  # ">",          2‿1 _mon
+  # "∾",          2‿1 _mon  # Dyad combines
   # "˘⎉¨⌜",
   # "⚇",
   ⟩
@@ -425,7 +431,8 @@ under←{
   # Return flat lists ⟨indices,values⟩, or err if 𝕨 doesn't capture 𝕩.
   conform ← {𝕎◶0‿𝕏}´⟨IsArray⊢, =○=, MatchS○≢⟩
   GetInserts ← {
-    count←1⋄DC←IsArray◶⟨0,1+0⌈´{count+↩¯1+≠d←⥊𝕩⋄DC⌜d}⟩⋄depth←DC𝕩
+    v‿d←𝕨
+    count←1⋄DC←IsArray◶⟨0,d◶⟨1,1+0⌈´{count+↩¯1+≠d←⥊𝕩⋄DC⌜d}⟩⟩⋄depth←DC𝕩
     𝕩 (2⌊depth)◶(⋈○⋈)‿(Conform◶⟨Err˙,⋈○⥊⟩)‿{
       Fail←{𝕊‿0}
       # 𝕎 is parent traversal; 𝕩 is current components of ind and val
@@ -437,7 +444,7 @@ under←{
       next ← 0 Trav 𝕨‿𝕩
       res ← {n‿o←Next𝕩⋄next↩n⋄o}⌜ ↕count
       (next=fail)◶⟨0⊸⊑⌜ ⋈ 1⊸⊑⌜, Err˙⟩ res
-    } 𝕨
+    } v
   }⍟(1-IsErr∘⊢)
 
   _insert ← {
@@ -459,9 +466,8 @@ under←{
 
   {
     val←𝕨𝔽○𝔾𝕩
-    sf ← SFN 𝕘 ⋄ SR ← ¯1‿⟨𝕩⟩‿0 _s
-    root‿ind ← IsStruct◶⟨0‿Err,0‿2⊏1⊑Decompose⟩ SF sr
-    IsErr◶⟨root _insert⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val GetInserts ind
+    root‿ind‿d ← IsStruct◶⟨0‿Err‿0,0‿2‿3⊏1⊑Decompose⟩ 𝕘 SFN⊸{𝕎𝕩} InitS 𝕩
+    IsErr◶⟨root _insert⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val‿d GetInserts ind
   }
 }
 
