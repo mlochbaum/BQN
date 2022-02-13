@@ -30,7 +30,7 @@ For **Bins**, use a branching binary search: see [On binary search](#on-binary-s
 
 The name of the game here is "branchless".
 
-For sorting, the fastest algorithms for generic data and generic hardware are branchless [quicksorts](#quicksort). Fluxsort is new and very exciting because it's a *stable* algorithm that's substantially faster than runner-up pdqsort on random arrays. However, it's immature and is missing a lot of the specialized strategies pdqsort has. I'm working on adapting these improvements to work for stable sorting and also on hybridizing with counting/bucket sort.
+For sorting, the fastest algorithms for generic data and generic hardware are branchless [quicksorts](#quicksort). Fluxsort is new and very exciting because it's a *stable* algorithm that's substantially faster than runner-up pdqsort on random arrays. However, pdqsort still has some advantages, and there are unstable techniques that could be used to improve Fluxsort when stability doesn't matter.
 
 A branchless binary search is adequate for Bins but in many cases—very small or large `𝕨`, and small range—there are better methods.
 
@@ -38,11 +38,11 @@ A branchless binary search is adequate for Bins but in many cases—very small o
 
 Both counting and bucket sort are small-range algorithms that begin by counting the number of each possible value. Bucket sort, as used here, means that the counts are then used to place values in the appropriate position in the result in another pass. Counting sort does not read from the initial values again and instead reconstructs them from the counts. It might be written `(//⁼)⌾(-⟜min)` in BQN, relying on the extension of `/⁼` to unsorted arguments.
 
-Bucket sort can be used for Grade or sort-by (`⍋⊸⊏`), but counting sort only works for sorting itself. It's not-even-unstable: there's no connection between result values and the input values except that they are constructed to be equal. But with [fast Indices](replicate.md#non-booleans-to-indices), Counting sort is vastly more powerful, and is effective with a range four to eight times the argument length. This is large enough that it might pose a memory usage problem, but the memory use can be made arbitrarily low by partitioning.
+Bucket sort can be used for Grade or sort-by (`⍋⊸⊏`), but counting sort only works for sorting itself. It's not-even-unstable: there's no connection between result values and the input values except that they are constructed to be equal. But with [fast Indices](replicate.md#non-booleans-to-indices), counting sort is vastly more powerful, and is effective with a range four to eight times the argument length. This is large enough that it might pose a memory usage problem, but the memory use can be made arbitrarily low by partitioning.
 
 ### Quicksort
 
-[Fluxsort](https://github.com/scandum/fluxsort) attains high performance with a branchless stable partition that places one half on top of existing data and the other half somewhere else. One half ends up in the appropriate place in the sorted array. The other is in swap memory, and will be shifted back by subsequent partitions and base-case sorting. Aside from the partitioning strategy, Fluxsort makes a number of other decisions differently from pdqsort, including a fairly complicated merge sort ([Quadsort](https://github.com/scandum/quadsort)) as the base case. I haven't fully evaluated these.
+[Fluxsort](https://github.com/scandum/fluxsort) attains high performance with a branchless stable partition that places one half on top of existing data and the other half somewhere else. One half ends up in the appropriate place in the sorted array. The other is in swap memory, and will be shifted back by subsequent partitions and base-case sorting. Aside from the partitioning strategy, Fluxsort makes a number of other decisions differently from pdqsort, including a fairly complicated merge sort ([Quadsort](https://github.com/scandum/quadsort)) as the base case. I haven't looked into Quadsort, but did discuss other features with the author in [this issue](https://github.com/scandum/fluxsort/issues/1). Pivot selection is an important one—it seems pdqsort uses far fewer pivots than it should.
 
 [This paper](https://arxiv.org/abs/2106.05123) gives a good description of [pdqsort](https://github.com/orlp/pdqsort). I'd start with the [Rust version](https://github.com/rust-lang/rust/blob/master/library/core/src/slice/sort.rs), which has some advantages but can still be improved further. The subsections below describe improved [partitioning](#partitioning) and an [initial pass](#initial-pass) with several benefits. I also found that the pivot randomization methods currently used are less effective because they swap elements that won't become pivots soon; the pivot candidates and randomization targets need to be chosen to overlap. The optimistic insertion sort can also be improved: when a pair of elements is swapped the smaller one should be inserted as usual but the larger one can also be pushed forward at little cost, potentially saving many swaps and handling too-large elements as gracefully as too-small ones.
 
@@ -87,7 +87,7 @@ A few people have done some work on merge sorting with AVX2 or AVX-512: [two](ht
 
 [ChipSort](https://github.com/nlw0/ChipSort.jl) seems further along than those. It uses sorting networks, comb sort, and merging, which all fit nicely with SIMD and should work well together.
 
-Or AVX can [speed up](https://github.com/WojciechMula/simd-sort) quicksort. I suspect this is more of a marginal improvement (over BlockQuicksort/pdqsort discussed below) relative to merge sort. If partitioning is fast enough it might make stable quicksort viable.
+Or AVX can [speed up](https://github.com/WojciechMula/simd-sort) quicksort. I suspect this is more of a marginal improvement (over branchless quicksorts) relative to merge sort.
 
 ### Binary search
 
