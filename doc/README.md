@@ -9,6 +9,8 @@ Overview:
 - [Types](types.md)
 - [Primitives](primitive.md)
 - [Paradigms](paradigms.md)
+- See also [help index](../help/README.md); [summary gist](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
+- And [system values](../spec/system.md) (not always implemented)
 
 References:
 - [Glossary](glossary.md)
