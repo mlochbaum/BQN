@@ -7,6 +7,14 @@
 <h1 id="how-to-run-bqn"><a class="header" href="#how-to-run-bqn">How to run BQN</a></h1>
 <p><a href="https://github.com/dzaima/CBQN">CBQN</a> is the primary offline implementation. Scripts in this repository start with <code><span class='Comment'>#! /usr/bin/env bqn</span></code> in order to look up the user's <code><span class='Value'>bqn</span></code> executable, which is expected to be CBQN.</p>
 <p>Third-party packages to build some BQN implementations are available for both Nix and Arch Linux. For general use I recommend <code><span class='Value'>cbqn</span></code> from nixpkgs (Nix) and <code><span class='Value'>cbqn</span><span class='Function'>-</span><span class='Value'>git</span></code> from the AUR (Arch).</p>
+<p>There are many websites where you can run BQN as well. All but Attempt This Online are based on Javascript BQN.</p>
+<ul>
+<li><a href="https://mlochbaum.github.io/BQN/try.html">The main online REPL</a>.</li>
+<li>Razetime's <a href="https://razetime.github.io/bqn-repl/">alternative</a> runs as a continuous session so you can save results.</li>
+<li>Try It Online format: <a href="https://ato.pxeger.com/run?1=m704qTBvwYKlpSVpuhZoFJQGAA">Attempt This Online</a> runs CBQN server-side; <a href="https://dso.surge.sh/#bqn">Do Stuff Online</a> runs JS BQN locally.</li>
+<li>This <a href="https://observablehq.com/@lsh/bqn">Observable notebook</a> can be imported into other notebooks.</li>
+<li><a href="https://dancek.github.io/bqn-80">BQN-80</a>: make animations with BQN.</li>
+</ul>
 <h3 id="self-hosted-bqn"><a class="header" href="#self-hosted-bqn">Self-hosted BQN</a></h3>
 <p>See the subsections below for instructions on specific implementations.</p>
 <p>This version of BQN is <a href="implementation/index.html">implemented</a> mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows <a href="doc/embed.html">embedding</a>, where programs in the host language can include BQN code. It fully supports all syntax specified so far, and all primitives except a few cases of structural Under (<code><span class='Modifier2'>⌾</span></code>). System value support varies at it's implemented separately in each host.</p>
@@ -21,14 +29,6 @@
 </ul>
 <h4 id="javascript"><a class="header" href="#javascript">Javascript</a></h4>
 <p>The file <a href="https://github.com/mlochbaum/BQN/blob/master/docs/bqn.js">docs/bqn.js</a> is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script <a href="https://github.com/mlochbaum/BQN/blob/master/bqn.js">bqn.js</a>, passing a file and <code><span class='Value'>•args</span></code>, or <code><span class='Function'>-</span><span class='Value'>e</span></code> to execute all remaining arguments directly and print the results.</p>
-<p>Several sites run using JS-based BQN:</p>
-<ul>
-<li><a href="https://mlochbaum.github.io/BQN/try.html">The main online REPL</a>.</li>
-<li>Razetime's <a href="https://razetime.github.io/bqn-repl/">alternative</a> runs as a continuous session so you can save results.</li>
-<li><a href="https://dso.surge.sh/">Do Stuff Online</a> considers BQN to be a stuff (it's like Try It Online).</li>
-<li>This <a href="https://observablehq.com/@lsh/bqn">Observable notebook</a> can be imported into other notebooks.</li>
-<li><a href="https://dancek.github.io/bqn-80">BQN-80</a>: make animations with BQN.</li>
-</ul>
 <h4 id="cbqn"><a class="header" href="#cbqn">CBQN</a></h4>
 <p>C sources are kept in the <a href="https://github.com/dzaima/CBQN">CBQN</a> repository, but it also depends on bytecode from the BQN sources here. Running <code><span class='Value'>make</span></code> gets a working copy right away with saved bytecode. Then to use the latest bytecode, call <code><span class='Value'>$</span> <span class='Value'>.</span><span class='Function'>/BQN</span> <span class='Value'>genRuntime</span> <span class='Value'>…</span><span class='Function'>/BQN</span></code>, where <code><span class='Value'>…</span><span class='Function'>/BQN</span></code> points to this repository, and run <code><span class='Value'>make</span></code> again.</p>
 <p><code><span class='Value'>genRuntime</span></code> can also be run with another BQN implementation (the Node.js one works but takes up to a minute), and plain <code><span class='Value'>.</span><span class='Function'>/</span><span class='Value'>genRuntime</span></code> uses your system's <code><span class='Value'>bqn</span></code> executable. I symlink <code><span class='Value'>…</span><span class='Function'>/CBQN/BQN</span></code> to <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>bin</span><span class='Function'>/</span><span class='Value'>bqn</span></code> so I can easily use CBQN for scripting.</p>
