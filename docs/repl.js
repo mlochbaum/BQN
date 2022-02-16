@@ -19,7 +19,7 @@ if (doc.count) {
 }
 
 let setExplain = e=>e;
-let repl = ()=>{
+let repl = () => {
   let s=Array.from(doc.code.value), src=str(s);
   doc.rslt.classList.remove('err');
   doc.rslt.textContent=' '; setExplain();
@@ -35,6 +35,7 @@ let repl = ()=>{
     } catch(e) {
       doc.rslt.classList.add('err');
       doc.rslt.textContent=fmtErr(e);
+      highlightErr(s, e);
     }
     sysvals.js=dojs; // In case it was disabled by fragment loading
   }, 0);
@@ -85,6 +86,34 @@ sysvals.plot = (x,w) => {
   return '\0';
 }
 sysvals.setplot = (x,w) => { startPlot(); setPlot(x,w); }
+
+let highlightErr = (s, e) => {
+  let h = doc.highlight;
+  h.style.height = doc.code.clientHeight+"px";
+  let clear = doc.code.oninput = () => { h.innerText = ''; }
+  let scroll = doc.code.onscroll = () => {
+    h.scrollTop  = doc.code.scrollTop;
+    h.scrollLeft = doc.code.scrollLeft;
+  }
+  scroll(); clear();
+
+  let w=e.message, is;
+  while (w && (w.loc||(e.kind!=='!'&&w.sh&&w.sh[0]===2))
+           && w.src.join('')===s.join('')) { [is,w]=w; }
+  if (is) {
+    let n, pair=0;
+    if (!is.sh) { n=1; is=[is]; }
+    else { n=is.sh[0]; pair=is.sh.length>1; if(pair)n*=2; }
+    let l=0, sl = j=>s.slice(l,l=j).join('');
+    for (let i=0; i<n; i) {
+      h.append(sl(is[i++]));
+      let m = document.createElement("mark");
+      m.innerText = sl((pair?is[i++]:l)+1);
+      h.append(m);
+    }
+    h.append(sl());
+  }
+}
 
 let keymode=0; // 1 for prefix
 let prefix='\\';
