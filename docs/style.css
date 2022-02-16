@@ -123,7 +123,6 @@ pre, textarea, .highlight { padding: 0.8em; }
 textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
 .cont { margin: 1.3em 0; position: relative; }
 .rslt { background: none; border-top: none; margin: 0; overflow-x: initial; }
-.rslt.err { color: #d11; }
 .kb {
   line-height: 1.5;
   width: 100%;

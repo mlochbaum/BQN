@@ -21,20 +21,23 @@ if (doc.count) {
 let setExplain = e=>e;
 let repl = () => {
   let s=Array.from(doc.code.value), src=str(s);
-  doc.rslt.classList.remove('err');
   doc.rslt.textContent=' '; setExplain();
   setcount(s);
   setTimeout(() => {
+    doc.rslt.textContent = '';
+    let ssep='', sep = () => doc.rslt.append(ssep);
+    let disp = t => { sep(); ssep='\n'; doc.rslt.append(t); }
+    sysvals.show = (x,w) => { disp(fmt(x)); return x; }
+    didInitPlot = 0;
     try {
-      let out=[]; sysvals.show = (x,w) => { out.push(x); return x; }
-      didInitPlot = 0;
       let c=compile(src);
       setExplain(src,c);
-      out.push(run.apply(null,c));
-      doc.rslt.textContent=out.map(fmt).join('\n');
+      disp(fmt(run.apply(null,c)));
     } catch(e) {
-      doc.rslt.classList.add('err');
-      doc.rslt.textContent=fmtErr(e);
+      let n = document.createElement('span');
+      n.classList.add('Error');
+      n.innerText = fmtErr(e);
+      sep(); disp(n);
       highlightErr(s, e);
     }
     sysvals.js=dojs; // In case it was disabled by fragment loading
@@ -107,7 +110,7 @@ let highlightErr = (s, e) => {
     let l=0, sl = j=>s.slice(l,l=j).join('');
     for (let i=0; i<n; i) {
       h.append(sl(is[i++]));
-      let m = document.createElement("mark");
+      let m = document.createElement('mark');
       m.innerText = sl((pair?is[i++]:l)+1);
       h.append(m);
     }
