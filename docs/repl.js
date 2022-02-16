@@ -98,8 +98,8 @@ let highlightErr = (s, e) => {
     h.scrollTop  = doc.code.scrollTop;
     h.scrollLeft = doc.code.scrollLeft;
   }
-  scroll(); clear();
 
+  clear();
   let w=e.message, is;
   while (w && (w.loc||(e.kind!=='!'&&w.sh&&w.sh[0]===2))
            && w.src.join('')===s.join('')) { [is,w]=w; }
@@ -116,6 +116,7 @@ let highlightErr = (s, e) => {
     }
     h.append(sl());
   }
+  scroll();
 }
 
 let keymode=0; // 1 for prefix

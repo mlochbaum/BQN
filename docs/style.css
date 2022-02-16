@@ -156,7 +156,7 @@ a.key { text-decoration:none; }
   cursor: pointer;
 }
 .highlight {
-  width: 100%; position: absolute; overflow: auto;
+  width: 100%; position: absolute; overflow: hidden;
   margin: 0; border: 1px solid transparent;
   color: transparent; pointer-events: none;
   white-space: pre-wrap; word-wrap: break-word;
