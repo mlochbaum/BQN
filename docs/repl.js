@@ -17,11 +17,14 @@ if (doc.count) {
     setcount(c.value.slice(s,e), 2);
   }
 }
+let clearHighlight = doc.code.oninput = () => {
+  doc.highlight.innerText = '';
+}
 
 let setExplain = e=>e;
 let repl = () => {
   let s=Array.from(doc.code.value), src=str(s);
-  doc.rslt.textContent=' '; setExplain();
+  doc.rslt.textContent=' '; setExplain(); clearHighlight();
   setcount(s);
   setTimeout(() => {
     doc.rslt.textContent = '';
@@ -93,13 +96,12 @@ sysvals.setplot = (x,w) => { startPlot(); setPlot(x,w); }
 let highlightErr = (s, e) => {
   let h = doc.highlight;
   h.style.height = doc.code.clientHeight+"px";
-  let clear = doc.code.oninput = () => { h.innerText = ''; }
   let scroll = doc.code.onscroll = () => {
     h.scrollTop  = doc.code.scrollTop;
     h.scrollLeft = doc.code.scrollLeft;
   }
 
-  clear();
+  clearHighlight();
   let w=e.message, is;
   while (w && (w.loc||(e.kind!=='!'&&w.sh&&w.sh[0]===2))
            && w.src.join('')===s.join('')) { [is,w]=w; }
@@ -140,6 +142,7 @@ doc.code.onkeydown = ev => {
   }
 }
 let typeChar = (t, c, ev) => {
+  clearHighlight();
   let v = t.value;
   let i = t.selectionStart;
   t.value = v.slice(0,i)+c+v.slice(t.selectionEnd);
