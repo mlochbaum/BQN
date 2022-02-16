@@ -77,11 +77,11 @@ table th {
   font-family: f3270;
   src: url(3270_sub.woff2) format('woff2');
 }
-pre.DejaVu , .DejaVu  .key, .DejaVu  .code, .DejaVu  .rslt { font-family:BQNMod,monospace; }
-pre.BQN386 , .BQN386  .key, .BQN386  .code, .BQN386  .rslt { font-family:BQN,monospace; }
-pre.Iosevka, .Iosevka .key, .Iosevka .code, .Iosevka .rslt { font-family:Iosevka,f3270,monospace; }
-pre.Julia  , .Julia   .key, .Julia   .code, .Julia   .rslt { font-family:JuliaMono,monospace; }
-pre.Fairfax, .Fairfax .key, .Fairfax .code, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
+pre.DejaVu , .DejaVu  .key, .DejaVu  .code, .DejaVu  .highlight, .DejaVu  .rslt { font-family:BQNMod,monospace; }
+pre.BQN386 , .BQN386  .key, .BQN386  .code, .BQN386  .highlight, .BQN386  .rslt { font-family:BQN,monospace; }
+pre.Iosevka, .Iosevka .key, .Iosevka .code, .Iosevka .highlight, .Iosevka .rslt { font-family:Iosevka,f3270,monospace; }
+pre.Julia  , .Julia   .key, .Julia   .code, .Julia   .highlight, .Julia   .rslt { font-family:JuliaMono,monospace; }
+pre.Fairfax, .Fairfax .key, .Fairfax .code, .Fairfax .highlight, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
 .Fairfax .key { line-height:1.25; }
 pre.f3270  , .f3270   .key, .f3270   .code, .f3270   .rslt { font-family:f3270,monospace; font-size:1rem; line-height:1.1; }
 .f3270 .key { line-height:1.4; }
@@ -93,7 +93,7 @@ pre, code, textarea, .primitives tr td:first-child {
   background-color: #e3e7e7;
   color: #292929;
 }
-pre, code, textarea, .kb {
+pre, code, textarea, .highlight, .kb {
   font-family: BQN, monospace;
   font-weight: normal;
   font-size: 0.94em;
@@ -112,16 +112,16 @@ code {
   padding: 0.15em 0.1em 0.05em;
   border-width: 0.3px;
 }
-pre, textarea, .kb {
+pre, textarea, .highlight, .kb {
   line-height: 1.2;
 }
 pre {
   margin: 1.6em 0.4em;
   overflow-x: auto;
 }
-pre, textarea { padding: 0.8em; }
+pre, textarea, .highlight { padding: 0.8em; }
 textarea { width: 100%; outline: none; resize: vertical; margin: 0; }
-.cont { margin: 1.3em 0; }
+.cont { margin: 1.3em 0; position: relative; }
 .rslt { background: none; border-top: none; margin: 0; overflow-x: initial; }
 .rslt.err { color: #d11; }
 .kb {
@@ -155,6 +155,16 @@ a.key { text-decoration:none; }
   height: 2.2em;
   fill: #272e30;
   cursor: pointer;
+}
+.highlight {
+  width: 100%; position: absolute; overflow: auto;
+  margin: 0; border: 1px solid transparent;
+  color: transparent; pointer-events: none;
+  white-space: pre-wrap; word-wrap: break-word;
+}
+.highlight mark {
+  color: transparent; background: none;
+  text-decoration: underline #d11 3px;
 }
 .clickable { cursor: pointer; }
 

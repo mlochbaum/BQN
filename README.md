@@ -14,6 +14,7 @@ E ← ⊐⟜":"⊸(↑At"class="∾1⊸+⊸↓)⊸Enc
 repl ← "div:cont" E ⟨
   "div:kb" E ""
   "div:rel" E ⟨
+    "div:highlight" E ""
     "textarea:code|rows=1|spellcheck=false" E "<⟜'a'⊸/ ""Big Questions Notation"""
     "svg:demo|viewBox=0 -6 4 12" E "path" Elt "d"‿"M1 -6H0L1 0L0 6H1L4 0z"
   ⟩
