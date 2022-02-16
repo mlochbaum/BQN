@@ -2,7 +2,7 @@ if exists('b:current_syntax')
   finish
 endif
 
-syn match bqnerr "[^ \r\n]"
+syn match bqnerr "[^ \t\r\n]"
 syn match bqnblk "[{}]"
 syn match bqnlst "[⟨⟩\[\]‿]"
 syn match bqnpar "[()]"
