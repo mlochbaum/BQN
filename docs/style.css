@@ -83,7 +83,7 @@ pre.Iosevka, .Iosevka .key, .Iosevka .code, .Iosevka .highlight, .Iosevka .rslt 
 pre.Julia  , .Julia   .key, .Julia   .code, .Julia   .highlight, .Julia   .rslt { font-family:JuliaMono,monospace; }
 pre.Fairfax, .Fairfax .key, .Fairfax .code, .Fairfax .highlight, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
 .Fairfax .key { line-height:1.25; }
-pre.f3270  , .f3270   .key, .f3270   .code, .f3270   .rslt { font-family:f3270,monospace; font-size:1rem; line-height:1.1; }
+pre.f3270  , .f3270   .key, .f3270   .code, .f3270   .highlight, .f3270   .rslt { font-family:f3270,monospace; font-size:1rem; line-height:1.1; }
 .f3270 .key { line-height:1.4; }
 
 code, kbd, svg text {
