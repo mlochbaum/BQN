@@ -31,6 +31,7 @@ let repl = () => {
     let ssep='', sep = () => doc.rslt.append(ssep);
     let disp = t => { sep(); ssep='\n'; doc.rslt.append(t); }
     sysvals.show = (x,w) => { disp(fmt(x)); return x; }
+    sysvals.out  = (x,w) => { disp(req1str("•Out",x,w)); return x; }
     didInitPlot = 0;
     try {
       let c=compile(src);
