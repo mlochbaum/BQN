@@ -501,7 +501,7 @@ let fmtErr = e => {
     let k=1,o=i-j,cl=j; while (k<n&&(cl=is[k]-o)<m.length) k++;
     let ol=k<n; if (pair) { if (k%2) cl=m.length; else { cl=is[--k]-o+1; } }
     let c=Array(cl).fill(0); c[j]=1;
-    for (let h=1;h<k;h++) c[is[h]-o+(pair?h%2:0)]=1;
+    for (let h=1;h<k;h++) c[j=Math.max(j,is[h]-o+(pair?h%2:0))]^=1;
     if (pair) for (let h=1;h<cl;h++) c[h]^=c[h-1];
     let add = ['',m.join(''),c.map(t=>t?'^':' ').join('')];
     loc = add.concat(ol?['(and other lines)']:[], loc);

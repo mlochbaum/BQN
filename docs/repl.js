@@ -111,11 +111,11 @@ let highlightErr = (s, e) => {
     if (!is.sh) { n=1; is=[is]; }
     else { n=is.sh[0]; pair=is.sh.length>1; if(pair)n*=2; }
     let l=0, sl = j=>s.slice(l,l=j).join('');
-    for (let i=0; i<n; i) {
-      h.append(sl(is[i++]));
+    for (let i=0; i<n; ) {
+      let b=is[i++]; h.append(sl(b));
+      if (pair) for (b=is[i++]; i<n&&b+1>=is[i]; i+=2) b=is[i+1];
       let m = document.createElement('mark');
-      m.innerText = sl((pair?is[i++]:l)+1);
-      h.append(m);
+      m.innerText = sl(b+1); h.append(m);
     }
     h.append(sl());
   }
