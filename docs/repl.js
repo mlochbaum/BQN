@@ -159,7 +159,7 @@ let keys={}, revkeys={}, primhelp={}, helpurl={};
 kk.map((k,i)=>{keys[k]=kv[i];revkeys[kv[i]]=k;});
 doc.kb.innerHTML = keydesc
   .map(d=>'<a class="key '+syncls[d[0]]+'">'+Array.from(d)[1]+'</a>')
-  .concat(['<a href="keymap.html" target="_blank">map</a>'])
+  .concat(['<a href="keymap.html" target="_blank" title="Link to a BQN keyboard diagram">map</a>'])
   .join("&#8203;"); // zero-width space
 let setPrefix = () => {
   doc.kb.querySelectorAll("a.key").forEach((x,i) => {
@@ -185,7 +185,7 @@ doc.kbext = doc.kb.querySelector('.kbext');
 if (doc.demo) {
   let fonts=[["BQN386"],["DejaVu","Mod"],["Fairfax","HD"],["3270","font"],["Iosevka","Term"],["Julia","Mono"]];
   let fclass = f => f==="3270"?"f"+f:f
-  let fontsel = '<select>'+fonts.map(f =>
+  let fontsel = '<select title="Select font">'+fonts.map(f =>
       '<option value="'+f[0]+'">'+f[0]+(f[1]?' '+f[1]:'')+'</option>'
     ).join("")+'select';
   appendHTML(doc.kbext, fontsel);
@@ -193,7 +193,7 @@ if (doc.demo) {
     e=>doc.cont.className='cont '+fclass(e.target.value);
 }
 
-appendHTML(doc.kbext, '<input class="prfx" type="text" maxlength="1" value="'+prefix+'"/>');
+appendHTML(doc.kbext, '<input class="prfx" type="text" maxlength="1" title="Configure prefix key" value="'+prefix+'"/>');
 doc.kbext.querySelector(".prfx").onchange = ev => {
   prefix = ev.target.value; setPrefix();
 }
