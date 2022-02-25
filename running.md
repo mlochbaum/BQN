@@ -8,7 +8,8 @@ Third-party packages to build some BQN implementations are available for both Ni
 
 There are many websites where you can run BQN as well. All but Attempt This Online are based on Javascript BQN.
 - [The main online REPL](https://mlochbaum.github.io/BQN/try.html).
-- Razetime's [alternative](https://razetime.github.io/bqn-repl/) runs as a continuous session so you can save results.
+- [BQNPAD](https://bqnpad.mechanize.systems/) is a fancy syntax-highlighted REPL (preview results as you type!).
+- Razetime's simpler [alternative](https://razetime.github.io/bqn-repl/) also runs as a continuous session.
 - Try It Online format: [Attempt This Online](https://ato.pxeger.com/run?1=m704qTBvwYKlpSVpuhZoFJQGAA) runs CBQN server-side; [Do Stuff Online](https://dso.surge.sh/#bqn) runs JS BQN locally.
 - This [Observable notebook](https://observablehq.com/@lsh/bqn) can be imported into other notebooks.
 - [BQN-80](https://dancek.github.io/bqn-80): make animations with BQN.
