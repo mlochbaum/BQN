@@ -152,6 +152,17 @@ The following short names can also be provided for file access. They can be prov
 
 `•Repr` attempts to return a string so that `•BQN •Repr 𝕩` matches `𝕩`. If `𝕩` contains any mutable values (operations or namespaces), this is not possible. However, if such a values is stateless, in the sense that they don't access variables outside of their own scopes, it is permissible for `•Repr` to return source code that would create a value with identical behavior.
 
+### Terminal I/O
+
+The system namespace `•term` gives fine-grained control of input and output when running in a terminal emulator or similar text-based interface.
+
+| Name      | Summary
+|-----------|----------------------
+| `Flush`   | Flush output buffer
+| `RawMode` | Set raw mode (no input processing) if `1`, unset if `0`
+| `CharB`   | Read a character, blocking until one is available
+| `CharN`   | Read a character if available but return `0` if not
+
 ## Interface
 
 | Name    | Summary
