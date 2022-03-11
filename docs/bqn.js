@@ -670,12 +670,12 @@ let rand = (() => {
       let j = i + randnat(x-i);
       let t=r[i]; r[i]=r[j]; r[j]=t;
     }
-    r.length = w; return list(r);
+    r.length = w; return list(r,0);
   };
   let deal = deal_err("Deal");
   let subset = (x,w) => {
     reqnat("Subset: 𝕩", x);
-    if (!has(w)) return list(iota(x).filter(_=>Math.random()<0.5));
+    if (!has(w)) return list(iota(x).filter(_=>Math.random()<0.5), 0);
     return deal_err("Subset")(x,w).sort();
   };
   return makens(["range", "deal", "subset"], [range, deal, subset]);
