@@ -676,7 +676,7 @@ let rand = (() => {
   let subset = (x,w) => {
     reqnat("Subset: 𝕩", x);
     if (!has(w)) return list(iota(x).filter(_=>Math.random()<0.5), 0);
-    return deal_err("Subset")(x,w).sort();
+    return deal_err("Subset")(x,w).sort((a,b)=>a-b);
   };
   return makens(["range", "deal", "subset"], [range, deal, subset]);
 })();
