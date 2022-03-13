@@ -50,9 +50,16 @@ let preview = false;
 let inpreview = () => preview;
 
 let setc = (d, id, v) => {
-  if (preview && id.e != null && !id.e.inpreview)
+  if (preview && seteff(id))
     throw {kind: 'previewError', message: 'side effects are not allowed'};
   return set(d, id, v);
+}
+
+let seteff = (id) => {
+  if (id.e) return !id.e.inpreview;
+  else if (id.match) return false;
+  else if (Array.isArray(id)) return id.some(id => id.m ? seteff(id.m) : seteff(id));
+  else return false;
 }
 
 let set = (d, id, v) => {
