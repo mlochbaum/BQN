@@ -50,7 +50,7 @@ let preview = false;
 let inpreview = () => preview;
 
 let setc = (d, id, v) => {
-  if (preview && !id.e.inpreview)
+  if (preview && id.e != null && !id.e.inpreview)
     throw {kind: 'previewError', message: 'side effects are not allowed'};
   return set(d, id, v);
 }
