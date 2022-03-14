@@ -42,7 +42,7 @@ CBQN uses the self-hosted runtime to achieve full primitive coverage, and implem
 
 ### dzaima/BQN
 
-[dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL, and should be easy to run on desktop Linux and Android. It was historically the main implementation, but is now updated only to stay up to date with language changes. It has almost complete syntax support but incomplete primitive support: major missing functionality is dyadic Depth (`⚇`), Windows (`↕`), and many cases of set functions (`⊐⊒∊⍷`, mostly with rank >1).
+[dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL, and should be easy to run on desktop Linux and Android. It was historically the main implementation, but is now updated only to stay up to date with language changes. Major missing functionality is dyadic Depth (`⚇`) and set functions `⊐⊒∊⍷` with rank >1, and there are various small differences from the BQN spec, mostly to do with rank, handling of atoms, fills, and headers.
 
 To get an executable that works like CBQN, make a script with the following contents. Scripts may use `#! /usr/bin/env dbqn` to run with dzaima/BQN specifically, but this is rare now (in this repository, only `test/dzaima` does it).
 
