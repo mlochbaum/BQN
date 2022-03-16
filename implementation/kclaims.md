@@ -79,17 +79,27 @@ That's just the whole cost (in cycles) of L1 misses, exactly what we want! First
 
            0.557255985 seconds time elapsed
 
-Here's the BQN call that builds [CBQN](https://github.com/dzaima/CBQN)'s object code sources:
+Here are the BQN calls that build [CBQN](https://github.com/dzaima/CBQN)'s object code sources, and this website:
 
      Performance counter stats for './genRuntime /home/marshall/BQN/':
 
-           241,224,322      cycles:u
-             5,452,372      icache_16b.ifdata_stall:u
-               829,146      cache-misses:u
-             6,954,143      L1-dcache-load-misses:u
-             1,291,804      L1-icache-load-misses:u
+           232,456,331      cycles:u
+             4,482,531      icache_16b.ifdata_stall:u
+               707,909      cache-misses:u
+             5,058,125      L1-dcache-load-misses:u
+             1,315,281      L1-icache-load-misses:u
 
-           0.098228740 seconds time elapsed
+           0.103811282 seconds time elapsed
+
+     Performance counter stats for './gendocs':
+
+         5,633,327,936      cycles:u
+           494,293,472      icache_16b.ifdata_stall:u
+             8,755,069      cache-misses:u
+            37,565,924      L1-dcache-load-misses:u
+           265,985,526      L1-icache-load-misses:u
+
+           2.138414849 seconds time elapsed
 
 And the Python-based font tool I use to build [font samples](https://mlochbaum.github.io/BQN/fonts.html) for this site:
 
@@ -103,13 +113,14 @@ And the Python-based font tool I use to build [font samples](https://mlochbaum.g
 
            0.215698059 seconds time elapsed
 
-Dividing the stall number by total cycles gives us percentage of program time that can be attributed to L1 instruction misses. 
+Dividing the stall number by total cycles gives us percentage of program time that can be attributed to L1 instruction misses.
 
-        "J"‿"BQN"‿"Python" ≍˘ 100 × 56‿5.4‿25 ÷ 1_457‿241‿499
+        l ← "J"‿"BQN"‿"BQN"‿"Python"
+        l ≍˘ 100 × 56‿4.5‿494‿25 ÷ 1_457‿232‿5_633‿499
 
-So, roughly 4%, 2%, and 5%. The cache miss counts are also broadly in line with these numbers. Note that full cache misses are pretty rare, so that most misses just hit L2 or L3 and don't suffer a large penalty. Also note that instruction cache misses are mostly lower than data misses, as expected.
+So, roughly 4%, 2 to 9%, and 5%. The cache miss counts are also broadly in line with these numbers. Note that full cache misses are pretty rare, so that most misses just hit L2 or L3 and don't suffer a large penalty. Also note that instruction cache misses are mostly lower than data misses, as expected.
 
-Don't get me wrong, I'd love to improve performance even by 2%. But it's not exactly world domination, is it? And it doesn't matter how cache-friendly K is, that's the absolute limit.
+Don't get me wrong, I'd love to improve performance even by 2%. But it's not exactly world domination, is it? The perf results are an upper bound for how much these programs could be sped up with better treatment of the instruction cache. If K is faster by more than that, it's because of other optimizations.
 
 For comparison, here's [ngn/k](https://codeberg.org/ngn/k) (which does aim for a small executable) running one of its unit tests—test 19 in the a20/ folder, chosen because it's the longest-running of those tests.
 
@@ -123,4 +134,4 @@ For comparison, here's [ngn/k](https://codeberg.org/ngn/k) (which does aim for a
 
            1.245378356 seconds time elapsed
 
-The stalls are less than 1% here, so maybe the smaller executable is paying off in some way. I can't be sure, because the programs being run are very different: `19.k` is 10 lines while the others are hundreds of lines long. But I don't have a longer K program handy to test with (and you could always argue the result doesn't apply to Whitney's K anyway). Again, it doesn't matter much: the point is that the absolute most the other interpreters could gain from being more L1-friendly is about 5% on those fairly representative programs.
+The stalls are less than 1% here, so maybe the smaller executable is paying off in some way. I can't be sure, because the programs being run are very different: `19.k` is 10 lines while the others are hundreds of lines long. But I don't have a longer K program handy to test with (and you could always argue the result doesn't apply to Whitney's K anyway). Again, it doesn't matter much: the point is that the absolute most the other interpreters could gain from being more L1-friendly is about 10% on those fairly representative programs.
