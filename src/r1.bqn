@@ -381,12 +381,17 @@ under←{
   }
   _s ← {
     ⟨st,d‿o⟩←𝕩  # Function, input depth, output is structural
-    f‿a‿i‿q←Expand⍟(d>·IsArray 2⊑⊢)𝕗   # Path, array reference, indices
-    {f‿a‿𝕩‿(q⌈1<o) _s}⍟(0<o) 𝕨 St i
+    f‿a‿i‿⟨q,r⟩←Expand⍟(d>·IsArray 2⊑⊢)𝕗   # Path, array reference, indices, info
+    {f‿a‿𝕩‿⟨q⌈1<o,r⟩ _s}⍟(0<o) 𝕨 St i
   }
-  IsStruct ← (4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩ {Decompose𝕩}
+  IsStruct ← (StructD←(4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩) {Decompose𝕩}
   NS ← IsStruct _errIf
-  InitS ← {¯1‿⟨𝕩⟩‿0‿0 _s}
+  InitS ← {¯1‿⟨𝕩⟩‿0‿⟨0,0⟩ _s}
+  Nest ← {
+    d←0⋄r←0 ⋄ SD ← {d⌈↩IsArray𝕩⋄𝕩}
+    a ← Decompose⊸(1⊸⊑⊸((0<·≠0⊑⊣)◶⟨SD 2⊑⊣,{r↩1⋄𝕩}⟩) ⍟(StructD⊣)) _perv 𝕩
+    ⟨⟩‿@‿a‿⟨d,r⟩ _s
+  }
 
   _amb ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕗{𝕨𝕏𝕗}⟩}
   _mon ← {(𝕗_amb𝕩)⊘(NS𝕩)}
@@ -395,7 +400,8 @@ under←{
     "⊢⊣˜∘○⊸⟜⊘◶",  ⊢  # ˙ handled specially
     "´˝",         {r←𝕩⋄{IsArray∘⊢◶⟨E,𝕗_r⟩}}
     "=≠≢",        1‿0 _mon
-    "<⋈",         0‿2 _mon
+    "<",          0‿2 _mon
+    "⋈",          0‿2 {+○IsStruct◶⟨𝕏, 𝕩‿𝕗{𝕨𝕏𝕗}⊘E, Nest 𝕏⟩}
     "≍",          1‿1 _mon  # Dyad combines
     "↕/»«",       1‿1 _dy
     "⊔",          1‿2 _dy
@@ -447,10 +453,10 @@ under←{
     } v
   }⍟(1-IsErr∘⊢)
 
-  _insert ← {
-    root←𝕗
-    i‿v←𝕨
-    Set1←𝕨⊸{
+  _insert_ ← {
+    i‿v←𝕗_indRec⍟𝕘 𝕩
+    root‿x←𝕗
+    Set1←{
       𝕩↩ToArray𝕩
       s←≢𝕩⋄l←≠d←⥊𝕩
       "Cannot modify fill with Structural Under"!1∧´@⊸>⌜i
@@ -461,13 +467,26 @@ under←{
     }
     _at_ ← {(↕≠𝕩)𝔽⍟((𝔾𝕩)=⊣)¨𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ 𝕩 }
-    IsArray∘root◶⟨0⊑v˙, Set⟩ _fillBy_ ⊢ 𝕩
+    IsArray∘root◶⟨0⊑v˙, Set⟩ _fillBy_ ⊢ x
+  }
+
+  _indRec ← {
+    root‿x←𝕗 ⋄ iv←𝕩
+    "TODO"!0=≠root
+    l ← GroupLen i ← (1=Type)◶⟨0⊑0⊑1⊑Decompose,¯1⟩⌜ 0⊑iv
+    ind‿val ← (l GroupOrd i)⊸⊏⌜ iv ⋄ rec←0
+    ic ← (1<·≠0⊑⊢)◶⟨2⊑⊢,{rec↩1⋄𝕩_s}(⋈1↓0⊑⊢)∾1↓⊢⟩∘(1⊑Decompose)⌜ ind
+    j←0 ⋄ IJ←{(j+↩𝕩) ⊢ val ⋈⟜1⊸GetInserts○((j⊸+⌜↕𝕩)⊸⊏) ic}
+    m ← (⊢ ⋈ ⊑⟜(⥊x) {⟨⟩‿𝕨 _insert_ rec⍟(1-IsErr) 𝕩} ·IJ⊑⟜l)⌜ /0⊸<⌜l
+    t ← (/ ¯1⊸=⌜i)⊸⊏⌜ iv
+    {(𝕩⊸⊑⌜m)∾𝕩⊑t}⌜ ↕2
   }
 
   {
     val←𝕨𝔽○𝔾𝕩
-    root‿ind‿d ← IsStruct◶⟨0‿Err‿0,0‿2‿3⊏1⊑Decompose⟩ 𝕘 SFN⊸{𝕎𝕩} InitS 𝕩
-    IsErr◶⟨root _insert⟜(𝕩˙), {𝕏val}·Inverse𝔾˙⟩ val‿d GetInserts ind
+    s←𝕘 SFN⊸{𝕎𝕩} InitS 𝕩
+    root‿ind‿⟨d,rec⟩ ← IsStruct◶⟨0‿Err‿⟨0,0⟩,0‿2‿3⊏1⊑Decompose⟩ s
+    IsErr◶⟨root‿𝕩 _insert_ rec, {𝕏val}·Inverse𝔾˙⟩ val‿d GetInserts ind
   }
 }
 
