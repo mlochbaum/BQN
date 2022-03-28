@@ -4,25 +4,19 @@
 
 This page gathers links to work by the community. To get in touch, please use our [chat forums](forums.md).
 
-[Advent of Code](https://adventofcode.com/) 2021 is complete: check out the [review and retrospective](aoc.md)!
+There are a few repositories [tagged BQN](https://github.com/topics/bqn) on Github, but also lots of BQN entries on these sites that encourage shorter-form programming:
 
-For code repositories using BQN, see:
-
-- Github repositories [tagged BQN](https://github.com/topics/bqn)
-- [bqn-rest](https://codeberg.org/CptJimKirk/bqn-rest), for web APIs
-- Josh Holland's [solutions](https://git.sr.ht/~jshholland/trybqn/tree) to TryAPL problems
-
-And the links below point to BQN submissions on some sites that encourage shorter-form programming.
-
-- [Rosetta Code](https://rosettacode.org/wiki/Category:BQN) (consider translating [APL versions](https://rosettacode.org/wiki/Category:APL)?)
+- [Rosetta Code](https://rosettacode.org/wiki/Category:BQN)
 - Stack Exchange [Code Golf & Coding Challenges](https://codegolf.stackexchange.com/search?tab=newest&q=BQN)
 - Codidact [Code Golf](https://codegolf.codidact.com/posts/search?utf8=%E2%9C%93&search=BQN&sort=age)
 
-And also:
+See also:
 
+- [My retrospective](aoc.md) on the many BQN solutions published for [Advent of Code](https://adventofcode.com/) 2021
 - Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
-- Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs.
+- Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs, and a few of Conor Hoekstra's [videos](https://www.youtube.com/c/codereport/videos) have BQN sections as well.
 - Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh?tab=notebooks) based on BQN.
+- [bqrpn](https://yiyus.info/bqrpn/) is a reverse-Polish calculator powered by BQN in Javascript.
 
 ### Fan art
 
