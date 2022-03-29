@@ -53,16 +53,19 @@ b ← (0.4⌈0.2+≠¨zf) {∾"M vhv"∾¨FmtNum (0‿1‿1‿0‿1⊏d)×(⟨�
 Group operates on a list of atomic-number [indices](indices.md) `𝕨` and an array `𝕩`, treated as a list of its major cells, to produce a list of groups, each containing some of the cells from `𝕩`. The two arguments have the same length, and each cell in `𝕩` is paired with the index in `𝕨` at the same position, which indicates which result group should include that cell.
 
         0‿1‿2‿0‿1 ≍ "abcde"  # Corresponding indices and values
+
         0‿1‿2‿0‿1 ⊔ "abcde"  # Values grouped by index
 
-A few extra options can be useful in some circumstances. First, an "index" of `¯1` in `𝕨` indicates that the corresponding cell should be dropped and not appear in the result. Second, `𝕨` is allowed to have an extra element after the end, which gives a minimum length for the result: otherwise, the result will be just long enough to accomodate the highest index in `𝕨`.
+A few extra options can be useful in some circumstances. First, an "index" of `¯1` in `𝕨` indicates that the corresponding cell should be dropped and not appear in the result. Second, `𝕨` is allowed to have an extra element after the end, which gives a minimum length for the result: otherwise, the result will be just long enough to accomodate the highest index in `𝕨` (it might seem like the last element should be treated like an index, making the minimum length one higher, but the length version usually leads to simpler arithmetic).
 
         0‿¯1‿2‿2‿¯1 ⊔ "abcde"  # Drop c and e
+
         0‿1‿2‿2‿1‿6 ⊔ "abcde"  # Length-6 result
 
 A third extension is that `𝕨` doesn't really have to be a list: if not, then it groups `-=𝕨`-cells of `𝕩` instead of just `¯1`-cells. These cells are placed in index order. This extension isn't compatible with the second option from above, because it's usually not possible to add just one extra element to a non-list array. One usage is to group the diagonals of a table. See if you can figure out how the code below does this.
 
         ⊢ a ← 'a'+⥊⟜(↕×´)3‿5
+
         (+⌜´·↕¨≢)⊸⊔ a
 
 For a concrete example, we might choose to group a list of words by length. Within each group, cells maintain the ordering they had in the list originally.
@@ -75,17 +78,22 @@ For a concrete example, we might choose to group a list of words by length. With
 If we'd like to ignore words of 0 letters, or more than 5, we can set all word lengths greater than 5 to 0, then reduce the lengths by 1. Two words end up with left argument values of ¯1 and are omitted from the result.
 
         1 -˜ ≤⟜5⊸× ≠¨ phrase
+
         ≍˘ {1-˜≤⟜5⊸×≠¨𝕩}⊸⊔ phrase
 
 Note that the length of the result is determined by the largest index. So the result never includes trailing empty groups. A reader of the above code might expect 5 groups (lengths 1 through 5), but there are no words of length 5, so the last group isn't there. To ensure the result always has 5 groups, we can add a `5` at the end of the left argument.
 
         ≍˘ {5∾˜1-˜≤⟜5⊸×≠¨𝕩}⊸⊔ phrase
 
-When Group is called dyadically, the left argument is used for the indices and the right is used for values, as seen above. When it is called monadically, the right argument, which must be a list, gives the indices and the values grouped are the right argument's indices, that is, `↕≠𝕩`.
+### Group Indices
+
+Above, Group has two arguments, and `𝕨` gives the indices and `𝕩` is the values to be grouped. In the one-argument case, `𝕩` now gives the result indices, and the values grouped are indices related to `𝕩`. For a numeric list, `⊔𝕩` is `𝕩⊔↕≠𝕩`.
 
         ≍˘ ⊔ 2‿3‿¯1‿2
 
 Here, the index 2 appears at indices 0 and 3 while the index 3 appears at index 1.
+
+But `𝕩` can also be a list of numeric arrays. In this case the indices `↕∾≢¨𝕩` will be grouped by `𝕩` according to the multidimensional grouping documented in the next section. Since the argument to [Range](range.md) (`↕`) is now a list, each index to be grouped is a list instead of a number. As with `↕`, the depth of the result of Group Indices is always one greater than that of its argument. One consequence is that for an array `a` of any rank, `⊔⋈a` groups the indices `↕≢a`.
 
 ### Multidimensional grouping
 
@@ -96,8 +104,6 @@ Here we split up a rank-2 array into a rank-2 array of rank-2 arrays. Along the 
         ⟨0‿0‿1‿1,0‿1‿0‿1‿0‿1‿0⟩ ⊔ (10×↕4)+⌜↕7
 
 Each group `i⊑𝕨⊔𝕩` is composed of the cells `j<¨⊸⊏𝕩` such that `i≢j⊑¨𝕨`. The groups retain their array structure and ordering along each argument axis. Using multidimensional Replicate we can say that `i⊑𝕨⊔𝕩` is `(i=𝕨)/𝕩`.
-
-The monadic case works similarly: Group Indices always satisfies `⊔𝕩 ←→ 𝕩⊔↕≠⚇1𝕩`. As with `↕`, the depth of the result of Group Indices is always one greater than that of its argument. A depth-0 argument is not allowed.
 
 ## Properties
 
