@@ -377,7 +377,7 @@ under←{
 
   Expand ← {
     f‿a‿i‿q←𝕩 ⋄ e←i⊑⥊a
-    Expand2⍟(2=𝕨) ⟨IsArray◶⟨⟨⟩,∾⟜⟨i⟩⟩f,e,IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩e,q⟩
+    ⟨IsArray◶⟨⟨⟩,∾⟜⟨i⟩⟩f,e,IsArray◶⟨0,@Fill⥊⟜(↕1×´⊢)∘≢⟩e,q⟩
   }⍟(>⟜(IsArray 2⊑⊢))
   Expand2 ← {
     xf‿xa‿xi‿xq ← 𝕩
@@ -386,7 +386,7 @@ under←{
   }
   _s ← {
     ⟨st,d‿o⟩←𝕩  # Function, input depth, output is structural
-    f‿a‿i‿⟨q,r⟩←d Expand 𝕗   # Path, array reference, indices, info
+    f‿a‿i‿⟨q,r⟩←Expand2⍟(2=d) (0<d) Expand 𝕗   # Path, array reference, indices, info
     {f‿a‿𝕩‿⟨q⌈1<o,r⟩ _s}⍟(1-IsStruct)⍟(0<o) 𝕨 St i
   }
   IsStruct ← (StructD←(4=0⊸⊑)◶⟨0,s˙=2⊸⊑⟩) {Decompose𝕩}

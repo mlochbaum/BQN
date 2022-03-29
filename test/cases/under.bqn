@@ -46,6 +46,7 @@
 "hg"‿"fed"‿""‿"cba" ≡ ⌽⌾∾"ab"‿"cde"‿""‿"fgh"
 "ab"‿"gde"‿""‿"fch" ≡ ⌽⌾(2‿4‿6⊏∾)"ab"‿"cde"‿""‿"fgh"
 "ac"‿"bd" ≡ ⍉⌾>"ab"‿"cd"
+"aed"‿"cb" ≡ ⌽⌾(∾⌽) "abc"‿"de"
 # Fills
 ! % ⌽⌾(1↓4↑⊢)"abc"
 
