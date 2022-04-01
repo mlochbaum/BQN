@@ -114,7 +114,7 @@ gen ← {
   ch_end ← 17×2⋆16 ⋄ surr ← (2⋆11)×27+↕2
   Char ⇐ Squeeze @ + ·(1≠surr⊸⍋)⊸× (0≍ch_end⌊2⋆2⋆⊣)⊸RandInterval
 
-  Struct ⇐ ⊢ ⥊ =⟜6◶⟨RandInt‿(@+(ch_end⌊2⋆2⋆⊣)⊸Rand˜)_randChoose,RandFloat⊢⟩⟜(×´⥊)
+  Struct ⇐ ⊢ ⥊ =⟜6◶⟨RandInt‿(@+(ch_end⌊2⋆2⋆⊣)Rand˜⊢)_randChoose,RandFloat⊢⟩⟜(×´⥊)
 }
 
 _testConsistent_ ← {Match←𝔾
