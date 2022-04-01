@@ -17,7 +17,7 @@ Any number of types or bounds can be given; all combinations are tested."
   •Exit∘•Out∘help⍟(∨´2⊸>) oi
 
   opts ← 2↓o≠⊸↑ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
-  bounds‿num‿types‿prims‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
+  bounds‿num‿types‿prims‿seed ⇐ •BQN¨¨⌾(¯2⊸↓) opts
   _default_ ← { (∾"Only one "‿𝕘‿" can be given") ! 1≥≠𝕨 ⋄ 𝕩𝔽∘⊣´𝕨 }
   num ⊢_default_"iteration number"↩ 100
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
