@@ -47,6 +47,11 @@
 "ab"‿"gde"‿""‿"fch" ≡ ⌽⌾(2‿4‿6⊏∾)"ab"‿"cde"‿""‿"fgh"
 "ac"‿"bd" ≡ ⍉⌾>"ab"‿"cd"
 "aed"‿"cb" ≡ ⌽⌾(∾⌽) "abc"‿"de"
+! % -´⌾(⊑¨) "abc"‿"de"
+"dbc"‿"ae" ≡ ⌽⌾(⊑¨) "abc"‿"de"
+"aec"‿"db" ≡ ⌽⌾(1⊑¨⊢) "abc"‿"de"
+"dbe"‿"ac" ≡ ⌽˘⌾(0‿¯1⊑⌜⊢) "abc"‿"de"
+("bac"≍"def") ≡ ⌽˘⌾((-⟜1¨≢)⊸↑) "abc"≍"def"
 # Fills
 ! % ⌽⌾(1↓4↑⊢)"abc"
 
