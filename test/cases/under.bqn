@@ -52,6 +52,10 @@
 "aec"‿"db" ≡ ⌽⌾(1⊑¨⊢) "abc"‿"de"
 "dbe"‿"ac" ≡ ⌽˘⌾(0‿¯1⊑⌜⊢) "abc"‿"de"
 ("bac"≍"def") ≡ ⌽˘⌾((-⟜1¨≢)⊸↑) "abc"≍"def"
+"acbd" ≡ ⍉⌾(>2⊸↑⋈2⊸↓) "abcd"
+("dbc"≍"aef") ≡ ⌽⌾(⊏˘) "abc"≍"def"
+("aef"≍"dbc") ≡ ⌽⌾(2‿1⊏⎉1⊢) "abc"≍"def"
+("abe"≍"dcf") ≡ ⌽⌾(2‿1⊏⎉¯1⊢) "abc"≍"def"
 # Fills
 ! % ⌽⌾(1↓4↑⊢)"abc"
 

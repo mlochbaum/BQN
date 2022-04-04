@@ -381,7 +381,10 @@ under←{
   }⍟(>⟜(IsArray 2⊑⊢))
   Expand2 ← {
     xf‿xa‿xi‿xq ← 𝕩
-    i ← { f‿a‿i‿q←1 Expand xf‿xa‿𝕩‿xq ⋄ {f‿a‿𝕩‿q _s}⍟(1-IsStruct)⌜i }⌜ xi
+    i ← {
+      f‿a‿i‿q←1 Expand xf‿xa‿𝕩‿xq
+      {f‿a‿𝕩‿q _s}⍟(1-IsStruct)⌜⍟(0<≠f) i
+    }⌜ xi
     ⟨⟩‿@‿i‿⟨1,1⟩
   }
   _s ← {
@@ -409,6 +412,16 @@ under←{
   _withNest ← {
     (0<+○IsStruct)◶⟨𝔽, Nest 𝔽○(Es∘(1 Expand 1⊑Decompose)⍟IsStruct)⟩
   }
+  _rankStruct_ ← {
+    ss←↕0 ⋄ Wr←{ss∾↩⟨𝕩⟩⋄𝕩} ⋄ _rd←{i←𝕗⋄{𝕩⋄(i+↩1)⊢i⊑ss}}
+    _r_ ← {
+      Min←<◶⊢‿⊣
+      k←𝕨(⋈○(=2⊸⊑⍟(0 _rd)) (0≤⊢)◶⟨Min⟜-,⊣-Min⟩¨ 𝔾_ranks)𝕩
+      c←0<+´ss⋄Enc←0 _rd◶⟨EncRank,{f‿a‿i‿q←𝕩⋄{f‿a‿𝕩‿q _s}⌜𝕨 EncRank i}⟩
+      c◶⟨Merge,{𝕏⟨Merge,2‿1⟩}∘Nest⟩ ((0⊑k)Enc𝕨) 𝔽_each ((1-˜≠)⊸⊑k)Enc𝕩
+    }
+    𝕨 𝔽_r_𝔾○((1 Expand 1⊑Decompose)⍟(Wr IsStruct)) 𝕩
+  }
 
   _amb ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕗{𝕨𝕏𝕗}⟩}
   _mon ← {(𝕗_amb𝕩)⊘(NS𝕩)}
@@ -428,7 +441,8 @@ under←{
     ">",          2‿1 _mon
     "∾",          2‿1 {+○IsStruct◶⟨𝕏, 𝕩‿𝕗{𝕨𝕏𝕗}⊘E, 𝕏_nested⟩}
     "¨⌜",         {m←𝕩⋄{𝔽 _m _withNest}}
-  # "˘⎉",
+    "˘",          {𝕩⋄{𝔽 _rankStruct_ ¯1}}
+    "⎉",          rankStruct˙
   # "⚇",
   ⟩
   NSPrim ← (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩
@@ -662,6 +676,7 @@ EncCell ← {
   E←{e←Fill d⊢_fillBy_(0⍟(3≤Type)⊣)↕0 ⋄ (d⊣_fillBy_⊢˜e˙⌜i)Fill𝕩}
   f⥊ E⍟(0=≠) {d⊏˜(c×𝕩)⊸+⌜i}⌜↕1×´f
 }
+EncRank ← (>⟜0×1+≥⟜=)◶⟨<⊢,EncCell,<⌜_fillBy_<⊢⟩
 _cells ← {
   F←𝔽 ⋄ _m←{𝔽⌜⊘(𝔽¨)_fillByPure_𝔽○(1⊸EncCell)}
   D←{ "˘: Argument lengths don't agree" ! 𝕩=○≠𝕨 ⋄ 𝕨 F _m 𝕩 }
@@ -790,8 +805,7 @@ _depthOp_←{
 _rankOp_←{
   Min←<◶⊢‿⊣
   k←𝕨(⋈○= (0≤⊢)◶⟨Min⟜-,⊣-Min⟩¨ 𝔾_ranks)𝕩
-  Enc←(>⟜0×1+≥⟜=)◶⟨<⊢,EncCell,<⌜_fillBy_<⊢⟩
-  Merge ((0⊑k)Enc𝕨) 𝔽_each ((1-˜≠)⊸⊑k)Enc𝕩
+  Merge ((0⊑k)EncRank𝕨) 𝔽_each ((1-˜≠)⊸⊑k)EncRank𝕩
 }
 
 _repeat_←{
