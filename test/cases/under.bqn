@@ -56,6 +56,7 @@
 ("dbc"≍"aef") ≡ ⌽⌾(⊏˘) "abc"≍"def"
 ("aef"≍"dbc") ≡ ⌽⌾(2‿1⊏⎉1⊢) "abc"≍"def"
 ("abe"≍"dcf") ≡ ⌽⌾(2‿1⊏⎉¯1⊢) "abc"≍"def"
+("aef"≍"dbc") ≡ ⌽⌾(2‿1⊏⎉(-˜○=)⊢) "abc"≍"def"
 # Fills
 ! % ⌽⌾(1↓4↑⊢)"abc"
 
