@@ -423,6 +423,14 @@ under←{
     }
     𝕨 𝔽_r_𝔾○((1 Expand 1⊑Decompose)⍟(Wr IsStruct)) 𝕩
   }
+  _depthStruct_←{
+    n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽 ⋄ B←{𝕏}⊘{𝕨˙⊸𝕏}
+    "Under ⚇: depths must be less than 0, or ∞"!1×´(∞⊸=∨0⊸>)⌜n
+    _tf←{𝕗⌜_withNest} ⋄ _ef←{𝕗_eachd _withNest}
+    a ← {(𝕨 B 𝕗)_tf𝕩}‿{𝔽⟜(𝕩˙)_tf𝕨}‿_ef
+    _d←{ t←2⊸×⊸+´0⊸>⌜𝕗 ⋄ 𝕗{𝕩⋄m←(t-1)⊑a⋄(+⟜1⌜𝕗)_d _m}⍟(0<t) f }
+    𝕨 n _d 𝕩
+  }
 
   _amb ← {(IsStruct⊢)◶⟨𝕏, 𝕩‿𝕗{𝕨𝕏𝕗}⟩}
   _mon ← {(𝕗_amb𝕩)⊘(NS𝕩)}
@@ -444,7 +452,7 @@ under←{
     "¨⌜",         {m←𝕩⋄{𝔽 _m _withNest}}
     "˘",          {𝕩⋄{𝔽 _rankStruct_ ¯1}}
     "⎉",          rankStruct˙
-  # "⚇",
+    "⚇",          depthStruct˙
   ⟩
   NSPrim ← (Type-3˙)◶⟨NS, {m←𝕩⋄{NS(𝕗_m)˙0}}, {m←𝕩⋄{NS(𝕗_m_𝕘)˙0}}⟩
   SP ← (Join1 k)_glyphLookup_((k≠⌜⊸/v)∾⟨NSPrim⟩)
