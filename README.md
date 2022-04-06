@@ -33,7 +33,7 @@ Looking for a modern, powerful language centered on Ken Iverson's array programm
 
 BQN **will provide**:
 
-- State of the art array performance: takes some time, but I developed many of Dyalog APL's current algorithms and know we'll get there
+- State of the art array performance: CBQN credibly competes with the fastest array languages, but isn't dominant yet.
 - Interfaces to connect with other languages, like a C FFI and JSON and CSV tools
 - A standard system to install and use libraries and packages, and support for package managers
 
