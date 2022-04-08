@@ -7,26 +7,72 @@
 <h1 id="how-to-run-bqn"><a class="header" href="#how-to-run-bqn">How to run BQN</a></h1>
 <p><a href="https://github.com/dzaima/CBQN">CBQN</a> is the primary offline implementation. Scripts in this repository start with <code><span class='Comment'>#! /usr/bin/env bqn</span></code> in order to look up the user's <code><span class='Value'>bqn</span></code> executable, which is expected to be CBQN.</p>
 <p>Third-party packages to build some BQN implementations are available for both Nix and Arch Linux. For general use I recommend <code><span class='Value'>cbqn</span></code> from nixpkgs (Nix) and <code><span class='Value'>cbqn</span><span class='Function'>-</span><span class='Value'>git</span></code> from the AUR (Arch).</p>
-<p>There are many websites where you can run BQN as well. All but Attempt This Online are based on Javascript BQN.</p>
-<ul>
-<li><a href="https://mlochbaum.github.io/BQN/try.html">The main online REPL</a>.</li>
-<li><a href="https://bqnpad.mechanize.systems/">BQNPAD</a> is a fancy syntax-highlighted REPL (preview results as you type!).</li>
-<li>Razetime's simpler <a href="https://razetime.github.io/bqn-repl/">alternative</a> also runs as a continuous session.</li>
-<li>Try It Online format: <a href="https://ato.pxeger.com/run?1=m704qTBvwYKlpSVpuhZoFJQGAA">Attempt This Online</a> runs CBQN server-side; <a href="https://dso.surge.sh/#bqn">Do Stuff Online</a> runs JS BQN locally.</li>
-<li>This <a href="https://observablehq.com/@lsh/bqn">Observable notebook</a> can be imported into other notebooks.</li>
-<li><a href="https://dancek.github.io/bqn-80">BQN-80</a>: make animations with BQN.</li>
-</ul>
+<p>All these websites run BQN (on your computer, except Attempt This Online):</p>
+<table>
+<thead>
+<tr>
+<th>Link</th>
+<th>Style</th>
+<th>Engine</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://mlochbaum.github.io/BQN/try.html">Online REPL</a></td>
+<td>One-shot</td>
+<td>JS</td>
+<td>&quot;Explain&quot;, error marker</td>
+</tr>
+<tr>
+<td><a href="https://bqnpad.mechanize.systems/">BQNPAD</a></td>
+<td>Session</td>
+<td>JS, Wasm</td>
+<td>Preview, syntax coloring</td>
+</tr>
+<tr>
+<td><a href="https://ato.pxeger.com/run?1=m704qTBvwYKlpSVpuhZoFJQGAA">Attempt This Online</a></td>
+<td>TIO</td>
+<td>CBQN</td>
+<td>Server-side</td>
+</tr>
+<tr>
+<td><a href="https://dso.surge.sh/#bqn">Do Stuff Online</a></td>
+<td>TIO</td>
+<td>JS</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://razetime.github.io/bqn-repl/">Razetime</a></td>
+<td>Session</td>
+<td>JS</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://observablehq.com/@lsh/bqn">Observable</a></td>
+<td>Notebook</td>
+<td>JS</td>
+<td>For import in Observable</td>
+</tr>
+<tr>
+<td><a href="https://dancek.github.io/bqn-80">BQN-80</a></td>
+<td>One-shot</td>
+<td>JS</td>
+<td>Create animations</td>
+</tr>
+</tbody>
+</table>
+<p>Further details in the sections below.</p>
 <h3 id="self-hosted-bqn"><a class="header" href="#self-hosted-bqn">Self-hosted BQN</a></h3>
-<p>See the subsections below for instructions on specific implementations.</p>
 <p>This version of BQN is <a href="implementation/index.html">implemented</a> mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows <a href="doc/embed.html">embedding</a>, where programs in the host language can include BQN code. It fully supports all functionality specified so far (really it's ahead of the spec, which has some flaws to be addressed). System value support varies at it's implemented separately in each host.</p>
-<p>Support in the following languages has been implemented:</p>
+<p>Support in the following languages has been implemented (details in the subsections below):</p>
 <ul>
 <li><a href="https://github.com/dzaima/CBQN">C</a>, targetting high performance. Usually fairly fast.</li>
 <li>Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.</li>
 <li>BQN (<a href="https://github.com/mlochbaum/BQN/blob/master/bqn.bqn">bqn.bqn</a>), for testing without a build step.</li>
+<li><a href="https://git.sr.ht/~andreypopp/BQN.jl">Julia</a> embedding, with common primitives implemented natively. Slow startup.</li>
 <li><a href="https://github.com/ashermancinelli/cxbqn">C++</a>, planning to enable GPU use. Still slow; some cool features.</li>
 <li><a href="https://github.com/cannadayr/rsbqn/">Rust</a>, motivated by web use (an <a href="https://github.com/cannadayr/ebqn">Erlang</a> version is abandoned as too slow).</li>
-<li><a href="https://git.sr.ht/~andreypopp/BQN.jl">Julia</a> embedding, with common primitives implemented natively. Slow startup.</li>
 </ul>
 <h4 id="javascript"><a class="header" href="#javascript">Javascript</a></h4>
 <p>The file <a href="https://github.com/mlochbaum/BQN/blob/master/docs/bqn.js">docs/bqn.js</a> is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script <a href="https://github.com/mlochbaum/BQN/blob/master/bqn.js">bqn.js</a>, passing a file and <code><span class='Value'>•args</span></code>, or <code><span class='Function'>-</span><span class='Value'>e</span></code> to execute all remaining arguments directly and print the results.</p>
