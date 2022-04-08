@@ -12,7 +12,7 @@
 #⌜
 # LAYER 0: Assumed functionality
 
-# IEEE 754, except NaN results cause an error and -0 is converted to 0.
+# Arithmetic on the implementation-defined number system
 # LIMITED to the stated cases and atomic arguments.
 +          #                Add
 -          # Negate         Subtract
