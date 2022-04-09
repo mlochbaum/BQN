@@ -159,10 +159,10 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   𝕩⊏˜↩rev⋄dc⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev
 
   # Compute parsing ordering gr≡g⊏rev
-  g↩⍋+`p↩br-˜rev⊏p⋄g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev    # Order by non-brace bracket depth, then dots
+  g↩⍋+`p↩br-˜rev⊏p⋄bp←0(<⋈○(/⟜g)>)g⊏p       # Order by non-brace bracket depth
+  g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev                     # Now by dots
   sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB    # Strand length; list starts
-  b←br>0⋄c←/br<0                            # Block Begin (mask) and Close (index), in matching order
-  bp←⟨/b,c⟩∾¨0(<≍○(</⟜g)>)g⊏p               # Bracket pairs
+  b←br>0⋄c←/br<0⋄bp∾¨↩⟨/b,c⟩                # Block Begin (mask) and Close (index), in matching order
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
 
   # Headers
