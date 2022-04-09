@@ -118,6 +118,7 @@ File access functions read or write files, either by manipulating files as a who
 | `Chars`     | Read from or write to entire file, as characters
 | `Lines`     | Read from or write to entire file, as lines
 | `Bytes`     | Read from or write to entire file, as bytes
+| `MapBytes`  | Create a memory-mapped array aliasing the file
 
 `Rename`, `Copy`, and `CreateDir` return the path of the new file. `Remove` and `RemoveDir` return `1` to indicate successful removal (and error otherwise).
 
@@ -129,6 +130,8 @@ Functions `Chars`, `Lines`, and `Bytes` are all ambivalent. If only `𝕩` is gi
 - Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.
 - Bytes: Single-byte values, stored as BQN characters from `@` to `@+255`.
 
+The `MapBytes` function only takes one argument, a filename, and returns an array matching the result of `Bytes`. However, the array data should be [memory-mapped](https://en.wikipedia.org/wiki/Memory-mapped_file) allowing it to be loaded into memory on use. The array and arrays derived from it (such as slices) may change in value if the underlying file is modified after `MapBytes` is called.
+
 The following short names can also be provided for file access. They can be provided, and use the definitions from above even if `•file` is not provided.
 
 | Name       | Equivalent
@@ -138,6 +141,8 @@ The following short names can also be provided for file access. They can be prov
 | `•FBytes`  | `•file.Bytes`
 
 ### Open file object
+
+Not yet specified.
 
 ## Input and output
 
