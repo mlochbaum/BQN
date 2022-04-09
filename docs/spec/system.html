@@ -254,6 +254,10 @@
 <td><code><span class='Function'>Bytes</span></code></td>
 <td>Read from or write to entire file, as bytes</td>
 </tr>
+<tr>
+<td><code><span class='Function'>MapBytes</span></code></td>
+<td>Create a memory-mapped array aliasing the file</td>
+</tr>
 </tbody>
 </table>
 <p><code><span class='Function'>Rename</span></code>, <code><span class='Function'>Copy</span></code>, and <code><span class='Function'>CreateDir</span></code> return the path of the new file. <code><span class='Function'>Remove</span></code> and <code><span class='Function'>RemoveDir</span></code> return <code><span class='Number'>1</span></code> to indicate successful removal (and error otherwise).</p>
@@ -264,6 +268,7 @@
 <li>Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.</li>
 <li>Bytes: Single-byte values, stored as BQN characters from <code><span class='String'>@</span></code> to <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>255</span></code>.</li>
 </ul>
+<p>The <code><span class='Function'>MapBytes</span></code> function only takes one argument, a filename, and returns an array matching the result of <code><span class='Function'>Bytes</span></code>. However, the array data should be <a href="https://en.wikipedia.org/wiki/Memory-mapped_file">memory-mapped</a> allowing it to be loaded into memory on use. The array and arrays derived from it (such as slices) may change in value if the underlying file is modified after <code><span class='Function'>MapBytes</span></code> is called.</p>
 <p>The following short names can also be provided for file access. They can be provided, and use the definitions from above even if <code><span class='Value'>•file</span></code> is not provided.</p>
 <table>
 <thead>
@@ -288,6 +293,7 @@
 </tbody>
 </table>
 <h3 id="open-file-object"><a class="header" href="#open-file-object">Open file object</a></h3>
+<p>Not yet specified.</p>
 <h2 id="input-and-output"><a class="header" href="#input-and-output">Input and output</a></h2>
 <table>
 <thead>
