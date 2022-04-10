@@ -150,7 +150,7 @@ _testDyArith ← {f←𝕗
 
 _testMonStruct ← { # ⥊≍⌽⍉⊏
   k ← 3|1+ ⌽‿⊏ ⊐ 𝕗
-  sh ← k ⊏ {𝕏𝕨}` (1+⌈´k) ↑ ⟨RandShape 𝕩, 1⊸∾⍟(0=≠), 1⊸⌈⌾⊑⟩
+  sh ← k ⊏ {𝕏𝕨}` (1+⌈´k) ↑ ⟨RandShape 𝕩, 1⊸∾⍟(0=≠), 1⊸∾⍟(0=⊑)⟩
   ((⊐sh) ⊏ 𝕨⊸gen.Struct¨ ⍷sh) { ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 
@@ -194,7 +194,7 @@ _testSelect ← { # /⊏
   l‿sh ← (⍋≠¨)⊸⊏ RandShape¨ 𝕩‿𝕩
   n ← RandBound 𝕩
   d ← 𝕨 gen.Struct sh
-  RandInd ← 0⊸≠◶⟨⟨⟩,gen.Index⟜(⥊‿RandShape _randChoose)˜⟩
+  RandInd ← ∧○(0⊸≠)◶⟨⟨⟩,gen.Index⟜(⥊‿RandShape _randChoose)˜⟩
   g ← ({⊏} = 𝕗) ⊏ RandRep‿RandInd
   g { ! (n𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
   g { ! (l𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
