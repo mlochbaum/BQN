@@ -41,6 +41,7 @@ Primitives:
 - [Array depth](depth.md) (`≡` and `⚇`)
 - [Array dimensions](shape.md) (`≢=≠`)
 - [Assert and Catch](assert.md) (`!` and `⎊`)
+- [Atop and Over](compose.md) (`∘○`)
 - [Deshape and Reshape](reshape.md) (`⥊`)
 - [Enclose](enclose.md) (`<`)
 - [Find](find.md) (`⍷`)
