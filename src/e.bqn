@@ -39,10 +39,10 @@ escchars ← """&<>" ⋄ escapes ← ("&"∾∾⟜";")¨"quot"‿"amp"‿"lt"‿
 Explain ← {
   b‿const‿blk‿bdy‿(i‿e)‿tok ← 𝕨
   ba‿bc‿bo‿bp ← (⊏/¨1⊸↓)'0'-˜⟨ # For each instruction, number of:
-    "114113141111111311411413141111=111"  # Codes until next opcode
-    "1110001100000000000222110000000111"  # Arguments
-    "000111//23232303232000001122232111"  # Stack values consumed
-    "1110001111111101111111110101111111"  # Stack values output
+    "114113141111111315114131131111=111"  # Codes until next opcode
+    "1110001100000000002221100000000111"  # Arguments
+    "000111//23232303230000011022232111"  # Stack values consumed
+    "1110001111111101111111101101111111"  # Stack values output
     "0000000011111101010000000000010000"  # Position determiner
   ⟩
   m ← { # Mask of instruction starts
