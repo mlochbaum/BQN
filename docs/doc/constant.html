@@ -1,0 +1,55 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Constant</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
+<h1 id="constant"><a class="header" href="#constant">Constant</a></h1>
+<svg viewBox='-191 0 672 270'>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Constant</text>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕗</tspan><tspan class='Modifier'>˙</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='57'><tspan class='Value'>𝕗</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Value'>𝕗</tspan><tspan class='Modifier'>˙</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0L0 57'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='57'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='57'><tspan class='Value'>𝕗</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<p>It's one of the simple ones: <code><span class='Value'>f</span><span class='Modifier'>˙</span><span class='Value'>𝕩</span></code> is <code><span class='Value'>f</span></code>. And <code><span class='Value'>𝕨f</span><span class='Modifier'>˙</span><span class='Value'>𝕩</span></code>? It's <code><span class='Value'>f</span></code>. Like the <a href="identity.html">identity functions</a>, Constant doesn't compute anything but just returns one of its inputs. It's somewhat different in that it's a deferred modifier, so you have to first apply Constant to its operand and <em>then</em> to some arguments for that non-event to happen.</p>
+<p>The design of BQN makes Constant unnecessary in most cases, because when a non-operation (number, character, array, namespace) is applied it already returns itself: <code><span class='Number'>π</span><span class='Modifier'>˙</span></code> is the same function as <code><span class='Number'>π</span></code>. If you've used much <a href="tacit.html">tacit</a> programming, you've probably written a few <a href="train.html">trains</a> like <code><span class='Number'>2</span><span class='Function'>×+</span></code> (twice the sum), which is nicer than the equivalent <code><span class='Number'>2</span><span class='Modifier'>˙</span><span class='Function'>×+</span></code>. However, a train has to end with a function, so you can't just put a number at the end. Applying <code><span class='Modifier'>˙</span></code> is a convenient way to change the number from a subject to a function role.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8O3MiAgICMgQSBudW1iZXIKCivDtzLLmSAgIyBBIGZ1bmN0aW9uCgozICgrw7cyy5kpIDc=">↗️</a><pre>    <span class='Function'>+÷</span><span class='Number'>2</span>   <span class='Comment'># A number
+</span>0.5
+
+    <span class='Function'>+÷</span><span class='Number'>2</span><span class='Modifier'>˙</span>  <span class='Comment'># A function
+</span>+÷2˙
+
+    <span class='Number'>3</span> <span class='Paren'>(</span><span class='Function'>+÷</span><span class='Number'>2</span><span class='Modifier'>˙</span><span class='Paren'>)</span> <span class='Number'>7</span>
+5
+</pre>
+<p>When programming with <a href="functional.html">first-class functions</a>, the constant application shortcut becomes a hazard! Consider the program <code><span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span><span class='Paren'>)</span> <span class='Value'>𝕩</span><span class='Brace'>}</span></code> to insert <code><span class='Value'>𝕨</span></code> into an array <code><span class='Value'>𝕩</span></code> as an element. It works fine with a number, but with a function it's broken:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oieIHvwnZWo4oy+KDLiirjiipEpIPCdlal9IDHigL8y4oC/M+KAvzQKCk0g4oaQIC0KbSB78J2VqOKMvigy4oq44oqRKSDwnZWpfSAx4oC/MuKAvzPigL80">↗️</a><pre>    <span class='Number'>∞</span> <span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span><span class='Paren'>)</span> <span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+⟨ 1 2 ∞ 4 ⟩
+
+    <span class='Function'>M</span> <span class='Gets'>←</span> <span class='Function'>-</span>
+    <span class='Value'>m</span> <span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span><span class='Paren'>)</span> <span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+⟨ 1 2 ¯3 4 ⟩
+</pre>
+<p>Here <code><span class='Value'>m</span></code> is applied to <code><span class='Number'>2</span><span class='Function'>⊑</span><span class='Value'>𝕩</span></code> even though we want to discard that value. Spelled as <code><span class='Value'>m</span></code>, our <a href="context.html">context-free grammar</a> knows it's a function argument, but this <a href="../problems.html#syntactic-type-erasure">doesn't affect</a> later usage. Under always applies <code><span class='Function'>𝔽</span></code> as a function. The proper definition of the insertion function should use a <code><span class='Modifier'>˙</span></code>, like this:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=bSB78J2VqMuZ4oy+KDLiirjiipEpIPCdlal9IDHigL8y4oC/M+KAvzQ=">↗️</a><pre>    <span class='Value'>m</span> <span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Modifier'>˙</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span><span class='Paren'>)</span> <span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
+⟨ 1 2 - 4 ⟩
+</pre>

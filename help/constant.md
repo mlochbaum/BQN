@@ -3,6 +3,7 @@
 # Dot Above (`˙`)
 
 ## `𝔽˙ 𝕩`, `𝕨 𝔽˙ 𝕩`: Constant
+[→full documentation](../doc/constant.md)
 
 Returns a function that will always return `𝕗`.
 
