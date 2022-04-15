@@ -3,6 +3,7 @@
 # Multimap (`⊸`)
 
 ## `𝕗⊸𝔾 𝕩`: Bind Left
+[→full documentation](../doc/hook.md#bind)
 
 Supply `𝕗` as a left argument to `𝔾` (`𝕗 𝔾 𝕩`).
 
@@ -15,6 +16,7 @@ Supply `𝕗` as a left argument to `𝔾` (`𝕗 𝔾 𝕩`).
 
 
 ## `𝔽⊸𝔾 𝕩`: Before
+[→full documentation](../doc/hook.md)
 
 Apply `𝔽` to `𝕩`, and supply it as a left argument to `𝔾` (`(𝔽 𝕩) 𝔾 𝕩`).
 
@@ -29,6 +31,7 @@ Apply `𝔽` to `𝕩`, and supply it as a left argument to `𝔾` (`(𝔽 𝕩)
 
 
 ## `𝕨 𝔽⊸𝔾 𝕩`: Dyadic Before
+[→full documentation](../doc/hook.md)
 
 Apply `𝔽` to `𝕨`, and supply it as a left argument to `𝔾` (`(𝔽 𝕨) 𝔾 𝕩`).
 
