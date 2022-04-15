@@ -867,7 +867,7 @@ TrainInverse ← {
 }
 FuncInverse ← (0⊸⊑ ⊣◶⟨
   {PrimInverse𝕩} 1⊸⊑                     # 0 primitive
-  (!∘"Cannot currently invert blocks")˙  # 1 block
+  (!∘"Can't invert blocks (add an undo header?)")˙  # 1 block
   1⊸⊑ AtopInverse 2⊸⊑                    # 2-train
   TrainInverse                           # 3-train
   1⊸⊑    {𝕏𝕨}⟜{Mod1Inverse𝕩} 2⊸⊑         # 4 1-modifier
