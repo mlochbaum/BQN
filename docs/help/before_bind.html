@@ -6,6 +6,7 @@
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
 <h1 id="multimap-"><a class="header" href="#multimap-">Multimap (<code><span class='Modifier2'>⊸</span></code>)</a></h1>
 <h2 id="𝕗𝔾-𝕩-bind-left"><a class="header" href="#𝕗𝔾-𝕩-bind-left"><code><span class='Value'>𝕗</span><span class='Modifier2'>⊸</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Bind Left</a></h2>
+<p><a class="fulldoc" href="../doc/hook.html#bind">→full documentation</a></p>
 <p>Supply <code><span class='Value'>𝕗</span></code> as a left argument to <code><span class='Function'>𝔾</span></code> (<code><span class='Value'>𝕗</span> <span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>).</p>
 <p><code><span class='Value'>𝕗</span></code> is a constant, <code><span class='Function'>𝔾</span></code> must be dyadic.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KKuC0gOQoKMyAtIDk=">↗️</a><pre>    <span class='Number'>3</span><span class='Modifier2'>⊸</span><span class='Function'>-</span> <span class='Number'>9</span>
@@ -15,6 +16,7 @@
 ¯6
 </pre>
 <h2 id="𝔽𝔾-𝕩-before"><a class="header" href="#𝔽𝔾-𝕩-before"><code><span class='Function'>𝔽</span><span class='Modifier2'>⊸</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Before</a></h2>
+<p><a class="fulldoc" href="../doc/hook.html">→full documentation</a></p>
 <p>Apply <code><span class='Function'>𝔽</span></code> to <code><span class='Value'>𝕩</span></code>, and supply it as a left argument to <code><span class='Function'>𝔾</span></code> (<code><span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>).</p>
 <p><code><span class='Function'>𝔽</span></code> must be monadic, <code><span class='Function'>𝔾</span></code> must be dyadic.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LeKKuCsgOQoKLSArIDkKCigtIDkpICsgOQ==">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Number'>9</span>
@@ -27,6 +29,7 @@
 0
 </pre>
 <h2 id="𝕨-𝔽𝔾-𝕩-dyadic-before"><a class="header" href="#𝕨-𝔽𝔾-𝕩-dyadic-before"><code><span class='Value'>𝕨</span> <span class='Function'>𝔽</span><span class='Modifier2'>⊸</span><span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>: Dyadic Before</a></h2>
+<p><a class="fulldoc" href="../doc/hook.html">→full documentation</a></p>
 <p>Apply <code><span class='Function'>𝔽</span></code> to <code><span class='Value'>𝕨</span></code>, and supply it as a left argument to <code><span class='Function'>𝔾</span></code> (<code><span class='Paren'>(</span><span class='Function'>𝔽</span> <span class='Value'>𝕨</span><span class='Paren'>)</span> <span class='Function'>𝔾</span> <span class='Value'>𝕩</span></code>).</p>
 <p><code><span class='Function'>𝔽</span></code> must be monadic, <code><span class='Function'>𝔾</span></code> must be dyadic.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiAt4oq4KyAxCgoyIC0gKyAxCgooLSAyKSArIDE=">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>-</span><span class='Modifier2'>⊸</span><span class='Function'>+</span> <span class='Number'>1</span>
