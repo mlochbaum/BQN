@@ -3,6 +3,7 @@
 # Circled Division Slash (`⊘`)
 
 ## `𝔽⊘𝔾 𝕩`: Valences
+[→full documentation](../doc/valences.md)
 
 Apply `𝔽` to `𝕩`.
 
@@ -13,6 +14,7 @@ Apply `𝔽` to `𝕩`.
 
 
 ## `𝕨 𝔽⊘𝔾 𝕩`: Dyadic Valences
+[→full documentation](../doc/valences.md)
 
 Apply `𝔾` to `𝕨` and `𝕩`.
 
