@@ -9,7 +9,7 @@
 <p>Primitives have no side effects other than errors, and can't perform infinite computations, except when a primitive modifier calls an operand function that does one of these things (this can only happen when arguments are passed, as primitive modifiers are always deferred). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function without them always returns the same result if passed the same arguments. Since trains and list notation have the same nice properties, tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.</p>
 <p>Recursion is the primary way to perform potentially infinite computations in BQN, and it can be packaged into <a href="control.html">control structures</a> like <code><span class='Function'>While</span></code> for ease of use. A given BQN implementation might also provide <a href="../spec/system.html">system values</a> for &quot;impure&quot; tasks like file access or other I/O.</p>
 <h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
-<p>Functions that have significant differences from APL equivalents or don't appear in APL are marked with an asterisk.</p>
+<p>A function call with one argument (prefix) is called &quot;monadic&quot; and one with two arguments (infix) is &quot;dyadic&quot;.</p>
 <table>
 <thead>
 <tr>
@@ -62,17 +62,17 @@
 <tr>
 <td><code><span class='Function'>∧</span></code></td>
 <td><a href="order.html#sort">Sort Up</a></td>
-<td><a href="logic.html">And</a>*</td>
+<td><a href="logic.html">And</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>∨</span></code></td>
 <td><a href="order.html#sort">Sort Down</a></td>
-<td><a href="logic.html">Or</a>*</td>
+<td><a href="logic.html">Or</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>¬</span></code></td>
-<td><a href="logic.html">Not</a>*</td>
-<td><a href="logic.html">Span</a>*</td>
+<td><a href="logic.html">Not</a></td>
+<td><a href="logic.html">Span</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>|</span></code></td>
@@ -91,7 +91,7 @@
 </tr>
 <tr>
 <td><code><span class='Function'>&gt;</span></code></td>
-<td><a href="couple.html">Merge</a>*</td>
+<td><a href="couple.html">Merge</a></td>
 <td><a href="arithmetic.html#comparisons">Greater Than</a></td>
 </tr>
 <tr>
@@ -101,7 +101,7 @@
 </tr>
 <tr>
 <td><code><span class='Function'>=</span></code></td>
-<td><a href="shape.html">Rank</a>*</td>
+<td><a href="shape.html">Rank</a></td>
 <td><a href="arithmetic.html#comparisons">Equals</a></td>
 </tr>
 <tr>
@@ -111,7 +111,7 @@
 </tr>
 <tr>
 <td><code><span class='Function'>≡</span></code></td>
-<td><a href="depth.html">Depth</a>*</td>
+<td><a href="depth.html">Depth</a></td>
 <td><a href="match.html">Match</a></td>
 </tr>
 <tr>
@@ -132,47 +132,47 @@
 <tr>
 <td><code><span class='Function'>⥊</span></code></td>
 <td><a href="reshape.html">Deshape</a></td>
-<td><a href="reshape.html">Reshape</a>*</td>
+<td><a href="reshape.html">Reshape</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>∾</span></code></td>
-<td><a href="join.html">Join</a>*</td>
+<td><a href="join.html">Join</a></td>
 <td><a href="join.html">Join to</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>≍</span></code></td>
-<td><a href="couple.html">Solo</a>*</td>
-<td><a href="couple.html">Couple</a>*</td>
+<td><a href="couple.html">Solo</a></td>
+<td><a href="couple.html">Couple</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⋈</span></code></td>
-<td><a href="pair.html">Enlist</a>*</td>
-<td><a href="pair.html">Pair</a>*</td>
+<td><a href="pair.html">Enlist</a></td>
+<td><a href="pair.html">Pair</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>↑</span></code></td>
-<td><a href="prefixes.html">Prefixes</a>*</td>
+<td><a href="prefixes.html">Prefixes</a></td>
 <td><a href="take.html">Take</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>↓</span></code></td>
-<td><a href="prefixes.html">Suffixes</a>*</td>
+<td><a href="prefixes.html">Suffixes</a></td>
 <td><a href="take.html">Drop</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>↕</span></code></td>
 <td><a href="range.html">Range</a></td>
-<td><a href="windows.html">Windows</a>*</td>
+<td><a href="windows.html">Windows</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>»</span></code></td>
-<td><a href="shift.html">Nudge</a>*</td>
-<td><a href="shift.html">Shift Before</a>*</td>
+<td><a href="shift.html">Nudge</a></td>
+<td><a href="shift.html">Shift Before</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>«</span></code></td>
-<td><a href="shift.html">Nudge Back</a>*</td>
-<td><a href="shift.html">Shift After</a>*</td>
+<td><a href="shift.html">Nudge Back</a></td>
+<td><a href="shift.html">Shift After</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⌽</span></code></td>
@@ -181,8 +181,8 @@
 </tr>
 <tr>
 <td><code><span class='Function'>⍉</span></code></td>
-<td><a href="transpose.html">Transpose</a>*</td>
-<td><a href="transpose.html">Reorder axes</a>*</td>
+<td><a href="transpose.html">Transpose</a></td>
+<td><a href="transpose.html">Reorder axes</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>/</span></code></td>
@@ -201,23 +201,23 @@
 </tr>
 <tr>
 <td><code><span class='Function'>⊏</span></code></td>
-<td><a href="select.html">First Cell</a>*</td>
-<td><a href="select.html">Select</a>*</td>
+<td><a href="select.html">First Cell</a></td>
+<td><a href="select.html">Select</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⊑</span></code></td>
 <td><a href="pick.html#first">First</a></td>
-<td><a href="pick.html">Pick</a>*</td>
+<td><a href="pick.html">Pick</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⊐</span></code></td>
-<td><a href="selfcmp.html#classify">Classify</a>*</td>
+<td><a href="selfcmp.html#classify">Classify</a></td>
 <td><a href="search.html#index-of">Index of</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>⊒</span></code></td>
-<td><a href="selfcmp.html#occurrence-count">Occurrence Count</a>*</td>
-<td><a href="search.html#progressive-index-of">Progressive Index of</a>*</td>
+<td><a href="selfcmp.html#occurrence-count">Occurrence Count</a></td>
+<td><a href="search.html#progressive-index-of">Progressive Index of</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>∊</span></code></td>
@@ -231,13 +231,13 @@
 </tr>
 <tr>
 <td><code><span class='Function'>⊔</span></code></td>
-<td><a href="group.html">Group Indices</a>*</td>
-<td><a href="group.html">Group</a>*</td>
+<td><a href="group.html">Group Indices</a></td>
+<td><a href="group.html">Group</a></td>
 </tr>
 <tr>
 <td><code><span class='Function'>!</span></code></td>
-<td><a href="assert.html">Assert</a>*</td>
-<td><a href="assert.html">Assert with Message</a>*</td>
+<td><a href="assert.html">Assert</a></td>
+<td><a href="assert.html">Assert with Message</a></td>
 </tr>
 </tbody>
 </table>
