@@ -3,6 +3,7 @@
 # Circle with Lower Right Quadrant (`◶`)
 
 ## `𝔽◶𝕘 𝕩`, `𝕨 𝔽◶𝕘 𝕩`: Choose
+[→full documentation](../doc/choose.md)
 
 Apply `𝔽` to the arguments and use the result to [pick](first_pick.md#𝕨--𝕩-pick) (`⊑`) a function from list `𝕘`. Apply the picked function to the arguments.
 

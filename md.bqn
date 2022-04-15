@@ -216,7 +216,7 @@ Markdown ← {filename𝕊𝕩:
     # Don't show assignment results by default
     ShowRslt ← {
       depth ← +` "(){}⟨⟩" (⊣(≠⊸>×¯1⋆2|⊢)⊐) 𝕩
-      𝕩 /˜↩ ¬ ∨`⌾⌽ (0=depth) ∧ 𝕩∊"⋄,"  # Just the last statement
+      𝕩 /˜↩ ¬ ∨`⌾⌽ (0=depth) ∧ (∧`𝕩≠'#') ∧ 𝕩∊"⋄,"  # Just the last statement
       g ← 𝕩∊"←↩"
       (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
     }
