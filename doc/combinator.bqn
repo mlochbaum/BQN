@@ -4,7 +4,7 @@ w‿h ← 280‿260
 Pnt ← 32‿57×⌽
 
 comps ← "∘○˙⊸⟜˜⊘"
-names ← (¬×+`)⊸-∘=⟜' '⊸⊔ "Atop Over Constant Before After Self/Swap Cases"
+names ← (¬×+`)⊸-∘=⟜' '⊸⊔ "Atop Over Constant Before After Self/Swap Valences"
 
 ps ← At "class=yellow|style=fill:none|stroke-width=2"
 _trans ← {𝕗 At "transform=translate("∾(⊣∾","∾⊢)○FmtNum∾")"˙}

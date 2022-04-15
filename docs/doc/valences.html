@@ -1,0 +1,47 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Valences</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
+<h1 id="valences"><a class="header" href="#valences">Valences</a></h1>
+<svg viewBox='-191 0 672 270'>
+  <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
+    <rect class='code' stroke-width='1' rx='12' x='-120.4' y='1' width='240.8' height='205'/>
+    <text dy='0.32em' y='223' fill='currentColor'>Valences</text>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(-60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⊘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0Q0 57 0 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔽</tspan></text>
+      <text dy='0.32em' x='0' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g font-size='21px' font-family='BQN,monospace' transform='translate(60.87,25)'>
+      <text dy='0.32em' y='155' font-size='19px'><tspan class='Value'>𝕨</tspan> <tspan class='Function'>𝔽</tspan><tspan class='Modifier2'>⊘</tspan><tspan class='Function'>𝔾</tspan> <tspan class='Value'>𝕩</tspan></text>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C-40 57 -32 51.3 -32 114'/>
+      <path class='yellow' style='fill:none' stroke-width='2' d='M0 0C40 57 32 51.3 32 114'/>
+      <circle r='12' class='code' stroke-width='0' cx='0' cy='0'/>
+      <circle r='12' class='code' stroke-width='0' cx='-32' cy='114'/>
+      <circle r='12' class='code' stroke-width='0' cx='32' cy='114'/>
+      <text dy='0.32em' x='0' y='0'><tspan class='Function'>𝔾</tspan></text>
+      <text dy='0.32em' x='-32' y='114'><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.32em' x='32' y='114'><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<p>Every BQN function can be called with one or two arguments, possibly doing completely different things in each case. The Valences (<code><span class='Modifier2'>⊘</span></code>) 2-modifier grafts together a one-argument function <code><span class='Function'>𝔽</span></code> and a two-argument function <code><span class='Function'>𝔾</span></code>, with the resulting function calling one or the other as appropriate. It's the <a href="tacit.html">tacit</a> equivalent of a block function with <a href="block.html#multiple-bodies">two bodies</a>. So the function <code><span class='Brace'>{</span><span class='Function'>÷</span><span class='Value'>𝕩</span> <span class='Head'>;</span> <span class='Value'>𝕩</span><span class='Function'>-</span><span class='Value'>𝕨</span><span class='Brace'>}</span></code> can also be written <code><span class='Function'>÷</span><span class='Modifier2'>⊘</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Paren'>)</span></code>. A full definition of Valences as a block is <code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Value'>𝕩</span><span class='Head'>;</span><span class='Value'>𝕨</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAt4oqYKyA2ICAjIC0gc2lkZQoKMyAt4oqYKyAyICAjICsgc2lkZQ==">↗️</a><pre>      <span class='Function'>-</span><span class='Modifier2'>⊘</span><span class='Function'>+</span> <span class='Number'>6</span>  <span class='Comment'># - side
+</span>¯6
+
+    <span class='Number'>3</span> <span class='Function'>-</span><span class='Modifier2'>⊘</span><span class='Function'>+</span> <span class='Number'>2</span>  <span class='Comment'># + side
+</span>5
+</pre>
+<p>Valences provides one way to check whether <code><span class='Value'>𝕨</span></code> is present in a block function. The expression <code><span class='Value'>𝕨</span><span class='Number'>0</span><span class='Modifier2'>⊘</span><span class='Number'>1</span><span class='Value'>𝕩</span></code> always ignores the values of the arguments, resulting in <code><span class='Number'>0</span></code> if <code><span class='Value'>𝕨</span></code> isn't given and <code><span class='Number'>1</span></code> if it is (if you want <code><span class='Number'>1</span></code> or <code><span class='Number'>2</span></code>, then <code><span class='Function'>≠</span><span class='Value'>𝕨</span><span class='Function'>⋈</span><span class='Value'>𝕩</span></code> is shorter, but I'm not sure if I like it).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgIHvwnZWoMOKKmDHwnZWpfSAneCcKCid3JyB78J2VqDDiipgx8J2VqX0gJ3gn">↗️</a><pre>        <span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Number'>0</span><span class='Modifier2'>⊘</span><span class='Number'>1</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='String'>'x'</span>
+0
+
+    <span class='String'>'w'</span> <span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Number'>0</span><span class='Modifier2'>⊘</span><span class='Number'>1</span><span class='Value'>𝕩</span><span class='Brace'>}</span> <span class='String'>'x'</span>
+1
+</pre>

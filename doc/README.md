@@ -71,6 +71,7 @@ Primitives:
 - [Take and Drop](take.md) (`↑`)
 - [Transpose](transpose.md) (`⍉`)
 - [Undo](undo.md) (`⁼`)
+- [Valences](valences.md) (`⊘`)
 - [Windows](windows.md) (`↕`)
 
 Environment:
