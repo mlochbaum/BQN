@@ -10,7 +10,7 @@ Recursion is the primary way to perform potentially infinite computations in BQN
 
 ## Functions
 
-Functions that have significant differences from APL equivalents or don't appear in APL are marked with an asterisk.
+A function call with one argument (prefix) is called "monadic" and one with two arguments (infix) is "dyadic".
 
 | Glyph | Monadic                                             | Dyadic
 |-------|-----------------------------------------------------|---------
@@ -22,42 +22,42 @@ Functions that have significant differences from APL equivalents or don't appear
 | `√`   | [Square Root](arithmetic.md#basic-arithmetic)       | [Root](arithmetic.md#basic-arithmetic)
 | `⌊`   | [Floor](arithmetic.md#additional-arithmetic)        | [Minimum](arithmetic.md#additional-arithmetic)
 | `⌈`   | [Ceiling](arithmetic.md#additional-arithmetic)      | [Maximum](arithmetic.md#additional-arithmetic)
-| `∧`   | [Sort Up](order.md#sort)                            | [And](logic.md)*
-| `∨`   | [Sort Down](order.md#sort)                          | [Or](logic.md)*
-| `¬`   | [Not](logic.md)*                                    | [Span](logic.md)*
+| `∧`   | [Sort Up](order.md#sort)                            | [And](logic.md)
+| `∨`   | [Sort Down](order.md#sort)                          | [Or](logic.md)
+| `¬`   | [Not](logic.md)                                     | [Span](logic.md)
 | `\|`  | [Absolute Value](arithmetic.md#additional-arithmetic)| [Modulus](arithmetic.md#additional-arithmetic)
 | `≤`   |                                                     | [Less Than or Equal to](arithmetic.md#comparisons)
 | `<`   | [Enclose](enclose.md)                               | [Less Than](arithmetic.md#comparisons)
-| `>`   | [Merge](couple.md)*                                 | [Greater Than](arithmetic.md#comparisons)
+| `>`   | [Merge](couple.md)                                  | [Greater Than](arithmetic.md#comparisons)
 | `≥`   |                                                     | [Greater Than or Equal to](arithmetic.md#comparisons)
-| `=`   | [Rank](shape.md)*                                   | [Equals](arithmetic.md#comparisons)
+| `=`   | [Rank](shape.md)                                    | [Equals](arithmetic.md#comparisons)
 | `≠`   | [Length](shape.md)                                  | [Not Equals](arithmetic.md#comparisons)
-| `≡`   | [Depth](depth.md)*                                  | [Match](match.md)
+| `≡`   | [Depth](depth.md)                                   | [Match](match.md)
 | `≢`   | [Shape](shape.md)                                   | [Not Match](match.md)
 | `⊣`   | [Identity](identity.md)                             | [Left](identity.md)
 | `⊢`   | [Identity](identity.md)                             | [Right](identity.md)
-| `⥊`   | [Deshape](reshape.md)                               | [Reshape](reshape.md)*
-| `∾`   | [Join](join.md)*                                    | [Join to](join.md)
-| `≍`   | [Solo](couple.md)*                                  | [Couple](couple.md)*
-| `⋈`   | [Enlist](pair.md)*                                  | [Pair](pair.md)*
-| `↑`   | [Prefixes](prefixes.md)*                            | [Take](take.md)
-| `↓`   | [Suffixes](prefixes.md)*                            | [Drop](take.md)
-| `↕`   | [Range](range.md)                                   | [Windows](windows.md)*
-| `»`   | [Nudge](shift.md)*                                  | [Shift Before](shift.md)*
-| `«`   | [Nudge Back](shift.md)*                             | [Shift After](shift.md)*
+| `⥊`   | [Deshape](reshape.md)                               | [Reshape](reshape.md)
+| `∾`   | [Join](join.md)                                     | [Join to](join.md)
+| `≍`   | [Solo](couple.md)                                   | [Couple](couple.md)
+| `⋈`   | [Enlist](pair.md)                                   | [Pair](pair.md)
+| `↑`   | [Prefixes](prefixes.md)                             | [Take](take.md)
+| `↓`   | [Suffixes](prefixes.md)                             | [Drop](take.md)
+| `↕`   | [Range](range.md)                                   | [Windows](windows.md)
+| `»`   | [Nudge](shift.md)                                   | [Shift Before](shift.md)
+| `«`   | [Nudge Back](shift.md)                              | [Shift After](shift.md)
 | `⌽`   | [Reverse](reverse.md)                               | [Rotate](reverse.md#rotate)
-| `⍉`   | [Transpose](transpose.md)*                          | [Reorder axes](transpose.md)*
+| `⍉`   | [Transpose](transpose.md)                           | [Reorder axes](transpose.md)
 | `/`   | [Indices](replicate.md#indices)                     | [Replicate](replicate.md)
 | `⍋`   | [Grade Up](order.md#grade)                          | [Bins Up](order.md#bins)
 | `⍒`   | [Grade Down](order.md#grade)                        | [Bins Down](order.md#bins)
-| `⊏`   | [First Cell](select.md)*                            | [Select](select.md)*
-| `⊑`   | [First](pick.md#first)                              | [Pick](pick.md)*
-| `⊐`   | [Classify](selfcmp.md#classify)*                    | [Index of](search.md#index-of)
-| `⊒`   | [Occurrence Count](selfcmp.md#occurrence-count)*    | [Progressive Index of](search.md#progressive-index-of)*
+| `⊏`   | [First Cell](select.md)                             | [Select](select.md)
+| `⊑`   | [First](pick.md#first)                              | [Pick](pick.md)
+| `⊐`   | [Classify](selfcmp.md#classify)                     | [Index of](search.md#index-of)
+| `⊒`   | [Occurrence Count](selfcmp.md#occurrence-count)     | [Progressive Index of](search.md#progressive-index-of)
 | `∊`   | [Mark Firsts](selfcmp.md#mark-firsts)               | [Member of](search.md#member-of)
 | `⍷`   | [Deduplicate](selfcmp.md#deduplicate)               | [Find](find.md)
-| `⊔`   | [Group Indices](group.md)*                          | [Group](group.md)*
-| `!`   | [Assert](assert.md)*                                | [Assert with Message](assert.md)*
+| `⊔`   | [Group Indices](group.md)                           | [Group](group.md)
+| `!`   | [Assert](assert.md)                                 | [Assert with Message](assert.md)
 
 ## Modifiers
 
