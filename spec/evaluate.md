@@ -32,6 +32,8 @@ An *assignment* is one of the four rules containing `ASGN`. It is evaluated by f
 
 The right-hand-side value, here called `v`, in destructuring assignment must be a list (rank 1 array) or namespace. If it's a list, then each `LHS_ENTRY` node must be an `LHS_ELT`. The left-hand side is treated as a list of `lhs` targets, and matched to `v` element-wise, with an error if the two lists differ in length. If `v` is a namespace, then the left-hand side must be an `lhsStr` where every `LHS_ATOM` is an `NAME`, or an `lhsList` where every `LHS_ENTRY` is an `NAME` or `lhs "⇐" NAME`, so that it can be considered a list of `NAME` nodes some of which are also associated with `lhs` nodes. To perform the assignment, the value of each name is obtained from the namespace `v`, giving an error if `v` does not define that name. The value is assigned to the `lhs` node if present (which may be a destructuring assignment or simple subject assignment), and otherwise assigned to the same `NAME` node used to get it from `v`.
 
+A destructuring assignment is performed in program order, or equivalently index order, with each sub-assignment fully completed before beginning the next (a depth-first order). Thus if an assignment with `↩` encounters an error but it's caught with `⎊`, some of the assignment may have already been performed, changing variable values.
+
 *Modified assignment* is the subject assignment rule `lhs Derv "↩" subExpr?`. In this case, `lhs` is evaluated as if it were a `subExpr` (the syntax is a subset of `subExpr`), and passed as an argument to `Derv`. The full application is `lhs Derv subExpr`, if `subExpr` is given, and `Derv lhs` otherwise. Its value is assigned to `lhs`, and is also the result of the modified assignment expression.
 
 ### Expressions
