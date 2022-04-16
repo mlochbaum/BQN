@@ -59,11 +59,11 @@ Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
 ≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
 
 # LIMITED to numeric arguments for arithmetic cases
-√ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)
+√ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)      # Higher precision allowed; see spec
 ∧ ←            ×
 ∨ ←            (+-×)
 ¬ ← 1+-
-| ← ×⟜×      ⊘ {𝕩-𝕨×⌊𝕩÷𝕨}
+| ← ×⟜×      ⊘ {𝕩-𝕨×⌊𝕩÷𝕨}  # Higher precision allowed; see spec
 < ← {⟨⟩⥊⟨𝕩⟩} ⊘ (¬≤˜)
 > ←            (¬≤)
 ≥ ← !∘0      ⊘ (≤˜)
