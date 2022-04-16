@@ -34,6 +34,7 @@ _amend     # {𝕨˙⌾(𝕗⊸⊑)𝕩}
 Identity   # Left or right identity of function 𝕏
 ⁼          # Inverse of function 𝔽
 Fill       # Enclosed fill value for 𝕩
+HasFill    # Whether 𝕩 has a fill value
 
 
 #⌜
@@ -211,7 +212,7 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 DropV← {⊑⟜𝕩¨𝕨+↕𝕨-˜≠𝕩}
 Cell ← DropV⟜≢
 
-Merge←(0<≠∘⥊)◶((∾○≢⥊⊢)⟜Fill)‿{
+Merge←(0<≠∘⥊)◶((∾○≢⥊⊢)⟜Fill⍟HasFill)‿{
   c←≢⊑𝕩
   ! ∧´⥊(c≡≢)¨𝕩
   𝕩⊑⟜ToArray˜⌜↕c
@@ -377,7 +378,7 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 
 { Identity ↩ 𝕨˙⊸=◶Identity‿𝕩 }´¨ ⟨ ∨‿0 , ∧‿1 ⟩
 
-JoinEmpty ← ({!𝕨≤○≠𝕩⋄𝕨≠⊸((𝕨×≠⊸↑)∾↓)𝕩}○≢⥊⊢)⟜Fill
+JoinEmpty ← ({!𝕨≤○≠𝕩⋄𝕨≠⊸((𝕨×≠⊸↑)∾↓)𝕩}○≢⥊⊢)⟜Fill⍟HasFill
 
 Join←(0<≠∘⥊)◶⟨JoinEmpty, (0<=)◶{!IsArray𝕩⋄>𝕩}‿{
   ! IsArray 𝕩
