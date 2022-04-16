@@ -28,6 +28,8 @@ In the first two cases, if the result would not be a valid Unicode code point, t
 
 Additionally, the **Floor** function `⌊` returns the largest integer smaller than or equal to the argument, or the argument itself if it is `¯∞` or `∞`. It's needed because the arithmetic operations give no fixed-time way to determine if a value is an integer. Floor gives an error if the argument is an atom other than a number.
 
+The functions **Modulus** `|`, and **Square Root** and **Root** `√`, defined in reference.bqn may also be implemented as basic arithmetic rather than using the definitions in terms of the functions above, as this can allow for higher precision (it shouldn't affect other definitions, as these only use integer `|`, which is exact). Any replacements should approximate the definition computed with infinite precision. This is particularly recommended for Modulus in a typical floating-point implementation, because the definition with `÷` loses precision when `𝕩` is much larger than `𝕨` and is less useful for some numerical applications.
+
 ### Comparison
 
 Two kinds of comparison are needed to define BQN's primitives: *equality* comparison and *ordered* comparison.
@@ -112,13 +114,13 @@ The reference implementations extend Shape (`≢`) to atoms as well as arrays, i
 Arithmetic functions not already provided are defined in layer 1. These definitions, like the provided functions, apply to atoms only; they should be extended to arrays using the `_perv` modifier from layer 2.
 
 - **Sign** (`×`) 
-- **Square Root** and **Root** (`√`) are defined in terms of Power. If a dedicated implementation is used for square roots, then Power should check for a right argument of `0.5` and use this implementation in order to maintain consistency.
+- **Square Root** and **Root** (`√`) are defined in terms of Power, but a higher-precision native implementation is allowed.
 - **Ceiling** (`⌈`) is like Floor, but rounds up instead of down.
 - **Not** (`¬`) is a linear extension of logical negation, and **Span** (`¬`) adds the left argument.
 - **And** (`∧`) and **Or** (`∨`) are bilinear extensions of the boolean functions.
 - **Minimum** (`⌊`) and **Maximum** (`⌈`) return the smaller or larger of the arguments, respectively. They are *not required* to be implemented for character arguments, and may give an error if either argument is a character.
 - **Absolute Value** (`|`)
-- **Modulus** (`|`) is an extension of modular division to real numbers. As it uses floor instead of truncation, it's not the same as the `%` operator from C or other languages when `𝕨<0`.
+- **Modulus** (`|`) is an extension of modular division to real numbers. As it uses floor instead of truncation, it's not the same as the `%` operator from C or other languages when `𝕨<0`. A higher-precision native implementation is allowed.
 - Comparisons **Less Than** (`<`), **Greater Than** (`>`), **Greater Than or Equal to** (`≥`), and **Not Equals** (`≠`) are defined in terms of the two provided comparisons.
 
 ### Iteration modifiers
