@@ -2,11 +2,11 @@
 
 # Specification: BQN grammar
 
-BQN's grammar is given below. Terms are defined in a [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) variant. However, handling special names properly is possible but difficult in BNF, so they are explained in text along with the braced block grammar.
+BQN's grammar is given below. Terms are defined in a [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) variant. However, handling special names properly is possible but difficult in BNF, so they are explained in text along with the block grammar.
 
 The symbols `s`, `F`, `_m`, and `_c_` are identifier tokens with subject, function, 1-modifier, and 2-modifier classes respectively. Similarly, `sl`, `Fl`, `_ml`, and `_cl_` refer to literals and primitives of those classes. While names in the BNF here follow the identifier naming scheme, this is informative only: syntactic roles are no longer used after parsing and cannot be inspected in a running program.
 
-A program is a list of statements. Almost all statements are expressions. Namespace export statements, and valueless results stemming from `·`, or `𝕨` in a monadic brace function, can be used as statements but not expressions.
+A program is a list of statements. Almost all statements are expressions. Namespace export statements, and valueless results stemming from `·`, or `𝕨` in a monadic block function, can be used as statements but not expressions.
 
     PROGRAM  = ⋄? ( STMT ⋄ )* STMT ⋄?
     STMT     = EXPR | nothing | EXPORT
@@ -93,7 +93,7 @@ There are some extra possibilities for a header that specifies arguments. As a s
              |        FuncName "˜"? "⁼"
              | lhsComp
 
-A braced block contains bodies, which are lists of statements, separated by semicolons and possibly preceded by headers, which are separated from the body with a colon. A non-final expression can be made into a predicate by following it with the separator-like `?`. Multiple bodies allow different handling for various cases, which are pattern-matched by headers. A block can have any number of bodies with headers. After these there can be bodies without headers—up to one for an immediate block and up to two for a block with arguments. If a block with arguments has one such body, it's ambivalent, but two of them refer to the monadic and dyadic cases.
+A block is written with braces. It contains bodies, which are lists of statements, separated by semicolons. Multiple bodies can handle different cases, as determined by headers and predicates. A header is written before its body with a separating colon, and an expression other than the last in a body can be made into a predicate by following it with the separator-like `?`. A block can have any number of bodies with headers. After these there can be bodies without headers—up to one for an immediate block and up to two for a block with arguments. If a block with arguments has one such body, it's ambivalent, but two of them refer to the monadic and dyadic cases.
 
     BODY     = ⋄? ( STMT ⋄ | EXPR ⋄? "?" ⋄? )* STMT ⋄?
     CASE     = BODY
@@ -106,7 +106,7 @@ A braced block contains bodies, which are lists of statements, separated by semi
     _blMod1  = IMM_BLK | ARG_BLK
     _blMod2_ = IMM_BLK | ARG_BLK
 
-Three additional rules apply to blocks, allowing the ambiguous grammar above to be disambiguated. They are shown in the table below. First, each block type allows the special names in its row to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each of these four columns is cumulative, so that a given entry also includes all the entries above it. Second, a block can't contain one of the tokens from the "label" column of a different row. Third, each `BrFunc`, `_brMod1`, and `_brMod2_` term *must* contain one of the names on, and not above, the corresponding row (including the "label" column).
+Three additional rules apply to blocks, allowing the ambiguous grammar above to be disambiguated. They are shown in the table below. First, each block type allows the special names in its row to be used as the given token types within `BODY` terms (not headers). Except for the spaces labelled "None", each of these four columns is cumulative, so that a given entry also includes all the entries above it. Second, a block can't contain one of the tokens from the "label" column of a different row. Third, each `BlFunc`, `_blMod1`, and `_blMod2_` term *must* contain one of the names on, and not above, the corresponding row (including the "label" column).
 
 | Term               | `s`    | `F`    | `_m`    | `_c_`    | label
 |--------------------|--------|--------|---------|----------|-------
@@ -122,4 +122,4 @@ The rules for special names can be expressed in BNF by making many copies of all
              | ( subject_allow1 | nothing_allow1 )? Derv_req1 arg_allow1
              | ( subject_allow1 | nothing_allow1 )? Derv_allow1 arg_req1
 
-Quite tedious. The explosion of rules is partly due to the fact that the brace-typing rule falls into a weaker class of grammars than the other rules. Most of BQN is [deterministic context-free](https://en.wikipedia.org/wiki/Deterministic_context-free_grammar) but brace-typing is not, only context-free. Fortunately brace typing does not introduce the parsing difficulties that can be present in a general context-free grammar, and it can easily be performed in linear time: after [scanning](token.md) but before parsing, move through the source code maintaining a stack of the current top-level set of braces. Whenever a colon or special name is encountered, annotate that set of braces to indicate that it is present. When a closing brace is encountered and the top brace is popped off the stack, the type is needed if there was no colon, and can be found based on which names were present. One way to present this information to the parser is to replace the brace tokens with new tokens that indicate the type.
+Quite tedious. The explosion of rules is partly due to the fact that the block-typing rule falls into a weaker class of grammars than the other rules. Most of BQN is [deterministic context-free](https://en.wikipedia.org/wiki/Deterministic_context-free_grammar) but block-typing is not, only context-free. Fortunately block typing does not introduce the parsing difficulties that can be present in a general context-free grammar, and it can easily be performed in linear time: after [scanning](token.md) but before parsing, move through the source code maintaining a stack of the current top-level set of braces. Whenever a colon or special name is encountered, annotate that set of braces to indicate that it is present. When a closing brace is encountered and the top brace is popped off the stack, the type is needed if there was no colon, and can be found based on which names were present. One way to present this information to the parser is to replace the brace tokens with new tokens that indicate the type.
