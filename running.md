@@ -22,7 +22,7 @@ Further details in the sections below.
 
 ### Self-hosted BQN
 
-This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all functionality specified so far (really it's ahead of the spec, which has some flaws to be addressed). System value support varies at it's implemented separately in each host.
+This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all functionality specified so far. System value support varies at it's implemented separately in each host.
 
 Support in the following languages has been implemented (details in the subsections below):
 - [C](https://github.com/dzaima/CBQN), targetting high performance. Usually fairly fast.
