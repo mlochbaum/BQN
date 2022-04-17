@@ -93,15 +93,17 @@ There are some extra possibilities for a header that specifies arguments. As a s
              |        FuncName "˜"? "⁼"
              | lhsComp
 
-A block is written with braces. It contains bodies, which are lists of statements, separated by semicolons. Multiple bodies can handle different cases, as determined by headers and predicates. A header is written before its body with a separating colon, and an expression other than the last in a body can be made into a predicate by following it with the separator-like `?`. A block can have any number of bodies with headers. After these there can be bodies without headers—up to one for an immediate block and up to two for a block with arguments. If a block with arguments has one such body, it's ambivalent, but two of them refer to the monadic and dyadic cases.
+A block is written with braces. It contains bodies, which are lists of statements, separated by semicolons. Multiple bodies can handle different cases, as determined by headers and predicates. A header is written before its body with a separating colon, and an expression other than the last in a body can be made into a predicate by following it with the separator-like `?`.
+
+An `I_CASE`, `A_CASE`, or `S_CASE` is called a *general case* or *general body* if it has no header or predicate, or, more formally, it doesn't directly include a `":"` token and its `BODY` node doesn't use the `EXPR ⋄? "?" ⋄?` case. A program must satisfy some additional rules regarding general cases, but these are not needed to resolve the grammar and shouldn't strictly be considered part of it. First, no general body can appear before a body that isn't general in a block. Second, a `IMM_BLK` or `blSub` can directly contain at most one general body and an `ARG_BLK` at most two (these are monadic and dyadic cases).
 
     BODY     = ⋄? ( STMT ⋄ | EXPR ⋄? "?" ⋄? )* STMT ⋄?
-    CASE     = BODY
-    I_CASE   = ⋄? IMM_HEAD ⋄? ":" BODY
-    A_CASE   = ⋄? ARG_HEAD ⋄? ":" BODY
-    IMM_BLK  = "{" ( I_CASE ";" )* ( I_CASE | CASE ) "}"
-    ARG_BLK  = "{" ( A_CASE ";" )* ( A_CASE | CASE ( ";" CASE )? ) "}"
-    blSub    = "{" ( ⋄? s ⋄? ":" )? BODY "}"
+    I_CASE   = ( ⋄? IMM_HEAD ⋄? ":" )? BODY
+    A_CASE   = ( ⋄? ARG_HEAD ⋄? ":" )? BODY
+    S_CASE   = ( ⋄? s        ⋄? ":" )? BODY
+    IMM_BLK  = "{" ( I_CASE ";" )* I_CASE "}"
+    ARG_BLK  = "{" ( A_CASE ";" )* A_CASE "}"
+    blSub    = "{" ( S_CASE ";" )* S_CASE "}"
     BlFunc   =           ARG_BLK
     _blMod1  = IMM_BLK | ARG_BLK
     _blMod2_ = IMM_BLK | ARG_BLK
