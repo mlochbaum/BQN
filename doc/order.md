@@ -24,7 +24,42 @@ Sort Down always [matches](match.md) Sort Up [reversed](reverse.md), `⌽∘∧`
 
 ## Grade
 
-*See the [APL Wiki page](https://aplwiki.com/wiki/Grade) for a few more examples. BQN only has the monadic form.*
+<!--GEN
+d ← 60‿68
+pad ← 1.3‿0.2
+
+rc ← At "class=code|stroke-width=1.5|rx=12"
+Ge ← "g"⊸At⊸Enc
+g  ← "font-family=BQN,monospace|font-size=22px|text-anchor=middle"
+cg ← "font-size=18px|text-anchor=end"
+lg ← "class=lilac|stroke-width=2|stroke-linecap=round"
+ig ← "fill=currentColor|font-size=14|opacity=0.8"
+mg ← "fill=currentColor|font-size=22"
+Gec ← "class="⊸∾⊸Ge¨⟜(<˘)
+ci ← "Number"‿"String"
+
+Text ← ("text" Attr "dy"‿"0.32em"∾(Pos d⊸×))⊸Enc
+Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ ·FmtNum d⊸×
+Paths ← lg Ge Line∘+⟜(≍˘⟜-0.2⋈˜0.08×·÷´-˝˘)¨
+Rp ← Pos⊸∾⟜("width"‿"height"≍˘FmtNum)○(d⊸×)
+
+xt ← '''(∾∾⊣)¨"sort"
+wt ← FmtNum wv ← ⍋xt
+
+{
+tx ← ↕∘≠ xt ⋄ y ← +`0.6‿1‿0.44
+dim ← ⟨1.5+≠xt, 0.4+¯1⊑y⟩ ⋄ sh ← ¯1.8‿0
+tp ← ⍉ tx ⋈⌜ y
+
+((∾˜d)×((-∾+˜)pad)+sh∾dim) SVG g Ge ⟨
+  "rect" Elt rc ∾ sh Rp dim
+  Paths ≍⟜(¯1↓y)¨(wv⊏tx)⋈¨tx
+  mg Ge (3⥊"String"⋈⊑ci) Gec tp Text¨ >⟨xt,wt,wv⊏xt⟩
+  ig Ge ("class="∾⊑ci) Ge (-⟜0‿0.33¨ Text¨ (FmtNum ↕≠xt)˙) ⊏tp
+  cg Ge (¯0.8≍¨y) Text⟜Highlight¨ "𝕩"‿"⍋𝕩"‿"∧𝕩"
+⟩
+}
+-->
 
 Grade is more abstract than Sort. Rather than rearranging the argument's cells immediately, it returns a list of indices (more precisely, a permutation) giving the ordering that would sort them.
 
@@ -39,6 +74,22 @@ Given our list `l` of things in a solar system, Sort Up orders them by size, or 
         (⍋l) ⊏ l
 
 ### Ordinals
+
+<!--GEN
+{
+tx ← ↕∘≠ xt ⋄ y ← +`0.6‿1‿1
+dim ← ⟨1.5+≠xt, 0.4+¯1⊑y⟩ ⋄ sh ← ¯1.8‿0
+tp ← ⍉ tx ⋈⌜ y
+
+((∾˜d)×((-∾+˜)pad)+sh∾dim) SVG g Ge ⟨
+  "rect" Elt rc ∾ sh Rp dim
+  Paths (⋈¨⟜tx˘(≍⟜⍋wv)⊏tx) ≍¨⟜<˘ 2↕y
+  mg Ge ("String"<⊸∾ci) Gec tp Text¨ >⟨xt,wt,FmtNum⍋wv⟩
+  ig Ge (3⥊ci) Gec (-⟜(⋈⟜0.33¨0.035×↕≠xt) Text¨ (FmtNum ↕≠xt)˙)˘ tp
+  cg Ge (¯0.8≍¨y) Text⟜Highlight¨ "𝕩"‿"⍋𝕩"‿"⍋⍋𝕩"
+⟩
+}
+-->
 
 So the elements of the Grade of an array correspond to the cells of that array after it's sorted. It's tempting if you don't have the sorted list handy to try to match them up with major cells of the original array, but this never makes sense—there's no relationship. However, applying Grade *twice* gives us a list that does correspond to the original argument quite usefully: it says, for each major cell of that argument, what rank it has relative to the others (smallest is 0, next is 1, and so on, breaking ties in favor of which cell comes earlier in the argument). Experienced APL programmers call this pattern the "ordinals" idiom.
 
@@ -77,6 +128,7 @@ The two Bins functions are written with the same symbols `⍋` and `⍒` as Grad
 Bins behaves like a [search function](search.md) with respect to rank: it looks up cells from `𝕩` relative to major cells of `𝕨`. However, there's an extra requirement: the left argument to Bins is already sorted according to whichever ordering is used. If it isn't, you'll get an error.
 
         5‿6‿2‿4‿1 ⍋ 3
+
         0‿3‿4‿7‿9 ⍒ 3
 
 Given this, the simplest definition of `𝕨⍋𝕩` (or `𝕨⍒𝕩`) is that for each cell in `𝕩` of rank `(=𝕨)-1`, it counts the number of major cells from `𝕨` that come earlier in the ordering, or match that cell.
