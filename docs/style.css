@@ -19,10 +19,16 @@ h1, h2, h3, h4 {
   line-height: 1.2;
   margin: 2.5rem 0 1rem 0;
   padding-bottom: 0.1em;
-  border-bottom: 0.01em solid #9995
+  border-bottom: 0.01em solid #9995;
 }
 a:link.header, a:visited.header {
-  text-decoration:none; color:inherit;
+  text-decoration: none;
+  color: inherit;
+}
+a code {
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.2;
 }
 a.fulldoc {
   float: right;
