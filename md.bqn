@@ -363,7 +363,6 @@ Markdown ← {filename𝕊𝕩:
     # If span has both a leading and a trailing space, they are removed.
     remSpace ← I2M ⥊ ((1<-˜˝˘)∧·∧˝˘' '=⊏⟜𝕩)⊸/ -⟜0‿1˘ codeBounds
     codeMask ∧↩ ¬ remSpace
-    ⟨code,codePos⟩ ← codeMask extensions◶(⋈˜⟨⟩)‿GetMultiHighlights 𝕩
     include ← ¬ remSpace ∨ ≠` I2M ⥊ ctInds
     codeBounds ↩ ⥊ -⟜1‿0˘ codeBounds
     unused ← actual ∧ include ∧ ¬ codeMask
@@ -417,9 +416,14 @@ Markdown ← {filename𝕊𝕩:
     lInds ← JoinPairs○FindPairs˝ brak
     linkPos ← ⊏˘ lInds
     lInds +⎉1↩ 1‿0‿1‿0
-    unused ∧↩ include ∧↩ ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
+    unused ∧↩ include ∧↩ notLink ← ¬ ≠` I2M ⥊ (¯1‿1+0‿3⊸⊏)˘ lInds
     linkGroup ← 1 -˜ (⊣×>)○(+`I2M)´ (≠⊸⥊⟜↕∾⊢)⟜2⊸⊔ ⥊lInds
     links ← ⥊ ProcLink¨˝˘ ∘‿2 ⥊ linkGroup ⊔ 𝕩
+
+    # Code highlighting within a link was handled by ProcLink
+    codeMask ∧↩ notLink
+    ⟨code,codePos⟩ ← codeMask extensions◶(⋈˜⟨⟩)‿GetMultiHighlights 𝕩
+    codeBounds /˜↩ codeBounds ⊏ notLink
 
     # Emphasis (still rudimentary)
     eMasks ← (unused ∧ 𝕩⊸=)¨ "*_"
