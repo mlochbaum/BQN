@@ -40,9 +40,7 @@ It's an odd distinction to have when your program is just one long sequence of s
 
         BQN ← "[many pages of specification]"
 
-What's going on? Does BQN not know about capital letters? Does it object to self-reference? Why is "`BQN`" green?
-
-If you open that statement in the online REPL, you'll see the more informative message "Role of the two sides in assignment must match" (*assignment* means anything written with a leftward arrow—either definition or modification). This is still cryptic but at least a "role" is something we've heard about before.
+Does BQN not know about capital letters? Does it object to self-reference? Why is "`BQN`" green? At least there's an error message, and a "role" is something we've heard about before. *Assignment* means anything written with a leftward arrow—either definition or modification.
 
 I'll first confuse you a little more by pointing out that BQN's variables are case-insensitive, and even underscore-insensitive!
 
