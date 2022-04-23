@@ -13,11 +13,11 @@ In the code blocks shown here, input is highlighted and indented, while output i
         - 1.5
 
 <!--GEN prim.bqn
-Primitives ⟨"+%%%Add", "-%%Negate%Subtract"⟩
+Primitives ⟨"+%%%Add", "-%%Negate%Subtract", "¯%9%Negative"⟩
 -->
 Shown above are a few arithmetic operations. BQN manages to pass as a normal programming language for three lines so far. That's a big accomplishment for BQN! Earth's a confusing place!
 
-The number of spaces between *primitive functions* like `+` and `-` and their *arguments* doesn't matter: you can use as much or as little as you like. No spaces inside numbers, of course.
+The number of spaces between *primitive functions* like `+` and `-` and their *arguments* doesn't matter: you can use as much or as little as you like. No spaces inside numbers, of course. On that note, there's a special minus sign `¯` for use as part of a number, which you can see in the output `¯1.5` above (since `-1.5` consists of a function and a number it's often less convenient to use).
 
         2 × π
         9 ÷ 2
