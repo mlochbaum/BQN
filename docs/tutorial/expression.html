@@ -28,10 +28,15 @@
     <td>Negate</td>
     <td>Subtract</td>
   </tr>
+  <tr>
+    <td><span class='Number'>¯</span></td>
+    <td><kbd>\9</kbd></td>
+    <td colspan='2'>Negative</td>
+  </tr>
 </table>
 
 <p>Shown above are a few arithmetic operations. BQN manages to pass as a normal programming language for three lines so far. That's a big accomplishment for BQN! Earth's a confusing place!</p>
-<p>The number of spaces between <em>primitive functions</em> like <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> and their <em>arguments</em> doesn't matter: you can use as much or as little as you like. No spaces inside numbers, of course.</p>
+<p>The number of spaces between <em>primitive functions</em> like <code><span class='Function'>+</span></code> and <code><span class='Function'>-</span></code> and their <em>arguments</em> doesn't matter: you can use as much or as little as you like. No spaces inside numbers, of course. On that note, there's a special minus sign <code><span class='Number'>¯</span></code> for use as part of a number, which you can see in the output <code><span class='Number'>¯1.5</span></code> above (since <code><span class='Function'>-</span><span class='Number'>1.5</span></code> consists of a function and a number it's often less convenient to use).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDDlyDPgAo5IMO3IDIKw7cg4oie">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>×</span> <span class='Number'>π</span>
 6.283185307179586
     <span class='Number'>9</span> <span class='Function'>÷</span> <span class='Number'>2</span>
