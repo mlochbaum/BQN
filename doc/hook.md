@@ -59,3 +59,33 @@ As in a train, if you want to use a function as a constant then you need to be e
         3 ⋈⟜(⌊˙)⊸⥊ 'a'+↕12
 
 In the more extreme case of wanting a *modifier* operand, you might try `⋈⟜({∘}˙)⊸⥊`, or `(⊣⋈{∘}˙)⊸⥊`, or just cheat with `∾⟜⟨∘⟩⊸⥊`.
+
+## Combinations
+
+If you like to go [tacit](tacit.md), you'll likely end up stringing together a few `⊸`s and `⟜`s at times. Of course the effects are entirely determined by the left-to-right precedence rule for modifiers, but it's interesting to examine what happens in more detail.
+
+In the pattern `F⊸G⟜H`, the ordering doesn't matter at all! That is, it means `(F⊸G)⟜H`, but this is exactly the same function as `F⊸(G⟜H)`. In both cases, `F` is applied to `𝕨`, `H` is applied to `𝕩`, and `G` acts on both the results.
+
+        4 -⊸⋈⟜⋆ 2
+
+I once named this pattern "split compose", but now I think it makes more sense to think of it as two pre-functions added separately to one central function (`⋈` above). The whole is exactly the sum of its parts. When applied to just one argument, `𝕩` is reused on both sides, making the composition equivalent to a 3-[train](train.md).
+
+        -⊸⋈⟜⋆ 2
+
+        (-⋈⋆) 2  # Same thing
+
+More `⟜`s can be added on the right, making `𝕩` flow through all the added functions. So for example `F⟜G⟜H x` is `x F G H x`, and could also be written `F⟜(G H) x`.
+
+A sequence of `⊸`s is more interesting. It doesn't just compose the functions (for that you need `G∘F⊸H`, but note the weird ordering—`F` applies before `G`!), but instead passes the current value *and* the initial function each time. Consider `F⊸G⊸H⊸I`, or `((F⊸G)⊸H)⊸I`: every function but `F` is on the ring side, meaning it's dyadic!
+
+Here's a long example, that might show up if you want to [sort](order.md#sort) an array but have an intolerance for the character `∧`. In quicksort, you select a partition element from the array, then divide it into elements less than, and greater than or equal to, the pivot. You'd probably pick a [random](../spec/system.md#random-generation) element for the pivot, but here I'll go with the middle element to avoid having a webpage that generates differently every time!
+
+        (⌊≠÷2˙)       "quicksort"  # Index of the pivot
+
+        (⌊≠÷2˙)⊸⊑     "quicksort"  # Select pivot from 𝕩
+
+        (⌊≠÷2˙)⊸⊑⊸≤   "quicksort"  # Compare with 𝕩
+
+        (⌊≠÷2˙)⊸⊑⊸≤⊸⊔ "quicksort"  # Use to partition 𝕩
+
+Three is rare, but I use two `⊸`s all the time, as well as `⟜` followed by `⊸`, for example the `<⟜'a'⊸/` filter on the [front page](../README.md). I think a combination like `lots∘of○stuff⊸/ x` reads very nicely when moving from left to right. When I see `⊸/` I know that I'm filtering `x` and can read the rest with that context. The reason `⊸` that has all this power, but not `⟜`, has nothing to do with the modifiers themselves, as they're completely symmetrical. It's all in the way BQN defines modifier grammar, left to right.
