@@ -5,7 +5,7 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="undo"><a class="header" href="#undo">Undo</a></h1>
-<p>Oh no, you've deleted a function after spending half an hour writing it! Well… hopefully your editor can help with that. But maybe you'll be interested to hear that BQN can reverse the action of some functions—ones that <em>don't</em> lose information. This capability is also used by <a href="repeat.html">Repeat</a> (<code><span class='Modifier2'>⍟</span></code>) to repeat a negative number of times.</p>
+<p>Oh no, you've deleted a function after spending half an hour writing it! Well… hopefully your editor can help with that. But maybe you'll be interested to hear that BQN can reverse the action of some functions—ones that <em>don't</em> lose information. This capability is also used by <a href="repeat.html">Repeat</a> (<code><span class='Modifier2'>⍟</span></code>) to repeat a negative number of times, and <a href="under.html">Under</a> (<code><span class='Modifier2'>⌾</span></code>) in some cases.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDijL0gImFiY2RlIgoKMiDijL3igbwgMiDijL0gImFiY2RlIg==">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⌽</span> <span class='String'>&quot;abcde&quot;</span>
 "cdeab"
 
@@ -19,7 +19,7 @@
     <span class='Function'>Fn</span><span class='Modifier'>⁼</span> <span class='Function'>Fn</span> <span class='String'>&quot;BQN&quot;</span>
 "BQN"
 </pre>
-<p>Here it undoes a function to decrement the last character by incrementing that character. In part this is enabled by the clean design of BQN primitives, because better-behaved functions like those using structural Under are easier to invert.</p>
+<p>Here it undoes a function to decrement the last character by incrementing that character. In part this is enabled by the clean design of BQN primitives, because better-behaved functions like those using structural <a href="under.html">Under</a> are easier to invert.</p>
 <h2 id="the-rules"><a class="header" href="#the-rules">The rules</a></h2>
 <p>If <code><span class='Function'>𝔽</span></code> can be inverted exactly, then Undo just does that. However, there are also some other functions that BQN inverts. For example, the squaring function <code><span class='Function'>×</span><span class='Modifier'>˜</span></code> has both a positive and a negative inverse, and yet:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w5fLnCDCrzMKw5fLnOKBvCDDl8ucIMKvMyAgIyBJdCdzIG5vdCB0aGUgc2FtZSE=">↗️</a><pre>    <span class='Function'>×</span><span class='Modifier'>˜</span> <span class='Number'>¯3</span>

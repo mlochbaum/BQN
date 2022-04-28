@@ -151,7 +151,7 @@ To avoid including spaces in the result, we should change the result index at ea
 
         ' '((⊢-˜¬×+`)∘=⊔⊢)"BQN uses notation as a tool of thought"
 
-A function with structural Under, such as `` {¯1¨⌾(𝕩⊸/)+`𝕩} ``, would also work.
+A function with structural [Under](under.md), such as `` {¯1¨⌾(𝕩⊸/)+`𝕩} ``, would also work.
 
 In other cases, we might want to split on spaces, so that words are separated by any number of spaces, and extra spaces don't affect the output. Currently our function makes a new word with each space:
 

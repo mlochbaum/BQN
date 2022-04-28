@@ -94,7 +94,7 @@ A more complicated boolean scan, which depends on the left-to-right ordering, is
 
 ## Reverse scan
 
-We've discussed how the scan moves forward along `𝕩`, so that each time `𝔽` takes an old result as `𝕨` and a new value as `𝕩`. This means that results correspond to [prefixes](prefixes.md) and go left to right on each one. Since the most important scans have associative, commutative operands, the left-to-right ordering often doesn't make a difference. But sometimes a suffix rather than prefix scan is wanted. For these cases, Scan Under [Reverse](reverse.md) (`` `⌾⌽ ``) does the trick.
+We've discussed how the scan moves forward along `𝕩`, so that each time `𝔽` takes an old result as `𝕨` and a new value as `𝕩`. This means that results correspond to [prefixes](prefixes.md) and go left to right on each one. Since the most important scans have associative, commutative operands, the left-to-right ordering often doesn't make a difference. But sometimes a suffix rather than prefix scan is wanted. For these cases, Scan [Under](under.md) [Reverse](reverse.md) (`` `⌾⌽ ``) does the trick.
 
         ∨`   0‿0‿1‿0‿0‿1‿0
 

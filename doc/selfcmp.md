@@ -131,7 +131,7 @@ A more efficient way when `⊒` doesn't have a fast implementation is `` /(¯1�
 
 *There's also an [APL Wiki page](https://aplwiki.com/wiki/Unique) on this function.*
 
-Deduplicate removes every major cell from the argument that matches an earlier cell, resulting in an array with the same rank but possibly a shorter length. It might also be described as returning the unique major cells of the argument, ordered by first occurrence. Deduplicate Under Reverse (`⍷⌾⌽`) orders by last occurrence instead.
+Deduplicate removes every major cell from the argument that matches an earlier cell, resulting in an array with the same rank but possibly a shorter length. It might also be described as returning the unique major cells of the argument, ordered by first occurrence. Deduplicate [Under](under.md) Reverse (`⍷⌾⌽`) orders by last occurrence instead.
 
         ⍷ >"take"‿"drop"‿"drop"‿"pick"‿"take"‿"take"
 

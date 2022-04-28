@@ -72,6 +72,7 @@ Primitives:
 - [Solo, Couple, and Merge: `≍>`](couple.md)
 - [Take and Drop: `↑`](take.md)
 - [Transpose: `⍉`](transpose.md)
+- [Under: `⌾`](under.md)
 - [Undo: `⁼`](undo.md)
 - [Valences: `⊘`](valences.md)
 - [Windows: `↕`](windows.md)

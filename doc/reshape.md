@@ -131,7 +131,7 @@ Computed Reshape might also be used in actual data processing: for example, to s
 
         +´˘ ↑‿4 ⥊ ⟨0,2,1,1, 5,9,6,4, 3,3,3,3, 9,7⟩
 
-Computed Reshape can even be used with structural Under. Only the `∘` case really makes sense, although `⌊`, which leaves trailing elements unchanged, could conceivably be useful. Below, we split one argument into three groups and [reverse](reverse.md) their order, and reverse groups of three in another.
+Computed Reshape can even be used with [structural Under](under.md#structural-under). Only the `∘` case really makes sense, although `⌊`, which leaves trailing elements unchanged, could conceivably be useful. Below, we split one argument into three groups and [reverse](reverse.md) their order, and reverse groups of three in another.
 
         ⌽⌾(3‿∘⊸⥊) ↕15
 

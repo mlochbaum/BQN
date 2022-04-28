@@ -26,7 +26,7 @@ The right argument `↕5` could be any length-5 list, as its values aren't used.
 
         (⌽↕4) ⊣¨ ↕4‿5
 
-A more powerful pattern is with dyadic Under (`⌾`): unselected parts of the result will use values from `𝕩`. If `𝔽` is `⊣`, then the selected ones will use values from `𝕨`, merging these arrays together.
+A more powerful pattern is with dyadic [Under](under.md) (`⌾`): unselected parts of the result will use values from `𝕩`. If `𝔽` is `⊣`, then the selected ones will use values from `𝕨`, merging these arrays together.
 
         "ABCDE" ⊣⌾(0‿1‿1‿0‿0⊸/) "abcde"
 

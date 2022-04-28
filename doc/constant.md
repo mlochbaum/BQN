@@ -23,6 +23,6 @@ When programming with [first-class functions](functional.md), the constant appli
         M ← -
         m {𝕨⌾(2⊸⊑) 𝕩} 1‿2‿3‿4
 
-Here `m` is applied to `2⊑𝕩` even though we want to discard that value. Spelled as `m`, our [context-free grammar](context.md) knows it's a function argument, but this [doesn't affect](../problems.md#syntactic-type-erasure) later usage. Under always applies `𝔽` as a function. The proper definition of the insertion function should use a `˙`, like this:
+Here `m` is applied to `2⊑𝕩` even though we want to discard that value. Spelled as `m`, our [context-free grammar](context.md) knows it's a function argument, but this [doesn't affect](../problems.md#syntactic-type-erasure) later usage. [Under](under.md) always applies `𝔽` as a function. The proper definition of the insertion function should use a `˙`, like this:
 
         m {𝕨˙⌾(2⊸⊑) 𝕩} 1‿2‿3‿4

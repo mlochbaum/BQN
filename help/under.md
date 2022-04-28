@@ -3,6 +3,7 @@
 # Circle Jot (`⌾`)
 
 ## `𝔽⌾𝔾 𝕩`, `𝕨 𝔽⌾𝔾 𝕩`: Under
+[→full documentation](../doc/under.md)
 
 - Apply transformation `𝔾` to all arguments
 - Apply `𝔽` to the transformed arguments

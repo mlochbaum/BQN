@@ -39,7 +39,7 @@ Ll ← Line∘⍉ ≍ + (0≍0.05×-○⊑)≍˘0.45‿¯0.55˙
 
 The functions Indices and Replicate are used to copy or filter data. They might be described as transforming a [run-length encoding](https://en.wikipedia.org/wiki/Run-length_encoding) into unencoded form. On the other hand, Indices might be described as giving a sparse representation of `𝕩`, which is smaller if `𝕩` mostly consists of zeros.
 
-BQN doesn't have any of the various features used in APL to add fills to the result of Replicate, like negative numbers in `𝕨` or an Expand (`\`) primitive. An alternative to Expand is to use Replicate with structural Under (`⌾`) to insert values into an array of fills.
+BQN doesn't have any of the various features used in APL to add fills to the result of Replicate, like negative numbers in `𝕨` or an Expand (`\`) primitive. An alternative to Expand is to use Replicate with structural [Under](under.md) (`⌾`) to insert values into an array of fills.
 
 ## Replicate
 
