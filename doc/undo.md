@@ -2,7 +2,7 @@
 
 # Undo
 
-Oh no, you've deleted a function after spending half an hour writing it! Well… hopefully your editor can help with that. But maybe you'll be interested to hear that BQN can reverse the action of some functions—ones that *don't* lose information. This capability is also used by [Repeat](repeat.md) (`⍟`) to repeat a negative number of times.
+Oh no, you've deleted a function after spending half an hour writing it! Well… hopefully your editor can help with that. But maybe you'll be interested to hear that BQN can reverse the action of some functions—ones that *don't* lose information. This capability is also used by [Repeat](repeat.md) (`⍟`) to repeat a negative number of times, and [Under](under.md) (`⌾`) in some cases.
 
         2 ⌽ "abcde"
 
@@ -14,7 +14,7 @@ Above is one example of Undo (`⁼`) in action. [Rotate](reverse.md) shifts the 
 
         Fn⁼ Fn "BQN"
 
-Here it undoes a function to decrement the last character by incrementing that character. In part this is enabled by the clean design of BQN primitives, because better-behaved functions like those using structural Under are easier to invert.
+Here it undoes a function to decrement the last character by incrementing that character. In part this is enabled by the clean design of BQN primitives, because better-behaved functions like those using structural [Under](under.md) are easier to invert.
 
 ## The rules
 

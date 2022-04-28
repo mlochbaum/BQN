@@ -50,4 +50,4 @@ Another example is `/○⥊`, used to filter elements in a high-rank array. Alon
 
         (a<'a') /○⥊ a
 
-Over is closely connected with the Under modifier, which performs all the same steps but then undoes `𝔾` afterwards.
+Over is closely connected with the [Under](under.md) modifier, which performs all the same steps but then undoes `𝔾` afterwards.

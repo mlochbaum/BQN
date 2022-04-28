@@ -135,7 +135,7 @@ Just as bad, this result has the right information, but is enclosed and could br
 
         stuff ⊑∘⊐⟜< "string"
 
-If `𝕨` is fixed, then the version I prefer is to use Under to enclose the argument and then un-enclose the result. It requires `𝕨` to be bound to `⊐` because otherwise Under would enclose `𝕨` as well, since it applies `𝔾` to both arguments.
+If `𝕨` is fixed, then the version I prefer is to use [Under](under.md) to enclose the argument and then un-enclose the result. It requires `𝕨` to be bound to `⊐` because otherwise Under would enclose `𝕨` as well, since it applies `𝔾` to both arguments.
 
         stuff⊸⊐⌾< "string"
 
