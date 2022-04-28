@@ -3,6 +3,7 @@
 # Full Stop (`.`)
 
 ## `ns . name`: Namespace Field
+[→full documentation](../doc/namespace.md)
 
 Access a field with name `name` in namespace `ns`. Field must have been exported with `⇐`.
 
