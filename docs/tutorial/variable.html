@@ -153,6 +153,26 @@
 </table>
 
 <p>Besides using some primitives we haven't seen here, the notation is a little noisy. In return it's very flexible, in that you can apply any function you want, at a location you can select with a large class of BQN functions.</p>
+<svg viewBox='-270 -106 540 212'>
+  <g font-size='20px' text-anchor='middle' fill='currentColor'>
+    <rect class='code' stroke-width='1' rx='12' x='-200' y='-96' width='400' height='192'/>
+    <g stroke-width='3'><path class='purple' style='fill:none' d='M-60 -48l120 0m-15 -8l15 8l-15 8'/></g>
+    <g stroke-width='2'><path class='yellow' style='fill:none' d='M-60 48l120 0m-15 -8l15 8l-15 8M-100 -31.68l0 63.36m8 -15l-8 15l-8 -15M100 -31.68l0 63.36m8 -15l-8 15l-8 -15'/></g>
+    <g font-size='18px' font-family='BQN,monospace'>
+      <text dy='0.31em' x='0' y='-69.12'><tspan class='Function'>-</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Number'>1</tspan><tspan class='Modifier2'>⌾</tspan><tspan class='Paren'>(</tspan><tspan class='Number'>2</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>⊑</tspan><tspan class='Paren'>)</tspan></text>
+      <text dy='0.31em' x='0' y='69.12'><tspan class='Function'>-</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Number'>1</tspan></text>
+      <text dy='0.31em' x='-135' y='0'><tspan class='Number'>2</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>⊑</tspan></text>
+      <text dy='0.31em' x='135' y='0'><tspan class='Number'>2</tspan><tspan class='Modifier2'>⊸</tspan><tspan class='Function'>⊑</tspan></text>
+      <g class='string'>
+        <text dy='0.31em' x='-100' y='-48'>"BQN"</text>
+        <text dy='0.31em' x='-100' y='48'> 'N' </text>
+        <text dy='0.31em' x='100' y='-48'>"BQM"</text>
+        <text dy='0.31em' x='100' y='48'> 'M' </text>
+      </g>
+    </g>
+  </g>
+</svg>
+
 <p>So let's break this down. The 2-modifier Under (<code><span class='Modifier2'>⌾</span></code>) has two operands: the left one, <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>1</span></code>, subtracts one, and the right one, <code><span class='Number'>2</span><span class='Modifier2'>⊸</span><span class='Function'>⊑</span></code> uses a function we haven't seen before. It uses the right operand to pick out part of its argument, then the left one acts on that part only, and the entire argument, with the necessary modifications, is returned.</p>
 <svg viewBox='-174.7 -34 512 188'>
   <g font-family='BQN,monospace' font-size='18px' class='Paren' fill='currentColor'>

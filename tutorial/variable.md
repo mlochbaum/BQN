@@ -112,6 +112,41 @@ Primitives ⟨ "⌾%K%Under", "⊑%I%First%Pick" ⟩
 -->
 Besides using some primitives we haven't seen here, the notation is a little noisy. In return it's very flexible, in that you can apply any function you want, at a location you can select with a large class of BQN functions.
 
+<!--GEN
+{
+d ← 100‿48
+
+Text ← ("text" Attr "dy"‿"0.31em"∾·Pos d⊸×)⊸Enc
+Path ← ("path" Attr "class"⊸⋈≍"style"‿"fill:none"˙)⊸Elt⟜("d"⊸⋈)
+
+vals ← -⟜1{≍⟜(𝔾¨) ⊢⋈𝔽⌾𝔾}(2⊸⊑) "BQN"
+
+g  ← "font-size=20px|text-anchor=middle|fill=currentColor"
+rc ← At "class=code|stroke-width=1|rx=12"
+fc ← "font-size=18px|font-family=BQN,monospace"
+
+Ge ← "g"⊸At⊸Enc
+_arrow ← {
+  a ← ((⊢≍-⌾⊑∘⌽)÷⟜(+´⌾(×˜))𝕨) +˝∘×⎉1‿∞˜ 𝕗≍-⌾⊑𝕗
+  ∾"M l m l l "∾¨ FmtNum ∾⥊¨⟨𝕩-𝕨, 𝕨, -⊏a, a⟩
+}
+Arr ← 15‿8 _arrow
+cut ← 0.2‿0.17
+ars ← (×⟜(¬2×cut) Arr○(d⊸×) ×⟜(-cut)⊸+)¨⟜((<-1‿1)⊸++0‿0≍˘⌽) 2×=⟜<↕2
+
+dim ← 5.2‿4×d
+rdim ← 4‿4×d
+(∾÷⟜¯2‿1<20+dim) SVG g Ge ⟨
+  "rect" Elt rc∾(Pos rdim÷¯2)∾"width"‿"height"≍˘FmtNum rdim
+  "stroke-width=3"‿"stroke-width=2" Ge¨ "purple"‿"yellow" Path⟜∾¨ 0‿1‿1‿1⊔⥊ars
+  fc Ge ⟨
+    (⍉-⊸≍1.44‿1.35×⌽<⊸=↕2) Text⟜Highlight¨ "-⟜1⌾(2⊸⊑)"‿"-⟜1"≍⋈˜"2⊸⊑"
+    "class=string" Ge (⋈⌜˜-⟜¬↕2) Text¨ ⍉0‿¯1⌽¨(⌈´∘⥊≠¨)⊸(↑¨) •Repr¨ vals
+  ⟩
+⟩
+}
+-->
+
 So let's break this down. The 2-modifier Under (`⌾`) has two operands: the left one, `-⟜1`, subtracts one, and the right one, `2⊸⊑` uses a function we haven't seen before. It uses the right operand to pick out part of its argument, then the left one acts on that part only, and the entire argument, with the necessary modifications, is returned.
 
 <!--GEN evalexp.bqn
