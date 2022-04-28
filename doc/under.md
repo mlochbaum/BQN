@@ -68,6 +68,14 @@ BQN can detect lots of structural functions when written in [tacit](tacit.md) fo
 
         ⌽⌾(⊢↑˜≠÷2˙) "abcdef"
 
+But you can't use a computation that uses array values, such as `10⊸+⌾((<⊸5)⊸/)` to add 10 to each element below 5. This is because Under can change the array values, so that the function `𝔾` doesn't select the same elements before and after applying it (at the same time, Under can't change array structure, or at least not the parts that matter to `𝔾`). To use a dynamic selection function, compute the mask or indices based on a copy of the argument and use those as part of `𝔾`.
+
+        {10⊸+⌾((𝕩<5)⊸/)𝕩} 3‿8‿2‿2‿6
+
+        (<⟜5)⊸/ 3‿8‿2‿2‿6
+
+        (<⟜5)⊸/ {10⊸+⌾((𝕩<5)⊸/)𝕩} 3‿8‿2‿2‿6
+
 Under is useful with [scans](scan.md), as discussed in a section on [reverse scan](scan.md#reverse-scan). In this case, `⌽` is exactly invertible, so `⌾` can just as easily be seen as computational Under. When `𝔾` has an exact inverse, there can only be one solution to the constraint on Under, and both forms must be the same.
 
         ∧`⌾⌽ 1‿0‿1‿0‿1‿1‿1
@@ -78,7 +86,7 @@ Computational Under is based on [Undo](undo.md) (`⁼`), and applies whenever st
 
         (+´÷≠)⌾(×˜) 2‿3‿4‿5
 
-This average is the square root of the average of the squares of the arguments, and `⌾` lets us combine the two square-y steps. Similarly, `⌾÷` can be used for a harmonic sum or mean (you might notice that computational Under is a lot more mathy than the structural one).
+This average is the square root of the average of the squares of the arguments, and `⌾` lets us combine the two square-y steps. Here there are two possible solutions because `¯3.67…` has the same square as the positive result; BQN of course uses the principal root. Similarly, `⌾÷` can be used for a harmonic sum or mean (you might notice that computational Under is a lot more mathy than the structural one).
 
 Under is the idiomatic way to do a round-to-nearest function:
 
