@@ -95,6 +95,14 @@
 
   # Format any value to character matrix
   Fmt ← Type (3≤⊣)◶⟨FmtDat⊢,FmtOp⟩ ⊢
+  Trunc ← {
+    m ← "•Fmt: 𝕨 must be a list of up to two numbers (width, height)"
+    m ! (1≥=)◶⟨0,2≥≠⟩ 𝕨
+    sh ← ⌽𝕨»∞‿∞
+    c ← sh<s←≢ f ← 𝕩
+    sh {l←c-˜𝕨⌊s ⋄ ls←⋈⌜´l∾⟜(⥊⟜1)¨c ⋄ ∾ ls ⥊¨ (l↑f)⌾⊑ '…'¨ ls}⍟(∨´c) f
+  }
+  FmtW ← Fmt⊘(Trunc⟜Fmt)
 
   # Represent as string
   RR ← {Repr𝕩}
@@ -109,5 +117,5 @@
   Repr ← Type (3≤⊣)◶⟨ReprDat⊢,ReprOp⟩ ⊢
 
   # Convert Fmt from matrix to string
-  ⟨¯1↓·⥊ ∾⟜(@+10)˘∘Fmt, Repr⟩
+  ⟨¯1↓·⥊ ∾⟜(@+10)˘∘FmtW, Repr⟩
 }
