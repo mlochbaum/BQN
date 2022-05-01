@@ -46,19 +46,28 @@
     ≍(1<≠)◶⟨"⟨⟩",'↕'⌾⊑·∾·"‿"⊸∾¨FN¨⟩≢𝕩
   })
 
-  PaddingJoin ← {
+  _paddingJoin ← {  # 𝕗 is 1 to left align and ¯1 to right align
     s ← ≢¨ 𝕩
     w ← (0<=)◶⟨⥊,⌈˝⍟(=-1˙)⟩1⊑¨s
     h ← ⌈˝⎉1⍟(0<=) ⊑¨s
-    o ← <∘∾⎉2 ≍⍟(0⌈2-=) (h ≍⌜ 𝕨×w¬(-𝕨×≠w)↑1) ↑¨ 𝕩
+    o ← <∘∾⎉2 ≍⍟(0⌈2-=) (h ⋈⌜ 𝕗×w¬(-𝕗×≠w)↑1) ↑¨ 𝕩
     2 PadH (1⊸⌽⊸≡⥊h)◶⟨PadVMixed,PadV∘>⟩ o
   }
 
-  FmtMixed ← {
-    (=𝕩) Enframe (𝕨⊣1) PaddingJoin Fmt¨𝕩
+  _fmtMixedP ← {
+    r ← =𝕩
+    Join ← r Enframe 𝕗 _paddingJoin
+    𝕨 (∨´<⟜∞)◶(Join <⊸(Fmt¨))‿{
+      p ← ⟨r>1,2⟩  # Outer padding
+      o ← ¯1((0+⌜´(1(1+×)`⊢)⌾⌽×↕¨)∘↓⋈⌜2×↕∘⊑)≢𝕩  # Offset
+      E ← (1‿1⥊'…')˙
+      f ← o (𝕨-p)⊸-⊸(⊣ E∘⊢⍟(∨´<⟜≢) (∨´≤⟜0)◶Fmt‿E)¨ 𝕩
+      Join f
+    } 𝕩
   }
+  FmtMixed ← 1 _fmtMixedP
 
-  FmtSimple ← (≠(0⊸<+≤)+´)∘(⥊<@˙)◶{ # Depth 1
+  FmtSimple ← (≠(0⊸<+≤)+´)∘(⥊<@˙)∘⊢◶{ # Depth 1
     # All characters
     r ← =𝕩 ⋄ 𝕩 ↩ ><¨0↓𝕩  # Ensure rank>0 and ' ' for fill
     k ← ∞⍟(0⊸=) -≠ c ← ¯1↓≢𝕩
@@ -70,14 +79,18 @@
     (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (q⌾⊑c⥊(¯1⊑1∾c)↑'·') ∾⎉k 𝕩 ∾⎉k c-⊸↑q
   }‿{
     # Not homogeneous, or empty
-    (∨´0=≢)◶FmtMixed‿FmtEmpty 𝕩
+    (∨´0=≢)◶⟨𝕨⊸FmtMixed,FmtEmpty⟩ 𝕩
   }‿{
     # All numbers
-    ¯1 FmtMixed 𝕩
+    𝕨 ¯1 _fmtMixedP 𝕩
   }
 
   # Format data type
-  FmtDat ← (2⌊≡)◶⟨≍ReprAtom,(∨´∘⥊3≤Type⌜)◶FmtSimple‿FmtMixed,FmtMixed⟩
+  FmtDat ← (2⌊≡∘⊢)◶⟨
+    ≍ ReprAtom∘⊢
+    (∨´∘⥊3≤Type⌜∘⊢)◶FmtSimple‿FmtMixed
+    FmtMixed
+  ⟩
 
   # Format part of a compound operation; return precedence‿string
   _dispOp_ ← {
@@ -94,15 +107,19 @@
   FmtOp ← ≍1⊑ (1=≠)◶⟨arr,⊏⟩∘FmtDat _dispOp_ (=⟜2◶⟨FF⊑∘⊢,arr⟩)
 
   # Format any value to character matrix
-  Fmt ← Type (3≤⊣)◶⟨FmtDat⊢,FmtOp⟩ ⊢
+  Fmt ← {
+    t ← Type𝕩
+    𝕨 (3≤t)◶⟨FmtDat,t⊸FmtOp⟩ 𝕩
+  }
   Trunc ← {
+    c ← 𝕨<s←≢ f ← 𝕩
+    𝕨 {l←c-˜𝕨⌊s ⋄ ls←⋈⌜´l∾⟜(⥊⟜1)¨c ⋄ ∾ ls ⥊¨ (l↑f)⌾⊑ '…'¨ ls}⍟(∨´c) f
+  }
+  FmtW ← {
     m ← "•Fmt: 𝕨 must be a list of up to two numbers (width, height)"
     m ! (1≥=)◶⟨0,2≥≠⟩ 𝕨
-    sh ← ⌽𝕨»∞‿∞
-    c ← sh<s←≢ f ← 𝕩
-    sh {l←c-˜𝕨⌊s ⋄ ls←⋈⌜´l∾⟜(⥊⟜1)¨c ⋄ ∾ ls ⥊¨ (l↑f)⌾⊑ '…'¨ ls}⍟(∨´c) f
+    (⌽𝕨⊢⊘»∞‿∞) (⊣ Trunc Fmt) 𝕩
   }
-  FmtW ← Fmt⊘(Trunc⟜Fmt)
 
   # Represent as string
   RR ← {Repr𝕩}
