@@ -5,7 +5,7 @@ compile ← need •Import "src/c.bqn"
 glyphs ← ∾ •Import "src/glyphs.bqn"
 vm ← •Import "vm.bqn"
 
-FillFn ← (⊑1↑0↑⥊)⊘{𝕩˙⌾⊢ <𝕨}
+FillFn ← (⊑1↑0↑⥊)⊘{𝕩⌾(⊢¨)𝕩≢⊸⥊<𝕨}
 _fillBy_ ← {
   r←𝕨𝔽x←𝕩 ⋄ G←𝔾
   𝕨({
