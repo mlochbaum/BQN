@@ -104,7 +104,7 @@
     p‿s
   }
   arr ← "*array*"
-  FmtOp ← ≍1⊑ (1=≠)◶⟨arr,⊏⟩∘FmtDat _dispOp_ (=⟜2◶⟨FF⊑∘⊢,arr⟩)
+  FmtOp ← ≍1⊑ (1=≠)◶⟨arr,⊏⟩∘(∞‿∞⊸FmtDat) _dispOp_ (=⟜2◶⟨FF⊑∘⊢,arr⟩)
 
   # Format any value to character matrix
   Fmt ← {
