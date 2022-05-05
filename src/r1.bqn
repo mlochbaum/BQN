@@ -468,7 +468,7 @@ under←{
   SFN ← 0⊸≤◶⟨3,2⊸≤◶⊢‿2⟩∘(0⊑⊢)◶⟨
     SE · {p←SP𝕩⋄P𝕩} 1⊑⊢           #  0 primitive
     E˙                            #  1 block
-    DIsConst◶⟨0⊸⊑ Recomp {SFN⌜1↓𝕩}, SE{(1⊑𝕩)˙}⟩  # other operation
+    DIsConst◶⟨SE 0⊸⊑ Recomp {SFN⌜1↓𝕩}, {(1⊑𝕩)˙}⟩  # other operation
     SE 1⊑⊢                        # ¯1 constant
   ⟩⟜{Decompose𝕩}
 
