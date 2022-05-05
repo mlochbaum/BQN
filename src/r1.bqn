@@ -29,13 +29,14 @@ _glyphLookup_ ← {
 }
 _isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
 IsJoin ← '∾'_isGlyph
+IsTable ← '⌜'_isGlyph
 DIsConst ← (4=0⊸⊑)◶0‿('˙'_isGlyph 2⊸⊑)
 
 Split2 ← { s←2⊸×⌜↕(≠𝕩)÷2 ⋄ ⟨s⊏𝕩,(1⊸+⌜s)⊏𝕩⟩ }
 _lookup_ ← {
   k‿v←Split2 𝕘 ⋄ k _glyphLookup_ (v∾⟨𝕗⟩)
 }
-Identity ← {𝕏0} !∘"´: Identity not found" _lookup_ ⟨
+ScalId ← @ _lookup_ ⟨
   '+',0 , '-',0
   '×',1 , '÷',1
   '⋆',1 , '¬',1
@@ -44,6 +45,11 @@ Identity ← {𝕏0} !∘"´: Identity not found" _lookup_ ⟨
   '≠',0 , '=',1
   '>',0 , '≥',1
 ⟩
+TabId ← {
+  id ← (4=0⊸⊑)◶⟨0,(IsTable 2⊸⊑)⟩◶⟨@,ScalId 1⊸⊑⟩ Decompose 𝕩
+  "´: Identity not found" ! @≠id ⋄ <id
+}
+Identity ← { 𝕨 @⊸=◶⟨⊢⊘Reshape,TabId𝕩˙⟩ ScalId𝕩 }
 
 _fold←{
   "´: 𝕩 must be a list" ! 1==𝕩
@@ -695,7 +701,7 @@ _insert←{
   Id ← {
     s ← 1↓≢𝕩
     JoinSh ← {"˝: Identity does not exist"!0<≠𝕨 ⋄ 𝕨×⟜(0⊸<)¨↕≠𝕨}
-    s (1-IsJoin∘⊢)◶⟨JoinSh⥊𝕩˙, Reshape⟜Identity⟩ f
+    s (1-IsJoin∘⊢)◶⟨JoinSh⥊𝕩˙, Identity⟩ f
   }
   𝕨 (0<≠)⊘1◶Id‿{𝕨F´1 EncCell 𝕩} 𝕩
 }
