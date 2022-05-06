@@ -7,7 +7,7 @@ Some people consider it reasonable to name [combinators](primitive.md#modifiers)
 |   BQN   | Bird 1   | 1        | Bird 2       | 2                              |
 | :-----: | -------- | -------- | ------------ | ------------------------------ |
 |   `⊣`   | Identity | `I`      | Kestrel      | `K`                            |
-|   `⊢`   | Identity | `I`      |              | `KI`                           |
+|   `⊢`   | Identity | `I`      | Kite         | `KI`                           |
 |   `∘`   | Bluebird | `B`      | Blackbird    | `B₁`                           |
 |   `○`   | Bluebird | `B`      | Psi          | `ψ`                            |
 |   `˙`   | Kestrel  | `K`      |              | `KK`                           |
