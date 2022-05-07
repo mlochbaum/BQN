@@ -113,7 +113,7 @@ This list application works recursively, so that lists of lists (and so on) are 
 ## Some list functions
 
 <!--GEN
-Primitives ⟨"⋈%.%Enlist%Pair", "∾%,%%Join To", "⌽%q%Reverse%Rotate"⟩
+Primitives ⟨"⋈%Z%Enlist%Pair", "∾%,%%Join To", "⌽%q%Reverse%Rotate"⟩
 -->
 Let's introduce a few primitives to work with lists.
 
