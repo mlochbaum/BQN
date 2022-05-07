@@ -19,7 +19,7 @@ The useful control structures introduced here are collected as shortened definit
     # Switch/case statements have many variations; these are a few
     Match   ← {𝕏𝕨}´
     Select  ← {(⊑𝕩)◶(1↓𝕩)@}
-    Switch  ← {c←⊑𝕩 ⋄ m‿a←<˘⍉∘‿2⥊1↓𝕩 ⋄ (⊑a⊐C)◶m@}
+    Switch  ← {c←⊑𝕩 ⋄ m‿a←<˘⍉∘‿2⥊1↓𝕩 ⋄ (m⊸⊐⌾<C)◶a@}
     Test    ← {fn←{C‿A𝕊e:C◶A‿E}´𝕩⋄Fn@}
 
 ## Blocks and functions
@@ -153,7 +153,7 @@ A simplified version of a switch-case statement is possible if the cases are nat
 
 To test against other possible values, the following statement takes interleaved lists of values and actions, and disentangles them. It searches through the values with `⊐`.
 
-    Switch ← {c←⊑𝕩 ⋄ m‿a←<˘⍉∘‿2⥊1↓𝕩 ⋄ (⊑a⊐C)◶m@}
+    Switch ← {c←⊑𝕩 ⋄ m‿a←<˘⍉∘‿2⥊1↓𝕩 ⋄ (m⊸⊐⌾<C)◶a@}
 
     Switch ⟨value
       "increment" ⋄ {𝕤⋄ v+↩1}
