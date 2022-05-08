@@ -6,6 +6,8 @@
 
 Third-party packages to build some BQN implementations are available for both Nix and Arch Linux. For general use I recommend `cbqn` from nixpkgs (Nix) and `cbqn-git` from the AUR (Arch).
 
+For tools related to running BQN, see the [editor plugins](editors/README.md) and [fonts page](https://mlochbaum.github.io/BQN/fonts.html).
+
 All these websites run BQN (on your computer, except Attempt This Online):
 
 | Link | Style | Engine | Comments
