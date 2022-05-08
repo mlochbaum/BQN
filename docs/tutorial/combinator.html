@@ -14,6 +14,16 @@
 6
 </pre>
 <p>This composition starts with the three values <code><span class='Function'>|</span></code>, <code><span class='Function'>-</span></code>, and <code><span class='Number'>6</span></code>. To produce its result, it first applies <code><span class='Function'>-</span></code> to <code><span class='Number'>6</span></code>, giving <code><span class='Number'>¯6</span></code>, a new value that it's free to use later. Then it applies <code><span class='Function'>|</span></code> to <code><span class='Number'>¯6</span></code>, giving <code><span class='Number'>6</span></code> again. Bit of a waste.</p>
+<table class='primitives'>
+  <tr>
+    <td><span class='Function'>|</span></td>
+    <td></td>
+    <td>Absolute Value</td>
+    <td></td>
+  </tr>
+</table>
+
+<p>Oh, right, <code><span class='Function'>|</span></code> is another one of those math class things, the absolute value. It makes negative numbers positive, and leaves positive ones alone, so |-6| is 6. But Iverson worked out a neat trick when he turned his mathematical notation into a programming language: if we write <code><span class='Function'>|</span><span class='Number'>¯6</span></code> without the trailing bar, then <code><span class='Function'>|</span></code> can be an ordinary one-argument function. Which means it can be used as an operand to the combinator <code><span class='Modifier2'>∘</span></code> for example.</p>
 <p>In BQN's combinators, the result of a function application is never used as a function itself. This allows us to use a graphic like the one below to represent a combinator. In each graph, function applications are illustrated with the name of the function linked by yellow lines to its arguments below (this is the same view as the expression diagrams we've been using, flipped upside down and cleaned up a little).</p>
 <svg viewBox='-191 0 672 270'>
   <g font-size='20px' text-anchor='middle' transform='translate(145,20)'>
@@ -608,6 +618,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code><span class='Function'>|</span></code></td>
+<td><a href="../doc/arithmetic.html#additional-arithmetic">Absolute Value</a></td>
+<td></td>
+</tr>
 <tr>
 <td><code><span class='Function'>&lt;</span></code></td>
 <td></td>

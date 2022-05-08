@@ -16,6 +16,13 @@ There are benefits to being tightly restricted and horribly confined! In program
 
 This composition starts with the three values `|`, `-`, and `6`. To produce its result, it first applies `-` to `6`, giving `¯6`, a new value that it's free to use later. Then it applies `|` to `¯6`, giving `6` again. Bit of a waste.
 
+<!--GEN prim.bqn
+Primitives ⟨
+  "|%%Absolute Value%"
+⟩
+-->
+Oh, right, `|` is another one of those math class things, the absolute value. It makes negative numbers positive, and leaves positive ones alone, so |-6| is 6. But Iverson worked out a neat trick when he turned his mathematical notation into a programming language: if we write `|¯6` without the trailing bar, then `|` can be an ordinary one-argument function. Which means it can be used as an operand to the combinator `∘` for example.
+
 In BQN's combinators, the result of a function application is never used as a function itself. This allows us to use a graphic like the one below to represent a combinator. In each graph, function applications are illustrated with the name of the function linked by yellow lines to its arguments below (this is the same view as the expression diagrams we've been using, flipped upside down and cleaned up a little).
 
 <!--GEN ../doc/combinator.bqn
@@ -33,7 +40,7 @@ So `|∘-` is the absolute difference: a useful function for a change! If we hav
 
 This means that if you are at 14th and 8th, and want to get to 19th and 6th, or vice-versa, you must walk at least seven blocks total: five to get from 14th to 19th and two from 8th to 6th, not necessarily in that order. The function `+´∘|∘-` actually uses both cases of `∘`: the one-argument case for `+´∘|`, and the two argument case for the `∘-` part.
 
-<!--GEN prim.bqn
+<!--GEN
 Primitives ⟨
   "˜%`%Self%Swap"
   "˙%""%Constant"
@@ -297,6 +304,7 @@ BQN has a full complement of comparison functions, which are pervasive (work on 
 
 Glyph | 1 arg                     | 2 args
 ------|---------------------------|--------
+`\|`  | [Absolute Value](../doc/arithmetic.md#additional-arithmetic) |
 `<`   |                           | [Less Than](../doc/arithmetic.md#comparisons)
 `>`   |                           | [Greater Than](../doc/arithmetic.md#comparisons)
 `≠`   | [Length](../doc/shape.md) | [Not Equals](../doc/arithmetic.md#comparisons)

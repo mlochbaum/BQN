@@ -12,5 +12,5 @@ The tutorials available so far:
 |------------------------------|----------|-----------
 | [Expressions](expression.md) | Arithmetic, syntax, affine characters  | `+-×÷⋆√˜⁼˙∘`
 | [List manipulation](list.md) | Lists, strings, and strands; pervasion | `∾⋈⌽↕¨´`
-| [Combinators](combinator.md) | Tacit programming, booleans            | `<>≠=≤≥≡≢○⊸⟜`
+| [Combinators](combinator.md) | Tacit programming, booleans            | `\|<>≠=≤≥≡≢○⊸⟜`
 | [Variables](variable.md)     | Declarations, cross-roles              | `∧∨¬⊣⊢↑↓«»⌾`
