@@ -222,10 +222,10 @@ The objects we've seen so far are:
 |             | `⋆`      | Power
 |             | `√`      | (Square) Root
 |             | `⋆⁼`     | Logarithm
-| 1-modifiers | `˜`      | Swap, Self
-|             | `⁼`      | Undo
-|             | `˙`      | Constant
-| 2-modifiers | `∘`      | Atop
+| 1-modifiers | `˜`      | [Swap, Self](../doc/swap.md)
+|             | `⁼`      | [Undo](../doc/undo.md)
+|             | `˙`      | [Constant](../doc/constant.md)
+| 2-modifiers | `∘`      | [Atop](../doc/compose.md)
 
 Except for `⋆⁼`, which is just a particular case of a modifier applied to a function, everything we've seen is either a *literal* (characters and numbers) or a *primitive* (functions and modifiers), and has a fixed value. Primitive 1-modifiers have superscript characters and 2-modifiers contain unbroken circles. Other primitives are always functions.
 

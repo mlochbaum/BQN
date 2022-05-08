@@ -320,6 +320,8 @@ A combinator is a function or modifier that produces its result from its inputs 
 DrawComp "∘˜˙"≍"○⊸⟜"
 -->
 
+Documentation: [Atop and Over](../doc/compose.md), [Before and After](../doc/hook.md), [Self/Swap](../doc/swap.md), [Constant](../doc/constant.md).
+
 A data value (number, character, or array) can be applied as a function, in which case it ignores any arguments and returns itself. In particular, using a data value as the left operand of Before or the right operand of After is called Bind because it attaches that data value as an argument to the other operand.
 
 This section was a bit long because combinators are conceptually difficult, but as you can see we didn't cover all that much material (and our diagrams *fully* define the combinators in question, which is unusual in a summary!). The tacit style we've used here can be very confusing or uncomfortable at first, maybe *because* it's so radically simple. We'll keep working with it in future tutorials, and it should start to feel more solid and logical. Even if not, that's okay! As I said, BQN has a more explicit function style as well, and it's completely possible to program without ever using a combinator. But perhaps you'll find that a well-placed Over or Bind can make things a lot smoother.
