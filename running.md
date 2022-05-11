@@ -4,7 +4,7 @@
 
 [CBQN](https://github.com/dzaima/CBQN) is the primary offline implementation. Scripts in this repository start with `#! /usr/bin/env bqn` in order to look up the user's `bqn` executable, which is expected to be CBQN.
 
-Third-party packages to build some BQN implementations are available for both Nix and Arch Linux. For general use I recommend `cbqn` from nixpkgs (Nix) and `cbqn-git` from the AUR (Arch).
+Third-party packages to build some BQN implementations are available for both Nix and Arch Linux. For general use I recommend `cbqn` from nixpkgs (Nix) and `cbqn-git` from the AUR (Arch). There are also third party [Windows builds](https://github.com/actalley/WinBQN) hosted on Github.
 
 For tools related to running BQN, see the [editor plugins](editors/README.md) and [fonts page](https://mlochbaum.github.io/BQN/fonts.html).
 
@@ -41,6 +41,8 @@ The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be lo
 #### CBQN
 
 C sources are kept in the [CBQN](https://github.com/dzaima/CBQN) repository, but it also depends on bytecode from the BQN sources here. Running `make` gets a working copy right away with saved bytecode. Then to use the latest bytecode, call `$ ./BQN genRuntime …/BQN`, where `…/BQN` points to this repository, and run `make` again.
+
+CBQN is developed on Linux, and as-is will only run on Unix-like systems (including macOS). To run on Windows, [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) has the best support but there are also native builds based on each of Cygwin and Mingw [here](https://github.com/actalley/WinBQN).
 
 `genRuntime` can also be run with another BQN implementation (the Node.js one works but takes up to a minute), and plain `./genRuntime` uses your system's `bqn` executable. I symlink `…/CBQN/BQN` to `~/bin/bqn` so I can easily use CBQN for scripting.
 
