@@ -66,7 +66,7 @@ I picked out the ligature character `‿` between YAG meetings, but I think Rich
 
 #### Double-struck special names
 
-There was a lot of discussion about names for arguments at YAG (no one liked alpha and omega); I think Nathan Rogers suggested using Unicode's mathematical variants of latin letters and I picked out the double-struck ones. My impression is that we were approaching a general concensus that "w" and "x" were the best of several bad choices of argument letters, but that I was the first to commit to them.
+There was a lot of discussion about names for arguments at YAG (no one liked alpha and omega); I think Nathan Rogers suggested using Unicode's mathematical variants of latin letters and I picked out the double-struck ones. My impression is that we were approaching a general consensus that "w" and "x" were the best of several bad choices of argument letters, but that I was the first to commit to them.
 
 #### Assert primitive
 
