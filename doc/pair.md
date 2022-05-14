@@ -50,4 +50,4 @@ Enlist and Pair set the result's [fill](fill.md) element, while list notation do
 
         4 ↑ "a"‿5 ⋈ "b"‿7
 
-This means that `⋈` may always behave the same as the obvious implementation `{⟨𝕩⟩;⟨𝕨,𝕩⟩}`. However, `≍○<` and even `>∘{⟨𝕩⟩;⟨𝕨,𝕩⟩}○<` compute the result fill as `⋈` does and are identical implementations.
+This means that `⋈` may not always behave the same as the obvious implementation `{⟨𝕩⟩;⟨𝕨,𝕩⟩}`. However, `≍○<` and even `>∘{⟨𝕩⟩;⟨𝕨,𝕩⟩}○<` compute the result fill as `⋈` does and are identical implementations.
