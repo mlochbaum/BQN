@@ -10,6 +10,7 @@ Indicates no value. If a left argument is Nothing, the function is called with n
         · ⌽ "abc"  # Reverse instead of Rotate
 
 ### In Trains
+[→full documentation](../doc/train.md#2-train-3-train)
 
 Nothing can serve as a left argument in a train to string together multiple monadic functions.
 
