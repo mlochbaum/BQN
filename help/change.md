@@ -14,3 +14,17 @@ Variable `n` must already exist.
         ⊢ b ← 3
 
         ⊢ b ↩ "Be the change you wish to see in the world."
+
+## `n F↩`: Modify
+[→full documentation](../doc/expression.md#assignment)
+
+Apply function `F` to existing variable `n`, and assign the result back to `n`.
+
+        ⊢ b ⌽↩
+
+## `n F↩ v`: Modify
+[→full documentation](../doc/expression.md#assignment)
+
+Assign `n F v` to `n`.
+
+        ⊢ b ↓˜↩ 6

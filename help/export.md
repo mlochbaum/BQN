@@ -11,10 +11,10 @@ Define a variable with name `n` and export it from the current namespace.
         ns.exported
         ns.unexported
 
-## `𝕨 ⇐`: Export names
+## `n ⇐`: Export names
 [→full documentation](../doc/expression.md#exports)
 
-Export the names given in `𝕩` from the current namespace. Names must be defined somewhere in the scope.
+Export the names given in `n` from the current namespace. Names must be defined somewhere in the scope.
 
         ns1 ← { ⟨alsoexported⟩⇐, exported ⇐ 5, alsoexported ← 0}
         ns1.exported
