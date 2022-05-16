@@ -3,6 +3,7 @@
 # Bullet (`•`)
 
 ## `•`: System
+[→specification](../spec/system.md)
 
 A prefix for system functions. `•listSys` gives a list of defined system value names.
 

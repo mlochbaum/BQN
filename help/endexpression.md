@@ -3,6 +3,7 @@
 # Right Parenthesis (`)`)
 
 ## `... )`: End Expression
+[→full documentation](../doc/expression.md#parentheses)
 
 The closing symbol for `(`. See [Begin Expression](beginexpression.md) for more details.
 

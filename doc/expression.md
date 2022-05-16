@@ -23,6 +23,10 @@ In the table, `?` marks an optional left argument. If there isn't a value in tha
 
 If you're comfortable reading [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) and want to understand things in more detail than described below, you might check the [grammar specification](../spec/grammar.md) as well.
 
+## Parentheses
+
+As in most programming languages, parentheses `()` are for grouping. The code inside a balanced set of parentheses is a single expression, which produces one value to be used by the expression that contains it—for example, in `(2×3)+4`, `2×3` is a subexpression evaluating to `6`, so that larger expression is equivalent to `6+4`. The syntactic role of a set of parentheses is also the same as that of the expression inside.
+
 ## Syntactic role
 
 *This issue is approached from a different angle in [Context free grammar](context.md).*
