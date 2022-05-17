@@ -47,7 +47,7 @@ ScalId ← @ _lookup_ ⟨
 ⟩
 TabId ← {
   id ← (4=0⊸⊑)◶⟨0,(IsTable 2⊸⊑)⟩◶⟨@,ScalId 1⊸⊑⟩ Decompose 𝕩
-  "´: Identity not found" ! @≠id ⋄ <id
+  "´: Identity not found" ! @>id ⋄ <id
 }
 Identity ← { 𝕨 @⊸=◶⟨⊢⊘Reshape,TabId𝕩˙⟩ ScalId𝕩 }
 
