@@ -279,7 +279,7 @@ let lesseq = (x,w) => {
   let s=typeof w, t=typeof x;
   if (s==="function"||t==="function") throw Error("𝕨≤𝕩: Cannot compare operations");
   if (w.ns||x.ns) throw Error("𝕨≤𝕩: Cannot compare namespaces");
-  return +(s!==t ? s<=t : w<=x);
+  return +(s!==t ? s<=t : s==="string" ? w.codePointAt(0)<=x.codePointAt(0) : w<=x);
 }
 let equals = (x,w) => {
   let a,b;
