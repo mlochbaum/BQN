@@ -99,6 +99,15 @@
 <li><strong>Error</strong>: A condition that stops compilation or execution (see <a href="assert.html">assert</a>).</li>
 <li><strong>Inferred property</strong>: A property of a value that is derived by BQN based on constraints. If it cannot be derived then the value will not have the property. Includes identity values, fill elements, and behavior of Undo and Under.</li>
 </ul>
+<h2 id="namespaces"><a class="header" href="#namespaces">Namespaces</a></h2>
+<ul>
+<li><a href="namespace.html"><strong>Namespace</strong></a>: A container for variables, some of which are exposed as fields.</li>
+<li><strong>Field</strong>: One of the variables accessible from outside a namespace.</li>
+<li><strong>Access</strong>: To get the current value of a field from a namespace.</li>
+<li><a href="namespace.html#exports"><strong>Export</strong></a>: Declare a variable to be accessible from the outside, that is, make it a field.</li>
+<li><a href="oop.html"><strong>Object</strong></a>: Informal term for a namespace that holds mutable state.</li>
+<li><strong>Alias</strong>: A different &quot;outside&quot; name chosen for a field in a destructuring assignment.</li>
+</ul>
 <h2 id="tokens"><a class="header" href="#tokens">Tokens</a></h2>
 <ul>
 <li><strong>Token formation</strong> or tokenization: Splitting source code into a sequence of tokens.</li>
@@ -123,9 +132,10 @@
 </ul>
 <h2 id="assignment-and-scoping"><a class="header" href="#assignment-and-scoping">Assignment and scoping</a></h2>
 <ul>
-<li><a href="syntax.html#assignment"><strong>Assignment</strong></a>: An operation that sets a variable's value. Definition (<code><span class='Gets'>←</span></code>) or a change of definition (<code><span class='Gets'>↩</span></code>).</li>
-<li><strong>Assignment arrow</strong>: <code><span class='Gets'>←</span></code> or <code><span class='Gets'>↩</span></code>, used to denote assignment.</li>
-<li><strong>Definition</strong>: The first assignment of a variable, which must be performed with <code><span class='Gets'>←</span></code>.</li>
+<li><a href="expression.html#assignment"><strong>Assignment</strong></a>: An operation that sets a variable's value. Definition (<code><span class='Gets'>←</span></code>, <code><span class='Gets'>⇐</span></code>) or a change of definition (<code><span class='Gets'>↩</span></code>).</li>
+<li><strong>Assignment arrow</strong>: <code><span class='Gets'>←</span></code>, <code><span class='Gets'>⇐</span></code>, or <code><span class='Gets'>↩</span></code>, used to denote assignment.</li>
+<li><strong>Definition</strong>: The first assignment of a variable, which must be performed with <code><span class='Gets'>←</span></code> or <code><span class='Gets'>⇐</span></code>.</li>
+<li><a href="expression.html#destructuring"><strong>Destructuring assignment</strong></a>: a form of assignment that can extract components of arrays and namespaces.</li>
 </ul>
 <ul>
 <li><a href="lexical.html"><strong>Scope</strong></a>: An environment where variables are defined and manipulated, which is created before evaluating a body.</li>

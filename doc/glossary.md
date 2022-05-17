@@ -88,6 +88,15 @@ The possible roles are:
 * **Error**: A condition that stops compilation or execution (see [assert](assert.md)).
 * **Inferred property**: A property of a value that is derived by BQN based on constraints. If it cannot be derived then the value will not have the property. Includes identity values, fill elements, and behavior of Undo and Under.
 
+## Namespaces
+
+* [**Namespace**](namespace.md): A container for variables, some of which are exposed as fields.
+* **Field**: One of the variables accessible from outside a namespace.
+* **Access**: To get the current value of a field from a namespace.
+* [**Export**](namespace.md#exports): Declare a variable to be accessible from the outside, that is, make it a field.
+* [**Object**](oop.md): Informal term for a namespace that holds mutable state.
+* **Alias**: A different "outside" name chosen for a field in a destructuring assignment.
+
 ## Tokens
 
 * **Token formation** or tokenization: Splitting source code into a sequence of tokens.
@@ -112,9 +121,10 @@ The possible roles are:
 
 ## Assignment and scoping
 
-* [**Assignment**](syntax.md#assignment): An operation that sets a variable's value. Definition (`←`) or a change of definition (`↩`).
-* **Assignment arrow**: `←` or `↩`, used to denote assignment.
-* **Definition**: The first assignment of a variable, which must be performed with `←`.
+* [**Assignment**](expression.md#assignment): An operation that sets a variable's value. Definition (`←`, `⇐`) or a change of definition (`↩`).
+* **Assignment arrow**: `←`, `⇐`, or `↩`, used to denote assignment.
+* **Definition**: The first assignment of a variable, which must be performed with `←` or `⇐`.
+* [**Destructuring assignment**](expression.md#destructuring): a form of assignment that can extract components of arrays and namespaces.
 
 * [**Scope**](lexical.md): An environment where variables are defined and manipulated, which is created before evaluating a body.
 * **Identifier**: An instance of a name in a program, with two identifiers considered the same if they correspond to the same definition.
