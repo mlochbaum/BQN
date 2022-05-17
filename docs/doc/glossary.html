@@ -23,11 +23,11 @@
 </ul>
 <p>A few terms refer to multiple types collectively:</p>
 <ul>
-<li><strong>Atom</strong>: A value that's not an array.</li>
-<li><strong>Modifier</strong>: A 1-modifier or 2-modifier.</li>
-<li><strong>Data type</strong>: Number, character, or array.</li>
-<li><strong>Operation type</strong>: Function, 1-modifier, or 2-modifier.</li>
-<li><strong>Mutable type</strong>: Operation or namespace.</li>
+<li><a href="based.html#starting-from-atoms"><strong>Atom</strong></a>: A value that's not an array.</li>
+<li><a href="types.html#modifiers"><strong>Modifier</strong></a>: A 1-modifier or 2-modifier.</li>
+<li><a href="types.html#data-types"><strong>Data type</strong></a>: Number, character, or array.</li>
+<li><a href="types.html#operation-types"><strong>Operation type</strong></a>: Function, 1-modifier, or 2-modifier.</li>
+<li><a href="lexical.html#mutation"><strong>Mutable type</strong></a>: Operation or namespace.</li>
 </ul>
 <p>BQN uses standard terminology for particular sets of numbers, with natural numbers starting at 0.</p>
 <ul>
@@ -39,7 +39,7 @@
 </ul>
 <h2 id="roles"><a class="header" href="#roles">Roles</a></h2>
 <ul>
-<li><a href="context.html"><strong>Syntactic role</strong></a>: One of four possible types for an expression, which are determined by the expression itself and not outside context and describe how it interacts with other parts of the syntax.</li>
+<li><a href="expression.html#syntactic-role"><strong>Syntactic role</strong></a>: One of four possible types for an expression, which are determined by the expression itself and not outside context and describe how it interacts with other parts of the syntax.</li>
 </ul>
 <p>The possible roles are:</p>
 <ul>
@@ -50,26 +50,26 @@
 </ul>
 <h2 id="arrays"><a class="header" href="#arrays">Arrays</a></h2>
 <ul>
-<li><strong>Array</strong>: A multidimensional collection of values.</li>
-<li><strong>Element</strong>: One of the values contained in an array.</li>
-<li><strong>Axis</strong>: One dimension or direction in an array.</li>
-<li><strong>Rank</strong>: The number of dimensions an array has.</li>
+<li><a href="array.html"><strong>Array</strong></a>: A multidimensional collection of values.</li>
+<li><a href="array.html#elements"><strong>Element</strong></a>: One of the values contained in an array.</li>
+<li><a href="array.html#rectangles"><strong>Axis</strong></a>: One dimension or direction in an array.</li>
+<li><a href="array.html#dimensions"><strong>Rank</strong></a>: The number of dimensions an array has.</li>
 <li><a href="shape.html"><strong>Shape</strong></a>: The number of elements an array has along each dimension.</li>
-<li><strong>Length</strong>: The number of elements an array has along the first dimension, or 1 if it has rank 0.</li>
+<li><a href="shape.html"><strong>Length</strong></a>: The number of elements an array has along the first dimension, or 1 if it has rank 0.</li>
 <li><a href="depth.html"><strong>Depth</strong></a>: The greatest number of times an element can be selected from a value before reaching an atom.</li>
-<li><strong>Fill</strong>: A &quot;prototypical&quot; array element used in certain operations; it's an inferred property of an array.</li>
+<li><a href="fill.html"><strong>Fill</strong></a>: A &quot;prototypical&quot; array element used in certain operations; it's an inferred property of an array.</li>
 </ul>
 <ul>
 <li><strong>Empty</strong>: Having no elements. An array is empty if its shape contains 0.</li>
 <li><strong>Cell</strong>: An array containing all elements of the original array whose indices share a particular prefix.</li>
 <li><strong>k-Cell</strong>: A cell of rank <em>k</em>.</li>
-<li><strong>Major cell</strong>: A cell with rank one less than the original array.</li>
-<li><strong>Agreement</strong>: The way elements are paired when a function maps over two arrays.</li>
+<li><a href="indices.html#major-cell-indices"><strong>Major cell</strong></a>: A cell with rank one less than the original array.</li>
+<li><a href="leading.html#leading-axis-agreement"><strong>Agreement</strong></a>: The way elements are paired when a function maps over two arrays.</li>
 <li><strong>Frame</strong>: A prefix of an array's shape, used for agreement with the Rank modifier.</li>
 </ul>
 <ul>
 <li><strong>Unit</strong>: An array of rank 0, or an atom.</li>
-<li><a href="enclose.html#whats-a-unit"><strong>Unit array</strong></a>: An array of rank 0 other than an atom.</li>
+<li><a href="enclose.html#whats-a-unit"><strong>Unit array</strong></a>: An array of rank 0.</li>
 <li><strong>List</strong>: An array of rank 1.</li>
 <li><strong>String</strong>: A list of characters.</li>
 <li><strong>Table</strong>: An array of rank 2.</li>
@@ -92,12 +92,12 @@
 </ul>
 <ul>
 <li><strong>Derived function</strong>: A function produced by binding operands to a deferred modifier; doing so does not cause any computation.</li>
-<li><strong>Train</strong>: A function composed of two or more functions.</li>
-<li><strong>Identity element</strong>: An inferred property of a function: the result of a reduction with this function on an empty array.</li>
+<li><a href="train.html"><strong>Train</strong></a>: A function composed of two or more functions.</li>
+<li><a href="fold.html#identity-values"><strong>Identity value</strong></a>: An inferred property of a function: the result of a reduction with this function on an empty array.</li>
 </ul>
 <ul>
-<li><strong>Error</strong>: A condition that stops compilation or execution.</li>
-<li><strong>Inferred property</strong>: A property of a value that is derived by BQN based on constraints. If it cannot be derived then the value will not have the property.</li>
+<li><strong>Error</strong>: A condition that stops compilation or execution (see <a href="assert.html">assert</a>).</li>
+<li><strong>Inferred property</strong>: A property of a value that is derived by BQN based on constraints. If it cannot be derived then the value will not have the property. Includes identity values, fill elements, and behavior of Undo and Under.</li>
 </ul>
 <h2 id="tokens"><a class="header" href="#tokens">Tokens</a></h2>
 <ul>
@@ -107,18 +107,18 @@
 <li><a href="primitive.html"><strong>Primitive</strong></a>: One of several fixed operations defined by the language, denoted by a single-character token.</li>
 <li><strong>Word</strong>: A sequence of alphabetic or numeric characters.</li>
 <li><strong>Name</strong>: A word that starts with an alphabetic character. Names are compared case-insensitively and ignoring underscores <code><span class='Modifier2'>_</span></code>.</li>
-<li><strong>Numeric literal</strong>: A word that starts with a numeric character, indicating a number.</li>
-<li><strong>String literal</strong>: A literal written with double quotes <code><span class='String'>&quot;&quot;</span></code>, indicating a string.</li>
-<li><strong>Character literal</strong>: A literal written with single quotes <code><span class='String'>''</span></code>, indicating a string.</li>
-<li><strong>Null literal</strong>: The literal <code><span class='String'>@</span></code>, indicating the null character (code point 0).</li>
+<li><a href="syntax.html#constants"><strong>Numeric literal</strong></a>: A word that starts with a numeric character, indicating a number.</li>
+<li><a href="arrayrepr.html#strings"><strong>String literal</strong></a>: A literal written with double quotes <code><span class='String'>&quot;&quot;</span></code>, indicating a string.</li>
+<li><a href="syntax.html#constants"><strong>Character literal</strong></a>: A literal written with single quotes <code><span class='String'>''</span></code>, indicating a string.</li>
+<li><a href="syntax.html#constants"><strong>Null literal</strong></a>: The literal <code><span class='String'>@</span></code>, indicating the null character (code point 0).</li>
 </ul>
 <h2 id="parsing"><a class="header" href="#parsing">Parsing</a></h2>
 <ul>
 <li><strong>Parsing</strong>: Analysis of the tokens of a program, which determines which actions will be taken to evaluate it.</li>
 <li><a href="syntax.html#expressions"><strong>Expression</strong></a>: A piece of code that defines a (not necessarily constant) variable.</li>
 <li><a href="expression.html#nothing"><strong>Nothing</strong></a>: A special value-like entity that comes from <code><span class='Nothing'>·</span></code>, <code><span class='Value'>𝕨</span></code> in a function with no left argument, or a function called on nothing.</li>
-<li><strong>Statement</strong>: An expression, or nothing (<code><span class='Nothing'>·</span></code>).</li>
-<li><strong>Ligature</strong>: The character <code><span class='Ligature'>‿</span></code>.</li>
+<li><strong>Statement</strong>: An expression, nothing (<code><span class='Nothing'>·</span></code>), or an export (<code><span class='Value'>var</span><span class='Gets'>⇐</span></code>).</li>
+<li><a href="arrayrepr.html#strands"><strong>Ligature</strong></a>: The character <code><span class='Ligature'>‿</span></code>.</li>
 <li><a href="arrayrepr.html#brackets"><strong>List notation</strong></a>: The angle brackets <code><span class='Bracket'>⟨⟩</span></code> or ligatures used to indicate a list.</li>
 </ul>
 <h2 id="assignment-and-scoping"><a class="header" href="#assignment-and-scoping">Assignment and scoping</a></h2>
@@ -128,19 +128,20 @@
 <li><strong>Definition</strong>: The first assignment of a variable, which must be performed with <code><span class='Gets'>←</span></code>.</li>
 </ul>
 <ul>
-<li><strong>Scope</strong>: An environment where variables are defined and manipulated, which is created before evaluating a body.</li>
+<li><a href="lexical.html"><strong>Scope</strong></a>: An environment where variables are defined and manipulated, which is created before evaluating a body.</li>
 <li><strong>Identifier</strong>: An instance of a name in a program, with two identifiers considered the same if they correspond to the same definition.</li>
 </ul>
 <h2 id="blocks"><a class="header" href="#blocks">Blocks</a></h2>
 <ul>
 <li><a href="block.html"><strong>Block</strong></a>: A syntactic element surrounded in curly braces <code><span class='Brace'>{}</span></code>, which encapsulates code.</li>
-<li><strong>Immediate block</strong>: A block that is evaluated and returns a value immediately; it has a subject role.</li>
+<li><a href="block.html#headerless-blocks"><strong>Immediate block</strong></a>: A block that is evaluated and returns a value immediately; it has a subject role.</li>
 <li><strong>Block function</strong>: A block defining a function.</li>
 <li><strong>Block modifier</strong>: A block defining a 1- or 2-modifier.</li>
-<li><strong>Immediate modifier</strong>: A modifier that's evaluated as soon as it receives its operands.</li>
-<li><strong>Deferred modifier</strong>: The opposite of an immediate modifier, one that's only evaluated when called with operands and arguments.</li>
+<li><a href="block.html#operands"><strong>Immediate modifier</strong></a>: A modifier that's evaluated as soon as it receives its operands.</li>
+<li><a href="block.html#operands"><strong>Deferred modifier</strong></a>: The opposite of an immediate modifier, one that's only evaluated when called with operands and arguments.</li>
+<li><a href="block.html#multiple-bodies"><strong>Body</strong></a>: One sequence of statements in a block. Bodies, possibly preceded by headers, are separated by semicolons <code><span class='Head'>;</span></code>.</li>
 <li><a href="block.html#block-headers"><strong>Header</strong></a>: A preface to a body in a block function or modifier indicating possible inputs, which is followed by a colon <code><span class='Head'>:</span></code>.</li>
 <li><a href="block.html#short-headers"><strong>Label</strong></a>: A header consisting of a single name.</li>
-<li><strong>Body</strong>: One sequence of statements in a block. Bodies, possibly preceded by headers, are separated by semicolons <code><span class='Head'>;</span></code>.</li>
+<li><a href="block.html#predicates"><strong>Predicate</strong></a>: An expression followed by <code><span class='Head'>?</span></code>, which acts as a condition for the body to continue running.</li>
 <li><a href="tacit.html"><strong>Tacit</strong></a>: Code that defines functions without using blocks.</li>
 </ul>
