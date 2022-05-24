@@ -170,11 +170,48 @@ The system namespace `•term` gives fine-grained control of input and output wh
 
 ## Interface
 
+The function `•SH` allows BQN to call other programs, as an operating system shell would. `•FFI` allows it to call functions compiled by C or compatible languages—these are stored in files that traditionally have names like `lib*.so` in Unix. In both cases the callee can run unrestricted code, so only trusted programs and functions should be called this way.
+
 | Name    | Summary
 |---------|----------------------
 | `•SH`   | Execute shell command and return `exitcode‿stdout‿stderr`
+| `•FFI`  | Load a native function from a shared object file
 
 The argument to `•SH` is a list of strings giving the command and its arguments (for example `"mv"‿"old"‿"new"`). The command is executed synchronously, and the result is a list of three elements: the command's exit code, text written to stdout, and text written to stderr. In both cases the text is a plain string containing all text emitted by the program. Text is interpreted as UTF-8, with an error if it's not valid UTF-8.
+
+The arguments to `•FFI` are a file path for `𝕨` (interpreted relative to `•path` if necessary, like `•file` functions), and a function descriptor for `𝕩`, which gives the function name, argument and result types, and information about how to convert these values. The format of `𝕩` is described in the next section. The result is a BQN function that calls the specified function. This call can crash, mutate values, or invoke other unexpected behavior if the function interferes with memory used by BQN.
+
+### Foreign Function Interface
+
+In a call to `•FFI`, `𝕩` follows the pattern `"result"‿"fn"‿"arg0"‿"arg1"‿...`, that is, a string for the *result type*, one for the *function name*, and any number of strings indicating *argument types*. `𝕩` must always be a list.
+
+The function name is an arbitrary string. In order to look up the appropriate function in shared object file `𝕨`, it's encoded as UTF-8.
+
+Types are to be interpreted according to the C ABI appropriate for the platform used. The grammar for a result or argument type is given below, using BNF as in the BQN grammar. Quoted values here are single characters: the type isn't tokenized and can't contain spaces. A `•FFI` implementation does not need to support all combinations of types.
+
+    conv  = type ( ":" bqn )?
+    type  = ( "i" | "u" | "f" ) nat          # number
+          | "a"                              # BQN object
+          | "*"                              # opaque pointer
+          | ( "*" | "&" ) type               # pointer
+          | "[" nat "]" type                 # array
+          | "{" ( conv ( "," conv )* )? "}"  # struct
+    bqn   = ( "i" | "u" | "f" | "c" ) nat
+
+    nat   = digit+
+    digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+By default, the returned function takes a list of arguments `𝕩`, requires `𝕨` to be an empty list if present, and returns a value corresponding to the C result. Some argument-specific rules can change this:
+- The result type may also be the empty string `""`, indicating a void or ignored result, or `"&"`, indicating an ignored result, using a mutable argument for the BQN result, as discussed below. It can't contain any instance of the pointer rule `( "*" | "&" ) type`.
+- An argument type may be preceded by up to one `>`, and up to one `𝕨` or `𝕩`, in any order. Arguments with `𝕨` are taken from `𝕨` in order, and the others from `𝕩`. If no arguments come from `𝕨`, the BQN function may be called monadically. If an argument type contains `>`, it must be the only value in its BQN argument (`𝕨` or `𝕩`), and that argument will be treated not as a list but as an entire value.
+
+Beginning with the type declarations themselves, a **number** such as `f32` corresponds to a C type with the given quality (`i` for signed integer, `u` for unsigned, `f` for floating-point) and width in bits. The corresponding BQN value is a number, and should be converted exactly for integers and with rounding for decreasing-type conversions. For conversions to or from an integer type, attempting to convert a value to a type that can't contain it, or one outside of the exactly representable integer range (`-2⋆53` to `2⋆53` for IEEE doubles), results in an error.
+
+A **pointer** such as `*u8` comes from a BQN list. If the symbol `&` is used rather than `*`, the pointer is called **mutable** and its contents after the function call completes are also returned as an element of the result. If there is any mutable pointer, the result is a list, unless the result type is `"&"`, in which case there must be exactly one mutable pointer and the result is its value alone. These prefixes can only be used in arguments, meaning that a BQN value is provided, and this value determines the length of both the input and the mutable result.
+
+The letter `a` indicates that a **BQN value** is to be passed directly, interpreted in whatever way makes sense for the implementation. A plain `*` indicates an **opaque pointer**, to be mapped to a BQN value of namespace type. The behavior of this value is not yet specified. The **array** and **struct** types indicate C structs and arrays, and correspond to BQN lists.
+
+The `bqn` value in a `conv` term indicates a BQN element type to be used. It can be appear after the whole type, or any member of a struct, and applies to the final component (that is, `type` term) of the type *and* one preceding `*`, `&`, or `[n]` if present (if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._conv`. The C type is treated as pure data, a stream of bits. For a prefix `*` or `&`, the data in question is the region of memory pointed to.
 
 ## Operation properties
 
