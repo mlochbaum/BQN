@@ -8,6 +8,56 @@
 <p>This portion of the spec is still potentially subject to major changes.</p>
 <p>The <code><span class='Value'>•</span></code> symbol is used to access values other than primitives provided by BQN.</p>
 <p>All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior. For namespaces this rule applies to individual fields as well: a namespace may be provided with only some of the fields, but a field with one of the given names must behave as specified.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#execution">Execution</a></td>
+<td><code><span class='Function'>•BQN</span></code>, <code><span class='Function'>•ReBQN</span></code>, <code><span class='Value'>•primitives</span></code></td>
+</tr>
+<tr>
+<td><a href="#scripts">Scripts</a></td>
+<td><code><span class='Function'>•Import</span></code>, <code><span class='Value'>•args</span></code>, <code><span class='Function'>•Exit</span></code>, …</td>
+</tr>
+<tr>
+<td><a href="#files">Files</a> (<a href="#file-paths">paths</a>, <a href="#file-metadata">metadata</a>, <a href="#file-access">access</a>, <a href="#open-file-object">opened</a>)</td>
+<td><code><span class='Value'>•file</span></code>, <code><span class='Function'>•FChars</span></code>, <code><span class='Function'>•FLines</span></code>, <code><span class='Function'>•FBytes</span></code></td>
+</tr>
+<tr>
+<td><a href="#input-and-output">Input and output</a> (<a href="#terminal-io">terminal</a>)</td>
+<td><code><span class='Function'>•Out</span></code>, <code><span class='Function'>•Show</span></code>, <code><span class='Function'>•Repr</span></code>, <code><span class='Function'>•Fmt</span></code></td>
+</tr>
+<tr>
+<td><a href="#interface">Interface</a> (<a href="#foreign-function-interface">FFI</a>)</td>
+<td><code><span class='Function'>•SH</span></code>, <code><span class='Function'>•FFI</span></code></td>
+</tr>
+<tr>
+<td><a href="#operation-properties">Operation properties</a></td>
+<td><code><span class='Function'>•Type</span></code>, <code><span class='Function'>•Glyph</span></code>, <code><span class='Function'>•Source</span></code>, <code><span class='Function'>•Decompose</span></code></td>
+</tr>
+<tr>
+<td><a href="#time">Time</a></td>
+<td><code><span class='Function'>•UnixTime</span></code>, <code><span class='Function'>•Delay</span></code>, <code><span class='Modifier'>•_timed</span></code>, …</td>
+</tr>
+<tr>
+<td><a href="#math">Math</a></td>
+<td><code><span class='Value'>•math</span></code></td>
+</tr>
+<tr>
+<td><a href="#random-generation">Random generation</a></td>
+<td><code><span class='Value'>•rand</span></code></td>
+</tr>
+<tr>
+<td><a href="#bitwise-operations">Bitwise operations</a></td>
+<td><code><span class='Value'>•bit</span></code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="execution"><a class="header" href="#execution">Execution</a></h2>
 <table>
 <thead>
