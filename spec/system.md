@@ -8,6 +8,19 @@ The `•` symbol is used to access values other than primitives provided by BQN.
 
 All system values described in the BQN specification are optional: an implementation does not have to include any of them. However, if a system value with one of the names given below is included, then it must have the specified behavior. For namespaces this rule applies to individual fields as well: a namespace may be provided with only some of the fields, but a field with one of the given names must behave as specified.
 
+| Section | Contents
+|---------|---------
+| [Execution](#execution) | `•BQN`, `•ReBQN`, `•primitives`
+| [Scripts](#scripts) | `•Import`, `•args`, `•Exit`, …
+| [Files](#files) ([paths](#file-paths), [metadata](#file-metadata), [access](#file-access), [opened](#open-file-object)) | `•file`, `•FChars`, `•FLines`, `•FBytes`
+| [Input and output](#input-and-output) ([terminal](#terminal-io)) | `•Out`, `•Show`, `•Repr`, `•Fmt`
+| [Interface](#interface) ([FFI](#foreign-function-interface)) | `•SH`, `•FFI`
+| [Operation properties](#operation-properties) | `•Type`, `•Glyph`, `•Source`, `•Decompose`
+| [Time](#time) | `•UnixTime`, `•Delay`, `•_timed`, …
+| [Math](#math) | `•math`
+| [Random generation](#random-generation) | `•rand`
+| [Bitwise operations](#bitwise-operations) | `•bit`
+
 ## Execution
 
 | Name          | Summary
