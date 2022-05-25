@@ -24,6 +24,8 @@ _sl_ ← {𝔽_𝕣_⟨a,b⟩: 𝔽∘((a↓b↓⊢)¨)⊸((a⊸↑∾⊣∾b⊸
 qwerty ←   "`1234567890-=~!@#$%^&*()_+qwertyuiop[]QWERTYUIOP{}asdfghjkl;'ASDFGHJKL:""|zxcvbnm,./ZXCVBNM<>? "
 keys ← ⟨
   "dvorak"‿"`1234567890[]~!@#$%^&*(){}',.pyfgcrl/=""<>PYFGCRL?+aoeuidhtns-AOEUIDHTNS_|;qjkxbmwvz:QJKXBMWVZ "
+ "colemak"‿"`1234567890-=~!@#$%^&*()_+qwfpgjluy;[]QWFPGJLUY:{}arstdhneio'ARSTDHNEIO""|zxcvbkm,./ZXCVBKM<>? "
+ "workman"‿"`1234567890-=~!@#$%^&*()_+qdrwbjfup;[]QDRWBJFUP:{}ashtgyneoi'ASHTGYNEOI""|zxmcvkl,./ZXMCVKL<>? "
 ⟩
 
 # 2-modifier: source keymap as 𝕗 and target as 𝕘, file contents 𝕩
