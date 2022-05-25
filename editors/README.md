@@ -6,7 +6,7 @@
 "style" Enc ".Comment,.Function,.Number,.String { color: inherit; }"
 -->
 
-Editor plugins and other tools for allowing BQN input are in [this folder](https://github.com/mlochbaum/BQN/tree/master/editors). Input always uses the layout shown [here](https://mlochbaum.github.io/BQN/keymap.html), and is usually performed with a backslash `\` prefix, but sometimes with a modifier key such as alt. To type an actual backslash, hit the backslash key twice.
+Editor plugins and other tools for allowing BQN input are in [this folder](https://github.com/mlochbaum/BQN/tree/master/editors). Input always uses the layout shown [here](https://mlochbaum.github.io/BQN/keymap.html) ([want another?](#alternate-layouts)), and is usually performed with a backslash `\` prefix, but sometimes with a modifier key such as alt. To type an actual backslash, hit the backslash key twice.
 
 [This bookmarklet](https://abrudz.github.io/lb/bqn) enables BQN input in any webpage in your **browser**.
 
@@ -83,3 +83,9 @@ See [this repository](https://github.com/razetime/bqn-vscode), or install direct
 ### Kakoune
 
 Copy or symlink `kak/autoload/filetype/bqn.kak` into `autoload/filetype` in your Kakoune config directory (probably `.config/kak/`).
+
+## Alternate layouts
+
+All files here use the BQN layout designed for qwerty, which will generally be jumbled in another layout (for example the key for `r` will still type `↑`, but it may not be above `c`, which types `↓`). The [remap.bqn](remap.bqn) script allows you to remap some files in this repository to a new layout. See `$ remap.bqn -h` for usage. Support for a new layout can be added in the `keys` array of the script, but do watch for string alignment with the doubled quote character.
+
+(If you haven't installed CBQN but have Node.js, `$ bqn.js editors/remap.bqn…` from the repository root will work too)
