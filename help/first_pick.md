@@ -18,7 +18,7 @@ First element of `𝕩`.
 ## `𝕨 ⊑ 𝕩`: Pick
 [→full documentation](../doc/pick.md)
 
-Pick the element of `𝕨` at index `𝕩`.
+Pick the element of `𝕩` at index `𝕨`.
 
         2 ⊑ ⟨1, 2, 3⟩
 
