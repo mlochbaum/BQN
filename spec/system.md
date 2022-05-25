@@ -224,7 +224,7 @@ A **pointer** such as `*u8` comes from a BQN list. If the symbol `&` is used rat
 
 The letter `a` indicates that a **BQN value** is to be passed directly, interpreted in whatever way makes sense for the implementation. A plain `*` indicates an **opaque pointer**, to be mapped to a BQN value of namespace type. The behavior of this value is not yet specified. The **array** and **struct** types indicate C structs and arrays, and correspond to BQN lists.
 
-The `bqn` value in a `conv` term indicates a BQN element type to be used. It can be appear after the whole type, or any member of a struct, and applies to the final component (that is, `type` term) of the type *and* one preceding `*`, `&`, or `[n]` if present (if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._conv`. The C type is treated as pure data, a stream of bits. For a prefix `*` or `&`, the data in question is the region of memory pointed to.
+The `bqn` value in a `conv` term indicates a BQN element type to be used. It can be appear after the whole type, or any member of a struct, and applies to the final component (that is, `type` term) of the type *and* one preceding `*`, `&`, or `[n]` if present (if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._cast`. The C type is treated as pure data, a stream of bits. For a prefix `*` or `&`, the data in question is the region of memory pointed to.
 
 ## Operation properties
 
