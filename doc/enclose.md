@@ -31,9 +31,10 @@ Usually this is unwanted. You'd prefer to use `⊑` or `+´` in order to get an 
 
         +˝˘ 3‿4⥊↕12
 
-In this case each call to `+˝` returns a cell of the result. The result is a list, so its cells are units! Here, Cells (`˘`) "hides" one axis from its operand, and the operand `+˝` reduces out an axis, leaving zero axes—until Cells assembles the results, putting its axis back. In this case, `+´` would also be tolerated. But it's wrong, because each result really should be a zero-axis array. We can reveal this by making an array whose elements aren't atoms.
+In this case each call to `+˝` returns a cell of the result. The result is a list, so its cells are units! Here, [Cells](rank.md) (`˘`) "hides" one axis from its operand, and the operand `+˝` reduces out an axis, leaving zero axes—until Cells assembles the results, putting its axis back. In this case, `+´` would also be tolerated. But it's wrong, because each result really should be a zero-axis array. We can reveal this by making an array whose elements aren't atoms.
 
         +´˘ ⟨↕2,"ab"⟩≍⟨↕3,"ABC"⟩
+
         +˝˘ ⟨↕2,"ab"⟩≍⟨↕3,"ABC"⟩
 
 The function `+´˘` tries to mix together the result elements into one big array, causing an error because they have different lengths, but `+˝˘` keeps them as elements.
@@ -60,7 +61,7 @@ For this purpose `{⟨𝕩⟩}⊸∾`, which turns the left argument into a 1-el
 
         (=⌜˜↕4) ∾˘ ↕4
 
-Now Cells (`˘`) splits both arguments into cells. For the `𝕨`, a rank-2 array, these cells are lists; for the list `𝕩` they have to be units. Treating them as elements would work in this case, because `∾` would automatically enclose them, but would fail if `𝕩` contained non-atom elements such as strings.
+Now [Cells](rank.md) (`˘`) splits both arguments into cells. For the `𝕨`, a rank-2 array, these cells are lists; for the list `𝕩` they have to be units. Treating them as elements would work in this case, because `∾` would automatically enclose them, but would fail if `𝕩` contained non-atom elements such as strings.
 
 The other use of `<` in the original example is `(<⟨⟩)`, which is the left argument to the function `<⊸∾⌜´`. Let's break that function down. We said `<⊸∾` joins `𝕨` as an element to the front of `𝕩`. With [Table](map.md#table) we have `<⊸∾⌜`, which takes two array arguments and does this for every pair of elements from them.
 
