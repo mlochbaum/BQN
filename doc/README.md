@@ -43,6 +43,7 @@ Primitives:
 - [Assert and Catch: `!` and `⎊`](assert.md)
 - [Atop and Over: `∘○`](compose.md)
 - [Before and After: `⊸⟜`](hook.md)
+- [Cells and Rank: `˘⎉`](rank.md)
 - [Choose: `◶`](choose.md)
 - [Constant: `˙`](constant.md)
 - [Deshape and Reshape: `⥊`](reshape.md)
