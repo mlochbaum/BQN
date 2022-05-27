@@ -27,14 +27,14 @@ Looking for a modern, powerful language centered on Ken Iverson's array programm
 
 - A simple, consistent, and [stable](commentary/stability.md) array programming language
 - A low-dependency C implementation using bytecode compilation: [installation](running.md)
-- [System functions](spec/system.md) for common math, file, and IO operations
+- [System functions](spec/system.md) for math, files, and I/O, and a C FFI
 - Documentation with examples, visuals, explanations, and rationale for features
 - Replace or extend primitives to make a [BQN-like language](doc/rebqn.md) suited for specialized domains
 
 BQN **will provide**:
 
 - State of the art array performance: CBQN credibly competes with the fastest array languages, but isn't dominant yet.
-- Interfaces to connect with other languages, like a C FFI and JSON and CSV tools
+- Libraries with interfaces for common file formats like JSON and CSV
 - A standard system to install and use libraries and packages, and support for package managers
 
 At present, I think BQN is a good choice for learning array programming, scripting, medium-scale (fits in RAM) number crunching, and recreational programming. For some examples of BQN in action, this repository holds the dreaded [self-hosted compiler](src/c.bqn) and the friendlier [markdown processor](md.bqn) used to generate the site. See also my scripts at [bqn-libs](https://github.com/mlochbaum/bqn-libs), this [gnuplot interface](https://github.com/frasiyav/BQN-Gnuplot/blob/main/Gnuplot.bqn), examples on [RosettaCode](https://rosettacode.org/wiki/Category:BQN), or something else from the [community](community/README.md) page.
