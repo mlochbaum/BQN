@@ -16,9 +16,9 @@ The function `𝔽˘` applies `𝔽` to the major cells of `𝕩`. So, for examp
 
         ⟨  a      ,     »a     ,    »˘a ⟩
 
-What's it mean for Nudge to shift the "entire table"? The block above shows that is shifts downward, but what's really happening is that Nudge treats `𝕩` as a collection of major cells—its rows—and shifts these. So it adds an entire row and moves the rest of the rows downwards. Nudge Cells appears similar, but it's acting independently on each row, and the values that it moves around are major cells of the row, that is, rank-0 units.
+What's it mean for Nudge to shift the "entire table"? The block above shows that it shifts downward, but what's really happening is that Nudge treats `𝕩` as a collection of major cells—its rows—and shifts these. So it adds an entire row and moves the rest of the rows downwards. Nudge Cells appears similar, but it's acting independently on each row, and the values that it moves around are major cells of the row, that is, rank-0 units.
 
-Here's an example showing how Cells can be used to shift each row independently, even though it's not possible to shift columns like this (in fact the best way to would be to [transpose](transpose.md) in order to work on rows). It uses the not-yet-introduced dyadic form of Cells, so you might want to come back to it after reading the next section.
+Here's an example showing how Cells can be used to shift each row independently, even though it's not possible to shift columns like this (in fact the best way to do that would be to [transpose](transpose.md) in order to work on rows). It uses the not-yet-introduced dyadic form of Cells, so you might want to come back to it after reading the next section.
 
         (↑"∘∘") ⊑⊸»˘ a
 
@@ -38,7 +38,7 @@ This approach can apply to more complicated functions as well. And because the r
 
 ### Two arguments
 
-When given two arguments, Cells tries to pair their cells together. Starting simple, a unit array on either side will be paired with every cell of the other argument (and an atom is converted to an array).
+When given two arguments, Cells tries to pair their cells together. Starting simple, a unit (whether array or atom) on either side will be paired with every cell of the other argument.
 
         '∘' »˘ a
 
@@ -55,3 +55,50 @@ This is because the general case of Cells does one-to-one matching, pairing the 
 The arguments might have different ranks: for example, `"012"` has rank 1 and `a` has rank 2 above. That's fine: it just means Cells will pass arguments of rank 0 and 1 to its operand. You can see these arguments using [Pair](pair.md) Cells, `⋈˘`, so that each cell of the result is just a list of the two arguments used for that call.
 
         "012" ⋈˘ a
+
+## Rank
+
+Rank (`⎉`) is a generalization of Cells (`𝔽˘` is defined to be `𝔽⎉¯1`) that can apply to arbitrary—not just major—cells and combine different levels of mapping for two arguments.
+
+Rank comes in handy when there are high-rank arrays with lots of exciting axes, which is a great use case for BQN but honestly isn't all that common. And to continue this trend of honesty, using Rank just never *feels* good—it's some heavy machinery that I drag out when nothing else works, only to make use of a small part of the functionality. If Cells covers your use cases, that's probably for the best!
+
+### Negative and positive ranks
+
+I've said that `𝔽⎉¯1` is `𝔽˘`. And it's also the case that `𝔽⎉¯2` is `𝔽˘˘`. And `𝔽⎉¯3` is `𝔽˘˘˘`. And so on.
+
+        (↕4) (⋈˘˘˘ ≡ ⋈⎉¯3) ↕4‿2‿2‿5
+
+So `𝔽⎉(-k)`, at least for `k≥1`, is how you map over the first `k` axes of an array or two. We'll get more into why this is in the next section. What about some positivity for a change?
+
+        <⎉0 "abc"≍"def"
+
+        <⎉1 "abc"≍"def"
+
+The function `𝔽⎉k`, for `k≥0`, operates on the `k`-cells of its arguments—that is, it maps over all *but* the last `k` axes. For any given argument `a`, ranks `k` and `k-=a` are the same, as long as `k≥0` and `(k-=a)≤¯1`. So rank 2 is rank ¯3 for a rank-5 array. The reason this option is useful is that the same rank might be applied to multiple arguments, either with multiple function calls or one call on two arguments. Let's revisit an example with Cells from before, shifting the same string into each row of a table. The function `»` should be called on rank-1 strings, but because the argument ranks are different, a negative rank can't get down to rank 1 on both sides. Positive rank 1 does the job, allowing us to unbundle the string `"∘∘"` so that `»⎉1` is a standalone function.
+
+        "∘∘"⊸»˘ a
+
+        "∘∘" »⎉1 a
+
+The rank for a given argument is clamped, so that on a rank 3 argument for example, a rank of ¯5 counts as ¯3 and a rank of 6 counts as 3 (same for any other value less than ¯3 or greater than 3, although it does have to be a whole number). You may have noticed there's [no](../commentary/problems.md#rankdepth-negative-zero) option for ¯0, "don't map over anything", but ∞ serves that purpose as it indicates the highest possible rank and thus the entire array. More on why that's useful later.
+
+### Frame and Cells
+
+### Multiple and computed ranks
+
+The Rank modifier also accepts a list of one to three numbers for `𝕘`, as well as a function `𝔾` returning such a list. Practically speaking, here's what you need to know:
+
+- A single number or one-element list indicates the ranks for all arguments.
+- Two numbers indicate the ranks for `𝕨` and `𝕩`.
+
+        ⊢ m ← >⟨0‿1‿0,¯1‿0‿0,0‿0‿1⟩
+
+        m +˝∘×⎉1‿∞ 1‿2‿3
+
+        m +˝∘×⎉1‿∞ 1‿2‿3×⌜1‿10
+
+        ("abc"≍"def") ∾⎉1⎉1‿∞ >"QR"‿"ST"‿"UV"
+
+Here's the full, boring description of how `𝔾` is handled. The operand `𝔾` is called on the arguments `𝕨𝔾𝕩` before doing anything else (if it's not a function, this just returns `𝕘`). Then it's converted to a list. It's required to have rank 0 or 1, but numbers and enclosed numbers are fine. This list can have one to three elements; three elements is the general case, as the elements give the ranks for monadic `𝕩`, dyadic `𝕨`, and dyadic `𝕩` in order. If there are less than three elements, the list `r` is expanded backwards-cyclically to `3⊸⥊⌾⌽r`, turning `⟨a⟩` into `a‿a‿a` and `a‿b` into `b‿a‿b`. So `3⊸⥊⌾⌽⥊𝕨𝔾𝕩` is the final formula.
+
+### Leading axis agreement

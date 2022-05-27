@@ -3,6 +3,7 @@
 # Circled Horizontal Bar With Notch (`⎉`)
 
 ## `𝔽⎉𝕘 𝕩`, `𝕨 𝔽⎉𝕘 𝕩`: Rank
+[→full documentation](../doc/rank.md#rank)
 
 Apply `𝔽` to cells at ranks given in `𝕘`. Non-negative numbers indicate the rank of the cell and negative ones indicate the difference from full rank.
 

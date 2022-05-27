@@ -3,6 +3,7 @@
 # Breve (`˘`)
 
 ## `𝔽˘ 𝕩`, `𝕨 𝔽˘ 𝕩`: Cells
+[→full documentation](../doc/rank.md#cells)
 
 Apply `𝔽` to/between the major cells of the arguments. (`𝔽⎉¯1`)
 
