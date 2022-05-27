@@ -2,6 +2,63 @@
 
 # Cells and Rank
 
+<!--GEN
+xn ← 1‿2‿5⌾(⟨1‿1,2‿1,1‿3⟩⊸⊑) 3‿4⥊0
+d ← 46‿40
+
+rc ← "class=code|stroke-width=1.5|rx=12"
+Ge ← "g"⊸At⊸Enc
+g  ← "font-size=18px|fill=currentColor|font-family=BQN,monospace|text-anchor=middle"
+fg ← "font-size=24px"
+dg ← fg∾"|fill=currentColor|opacity=0.9|text-anchor=start"
+lg ← fg∾"|text-anchor=start"
+bg ← "class=bluegreen|stroke-width=2|stroke-linecap=round|style=fill:none|opacity=0.7"
+ag ← "class=green|stroke-width=3|stroke-linecap=round|opacity=0.2"
+cg ← "stroke-width=0.3|fill=none|stroke=currentColor"
+
+Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ ·FmtNum d×⊢
+Path ← "path"⊸At ⊸ Elt ⟜ ("d"⊸⋈)
+Rect ← "rect" Elt {(At𝕨)⊢⊘∾"x"‿"y"‿"width"‿"height"≍˘FmtNum𝕩}
+Text ← ("text" Attr "dy"‿"0.33em"∾·Pos d⊸×)⊸Enc
+TTab ← (⍉⋈⌜´)⊸(Text⟜Highlight¨)
+
+off ← 1.2‿2.4
+fo‿co ← ¯1.1‿¯1
+tb ← >0‿¯1⊸⊏¨tx‿ty ← ↕¨sh←⌽≢xn
+dim ← 2‿1×off+⌽≢xn
+Pd ← ∾∾¨⟜FmtNum
+
+Arr ← "M l m l l " Pd ((⊢∾-∾1‿¯1⊸×) 15‿8)∾˜(-˜∾⊣)
+bigarr ← (0.2‿¯0.7+2‿1÷˜sh)∾⌽⊸(¯1‿1‿1‿¯1⊸×⊸∾○∾)(¯1.2‿1.4)‿0.5‿1.9
+
+Tr ← {"transform=translate("∾")"∾˜∾⟜","⊸∾´FmtNum d×off+𝕩‿0}⊸Ge
+CR ← { 𝕨 Rect ⥊-˜` 11 -⊸≍⊸+ d⊸×˘𝕩 }
+share ← ⟨
+  cg Ge (CR (⊏tb)≍˘⊢)¨ ty
+  tx‿ty TTab FmtNum xn
+  bg Path "M hv" ∾˜⊸Pd ⥊⌽(15×1.5‿¯1) (+⌾⊑ ≍ -⊸≍∘⊣)˘ 19-⊸≍⊸+d⊸×˘⍉tb
+⟩
+
+((∾˜d)×((-∾+˜)0.3‿0.3)+0‿0∾dim) SVG g Ge ⟨
+  rc Rect 0‿0∾d×dim
+  dg Ge 0.2‿0 Text "Cells"
+  0 Tr share∾⟨
+    cg CR (⊏tb)≍˘¯1.1
+    ag Path "z"∾˜"M vhl l hv" (⊣Pd(∊⟜" v"⊏d˙)⊸×) bigarr
+    lg Ge ¯1‿fo Text Highlight "+˝"
+    tx‿fo TTab FmtNum +˝xn
+    fg Ge ((+˝÷≠)⎉1¨tx⋈2↕ty) TTab <"+"
+  ⟩
+  (1.5+≠tx) Tr share∾⟨
+    cg Ge (CR ·≍˜co≍⊢)¨ ty
+    (ag∾"|style=fill:none") Ge ("" Path (-≠tx)‿0 Arr○(d⊸×) (co+0.2)⋈⊢)¨ ty
+    lg Ge (co-0.2)‿fo Text Highlight "+˝˘"
+    co‿ty TTab FmtNum +˝˘xn
+    ((+˝÷≠)˘ 2↕tx)‿ty TTab <"+"
+  ⟩
+⟩
+-->
+
 The Cells modifier `˘` applies a function to major cells of its argument, much like [Each](map.md) applies to elements. Each result from `𝔽` becomes a major cell of the result, which means they must all have the same shape.
 
 The Rank modifier `⎉` generalizes this concept by allowing numbers provided by `𝔾` to specify a rank for each argument: non-negative to indicate the rank of each array passed to `𝔽`, or negative for the number of axes that are mapped over. Cells, which maps over one axis of each argument, is identical to `⎉¯1`. Rank is analogous to the [Depth modifier](depth.md#the-depth-modifier), but the homogeneous structure of an array eliminates some tricky edge cases found in Depth.
