@@ -137,9 +137,29 @@ The function `𝔽⎉k`, for `k≥0`, operates on the `k`-cells of its arguments
 
         "∘∘" »⎉1 a
 
-The rank for a given argument is clamped, so that on a rank 3 argument for example, a rank of ¯5 counts as ¯3 and a rank of 6 counts as 3 (same for any other value less than ¯3 or greater than 3, although it does have to be a whole number). You may have noticed there's [no](../commentary/problems.md#rankdepth-negative-zero) option for ¯0, "don't map over anything", but ∞ serves that purpose as it indicates the highest possible rank and thus the entire array. More on why that's useful later.
+The rank for a given argument is clamped, so that on a rank 3 argument for example, a rank of ¯5 counts as ¯3 and a rank of 6 counts as 3 (same for any other value less than ¯3 or greater than 3, although it does have to be a whole number). You may have noticed there's [no](../commentary/problems.md#rankdepth-negative-zero) option for ¯0, "don't map over anything", but ∞ serves that purpose, as it indicates the highest possible rank and thus the entire array. More on why that's useful later.
 
 ### Frame and Cells
+
+Lets look at things more systematically. Suppose `x` has shape `4‿3‿2‿1‿0`, and we'd like to approach it with `⎉2`, or equivalently `⎉¯3`. This choice splits the axes of `x` into two parts: leading axes (shapes `4‿3‿2`) make up the *frame* of `x`, while trailing axes give the shape `1‿0` of each *cell* of `x`.
+
+        ≢   <⎉2 ↕4‿3‿2‿1‿0
+
+        ≢ ⊑ <⎉2 ↕4‿3‿2‿1‿0
+
+We can build a frame array using `<⎉2`, as shown above. In the general case, the frame remains conceptual: the actual array `<⎉2 x` is never created, and the result might also not have the shape `4‿3‿2`. But the result shape does always have `4‿3‿2` as a prefix. Rank maps over these axes, leaving them intact. And it can be defined in terms of the cell-splitting function `<⎉k`, and its inverse [Merge](couple.md#merge-and-array-theory) (`>`).
+
+    F⎉k x  ←→  >F¨<⎉k x
+
+That is, `F⎉k` splits its argument into `k`-cells, applies `F` to each of these (in index order, of course), then merges the results into a single array.
+
+        +˝⎉1 4‿2⥊↕8
+
+        +˝¨<⎉1 4‿2⥊↕8  # +˝ of a list is a unit
+
+        >+˝¨<⎉1 4‿2⥊↕8
+
+Each can be implemented by acting on 0-cells with Rank too: `F⌾⊑⎉0 x ←→ F¨x`, meaning that `F¨` applies `F` to the interior of each 0-cell, that is, each element. Some half-way identities are `<∘F⎉k  ←→ F¨<⎉k` and `F∘⊑⎉0 ←→ >F¨`.
 
 ### Multiple and computed ranks
 
@@ -148,14 +168,42 @@ The Rank modifier also accepts a list of one to three numbers for `𝕘`, as wel
 - A single number or one-element list indicates the ranks for all arguments.
 - Two numbers indicate the ranks for `𝕨` and `𝕩`.
 
+As an example, we'll define the matrix-vector product. A matrix is a rank-2 array and a vector is a list, and their product is a list. It's made up of the elements `+´ row × vec` for each row `row` of the matrix. To define this using Rank, we'll change `+´` to `+˝` to get a unit out, and we need to map over the rows of the left argument but not of the right one. Following the rules above, there are several ways to do this, including `+˝∘×⎉1`, `+˝∘×⎉¯1‿1`, and `+˝∘×⎉¯1‿∞`. When correctly defined we can see that multiplication by the matrix `m` below negates the first element of a list, and also swaps it with the second.
+
         ⊢ m ← >⟨0‿1‿0,¯1‿0‿0,0‿0‿1⟩
+
+        +˝ 0‿1‿0 × 1‿2‿3
 
         m +˝∘×⎉1‿∞ 1‿2‿3
 
+But a rank of `1‿∞` works the best because it also defines a matrix-*matrix* product. Which as shown below does the same transformation to the *cells* of the right-hand-side matrix, instead of the elements of a vector. This works because `×` and `+˝` work on the leading axes of their arguments. When `⎉1‿∞` is applied, these axes are the last axis of `𝕨` and the first axis of `𝕩`. Which… is kind of weird, but it's what a matrix product is.
+
+        +˝ 0‿1‿0 × 1‿2‿3×⌜1‿10
+
         m +˝∘×⎉1‿∞ 1‿2‿3×⌜1‿10
+
+For completeness, here's the whole, boring description of how `𝔾` is handled. The operand `𝔾` is called on the arguments `𝕨𝔾𝕩` before doing anything else (if it's not a function, this just returns `𝕘`). Then it's converted to a list. It's required to have rank 0 or 1, but numbers and enclosed numbers are fine. This list can have one to three elements; three elements is the general case, as the elements give the ranks for monadic `𝕩`, dyadic `𝕨`, and dyadic `𝕩` in order. If there are less than three elements, the list `r` is expanded backwards-cyclically to `3⊸⥊⌾⌽r`, turning `⟨a⟩` into `a‿a‿a` and `a‿b` into `b‿a‿b`. So `3⊸⥊⌾⌽⥊𝕨𝔾𝕩` is the final formula.
+
+### Leading axis agreement
+
+In the preceding sections we've been somewhat loose with the way two arguments are paired up. The simple answer is [leading axis agreement](leading.md#leading-axis-agreement) on the frames.
+
+This is why the rank of `⎉1‿∞` that leads to a frame `⟨3⟩` on the left and `⟨⟩` on the right is fine: more generally, either argument can have a longer frame as long as the elements in the shorter one agree with it. So frames of `⟨3,2⟩` and `⟨3⟩` would also be fine, but `⟨2,3⟩` and `⟨3⟩` wouldn't: the first axes of these frames need to have the same length.
+
+        ≢ (↕3‿2‿5) ∾⎉1 (↕3‿4)
+
+        ≢ (↕2‿3‿5) ∾⎉1 (↕3‿4)
+
+On the other hand, Rank doesn't care about the argument cell shapes—it leaves that up to the function `𝔽`. If `𝔽` is an arithmetic function, you'll get *two* layers of prefix agreement: one outer matching with `⎉`, and an inner one with `𝔽`.
+
+It's also possible to apply multiple copies of Rank, which in general is powerful enough to match and not-match axes in any combination as long as the axes for each argument stay in order (of course, BQN also provides the tools to [reorder axes](transpose.md#dyadic-transpose)).
+
+One of the relatively more common instance of this pattern is a variation on the [Table](map.md#table) modifier, to work with cells instead of elements. Here we'll make a table of all combinations of one row (1-cell) from `𝕨` and one from `𝕩`. To do this, we want to first line up each row of `𝕨` with the whole of `𝕩`. As in a matrix product, that's `⎉1‿∞`. But then we'd like to pair that row with the rows of `𝕩` individually, which could be written `⎉∞‿1`. But since we know the left argument has been reduced to lists, `⎉1` also works. We then arrange the two layers of mapping with `⎉1` on the inside, giving `(∾⎉1)⎉1‿∞`.
 
         ("abc"≍"def") ∾⎉1⎉1‿∞ >"QR"‿"ST"‿"UV"
 
-Here's the full, boring description of how `𝔾` is handled. The operand `𝔾` is called on the arguments `𝕨𝔾𝕩` before doing anything else (if it's not a function, this just returns `𝕘`). Then it's converted to a list. It's required to have rank 0 or 1, but numbers and enclosed numbers are fine. This list can have one to three elements; three elements is the general case, as the elements give the ranks for monadic `𝕩`, dyadic `𝕨`, and dyadic `𝕩` in order. If there are less than three elements, the list `r` is expanded backwards-cyclically to `3⊸⥊⌾⌽r`, turning `⟨a⟩` into `a‿a‿a` and `a‿b` into `b‿a‿b`. So `3⊸⥊⌾⌽⥊𝕨𝔾𝕩` is the final formula.
+        ≢ ("abc"≍"def") ∾⎉1⎉1‿∞ >"QR"‿"ST"‿"UV"
 
-### Leading axis agreement
+        ≢ (↕3‿4‿5) ∾⎉1⎉1‿∞ ↕0‿1‿2‿8
+
+The flexibility of Rank also means we're able to apply this pattern with ranks other than 1. In particular, `𝔽⎉∞‿¯1⎉¯1‿∞` applies `𝔽` to all combinations of one major cell from either argument—an equivalent to `>𝔽⌜○(<˘)`. In this case the left rank of `𝔽⎉∞‿¯1` is unknown, so the only way to apply `𝔽` to the entire cell from `𝕨` is to use rank ∞.
