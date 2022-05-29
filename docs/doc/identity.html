@@ -18,7 +18,7 @@
     <span class='String'>&quot;left&quot;</span> <span class='Function'>⊣</span> <span class='String'>&quot;right&quot;</span>
 "left"
 </pre>
-<p>Depending on your past experiences, this could cause some confusion: built-in support for functions that do nothing? Documentation should say why a feature's there and how to use it, not just what it does, so we'll try to address this below. The most important single use is for tacit programming, but there are a variety of other uses as well.</p>
+<p>Depending on your past experiences, this could cause some confusion: built-in support for functions that do nothing? Documentation should say why a feature's there and how to use it, not just what it does, so we'll try to address this below. The most important single use is for <a href="tacit.html">tacit</a> programming, but there are a variety of other uses as well.</p>
 <p>Of course, it's easy to write block functions <code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> and <code><span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Brace'>}</span></code> that return particular arguments. While I would already make <code><span class='Function'>⊣</span></code> and <code><span class='Function'>⊢</span></code> primitives just because they are common and important, there are also specific disadvantages to using blocks. They fail to indicate that there are no side effects, as primitives would, and they also need special casing for the interpreter to manipulate them when applying <a href="undo.html">Undo</a> (<code><span class='Modifier'>⁼</span></code>) or making other inferences.</p>
 <h2 id="filling-arrays"><a class="header" href="#filling-arrays">Filling arrays</a></h2>
 <p>What's the easiest way to create a matrix with 0 on the first row, 1 on the second, and so on? Probably this one, with <a href="map.html#table">table</a>:</p>
@@ -68,19 +68,8 @@
 4.5
 </pre>
 <p>A larger class of block functions can be translated just by adding parentheses and <code><span class='Modifier'>˙</span></code> (there's a discussion of this technique in APL <a href="https://dfns.dyalog.com/n_tacit.htm">here</a>). It's helpful when writing tacit code to know that <code><span class='Function'>Fn</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span></code> applies <code><span class='Function'>Fn</span></code> to the left argument only and <code><span class='Function'>Fn</span><span class='Modifier2'>∘</span><span class='Function'>⊢</span></code> applies it to the right argument—these can be read &quot;Fn of left&quot; and &quot;Fn of right&quot;.</p>
-<h2 id="syntax-tricks"><a class="header" href="#syntax-tricks">Syntax tricks</a></h2>
+<h2 id="one-more-thing"><a class="header" href="#one-more-thing">One more thing</a></h2>
 <p>You've probably seen <code><span class='Function'>⊢</span></code> used in documentation to display the value of a variable being assigned. This is a hack, and in most contexts <code><span class='Function'>•Show</span></code> should be used to display values.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQICJzaG93IHRoaXMi">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>a</span> <span class='Gets'>←</span> <span class='String'>&quot;show this&quot;</span>
 "show this"
 </pre>
-<p>More importantly, <code><span class='Modifier2'>∘</span><span class='Function'>⊣</span></code> can be used to ignore a right argument for modified assignment, to apply a function &quot;in place&quot; to a variable without writing the variable name twice.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDijL3iiJjiiqPihqkgQA==">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>⌽</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span><span class='Gets'>↩</span> <span class='String'>@</span>
-"siht wohs"
-</pre>
-<p>In APL a tack can be used to avoid stranding numbers together. In BQN, stranding is explicit, and there's no need!</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w7fin5wy4o2fM+KKoiAyNArDt+KfnDLijZ8zIDI0">↗️</a><pre>    <span class='Function'>÷</span><span class='Modifier2'>⟜</span><span class='Number'>2</span><span class='Modifier2'>⍟</span><span class='Number'>3</span><span class='Function'>⊢</span> <span class='Number'>24</span>
-3
-    <span class='Function'>÷</span><span class='Modifier2'>⟜</span><span class='Number'>2</span><span class='Modifier2'>⍟</span><span class='Number'>3</span> <span class='Number'>24</span>
-3
-</pre>
-<p>(Wow, what a useless section.)</p>

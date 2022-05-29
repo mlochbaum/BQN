@@ -12,7 +12,7 @@ Here are the simplest functions in BQN: Right (`⊢`) always returns its right a
 
         "left" ⊣ "right"
 
-Depending on your past experiences, this could cause some confusion: built-in support for functions that do nothing? Documentation should say why a feature's there and how to use it, not just what it does, so we'll try to address this below. The most important single use is for tacit programming, but there are a variety of other uses as well.
+Depending on your past experiences, this could cause some confusion: built-in support for functions that do nothing? Documentation should say why a feature's there and how to use it, not just what it does, so we'll try to address this below. The most important single use is for [tacit](tacit.md) programming, but there are a variety of other uses as well.
 
 Of course, it's easy to write block functions `{𝕩}` and `{𝕨}` that return particular arguments. While I would already make `⊣` and `⊢` primitives just because they are common and important, there are also specific disadvantages to using blocks. They fail to indicate that there are no side effects, as primitives would, and they also need special casing for the interpreter to manipulate them when applying [Undo](undo.md) (`⁼`) or making other inferences.
 
@@ -51,19 +51,8 @@ In a [tacit](tacit.md) context, `⊣` is roughly equivalent to `𝕨` and `⊢` 
 
 A larger class of block functions can be translated just by adding parentheses and `˙` (there's a discussion of this technique in APL [here](https://dfns.dyalog.com/n_tacit.htm)). It's helpful when writing tacit code to know that `Fn∘⊣` applies `Fn` to the left argument only and `Fn∘⊢` applies it to the right argument—these can be read "Fn of left" and "Fn of right".
 
-## Syntax tricks
+## One more thing
 
 You've probably seen `⊢` used in documentation to display the value of a variable being assigned. This is a hack, and in most contexts `•Show` should be used to display values.
 
         ⊢ a ← "show this"
-
-More importantly, `∘⊣` can be used to ignore a right argument for modified assignment, to apply a function "in place" to a variable without writing the variable name twice.
-
-        a ⌽∘⊣↩ @
-
-In APL a tack can be used to avoid stranding numbers together. In BQN, stranding is explicit, and there's no need!
-
-        ÷⟜2⍟3⊢ 24
-        ÷⟜2⍟3 24
-
-(Wow, what a useless section.)
