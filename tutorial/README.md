@@ -14,3 +14,10 @@ The tutorials available so far:
 | [List manipulation](list.md) | Lists, strings, and strands; pervasion | `∾⋈⌽↕¨´`
 | [Combinators](combinator.md) | Tacit programming, booleans            | `\|<>≠=≤≥≡≢○⊸⟜`
 | [Variables](variable.md)     | Declarations, cross-roles              | `∧∨¬⊣⊢↑↓«»⌾`
+
+Where to from here? I'd suggest the following documentation pages as starting points:
+
+- [Blocks](../doc/block.md); maybe [Lexical scoping](../doc/lexical.md) and [Control flow](../doc/control.md)
+- [Arrays](../doc/array.md) and [Indices](../doc/indices.md)
+- [Namespaces](../doc/namespace.md) and [Object-oriented programming](../doc/oop.md)
+- [Primitives](../doc/primitive.md) as needed
