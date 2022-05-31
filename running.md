@@ -27,7 +27,7 @@ Further details in the sections below.
 This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all functionality specified so far. System value support varies at it's implemented separately in each host.
 
 Support in the following languages has been implemented (details in the subsections below):
-- [C](https://github.com/dzaima/CBQN), targetting high performance. Usually fairly fast.
+- [C](https://github.com/dzaima/CBQN), targeting high performance. Usually fairly fast.
 - Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.
 - BQN ([bqn.bqn](bqn.bqn)), for testing without a build step.
 - [Julia](https://github.com/andreypopp/BQN.jl) embedding, with common primitives implemented natively. Slow startup.
@@ -62,4 +62,4 @@ If compiled with Native Image, `nBQN` can be used directly instead.
 
 ### BQN2NGN
 
-[BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript built to experiment with the langauge. It's now abandoned.
+[BQN2NGN](https://github.com/mlochbaum/BQN2NGN) is a prototype implementation in Javascript built to experiment with the language. It's now abandoned.
