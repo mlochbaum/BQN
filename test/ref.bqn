@@ -17,7 +17,8 @@ chrs ← •Import "../src/glyphs.bqn"
 
 def‿keep ← ⊑¨⌾(1⊸⊑) (1=≠)¨⊸⊔ anames
 keep∾↩"⌾⎊"
-pre←"Type←•Type"‿"_amend←{𝕨˙⌾(𝕗⊸⊑)𝕩}"‿"Identity←{𝕏´⟨⟩}"‿"Fill←⊑∘»1↑⥊"
+pre←⟨"Type←•Type","_amend←{𝕨˙⌾(𝕗⊸⊑)𝕩}","Identity←{𝕏´⟨⟩}"
+     "Fill←⊑∘»1↑⥊","HasFill←1∘Fill⎊0"⟩
 
 GetRepls ← {
   ki ← (⊑¨⊑𝕩)∊keep
