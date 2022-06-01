@@ -105,6 +105,18 @@ The total number of elements in an array is its **bound**, and can be found usin
 
 Any BQN value can be used as an array element, including another array (BQN, as a dynamically-typed language, doesn't restrict the types that can be used in one context without a good reason). However, BQN arrays are restricted relative to other array models. Frameworks like NumPy or Julia have mutable arrays, so that the value of an element can be changed after the array is created. This allows an array to be its own element, by creating an array and then inserting it into itself. This would be unnatural in BQN, where an array can only be formed from elements that already exist. In BQN only operations and namespaces are [mutable](lexical.md#mutation).
 
+## Cells
+
+The contents of an array are its elements, but it also makes sense to split up an array into subarrays of elements called cells. The most important kind of cell, a **major cell** consists of all the elements that have indices beginning with some particular index `i`. For this to make sense, `i` must be between `0` and the length `l` of the array's first axis, so that there are `l` major cells each identified by an index.
+
+        2‿3‿4 ×⌜ 1‿5‿8‿11
+
+        1 ⊏ 2‿3‿4 ×⌜ 1‿5‿8‿11  # Major cell 1
+
+A major cell still has an array structure: it retains all the axes of the original array other than the first. So it has its own major cells, identified by the index `i` of the original major cell and `j` within it. These are also cells of the original array. Generalizing, a **cell** with index list `l` is defined to be the array of all elements whose indices begin with `l`. In an array with rank `n`, the cell rank is `n-≠l`, and cells grouped using this rank. An `n`-cell mst have an empty cell index, so that it includes all elements—it's the entire array! An `n-1` cell, also called a ¯1-cell, is a major cell. A 0-cell has an index of length `n`, and contains a single element.
+
+Cells are the center of the [leading axis model](leading.md) used to structure many array primitives.
+
 ## Properties
 
 Summarizing, the values needed to define an array are its rank (the number of axes), its shape (the number of positions along each axis), and the value of each element (that is, at each combination of positions). Two arrays [match](match.md) when all these values match.

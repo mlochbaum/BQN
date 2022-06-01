@@ -54,11 +54,11 @@ The possible roles are:
 * [**Fill**](fill.md): A "prototypical" array element used in certain operations; it's an inferred property of an array.
 
 * **Empty**: Having no elements. An array is empty if its shape contains 0.
-* **Cell**: An array containing all elements of the original array whose indices share a particular prefix.
-* **k-Cell**: A cell of rank *k*.
-* [**Major cell**](indices.md#major-cell-indices): A cell with rank one less than the original array.
+* [**Cell**](array.md#cells): An array containing all elements of the original array whose indices share a particular prefix.
+* [**k-Cell**](array.md#cells): A cell of rank *k*.
+* [**Major cell**](array.md#cells): A cell with rank one less than the original array.
 * [**Agreement**](leading.md#leading-axis-agreement): The way elements are paired when a function maps over two arrays.
-* **Frame**: A prefix of an array's shape, used for agreement with the Rank modifier.
+* [**Frame**](rank.md#frame-and-cells): A prefix of an array's shape, used for agreement with the Rank modifier.
 
 * **Unit**: An array of rank 0, or an atom.
 * [**Unit array**](enclose.md#whats-a-unit): An array of rank 0.
