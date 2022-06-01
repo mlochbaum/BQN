@@ -46,7 +46,7 @@ A function call with one argument (prefix) is called "monadic" and one with two 
 | `»`   | [Nudge](shift.md)                                   | [Shift Before](shift.md)
 | `«`   | [Nudge Back](shift.md)                              | [Shift After](shift.md)
 | `⌽`   | [Reverse](reverse.md)                               | [Rotate](reverse.md#rotate)
-| `⍉`   | [Transpose](transpose.md)                           | [Reorder axes](transpose.md)
+| `⍉`   | [Transpose](transpose.md)                           | [Reorder Axes](transpose.md)
 | `/`   | [Indices](replicate.md#indices)                     | [Replicate](replicate.md)
 | `⍋`   | [Grade Up](order.md#grade)                          | [Bins Up](order.md#bins)
 | `⍒`   | [Grade Down](order.md#grade)                        | [Bins Down](order.md#bins)

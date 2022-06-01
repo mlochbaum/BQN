@@ -20,7 +20,7 @@ The following functions take or return indices. Except where marked, the indices
 |       | `⊏`  | `𝕨`     | Major cell or along-axis number
 |  `⍉`  |      |         | Axis number
 
-In Dyadic [Transpose](transpose.md#dyadic-transpose) (`⍉`), `𝕨` is made up of indices into axes of `𝕩`. Since array shape is 1-dimensional, there is only one sensible choice for these elements, a single number each.
+In [Reorder Axes](transpose.md#reorder-axes) (`⍉`), `𝕨` is made up of indices into axes of `𝕩`. Since array shape is 1-dimensional, there is only one sensible choice for these elements, a single number each.
 
 ## Element indices
 

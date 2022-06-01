@@ -63,9 +63,9 @@ Axis permutations of the types we've shown generate the complete permutation gro
 
         ≢ ⍉⁼⎉¯2 ⍉ a23456  # Restrict Transpose to the first three axes
 
-In a case like this BQN's Dyadic transpose is much easier.
+In a case like this the dyadic version of `⍉`, called Reorder Axes, is much easier.
 
-## Dyadic Transpose
+## Reorder Axes
 
 Transpose also allows a left argument that specifies a permutation of `𝕩`'s axes. For each index `p←i⊑𝕨` in the left argument, axis `i` of `𝕩` is used for axis `p` of the result. Multiple argument axes can be sent to the same result axis, in which case that axis goes along a diagonal of `𝕩`, and the result will have a lower rank than `𝕩`.
 
@@ -85,7 +85,7 @@ In particular, the case with only one axis specified is interesting. Here, the f
 
         ≢ 2 ⍉ a23456  # Restrict Transpose to the first three axes
 
-Finally, it's worth noting that, as monadic Transpose moves the first axis to the end, it's equivalent to dyadic Transpose with a "default" left argument: `(=-1˙)⊸⍉`.
+Finally, it's worth noting that, as monadic Transpose moves the first axis to the end, it's equivalent to Reorder Axes with a "default" left argument: `(=-1˙)⊸⍉`.
 
 ## Definitions
 
@@ -95,4 +95,4 @@ An atom right argument to either valence of Transpose is always enclosed to get 
 
 Monadic transpose is identical to `(=-1˙)⊸⍉`, except that if `𝕩` is a unit it is returned unchanged (after enclosing, if it's an atom) rather than giving an error.
 
-In dyadic Transpose, `𝕨` is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the right argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
+In Reorder Axes, `𝕨` is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the right argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
