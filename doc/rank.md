@@ -65,7 +65,7 @@ The Rank modifier `⎉` generalizes this concept by allowing numbers provided by
 
 ## Cells
 
-The function Cells (`˘`) is named after *major cells* in an array. A major cell is a component of an array with dimension one smaller, so that the major cells of a list are [units](enclose.md#whats-a-unit), the major cells of a rank-2 table are its rows (which are lists), and the major cells of a rank-3 array are tables.
+The function Cells (`˘`) is named after *major cells* in an array. A [major cell](array.md#cells) is a component of an array with dimension one smaller, so that the major cells of a list are [units](enclose.md#whats-a-unit), the major cells of a rank-2 table are its rows (which are lists), and the major cells of a rank-3 array are tables.
 
 The function `𝔽˘` applies `𝔽` to the major cells of `𝕩`. So, for example, where [Nudge](shift.md) (`»`) shifts an entire table, Nudge Cells shifts its major cells, or rows.
 
@@ -115,7 +115,7 @@ The arguments might have different ranks: for example, `"012"` has rank 1 and `a
 
 ## Rank
 
-Rank (`⎉`) is a generalization of Cells (`𝔽˘` is defined to be `𝔽⎉¯1`) that can apply to arbitrary—not just major—cells and combine different levels of mapping for two arguments.
+Rank (`⎉`) is a generalization of Cells (`𝔽˘` is defined to be `𝔽⎉¯1`) that can apply to arbitrary—not just major—[cells](array.md#cells) and combine different levels of mapping for two arguments.
 
 Rank comes in handy when there are high-rank arrays with lots of exciting axes, which is a great use case for BQN but honestly isn't all that common. And to continue this trend of honesty, using Rank just never *feels* good—it's some heavy machinery that I drag out when nothing else works, only to make use of a small part of the functionality. If Cells covers your use cases, that's probably for the best!
 
