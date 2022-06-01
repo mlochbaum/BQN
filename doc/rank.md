@@ -196,7 +196,7 @@ This is why the rank of `⎉1‿∞` that leads to a frame `⟨3⟩` on the left
 
 On the other hand, Rank doesn't care about the argument cell shapes—it leaves that up to the function `𝔽`. If `𝔽` is an arithmetic function, you'll get *two* layers of prefix agreement: one outer matching with `⎉`, and an inner one with `𝔽`.
 
-It's also possible to apply multiple copies of Rank, which in general is powerful enough to match and not-match axes in any combination as long as the axes for each argument stay in order (of course, BQN also provides the tools to [reorder axes](transpose.md#dyadic-transpose)).
+It's also possible to apply multiple copies of Rank, which in general is powerful enough to match and not-match axes in any combination as long as the axes for each argument stay in order (of course, BQN also provides the tools to [reorder axes](transpose.md#reorder-axes)).
 
 One of the relatively more common instance of this pattern is a variation on the [Table](map.md#table) modifier, to work with cells instead of elements. Here we'll make a table of all combinations of one row (1-cell) from `𝕨` and one from `𝕩`. To do this, we want to first line up each row of `𝕨` with the whole of `𝕩`. As in a matrix product, that's `⎉1‿∞`. But then we'd like to pair that row with the rows of `𝕩` individually, which could be written `⎉∞‿1`. But since we know the left argument has been reduced to lists, `⎉1` also works. We then arrange the two layers of mapping with `⎉1` on the inside, giving `(∾⎉1)⎉1‿∞`.
 
