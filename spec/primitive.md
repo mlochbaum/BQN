@@ -89,7 +89,7 @@ There's little to say about BQN's true combinators, since each is simply a patte
 
 - **Choose** (`◶`) is later redefined to use the complete `⊑` rather than the simple version assumed (using this primitive means it's not a true combinator).
 - **Constant** (`˙`)
-- **Valences** (`⊘`) uses a trick with ambivalent `-` to find out whether there's a left argument, described below.
+- **Valences** (`⊘`)
 - **Right** (`⊢`)
 - **Left** (`⊣`)
 - **Self**/**Swap** (`˜`)
@@ -97,8 +97,6 @@ There's little to say about BQN's true combinators, since each is simply a patte
 - **Over** (`○`)
 - **Before**/**Bind** (`⊸`)
 - **After**/**Bind** (`⟜`)
-
-The somewhat complicated definition of Valences could be replaced with `{𝔽𝕩;𝕨𝔾𝕩}` using headers. However, reference.bqn uses a simple subset of BQN's syntax that doesn't include headers. Instead, the definition relies on the fact that `𝕨` works like `·` if no left argument is given: `(1˙𝕨)-0` is `1-0` or `1` if `𝕨` is present and `(1˙·)-0` otherwise: this reduces to `·-0` or `0`.
 
 ### Array properties
 
