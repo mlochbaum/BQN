@@ -2,7 +2,7 @@
 
 # Left Pointing Double Angle Quotation (`«`)
 
-## `« 𝕩`: Shift Before
+## `« 𝕩`: Nudge Back
 [→full documentation](../doc/shift.md)
 
 Remove the first element of `𝕩`,  add a cell of fill values to the end of the first axis of `𝕩`.
