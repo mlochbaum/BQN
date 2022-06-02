@@ -96,3 +96,5 @@
 | `∞` | [Infinity](infinity.md) |
 | `@` | [Null Character](nullcharacter.md) |
 | `#` | [Comment](comment.md) |
+| `'` | [Character](character.md) |
+| `"` | [String](string.md) |
