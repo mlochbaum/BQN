@@ -33,8 +33,8 @@
 | `↑` | [Prefixes, Take](prefixes_take.md) |
 | `↓` | [Suffixes, Drop](suffixes_drop.md) |
 | `↕` | [Range, Windows](range_windows.md) |
-| `«` | [Shift Before, Shift Before](shiftbefore.md) |
-| `»` | [Shift After, Shift After](shiftafter.md) |
+| `«` | [Nudge Back, Shift Before](shiftbefore.md) |
+| `»` | [Nudge, Shift After](shiftafter.md) |
 | `⌽` | [Reverse, Rotate](reverse_rotate.md) |
 | `⍉` | [Transpose, Reorder Axes](transpose_reorderaxes.md) |
 | `/` | [Indices, Replicate](indices_replicate.md) |
@@ -70,7 +70,7 @@
 | `` ` `` | [Scan, Scan With initial](scan.md) |
 | `←` | [Define](define.md) |
 | `⇐` | [Export Definition, Export names](export.md) |
-| `↩` | [Change](change.md) |
+| `↩` | [Change, Modify](change.md) |
 | `,` or `⋄` | [Separator](separator.md) |
 | `.` | [Namespace Field](namespacefield.md) |
 | `(` | [Begin Expression](beginexpression.md) |
