@@ -67,6 +67,7 @@ The possible roles are:
 * **Table**: An array of rank 2.
 
 * [**Index**](indices.md): One of a variety of ways to select an element, cell, axis, or position along an axis of an array.
+* [**Index list**](indices.md#element-indices): A list of numbers indicating a single element of an array.
 
 ## Operations
 

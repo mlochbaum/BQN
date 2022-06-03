@@ -15,7 +15,7 @@
   ⟨ 1 0 ⟩ ⟨ 1 1 ⟩ ⟨ 1 2 ⟩  
                           ┘
 </pre>
-<p>It's really two different functions packed together: if <code><span class='Value'>𝕩</span></code> is a natural number—a length—then it returns a list of numeric indices, but if it's a list of numbers, then it returns an array of list indices. This means the result always has <a href="depth.html">depth</a> one more than the argument.</p>
+<p>It's really two different functions packed together: if <code><span class='Value'>𝕩</span></code> is a natural number—a length—then it returns a list of numeric indices, but if it's a list of numbers, then it returns an array of index lists. This means the result always has <a href="depth.html">depth</a> one more than the argument.</p>
 <p>The two kinds of index correspond to BQN's two selection functions: <a href="select.html">Select</a> (<code><span class='Function'>⊏</span></code>) works with indices along an axis, which are numbers, and <a href="pick.html">Pick</a> (<code><span class='Function'>⊑</span></code>) works with element indices, which are lists. The examples below would fail if we swapped these around. Each result from Range is a length-6 list, but their elements are different.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVNgoKKOKGlTYpIOKKjyAic2VsZWN0IgoK4oaV4p+oNuKfqQoKKOKGleKfqDbin6kpIOKKkSAiIHBpY2sgIg==">↗️</a><pre>    <span class='Function'>↕</span><span class='Number'>6</span>
 ⟨ 0 1 2 3 4 5 ⟩

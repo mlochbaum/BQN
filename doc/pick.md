@@ -63,7 +63,7 @@ Pick also accepts a list of indices:
 
         ⟨2‿0, 1‿¯1, 3‿1, ¯1‿¯1⟩ ⊑ a
 
-These indices have to be lists, since if they're numbers it just looks like `𝕨` is one list index.
+These indices have to be lists, since if they're numbers it just looks like `𝕨` is an index list for one element.
 
         ⟨2,1,0,¯1⟩ ⊑ "abc"  # 𝕩 doesn't have rank 4!
 
