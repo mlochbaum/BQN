@@ -10,7 +10,7 @@ Join To connects its two arguments together, for example to join two strings:
 
         "abcd" ∾ "EFG"
 
-If the arguments have the same rank, then they are combined along the first axis: the result is an array whose major cells are the major cells of `𝕨` followed by the major cells of `𝕩`. For arrays with rank two or more, this means they will be joined "vertically" according to BQN's display.
+If the arguments have the same rank, then they are combined along the first axis: the result is an array whose [major cells](array.md#cells) are the major cells of `𝕨` followed by the major cells of `𝕩`. For arrays with rank two or more, this means they will be joined "vertically" according to BQN's [display](arrayrepr.md#array-display).
 
         ⊢ a ← 3 +⌜○↕ 4
         ⊢ b ← 2‿4 ⥊ ↕8
@@ -42,13 +42,15 @@ To join with a separator in between, we might prepend the separator to each stri
 
         1↓∾' '∾¨"time"‿"to"‿"join"‿"some"‿"words"
 
+        ∾1↓⥊(<" * ")≍˘"time"‿"to"‿"join"‿"some"‿"words"
+
 Join also extends the rank of a unit element (including an atom) to allow it to fit into the list. The highest-rank element determines the rank of the result.
 
         ∾"abc"‿'d'‿"ef"‿(<'g')
 
         ∾"abcd"  # Result has to be rank 0, impossible
 
-However, Join has higher-dimensional uses as well. Given a rank-`m` array of rank-`n` arrays (requiring `m≤n`), it will merge arrays along their first `m` axes. For example, if the argument is a matrix of matrices representing a [block matrix](https://en.wikipedia.org/wiki/Block_matrix), Join will give the corresponding unblocked matrix as its result.
+Join has higher-dimensional uses as well. Given a rank-`m` array of rank-`n` arrays (requiring `m≤n`), it will merge arrays along their first `m` axes. For example, if the argument is a matrix of matrices representing a [block matrix](https://en.wikipedia.org/wiki/Block_matrix), Join will give the corresponding unblocked matrix as its result.
 
         ⊢ m ← (3‿1≍⌜4‿2‿5) ⥊¨ 2‿3⥊↕6
         ∾ m  # Join all that together
