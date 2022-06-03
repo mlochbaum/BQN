@@ -53,6 +53,6 @@ A larger class of block functions can be translated just by adding parentheses a
 
 ## One more thing
 
-You've probably seen `⊢` used in documentation to display the value of a variable being assigned. This is a hack, and in most contexts `•Show` should be used to display values.
+You've probably seen `⊢` used in documentation to display the value of a variable being assigned. Normally `•Show` is used to display values, but the website is sort of a weird context: it displays by default but disables it if the final thing done is an assignment. `⊢` isn't assignment, so it works arround that rule.
 
         ⊢ a ← "show this"
