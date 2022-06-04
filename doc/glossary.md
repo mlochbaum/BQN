@@ -96,7 +96,7 @@ The possible roles are:
 * **Access**: To get the current value of a field from a namespace.
 * [**Export**](namespace.md#exports): Declare a variable to be accessible from the outside, that is, make it a field.
 * [**Object**](oop.md): Informal term for a namespace that holds mutable state.
-* **Alias**: A different "outside" name chosen for a field in a destructuring assignment.
+* [**Alias**](namespace.md#imports): A different "outside" name chosen for a field in a destructuring assignment.
 
 ## Tokens
 

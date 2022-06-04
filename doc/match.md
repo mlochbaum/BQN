@@ -17,11 +17,11 @@ Match always gives the same result as [Equals](arithmetic.md#comparisons) (`=`) 
 
 Match compares arrays based on their fundamental properties—[shape](shape.md) and elements—and not the [fill element](fill.md), which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for `'a'‿'b'‿'c'`, it should still be considered to match `"abc"`.
 
-To give a precise definition, two arrays are considered to match if they have the same shape and all corresponding elements from the two arrays match. Every array has a finite [depth](depth.md) so this recursive definition always ends up comparing non-arrays, or atoms. An array never matches an atom, so the result if only one argument is an atom is `0`. The interesting case is when both arguments are atoms, discussed below.
+To give a precise definition, two arrays are considered to match if they have the same shape and all corresponding elements from the two arrays match. Every array has a finite [depth](depth.md), so this recursive definition always ends up comparing non-arrays, or atoms. And because an array never matches an atom, the result if only one argument is an atom is `0`. The interesting case is when both arguments are atoms, discussed below.
 
 ## Atomic equality
 
-Atoms in BQN have six possible [types](types.md): number, character, function, 1-modifier, 2-modifier, and namespace. Equality is not allowed to fail for any two arguments, so it needs to be defined on all of these types.
+Atoms in BQN have six possible [types](types.md): number, character, function, 1-modifier, 2-modifier, and namespace. Equality testing isn't allowed to fail for any two arguments, so it needs to be defined on all of these types.
 
 Starting with the easiest rules, values with different types are never equal to each other.
 
@@ -33,12 +33,12 @@ Two characters are equal when they have the same code point. Numeric equality de
 
         1.25 = 1 + 0.25
 
-Mutable types are more difficult. Here there are three cases:
+Operations and namespaces are more difficult. Here there are three cases:
 - Primitives are equal if they have the same glyph.
 - Compound functions or modifiers are split into components.
 - Block instances or namespaces are equal if they are the same instance.
 
-The first two are fairly similar to how numbers and arrays work. Primitives and compounds like trains, or modifiers with bound operands, are immutable, so they are defined purely by what components they contain.
+The first two are fairly similar to how numbers and arrays work. Primitives and compounds like trains, or modifiers with bound operands, are immutable, so they're defined purely by what components they contain.
 
         ⟨+,-,×⟩ = ⟨+,-,÷⟩
 
@@ -58,7 +58,7 @@ The final point above about block instances is subtler. An instance of a block f
         G 8
         F 5   # Another result—the definition of insanity!
 
-(A side note is that BQN restricts what can cause these side effects: they can only happen by calling a block function or modifier, and never a primitive or purely tacit operation). Now suppose we share the value of `F` with another variable. When we apply `G`, the result of `F` might change, but so does `F1`! This effect is called [aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing)).
+(A side note is that BQN restricts what can cause these side effects: they can only happen by calling a block function or modifier, and never a primitive or purely [tacit](tacit.md) operation). Now suppose we share the value of `F` with another variable like `F1` below. When we apply `G`, the result of `F` might change, but so does `F1`! This effect is called [aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing)).
 
         F1 ← F
         {𝕏 6}¨ F‿F1
@@ -66,7 +66,7 @@ The final point above about block instances is subtler. An instance of a block f
         G 3
         {𝕏 6}¨ F‿F1
 
-In some cases you might not be able to demonstrate aliasing so cleanly. A function such as a random number generator changes its own state, so calling one function will change the other. Comparison tells you whether two blocks are the same.
+In some cases you might not be able to demonstrate aliasing so cleanly. A function such as a random number generator changes its own state, so calling one function will change the other. But comparison tells you directly whether two blocks are the same.
 
         f = f1
 
