@@ -24,7 +24,7 @@ Merge is effectively a generalization of Solo and Couple, since Solo is `{>⟨�
 
 ## Merge and array theory
 
-In all cases what these functions do is more like reinterpreting existing data than creating new information. In fact, if we ignore the shape and look at the ravels of the arrays involved in a call to Merge, we find that it just [joins](join.md) them together. Essentially, Merge is a request to ensure that the inner arrays (which, being independent elements, could be any sort of "ragged" array) can fit together in an array, and then to consider them to be such an array. For this reason, Merge (or a virtual analogue) is used to combine the result cells when calling a function with Rank into a single array.
+In all cases what these functions do is more like reinterpreting existing data than creating new information. In fact, if we ignore the shape and look at the deshaped arrays involved in a call to Merge, we find that it just [joins](join.md) them together. Essentially, Merge is a request to ensure that the inner arrays (which, being independent elements, could be any sort of "ragged" array) can fit together in an array, and then to consider them to be such an array. For this reason, Merge (or a virtual analogue) is used to combine the result cells when calling a function with Rank into a single array.
 
         ⥊ > a
         ⥊ ⥊¨ a
