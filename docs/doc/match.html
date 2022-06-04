@@ -23,9 +23,9 @@
 0
 </pre>
 <p>Match compares arrays based on their fundamental properties—<a href="shape.html">shape</a> and elements—and not the <a href="fill.html">fill element</a>, which is an inferred property. Since it can be computed differently in different implementations, using the fill element in Match could lead to some confusing results. Even if the implementation doesn't define a fill for <code><span class='String'>'a'</span><span class='Ligature'>‿</span><span class='String'>'b'</span><span class='Ligature'>‿</span><span class='String'>'c'</span></code>, it should still be considered to match <code><span class='String'>&quot;abc&quot;</span></code>.</p>
-<p>To give a precise definition, two arrays are considered to match if they have the same shape and all corresponding elements from the two arrays match. Every array has a finite <a href="depth.html">depth</a> so this recursive definition always ends up comparing non-arrays, or atoms. An array never matches an atom, so the result if only one argument is an atom is <code><span class='Number'>0</span></code>. The interesting case is when both arguments are atoms, discussed below.</p>
+<p>To give a precise definition, two arrays are considered to match if they have the same shape and all corresponding elements from the two arrays match. Every array has a finite <a href="depth.html">depth</a>, so this recursive definition always ends up comparing non-arrays, or atoms. And because an array never matches an atom, the result if only one argument is an atom is <code><span class='Number'>0</span></code>. The interesting case is when both arguments are atoms, discussed below.</p>
 <h2 id="atomic-equality"><a class="header" href="#atomic-equality">Atomic equality</a></h2>
-<p>Atoms in BQN have six possible <a href="types.html">types</a>: number, character, function, 1-modifier, 2-modifier, and namespace. Equality is not allowed to fail for any two arguments, so it needs to be defined on all of these types.</p>
+<p>Atoms in BQN have six possible <a href="types.html">types</a>: number, character, function, 1-modifier, 2-modifier, and namespace. Equality testing isn't allowed to fail for any two arguments, so it needs to be defined on all of these types.</p>
 <p>Starting with the easiest rules, values with different types are never equal to each other.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oJ2EnLCArLCAz4p+pID0g4p+oLeKfnMK7LCAnKycsIDPLmeKfqQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='String'>'a'</span><span class='Separator'>,</span> <span class='Function'>+</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span><span class='Separator'>,</span> <span class='String'>'+'</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Modifier'>˙</span><span class='Bracket'>⟩</span>
 ⟨ 0 0 0 ⟩
@@ -37,13 +37,13 @@
     <span class='Number'>1.25</span> <span class='Function'>=</span> <span class='Number'>1</span> <span class='Function'>+</span> <span class='Number'>0.25</span>
 1
 </pre>
-<p>Mutable types are more difficult. Here there are three cases:</p>
+<p>Operations and namespaces are more difficult. Here there are three cases:</p>
 <ul>
 <li>Primitives are equal if they have the same glyph.</li>
 <li>Compound functions or modifiers are split into components.</li>
 <li>Block instances or namespaces are equal if they are the same instance.</li>
 </ul>
-<p>The first two are fairly similar to how numbers and arrays work. Primitives and compounds like trains, or modifiers with bound operands, are immutable, so they are defined purely by what components they contain.</p>
+<p>The first two are fairly similar to how numbers and arrays work. Primitives and compounds like trains, or modifiers with bound operands, are immutable, so they're defined purely by what components they contain.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oKywtLMOX4p+pID0g4p+oKywtLMO34p+pCgrin6grIC0gw5fin6kgPSDin6grIC0gw7fin6kgICMgQ29tcGFyZSB0d28gdGhyZWUtdHJhaW5zIGNvbXBvbmVudC13aXNlCgrin6grIC0gw7fin6kgPSDin6grIC0gw7fin6k=">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Function'>×</span><span class='Bracket'>⟩</span> <span class='Function'>=</span> <span class='Bracket'>⟨</span><span class='Function'>+</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Function'>÷</span><span class='Bracket'>⟩</span>
 ⟨ 1 1 0 ⟩
 
@@ -66,7 +66,7 @@
     <span class='Function'>F</span> <span class='Number'>5</span>   <span class='Comment'># Another result—the definition of insanity!
 </span>13
 </pre>
-<p>(A side note is that BQN restricts what can cause these side effects: they can only happen by calling a block function or modifier, and never a primitive or purely tacit operation). Now suppose we share the value of <code><span class='Function'>F</span></code> with another variable. When we apply <code><span class='Function'>G</span></code>, the result of <code><span class='Function'>F</span></code> might change, but so does <code><span class='Function'>F1</span></code>! This effect is called <a href="https://en.wikipedia.org/wiki/Aliasing_(computing)">aliasing</a>.</p>
+<p>(A side note is that BQN restricts what can cause these side effects: they can only happen by calling a block function or modifier, and never a primitive or purely <a href="tacit.html">tacit</a> operation). Now suppose we share the value of <code><span class='Function'>F</span></code> with another variable like <code><span class='Function'>F1</span></code> below. When we apply <code><span class='Function'>G</span></code>, the result of <code><span class='Function'>F</span></code> might change, but so does <code><span class='Function'>F1</span></code>! This effect is called <a href="https://en.wikipedia.org/wiki/Aliasing_(computing)">aliasing</a>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RjEg4oaQIEYKe/CdlY8gNn3CqCBG4oC/RjEKCkcgMwp78J2VjyA2fcKoIEbigL9GMQ==">↗️</a><pre>    <span class='Function'>F1</span> <span class='Gets'>←</span> <span class='Function'>F</span>
     <span class='Brace'>{</span><span class='Function'>𝕏</span> <span class='Number'>6</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>F</span><span class='Ligature'>‿</span><span class='Function'>F1</span>
 ⟨ 14 14 ⟩
@@ -76,7 +76,7 @@
     <span class='Brace'>{</span><span class='Function'>𝕏</span> <span class='Number'>6</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>F</span><span class='Ligature'>‿</span><span class='Function'>F1</span>
 ⟨ 9 9 ⟩
 </pre>
-<p>In some cases you might not be able to demonstrate aliasing so cleanly. A function such as a random number generator changes its own state, so calling one function will change the other. Comparison tells you whether two blocks are the same.</p>
+<p>In some cases you might not be able to demonstrate aliasing so cleanly. A function such as a random number generator changes its own state, so calling one function will change the other. But comparison tells you directly whether two blocks are the same.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ZiA9IGYx">↗️</a><pre>    <span class='Value'>f</span> <span class='Function'>=</span> <span class='Value'>f1</span>
 1
 </pre>

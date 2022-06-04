@@ -4,7 +4,7 @@
 
 BQN uses lexical scope, like most modern functional programming languages including Javascript, Scheme, and Julia, and like Dyalog APL's dfns (tradfns are dynamically scoped). This document describes how lexical scoping works, and a few small details relevant to BQN's version of it.
 
-In short, every [block](block.md) is a separate scope that can refer to identifiers in containing scopes. When evaluated, the block makes a variable for each identifier defined in it (including arguments and operands). The blocks that it contains will now access these variables. In the first level of a block, variables must be defined before they can be used, but in child blocks, a variable can be used regardless of where it's defined, as long as the definition is evaluated before the child block is.
+In short, every [block](block.md) is a separate scope, but can use identifiers in containing scopes. Each time it's evaluated, the block makes a variable for each identifier defined in it (including arguments and operands). The blocks that it contains might access these variables. At the top level of a block, identifiers must be defined before they can be used, but in child blocks, an identifier can be used even if it's defined later, as long as that use isn't evaluated before the definition can set the variable value.
 
 ## Scopes
 
@@ -18,7 +18,7 @@ Scoping is a mechanism that allows the same variable name to refer to different 
 
 Above, the scope of the first `a` is the entire program, while the scope of the second `a` is limited to the body of `F`. So one form of context is that a name might mean different things depending on which block contains it. But even the exact same instance of a name in the source code might mean multiple things! A second kind of context is which evaluation of a block uses the name.
 
-Without this ability BQN would be pretty limited: for example, an [object](oop.md)'s fields are variables. If the variable value didn't depend on what object contained it, there could effectively only be one instance of each object! While it's needed all the time, the most direct way to demonstrate one name meaning multiple things is with recursion. The (fragile) function below labels each element in a nested list structure with its index in the list containing it.
+Without this ability BQN would be pretty limited: for example, an [object](oop.md)'s fields are variables. If the variable value didn't depend on what object contained it, there could effectively only be one instance of each object! It's not the most common use case, but recursion is the most direct way to demonstrate a name meaning multiple things at once. The (fragile) function below labels each element in a nested list structure with its index in the list containing it.
 
         Label ← { i←↕≠𝕩 ⋄ i ≍ 𝕊⍟=¨ 𝕩 }
 
@@ -30,7 +30,7 @@ These examples probably work like you expect—they're meant to highlight the fe
 
 ## Visibility
 
-A scope can view and modify (with `↩`) variables in other scopes that contain it. We say these variables are visible in the inner scopes. Variables at the top level of a program are visible to all the code in that program, so that we might call them "global". That would be a little misleading though, because for example each file is an entire program, so if one file is imported from another then it can't read the first file's variables.
+A scope can view and [modify](expression.md#assignment) (with `↩`) variables in other scopes that contain it. We say these variables are *visible* in the inner scopes. Variables at the top level of a program are visible to all the code in that program, so that we might call them "global". That's somewhat misleading, because for example each file is an entire program, so if one file is imported from another then it can't read the first file's variables.
 
         counter ← 0
         inc ← 6
@@ -96,7 +96,7 @@ Each result keeps its own counter and the different copies don't interfere with 
 
 Each counter function has access to the environment containing its `counter` and `inc`, even though the block that created that environment (`_makeCount`) has finished execution—it must have finished, since we are now using the function it returns on the last line. There's nothing particularly weird about this; just because a block creates an environment when it starts doesn't mean it has to destroy it when it finishes. From the mathematical perspective, it's easiest to say the environment exists forever, but a practical implementation will perform garbage collection to free environments that are no longer reachable.
 
-Since a function like `C1_4` maintains access to all the variables it needs to run, we say it *encloses* those variables, and call it a *closure*. It doesn't need to modify them. For example, even the following definition of `stdDev` is a closure.
+Since a function like `C1_4` maintains access to all the variables it needs to run, we say it *encloses* those variables, and call it a *closure*. It doesn't need to modify them. For example, the following definition of the theoretical standard deviation function `StdDev` is also a closure.
 
     stdDev ← {
       # Arithmetic mean
@@ -124,7 +124,7 @@ How does an environment know which of the many environments corresponding to the
 
 ## Mutation
 
-The value of a variable can be modified with `↩`. It's similar to definition `←` in that it sets the value of the variable, but the way it interacts with scoping is completely different. Defining creates a new variable in the current scope, and modifying refers to an existing variable in the current scope or a parent. In scoping terms, modifying is more like an ordinary variable reference than a definition.
+The value of a variable can be modified with `↩`. It's similar to definition `←` in that it sets the value of the variable, but the way it interacts with scoping is completely different. Definition creates a new variable in the current scope, and modification refers to an existing variable in the current scope or a parent. In scoping terms, a modification is more like an ordinary variable reference than a definition.
 
 When a variable's modified, functions with access to it see the new value. They have access to the variable, not any particular value that it has.
 
@@ -135,7 +135,7 @@ When a variable's modified, functions with access to it see the new value. They 
         factor ↩ 5
         Mul 6   # A new result
 
-Only code with access to a variable can modify it! This means that if none of the code in a variable's scope modifies it, then the variable is a constant in each environment that contains it (not necessarily across environments). That is, constant once it's defined: it's still possible to get an error if the variable is accessed before being defined.
+Only code with access to a variable can modify it! This means that if none of the code in a variable's scope modifies it, then the variable is a constant in each environment that contains it (not necessarily across environments). That is, constant once it's defined: remember that it's still possible to get an error if the variable is accessed before being defined.
 
         { { a } ⋄ a←4 }
 

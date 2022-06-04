@@ -18,7 +18,7 @@ Transpose is named this way because it exchanges the two axes of the matrix. Abo
 
 With two axes the only interesting operation of this sort is to swap them (and with one or zero axes there's nothing interesting to do, and `⍉` just returns the argument array). But a BQN programmer may well want to work with higher-rank arrays—although such a programmer might call them "tensors"—and this means there are many more ways to rearrange the axes. Transpose extends to high-rank arrays to allow some useful special cases as well as completely general axis rearrangement, as described below.
 
-## Monadic Transpose
+## Transposing tensors
 
 APL extends matrix transposition to any rank by reversing all axes for its monadic `⍉`, but this generalization isn't very natural and is almost never used. The main reason for it is to maintain the equivalence `a MP b ←→ b MP⌾⍉ a`, where `MP ← +˝∘×⎉1‿∞` is the generalized matrix product. But even here APL's Transpose is suspect. It does much more work than it needs to, as we'll see.
 

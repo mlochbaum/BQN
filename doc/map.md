@@ -4,7 +4,7 @@
 
 Mapping a function over an array means to call it on each element of that array, creating an array of results. It's also possible to map over two arrays, applying the function to various choices of one element from each, but there's no longer a single correct way to iterate over these elements.
 
-BQN has two 1-modifiers to map over arrays: Each (`¨`) and Table (`⌜`). On two arguments, Table applies its operand to all combinations of elements while Each creates a one-to-one or one-to-many matching. Since they apply to elements, these modifiers are different from Cells (`˘`) or its generalization Rank (`⎉`), which apply the function to array cells. The modifier [Depth](depth.md#the-depth-modifier) (`⚇`) is a generalization of Each, so that `¨` is `⚇¯1`; however, it can't be used to implement Table without some additional array operations.
+As a result, BQN has two 1-modifiers to map over arrays: Each (`¨`) and Table (`⌜`). On two arguments, Table applies its operand to all combinations of elements while Each creates a one-to-one or one-to-many matching. Since they apply to elements, these modifiers are different from [Cells](rank.md#cells) (`˘`) or its generalization [Rank](rank.md#rank) (`⎉`), which apply the function to array cells. The modifier [Depth](depth.md#the-depth-modifier) (`⚇`) is a generalization of Each, so that `¨` is `⚇¯1`; however, it can't be used to implement Table without some additional array operations.
 
 ## One-argument mapping
 
@@ -105,7 +105,7 @@ The Table modifier applies its operand function to every possible combination of
 
         "ABC" ≍⌜ "01234"
 
-Its name comes from the "multiplication table" or "times table" often used to teach arithmetic, and with it you can easily make such a table, by repeating the same argument with Self (`˜`):
+Its name comes from the "multiplication table" or "times table" often used to teach arithmetic, and with it you can easily make such a table, by repeating the same argument with [Self](swap.md) (`˜`):
 
         ×⌜˜ 1+↕6
 
@@ -144,11 +144,11 @@ Given two arguments of matching shapes, Each performs what's sometimes called a 
 
         "ABCD" ≍¨ "0123"
 
-This makes for a lot fewer applications than Table. Only the diagonal elements from Table's result are seen, as we can check with [Transpose](transpose.md).
+This makes for a lot fewer applications than Table. Only the diagonal elements from Table's result are seen, as we can check with [Reorder Axes](transpose.md#reorder-axes).
 
         0‿0 ⍉ "ABCD" ≍⌜ "0123"
 
-If the argument lengths don't match then Each gives an error. This contrasts with zip in many languages, which drops elements from the longer argument (this is natural for linked lists). This flexibility is rarely wanted in BQN, and having an error right away saves debugging time.
+If the argument lengths don't match then Each gives an error. This differs from zip in many languages, which drops elements from the longer argument (this is natural for linked lists). This flexibility is rarely wanted in BQN, and having an error right away saves debugging time.
 
         "ABC" ≍¨ "01234"
 
@@ -156,10 +156,10 @@ Arguments can have any shape as long as the axis lengths match up. As with Table
 
         (>⟨20‿30‿10,50‿40‿60⟩) +⟜↕¨ 2‿1‿0≍3‿2‿1
 
-But arguments don't have to have exactly the same shape: just the same length along corresponding axes. These axes are matched up according to the [leading axis convention](leading.md), so that one argument's shape has to be a prefix of the other's. With equal ranks, the shapes do have to match as we've seen above.
+But arguments don't have to have exactly the same shape: just the same length along corresponding axes. These axes are matched up by [leading axis agreement](leading.md#leading-axis-agreement), so that one argument's shape has to be a prefix of the other's. With equal ranks, the shapes do have to match as we've seen above.
 
         ≢ (0‿2‿6⥊@) ≍¨ 0‿1⥊0  # Too small
-        ≢ (0‿2‿6⥊@) ≍¨ 0‿2⥊0  # Just right
+
         ≢ (0‿2‿6⥊@) ≍¨ 0‿3⥊0  # Too large
 
-Leading axis agreement is described further [here](leading.md#leading-axis-agreement).
+        ≢ (0‿2‿6⥊@) ≍¨ 0‿2⥊0  # Just right
