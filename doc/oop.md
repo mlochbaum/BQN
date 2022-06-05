@@ -21,7 +21,7 @@ Mixins              | Not really (needs `this`)
 
 ## Objects
 
-An object in BQN is simply a namespace: its fields and methods are variables in the namespace, and one of these can be accessed outside of the namespace with dot syntax if it's exported with `⇐`. Unexported variables are instance-private in OOP parlance, meaning that they're only visible to the object containing them. They could be utilities, or hold state for the object. As an example, the object below implements the [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) puzzle with five disks. You can view the state (a list of disks occupying each of the three rods) with `towerOfHanoi.View`, or move the top disk from one rod to another with `towerOfHanoi.Move`.
+An object in BQN is simply a namespace: its fields and methods are variables in the namespace, and a variable can be accessed outside of the namespace with dot syntax if it's exported with `⇐`. Unexported variables are instance-private in OOP parlance, meaning that they're only visible to the object containing them. They could be utilities, or hold state for the object. As an example, the object below implements the [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) puzzle with five disks. You can view the state (a list of disks occupying each of the three rods) with `towerOfHanoi.View`, or move the top disk from one rod to another with `towerOfHanoi.Move`.
 
     towerOfHanoi ← {
       l ← ↕¨5‿0‿0
@@ -39,7 +39,7 @@ An object in BQN is simply a namespace: its fields and methods are variables in 
       }
     }
 
-Two fields `l` and `Transfer` aren't exported, for two different reasons. `l` encodes the state of the tower, but it's often better to expose it with the function `View` instead to allow the internal representation to be changed freely. `Transfer` is just a utility function. While it's not dangerous to use outside of the object, there's no reason to expose it through `towerOfHanoi`'s interface. If it's wanted in another place it should be moved to a common location.
+Two variables `l` and `Transfer` aren't exported, for two different reasons. `l` encodes the state of the tower, but it's only exposed with the function `View`, which allows the internal representation to be changed freely. `Transfer` is just a utility function. While it's not dangerous to use outside of the object, there's no reason to expose it through `towerOfHanoi`'s interface. If it's wanted in another place it should be moved to a common location.
 
 Here are the results of a few applications of these functions.
 
@@ -61,7 +61,7 @@ Here are the results of a few applications of these functions.
 
 ## Classes
 
-The object above is a singleton: there's just one of it, at least in the scope it occupies. It's often more useful to have a class that can be used to create objects. What we'll call a "class" is a namespace function, that is, a function that contains `⇐` and so returns a namespace. It's very easy to convert a singleton object to a class: just add a no-op `𝕤` line to force it to be a function, and call it with `@` when needed.
+The object above is a singleton: there's just one of it, at least in the scope it occupies. It's often more useful to have a class that can be used to create objects. What we'll call a "class" is a namespace function, that is, a function that contains `⇐` and so returns a namespace. It's very easy to convert a singleton object to a class: [just add](control.md#blocks-and-functions) a no-op `𝕤` line to force it to be a function, and call it with `@` when needed.
 
     MakeStack ← {𝕤
       st←@
@@ -69,7 +69,7 @@ The object above is a singleton: there's just one of it, at least in the scope i
       Pop ⇐{𝕤⋄ r‿s←st ⋄ st↩s ⋄ r}
     }
 
-But there's no need to ignore the argument: often it's useful to initialize a class using one or two arguments. For example, the stack class above can be modified to use `𝕩` as an initial list of values for the stack.
+But arguments don't have to be ignored: often it makes sense to use one or two arguments to initialize the object. For example, the stack class above can be modified to use `𝕩` as an initial list of values for the stack.
 
     MakeStackInit ← {
       st←@
@@ -78,7 +78,7 @@ But there's no need to ignore the argument: often it's useful to initialize a cl
       Push¨ 𝕩
     }
 
-A stack is a particularly simple class to make because its state can be represented efficiently as a BQN value. Other data structures don't allow this, and will often require an extra `Node` class when they are implemented—see `MakeQueue` below.
+A stack is a particularly simple class to make because its state can be represented efficiently as a BQN value. Other data structures don't allow this, and will often require an extra `Node` class in an implementation—see `MakeQueue` below.
 
 ## Mutability
 
@@ -90,7 +90,7 @@ Let's look at how mutability plays out in an example class for a single-ended qu
       t←h←e←{SetN⇐{h↩𝕩}}
       Node←{v⇐𝕩⋄n⇐e ⋄ SetN⇐{n↩𝕩}}
       Push⇐{t.SetN n←Node 𝕩 ⋄ t↩n}
-      Pop ⇐{𝕤⋄v←h.v⋄{t↩𝕩}⍟(e⊸=)h↩h.n⋄v}
+      Pop ⇐{𝕤⋄v←h.v⋄h↩h.n⋄{e=h?t↩e;@}⋄v}
     }
 
 Unlike a stack, a node's successor isn't known when it's created, and it has to be set. You might be inclined to make `n` settable directly, but we'll get more mileage out of a setter function `SetN`. This allows us to create a pseudo-node `e` (for "empty") indicating there are no values in the queue. Because it has no `.v` field, if `h` is `e` then `Pop` gives an error (but in a real implementation you'd want to test explicitly instead in order to give an appropriate error message). In fact it doesn't have an `n` field, and essentially uses the queue head `h` instead. With this empty "node", the queue definition is straightforward. The only tricky part to remember is that if `Pop` removes the last node, resulting in `e=h`, then the tail has to be set to `e` as well, or it will keep pointing to the removed node and cause bugs.
@@ -106,7 +106,7 @@ BQN classes don't support inheritance because there's no way to extend an existi
       Undo ⇐ t.Move∘⌽∘Pop
     }
 
-This class composes a Tower of Hanoi with an undo stack that stores previous moves. To undo a move from `a` to `b`, it moves from `b` to `a`, although if you felt really fancy you might define `Move⁼` in `towerOfHanoi` instead with `𝕊⁼𝕩: 𝕊⌽𝕩`.
+This class composes a Tower of Hanoi with an undo stack that stores previous moves. To undo a move from `a` to `b`, it moves from `b` to `a`, although if you felt really fancy you might define `Move⁼` in `towerOfHanoi` instead with an [undo header](undo.md#undo-headers) `𝕊⁼𝕩: 𝕊⌽𝕩`.
 
 It's also possible to copy several variables and only export some of them, with an export statement. For example, if I wasn't going to make another method called `Move`, I might have written `View‿Move ← towerOfHanoi` and then `View⇐`. In fact, depending on your personal style and how complicated your classes are, you might prefer to avoid inline `⇐` exports entirely, and declare all the exports at the top.
 
@@ -119,16 +119,16 @@ It's not currently possible for an object to know its own value without some out
     IntrospectiveClass ← {
       obj ← {
         this⇐@
-        SetThis ⇐ { !this=@ ⋄ this↩𝕩 }
+        SetThis ⇐ { !this≡@ ⋄ this↩𝕩 }
       }
       obj.setThis obj
     }
 
-This is a pretty clunky solution, and exports a useless method `SetThis` (which gives an error if it's ever called). It would be possible for BQN to define a system value `•this` that just gets the namespace's value. It would work only at the top level, so it would have to be assigned (`this←•this`) in order to use it in functions. This means it's always used before the namespace is done being defined, so a drawback is that it introduces the possibility that an object used in a program has undefined fields. The reason this isn't possible for objects without `•this` is that BQN's blocks don't have any sort of control flow, so that they always execute every statement in order. The namespace becomes accessible as a value once the block finishes, and at this point every statement has been executed and every field is initialized.
+This is a pretty clunky solution, and exports a useless method `SetThis` (which gives an error if it's ever called). It would be possible for BQN to define a system value `•this` that just gets the namespace's value. It would work only at the top level, so it would have to be assigned (`this←•this`) in order to use it in functions. This means it's always used before the namespace is done being defined, so a drawback is that it introduces the possibility that an object used in a program has undefined fields. Currently a namespace can only be created with all fields set: a block body doesn't have any sort of control flow other than the early exit `?`, so it can only finish by executing every statement, including every field definition, in order.
 
 ## Class members
 
-As with `this`, giving a class variables that belong to it is a do-it-yourself sort of thing (or more positively, not at all magic (funny how programmer jargon goes the opposite way to ordinary English)). It's an easy one though, as this is exactly what [lexical scoping](lexical.md) does:
+As with `this`, creating variables that belong to a class and not its objects is a do-it-yourself sort of thing (or more positively, not at all magic (funny how programmer jargon goes the opposite way to ordinary English)). It's an easy one though, as this is exactly what [lexical scoping](lexical.md) does:
 
     staticClass ← {
       counter ← 0

@@ -39,7 +39,7 @@
 ⟨ 9 3 18 2 ⟩
 </pre>
 <h2 id="pair-versus-couple"><a class="header" href="#pair-versus-couple">Pair versus Couple</a></h2>
-<p>Enlist and Pair closely related to <a href="couple.html">Solo and Couple</a>, in that <code><span class='Function'>⋈</span></code> is equivalent to <code><span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span></code> and <code><span class='Function'>≍</span></code> is equivalent to <code><span class='Function'>&gt;</span><span class='Modifier2'>∘</span><span class='Function'>⋈</span></code>. However, the result of <code><span class='Function'>⋈</span></code> is always a list (rank 1) while Solo or Couple return an array of rank at least 1.</p>
+<p>Enlist and Pair are closely related to <a href="couple.html">Solo and Couple</a>, in that <code><span class='Function'>⋈</span></code> is equivalent to <code><span class='Function'>≍</span><span class='Modifier2'>○</span><span class='Function'>&lt;</span></code> and <code><span class='Function'>≍</span></code> is equivalent to <code><span class='Function'>&gt;</span><span class='Modifier2'>∘</span><span class='Function'>⋈</span></code>. However, the result of <code><span class='Function'>⋈</span></code> is always a list (rank 1) while Solo or Couple return an array of rank at least 1.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiYyIg4omNICJkZWYiCgoiYWJjIiDii4ggImRlZiI=">↗️</a><pre>    <span class='String'>&quot;abc&quot;</span> <span class='Function'>≍</span> <span class='String'>&quot;def&quot;</span>
 ┌─     
 ╵"abc  
@@ -56,7 +56,7 @@
     <span class='String'>&quot;abc&quot;</span> <span class='Function'>⋈</span> <span class='String'>&quot;defg&quot;</span>
 ⟨ "abc" "defg" ⟩
 </pre>
-<p>The difference is that Couple treats the arguments as cells, and adds a dimension, while Pair treats them as elements, adding a layer of depth. Couple is a &quot;flat&quot; version of Pair, much like Cells (<code><span class='Modifier'>˘</span></code>) is a flat version of Each (<code><span class='Modifier'>¨</span></code>). Pair is more versatile, but—precisely because of its restrictions—Couple may allow more powerful array operations on the result.</p>
+<p>The difference is that Couple treats the arguments as <a href="array.html#cell">cells</a>, and adds a dimension, while Pair treats them as elements, adding a layer of depth. Couple is a &quot;flat&quot; version of Pair, much like <a href="rank.html#cells">Cells</a> (<code><span class='Modifier'>˘</span></code>) is a flat version of <a href="map.html#each">Each</a> (<code><span class='Modifier'>¨</span></code>). Pair is more versatile, but—precisely because of its restrictions—Couple may allow more powerful array operations on the result.</p>
 <h2 id="fill-element"><a class="header" href="#fill-element">Fill element</a></h2>
 <p>Enlist and Pair set the result's <a href="fill.html">fill</a> element, while list notation doesn't have to. So the following result is guaranteed:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NCDihpEgImEi4oC/NSDii4ggImIi4oC/Nw==">↗️</a><pre>    <span class='Number'>4</span> <span class='Function'>↑</span> <span class='String'>&quot;a&quot;</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Function'>⋈</span> <span class='String'>&quot;b&quot;</span><span class='Ligature'>‿</span><span class='Number'>7</span>
