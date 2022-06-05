@@ -30,7 +30,7 @@ However, before making a long list of this sort, consider that your goal might b
 
 ## Pair versus Couple
 
-Enlist and Pair closely related to [Solo and Couple](couple.md), in that `⋈` is equivalent to `≍○<` and `≍` is equivalent to `>∘⋈`. However, the result of `⋈` is always a list (rank 1) while Solo or Couple return an array of rank at least 1.
+Enlist and Pair are closely related to [Solo and Couple](couple.md), in that `⋈` is equivalent to `≍○<` and `≍` is equivalent to `>∘⋈`. However, the result of `⋈` is always a list (rank 1) while Solo or Couple return an array of rank at least 1.
 
         "abc" ≍ "def"
 
@@ -42,7 +42,7 @@ And the arguments to Couple must have the same shape, while Enlist takes any two
 
         "abc" ⋈ "defg"
 
-The difference is that Couple treats the arguments as cells, and adds a dimension, while Pair treats them as elements, adding a layer of depth. Couple is a "flat" version of Pair, much like Cells (`˘`) is a flat version of Each (`¨`). Pair is more versatile, but—precisely because of its restrictions—Couple may allow more powerful array operations on the result.
+The difference is that Couple treats the arguments as [cells](array.md#cell), and adds a dimension, while Pair treats them as elements, adding a layer of depth. Couple is a "flat" version of Pair, much like [Cells](rank.md#cells) (`˘`) is a flat version of [Each](map.md#each) (`¨`). Pair is more versatile, but—precisely because of its restrictions—Couple may allow more powerful array operations on the result.
 
 ## Fill element
 

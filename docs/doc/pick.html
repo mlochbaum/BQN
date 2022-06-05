@@ -6,7 +6,7 @@
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="pick"><a class="header" href="#pick">Pick</a></h1>
 <p>Pick (<code><span class='Function'>⊑</span></code>) chooses elements from <code><span class='Value'>𝕩</span></code> based on <a href="indices.html">index</a> lists from <code><span class='Value'>𝕨</span></code>. <code><span class='Value'>𝕨</span></code> can be a plain list, or even one number if <code><span class='Value'>𝕩</span></code> is a list, in order to get one element from <code><span class='Value'>𝕩</span></code>. It can also be an array of index lists, or have deeper array structure: each index list will be replaced with the element of <code><span class='Value'>𝕩</span></code> at that index, effectively applying to <code><span class='Value'>𝕨</span></code> at <a href="depth.html#the-depth-modifier">depth</a> 1.</p>
-<p>With no <code><span class='Value'>𝕨</span></code>, monadic <code><span class='Function'>⊑</span><span class='Value'>𝕩</span></code> takes the first element of <code><span class='Value'>𝕩</span></code> in index order, with an error if <code><span class='Value'>𝕩</span></code> is empty.</p>
+<p>The one-argument form is called First, and <code><span class='Function'>⊑</span><span class='Value'>𝕩</span></code> takes the first element of <code><span class='Value'>𝕩</span></code> in index order, with an error if <code><span class='Value'>𝕩</span></code> is empty.</p>
 <p>While sometimes &quot;scatter-point&quot; indexing is necessary, using Pick to select multiple elements from <code><span class='Value'>𝕩</span></code> is less array-oriented than <a href="select.html">Select</a> (<code><span class='Function'>⊏</span></code>), and probably slower. Consider rearranging your data so that you can select along axes instead of picking out elements.</p>
 <h2 id="one-element"><a class="header" href="#one-element">One element</a></h2>
 <p>When the left argument is a number, Pick gets an element from a list:</p>
@@ -23,7 +23,7 @@
     <span class='Number'>¯2</span> <span class='Function'>⊑</span> <span class='String'>&quot;abc&quot;</span>
 'b'
 </pre>
-<p>Making <code><span class='Value'>𝕩</span></code> a list is only a special case. In general <code><span class='Value'>𝕨</span></code> can be a list of numbers whose length is <code><span class='Value'>𝕩</span></code>'s rank. So when <code><span class='Function'>=</span><span class='Value'>𝕩</span></code> is 1, <code><span class='Value'>𝕨</span></code> can be length-1 list. For convenience, a number is also allowed, but not an enclosed number (which could be confused with the nested case).</p>
+<p>Making <code><span class='Value'>𝕩</span></code> a list is only a special case. In general <code><span class='Value'>𝕨</span></code> can be a list of numbers whose length is <code><span class='Value'>𝕩</span></code>'s rank. So when <code><span class='Function'>=</span><span class='Value'>𝕩</span></code> is 1, <code><span class='Value'>𝕨</span></code> can be length-1 list. The case above where <code><span class='Value'>𝕨</span></code> is a number is a simplification, but an enclosed number <code><span class='Value'>𝕨</span></code> isn't allowed because it could be confused with the nested case described below.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMiww4p+pIOKKkSDihpU04oC/NQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Bracket'>⟩</span> <span class='Function'>⊑</span> <span class='Function'>↕</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>5</span>
 ⟨ 2 0 ⟩
 </pre>
@@ -40,14 +40,14 @@
     <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>¯1</span> <span class='Function'>⊑</span> <span class='Value'>a</span>
 'j'
 </pre>
-<p>This applies even if <code><span class='Value'>𝕩</span></code> is a unit. By definition it has rank 0, so the only possible value for <code><span class='Value'>𝕨</span></code> is the empty list. This extracts an <a href="enclose.html">enclosed</a> element, and returns an atom unchanged—the atom is promoted to an array by enclosing it, then the action of Pick undoes this. But there's rarely a reason to use this case, because the monadic form First accomplishes the same thing.</p>
+<p><code><span class='Value'>𝕩</span></code> can even be a <a href="enclose.html#whats-a-unit">unit</a>. By definition it has rank 0, so the only possible value for <code><span class='Value'>𝕨</span></code> is the empty list. This extracts an <a href="enclose.html">enclosed</a> element, and returns an atom unchanged—the atom is promoted to an array by enclosing it, then the action of Pick undoes this. But there's rarely a reason to use this case, because the monadic form First accomplishes the same thing.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+o4p+pIOKKkSA8J2EnCuKfqOKfqSDiipEgJ2En">↗️</a><pre>    <span class='Bracket'>⟨⟩</span> <span class='Function'>⊑</span> <span class='Function'>&lt;</span><span class='String'>'a'</span>
 'a'
     <span class='Bracket'>⟨⟩</span> <span class='Function'>⊑</span> <span class='String'>'a'</span>
 'a'
 </pre>
 <h3 id="first"><a class="header" href="#first">First</a></h3>
-<p>With no left argument, <code><span class='Function'>⊑</span></code> is called First, and performs a slight generalization of Pick with a default left argument <code><span class='Number'>0</span><span class='Modifier'>¨</span><span class='Function'>≢</span><span class='Value'>𝕩</span></code>. For a non-empty array it returns the first element in index order.</p>
+<p>With no left argument, <code><span class='Function'>⊑</span></code> is called First, and is the same as Pick with a default left argument <code><span class='Number'>0</span><span class='Modifier'>¨</span><span class='Function'>≢</span><span class='Value'>𝕩</span></code>. For a non-empty array it returns the first element in index order.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRIDwnYScK4oqRICJGaXJzdCIK4oqRIOKGlTTigL8y4oC/NeKAvzE=">↗️</a><pre>    <span class='Function'>⊑</span> <span class='Function'>&lt;</span><span class='String'>'a'</span>
 'a'
     <span class='Function'>⊑</span> <span class='String'>&quot;First&quot;</span>
@@ -55,9 +55,10 @@
     <span class='Function'>⊑</span> <span class='Function'>↕</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 ⟨ 0 0 0 0 ⟩
 </pre>
-<p>If <code><span class='Value'>𝕩</span></code> is empty then First results in an error, like Pick.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRICIiCuKKkSDiiaLPgA==">↗️</a><pre>    <span class='Function'>⊑</span> <span class='String'>&quot;&quot;</span>
+<p>And if <code><span class='Value'>𝕩</span></code> is empty then First results in an error.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRICIiCgriipEg4omiz4A=">↗️</a><pre>    <span class='Function'>⊑</span> <span class='String'>&quot;&quot;</span>
 <span class='Error'>Error: ⊑: Argument cannot be empty</span>
+
     <span class='Function'>⊑</span> <span class='Function'>≢</span><span class='Number'>π</span>
 <span class='Error'>Error: ⊑: Argument cannot be empty</span>
 </pre>

@@ -4,8 +4,8 @@
 
 BQN has six functions that order arrays as part of their operation (the [comparison functions](arithmetic.md#comparisons) `≤<>≥` only order atoms, so they aren't included). These come in three pairs, where one of each pair uses an ascending ordering and the other uses a descending ordering.
 
-- `∨∧`, Sort, rearranges the argument to order it
-- `⍒⍋`, Grade, outputs the permutation that Sort would use to rearrange it
+- `∨∧`, Sort, puts major cells of `𝕩` in order
+- `⍒⍋`, Grade, outputs the permutation that Sort would use to rearrange `𝕩`
 - `⍒⍋`, Bins, takes an ordered `𝕨` and determines where each cell of `𝕩` fits in this ordering.
 
 The array ordering shared by all six is described last. For lists it's "dictionary ordering": two lists are compared one element at a time until one runs out, and the shorter one comes first in case of a tie. Operation values aren't ordered, so if an argument to an ordering function has a function or modifier somewhere in it then it will fail unless all the orderings can be decided without checking that value.
@@ -14,13 +14,13 @@ You can't provide a custom ordering function to Sort. The function would have to
 
 ## Sort
 
-You've probably seen it before. Sort Up (`∧`) reorders the major cells of its argument to place them in ascending order, and Sort Down (`∨`) puts them in descending order. Every ordering function follows this naming convention—there's an "Up" version pointing up and a "Down" version going the other way.
+You've probably seen it before. Sort Up (`∧`) reorders the [major cells](array.md#cells) of its argument to place them in ascending order, and Sort Down (`∨`) puts them in descending order. Every ordering function follows this naming convention—there's an "Up" version pointing up and a "Down" version going the other way.
 
         ∧ "delta"‿"alpha"‿"beta"‿"gamma"
 
         ∨ "δαβγ"
 
-Sort Down always [matches](match.md) Sort Up [reversed](reverse.md), `⌽∘∧`. The reason for this is that BQN's array ordering is a [total order](https://en.wikipedia.org/wiki/Total_order), meaning that if one array doesn't come earlier or later than another array in the ordering then the two arrays match. Since any two non-matching argument cells are strictly ordered, they will have one ordering in `∧` and the opposite ordering in `∨`. With the reverse, any pair of non-matching cells are ordered the same way in `⌽∘∧` and `∨`. Since these two results have the same major cells in the same order, they match. However, note that the results will not always behave identically because Match doesn't take [fill elements](fill.md) into account (if you're curious, take a look at `⊑¨∨⟨↕0,""⟩` versus `⊑¨⌽∘∧⟨↕0,""⟩`).
+Sort Down always [matches](match.md) Sort Up [reversed](reverse.md), `⌽∘∧`. The reason for this is that BQN's array ordering is a [total order](https://en.wikipedia.org/wiki/Total_order), meaning that if one array doesn't come earlier or later than another array in the ordering then the two arrays match. Since any two non-matching argument cells are strictly ordered, they will have one ordering in `∧` and the opposite ordering in `∨`. After the reverse, any pair of non-matching cells are ordered the same way in `⌽∘∧` and `∨`. Since these two results have the same major cells in the same order, they match. However, note that the results will not always behave identically because Match doesn't take [fill elements](fill.md) into account (if you're curious, take a look at `⊑¨∨⟨↕0,""⟩` versus `⊑¨⌽∘∧⟨↕0,""⟩`).
 
 ## Grade
 
@@ -61,7 +61,7 @@ tp ← ⍉ tx ⋈⌜ y
 }
 -->
 
-Grade is more abstract than Sort. Rather than rearranging the argument's cells immediately, it returns a list of indices (more precisely, a permutation) giving the ordering that would sort them.
+Grade is more abstract than Sort. Rather than rearranging the argument's cells immediately, it returns a list of [indices](indices.md) (more precisely, a permutation) giving the ordering that would sort them.
 
         ⊢ l ← "planet"‿"moon"‿"star"‿"asteroid"
 
@@ -99,11 +99,11 @@ How does it work? First, let's note that `⍋l` is a *permutation*: it contains 
 
 But what's the inverse `q` of a permutation `p`? Our requirement is that `𝕩 ≡ q⊏p⊏𝕩` for any `𝕩` with the same length as `p`. Setting `𝕩` to `↕≠p` (the identity permutation), we have `(↕≠p) ≡ q⊏p`, because `p⊏↕≠p` is just `p`. But if `p` is a permutation then `∧p` is `↕≠p`, so our requirement could also be written `(∧p) ≡ q⊏p`. Now it's all coming back around again. We know exactly how to get `q`! Defining `q←⍋p`, we have `q⊏p ↔ (⍋p)⊏p ↔ ∧p ↔ ↕≠p`, and `q⊏p⊏𝕩 ↔ (q⊏p)⊏𝕩 ↔ (↕≠p)⊏𝕩 ↔ 𝕩`.
 
-The fact that Grade Up inverts a permutation is useful in itself. Note that this applies to Grade Up specifically, and not Grade Down. This is because the identity permutation is ordered in ascending order. Grade Down would actually invert the reverse of a permutation, which is unlikely to be useful. So the ordinals idiom that goes in the opposite direction is actually not `⍒⍒` but `⍋⍒`. The initial grade is different, but the way to invert it is the same.
+The fact that Grade Up inverts a permutation is useful in itself. Note that this applies to Grade Up specifically, and not Grade Down. This is because the identity permutation is ordered in ascending order. Grade Down would invert the reverse of a permutation, which is unlikely to be useful. So the ordinals idiom that goes in the opposite direction is actually not `⍒⍒` but `⍋⍒`. The initial grade is different, but the way to invert it is the same.
 
 ### Stability
 
-When sorting an array, we usually don't care how matching cells are ordered relative to each other (although it's possible to detect it by using fill elements carefully. They maintain their ordering). Grading is a different matter, because often the grade of one array is used to order another one.
+When sorting an array, we usually don't care how matching cells are ordered relative to each other (although as mentioned above it's possible to detect it by using fill elements carefully. They maintain their ordering). Grading is a different matter, because often the grade of one array is used to order another one.
 
         ⊢ t ← >⟨ "dog"‿4, "ant"‿6, "pigeon"‿2, "pig"‿4 ⟩
 
@@ -121,11 +121,9 @@ To see some of the possibilities of Grade, you might pick apart the following ex
 
 ## Bins
 
-*There's also an [APL Wiki page](https://aplwiki.com/wiki/Interval_Index) on this function, but be careful as the Dyalog version has subtle differences.*
-
 The two Bins functions are written with the same symbols `⍋` and `⍒` as Grade, but take two arguments instead of one. More complicated? A little, but once you understand Bins you'll find that it's a basic concept that shows up in the real world all the time.
 
-Bins behaves like a [search function](search.md) with respect to rank: it looks up cells from `𝕩` relative to major cells of `𝕨`. However, there's an extra requirement: the left argument to Bins is already sorted according to whichever ordering is used. If it isn't, you'll get an error.
+Bins behaves like a [search function](search.md) with respect to rank: it looks up [cells](array.md#cells) from `𝕩` relative to major cells of `𝕨`. However, there's an extra requirement: the left argument to Bins must already be sorted according to whichever ordering is used. If it isn't, you'll get an error.
 
         5‿6‿2‿4‿1 ⍋ 3
 
@@ -145,15 +143,13 @@ A score of `565e7` sits between `578e7` and `553e7` at rank 3, `322e7` wouldn't 
 
 Most of the time you won't need to worry about the details of how BQN arrays are ordered. It's documented here because, well, that's what documentation does.
 
-The array ordering defines some arrays to be smaller or larger than others. All of the "Up" ordering functions use this ordering directly, so that smaller arrays come earlier, and the "Down" ones use the opposite ordering, with larger arrays coming earlier. For arrays consisting only of characters and numbers, with arbitrary nesting, the ordering is always defined. If an array contains an operation, trying to order it relative to another array might give an error. If comparing two arrays succeeds, there are three possibilities: the first array is smaller, the second is smaller, or the two arrays [match](match.md).
+BQN's *array ordering* is an extension of the number and character ordering given by `≤` to [arrays](array.md). In this system, any two arrays that have only numbers and characters for atoms can be compared with each other. Furthermore, some arrays that contain incomparable atoms (operations or namespaces) might be comparable, if the result of the comparison can be decided before reaching these atoms. Array ordering never depends on [fill elements](fill.md). If comparing two arrays succeeds, there are three possibilities: the first array is smaller, the second is smaller, or the two arrays [match](match.md). All of the "Up" ordering functions use this ordering directly, so that smaller arrays come earlier, and the "Down" ones use the opposite ordering, with larger arrays coming earlier.
 
-Comparing two atoms is defined to work the same way as the [comparison functions](arithmetic.md#comparisons) `≤<>≥`. Numbers come earlier than characters and otherwise these two types are ordered in the obvious way. To compare an atom to an array, the atom enclosing and then compared with the array ordering defined below. The result of this comparison is used except when the two arrays match: in that case, the atom is considered smaller.
+Comparing two atoms is defined to work the same way as the [comparison functions](arithmetic.md#comparisons) `≤<>≥`. Numbers come earlier than characters and otherwise these two types are ordered in the obvious way. To compare an atom to an array, the atom is enclosed and then compared with the array ordering defined below. The result of this comparison is used except when the two arrays match: in that case, the atom is considered smaller.
 
-Two arrays of the same shape are compared by comparing all their corresponding elements, in index order. This comparison can stop at the first pair of different elements (which allows later elements to contain operations without causing an error). If any elements were different, then they decide the result of the comparison. If all the elements matched, then by definition the two arrays match.
+Two arrays of the same shape are compared by comparing all their corresponding elements, in index order. This comparison stops at the first pair of different elements (which allows later elements to contain operations without causing an error). If any elements were different, then they decide the result of the comparison. If all the elements matched, then by definition the two arrays match.
 
 The principle for arrays of different shapes is the same, but there are two factors that need to be taken into account. First, it's not obvious any more what it means to compare corresponding elements—what's the correspondence? Second, the two arrays can't match because they have different shapes. So even if all elements end up matching one of them needs to come earlier.
-
-BQN's *array ordering* is an extension of the number and character ordering given by `≤` to arrays. In this system, any two arrays consisting of only numbers and characters for atoms can be compared with each other. Furthermore, some arrays that contain incomparable atoms (operations) might be comparable, if the result of the comparison can be decided before reaching these atoms. Array ordering does not depend on the fill elements for the two arguments.
 
 Let's discuss correspondence first. One way to think about how BQN makes arrays correspond is that they're simply laid on top of each other, lining up the first (as in `⊑`) elements. So a shape `⟨4⟩` array will match up with the first row of a shape `5‿3` array, but have an extra element off the end. A simple way to think about this is to say that the lower rank array is brought up to a matching rank by putting `1`s in front of the shape, and then lengths along each axis are matched up by padding the shorter array along that axis with a special "nothing" element. This "nothing" element will be treated as smaller than any actual array, because this rule recovers the "dictionary ordering" rule that a word that's a prefix of a longer word comes before that word. In the case of the shapes `⟨4⟩` and `5‿3`, if the three overlapping elements match then the fourth element comes from the first row and is present in the first array but not the second. So the shape `5‿3` array would be considered smaller without even looking at its other four rows.
 
