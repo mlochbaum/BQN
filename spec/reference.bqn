@@ -165,7 +165,7 @@ Pick1←{
 }
 Pickd←(∨´∘⥊IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
 Pick←IsArray◶⥊‿⊢⊸Pickd
-First←(0<≠)◶⟨!∘0,0⊸⊑⟩∘Deshape
+First←0⊑Deshape
 
 match←{¬∘(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨≠○IsArray , 0⟩
