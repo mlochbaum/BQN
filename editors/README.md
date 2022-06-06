@@ -22,11 +22,11 @@ Support for other editors, OSes, or workflows will be gladly accepted!
 
 ### XKB (Unix)
 
-The file [bqn](https://github.com/mlochbaum/BQN/blob/master/editors/bqn) is for configuring XKB on Linux, or other systems using X11. To use, copy it to `/usr/share/X11/xkb/symbols/`, then run
+The file [bqn](https://github.com/mlochbaum/BQN/blob/master/editors/bqn) is for configuring XKB on Linux, or other systems using X11. It's installed as part of xkeyboard-config 2.36 and later, or can be copied to `/usr/share/X11/xkb/symbols/` for earlier versions. Then run
 
     $ setxkbmap -layout us,bqn -option grp:switch
 
-replacing `us` with your ordinary keyboard layout. `switch` indicates the right alt key and can be replaced with `lswitch` for left alt or other codes. The setting will go away on shutdown so you will probably want to configure it to run every time you start up. The way to do this depends on your desktop environment. For further discussion, see [Wikipedia](https://en.wikipedia.org/wiki/X_keyboard_extension) or the [APL Wiki](https://aplwiki.com/wiki/Typing_glyphs_on_Linux).
+replacing `us` with your ordinary keyboard layout. `switch` indicates the right alt key and can be replaced with `lswitch` for left alt or other codes. The setting will go away on shutdown, so you will probably want to configure it to run every time you start up. The way to do this depends on your desktop environment. For further discussion, see [Wikipedia](https://en.wikipedia.org/wiki/X_keyboard_extension) or the [APL Wiki](https://aplwiki.com/wiki/Typing_glyphs_on_Linux).
 
 Another XKB option is to place [XCompose](https://github.com/mlochbaum/BQN/blob/master/editors/XCompose) (possibly with adjustments) in `~/.XCompose` and enable a compose key. This can be done using either OS-specific settings or the following command:
 
@@ -86,6 +86,6 @@ Copy or symlink `kak/autoload/filetype/bqn.kak` into `autoload/filetype` in your
 
 ## Alternate layouts
 
-All files here use the BQN layout designed for qwerty, which will generally be jumbled in another layout (for example the key for `r` will still type `↑`, but it may not be above `c`, which types `↓`). The [remap.bqn](remap.bqn) script allows you to remap some files in this repository to a new layout. See `$ remap.bqn -h` for usage. Support for a new layout can be added in the `keys` array of the script, but do watch for string alignment with the doubled quote character.
+All files here use the BQN layout designed for qwerty, which will generally be jumbled in another layout (for example the key for `r` will still type `↑`, but it may not be above `c`, which types `↓`). The [remap.bqn](remap.bqn) script allows you to remap some files in this repository to a new layout. See `$ ./remap.bqn -h` for usage. Support for a new layout can be added in the `keys` array of the script, but do watch for string alignment with the doubled quote character.
 
 (If you haven't installed CBQN but have Node.js, `$ bqn.js editors/remap.bqn…` from the repository root will work too)
