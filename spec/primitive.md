@@ -42,7 +42,7 @@ The dyadic function `=`, representing equality comparison, can be applied to any
 
 Operations are split into subtypes depending on how they were created.
 - Primitives are equal if they have the same token spelling.
-- Derived operations are equal if they are derived by the same rule and each corresponding component is the same.
+- Compound functions are equal if they are produced by the same rule and each corresponding component is the same.
 - Block instances are equal if they are the same instance.
 
 This means that block instance equality indicates identity in the context of mutability: two block instances are equal if any change of state in one would be reflected in the other as well. The concept of identity holds even if the blocks in question have no way of changing or accessing state. For example, `=○{𝕩⋄{𝕩}}˜@` is `0` while `=˜○{𝕩⋄{𝕩}}@` is `1`.

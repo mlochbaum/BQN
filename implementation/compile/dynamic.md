@@ -17,7 +17,7 @@ How a program can be optimized depends on why it's taking time to run. Here we'l
 - Primitives take a long time, because of large arrays.
 - There are many actions, because blocks are repeated many times.
 
-If many bytecode instructions are evaluated, it must be that blocks are repeated, because each instruction can only be run once by its containing block. A derived function might be run many times by a modifier, which typically involves a large array, but could also be because of Repeat (`⍟`).
+If many bytecode instructions are evaluated, it must be that blocks are repeated, because each instruction can only be run once by its containing block. A function operand might be run many times by a modifier, which typically involves a large array, but could also be because of Repeat (`⍟`).
 
 This is an array-based viewpoint, because in a low-level language the large array case would just be considered one of several kinds of repetition. Traditionally APL focused exclusively on speeding up the large array case; BQN's compilation makes better block performance a reachable goal.
 
@@ -65,15 +65,15 @@ Saving metadata from the first run is another possibility, with very low overhea
 
 The desire to do metadata computations, or pure data ones once metadata is known suggests a system with a "wrapper" that computes type, shape, and so on, then selects and calls an "kernel" function for the computation. Specialized code could use a particular kernel, or a different wrapper that selects from a subset of the kernels.
 
-### Derived functions
+### Compound functions
 
-Like blocks, it can be valuable to optimize derived functions if they are run many times. Derived functions are often known at the program start by constant folding, but might also be constructed dynamically, particularly to bind an argument to a function.
+Like blocks, it can be valuable to optimize compound functions if they are run many times. Compound functions are often known at the program start by constant folding, but might also be constructed dynamically, particularly to bind an argument to a function.
 
 Compound arithmetic functions like `+´`, `` ⌈` ``, or `=⌜` are essential to array programming, and have fast SIMD implementations, so they need to be recognized wherever they are found.
 
 In addition to these, there are patterns like ``∨`∘≠`` that can be implemented faster than their components, and bindings like `l⊸⊐` where a computation (here, a hash table) on the left argument can be saved. These can be handled by inspecting the function. However, it's more robust to convert it to a canonical form, so this possibility should also be considered.
 
-Tacit code can be converted to [SSA](https://en.wikipedia.org/wiki/Static_single_assignment_form) form very easily. To translate it into stack-based bytecode it would need a way to reuse values from the stack in multiple places; instructions to duplicate or extract a value from higher in the stack are an obvious candidate. Either of these forms is a natural step on the way to native compilation, and a bytecode representation would make it easier to optimize mixed tacit and explicit code—but it's easier to do the optimizations on SSA-form rather than stack-based code, so perhaps the right path is to convert both bytecode and derived functions to SSA.
+Tacit code can be converted to [SSA](https://en.wikipedia.org/wiki/Static_single_assignment_form) form very easily. To translate it into stack-based bytecode it would need a way to reuse values from the stack in multiple places; instructions to duplicate or extract a value from higher in the stack are an obvious candidate. Either of these forms is a natural step on the way to native compilation, and a bytecode representation would make it easier to optimize mixed tacit and explicit code—but it's easier to do the optimizations on SSA-form rather than stack-based code, so perhaps the right path is to convert both bytecode and compound functions to SSA.
 
 ### Compile in another thread
 

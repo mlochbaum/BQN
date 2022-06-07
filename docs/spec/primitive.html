@@ -37,7 +37,7 @@
 <p>Operations are split into subtypes depending on how they were created.</p>
 <ul>
 <li>Primitives are equal if they have the same token spelling.</li>
-<li>Derived operations are equal if they are derived by the same rule and each corresponding component is the same.</li>
+<li>Compound functions are equal if they are produced by the same rule and each corresponding component is the same.</li>
 <li>Block instances are equal if they are the same instance.</li>
 </ul>
 <p>This means that block instance equality indicates identity in the context of mutability: two block instances are equal if any change of state in one would be reflected in the other as well. The concept of identity holds even if the blocks in question have no way of changing or accessing state. For example, <code><span class='Function'>=</span><span class='Modifier2'>○</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}}</span><span class='Modifier'>˜</span><span class='String'>@</span></code> is <code><span class='Number'>0</span></code> while <code><span class='Function'>=</span><span class='Modifier'>˜</span><span class='Modifier2'>○</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}}</span><span class='String'>@</span></code> is <code><span class='Number'>1</span></code>.</p>
