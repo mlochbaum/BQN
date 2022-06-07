@@ -43,7 +43,7 @@ BQN doesn't have any of the various features used in APL to add fills to the res
 
 ## Replicate
 
-Given a list of natural numbers `𝕨`, Replicate repeats each major cell in `𝕩` the corresponding number of times. That is, `𝕨` and `𝕩` must have the same length, and the result includes `i⊑𝕨` copies of each cell `i⊏𝕩`, in order.
+Given a list of natural numbers `𝕨`, Replicate repeats each [major cell](array.md#cells) in `𝕩` the corresponding number of times. That is, `𝕨` and `𝕩` must have the same length, and the result includes `i⊑𝕨` copies of each cell `i⊏𝕩`, in order.
 
         2‿1‿0‿2 / "abcd"
 
@@ -65,7 +65,7 @@ When `𝕨` is a list of booleans, a cell is never repeated more than once, mean
 
 Here `≤⟜'i'` is a pervasive function, so there's no need to add `¨`. Similarly, to filter major cells of an array, `Fn˘⊸/` could be used, applying `Fn` to one major cell at a time.
 
-A similar pattern applies to Replicate as well. The function below tests which input characters are double quotes, but by adding one it changes the result to 1 for each non-quote character and 2 for quotes (but source code and display also double quotes here, so the input string has only two `"`s and the output has four).
+This idea extends to Replicate as well. The function below tests which input characters are double quotes, but by adding one it changes the result to 1 for each non-quote character and 2 for quotes (but source code and display also double quotes here, so the input string has only two `"`s and the output has four).
 
         {1+'"'=𝕩}⊸/ "for ""escaping"" quotes"
 
@@ -95,7 +95,7 @@ If `𝕨` is `⟨⟩`, then it has depth 1, but is handled with the multidimensi
 
 ## Indices
 
-The monadic form of `/` is much simpler than the dyadic one, with no multidimensional case or mismatched argument ranks. `𝕩` must be a list of natural numbers, and `/𝕩` is the list `𝕩/↕≠𝕩`. Its elements are the [indices](indices.md) for `𝕩`, with index `i` repeated `i⊑𝕩` times.
+The monadic form of `/` is much simpler than the dyadic one, with no multidimensional case or mismatched argument ranks. `𝕩` has to be a list of natural numbers, and `/𝕩` is the list `𝕩/↕≠𝕩`. Its elements are the [indices](indices.md) for `𝕩`, with index `i` repeated `i⊑𝕩` times.
 
         / 3‿0‿1‿2
 
@@ -125,7 +125,7 @@ So now we have the indices of each transition from 0 to 1 or 1 to 0, in an exten
 
         -˜`˘ ∘‿2⥊/ 0(∾≠∾˜) 0‿1‿1‿1‿0‿0‿1‿0‿1‿1‿0
 
-This means the transitions can be grouped exactly in pairs, the beginning and end of each group. Reshape with a [computed length](reshape.md#computed-lengths) `∘‿2` groups these pairs, and then a scan ``-˜`˘`` can be used to convert the start/end format to start/length if wanted.
+This means the transitions can be grouped exactly in pairs, the beginning and end of each group. Reshape with a [computed length](reshape.md#computed-lengths) `∘‿2` groups these pairs, and then a [scan](scan.md) ``-˜`˘`` can be used to convert the start/end format to start/length if wanted.
 
 ### Inverse
 

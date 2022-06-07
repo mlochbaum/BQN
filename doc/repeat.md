@@ -8,7 +8,7 @@ Repeat (`⍟`) is a 2-modifier that applies its operand function `𝔽` multiple
 
         »⍟3 "ABCDE"
 
-In mathematics (which unsurpisingly tends to use complicated terms to talk about an easy concept), this kind of repetition is called an [iterated function](https://en.wikipedia.org/wiki/Iterated_function) and written with exponential notation. It's related to function composition `∘` in the same way that exponentiation (`⋆`) relates to multiplication (`×`): function iteration is repeated composition.
+In mathematics (which unsurpisingly tends to use complicated terms to talk about an easy concept), this kind of repetition is called an [iterated function](https://en.wikipedia.org/wiki/Iterated_function) and written with exponential notation. It's related to function [composition](compose.md) `∘` in the same way that exponentiation (`⋆`) relates to multiplication (`×`): function iteration is repeated composition.
 
     n⋆4  ←→  n×n×n×n
     F⍟4  ←→  F∘F∘F∘F
@@ -24,7 +24,7 @@ If `𝕨` is given, it's passed as the left argument to `𝔽` for every invocat
         3 +⍟2 7
         3 + 3 + 7
 
-This kind of composition can't be represented by `∘` anymore (you'd need a [train](train.md)), but it's similar in spirit. `𝕨 𝔽⍟n 𝕩` is always equivalent to `𝕨⊸𝔽⍟n 𝕩`, provided `n` is a constant—not a function, as discussed in the next section.
+This kind of composition can't be represented by `∘` anymore (you'd need a [train](train.md)), but it's not much of a leap. `𝕨 𝔽⍟n 𝕩` is always equivalent to `𝕨⊸𝔽⍟n 𝕩`, provided `n` is a constant—not a function, as discussed in the next section.
 
 ## Dynamic repetition count
 
@@ -44,11 +44,11 @@ If `𝕨` is given, then `𝔾` gets it as a left argument (to avoid this, use `
 
 ## Negative repetition
 
-What does it mean to repeat a function a negative number of times? For a negative integer `-n`, BQN defines `F⍟(-n)` to be `F⁼⍟n`. In particular, `F⍟¯1` simply undoes `F`.
+What does it mean to repeat a function a negative number of times? For a negative integer `-n`, BQN defines `F⍟(-n)` to be `F⁼⍟n`. In particular, `F⍟¯1` simply [undoes](undo.md) `F`.
 
         1 ⌽⍟¯1 "abcde"  # Rotate backwards
 
-Because BQN's Undo is a little looser than a strict mathematical inverse, this is an extension of the function inverse written f⁻¹ in mathematics. As a result, it doesn't have all the same properties. For natural numbers, Repeat follows the rule that `F⍟m F⍟n 𝕩` is `F⍟(m+n) 𝕩`. For integers, we have `𝕩 ≡ F⍟n F⍟(-n) 𝕩`, but not necessarily `𝕩 ≡ F⍟(-n) F⍟n 𝕩`.
+Because BQN's Undo is a little looser than a strict mathematical inverse, this is an extension of the function inverse written f⁻¹ in mathematics. As a result, it doesn't have all the same properties. For natural numbers, Repeat follows the rule that `F⍟m F⍟n 𝕩` is `F⍟(m+n) 𝕩`. With a negative, we have `𝕩 ≡ F⍟n F⍟(-n) 𝕩`, but not necessarily `𝕩 ≡ F⍟(-n) F⍟n 𝕩`.
 
 ## Array of repetition counts
 

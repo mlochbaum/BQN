@@ -36,9 +36,9 @@ bp ← ⥊⌽(20×1.5‿¯1) (+⌾⊑ ≍ -⊸≍∘⊣)˘ 29‿21-⊸≍⊸+⍉
 ⟩
 -->
 
-The glyph `⥊` indicates BQN's facilities to reflow the data in an array, giving it a different shape. Its monadic form, Deshape, simply removes all shape information, returning a list of all the elements from the array in reading order. With a left argument, `⥊` is called Reshape and is a more versatile tool for rearranging the data in an array into the desired shape.
+The glyph `⥊` indicates BQN's facilities to reflow the data in an array, giving it a different shape. Its monadic form, Deshape, simply removes all shape information, returning a list of all the elements from the array in index order. With a left argument, `⥊` is called Reshape and is a more versatile tool for rearranging the data in an array into the desired shape.
 
-Because of its dependence on the reading order of an array, Reshape is less fundamental than other array operations. Using Reshape in the central computations of a program can be a sign of imperfect usage of arrays. For example, it may be useful to use Reshape to create a constant array or repeat a sequence of values several times, but the same task might also be accomplished more simply with [Table](map.md#table) `⌜`, or by taking advantage of [leading axis agreement](leading.md#leading-axis-agreement) in arithmetic primitives.
+Because of its dependence on the index order of an array, Reshape is less fundamental than other array operations. Using Reshape in the central computations of a program can be a sign of imperfect usage of arrays. For example, it may be useful to use Reshape to create a constant array or repeat a sequence of values several times, but the same task might also be accomplished more simply with [Table](map.md#table) `⌜`, or by taking advantage of [leading axis agreement](leading.md#leading-axis-agreement) in arithmetic primitives.
 
 ## Deshape
 
@@ -48,15 +48,15 @@ The result of Deshape is a list containing the same elements as the argument.
 
         ⥊ a
 
-The elements are ordered in reading order—left to right, then top to bottom. This means that leading axes "matter more" for ordering: if one element comes earlier in the first axis but later in the second than some other element, it will come first in the result. In another view, elements are ordered according to their [indices](indices.md). In other words, deshaping the array of indices for an array will always give a [sorted](order.md) array.
+The elements are ordered in reading order—left to right, then top to bottom. This means that leading axes "matter more" for ordering: if one element comes earlier in the first axis but later in the second than some other element, it will come first in the result. In another view, elements are ordered according to their [indices](indices.md), leading to the name *index order* for this ordering. To be precise, deshaping the array of indices for an array always gives a [sorted](order.md) array.
 
         ↕≢a
 
         ⍋ ⥊ ↕≢a
 
-This ordering is also known as *row-major* order.
+This ordering is also known as *row-major* order in computing.
 
-Deshape turns a unit argument into a single-element list, automatically [enclosing](enclose.md) it if it's an atom. However, if you know `𝕩` is a unit, a more principled way to turn it into a list is to apply [Solo](couple.md) (`≍`), which adds a length-1 axis before any other axes. If you ever add axes to the data format, Solo is more likely to continue working after this transition, unless there's a reason the result should always be a list.
+Deshape turns a unit argument into a single-element list, automatically enclosing it if it's an atom. However, if you know `𝕩` is a unit, a more principled way to turn it into a list is to apply [Solo](couple.md) (`≍`), which adds a length-1 axis before any other axes. If you ever add axes to the data format, Solo is more likely to continue working after this transition, unless there's a reason the result should always be a list.
 
         ⥊ 2
         ≍ 2
@@ -77,7 +77,7 @@ If the number of elements implied by the given shape—that is, `×´𝕨`—is 
 
         (⥊a) ≡ ⥊ 6‿2⥊a
 
-One common use is to generate an array with a specified shape that counts up from 0 in reading order, a reshaped [Range](range.md). The idiomatic phrase to do this is `⥊⟜(↕×´)`, since it doesn't require writing the shape and its product separately.
+One use is to generate an array with a specified shape that counts up from 0 in index order, a reshaped [Range](range.md). The idiomatic phrase to do this is `⥊⟜(↕×´)`, since it doesn't require writing the shape and its product separately.
 
         2‿7 ⥊ ↕14
         ⥊⟜(↕×´) 2‿7
@@ -106,12 +106,12 @@ What if you want to reshape an array into, say, rows of length 2, but don't want
 
         ∘‿2 ⥊ "aAeEiIoOuU"
 
-Above, the length given is `∘`, a special value that indicates that a length that fits the argument should be computed. In fact, Reshape has four different special values that can be used. Every one works the same for a case like the one above, where the rest of the shape divides the argument length evenly. They differ in how they handle uneven cases, where the required length would fall between two whole numbers.
+Above, the length given is `∘`, a special value that indicates that a length fitting the argument should be computed. Reshape has four such special values that can be used. Every one works the same for a case like the one above, where the rest of the shape divides the argument length evenly. They differ in how they handle uneven cases, where the required length falls between two whole numbers.
 
 - `∘` says the length must be an exact fit, and gives an error in such a case.
 - `⌊` rounds the length down, so that some elements are discarded.
 - `⌽` rounds the length up, repeating elements to make up the difference.
-- `↑` rounds the length up, but uses the argument's fill for the needed extra elements.
+- `↑` rounds the length up, but uses the argument's [fill](fill.md) for the needed extra elements.
 
 These values are just BQN primitives of course. They're not called by Reshape or anything like that; the primitives are just chosen to suggest the corresponding functionality.
 
@@ -125,7 +125,7 @@ Here's an example of the four cases. If we try to turn five elements into two ro
 
         2‿↑ ⥊ "abcde"
 
-A computed length can be useful to input an array without using nested notation: for example, if you have a table with rows of three elements, you might write it as one long list, using `∘‿3⥊⟨…⟩` to get it back to the appropriate shape. `∘` is definitely the value to use here, as it will check that you haven't missed an element or something like that.
+A computed length can be useful to input an array without using nested [notation](arrayrepr.md#brackets): for example, if you have a table with rows of three elements, you might write it as one long list, using `∘‿3⥊⟨…⟩` to get it back to the appropriate shape. `∘` is definitely the value to use here, as it will check that you haven't missed or added an element.
 
 Computed Reshape might also be used in actual data processing: for example, to sum a list in groups of four, you might first reshape it using `↑‿4` for the shape, then average the rows. Here the code `↑` is useful because added fill elements of `0` won't change the sum, so that if the last group doesn't have four elements (`9‿7` below), it will still be summed correctly.
 

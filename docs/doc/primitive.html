@@ -5,8 +5,8 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="bqn-primitives"><a class="header" href="#bqn-primitives">BQN primitives</a></h1>
-<p><em>Primitives</em> are the basic functions and modifiers built into the language, written with individual glyphs (more about the concept <a href="../commentary/primitive.html">here</a>). The role of a primitive when written always matches its type (but you can use its value in other roles by assigning it, or other methods).</p>
-<p>Primitives have no side effects other than errors, and can't perform infinite computations, except when a primitive modifier calls an operand function that does one of these things (this can only happen when arguments are passed, as primitive modifiers are always deferred). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function without them always returns the same result if passed the same arguments. Since trains and list notation have the same nice properties, tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.</p>
+<p><em>Primitives</em> are the basic functions and modifiers built into the language, written with individual glyphs (more about the concept <a href="../commentary/primitive.html">here</a>). The <a href="expression.html#syntactic-role">role</a> of a primitive when written always matches its type (but you can use its value in other roles by assigning it, or other methods).</p>
+<p>Primitives have no side effects other than errors, and can't perform infinite computations, except when a primitive modifier calls an operand function that does one of these things (and this can only happen when arguments are passed, as primitive modifiers are always deferred). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function without them always returns the same result if passed the same arguments. Since trains and list notation have the same nice properties, <a href="tacit.html">tacit</a> code written entirely with primitives, trains, and lists always describes finite, self-contained computations.</p>
 <p>Recursion is the primary way to perform potentially infinite computations in BQN, and it can be packaged into <a href="control.html">control structures</a> like <code><span class='Function'>While</span></code> for ease of use. A given BQN implementation might also provide <a href="../spec/system.html">system values</a> for &quot;impure&quot; tasks like file access or other I/O.</p>
 <h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
 <p>A function call with one argument (prefix) is called &quot;monadic&quot; and one with two arguments (infix) is &quot;dyadic&quot;.</p>
@@ -412,7 +412,7 @@
   </g>
 </svg>
 
-<p><em>Combinators</em> only control the application of functions. Because a non-function operand applies as a constant function, some combinators have extra meanings when passed a constant. For example, <code><span class='Number'>0</span><span class='Modifier'>˜</span></code> is identical to <code><span class='Number'>0</span><span class='Modifier'>˙</span></code>—a constant function that always returns 0—and <code><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span></code> is the function that tests whether its right argument is greater than 0.</p>
+<p><em>Combinators</em> only control the application of functions, which are passed as operands. A data value such as a number or array can also be an operand and, as always, applies as a constant function.</p>
 <table>
 <thead>
 <tr>
@@ -460,12 +460,6 @@
 <td><code><span class='Function'>𝔽</span></code>'s right argument comes from <code><span class='Function'>𝔾</span></code></td>
 </tr>
 <tr>
-<td><code><span class='Modifier2'>⌾</span></code></td>
-<td><a href="under.html">Under</a></td>
-<td><code><span class='Brace'>{</span><span class='Function'>𝔾</span><span class='Modifier'>⁼</span><span class='Modifier2'>∘</span><span class='Function'>𝔽</span><span class='Modifier2'>○</span><span class='Function'>𝔾</span><span class='Brace'>}</span></code> OR <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Gets'>↩</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Modifier2'>○</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
-<td>Apply <code><span class='Function'>𝔽</span></code> over <code><span class='Function'>𝔾</span></code>, then undo <code><span class='Function'>𝔾</span></code></td>
-</tr>
-<tr>
 <td><code><span class='Modifier2'>⊘</span></code></td>
 <td><a href="valences.html">Valences</a></td>
 <td><code><span class='Brace'>{</span><span class='Function'>𝔽</span><span class='Value'>𝕩</span><span class='Head'>;</span><span class='Value'>𝕨</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
@@ -477,10 +471,22 @@
 <td><code><span class='Brace'>{</span><span class='Value'>f</span><span class='Gets'>←</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>⊑</span><span class='Value'>𝕘</span> <span class='Separator'>⋄</span> <span class='Value'>𝕨</span><span class='Function'>F</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
 <td>Select one of the functions in list <code><span class='Value'>𝕘</span></code> based on <code><span class='Function'>𝔽</span></code></td>
 </tr>
+<tr>
+<td><code><span class='Modifier2'>⌾</span></code></td>
+<td><a href="under.html">Under</a></td>
+<td><code><span class='Brace'>{</span><span class='Function'>𝔾</span><span class='Modifier'>⁼</span><span class='Modifier2'>∘</span><span class='Function'>𝔽</span><span class='Modifier2'>○</span><span class='Function'>𝔾</span><span class='Brace'>}</span></code> OR <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Gets'>↩</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Modifier2'>○</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Separator'>⋄</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔽</span></code> over <code><span class='Function'>𝔾</span></code>, then undo <code><span class='Function'>𝔾</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Modifier2'>⎊</span></code></td>
+<td><a href="assert.html#catch">Catch</a></td>
+<td><code><span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Value'>𝕩…</span> <span class='Value'>𝕨</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td>
+<td>Apply <code><span class='Function'>𝔽</span></code>, but if it fails catch the error and apply <code><span class='Function'>𝔾</span></code></td>
+</tr>
 </tbody>
 </table>
-<p>Choose isn't really a combinator since it calls the function <code><span class='Function'>⊑</span></code>, and Under is not a true combinator since it has an &quot;undo&quot; step at the end. This step might be implemented using the left operand's inverse (<em>computational</em> Under) or its structural properties (<em>structural</em> Under).</p>
-<p>Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: in each case the 1-modifier happens to be the same as the 2-modifier with a right operand of <code><span class='Number'>¯1</span></code>.</p>
+<p>The last three are combinators in spirit but go beyond the actual strict definition: Choose calls the function <code><span class='Function'>⊑</span></code>, Under has an &quot;undo&quot; step at the end, and Catch traps an error. The second definition for Under and the one for Catch are written in pseudo-BQN because they can't be expressed otherwise.</p>
+<p>Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: for each of these the 1-modifier happens to be the same as the 2-modifier with a right operand of <code><span class='Number'>¯1</span></code>.</p>
 <table>
 <thead>
 <tr>
@@ -532,12 +538,6 @@
 <td><a href="scan.html">Scan</a></td>
 <td></td>
 <td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td><code><span class='Modifier2'>⎊</span></code></td>
-<td><a href="assert.html#catch">Catch</a></td>
 </tr>
 </tbody>
 </table>
