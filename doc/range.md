@@ -2,7 +2,7 @@
 
 # Range
 
-Range (`↕`) is a monadic function that creates arrays of [indices](indices.md) (like APL's famous [iota](https://aplwiki.com/wiki/Index_Generator) function). Each element in the result is its own index.
+Range (`↕`) is a monadic function that creates arrays of indices, like APL's famous [iota](https://aplwiki.com/wiki/Index_Generator) function `⍳`. Each element in the result is its own [index](indices.md).
 
         ↕ 6
 
@@ -20,7 +20,7 @@ The two kinds of index correspond to BQN's two selection functions: [Select](sel
 
         (↕⟨6⟩) ⊑ " pick "
 
-They also correspond to Length (`≠`) and [Shape](shape.md) (`≢`): for an array `a`, `↕≠a` gives the indices of major cells, while `↕≢a` gives the indices of all elements.
+They also correspond to [Length](shape.md) (`≠`) [and Shape](shape.md) (`≢`): for an array `a`, `↕≠a` gives the indices of major cells, while `↕≢a` gives the indices of all elements.
 
         a ← 4‿2⥊@
 
@@ -38,11 +38,11 @@ Calling `↕` on an atom, which must be a natural number, is the more common cas
 
         2 ↓ ↕4
 
-The result of `↕𝕩` is a list of length `𝕩`, but doesn't include `𝕩` itself. That's just how counting starting at 0 works. It does mean we can create a length-0 list easily:
+The result of `↕𝕩` is a list of length `𝕩`, but doesn't include `𝕩` itself. That's just how counting starting at 0 works (but a nice trick if you do want to include `𝕩` is `↕⊸∾𝕩`). It means we can create a length-0 list easily:
 
         ↕ 0
 
-Like all other results of `↕` on a number, `↕0` has a fill of 0.
+As with any other number argument, `↕0` has a [fill](fill.md) of 0.
 
         4 ↑ ↕0
 
@@ -54,7 +54,7 @@ Adding a character to a range produces a character range, with space as the fill
 
         »⍟3 'b'+↕8
 
-One interesting use of Range is to find, at each position in a boolean list, the most recent index that has a 1. To do this, first get the array of indices for `b`, `↕≠b`. Then multiply `b`, reducing indices where a `0` is found to 0.
+One interesting use of Range is to find, at each position in a boolean list, the most recent index that has a 1. To do this, first get the array of indices for `b`, `↕≠b`. Then multiply by `b`, reducing indices where a `0` is found to 0.
 
         ⊢ b ← 0‿1‿1‿0‿0‿0‿1‿0
 
@@ -74,11 +74,11 @@ Where there aren't any previous 1s, this returns an index of 0, which is the sam
 
 ## List range
 
-When the argument is a list of numbers, the result is an array of lists.
+When `𝕩` is a list of numbers, the result is an array of lists.
 
         ↕ 2‿3‿4
 
-This array, which contains all possible choices of one natural number less than each element of `𝕩`, can also be produced using Range on numbers only, along with [Table](map.md#table) (`⌜`).
+This array, which contains all possible choices of a natural number below each element of `𝕩`, can also be produced using Range on numbers only, along with [Table](map.md#table) (`⌜`).
 
         (<⟨⟩) ∾⌜´ ↕¨ 2‿3‿4
 

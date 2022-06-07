@@ -2,9 +2,9 @@
 
 # BQN primitives
 
-*Primitives* are the basic functions and modifiers built into the language, written with individual glyphs (more about the concept [here](../commentary/primitive.md)). The role of a primitive when written always matches its type (but you can use its value in other roles by assigning it, or other methods).
+*Primitives* are the basic functions and modifiers built into the language, written with individual glyphs (more about the concept [here](../commentary/primitive.md)). The [role](expression.md#syntactic-role) of a primitive when written always matches its type (but you can use its value in other roles by assigning it, or other methods).
 
-Primitives have no side effects other than errors, and can't perform infinite computations, except when a primitive modifier calls an operand function that does one of these things (this can only happen when arguments are passed, as primitive modifiers are always deferred). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function without them always returns the same result if passed the same arguments. Since trains and list notation have the same nice properties, tacit code written entirely with primitives, trains, and lists always describes finite, self-contained computations.
+Primitives have no side effects other than errors, and can't perform infinite computations, except when a primitive modifier calls an operand function that does one of these things (and this can only happen when arguments are passed, as primitive modifiers are always deferred). Side effects here include both writing state such as variables or printed output, and reading any outside state, so that a function without them always returns the same result if passed the same arguments. Since trains and list notation have the same nice properties, [tacit](tacit.md) code written entirely with primitives, trains, and lists always describes finite, self-contained computations.
 
 Recursion is the primary way to perform potentially infinite computations in BQN, and it can be packaged into [control structures](control.md) like `While` for ease of use. A given BQN implementation might also provide [system values](../spec/system.md) for "impure" tasks like file access or other I/O.
 
@@ -63,7 +63,7 @@ A function call with one argument (prefix) is called "monadic" and one with two 
 
 <!--GEN combinator.bqn-->
 
-*Combinators* only control the application of functions. Because a non-function operand applies as a constant function, some combinators have extra meanings when passed a constant. For example, `0˜` is identical to `0˙`—a constant function that always returns 0—and `0⊸<` is the function that tests whether its right argument is greater than 0.
+*Combinators* only control the application of functions, which are passed as operands. A data value such as a number or array can also be an operand and, as always, applies as a constant function.
 
 Glyph | Name(s)                 | Definition                     | Description
 ------|-------------------------|--------------------------------|---------------------------------------
@@ -73,13 +73,14 @@ Glyph | Name(s)                 | Definition                     | Description
 `○`   | [Over](compose.md)      | `{(𝔾𝕨)𝔽𝔾𝕩}`                    | Apply `𝔾` to each argument and `𝔽` to the results
 `⊸`   | [Before/Bind](hook.md)  | `{(𝔽𝕨⊣𝕩)𝔾𝕩}`                   | `𝔾`'s left argument comes from `𝔽`
 `⟜`   | [After/Bind](hook.md)   | `{(𝕨⊣𝕩)𝔽𝔾𝕩}`                   | `𝔽`'s right argument comes from `𝔾`
-`⌾`   | [Under](under.md)       | `{𝔾⁼∘𝔽○𝔾}` OR `{(𝔾𝕩)↩𝕨𝔽○𝔾𝕩⋄𝕩}` | Apply `𝔽` over `𝔾`, then undo `𝔾`
 `⊘`   | [Valences](valences.md) | `{𝔽𝕩;𝕨𝔾𝕩}`                     | Apply `𝔽` if there's one argument but `𝔾` if there are two
 `◶`   | [Choose](choose.md)     | `{f←(𝕨𝔽𝕩)⊑𝕘 ⋄ 𝕨F𝕩}`            | Select one of the functions in list `𝕘` based on `𝔽`
+`⌾`   | [Under](under.md)       | `{𝔾⁼∘𝔽○𝔾}` OR `{(𝔾𝕩)↩𝕨𝔽○𝔾𝕩⋄𝕩}` | Apply `𝔽` over `𝔾`, then undo `𝔾`
+`⎊`   | [Catch](assert.md#catch)| `{𝕨𝔽𝕩… 𝕨𝔾𝕩}`                   | Apply `𝔽`, but if it fails catch the error and apply `𝔾`
 
-Choose isn't really a combinator since it calls the function `⊑`, and Under is not a true combinator since it has an "undo" step at the end. This step might be implemented using the left operand's inverse (*computational* Under) or its structural properties (*structural* Under).
+The last three are combinators in spirit but go beyond the actual strict definition: Choose calls the function `⊑`, Under has an "undo" step at the end, and Catch traps an error. The second definition for Under and the one for Catch are written in pseudo-BQN because they can't be expressed otherwise.
 
-Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: in each case the 1-modifier happens to be the same as the 2-modifier with a right operand of `¯1`.
+Other modifiers control array traversal and iteration. In three cases a simpler 1-modifier is paired with a generalized 2-modifier: for each of these the 1-modifier happens to be the same as the 2-modifier with a right operand of `¯1`.
 
 | 1-Modifier | Name                                  | 2-Modifier | Name
 |------------|---------------------------------------|------------|--------
@@ -90,4 +91,3 @@ Other modifiers control array traversal and iteration. In three cases a simpler 
 | `´`        | [Fold](fold.md)                       |
 | `˝`        | [Insert](fold.md)                     |
 | `` ` ``    | [Scan](scan.md)                       |
-|            |                                       | `⎊`        | [Catch](assert.md#catch)

@@ -2,13 +2,13 @@
 
 # Reverse and Rotate
 
-The symbol `⌽` indicates two different array transformations: with no left argument, it reverses the major cells of the array, but with a left argument, it rotates or cycles them around. These two possibilities, first put together in very early versions of APL, can't be considered restrictions or different views of some unifying function, but there are connections between them. Each returns an array with the same [shape](shape.md) and all the same elements as `𝕩`, possibly in a different arrangement. And elements that start out next to each other in `𝕩` generally stay next to each other—always, if we consider an element on one edge to be next to the one opposite to it. One might think of them as [isometries](https://en.wikipedia.org/wiki/Isometry) preserving a discrete subgroup of the torus, if one were inclined to think such things. On major cells, the two functions decompose the [dihedral group](https://en.wikipedia.org/wiki/Dihedral_group) okay I'll stop.
+The symbol `⌽` indicates two different array transformations: with no left argument, it reverses the [major cells](array.md#cells) of the array, but with a left argument, it rotates or cycles them around. These two possibilities, first put together in very early versions of APL, can't be considered restrictions or different views of some unifying function, but there are connections between them. Each returns an array with the same [shape](shape.md) and all the same elements as `𝕩`, possibly in a different arrangement. And elements that start out next to each other in `𝕩` generally stay next to each other—always, if we consider an element on one edge to be next to the one opposite to it. One might think of them as [isometries](https://en.wikipedia.org/wiki/Isometry) preserving a discrete subgroup of the torus, if one were inclined to think such things. On major cells, the two functions decompose the [dihedral group](https://en.wikipedia.org/wiki/Dihedral_group) okay I'll stop.
 
-Many uses of Rotate in APL are better handled by [shift](shift.md) functions in BQN. If there's no reason to treat the data as cyclic or periodic, it's best to avoid Rotate.
+If there's no reason the data should be seen as cyclic or periodic, it's best to avoid Rotate: [shift](shift.md) functions are probably more appropriate.
 
 ## Reverse
 
-There's not too much to say about Reverse. It puts the elements of a list the other way around, or more generally the major cells of an array.
+Reverse doesn't make things complicated. It puts the elements of a list the other way around, or more generally the major cells of an array.
 
         ⌽ "abcdefg"
 
@@ -18,7 +18,7 @@ There's not too much to say about Reverse. It puts the elements of a list the ot
 
 You can't reverse an atom or rank-0 array because it has no axes to reverse along, or it could be said no ordering to reverse.
 
-To reverse along an axis other than the first, use Cells (`˘`) or Rank (`⎉`).
+To reverse along an axis other than the first, use [Cells](rank.md#cells) (`˘`) or [Rank](rank.md#rank) (`⎉`).
 
         ⌽˘ >"ab"‿"cd"‿"ef"
 
@@ -28,7 +28,7 @@ Reverse is useful for [folding](fold.md) left to right instead of right to left 
 
         ⋈˜´ ⌽ "abcd"  # Left to right
 
-Reverse is its own [inverse](undo.md) `⌽⁼`. As a result, `𝔽⌾⌽` reverses the argument, applies `𝔽`, and reverses again. It's a particularly useful pattern with [Scan](scan.md), as it allows scanning from the end rather than the beginning of the array. For example, `` ∨` `` on a list of booleans changes all bits after the first `1` to `1`, but `` ∨`⌾⌽ `` does this to all bits before the last `1`.
+Reverse is its own [inverse](undo.md) `⌽⁼`. So with [Under](under.md), `𝔽⌾⌽` reverses the argument, applies `𝔽`, and reverses again. It's a particularly useful pattern with [Scan](scan.md), as it allows scanning from the end rather than the beginning of the array. For example, `` ∨` `` on a list of booleans changes all bits after the first `1` to `1`, but `` ∨`⌾⌽ `` does this to all bits before the last `1`.
 
         ∨`   0‿0‿1‿0‿0‿1‿0
 
@@ -56,13 +56,13 @@ To rotate the other way, use a negative left argument (so `-⊸⌽` is a simple 
 
 ### Multiple axes
 
-The easiest way to rotate a later array axis is usually to use the Cells (`˘`) or Rank (`⎉`) modifier.
+The easiest way to rotate along a later array axis is usually to use the [Cells](rank.md#cells) (`˘`) or [Rank](rank.md#rank) (`⎉`) modifier.
 
         ⊢ tab ← 3‿4⥊"abcdABCD0123"
 
         1 ⌽˘ tab  # Rotate the second axis
 
-Rotate also allows `𝕨` to be a list (or unit array) of integers, in which case they're matched with [leading axes](leading.md) of `𝕩`. This means the length of `𝕨` can't be larger than the rank of `𝕩`, or there wouldn't be enough axes to match. This rule also explains why `𝕩` has to have rank one or more when `𝕨` is an atom, because `𝕨` is treated as the one-element list `⥊𝕨` in that case.
+Rotate also allows `𝕨` to be a list (or unit array) of integers, in which case they're matched with [leading axes](leading.md) of `𝕩`. This means the length of `𝕨` can't be larger than the rank of `𝕩`, or there wouldn't be enough axes to match. This rule that `𝕩` has to have rank one or more when `𝕨` is an atom is a special case, because then `𝕨` is treated as the one-element list `⥊𝕨`.
 
         3‿4‿2 ⌽ "just a list"
 
@@ -70,6 +70,6 @@ The expression below rotates the first (vertical) axis of `tab` by one element, 
 
         1‿2 ⌽ tab
 
-The vertical and horizontal rotations are independent, and could also be done with two `⌽`s and a `˘`. The multi-axis form is more convenient, and can potentially be evaluated faster that multiple separate rotations in the cases where it shows up.
+The vertical and horizontal rotations are independent, and could also be done with two `⌽`s and a `˘`. The multi-axis form is more convenient, and can potentially be evaluated faster than multiple separate rotations in the cases where it shows up.
 
         1 ⌽ 2 ⌽˘ tab
