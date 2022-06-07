@@ -83,6 +83,7 @@ The possible roles are:
 * **Monadic**: Called with one argument, either always (a monadic function) or in a particular instance (a monadic call).
 * **Dyadic**: Called with two arguments, always or in a particular instance.
 
+* **Compound function**: A derived function or train.
 * **Derived function**: A function produced by binding operands to a deferred modifier; doing so does not cause any computation.
 * [**Train**](train.md): A function composed of two or more functions.
 * [**Identity value**](fold.md#identity-values): An inferred property of a function: the result of a reduction with this function on an empty array.

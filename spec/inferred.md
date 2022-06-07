@@ -139,7 +139,7 @@ The following cases of Self/Swap must be supported.
 | `∨˜` | `√⌾¬` | `∨⁼`
 | `¬˜` |       | `+-1˙`
 
-Inverses of other modifiers and derived functions or modifiers obtained from them are given below. Here the "inverse" of a modifier is another modifier that, if applied to the same operands as the original operator, gives its inverse function. A constant is either a data value or `𝔽˙` for an arbitrary value `𝔽`.
+Inverses of other modifiers and compound functions are given below. Here the "inverse" of a modifier is another modifier that, if applied to the same operands as the original operator, gives its inverse function. A constant is either a data value or `𝔽˙` for an arbitrary value `𝔽`.
 
 | Mod     | Inverse              | Requirements
 |---------|----------------------|--------------

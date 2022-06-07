@@ -49,9 +49,9 @@ Rules in the table below are function and modifier evaluation.
 
 In each case the constituent expressions are evaluated in reverse source order: Right, then Called, then Left. Then the expression's result is obtained by calling the Called value on its parameters. A left argument of `nothing` is not used as a parameter, leaving only a right argument in that case. The type of the Called value must be appropriate to the expression type, as indicated in the "Types" column. For function application, a data type (number, character, or array) is allowed. It is called simply by returning itself. Although the arguments are ignored in this case, they are still evaluated. A block is evaluated by binding the parameter names given in columns L and R to the corresponding values. Then if all parameter levels present have been bound, its body is evaluated to give the result of application.
 
-Modifiers that are evaluated when they receive operands are called *immediate*. Other modifiers, including primitives and some kinds of block, simply record the operands and are called *deferred*. The result of applying a deferred modifier once is called a *derived function*.
+Modifiers that are evaluated when they receive operands are called *immediate*. Other modifiers, including primitives and some kinds of block, simply record the operands and are called *deferred*. The result of applying a deferred modifier once is called a *derived function*, and is one kind of *compound function*.
 
-The rules for trains create another kind of derived function. A derived function is identified by the rule that created it, and the values of its parts.
+The rules for trains create another kind of compound function. A compound function is identified by the rule that created it, and the values of its parts.
 | Left       | Center    | Right                 | Result
 |------------|-----------|-----------------------|--------------
 | `Operand`  |  `Derv`   | `Fork`                | `{(𝕨L𝕩)C(𝕨R𝕩)}`
