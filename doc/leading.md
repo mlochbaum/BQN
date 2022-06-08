@@ -8,7 +8,7 @@ Several primitive functions manipulate the right argument, or sometimes both arg
 
 ### Manipulating cells
 
-Most monadic functions that deal with structure at all (that is, not arithmetic) work only on the first axis of the argument. Usually, they treat it as a list of its [major cells](array.md#cells). The function [Length](shape.md) (`≠`) counts these major cells, while [Prefixes](prefixes.md) (`↑`), Suffixes (`↓`), [Reverse](reverse.md) (`⌽`), and [First Cell](select.md) (`⊏`) move them around. The [Insert](fold.md#insert) (`˝`) and [Scan](scan.md) (`` ` ``) modifiers also yield functions that work along the first axis; [Fold](fold.md) (`´`) requires `𝕩` to be a list but does go along the first (only) axis of that list.
+Most monadic functions that deal with structure at all (that is, not arithmetic) work only on the first axis of the argument. Usually, they treat it as a list of its [major cells](array.md#cells). The function [Length](shape.md) (`≠`) counts these major cells, while [Prefixes](prefixes.md) (`↑`), Suffixes (`↓`), [Reverse](reverse.md) (`⌽`), and [First Cell](select.md#first-cell) (`⊏`) move them around. The [Insert](fold.md#insert) (`˝`) and [Scan](scan.md) (`` ` ``) modifiers also yield functions that work along the first axis; [Fold](fold.md) (`´`) requires `𝕩` to be a list but does go along the first (only) axis of that list.
 
         ⊢ a ← 3‿2 ⥊ "abcdef"  # An array with three major cells
 

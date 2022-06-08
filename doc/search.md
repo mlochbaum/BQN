@@ -44,7 +44,7 @@ defs ← "defs" Enc ("mask"At"id=m") Enc ⟨
 ⟩
 -->
 
-The three search functions are Index of (`⊐`), Progressive Index of (`⊒`), and Member of (`∊`). These are dyadic functions that search one argument ("searched-in") for major cells [matching](match.md) cells from the other ("searched-for"). For example, Index of returns, for each cell in `𝕩`, the index of the first cell in `𝕨` that matches it.
+The three search functions are Index of (`⊐`), Progressive Index of (`⊒`), and Member of (`∊`). These are dyadic functions that search one argument ("searched-in") for major cells [matching](match.md) cells from the other ("searched-for"). For example, Index of returns, for each [cell](array.md#cells) in `𝕩`, the index of the first cell in `𝕨` that matches it.
 
 |      | Name                  | for | in  | Return
 |:----:|-----------------------|:---:|:---:|-------
@@ -81,7 +81,7 @@ Index of (`⊐`) returns the index of the first occurrence of each entry in `�
 
 `𝕩∊𝕨` is the same as `(𝕨⊐𝕩)<≠𝕨`. Note the reversal of arguments! In both `∊` and `⊐`, the open side points to the searched-in argument and the closed side points to the searched-for argument. Relatedly, in Select (`⊏`), the open side points to the selected argument, which is more like the searched-in argument in that its cells are generally accessed out of order (the searched-for argument is most like the selection result `𝕨⊏𝕩`).
 
-Index of always returns exactly one number, even if there are multiple matches, or no matches at all. To find the indices of all matches, start with [Match](match.md) [Each](map.md), then [Indices](replicate.md#indices) (I didn't mean for it to sound so repetitive! It just happened!).
+Index of always returns exactly one number, even if there are multiple matches, or no matches at all. To find the indices of all matches, start with [Match](match.md) [Each](map.md), then apply [Indices](replicate.md#indices) (I didn't mean for it to sound so repetitive! It just happened!).
 
         / "letters" ≡¨< 'e'        # Many to one
 
@@ -89,7 +89,7 @@ Index of always returns exactly one number, even if there are multiple matches, 
 
 ## Progressive Index of
 
-Progressive Index of (`⊒`), as the name and glyph suggest, is a more sophisticated variant of Index of. Like Index of, it returns either `≠𝕨` or an index of a cell from `𝕨` that matches the given cell of `𝕩`. Unlike Index of, no index except `≠𝕨` can ever be repeated. Progressive Index of returns the index of the first *unused* match, provided there's still one left.
+Progressive Index of (`⊒`), as the name and glyph suggest, is a more sophisticated variant of Index of. Like Index of, it returns either `≠𝕨` or an index of a cell from `𝕨` that matches the given cell of `𝕩`. Unlike Index of, no index can ever be repeated (but `≠𝕨` can). Progressive Index of returns the index of the first *unused* match, provided there's still one left.
 
         "aaa" ⊒ "aaaaa"
 
@@ -131,7 +131,7 @@ Instead of interpreting `𝕩` as a single element, Index of treats it as a list
 
         stuff ⊐< "string"
 
-Just as bad, this result has the right information, but is enclosed and could break the program later on. Remember that the result of a search function is *always* an array. We really want the [first](pick.md#first) element.
+This result has the right information, but is enclosed and could break the program later on. Remember that the result of a search function is *always* an array. We really want the [first](pick.md#first) element.
 
         stuff ⊑∘⊐⟜< "string"
 
@@ -153,7 +153,7 @@ Member of and Index of compute each result number independently, so only the sha
 
 But the searched-in argument doesn't have to be a list either! It can also be an array of higher rank. Rank 0 isn't allowed: if you want to "search" a unit, you're probably just looking for [match](match.md).
 
-The searched-in argument is treated as a list of its major cells. It's the rank of these major cells—let's call this rank `c`—that determines how the searched-for argument is treated. That argument must have rank `c` or more, and it's treated as an array of `c`-cells. For example, if the left argument to `⊐` is a rank-2 table, then each 1-cell (row) of `𝕩` is searched for independently, yielding one number in the result: a 0-cell.
+The searched-in argument is treated as a list of its [major cells](array.md#cells). It's the rank of these major cells—let's call this rank `c`—that determines how the searched-for argument is treated. That argument must have rank `c` or more, and it's treated as an array of `c`-cells. For example, if the left argument to `⊐` is a rank-2 table, then each 1-cell (row) of `𝕩` is searched for independently, yielding one number in the result: a 0-cell.
 
         ⊢ rows ← >"row"‿"rho"‿"row"‿"rue"
 
@@ -161,7 +161,7 @@ The searched-in argument is treated as a list of its major cells. It's the rank 
 
 So the result rank of `⊐` is always `𝕨¬○=𝕩`, with a result shape `(1-˜=𝕨)↓≢𝕩`, and `𝕨⊐𝕩` fails if `1>=𝕩` or the result rank would be negative. In the list case, we have `1==𝕩` (so the first condition holds), and the result rank resolves to `=𝕨` (which can't be negative, so the second holds as well). The cell rank of `𝕩` is 0, and the fact that a 0-cell of `𝕩` gives a 0-cell of the result is what causes the shape arithmetic to be so simple.
 
-For Member of, the arguments are reversed relative to Index of, but otherwise everything's the same. This differs from APL, where entries are always elements, not cells. Many APL designers consider the APL definition to be a failure of foresight and would prefer BQN's definition—or rather A+'s or J's definition, as these languages were actually the first to use it. The rank-aware version is more flexible, as it allows both searching for elements and searching for rows. APL would return the first result in both cases.
+For Member of, the arguments are reversed relative to Index of, but otherwise everything's the same. This differs from APL, where entries are always elements, not cells. Many APL designers consider the APL definition to be a failure of foresight and would prefer BQN's definition—or rather A+'s or J's definition, as these languages were actually the first to use it. The rank-aware version is more flexible, as it allows both searching for elements and searching for rows. APL would return the first result in both cases below.
 
         (2‿1≍3‿1) ∊ 3‿1‿4‿3
 

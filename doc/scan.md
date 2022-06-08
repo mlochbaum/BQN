@@ -44,7 +44,7 @@ dim ← ⟨2.5+≠tx,0.75+1⊑ty⟩ ⋄ sh ← ¯2.3‿0
 ⟩
 -->
 
-The 1-modifier Scan (`` ` ``) moves along the first axis of the array `𝕩`, building up an array of results by applying `𝔽` repeatedly beginning with `𝕨` or `⊏𝕩`. It's related to the fold modifiers, and most closely resembles the [APL2-style reduction](fold.md#apl2-reduction) `¨˝`, but it traverses the array in forward rather than reverse index order, and includes all intermediate results of `𝔽` in its output instead of just the final one.
+The 1-modifier Scan (`` ` ``) moves along the first axis of the array `𝕩`, building up an array of results by applying `𝔽` repeatedly beginning with `𝕨` or `⊏𝕩`. It's related to the [fold](fold.md) modifiers, and most closely resembles the [APL2-style reduction](fold.md#apl2-reduction) `¨˝`, but it traverses the array in forward rather than reverse index order, and includes all intermediate results of `𝔽` in its output instead of just the final one.
 
 BQN's Scan is ordered differently from Scan in APL. Both include one result for each non-empty prefix of `𝕩`. In BQN this is a left-to-right fold, so that each new result requires one application of `𝔽`. APL uses right-to-left folds, which matches with reduction, but requires starting over at the end for each new prefix, except in special cases. If needed, this definition can be obtained with a fold on each [prefix](prefixes.md) except the first (which is empty). In the particular case of `-⍀`, that nested solution isn't needed: negate odd-indexed elements and then apply `` +` ``.
 
@@ -117,7 +117,7 @@ Scan moves along the [leading axis](leading.md) of `𝕩`: vertically, for a tab
 
         +` a
 
-If `𝕨` is given, it must have the same shape as a major cell of `𝕩` (this is why `𝕨` needs to be enclosed when `𝕩` is a list: in general it's an array). Then the first result cell is found by applying `𝔽` to elements of `𝕨` and `⊏𝕩`, and the computation continues as in the one-argument case for remaining cells.
+If `𝕨` is given, it must have the same shape as a [major cell](array.md#cells) of `𝕩` (this is why `𝕨` needs to be enclosed when `𝕩` is a list: in general it's an array). Then the first result cell is found by applying `𝔽` to elements of `𝕨` and `⊏𝕩`, and the computation continues as in the one-argument case for remaining cells.
 
         3‿2‿1‿0 +` a
 
