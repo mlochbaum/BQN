@@ -50,7 +50,7 @@ A function call with one argument (prefix) is called "monadic" and one with two 
 | `/`   | [Indices](replicate.md#indices)                     | [Replicate](replicate.md)
 | `⍋`   | [Grade Up](order.md#grade)                          | [Bins Up](order.md#bins)
 | `⍒`   | [Grade Down](order.md#grade)                        | [Bins Down](order.md#bins)
-| `⊏`   | [First Cell](select.md)                             | [Select](select.md)
+| `⊏`   | [First Cell](select.md#first-cell)                  | [Select](select.md)
 | `⊑`   | [First](pick.md#first)                              | [Pick](pick.md)
 | `⊐`   | [Classify](selfcmp.md#classify)                     | [Index of](search.md#index-of)
 | `⊒`   | [Occurrence Count](selfcmp.md#occurrence-count)     | [Progressive Index of](search.md#progressive-index-of)

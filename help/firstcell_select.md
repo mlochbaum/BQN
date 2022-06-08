@@ -3,7 +3,7 @@
 # Square Image Of (`⊏`)
 
 ## `⊏ 𝕩`: First Cell
-[→full documentation](../doc/select.md)
+[→full documentation](../doc/select.md#first-cell)
 
 First major cell of `𝕩`.
 

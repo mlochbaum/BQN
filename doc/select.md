@@ -38,7 +38,7 @@ The monadic form First Cell (`⊏`) gets the major cell with index 0, so that `�
 
 ## Single selection
 
-Each axis of a BQN array is numbered starting at zero. Major cells are arranged along the first axis; in accordance with the [leading axis](leading.md) principle, Select returns a major cell of `𝕩` when `𝕨` is an atom.
+The [major cells](array.md#cells) of an array are arranged along the [first axis](leading.md) and numbered starting at 0. For a natural number `𝕨`, Select returns the major cell of `𝕩` with index `𝕨`.
 
         2 ⊏ "abcdef"  # An enclosed element
 
@@ -48,13 +48,15 @@ Each axis of a BQN array is numbered starting at zero. Major cells are arranged 
 
         0 ⊏ <5  # No first axis to select from
 
-As a major cell of `𝕩`, the result has rank one less than it and its shape is `1↓≢𝕩`. `𝕩` must have rank one or more.
+As a major cell, the result has rank one less than `𝕩` and shape `1↓≢𝕩`. Of course `𝕩` must have at least one axis to select along, or there are no major cells and you'll get an error.
 
 The index `𝕨` has to be an integer less than `≠𝕩`. It can be negative, in which case it must be greater than or equal to `-≠𝕩`. Negative indices select from the end of `𝕩`, in that `¯1` indicates the last major cell and `-≠𝕩` indicates the first. If `≠𝕩` is 0, then no index is valid.
 
         ¯2 ⊏ "abcdef"
 
         0 ⊏ ""
+
+### First Cell
 
 The monadic case First Cell (`⊏𝕩`) is identical to `0⊏𝕩`. It has the same restrictions: `𝕩` must have rank 1 or more, and length 1 or more.
 
@@ -68,7 +70,7 @@ The monadic case First Cell (`⊏𝕩`) is identical to `0⊏𝕩`. It has the s
 
 ## First-axis selection
 
-If `𝕨` is an array of numbers (including any empty array), then each number indicates a major cell of `𝕩`. In the simplest case, a list of numbers gives a result with the same rank as `𝕩` but maybe not the same length.
+If `𝕨` is an array of numbers (including any empty array), then each number indicates a major cell of `𝕩`. In the simplest case, a list of numbers gives a result with the same rank as `𝕩` but the length of `𝕨`.
 
         2‿3‿3‿0‿4‿1 ⊏ "OlZEt"
 
@@ -117,4 +119,4 @@ However, the `<¨⊸⊏` construct can select a cell of any rank from `𝕩`, be
 
 If an element of `𝕨` has rank more than 1, it increases the rank of `𝕩` rather than decreasing it. The general rule is that in the result, one axis of `𝕩` is replaced by all the axes of the corresponding element of `𝕨` (trailing axes are unchanged). So the final shape `≢𝕨⊏𝕩` is `(∾≢¨𝕨)∾𝕨≠⊸↓≢𝕩`. But this shape doesn't affect the elements retrieved from `𝕩`. In all cases, using `⥊¨𝕨` for the left argument and then [reshaping](reshape.md) the result would yield the same value.
 
-Selection only ever applies to leading axes of `𝕩`. However, you can skip some leading axes using `˘` or `⎉`, to select on any contiguous set of axes. In particular, use the one-axis case `𝕨⊸⊏⎉(-k) 𝕩` to select along axis `k` of `𝕩`.
+Selection only ever applies to leading axes of `𝕩`. However, you can skip some leading axes using [Rank](rank.md) modifiers `˘` or `⎉`, to select on any contiguous set of axes. In particular, use the one-axis case `𝕨⊸⊏⎉(-k) 𝕩` to select along axis `k` of `𝕩`.

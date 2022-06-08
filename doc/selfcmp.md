@@ -39,7 +39,7 @@ defs ← "defs" Enc ("mask"At"id=m") Enc ⟨
 ⟩
 -->
 
-BQN has four self-search functions, Classify (`⊐`), Occurrence Count (`⊒`), Mark Firsts (`∊`), and Deduplicate (`⍷`). Each of these is a monadic function that obtains its result by comparing each major cell of the argument (which must have rank at least 1) to the earlier major cells with [match](match.md). For example, Mark Firsts indicates the cells that don't match any earlier cell, making them the first of their kind.
+BQN has four self-search functions, Classify (`⊐`), Occurrence Count (`⊒`), Mark Firsts (`∊`), and Deduplicate (`⍷`). Each of these is a monadic function that obtains its result by comparing each [major cell](array.md#cells) of the argument (which must have rank at least 1) to the earlier major cells with [match](match.md). For example, Mark Firsts indicates the cells that don't match any earlier cell, which might be called the first of their kind.
 
         ∊ "abaacb"
 
@@ -49,6 +49,14 @@ When the argument is a list, its major cells are units and thus contain one elem
         ∊ arr
 
 The result has one number for each major cell, or in other words is a list with the same length as its argument. Three self-search functions follow this pattern, but Deduplicate (`⍷`) is different: it returns an array of the same rank but possibly a shorter length than the argument.
+
+### Deduplicate
+
+Deduplicate removes every major cell from the argument that matches an earlier cell, resulting in an array with the same rank but possibly a shorter length. It might also be described as returning the unique major cells of the argument, ordered by first occurrence. Deduplicate [Under](under.md) [Reverse](reverse.md) (`⍷⌾⌽`) orders by last occurrence instead.
+
+        ⍷ >"take"‿"drop"‿"drop"‿"pick"‿"take"‿"take"
+
+        ⍷⌾⌽ >"take"‿"drop"‿"drop"‿"pick"‿"take"‿"take"
 
 ## Classify
 
@@ -75,21 +83,19 @@ Classify is also related to [Deduplicate](#deduplicate). In a way they are compl
         ⍷ ⊐ c
         ⊐ ⍷ c
 
-Applying both separately, in contrast, gives completely interesting results. These results contain all information from the original argument, as `⍷` indicates which cells it contained and `⊐` indicates where they were located. The function [Select](select.md) (`⊏`) reconstructs the argument from the two values.
+Applying both separately is a different story, and gives completely interesting results. These results contain all information from the original argument, as `⍷` indicates which cells it contained and `⊐` indicates where they were located. The function [Select](select.md) (`⊏`) reconstructs the argument from the two values.
 
         ⍷ c
         ⊐ c
         (⊐c) ⊏ (⍷c)
 
-One way to view this relationship is to consider an idea from linear algebra, where an idempotent transformation is called a "projection". That means that the argument might be any value but the result is part of a smaller class of values, and any argument from that smaller class is left the same. What arrays do the two functions project to? The result of Deduplicate is an array with no repeated major cells. The result of Classify is a list of natural numbers, but it also has an additional property: each number in the list is at most one higher than the previous numbers, and the first number is zero. This comes from the way Classify numbers the cells of its argument. When it finds a cell that hasn't appeared before (at a lower index), it always chooses the next higher number for it.
+One way to view this relationship is from the perspective of linear algebra, where an idempotent transformation is called a "projection". That means that the argument might be any value but the result is part of a smaller class of values, and any argument from that smaller class is left the same. What arrays do the two functions project to? The result of Deduplicate is an array with no repeated major cells. The result of Classify is a list of natural numbers, but it also has an additional property: each number in the list is at most one higher than the previous numbers, and the first number is zero. This comes from the way Classify numbers the cells of its argument. When it finds a cell that hasn't appeared before (at a lower index), it always chooses the next higher number for it.
 
-Applying both Classify and Deduplicate gives an array that has both properties (this isn't the case for all pairs of projections—we need to know that Classify maintains the uniqueness property for Deduplicate and vice-versa). It has no duplicate major cells, *and* it's a list of natural numbers that starts with 0 and never goes up by more than one. Taken together, these are a tight constraint! The first element of the argument has to be 0. The next can't be 0 because it's already appeared, but it can't be more than one higher—it has to be 1. The next can't be 0 or 1, and has to be 2. And so on. So the result is always `↕n` for some `n`. In fact it's possible to determine the length as well, by noting that each function preserves the number of unique major cells in its argument. Classify does this because distinct numbers in the output correspond exactly to distinct major cells in the input; Deduplicate does this because it only removes duplicate cells, not distinct ones. So the final result is `↕n`, where `n` is the number of unique major cells in the argument.
+Applying both Classify and Deduplicate gives an array that has both properties (this isn't the case for all pairs of projections—we need to know that Classify maintains the uniqueness property for Deduplicate and vice-versa). It has no duplicate major cells, *and* it's a list of natural numbers that starts with 0 and never goes up by more than one. Taken together, these are a tight constraint! The first element of the argument has to be 0. The next can't be 0 because it's already appeared, but it can't be more than one higher—it has to be 1. The next can't be 0 or 1, and has to be 2. And so on. So the result is always `↕n` for some `n`. It's possible to determine the length as well, by noting that each function preserves the number of unique major cells in its argument. Classify does this because distinct numbers in the output correspond exactly to distinct major cells in the input; Deduplicate does this because it only removes duplicate cells, not distinct ones. So the final result is `↕n`, where `n` is the number of unique major cells in the argument.
 
 ### Mark Firsts
 
-*See the [APL Wiki page](https://aplwiki.com/wiki/Unique_Mask) on this function as well.*
-
-Mark Firsts (`∊`) is the simplest self-search function: it returns `0` for any major cell of the argument that is a duplicate of an earlier cell and `1` for a major cell that's the first with its value. To implement [Deduplicate](#deduplicate) in terms of Mark Firsts, just [filter](replicate.md) out the duplicates with `∊⊸/`.
+Mark Firsts (`∊`) is the simplest numeric self-search function: it returns `0` for any major cell of the argument that is a duplicate of an earlier cell and `1` for a major cell that's the first with its value. To implement [Deduplicate](#deduplicate) in terms of Mark Firsts, just [filter](replicate.md) out the duplicates with `∊⊸/`.
 
         ∊   3‿1‿4‿1‿5‿9‿2‿6‿5
 
@@ -126,15 +132,3 @@ An interesting combination is Occurrence Count applied to the result of [Indices
         ⊒ / 2‿3‿4
 
 A more efficient way when `⊒` doesn't have a fast implementation is `` /(¯1⊸⊑↕⊸-⊏⟜»)+` ``, but that's clearly quite a bit more complicated.
-
-### Deduplicate
-
-*There's also an [APL Wiki page](https://aplwiki.com/wiki/Unique) on this function.*
-
-Deduplicate removes every major cell from the argument that matches an earlier cell, resulting in an array with the same rank but possibly a shorter length. It might also be described as returning the unique major cells of the argument, ordered by first occurrence. Deduplicate [Under](under.md) Reverse (`⍷⌾⌽`) orders by last occurrence instead.
-
-        ⍷ >"take"‿"drop"‿"drop"‿"pick"‿"take"‿"take"
-
-        ⍷⌾⌽ >"take"‿"drop"‿"drop"‿"pick"‿"take"‿"take"
-
-The relationship between Classify and Deduplicate is discussed [above](#classify-and-deduplicate).
