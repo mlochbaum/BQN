@@ -13,16 +13,16 @@ The possible types are:
 * [**Number**](types.md#numbers): Like some caveman was counting but then forty thousand years of math happened to it.
 * [**Character**](types.md#characters): A Unicode code point.
 * [**Array**](types.md#arrays): A multidimensional collection of values.
-* [**Function**](types.md#functions): An operation that is called on one or two arguments.
-* [**1-modifier**](types.md#modifiers): An operation that is called on one operand.
-* [**2-modifier**](types.md#modifiers): An operation that is called on two operands.
+* [**Function**](ops.md#functions): An operation that is called on one or two arguments.
+* [**1-modifier**](ops.md#modifiers): An operation that is called on one operand.
+* [**2-modifier**](ops.md#modifiers): An operation that is called on two operands.
 * [**Namespace**](namespace.md): A container for variables, some of which are exposed as fields.
 
 A few terms refer to multiple types collectively:
 * [**Atom**](based.md#starting-from-atoms): A value that's not an array.
-* [**Modifier**](types.md#modifiers): A 1-modifier or 2-modifier.
+* [**Modifier**](ops.md#modifiers): A 1-modifier or 2-modifier.
 * [**Data type**](types.md#data-types): Number, character, or array.
-* [**Operation type**](types.md#operation-types): Function, 1-modifier, or 2-modifier.
+* [**Operation type**](ops.md): Function, 1-modifier, or 2-modifier.
 * [**Mutable type**](lexical.md#mutation): Operation or namespace.
 
 BQN uses standard terminology for particular sets of numbers, with natural numbers starting at 0.
@@ -72,7 +72,7 @@ The possible roles are:
 
 ## Operations
 
-* **Operation**: A value that is called on inputs to perform computation and return a result or cause an error.
+* [**Operation**](ops.md): A value that is called on inputs to perform computation and return a result or cause an error.
 * **Call**: Submit inputs to an operation and receive any result.
 * **Input**: A value given (*passed*) to an operation when it's called.
 * **Result**: A value returned from an operation when called.
@@ -83,8 +83,8 @@ The possible roles are:
 * **Monadic**: Called with one argument, either always (a monadic function) or in a particular instance (a monadic call).
 * **Dyadic**: Called with two arguments, always or in a particular instance.
 
-* **Compound function**: A derived function or train.
-* **Derived function**: A function produced by binding operands to a deferred modifier; doing so does not cause any computation.
+* [**Compound function**](ops.md#functions): A derived function or train.
+* [**Derived function**](ops.md#functions): A function produced by binding operands to a deferred modifier; doing so does not cause any computation.
 * [**Train**](train.md): A function composed of two or more functions.
 * [**Identity value**](fold.md#identity-values): An inferred property of a function: the result of a reduction with this function on an empty array.
 

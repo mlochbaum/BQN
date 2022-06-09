@@ -16,17 +16,17 @@
 <li><a href="types.html#numbers"><strong>Number</strong></a>: Like some caveman was counting but then forty thousand years of math happened to it.</li>
 <li><a href="types.html#characters"><strong>Character</strong></a>: A Unicode code point.</li>
 <li><a href="types.html#arrays"><strong>Array</strong></a>: A multidimensional collection of values.</li>
-<li><a href="types.html#functions"><strong>Function</strong></a>: An operation that is called on one or two arguments.</li>
-<li><a href="types.html#modifiers"><strong>1-modifier</strong></a>: An operation that is called on one operand.</li>
-<li><a href="types.html#modifiers"><strong>2-modifier</strong></a>: An operation that is called on two operands.</li>
+<li><a href="ops.html#functions"><strong>Function</strong></a>: An operation that is called on one or two arguments.</li>
+<li><a href="ops.html#modifiers"><strong>1-modifier</strong></a>: An operation that is called on one operand.</li>
+<li><a href="ops.html#modifiers"><strong>2-modifier</strong></a>: An operation that is called on two operands.</li>
 <li><a href="namespace.html"><strong>Namespace</strong></a>: A container for variables, some of which are exposed as fields.</li>
 </ul>
 <p>A few terms refer to multiple types collectively:</p>
 <ul>
 <li><a href="based.html#starting-from-atoms"><strong>Atom</strong></a>: A value that's not an array.</li>
-<li><a href="types.html#modifiers"><strong>Modifier</strong></a>: A 1-modifier or 2-modifier.</li>
+<li><a href="ops.html#modifiers"><strong>Modifier</strong></a>: A 1-modifier or 2-modifier.</li>
 <li><a href="types.html#data-types"><strong>Data type</strong></a>: Number, character, or array.</li>
-<li><a href="types.html#operation-types"><strong>Operation type</strong></a>: Function, 1-modifier, or 2-modifier.</li>
+<li><a href="ops.html"><strong>Operation type</strong></a>: Function, 1-modifier, or 2-modifier.</li>
 <li><a href="lexical.html#mutation"><strong>Mutable type</strong></a>: Operation or namespace.</li>
 </ul>
 <p>BQN uses standard terminology for particular sets of numbers, with natural numbers starting at 0.</p>
@@ -81,7 +81,7 @@
 </ul>
 <h2 id="operations"><a class="header" href="#operations">Operations</a></h2>
 <ul>
-<li><strong>Operation</strong>: A value that is called on inputs to perform computation and return a result or cause an error.</li>
+<li><a href="ops.html"><strong>Operation</strong></a>: A value that is called on inputs to perform computation and return a result or cause an error.</li>
 <li><strong>Call</strong>: Submit inputs to an operation and receive any result.</li>
 <li><strong>Input</strong>: A value given (<em>passed</em>) to an operation when it's called.</li>
 <li><strong>Result</strong>: A value returned from an operation when called.</li>
@@ -93,8 +93,8 @@
 <li><strong>Dyadic</strong>: Called with two arguments, always or in a particular instance.</li>
 </ul>
 <ul>
-<li><strong>Compound function</strong>: A derived function or train.</li>
-<li><strong>Derived function</strong>: A function produced by binding operands to a deferred modifier; doing so does not cause any computation.</li>
+<li><a href="ops.html#functions"><strong>Compound function</strong></a>: A derived function or train.</li>
+<li><a href="ops.html#functions"><strong>Derived function</strong></a>: A function produced by binding operands to a deferred modifier; doing so does not cause any computation.</li>
 <li><a href="train.html"><strong>Train</strong></a>: A function composed of two or more functions.</li>
 <li><a href="fold.html#identity-values"><strong>Identity value</strong></a>: An inferred property of a function: the result of a reduction with this function on an empty array.</li>
 </ul>

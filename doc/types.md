@@ -79,6 +79,8 @@ Different elements of an array should not influence each other. While some APLs 
 
 ## Operation types
 
+*Full documentation [here](ops.md).*
+
 An operation is either a function or modifier, and can be applied to *inputs*—which are called *arguments* for functions and *operands* for modifiers—to obtain a result. During this application an operation might also change variables within its scope and call other operations, or cause an error, in which case it doesn't return a result. There is one type of call for each of the three operation types, and an operation will give an error if it is called in a way that doesn't match its type.
 
 In BQN syntax the result of a function has a subject role and the result of a modifier has a function role. However, the result can be any value at all: roles take place at the syntactic level, which has no bearing on types and values in the semantic level. This distinction is discussed further in [Mixing roles](context.md#mixing-roles).
@@ -93,4 +95,6 @@ A 1-modifier is called with one operand, while a 2-modifier is called with two. 
 
 ## Namespaces
 
-Functions and modifiers have internal scopes which they can manipulate (by defining and modifying variables) to save and update information. Namespaces let the programmer to expose this state more directly: identifiers in a namespace may be exported, allowing code outside the namespace to read their values. They are described in detail [here](namespace.md).
+*Full documentation [here](namespace.md).*
+
+Functions and modifiers have internal scopes which they can manipulate (by defining and modifying variables) to save and update information. Namespaces let the programmer to expose this state more directly: identifiers in a namespace may be exported, allowing code outside the namespace to read their values.
