@@ -29,7 +29,7 @@ Type       # 0 if 𝕩 is an array, 1 if a number, >1 otherwise
 ≢          # LIMITED to monadic case
 ⥊          # LIMITED to array 𝕩 and (×´𝕨)≡≢𝕩
 ⊑          # LIMITED to natural number 𝕨 and list 𝕩
-_amend     # {𝕨˙⌾(𝕗⊸⊑)𝕩}
+_amend     # {𝕨˙⌾(𝕗⊸⊑)𝕩} for list 𝕩
 ↕          # LIMITED to number 𝕩
 Identity   # Left or right identity of function 𝕏
 ⁼          # Inverse of function 𝔽
@@ -41,7 +41,7 @@ HasFill    # Whether 𝕩 has a fill value
 # LAYER 1: Foundational operators and functions
 
 # Combinators
-◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}     # LIMITED to number left operand result
+◶ ← {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}   # LIMITED to number left operand result
 ˙ ← {𝕩⋄𝕗}
 ⊘ ← {𝔽𝕩;𝕨𝔾𝕩}
 ⊢ ← {𝕩}
@@ -51,18 +51,19 @@ HasFill    # Whether 𝕩 has a fill value
 ○ ← {(𝔾𝕨)𝔽𝔾𝕩}
 ⊸ ← {(𝔽𝕨⊣𝕩)𝔾𝕩}
 ⟜ ← {(𝕨⊣𝕩)𝔽𝔾𝕩}
-⍟ ← {𝕨𝔾◶⊢‿𝔽𝕩}   # LIMITED to boolean right operand result
+⍟ ← {𝔾◶⊢‿𝔽}            # LIMITED to boolean right operand result
 
-IsArray←0=Type
-Int←(1=Type)◶⟨0,⌊⊸=⟩
-Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
+IsArray ← 0=Type
+Int ← (1=Type)◶⟨0,⌊⊸=⟩      # Is an integer (including ¯∞ and ∞)
+Nat ← (1=Type)◶⟨0,0⊸≤×⌊⊸=⟩  # Is a natural number
 
 ≢ ↩ IsArray◶⟨⟩‿≢  # LIMITED to monadic case
+⋈ ← {⟨𝕩⟩;⟨𝕨,𝕩⟩}
 
 # LIMITED to numeric arguments for arithmetic cases
 √ ← ⋆⟜(÷2)   ⊘ (⋆⟜÷˜)      # Higher precision allowed; see spec
 ∧ ←            ×
-∨ ←            (+-×)
+∨ ←            +-×
 ¬ ← 1+-
 | ← ×⟜×      ⊘ {𝕩-𝕨×⌊𝕩÷𝕨}  # Higher precision allowed; see spec
 < ← {⟨⟩⥊⟨𝕩⟩} ⊘ (¬≤˜)
@@ -71,116 +72,137 @@ Nat←(1=Type)◶⟨0,0⊸≤×⌊⊸=⟩
 ≠ ← Length   ⊘ (¬=)
 = ↩ Rank     ⊘ =
 × ↩ 0⊸(<->)  ⊘ ×
-⌊ ↩ ⌊        ⊘ {𝕨{(𝕨>𝕩)⊑𝕨‿𝕩}_perv𝕩}
-⌈ ← -∘⌊∘-    ⊘ {𝕨{(𝕨<𝕩)⊑𝕨‿𝕩}_perv𝕩}
+# ⌊⌈ defined after pervasion below
 
 ¨ ← _eachm   # LIMITED to monadic case and array 𝕩
 ´ ← _fold
 
 Rank ← 0⊑≢∘≢
-Length ← (0<Rank)◶⟨1⋄0⊑≢⟩
+Length ← (0<Rank)◶⟨1,0⊑≢⟩
 
 _eachm←{
+  # Set 𝕨⊑⥊𝕩 to 𝔽𝕨⊑⥊𝕩 for each index 𝕨
   (≢𝕩) ⥊ 0 𝔽{𝕨 (+⟜1 𝕊 𝔽∘⊑ 𝕨_amend ⊢)⍟(<⟜≠) 𝕩} ⥊𝕩
 }
-# Re-add identities for redefined functions
-identity { f‿i←𝕨 ⋄ f˙⊸=◶𝕩‿i }´↩ ⟨ ×‿1, ∨‿0, ∧‿1 ⟩
 _fold←{
   ! 1==𝕩
   l←≠v←𝕩 ⋄ F←𝔽
+  # If 𝕨 isn't given, start with the last cell of 𝕩
   r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
+  # Apply r↩(𝕨⊑v)F r for 𝕨 from l to 0
   l {𝕨 -⟜1⊸(⊣𝕊⊑⟜v⊸F)⍟(>⟜0) 𝕩} r
 }
+
+# Re-add identities for needed redefined functions
+identity { f‿i←𝕨 ⋄ f˙⊸=◶𝕩‿i }´↩ ⟨ ×‿1, ∨‿0, ∧‿1 ⟩
 
 
 #⌜
 # LAYER 2: Pervasion
-# After defining _perv, we apply it to all arithmetic functions,
-# making them pervasive. I'm not going to write that out.
+# _pervasive should be applied to all arithmetic as an IMPLICIT STEP:
+# +-×÷⋆√⌊⌈|¬ and dyadic ∧∨<>≠=≤≥
+
+# Join: elements 0…≠𝕨 come from 𝕨 and the rest from 𝕩
+∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨,-⟜k⊑𝕩˜⟩¨↕k+≠𝕩}  # LIMITED to two list arguments
 
 ToArray ← IsArray◶<‿⊢
 
-∾ ← {k←≠𝕨⋄k⊸≤◶⟨⊑⟜𝕨⋄-⟜k⊑𝕩˜⟩¨↕k+≠𝕩}  # LIMITED to two list arguments
-
 _table←{
   m←≠a←⥊𝕨 ⋄ n←≠b←⥊𝕩 ⋄ F←𝔽 ⋄ i←0
+  # 𝕩 is the result index; maintain index i in 𝕨 and compute 𝕩-n×i in 𝕩
   (𝕨∾○≢𝕩)⥊{i+↩𝕩=n×i+1⋄(i⊑a)F(𝕩-n×i)⊑b}¨↕m×n
 }
 
 _eachd←{
-  _e←{ # 𝕨 has smaller or equal rank
+  _e←{ # 𝕨 has rank less than or equal to 𝕩
     k←≠p←≢𝕨 ⋄ q←≢𝕩
-    ! ∧´(⊑⟜p=⊑⟜q)¨↕k
-    l←×´(q⊑˜k⊸+)¨↕q≠⊸-k
+    ! ∧´(⊑⟜p=⊑⟜q)¨↕k    # p≡k↑q
+    l←×´(q⊑˜k⊸+)¨↕q≠⊸-k # ×´k↓q, size of a cell in 𝕩 (pairs with a unit)
     a←⥊𝕨 ⋄ b←⥊𝕩
-    q⥊⥊(≠a) (⊑⟜a𝔽l⊸×⊸+⊑b˙)_table○↕ l
+    # In the inner function, 𝕨 indexes into a and (l×𝕨)+𝕩 into b
+    q⥊ (≠a) (⊑⟜a 𝔽 l⊸×⊸+⊑b˙)_table○↕ l
   }
-  (>○=)◶⟨𝔽_e⋄𝔽˜_e˜⟩
+  >○=◶⟨𝔽_e,𝔽˜_e˜⟩
 }
 
 ⌜ ← {(𝔽_eachm)⊘(𝔽_table)○ToArray}
 ¨ ↩ {(𝔽_eachm)⊘(𝔽_eachd)○ToArray}
-_perv←{ # Pervasion
-  (⊢⊘∨○IsArray)◶⟨𝔽⋄𝔽{𝕨𝔽_perv𝕩}¨⟩
+
+# Pervasion recurses whenever any argument is an array
+_pervasive←{
+  ⊢⊘∨○IsArray◶⟨𝔽, 𝔽{𝕨𝔽_pervasive𝕩}¨⟩
 }
+
+# The modifier _pervasive applies to all arithmetic.
+# For practicality when testing, basic functions are made pervasive
+# instead, which works for all arithmetic except dyadic ⌊⌈.
+⌊ ↩ ⌊        ⊘ ({(𝕨>𝕩)⊑𝕨‿𝕩}_pervasive)
+⌈ ← -∘⌊∘-    ⊘ ({(𝕨<𝕩)⊑𝕨‿𝕩}_pervasive)
 
 
 #⌜
 # LAYER 3: Remove other limits
-# Now all implementations are full except ∾; ↕ is monadic only
+# After this all implementations are full except ∾; ↕ is monadic only
 
-Deshape←IsArray◶{⟨𝕩⟩}‿⥊
+Deshape ← IsArray◶{⟨𝕩⟩}‿⥊
 Reshape←{
   ! 1≥=𝕨
   s←Deshape 𝕨
-  sp←+´p←¬Nat⌜s
-  ! 1≥sp
+  sp←+´p←¬Nat⌜s        # Number of non-numeric elements
+  ! 1≥sp               # At most one allowed
   n←≠d←Deshape 𝕩
   l←sp◶(×´)‿{
-    lp←×´p⊣◶⊢‿1¨𝕩
-    ! 0<lp
-    I←+´↕∘≠⊸×
-    t←I e←⟨∘,⌊,⌽,↑⟩=(I p)⊑s
-    ! +´e
-    a←(2⌊t)◶⟨{!Nat𝕩⋄𝕩},⌊,⌈⟩n÷lp
-    s↩p⊣◶⊢‿a¨s
+    # Handle computed shapes
+    lp←×´p 1⍟⊣¨𝕩       # Product of numeric elements
+    ! 0<lp             # Would imply division by zero
+    I←+´↕∘≠⊸×          # Index from boolean list with a single 1 (⊑/)
+    e←⟨∘,⌊,⌽,↑⟩=p I⊸⊑s # Pick element and compare with possibilities
+    ! +´e              # Must be one of ∘⌊⌽↑
+    t←I e              # Which one is it?
+    a←(2⌊t)◶⟨{!Nat𝕩⋄𝕩},⌊,⌈⟩n÷lp  # Compute and round length
+    s↩p a⍟⊣¨s          # Insert it back into the shape
+    # For element ↑, append fill elements to d if necessary
     {d∾↩(Fill d)⌜↕𝕩-n⋄n↩𝕩}⍟(n⊸<)⍟(3=t)lp×a
   } s
-  s⥊(↕l){!0<n⋄⊑⟜𝕩¨n|𝕨}⍟(l≠n)d
+  # Size of 𝕩 is n, so n|𝕨 is a cyclic index into d. Final size is l.
+  s ⥊ (↕l) {!0<n⋄⊑⟜𝕩¨n|𝕨}⍟(l≠n) d
 }
 
 Range←{
-  I←{!Nat𝕩⋄↕𝕩}
-  M←{!1==𝕩⋄(<⟨⟩)⥊⊸∾⌜´I¨𝕩}
+  I ← {!Nat𝕩 ⋄ ↕𝕩}             # 𝕩 is a number
+  M ← {!1==𝕩 ⋄ (<⟨⟩)⋈⊸∾⌜´I¨𝕩}  # 𝕩 is a list
   IsArray◶I‿M 𝕩
 }
 
 Pick1←{
-  ! 1==𝕨
-  ! 𝕨=○≠s←≢𝕩
-  ! ∧´Int¨𝕨
-  ! ∧´𝕨(≥⟜-∧<)s
-  𝕨↩𝕨+s×𝕨<0
-  (⥊𝕩)⊑˜0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨
+  ! 1==𝕨           # Index must be a list
+  ! 𝕨=○≠s←≢𝕩       # with length equal to rank of 𝕩
+  ! ∧´Int¨𝕨        # consisting of integers
+  ! ∧´𝕨(≥⟜-∧<)s    # in the range [-l,l) where l is an axis length
+  𝕨 +↩ s×𝕨<0       # Wrap negatives
+  i ← 0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨  # Compute index with a reverse fold
+  i ⊑ ⥊𝕩
 }
-Pickd←(∨´∘⥊IsArray¨∘⊣)◶Pick1‿{Pickd⟜𝕩¨𝕨}
-Pick←IsArray◶⥊‿⊢⊸Pickd
-First←0⊑Deshape
+# Recurse if depth is greater than 1
+Pickd ← {∨´⥊IsArray¨𝕨}◶Pick1‿{Pickd⟜𝕩¨𝕨}
+Pick ← IsArray◶⥊‿⊢⊸Pickd
+First ← {!0<≠𝕩 ⋄ 0⊑𝕩} Deshape
 
+# Two arrays match if all the following conditions hold:
 match←{¬∘(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
-  ⟨≠○IsArray , 0⟩
-  ⟨¬IsArray∘⊢, =⟩
-  ⟨≠○=       , 0⟩
-  ⟨∨´≠○≢     , 0⟩
-  {∧´⥊𝕨Match¨𝕩}
+  ⟨≠○IsArray , 0⟩  # They are both arrays, or both not arrays
+  ⟨¬IsArray∘⊢, =⟩  # They are equal atoms, OR
+  ⟨≠○=       , 0⟩  # They have equal ranks
+  ⟨∨´≠○≢     , 0⟩  # And equal length along each axis
+  {∧´⥊𝕨Match¨𝕩}    # And matching elements
 ⟩
 
-Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
+Depth ← IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 
 ⊑ ↩ First          ⊘ Pick
 ⥊ ↩ Deshape        ⊘ Reshape
 ↕ ↩ Range
-◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition, new Pick
+◶ ↩ {𝕨((𝕨𝔽𝕩)⊑𝕘){𝔽}𝕩}  # Same definition with updated Pick
 
 ≡ ← Depth          ⊘ Match
 ≢ ↩ ≢              ⊘ (¬Match)
@@ -190,7 +212,6 @@ Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 # LAYER 4: Operators
 
 > ↩ Merge⍟IsArray  ⊘ >
-⋈ ← {⟨𝕩⟩;⟨𝕨,𝕩⟩}
 ≍ ← >∘⋈
 ⎉ ← _rankOp_
 ⚇ ← _depthOp_
@@ -219,7 +240,7 @@ _depthOp_←{
   neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽 ⋄ B←{𝕏;𝕨˙⊸𝕏}
   _d←{
     R←(𝕗+neg)_d
-    𝕨(2⥊(neg∧𝕗≥0)∨(0⌈𝕗)≥⋈○≡)◶(⟨R¨⋄R⟜(𝕩˙)¨∘⊣⟩≍⟨(𝕨 B r)¨∘⊢⋄F⟩)𝕩
+    𝕨(2⥊(neg∧𝕗≥0)∨(0⌈𝕗)≥⋈○≡)◶(⟨R¨,R⟜(𝕩˙)¨∘⊣⟩≍⟨(𝕨 B r)¨∘⊢,F⟩)𝕩
   }
   𝕨 n _d 𝕩
 }
@@ -246,7 +267,7 @@ _scan←{
   l←≠r←⥊𝕩
   𝕨 (0<l)◶⊢‿{
     c←×´cs
-    {r↩≥⟜c◶⟨⊑⟜(⥊𝕩)⊸F⋄⊢⟩⟜(⊑⟜r)¨↕l}𝕨
+    {r↩≥⟜c◶⟨⊑⟜(⥊𝕩)⊸F,⊢⟩⟜(⊑⟜r)¨↕l}𝕨
     (≢𝕩) ⥊ r {((𝕨-c)F○(⊑⟜𝕩)𝕨)𝕨_amend𝕩}´ (l-1)-↕l-c
   } 𝕩
 }
@@ -365,7 +386,7 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 ∨ ↩ ⍒⊸⊏            ⊘ ∨
 ⊒ ← OccurrenceCount⊘ ProgressiveIndexOf
 
-{ Identity ↩ 𝕨˙⊸=◶Identity‿𝕩 }´¨ ⟨ ∨‿0 , ∧‿1 ⟩
+identity { f‿i←𝕨 ⋄ f˙⊸=◶𝕩‿i }´↩ ⟨ ∨‿0, ∧‿1 ⟩
 
 JoinEmpty ← ({!𝕨≤○≠𝕩⋄𝕨≠⊸((𝕨×≠⊸↑)∾↓)𝕩}○≢⥊⊢)⟜Fill⍟HasFill
 
