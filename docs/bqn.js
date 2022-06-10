@@ -549,6 +549,7 @@ let dojs = (x,w) => {
   let r = Function("'use strict'; return ("+s+")")();
   let toBQN = x => {
     if (isnum(x)) return x;
+    if (x===undefined) return '\0';
     if (typeof x==='string') { if (Array.from(x).length!==1) throw Error("•JS: JS strings are one character; use Array.from for BQN strings"); return x; }
     if (x instanceof Array) return arr(x.map(toBQN),x.sh||[x.length],has(x.fill)?tofill(toBQN(x.fill)):x.fill);
     if (isfunc(x)) { let f=(a,b)=>toBQN(x(a,b)); f.m=x.m; return f; }
