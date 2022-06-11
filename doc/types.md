@@ -67,7 +67,7 @@ Other linear combinations such as adding two characters or negating a character 
 
 ### Arrays
 
-*Full documentation [here](array.md).*
+*[Full documentation](array.md).*
 
 A BQN array is a multidimensional arrangement of data. This means it has a certain [*shape*](shape.md), which is a finite list of natural numbers giving the length along each axis, and it contains an *element* for each possible [*index*](indices.md), which is a choice of one natural number that's less than each axis length in the shape. The total number of elements, or *bound*, is then the product of all the lengths in the shape. The shape may have any length including zero, and this shape is known as the array's *rank*. An array of rank 0, which always contains exactly one element, is called a *unit*, while an array of rank 1 is called a *list* and an array of rank 2 is called a *table*.
 
@@ -79,7 +79,7 @@ Different elements of an array should not influence each other. While some APLs 
 
 ## Operation types
 
-*Full documentation [here](ops.md).*
+*[Full documentation](ops.md).*
 
 An operation is either a function or modifier, and can be applied to *inputs*—which are called *arguments* for functions and *operands* for modifiers—to obtain a result. During this application an operation might also change variables within its scope and call other operations, or cause an error, in which case it doesn't return a result. There is one type of call for each of the three operation types, and an operation will give an error if it is called in a way that doesn't match its type.
 
@@ -95,6 +95,6 @@ A 1-modifier is called with one operand, while a 2-modifier is called with two. 
 
 ## Namespaces
 
-*Full documentation [here](namespace.md).*
+*[Full documentation](namespace.md).*
 
 Functions and modifiers have internal scopes which they can manipulate (by defining and modifying variables) to save and update information. Namespaces let the programmer to expose this state more directly: identifiers in a namespace may be exported, allowing code outside the namespace to read their values.

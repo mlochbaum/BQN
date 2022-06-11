@@ -2,19 +2,21 @@
 
 # Shift functions
 
-The shift functions `«` and `»` add major cells to one side an array, displacing cells on the opposite side and moving those in between. Shifts resemble but are more general than the bit-based shift operations used in low-level languages. They replace the APL pattern of a 2-wise reduction after appending or prepending an element (APL's `2≠/0,v` translates to `»⊸≠v`), one of the more common uses of 2-wise reduction.
+The shift functions `«` and `»` add [major cells](array.md#cells) to one side an array, displacing cells on the opposite side and moving those in between. Shifts resemble but are more general than the bit-based shift operations used in low-level languages. They replace the APL pattern of a 2-wise reduction after appending or prepending an element (APL's `2≠/0,v` translates to `»⊸≠v`); a nice version of this common pattern is one reason BQN is free to replace windowed reduction with the sometimes less convenient [Windows](windows.md).
 
 The result of a shift function always has the same shape as `𝕩`. The function adds major cells to the beginning (`»`) or end (`«`) of `𝕩`, moving the cells already in `𝕩` to accomodate them. Some cells on the opposite side from those added will "fall off" and not be included in the result.
 
         0‿0 » 3‿2‿1             # Shift Before
+
         "end" « "add to the "   # Shift After
 
 The cells to add come from `𝕨` if it's present, as shown above. Otherwise, a single cell of [fill elements](fill.md) for `𝕩` is used. This kind of shift, which moves cells in `𝕩` over by just one, is called a "nudge".
 
         » "abcd"   # Nudge
+
         « 1‿2‿3    # Nudge Back
 
-If `𝕨` is longer than `𝕩`, some cells from `𝕨` will be discarded, as well as all of `𝕩`. In this case `𝕨»𝕩` is `(≠𝕩)↑𝕨` and `𝕨«𝕩` is `(-≠𝕩)↑𝕨`. For similar reasons, nudging an array of length 0 returns it unchanged.
+If `𝕨` is longer than `𝕩`, some cells from `𝕨` will be discarded, plus all of `𝕩`. In this case `𝕨»𝕩` is `(≠𝕩)↑𝕨` and `𝕨«𝕩` is `(-≠𝕩)↑𝕨`. For similar reasons, nudging an array of length 0 returns it unchanged.
 
 ## Sequence processing with shifts
 
@@ -24,7 +26,7 @@ When working with a sequence of data such as text, daily measurements, or audio 
         s ≍ »s
         -⟜» s
 
-        +` -⟜» s
+        +` -⟜» s   # Same as s
 
 In this way `»` refers to a sequence containing the previous element at each position. By default the array's fill is used for the element before the first, and a right argument can be given to provide a different one.
 
@@ -49,7 +51,7 @@ A feature these examples all share is that they maintain the length of `s`. This
 
 ## Arithmetic and logical shifts
 
-The glyphs `«` and `»`, suggesting movement, were chosen for the same reasons as the digraphs `<<` and `>>`, and can be used to implement the same operations on boolean lists.
+The glyphs `«` and `»`, suggesting movement, were chosen for the same reasons as the digraphs `<<` and `>>` in C-like languages, and can be used to implement the same bit-shift operations on boolean lists.
 
         ⊢ i ← "10011011"-'0'
 
@@ -65,7 +67,7 @@ With a number in big-endian format, a right shift might be logical, shifting in 
 
 ## Other examples
 
-In [Take](take.md) (`↑`), there's no way to specify the fill element when the result is longer than the argument. To take along the first axis with a specified, constant fill value, you can use Shift Before instead, where the right argument is an array of fills with the desired final shape.
+In [Take](take.md) (`↑`), there's no way to specify the fill element when the result is longer than the argument. To take along the first axis with a specified, constant fill value, you can use Shift Before instead, where the right argument is an array of fills with the desired final shape (a more general approach is [Under](under.md)).
 
         "abc" » 5⥊'F'
 
@@ -77,13 +79,13 @@ When using [Scan](scan.md) (`` ` ``), the result at a particular index is obtain
 
         2 +`∘» 1‿0‿1‿0  # Final value not created
 
-The *strides* of an array are the distances between one element and the next along any given axis. It's the product of all axis lengths below that axis, since these are all the axes that have to be "skipped" to jump along the axis. The strides of an array `𝕩` are `` (×`1»⊢)⌾⌽∘≢𝕩 ``.
+The *strides* of an array are the distances between one element and the next along any given axis. It's the product of all axis lengths below that axis, since these are all the axes that have to be "skipped" to jump along the axis. The strides of an array `𝕩` are `` (×`1»⊢)⌾⌽ ≢𝕩 ``.
 
         (×`1»⊢)⌾⌽ 5‿2‿4‿3
 
 ## Higher rank
 
-Shifting always works on the first axis of `𝕩` (which must have rank 1 or more), and shifts in major cells. A left argument can have rank equal to `𝕩`, or one less than it, in which case it becomes a single cell of the result. With no left argument, a cell of fills `1↑0↑𝕩` is nudged in.
+Shifting always works on the [first axis](leading.md) of `𝕩` (which must have rank 1 or more), and shifts in major cells. A left argument can have rank equal to `𝕩`, or one less than it, in which case it becomes a single cell of the result. With no left argument, a cell of fills `1↑0↑𝕩` is nudged in.
 
         ⊢ a ← ⥊⟜(↕×´) 4‿3
 
