@@ -1,6 +1,6 @@
 *View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/doc/repeat.html).*
 
-# The Repeat modifier
+# Repeat
 
 Repeat (`⍟`) is a 2-modifier that applies its operand function `𝔽` multiple times.
 

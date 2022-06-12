@@ -46,7 +46,7 @@ FS ← {𝕩 Enc˜ "g"Attr⟨"font-size",(Fmt𝕨)∾"px"⟩}
 
 The reason operations and namespaces are called "mutable" is that the values obtained from them—by calling an operation on particular arguments or reading a field from a namespace—[may change](lexical.md#mutation) over the course of the program. This property is caused by variable modification `↩`, which can directly change a namespace field, or change the behavior of an operation that uses the modified variable. This means that a program that doesn't include `↩` won't have such changes in behavior. However, there will still be an observable difference between immutable data and the mutable types: code that creates a mutable value (for example, a block function `{𝕩}`) creates a different one each time, so that two different instances don't [match](match.md) (`≡`) each other. Data values created at different times may match, but mutable values never will.
 
-An array is considered immutable because its shape, and what elements it contains, cannot change. An array has no identity outside these properties (and possibly its [fill element](fill.md)), so an array with a different shape or different elements would simply be a different array. However, any element of an array could be mutable, in which case the behavior of the array would change with respect to the operation of selecting that element and calling it or accessing a field.
+An array is considered immutable because its shape, and what elements it contains, cannot change. An array has no identity outside these properties (and possibly its [fill element](fill.md), which also can't change), so an array with a different shape or different elements would simply be a different array. However, any element of an array could be mutable, in which case the behavior of the array would change with respect to the operation of selecting that element and calling it or accessing a field.
 
 ## Data types
 
@@ -54,7 +54,7 @@ Data types—numbers, characters, and arrays—are more like "things" than "acti
 
 ### Numbers
 
-The BQN spec allows for different numeric models to be used, but requires there to be only one numeric type from the programmer's perspective: while programs can often be executed faster by using limited-range integer types, there is no need to expose these details to the programmer. Existing BQN implementations are based on [double-precision floats](https://en.wikipedia.org/wiki/IEEE-754), like Javascript or Lua.
+The BQN spec allows for different numeric models to be used, but requires there to be only one numeric type from the programmer's perspective: while programs can often be executed faster by using limited-range integer types, there is no need to expose these details to the programmer. Existing BQN implementations use [double-precision floats](https://en.wikipedia.org/wiki/IEEE-754), like Javascript or Lua.
 
 ### Characters
 
@@ -63,17 +63,17 @@ A character in BQN is always a [Unicode](https://en.wikipedia.org/wiki/Unicode) 
 Addition and subtraction [treat](arithmetic.md#character-arithmetic) characters as an [affine space](http://videocortex.io/2018/Affine-Space-Types/) relative to the linear space of numbers. This means that:
 * A number can be added to or subtracted from a character.
 * Two characters can be subtracted to get the distance between them—a number.
-Other linear combinations such as adding two characters or negating a character are not allowed. You can check whether an application of `+` or `-` on numbers and characters is allowed by applying the same function to the "characterness" of each value: `0` for a number and `1` for a character. The result will be a number if this application gives `0` and a character if this gives `1`, and otherwise the operation is not allowed.
+Other linear combinations such as adding two characters or negating a character are not allowed. You can check whether an application of `+` or `-` on numbers and characters is allowed by applying the same function to the "characterness" of each value: 0 for a number and 1 for a character. The result will be a number if the application gives 0 and a character if it gives 1, and otherwise the operation is not allowed.
 
 ### Arrays
 
 *[Full documentation](array.md).*
 
-A BQN array is a multidimensional arrangement of data. This means it has a certain [*shape*](shape.md), which is a finite list of natural numbers giving the length along each axis, and it contains an *element* for each possible [*index*](indices.md), which is a choice of one natural number that's less than each axis length in the shape. The total number of elements, or *bound*, is then the product of all the lengths in the shape. The shape may have any length including zero, and this shape is known as the array's *rank*. An array of rank 0, which always contains exactly one element, is called a *unit*, while an array of rank 1 is called a *list* and an array of rank 2 is called a *table*.
+A BQN array is a multidimensional arrangement of data. This means it has a certain [*shape*](shape.md), which is a finite list of natural numbers giving the length along each axis, and it contains an *element* for each possible [*index*](indices.md), which is a choice of one natural number that's less than each axis length in the shape. The total number of elements, or *bound*, is then the product of all the lengths in the shape. The shape may have any length including zero, and this shape is known as the array's *rank*. An array of rank 0, which always contains exactly one element, is called a [*unit*](enclose.md#whats-a-unit), while an array of rank 1 is called a *list* and an array of rank 2 is called a *table*.
 
 Each array—empty or nonempty—has an inferred property called a [*fill*](fill.md). The fill either indicates what element should be used to pad an array, or that such an element is not known and an error should result. Fills can be used by [Take](take.md) (`↑`), the two [Nudge](shift.md) functions (`»«`), [Merge](couple.md) (`>`), and [Reshape](reshape.md) (`⥊`).
 
-Arrays are value types (or immutable), so that there is no way to "change" the shape or elements of an array. An array with different properties is a different array. As a consequence, arrays are an inductive type, and it's not possible for an array to contain itself, or contain an array that contains itself, and so on. However, it is possible for an array to contain a function or other operation that has access to the array through a variable, and in this sense an array can "know about" itself.
+Arrays are value types (or immutable), so that there is no way to "change" the shape or elements of an array. An array with different properties is a different array. As a consequence, arrays are an inductive type, and it's not possible for an array to contain itself, or contain an array that contains itself, and so on. However, it is possible for an array to contain a function or other mutable value that has access to the array through a variable, and in this sense an array can "know about" itself.
 
 Different elements of an array should not influence each other. While some APLs force numbers placed in the same array to a common representation, which may have different precision properties, BQN values must not change behavior when placed in an array. However, this doesn't preclude changing the storage type of an array for better performance: for example, in a BQN implementation using 64-bit floats, an array whose elements are all integers that fit in 32-bit int range might be represented as an array of 32-bit ints.
 
@@ -83,7 +83,7 @@ Different elements of an array should not influence each other. While some APLs 
 
 An operation is either a function or modifier, and can be applied to *inputs*—which are called *arguments* for functions and *operands* for modifiers—to obtain a result. During this application an operation might also change variables within its scope and call other operations, or cause an error, in which case it doesn't return a result. There is one type of call for each of the three operation types, and an operation will give an error if it is called in a way that doesn't match its type.
 
-In BQN syntax the result of a function has a subject role and the result of a modifier has a function role. However, the result can be any value at all: roles take place at the syntactic level, which has no bearing on types and values in the semantic level. This distinction is discussed further in [Mixing roles](context.md#mixing-roles).
+In BQN syntax the result of function application has a subject role and the result of modifier application has a function role. However, the result value can still be anything at all: roles apply at the syntactic level, which has no bearing on types and values in the semantic level. This distinction is discussed further in [Mixing roles](context.md#mixing-roles).
 
 ### Functions
 

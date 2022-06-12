@@ -38,6 +38,6 @@ The `Catch` modifier allows you to handle errors in BQN (at present, it's the on
 
         0.5 ⌽⎊⊣ ↕6    # A two-argument example
 
-Catch doesn't know anything about what an error *is*, just whether there was one or not. In fact, the idea of error message doesn't feature at all in core BQN: it's purely part of the language environment. So you need a system value to access information about the error. Right now the only one is `•CurrentError`, which is a function that returns a message for the error currently caught (if any).
+Catch doesn't know anything about what an error *is*, just whether there was one or not. In fact, the idea of an error message doesn't feature at all in core BQN: it's purely part of the language environment. So you need a system value to access information about the error. Right now the only one is `•CurrentError`, which is a function that returns a message for the error currently caught (if any).
 
         ⌽⎊•CurrentError 2

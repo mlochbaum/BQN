@@ -43,7 +43,7 @@
     <span class='Number'>0.5</span> <span class='Function'>⌽</span><span class='Modifier2'>⎊</span><span class='Function'>⊣</span> <span class='Function'>↕</span><span class='Number'>6</span>    <span class='Comment'># A two-argument example
 </span>0.5
 </pre>
-<p>Catch doesn't know anything about what an error <em>is</em>, just whether there was one or not. In fact, the idea of error message doesn't feature at all in core BQN: it's purely part of the language environment. So you need a system value to access information about the error. Right now the only one is <code><span class='Function'>•CurrentError</span></code>, which is a function that returns a message for the error currently caught (if any).</p>
+<p>Catch doesn't know anything about what an error <em>is</em>, just whether there was one or not. In fact, the idea of an error message doesn't feature at all in core BQN: it's purely part of the language environment. So you need a system value to access information about the error. Right now the only one is <code><span class='Function'>•CurrentError</span></code>, which is a function that returns a message for the error currently caught (if any).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oy94o6K4oCiQ3VycmVudEVycm9yIDI=">↗️</a><pre>    <span class='Function'>⌽</span><span class='Modifier2'>⎊</span><span class='Function'>•CurrentError</span> <span class='Number'>2</span>
 "⌽: Argument cannot be a unit"
 </pre>
