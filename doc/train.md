@@ -2,7 +2,7 @@
 
 # Function trains
 
-Trains are an important aspect of BQN's [tacit](tacit.md) programming capabilities. In fact, a crucial one: with trains and the [identity functions](identity.md) Left (`⊣`) and Right (`⊢`), a fully tacit program can express any explicit function whose body is a statement with `𝕨` and `𝕩` used only as arguments (that is, there are no assignments and `𝕨` and `𝕩` are not used in operands or lists. Functions with assignments may have too many variables active at once to be directly translated but can be emulated by constructing lists. But it's probably a bad idea). Without trains it isn't possible to have two different functions that each use both arguments to a dyadic function. With trains it's perfectly natural.
+Trains are an important aspect of BQN's [tacit](tacit.md) programming capabilities. In fact, a crucial one: with trains, the [identity functions](identity.md) Left (`⊣`) and Right (`⊢`), and [Constant](constant.md) (`˙`), a fully tacit program can express any explicit function whose body is a statement with `𝕨` and `𝕩` used only as arguments (that is, there are no assignments and `𝕨` and `𝕩` are not used in operands or lists. Functions with assignments may have too many variables active at once to be directly translated but can be emulated by constructing lists. But it's probably a bad idea). Without trains it isn't possible to have two different functions that each use both arguments to a dyadic function. With trains it's perfectly natural.
 
 BQN's trains are the same as those of Dyalog APL, except that Dyalog is missing the minor convenience of BQN's [Nothing](expression.md#nothing) (`·`). There are many Dyalog-based documents and videos on trains you can view on the [APL Wiki](https://aplwiki.com/wiki/Train).
 
@@ -14,9 +14,9 @@ Trains are an adaptation of the mathematical convention that, for example, two f
 
 So given a list of the first few natural numbers, that *same* list *plus* its *reverse* gives a list of just one number repeated many times. I'm sure if I were [Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss#Anecdotes) I'd be able to find some clever use for that fact. The mathematical convention extends to any central operator and any number of function arguments, which in BQN means we use any three functions, and call the train with a left argument as well—the only numbers of arguments BQN syntax allows are 1 and 2.
 
-        7 (+≍-) 2
+        7 (+⋈-) 2
 
-Here [Couple](couple.md) (`≍`) is used to combine two units into a list, so we get seven plus and minus two. It's also possible to leave out the leftmost function of a train, or replace it with `·`. In this case the function on the right is called, then the other function is called on its result—it's identical to the mathematical composition `∘`, which is also part of BQN.
+[Pair](pair.md) (`⋈`) makes a list from two values, so we get seven plus and minus two. It's also possible to leave out the leftmost function of a train, or replace it with `·`. In this case the function on the right is called, then the other function is called on its result—it's identical to the mathematical [composition](compose.md) `∘`, which is also part of BQN.
 
         (∾⌽) "ab"‿"cde"‿"f"
         (·∾⌽) "ab"‿"cde"‿"f"
@@ -26,23 +26,23 @@ The three functions `∾⌽`, `·∾⌽`, and `∾∘⌽` are completely identic
 
 ## Longer trains
 
-Function application in trains, as in other contexts, shares the lowest precedence level with assignment. Modifiers and strands (with `‿`) have higher precedence, so they are applied before forming any trains. Once this is done, an expression is a *subject expression* if it ends with a subject and a *function expression* if it ends with a function (there are also modifier expressions, which aren't relevant here). A train is any function expression with multiple functions or subjects in it: while we've seen examples with two or three functions, any number are allowed.
+Function application in trains, as in other contexts, shares the lowest precedence level with assignment. Modifiers and strands (with `‿`) have higher precedence, so they are applied before forming any trains. Once this is done, an expression is a *subject expression* if it ends with a subject and a *function expression* if it ends with a function (a lone modifier can also be an expression, which isn't either of these). A train is any function expression with multiple functions or subjects in it: while we've seen examples with two or three functions, any number are allowed.
 
-Subject expressions are the domain of "old-school" APL, and just apply one function after another to a subject, possibly assigning some of the results (that's the top-level picture—anything can still happen within parentheses). Subjects other than the first appear only as left arguments to functions, which means that two subjects can't appear next to each other because the one on the left would have no corresponding function. Here's an example from the compiler (at one point), with functions and assignments numbered in the order they are applied and their arguments marked with `«»`, and a fully-parenthesized version shown below.
+Subject expressions are the domain of "old-school" APL, and just apply one function after another to a subject, possibly assigning some of the results (that's the top-level picture—anything can still happen within parentheses). Subjects other than the first appear only as left arguments to functions, which means that two subjects can't appear next to each other because the one on the left would have no corresponding function. Here's an example from BQN's compiler, with functions and assignments numbered in the order they are applied and their arguments marked with `«»`, and a fully-parenthesized version shown below.
 
     cn←pi∾lt←/𝕩≥ci←vi+nv
      «6 «5 «43«2 «1 «0»
 
     cn←(pi∾(lt←(/(𝕩≥(ci←(vi+nv))))))
 
-Function expressions have related but different rules, driven by the central principle that functions can be used as "arguments". Because roles can no longer be used to distinguish functions from their arguments, every function is assumed to have two arguments unless there's nothing to the left of it, or an assignment. In trains, assignments can't appear in the middle, only at the left side after all the functions have been applied. Here's another example from the compiler. Remember that for our purposes `` ⌈` `` behaves as a single component.
+Function expressions have related but different rules, driven by the central principle that functions can be used as "arguments". Because roles can no longer be used to distinguish functions from their arguments, every function is assumed to have two arguments unless there's nothing to the left of it, or an assignment. In trains, assignments can't appear in the middle, only at the left side apart from all the functions. Here's another example from the compiler. Remember that for our purposes `` ⌈` `` behaves as a single component.
 
     ⊢>¯1»⌈`
     «1 «0»
 
     ⊢>(¯1»⌈`)
 
-In a train, arguments alternate strictly with combining functions between them. Arguments can be either functions or subjects, except for the rightmost one, which has to be a function to indicate that the expression is a train. Trains tend to be shorter than subject expressions partly because to keep track of this alternation in a train of all functions, you need to know where each function is relative to the end of the train (subjects like the `¯1` above only occur as left arguments, so they can also serve as anchors).
+In a train, arguments alternate strictly with combining functions between them. Arguments can be either functions or subjects, except for the rightmost one, which has to be a function to indicate that the expression is a train. Trains tend to be shorter than subject expressions partly because this rule leads to some difficulty when reading. To keep track of the alternation in a train of all functions, you need to know where each function is relative to the end of the train (subjects like the `¯1` above only occur as left arguments, so they can also serve as anchors).
 
 ## Practice training
 
@@ -54,7 +54,7 @@ The train `` ⊢>¯1»⌈` `` is actually a nice trick to get the result of [Mar
 
 So—although not all trains simplify so much—this confusing train is just `` {𝕩>¯1»⌈`𝕩} ``! Why would I write it in such an obtuse way? To someone used to working with trains, the function `` (⊢>¯1»⌈`) `` isn't any more complicated to read: `⊢` in an argument position of a train just means `𝕩` while `` ⌈` `` will be applied to the arguments. Using the train just means slightly shorter code and two fewer `𝕩`s to trip over.
 
-This function's argument is Classify (`⊐`) of some list (in fact this technique also works on the [index-of](search.md#index-of)-self `𝕩⊐𝕩`). Classify moves along its argument, giving each major cell a number: the first unused natural number if that value hasn't been seen yet, and otherwise the number chosen when it was first seen. It can be implemented as `⍷⊐⊢`, another train!
+This function's argument is Classify (`⊐`) of some list (in fact this technique also works on the [index-of](search.md#index-of)-self `𝕩⊐𝕩`). Classify moves along its argument, giving each major cell a number: the first unused natural number if that value hasn't been seen yet, and otherwise the number chosen when it was first seen. It can in turn be implemented as `⍷⊐⊢`, another train!
 
         ⊢ sc ← ⊐ "tacittrains"
 
@@ -80,17 +80,17 @@ But we also saw the length-2 train `∾⌽` above. Even-length trains consist of
 
         ⍷∧| 3‿4‿¯3‿¯2‿0
 
-If it doesn't have to be a function, it's easiest to write it all out! Let's assume we want a tacit function instead. With three one-argument functions, we can't use a 3-train, as the middle function in a 3-train always has two arguments. Instead, we will compose the functions with 2-trains. Composition is associative, meaning that this can be done starting at either the left or the right.
+If it doesn't have to be a function, that's easiest to write it out! Let's assume we want a tacit function instead. With three one-argument functions, we can't use a 3-train, as the middle function in a 3-train always has two arguments. Instead, we will compose the functions with 2-trains. Composition is associative, meaning that this can be done starting at either the left or the right.
 
         ((⍷∧)|) 3‿4‿¯3‿¯2‿0
         (⍷(∧|)) 3‿4‿¯3‿¯2‿0
 
-We might make the first train above easier to read by using Atop (`∘`) instead of a 2-train. Atop is a 2-modifier, so it doesn't need parentheses when used in a train. The second train can also be changed to `⍷∧∘|` in the same way, but there is another option: the rightmost train `∧|` can be expanded to `·∧|`. After this it's an odd-length train in the last position, and doesn't need parentheses anymore.
+We might make the first train above easier to read by using [Atop](compose.md#atop) (`∘`) instead of a 2-train. Atop is a 2-modifier, so it doesn't need parentheses when used in a train. The second train can also be changed to `⍷∧∘|` in the same way, but there is another option: the rightmost train `∧|` can be expanded to `·∧|`. After this it's an odd-length train in the last position, and doesn't need parentheses anymore.
 
         (⍷∘∧|) 3‿4‿¯3‿¯2‿0
         (⍷·∧|) 3‿4‿¯3‿¯2‿0
 
-These two forms have a different emphasis, because the first breaks into subfunctions `⍷∘∧` and `|` and the second into `⍷` and `∧|`. It's more common to use `⍷∘∧` as a unit than `∧|`, so in this case `⍷∘∧|` is probably the better train.
+These two forms have a different emphasis, because the first breaks into subfunctions `⍷∘∧` and `|` and the second into `⍷` and `∧|`. It's more common to use `⍷∘∧` together than `∧|`, so in this case `⍷∘∧|` is probably the better train.
 
 Many one-argument functions strung together is [a major weakness](../commentary/problems.md#trains-dont-like-monads) for train syntax. If there are many such functions it's probably best to stick with a block function instead!
 

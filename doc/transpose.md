@@ -28,7 +28,7 @@ BQN's transpose takes the first axis of `𝕩` and moves it to the end.
 
         ≢ ⍉ a23456
 
-In terms of the argument data as given by [Deshape](reshape.md#deshape) (`⥊`), this looks like a simple 2-dimensional transpose: one axis is exchanged with a compound axis made up of the other axes. Here we transpose a rank 3 matrix:
+In terms of the index-ordered elements as given by [Deshape](reshape.md#deshape) (`⥊`), this looks like a simple 2-dimensional transpose: one axis is exchanged with a compound axis made up of the other axes. Here we transpose a rank 3 matrix:
 
         a322 ← 3‿2‿2⥊↕12
         ⋈⟜⍉ a322
@@ -45,7 +45,7 @@ To exchange multiple axes, use the [Repeat](repeat.md) modifier. A negative powe
 
 In fact, we have `≢⍉⍟k a ←→ k⌽≢a` for any whole number `k` and array `a`.
 
-To move axes other than the first, use the Rank modifier in order to leave initial axes untouched. A rank of `k>0` transposes only the last `k` axes while a rank of `k<0` ignores the first `|k` axes.
+To move axes other than the first, use the [Rank modifier](rank.md) in order to leave initial axes untouched. A rank of `k>0` transposes only the last `k` axes while a rank of `k<0` ignores the first `|k` axes.
 
         ≢ ⍉⎉3 a23456
 
@@ -57,7 +57,7 @@ Using these forms (and the [Rank](shape.md) function), we can state BQN's genera
 
     a MP b  ←→  ⍉⍟(1-=a) (⍉b) MP (⍉⁼a)
 
-Certainly not as concise as APL's version, but not a horror either. BQN's rule is actually more parsimonious in that it only performs the axis exchanges necessary for the computation: it moves the two axes that will be paired with the matrix product into place before the product, and directly exchanges all axes afterwards. Each of these steps is equivalent in terms of data movement to a matrix transpose, the simplest nontrivial transpose to perform. Also remember that for two-dimensional matrices both kinds of transposition are the same, so that APL's simpler rule `MP ≡ MP⌾⍉˜` holds in BQN.
+Certainly not as concise as APL's version, but not a horror either. BQN's rule is actually more parsimonious in that it only performs the axis exchanges necessary for the computation: it moves the two axes that will be paired with the matrix product into place before the product, and directly exchanges all axes afterwards. Each of these steps is equivalent in terms of data movement to a matrix transpose, the simplest nontrivial transpose to perform. Also remember that for two-dimensional matrices both kinds of transposition are the same, so that APL's simpler rule `MP ≡ MP⌾⍉˜` holds in BQN on rank 2.
 
 Axis permutations of the types we've shown generate the complete permutation group on any number of axes, so you could produce any transposition you want with the right sequence of monadic transpositions with Rank. However, this can be unintuitive and tedious. What if you want to transpose the first three axes, leaving the rest alone? With monadic Transpose you have to send some axes to the end, then bring them back to the beginning. For example [following four or five failed tries]:
 
@@ -67,7 +67,7 @@ In a case like this the dyadic version of `⍉`, called Reorder Axes, is much ea
 
 ## Reorder Axes
 
-Transpose also allows a left argument that specifies a permutation of `𝕩`'s axes. For each index `p←i⊑𝕨` in the left argument, axis `i` of `𝕩` is used for axis `p` of the result. Multiple argument axes can be sent to the same result axis, in which case that axis goes along a diagonal of `𝕩`, and the result will have a lower rank than `𝕩`.
+Transpose also allows a left argument that specifies a permutation of `𝕩`'s axes. For each index `p←i⊑𝕨` in the left argument, axis `i` of `𝕩` is used for axis `p` of the result. Multiple argument axes can be sent to the same result axis, in which case that axis goes along a diagonal of `𝕩`, and the result will have a lower rank than `𝕩` (see the next section).
 
         ≢ 1‿3‿2‿0‿4 ⍉ a23456
 
@@ -87,12 +87,25 @@ In particular, the case with only one axis specified is interesting. Here, the f
 
 Finally, it's worth noting that, as monadic Transpose moves the first axis to the end, it's equivalent to Reorder Axes with a "default" left argument: `(=-1˙)⊸⍉`.
 
+### Taking diagonals
+
+When `𝕨` contains an axis index more than once, the corresponding axes of `𝕩` will *all* be sent to that axis of the result. This isn't a special case: it follows the same rule that `i⊑𝕨⍉𝕩` is `(𝕨⊏i)⊑𝕩`. Only the result shape has to be adjusted for this case: the length along a result axis is the minimum of all the axes of `𝕩` that go into it, because any indices outside this range will be out of bounds along at least one axis.
+
+A bit abstract. This rule is almost always used simply as `0‿0⍉𝕩` to get the main diagonal of a matrix.
+
+        ⊢ a ← 3‿5⥊'a'+↕15
+
+        0‿0 ⍉ a
+
+        ⟨2⟩⊑0‿0⍉a  # Single index into result
+        ⟨2,2⟩⊑a    # is like a doubled index into a
+
 ## Definitions
 
 Here we define the two valences of Transpose more precisely.
 
-An atom right argument to either valence of Transpose is always enclosed to get an array before doing anything else.
+An atom right argument to Transpose or Reorder Axes is always [enclosed](enclose.md) to get an array before doing anything else.
 
-Monadic transpose is identical to `(=-1˙)⊸⍉`, except that if `𝕩` is a unit it is returned unchanged (after enclosing, if it's an atom) rather than giving an error.
+Monadic Transpose is identical to `(=-1˙)⊸⍉`, except that if `𝕩` is a unit it's returned unchanged (after enclosing, if it's an atom) rather than giving an error.
 
-In Reorder Axes, `𝕨` is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the right argument rank minus the number of duplicate entries in the left argument. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.
+In Reorder Axes, `𝕨` is a number or numeric array of rank 1 or less, and `𝕨≤○≠≢𝕩`. Define the result rank `r←(=𝕩)-+´¬∊𝕨` to be the rank of `𝕩` minus the number of duplicate entries in `𝕨`. We require `∧´𝕨<r`. Bring `𝕨` to full length by appending the missing indices: `𝕨∾↩𝕨(¬∘∊˜/⊢)↕r`. Now the result shape is defined to be `⌊´¨𝕨⊔≢𝕩`. Element `i⊑z` of the result `z` is element `(𝕨⊏i)⊑𝕩` of the argument.

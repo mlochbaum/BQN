@@ -47,18 +47,19 @@ The basic idea of Take (`↑`) is to get the first few elements of a list, while
 - `𝕩` can be an atom, or array of any rank (the result will be an array).
 - `𝕨` can be negative to take or drop from the end instead of the beginning.
 - For Take, if `𝕨` is larger than the length of `𝕩`, then [fills](fill.md) are added.
-- `𝕨` can have multiple numbers corresponding to leading axes of `𝕩`.
+- `𝕨` can have multiple numbers corresponding to [leading](leading.md) axes of `𝕩`.
 - `𝕨` is allowed to be longer than the rank of `𝕩`; `𝕩` will be extended to fit.
 
-These extensions can be combined as well, so there are a lot of possibilities. A good picture to have in mind is cutting out a corner of the array `𝕩`. This is because the result `𝕨↑𝕩` or `𝕨↓𝕩` always aligns with one side of `𝕩` along each axis, so it aligns with the corner where those sides meet.
+These extensions can be combined as well, so there are a lot of possibilities. A good picture to have in mind is cutting out a corner of the array `𝕩`. This is because the result `𝕨↑𝕩` or `𝕨↓𝕩` always aligns with one side of `𝕩` along each axis, so it also aligns with the corner where those sides meet.
 
 The result `d↓𝕩` is always the same as `t↑𝕩` for some other argument `t`, but computing `t` wouldn't be too convenient. The reverse isn't true: only Take can insert fills, so results that include them can't come from Drop.
 
 ## One axis
 
-Let's start with a natural number `𝕨`. Take gives the first `𝕨` major cells of `𝕩` (or elements of a list), while Drop gives all but the first `𝕨`.
+Let's start with a natural number `𝕨`. Take gives the first `𝕨` [major cells](array.md#cells) of `𝕩` (or elements of a list), while Drop gives all but the first `𝕨`.
 
         4 ↑ "take and drop"
+
         4 ↓ "take and drop"
 
         1 ↓ >"maj"‿"orc"‿"ell"
@@ -81,7 +82,7 @@ If `𝕩` is an atom or unit array, it's converted to a list first. For Take thi
 
 ### Negative argument
 
-If `𝕨` is negative then wraps around the other side to take or drop from the end of `𝕩`. It's a lot like negative indices in [Select](select.md) (`⊏`), but while negative indices are asymmetric—`0` is the first entry but `¯1` is the last—this case is symmetric. It's because the place to cut is always *before* the index `𝕨`, cancelling out the negative index asymmetry.
+If `𝕨` is negative, it wraps around the other side to take or drop from the end of `𝕩`. It's a lot like negative indices in [Select](select.md) (`⊏`), but while negative indices are asymmetric—`0` is the first entry but `¯1` is the last—this case is symmetric. It's because the place to cut is always *before* the index `𝕨`, cancelling out the negative index asymmetry.
 
         3 ↑ "abcdeEDCBA"
 
@@ -95,13 +96,13 @@ What about `0`? It behaves like it's both positive *and* negative. For Take, the
 
         0 ↓ 4‿3‿2  # Everything
 
-If `|𝕨` is too large, then Take will insert fills at the beginning to keep the result aligned with `𝕩` at the end. Drop returns an empty array as in the positive case. So unlike [Rotate](reverse.md) (`⌽`), which is completely cyclical, Take and Drop work cyclically only around 0.
+If `|𝕨` is too large, then Take will insert fills at the beginning to keep the result aligned with `𝕩` at the end. Drop returns an empty array as in the positive case. So unlike [Rotate](reverse.md) (`⌽`), which is completely cyclical, Take and Drop look cyclic only around 0.
 
         ¯6 ↑ "xy"
 
 ## Multiple axes
 
-In the general case `𝕨` is a list of integers. They're matched with the leading axes of `𝕩`, so that each affects one axis independently from the others.
+In the general case `𝕨` is a list of integers. They're matched with the [leading axes](leading.md) of `𝕩`, so that each affects one axis independently from the others.
 
         ⊢ m ← (10×↕5) +⌜ ↕7
 
