@@ -215,7 +215,7 @@ Markdown ← {filename𝕊𝕩:
     addRslt ← ∧´ ' ' = ∾ 4 (⌊⟜≠ ↑ ⊢)¨ 𝕩
     # Don't show assignment results by default
     ShowRslt ← {
-      depth ← +` "(){}⟨⟩" (⊣(≠⊸>×¯1⋆2|⊢)⊐) 𝕩
+      depth ← +` "(){}⟨⟩[]" (⊣(≠⊸>×¯1⋆2|⊢)⊐) 𝕩
       𝕩 /˜↩ ¬ ∨`⌾⌽ (0=depth) ∧ (∧`𝕩≠'#') ∧ 𝕩∊"⋄,"  # Just the last statement
       g ← 𝕩∊"←↩"
       (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
@@ -565,7 +565,7 @@ hlchars‿classTag ← {
     "Number"      , ∾idChars       # Will be classified among ↑↑ later
     "Gets"        , "←⇐↩→"
     "Paren"       , "()"
-    "Bracket"     , "⟨⟩"
+    "Bracket"     , "⟨⟩[]"
     "Brace"       , "{}"
     "Head"        , ":;?"
     "Ligature"    , "‿"
