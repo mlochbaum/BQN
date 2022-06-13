@@ -20,8 +20,9 @@ Here we define the "atomic" forms of functions and modifiers, which are either s
     _mod2_   = ( atom "." )? _c_ | _cl_ | "(" _m2Expr_ ")" | _blMod2_
     _mod1    = ( atom "." )? _m  | _ml  | "(" _m1Expr  ")" | _blMod1
     Func     = ( atom "." )?  F  |  Fl  | "(" FuncExpr ")" |  BlFunc
-    atom     = ( atom "." )?  s  |  sl  | "(" subExpr  ")" |  blSub | list
-    list     = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
+    atom     = ( atom "." )?  s  |  sl  | "(" subExpr  ")" |  blSub | array
+    array    = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
+             | "[" ⋄?   ( EXPR ⋄ )* EXPR ⋄?    "]"
     subject  = atom | ANY ( "‿" ANY )+
 
 Starting at the highest-order objects, modifiers have simple syntax. In most cases the syntax for `←` and `↩` is the same, but only `↩` can be used for modified assignment. The export arrow `⇐` can be used in the same ways as `←`, but it can also be used at the beginning of a header to force a namespace result, or with no expression on the right in an `EXPORT` statement.
@@ -60,13 +61,14 @@ Subject expressions consist mainly of function application. We also define nothi
 The target of subject assignment can be compound to allow for destructuring. List and namespace assignment share the nodes `lhsList` and `lhsStr` and cannot be completely distinguished until execution. The term `sl` in `LHS_SUB` is used for header inputs below: as an additional rule, it cannot be used in the `lhs` term of a `subExpr` node.
 
     NAME     = s | F | _m | _c_
-    LHS_SUB  = "·" | lhsList | sl
+    LHS_SUB  = "·" | lhsList | lhsArray | sl
     LHS_ANY  = NAME | LHS_SUB | "(" LHS_ELT ")"
     LHS_ATOM = LHS_ANY | "(" lhsStr ")"
     LHS_ELT  = LHS_ANY | lhsStr
     LHS_ENTRY= LHS_ELT | lhs "⇐" NAME
     lhsStr   = LHS_ATOM ( "‿" LHS_ATOM )+
     lhsList  = "⟨" ⋄? ( ( LHS_ENTRY ⋄ )* LHS_ENTRY ⋄? )? "⟩"
+    lhsArray = "[" ⋄?   ( LHS_ELT   ⋄ )* LHS_ELT   ⋄?    "]"
     lhsComp  = LHS_SUB | lhsStr | "(" lhs ")"
     lhs      = s | lhsComp
 
