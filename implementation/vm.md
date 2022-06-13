@@ -64,9 +64,10 @@ The following instructions are defined (those without names are tentatively rese
 | 06 | POPS |  X   |      |          | Pop and discard top of stack
 | 07 | RETN |  X   |      |          | Returns top of stack
 | 08 | RETD |  NS  |  07  |          | Return the running scope's namespace
-| 0B | ARRO |  X   |      | `N`      | Create length-`N` list
-| 0C | ARRM |  X   |  0B  | `N`      | Create length-`N` reference list
-| 0E | ARRH |  HR  |      |          | Merge top of stack (for `[]`)
+| 0B | LSTO |  X   |      | `N`      | Create length-`N` list
+| 0C | LSTM |  X   |  0B  | `N`      | Create length-`N` reference list
+| 0D | ARMO |  HR  |  0B  | `N`      | Create length-`N` merged array
+| 0E | ARMM |  HR  |  0D  | `N`      | Create length-`N` merged reference list
 | 10 | FN1C |  X   |      |          | Monadic function call
 | 11 | FN2C |  X   |      |          | Dyadic function call
 | 12 | FN1O |  X   |  10  |          | Monadic call, checking for `·`
@@ -105,8 +106,8 @@ Stack effects for most instructions are given below. Instructions `FN1O`, `FN2O`
 | 06 | POPS | `x →`                 |
 | 07 | RETN | `x → x`               | Returns from current block
 | 08 | RETD | `x? → n`              | Clears stack, dropping 0 or 1 value
-| 0B | ARRO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-1`)
-| 0B | ARRH | `l → a`               | List to array
+| 0B | LSTO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-1`)
+| 0B | ARMO | `x0 … xm → [x0 … xm]` |
 | 10 | FN1C | `𝕩 𝕤 → (𝕊 𝕩)`         | 12: `𝕩` may be `·`
 | 11 | FN2C | `𝕩 𝕤 𝕨 → (𝕨 𝕊 𝕩)`     | 13: `𝕨` or `𝕩` may be `·`
 | 14 | TR2D | `h g → (G H)`         |
@@ -140,11 +141,11 @@ Local variables are manipulated with the **VARO** (or **VARU**) and **VARM** ins
 
 Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU, SETM, or SETC only if it *has* been defined.
 
-### Variable references: ARRM ARRH VARM SETN SETU SETM SETC
+### Variable references: LSTM ARMM VARM SETN SETU SETM SETC
 
 A *variable reference* indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. **VARM** pushes a variable reference to the stack.
 
-A *reference list* is a list of variable references or reference lists. It's created with the **ARRM** instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents. The **ARRH** instruction converts this to a *merged reference list*, which matches an array of rank 1 or more by splitting it into cells.
+A *reference list* is a list of variable references or reference lists. It's created with the **LSTM** instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents. The **ARMM** instruction makes a *merged reference list*, which matches an array of rank 1 or more by splitting it into cells.
 
 The **SETN**, **SETU**, **SETM**, and **SETC** instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.
 

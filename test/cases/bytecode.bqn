@@ -15,7 +15,7 @@
 2  % a←2⋄3 A 4             # 17 FN2C
 6  % {𝕩}6                  #  1 DFND
 3  % A←{𝕨}⋄3 A 4           #    dyadic block function
-7  % a‿b←7‿2⋄a             # 11 ARRO, 12 ARRM
+7  % a‿b←7‿2⋄a             # 11 LSTO, 12 LSTM
 2  % ·‿b←7‿2⋄b             # 36 NOTM
 2  % 0{𝕨𝕏1}2               # 19 FN2O (doesn't test call type)
 5  % {({𝕨}𝕨)𝕏𝕩}5           # 18 FN1O not called
