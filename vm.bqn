@@ -136,7 +136,8 @@ ops ← ((!∘"Unknown opcode")˙⊣´⊢)¨ ⊔˝ ⍉> ⟨
   # Arrays
   11‿{i←𝕏@ ⋄ {s𝕊e: s.Push           ⌽s.Pop i } }
   12‿{i←𝕏@ ⋄ {s𝕊e: s.Push ref.Array ⌽s.Pop i } }
-  14‿(       {s𝕊e: s.Push =◶{𝕩.Merge@}‿> ⊑s.Pop 1 }˙)
+  13‿{i←𝕏@ ⋄ {s𝕊e: s.Push > ⌽s.Pop i } }
+  14‿{i←𝕏@ ⋄ {s𝕊e: s.Push {𝕩.Merge@} ref.Array ⌽s.Pop i } }
   # Application
   16‿(       {s𝕊e: s.Push {   f‿x:   F x }   s.Pop 2 }˙)
   17‿(       {s𝕊e: s.Push { w‿f‿x: w F x }   s.Pop 3 }˙)
