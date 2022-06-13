@@ -53,7 +53,7 @@ The program's symbol list is included in the tokenization information `t`: it is
 
 ### Instructions
 
-The following instructions are defined (those without names are tentatively reserved only). The ones emitted by the self-hosted BQN compiler are marked in the "used" column. Instructions marked "NS" are used only in programs with namespaces, and those marked "HE" are used only with headers `:` or predicates `?`. Only those marked "X" are needed to support the compiler and self-hosted runtime.
+The following instructions are defined (those without names are tentatively reserved only). The ones emitted by the self-hosted BQN compiler are marked in the "used" column. Only those marked "X" are needed to support the compiler and self-hosted runtime. "NS" indicates instructions used only in programs with namespaces, "HE" is for headers `:` or predicates `?`, and "HR" is for high-rank array notation `[]`.
 
 |  B | Name | Used | Like | Args     | Description
 |---:|------|:----:|-----:|:---------|------------
@@ -66,7 +66,7 @@ The following instructions are defined (those without names are tentatively rese
 | 08 | RETD |  NS  |  07  |          | Return the running scope's namespace
 | 0B | ARRO |  X   |      | `N`      | Create length-`N` list
 | 0C | ARRM |  X   |  0B  | `N`      | Create length-`N` reference list
-| 0E |      |      |      |          | Merge top of stack (for `[]`)
+| 0E | ARRH |  HR  |      |          | Merge top of stack (for `[]`)
 | 10 | FN1C |  X   |      |          | Monadic function call
 | 11 | FN2C |  X   |      |          | Dyadic function call
 | 12 | FN1O |  X   |  10  |          | Monadic call, checking for `·`
@@ -106,6 +106,7 @@ Stack effects for most instructions are given below. Instructions `FN1O`, `FN2O`
 | 07 | RETN | `x → x`               | Returns from current block
 | 08 | RETD | `x? → n`              | Clears stack, dropping 0 or 1 value
 | 0B | ARRO | `x0 … xm → ⟨x0 … xm⟩` | `N` total variables (`m=n-1`)
+| 0B | ARRH | `l → a`               | List to array
 | 10 | FN1C | `𝕩 𝕤 → (𝕊 𝕩)`         | 12: `𝕩` may be `·`
 | 11 | FN2C | `𝕩 𝕤 𝕨 → (𝕨 𝕊 𝕩)`     | 13: `𝕨` or `𝕩` may be `·`
 | 14 | TR2D | `h g → (G H)`         |
@@ -139,11 +140,11 @@ Local variables are manipulated with the **VARO** (or **VARU**) and **VARM** ins
 
 Slots should be initialized with some indication they are not yet defined. The variable can be defined with SETN only if it hasn't been defined yet, and can be accessed with VARO or VARU or modified with SETU, SETM, or SETC only if it *has* been defined.
 
-### Variable references: ARRM VARM SETN SETU SETM SETC
+### Variable references: ARRM ARRH VARM SETN SETU SETM SETC
 
 A *variable reference* indicates a particular frame slot in a way that's independent of the execution context. For example, it could be a pointer to the slot, or a reference to the frame along with the index of the slot. **VARM** pushes a variable reference to the stack.
 
-A *reference list* is a list of variable references or reference lists. It's created with the **ARRM** instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents.
+A *reference list* is a list of variable references or reference lists. It's created with the **ARRM** instruction. In the Javascript VM there's no difference between a reference list and an ordinary BQN list other than the contents. The **ARRH** instruction converts this to a *merged reference list*, which matches an array of rank 1 or more by splitting it into cells.
 
 The **SETN**, **SETU**, **SETM**, and **SETC** instructions set a value for a reference. If the reference is to a variable, they simply set its value. For a reference list, the value needs to be destructured. It must be a list of the same length, and each reference in the reference list is set to the corresponding element of the value list.
 

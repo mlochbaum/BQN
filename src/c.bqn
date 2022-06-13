@@ -7,7 +7,7 @@ charSet‿cgl←(∾ ⋈ ≠¨)⟨
   "⋄,"∾lf               # Separator
   ":;?"                 # Header punctuation
   "⇐←↩"                 # Gets
-  "(){}⟨⟩"              # Bracket
+  "(){}⟨⟩[]"            # Bracket
   "‿"                   # Ligature
   "·"                   # nOthing
   # Use last character in case of UTF-16 (like dzaima/BQN)
@@ -89,7 +89,8 @@ Tokenize←{System‿vars←𝕨
   t↩(w∨wf)/(vars≠⊸↓∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t  # Add IDs; remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
-  sk←sb/˜p>∨⟜«(M⟜bH∨(3‿5+⊑bB)∊˜p⊸+)(sb-p)⊏t # Keep the first of each group that's not just inside a bracket
+  eb←3‿5‿7+⊑bB                              # End brackets that allow separators
+  sk←sb/˜p>∨⟜«(M⟜bH∨eb∊˜p⊸+)(sb-p)⊏t        # Keep the first of each group that's not just inside a bracket
   t{is/˜↩𝕨⋄ie/˜↩𝕨⋄𝕨/𝕩}˜↩1¨⌾(sk⊸⊏)t≠sep      # Remove the rest
   im←(t=bR)∨t M vd⋈+´2↑kk                   # Identifier (or 𝕣) mask
   r←ir⌾(im⊸/)(vd⌊t)⊏charRole∾0              # Role
@@ -139,7 +140,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ErrMismatchedBrackets∘𝕩⍟¬ (g⊏p)(>⟜0⊸/≡1-˜<⟜0⊸/)gx←g⊏𝕩
   "Swapped open and closed brackets"_err_(1↑G) 0>(⊑g)⊑pd
   "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧pred⊸=∨sep⊸=)gbx←gb/gx
-  "Predicates can't be placed inside lists"_err_((sep≠GBX)/gb/G) ((4+⊑bB)⊸=»⊸∧pred⊸=)sep⊸≠⊸/gbx
+  BE←=∨+⟜2⊸=                                # Bracket equals: match ⟨[ or ⟩] given ⟨ or ⟩ only
+  "Predicates can't be placed inside lists"_err_((sep≠GBX)/gb/G) ((4+⊑bB)⊸BE»⊸∧pred⊸=)sep⊸≠⊸/gbx
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
   dl←«⊸∨dc←r=4                              # Dot left
   r-↩(𝕩=⊑bG)>ec←«dc<0≤r+p                   # Role ¯4 for exports: ⊑bG is ⇐
@@ -161,7 +163,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   # Compute parsing ordering gr≡g⊏rev
   g↩⍋+`p↩br-˜rev⊏p⋄bp←0(<⋈○(/⟜g)>)g⊏p       # Order by non-brace bracket depth
   g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev                     # Now by dots
-  sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩=5+⊑bB    # Strand length; list starts
+  sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩BE˜5+⊑bB  # Strand length; list starts
   b←br>0⋄c←/br<0⋄bp∾¨↩⟨/b,c⟩                # Block Begin (mask) and Close (index), in matching order
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
 
@@ -243,7 +245,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   oa←⌽/hg<op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3    # op: active modifiers; ro: mod or right operand
   "Missing operand"_nerr op×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
   s←𝕩=sep⋄fo←𝕩∊⟨2+⊑bB,1+⊑bH⟩                # Separators, function open { or ;
-  ls←s∧fo<○IT lo←𝕩=4+⊑bB                    # List Separators: after ⟨lo, not {fo
+  ls←s∧fo<○IT lo←𝕩BE˜4+⊑bB                  # List Separators: after ⟨lo, not {fo
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
   mm←𝕩=2+⊑bG⋄ma←tr<mm∧«ir≥1⋄mm∧↩1»ps        # Modified assignment; monadic modified
   "No right-hand side in non-modified assignment"_err_(G) ma<mm
@@ -313,6 +315,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob∾↩(cl-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
+  lm←/𝕩=7+⊑bB                               # List merge, for []
   dr←(hd¬⊸/hj)∾/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo    # Drop (block separator) and return
   qp←/𝕩=pred                                # Predicate
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
@@ -321,11 +324,11 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
   ao←48+(0⌈(1+⊑bG)-˜ai⊏𝕩+ma+mm)∾-hd         # Assignment opcode
-  or←⍋oi←idor∾g⊏˜∾oil←⟨cn,cn,bk,bk,hq,api,2/l,at,dr,qp,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,44¨api,⥊⍉(11+l⊏aa)≍ll,ao,6¨dr,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
+  or←⍋oi←idor∾g⊏˜∾oil←⟨cn,cn,bk,bk,hq,api,2/l,lm,at,dr,qp,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,44¨api,⥊⍉(11+l⊏aa)≍ll,14¨lm,ao,6¨dr,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
                24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
   # Instruction source positions
-  ui←8‿13‿14(⊏⟜(»+`)+⟜↕¨⊏)(≠idor)∾≠¨oil  # at,oa+…,fl locations
+  ui←9‿14‿15(⊏⟜(»+`)+⟜↕¨⊏)(≠idor)∾≠¨oil  # at,oa+…,fl locations
   oj←(g⊏˜∾⟨at-1‿0/˜≠¨ai‿hj,oa,fa⟩)⌾((∾ui)⊸⊏)oi
   ind←⟨oj,(g⊏˜fa⊏IT»¬ro∨ma)⌾((¯1⊑ui)⊸⊏)oj⟩(¯1∾˜or⊸⊏)⊸⊏¨i‿e
   # Indices for multi-body blocks

@@ -49,6 +49,15 @@ ref ← {
     SetN ⇐    {𝕨.SetN𝕩}_set_"←"
     SetU ⇐    {𝕨.SetU𝕩}_set_"↩"
     SetQ ⇐ ∨´ {𝕨.SetQ𝕩}_set_@
+    # Create a merged reference array based on this one
+    Merge ⇐ {𝕊:
+      Split ← {
+        "[…]←: Value must have rank 1 or more" ! 1≤=𝕩
+        <˘ 𝕩
+      }
+      Get ⇐ > Get
+      SetN‿SetU‿SetQ ⇐ {𝕏⟜Split}¨ SetN‿SetU‿SetQ
+    }
   }
   # Alias, like ⇐vals in ⟨a‿b⇐vals⟩←
   # It behaves like ⟨a‿b⟩← except when destructuring a namespace (GetF)
@@ -127,6 +136,7 @@ ops ← ((!∘"Unknown opcode")˙⊣´⊢)¨ ⊔˝ ⍉> ⟨
   # Arrays
   11‿{i←𝕏@ ⋄ {s𝕊e: s.Push           ⌽s.Pop i } }
   12‿{i←𝕏@ ⋄ {s𝕊e: s.Push ref.Array ⌽s.Pop i } }
+  14‿(       {s𝕊e: s.Push =◶{𝕩.Merge@}‿> ⊑s.Pop 1 }˙)
   # Application
   16‿(       {s𝕊e: s.Push {   f‿x:   F x }   s.Pop 2 }˙)
   17‿(       {s𝕊e: s.Push { w‿f‿x: w F x }   s.Pop 3 }˙)
