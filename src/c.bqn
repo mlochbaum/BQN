@@ -234,7 +234,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   # Prep for lexical resolution before reordering 𝕩
   xv←𝕩-vi
   {i↩(𝕨⊏i)⌾(𝕩⊸⊏)i⋄e↩(𝕩⊏e)⌾(𝕨⊸⊏)e}´bp        # Highlight all contents of a pair when error reporting
-  𝕩⊏˜↩g⋄hg←g⊏hf⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l⊏⍋gs)∾/gr⊏sr>sl
+  𝕩⊏˜↩g⋄hg←g⊏hf⋄r⊏˜↩gr⋄ir⊏˜↩gr⋄l↩(l0←l⊏⍋gs)∾/gr⊏sr>sl
+  lm←(0¨sll)∾˜(5+⊑bB)-˜l0⊏𝕩                 # List merge, adding 2 for []
 
   # Parsing part 1
   a←(¯5⊸<∧≤⟜¯3)r⋄ps←a<r<0                   # a: assignment, ps: part separator
@@ -315,7 +316,6 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob∾↩(cl-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
-  lm←/𝕩=7+⊑bB                               # List merge, for []
   dr←(hd¬⊸/hj)∾/s>(2=ne)∨ls∨»r=¯5⋄rt←/fo    # Drop (block separator) and return
   qp←/𝕩=pred                                # Predicate
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
@@ -324,11 +324,11 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
   ao←48+(0⌈(1+⊑bG)-˜ai⊏𝕩+ma+mm)∾-hd         # Assignment opcode
-  or←⍋oi←idor∾g⊏˜∾oil←⟨cn,cn,bk,bk,hq,api,2/l,lm,at,dr,qp,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,44¨api,⥊⍉(11+l⊏aa)≍ll,14¨lm,ao,6¨dr,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
+  or←⍋oi←idor∾g⊏˜∾oil←⟨cn,cn,bk,bk,hq,api,2/l,at,dr,qp,al+1,al+1,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,44¨api,⥊⍉(11+lm+l⊏aa)≍ll,ao,6¨dr,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
                24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
   # Instruction source positions
-  ui←9‿14‿15(⊏⟜(»+`)+⟜↕¨⊏)(≠idor)∾≠¨oil  # at,oa+…,fl locations
+  ui←8‿13‿14(⊏⟜(»+`)+⟜↕¨⊏)(≠idor)∾≠¨oil  # at,oa+…,fl locations
   oj←(g⊏˜∾⟨at-1‿0/˜≠¨ai‿hj,oa,fa⟩)⌾((∾ui)⊸⊏)oi
   ind←⟨oj,(g⊏˜fa⊏IT»¬ro∨ma)⌾((¯1⊑ui)⊸⊏)oj⟩(¯1∾˜or⊸⊏)⊸⊏¨i‿e
   # Indices for multi-body blocks
