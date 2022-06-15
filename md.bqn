@@ -320,7 +320,7 @@ Markdown ← {filename𝕊𝕩:
   }⟜JoinLines
   ProcHtmlBlock ← extensions◶JoinLines‿(<⟜2◶ProcComment‿ProcHtml)
 
-  lineChars‿lineClas‿procFns ← <˘⍉>⟨
+  [lineChars,lineClas,procFns] ← ⍉[
     ""    ‿ (!∘0)       ‿ ProcParagraph
     "#"   ‿ LenHeading  ‿ ProcHeading
     ""    ‿ 0           ‿ ProcCode
@@ -328,7 +328,7 @@ Markdown ← {filename𝕊𝕩:
     "-+*" ‿ LenBullet   ‿ ProcBullet
   # •d    ‿ LenListNum  ‿ ProcListNum
     "<"   ‿ IsHtmlBlock ‿ ProcHtmlBlock
-  ⟩
+  ]
 
   ######
   # Inline elements

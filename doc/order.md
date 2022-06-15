@@ -54,7 +54,7 @@ tp ← ⍉ tx ⋈⌜ y
 ((∾˜d)×((-∾+˜)pad)+sh∾dim) SVG g Ge ⟨
   "rect" Elt rc ∾ sh Rp dim
   Paths ≍⟜(¯1↓y)¨(wv⊏tx)⋈¨tx
-  mg Ge (3⥊"String"⋈⊑ci) Gec tp Text¨ >⟨xt,wt,wv⊏xt⟩
+  mg Ge (3⥊"String"⋈⊑ci) Gec tp Text¨ [xt,wt,wv⊏xt]
   ig Ge ("class="∾⊑ci) Ge (-⟜0‿0.33¨ Text¨ (FmtNum ↕≠xt)˙) ⊏tp
   cg Ge (¯0.8≍¨y) Text⟜Highlight¨ "𝕩"‿"⍋𝕩"‿"∧𝕩"
 ⟩
@@ -84,7 +84,7 @@ tp ← ⍉ tx ⋈⌜ y
 ((∾˜d)×((-∾+˜)pad)+sh∾dim) SVG g Ge ⟨
   "rect" Elt rc ∾ sh Rp dim
   Paths (⋈¨⟜tx˘(≍⟜⍋wv)⊏tx) ≍¨⟜<˘ 2↕y
-  mg Ge ("String"<⊸∾ci) Gec tp Text¨ >⟨xt,wt,FmtNum⍋wv⟩
+  mg Ge ("String"<⊸∾ci) Gec tp Text¨ [xt,wt,FmtNum⍋wv]
   ig Ge (3⥊ci) Gec (-⟜(⋈⟜0.33¨0.035×↕≠xt) Text¨ (FmtNum ↕≠xt)˙)˘ tp
   cg Ge (¯0.8≍¨y) Text⟜Highlight¨ "𝕩"‿"⍋𝕩"‿"⍋⍋𝕩"
 ⟩
@@ -105,7 +105,7 @@ The fact that Grade Up inverts a permutation is useful in itself. Note that this
 
 When sorting an array, we usually don't care how matching cells are ordered relative to each other (although as mentioned above it's possible to detect it by using fill elements carefully. They maintain their ordering). Grading is a different matter, because often the grade of one array is used to order another one.
 
-        ⊢ t ← >⟨ "dog"‿4, "ant"‿6, "pigeon"‿2, "pig"‿4 ⟩
+        ⊢ t ← [ "dog"‿4, "ant"‿6, "pigeon"‿2, "pig"‿4 ]
 
         1 ⊏˘ t
 

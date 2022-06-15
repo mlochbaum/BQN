@@ -215,14 +215,14 @@
 <p>Fortunately, I find that after a reasonable period of adjustment typing ligatures instead of spaces doesn't feel strange, and reading code is improved overall by the more explicit notation. A minor note is that lists of literal numbers, where APL-style stranding is best, tend to show up more in the snippets that beginners write to test out the language than in programs even in the tens of lines. So this issue sticks out in first experiences with BQN, but will come up less later on.</p>
 <h3 id="array-notation"><a class="header" href="#array-notation">Array notation?</a></h3>
 <p>BQN has literal notation for lists only right now. To get an array with rank other than 1, either <a href="reshape.html">reshape</a> a list, or <a href="couple.html#merge-and-array-theory">merge</a> a list of arrays:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiY4oC/MiDipYog4p+oMiwzLCA0LDEsIDAsNeKfqQoKPiDin6gy4oC/MywgNOKAvzEsIDDigL814p+p">↗️</a><pre>    <span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⥊</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiY4oC/MiDipYog4p+oMiwzLCA0LDEsIDAsNeKfqQoKWzLigL8zLCA04oC/MSwgMOKAvzVd">↗️</a><pre>    <span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⥊</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
 ┌─     
 ╵ 2 3  
   4 1  
   0 5  
       ┘
 
-    <span class='Function'>&gt;</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
+    <span class='Bracket'>[</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Bracket'>]</span>
 ┌─     
 ╵ 2 3  
   4 1  
