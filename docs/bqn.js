@@ -75,6 +75,8 @@ let set = (d, id, v) => {
     let cs=v.sh.slice(1); let c=cs.reduce((a,b)=>a*b,1);
     let cell = j => arr(v.slice(c*j,c*j+c),cs,v.fill);
     id.map((n,j)=>set(d,n,cell(j)));
+  } else if (id.m) {
+    throw Error("← or ↩: Can't use alias in list destructuring");
   } else {
     if (v.sh) {
       if (!eq(id.sh,v.sh)) throw Error("← or ↩: Target and value shapes don't match");
