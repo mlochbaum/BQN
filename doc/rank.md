@@ -170,7 +170,7 @@ The Rank modifier also accepts a list of one to three numbers for `𝕘`, as wel
 
 As an example, we'll define the matrix-vector product. A matrix is a rank-2 array and a vector is a list, and their product is a list. It's made up of the elements `+´ row × vec` for each row `row` of the matrix. To define this using Rank, we'll change `+´` to `+˝` to get a unit out, and we need to map over the rows of the left argument but not of the right one. Following the rules above, there are several ways to do this, including `+˝∘×⎉1`, `+˝∘×⎉¯1‿1`, and `+˝∘×⎉¯1‿∞`. Note that `⎉¯1` wouldn't work, because the ¯1 is interpreted separately for both arguments—it's equivalent to 1 matrix but 0 for the vector, or `⎉1‿0` overall. for the  When correctly defined we can see that multiplication by the matrix `m` below negates the first element of a list, and also swaps it with the second.
 
-        ⊢ m ← >⟨0‿1‿0,¯1‿0‿0,0‿0‿1⟩
+        ⊢ m ← [0‿1‿0, ¯1‿0‿0, 0‿0‿1]
 
         +˝ 0‿1‿0 × 1‿2‿3
 

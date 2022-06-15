@@ -153,6 +153,6 @@ BQN has literal notation for lists only right now. To get an array with rank oth
 
         ∘‿2 ⥊ ⟨2,3, 4,1, 0,5⟩
 
-        > ⟨2‿3, 4‿1, 0‿5⟩
+        [2‿3, 4‿1, 0‿5]
 
 The characters `[]` are reserved to potentially combine list notation with merging, allowing the above to be written `[2‿3, 4‿1, 0‿5]`. This would allow non-empty arrays with rank one or more to be written without a primitive, but not rank 0 or empty arrays. Since creating arrays in general would still require primitives like `<` or `⥊`, it's not clear whether this notation is worth it. General array notation is a surprisingly complicated topic; see the article about it [on the APL Wiki](https://aplwiki.com/wiki/Array_notation).

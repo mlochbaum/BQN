@@ -154,7 +154,7 @@ If the argument lengths don't match then Each gives an error. This differs from 
 
 Arguments can have any shape as long as the axis lengths match up. As with Table, the result elements don't depend on these shapes but the result shape does.
 
-        (>⟨20‿30‿10,50‿40‿60⟩) +⟜↕¨ 2‿1‿0≍3‿2‿1
+        [20‿30‿10,50‿40‿60] +⟜↕¨ 2‿1‿0≍3‿2‿1
 
 But arguments don't have to have exactly the same shape: just the same length along corresponding axes. These axes are matched up by [leading axis agreement](leading.md#leading-axis-agreement), so that one argument's shape has to be a prefix of the other's. With equal ranks, the shapes do have to match as we've seen above.
 
