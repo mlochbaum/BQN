@@ -35,13 +35,15 @@ ref ← {
     Get  ⇐ {𝕩.Get@}¨ arr˙
     # Common code for all setter functions
     # 𝕨S𝕩 sets reference 𝕨 to 𝕩, and e indicates error handling
+    al ← ∨´ {⟨al⟩:al;0}¨ arr
     _set_ ← {S _𝕣_ e:
       Err ← {(e∾": "∾𝕩)!e≡@ ⋄ ⟨1⟩} # e≡@ indicates SetQ, which can't error
       c ← (e≡@) ⊑ {𝔽}‿{𝔽⎊1}        # GetF or Get in F can error
       # Get field for reference 𝕨 from namespace, if possible
       F ← {⟨G⇐GetF⟩𝕊𝕩:(G𝕩).Get@ ; !Err"Cannot extract non-name from namespace"}
       {
-        0=•Type𝕩 ? arr ≡○≢◶⟨Err∘"Target and value shapes don't match", S¨⟩ 𝕩 ;
+        0=•Type𝕩 ? Err⍟al "Can't use alias in list destructuring"
+                   arr ≡○≢◶⟨Err∘"Target and value shapes don't match", S¨⟩ 𝕩 ;
         6=•Type𝕩 ? (⊢ S F⟜𝕩)_c¨ arr ;
         Err "Multiple targets but atomic value"
       }
@@ -64,6 +66,7 @@ ref ← {
   Alias ⇐ {env‿name 𝕊 r:
     SetN‿SetU‿SetQ ⇐ r
     GetF ⇐ {env.program 𝕩.Field name}
+    al ⇐ 1
   }
   # Destructuring placeholder ·
   not ⇐ { SetU⇐SetN⇐⊢ ⋄ SetQ⇐0˙ }
