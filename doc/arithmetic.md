@@ -179,7 +179,7 @@ With two arguments many combinations are possible. Arrays of equal shape are mat
 
 Arrays with different ranks can also be paired: they are matched by [leading axis agreement](leading.md#leading-axis-agreement). This means that one shape must be a prefix of the other, and elements of the lower-rank array are repeated to match up with cells of the higher-rank one.
 
-        1‿2‿3 ⋆ >⟨0‿1,2‿4,3‿6⟩
+        1‿2‿3 ⋆ [0‿1,2‿4,3‿6]
 
 This convention matches up with the way array nesting is handled: first, the leading "outer" axes are looped over, then later ones.
 
