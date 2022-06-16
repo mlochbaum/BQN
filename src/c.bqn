@@ -274,6 +274,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) ((5≠ai⊏gac)∧ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) hg<(0<er)∧(0≤r)∧»⊸>aa
   af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
+  "Aliases can only appear in ⟨⟩ bracketed lists"_err_(al⊏G) ¬al⊏(fo∨𝕩=⊑bB)<○IT lo
   ai/˜↩af⋄at/˜↩af∾1¨hj
 
   # Lexical resolution (independent of parsing part 2 below)
