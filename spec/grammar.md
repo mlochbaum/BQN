@@ -68,7 +68,7 @@ The target of subject assignment can be compound to allow for destructuring. Lis
     LHS_ENTRY= LHS_ELT | lhs "⇐" NAME
     lhsStr   = LHS_ATOM ( "‿" LHS_ATOM )+
     lhsList  = "⟨" ⋄? ( ( LHS_ENTRY ⋄ )* LHS_ENTRY ⋄? )? "⟩"
-    lhsArray = "[" ⋄?   ( LHS_ELT   ⋄ )* LHS_ELT   ⋄?    "]"
+    lhsArray = "[" ⋄? ( ( LHS_ELT   ⋄ )* LHS_ELT   ⋄? )? "]"
     lhsComp  = LHS_SUB | lhsStr | "(" lhs ")"
     lhs      = s | lhsComp
 
