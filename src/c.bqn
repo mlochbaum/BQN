@@ -142,7 +142,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧pred⊸=∨sep⊸=)gbx←gb/gx
   BE←=∨+⟜2⊸=                                # Bracket equals: match ⟨[ or ⟩] given ⟨ or ⟩ only
   "Predicates can't be placed inside lists"_err_((sep≠GBX)/gb/G) ((4+⊑bB)⊸BE»⊸∧pred⊸=)sep⊸≠⊸/gbx
-  {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)≠𝕩/0∾gx}1⊸«⊸∧1∾gb
+  {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)>𝕩/0∾gx}1⊸«⊸∧1∾gb
   dl←«⊸∨dc←r=4                              # Dot left
   r-↩(𝕩=⊑bG)>ec←«dc<0≤r+p                   # Role ¯4 for exports: ⊑bG is ⇐
   "Invalid assignment or stranding use"_err_(↕≠) ((¯4⊸<∧≤⟜¯2)r)>(ec∨𝕩=2+⊑bG)∧»dc<0≤r
@@ -258,6 +258,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   aa←×gac←g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac        # Broadcast ac to the entire target
   api←/(𝕩=⊑bO)∧ap←aa∧2=no                   # Assignment placeholder
   "Can't use Nothing (·) in lists"_nerr (¬ap)×no×(gr⊏¬ns)∨»lo∨ls
+  "Square brackets can't be empty"_err_(G) aa<(𝕩=6+⊑bB)∧1«ps
   ac-↩3×ah←6=ac                             # Assignment is header; 6→3
   nx⌈↩aa×1=no                               # Prevent assignment to 𝕨 if it's ·
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
