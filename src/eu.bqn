@@ -6,11 +6,11 @@ wh ← 1‿1
 Explain ← {
   b‿const‿blk‿bdy‿(i‿e)‿tok ← 𝕨
   ba‿bc‿bo‿bp ← (⊏/¨1⊸↓)'0'-˜⟨ # For each instruction, number of:
-    "114113141111111315114131131111=111"  # Codes until next opcode
-    "1110001100000000002221100000000111"  # Arguments
-    "000111//23232303230000011022232111"  # Stack values consumed
-    "1110001111111101111111101101111111"  # Stack values output
-    "0000000011111101010000000000010000"  # Position determiner
+    "11411311121111111315114131131111=111"  # Codes until next opcode
+    "111000111100000000002221100000000111"  # Arguments
+    "000111////23232303230000011022232111"  # Stack values consumed
+    "111000111111111101111111101101111111"  # Stack values output
+    "000000000011111101010000000000010000"  # Position determiner
   ⟩
   m ← { # Mask of instruction starts
     n ← (↕≠b)+1+ba(⊣⊏˜≠⊸>×⊢)b
