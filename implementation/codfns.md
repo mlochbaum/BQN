@@ -68,7 +68,7 @@ I stress here that I don't think there's anything wrong about the way Aaron has 
 
 BQN's compiler could certainly be made to run on a GPU, and it's fascinating that this is possible merely because I stuck to an array-based style. In Co-dfns, Aaron found a maximum factor of 6 improvement by running on the GPU, and this time it's the GPU runtime that we should expect to be slower than Dyalog. So we could expect an array-based compiler to run faster on large source files in this case. The problem is this: who could benefit from this speed?
 
-Probably not BQN. Recall that the BQN compiler runs at 3MB/s. This is fast enough that it almost certainly takes much longer to compile the program than to run it. The exception would be when a lot of code is loaded but not used, which can be solved by splitting the code into smaller files and only using those which are needed.
+Probably not BQN. Recall that the BQN compiler runs at 3MB/s. This is fast enough that it almost certainly takes much longer to run the program than to compile it. The exception would be when a lot of code is loaded but not used, which can be solved by splitting the code into smaller files and only using those which are needed.
 
 The programmers who complain about compile times are using languages like C++, Rust, and Julia that compile to native code, often through LLVM. The things that these compilers spend time on aren't the things that the BQN compiler does! BQN has a rigid syntax, no metaprogramming, and compiles to bytecode. The slow compilers are churning to perform tasks like:
 - Type checking
