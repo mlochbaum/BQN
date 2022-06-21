@@ -88,7 +88,7 @@ _fold←{
   ! 1==𝕩
   l←≠v←𝕩 ⋄ F←𝔽
   # If 𝕨 isn't given, start with the last cell of 𝕩
-  r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l↩l-1⋄l⊑𝕩}⊘⊣ 𝕩
+  r←𝕨 (0<l)◶{𝕩⋄Identity f}‿{l-↩1⋄l⊑𝕩}⊘⊣ 𝕩
   # Apply r↩(𝕨⊑v)F r for 𝕨 from l to 0
   l {𝕨 -⟜1⊸(⊣𝕊⊑⟜v⊸F)⍟(>⟜0) 𝕩} r
 }
@@ -220,40 +220,52 @@ Depth ← IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
 ˝ ← _insert
 ` ← _scan
 
-DropV← {⊑⟜𝕩¨𝕨+↕𝕨-˜≠𝕩}
-Cell ← DropV⟜≢
+Drop1 ← {⊑⟜𝕩¨𝕨+↕𝕨-˜≠𝕩}  # Drop from list
+Cell  ← Drop1⟜≢         # (-𝕨)-cell shape of array 𝕩
 
+# Merge: if empty, append fill shape to array shape to reshape fill
+# Otherwise, run all element ravels together
 Merge←(0<≠∘⥊)◶((∾○≢⥊⊢)⟜Fill⍟HasFill)‿{
   c←≢⊑𝕩
-  ! ∧´⥊(c≡≢)¨𝕩
-  𝕩⊑⟜ToArray˜⌜↕c
+  ! ∧´⥊(c≡≢)¨𝕩    # Shapes must match
+  𝕩⊑⟜ToArray˜⌜↕c  # Shape is (≢𝕩)∾c, with corresponding axis structure
 }
+
+# Check if ranks/depths are valid: list of one to three integers
+# Return ⥊𝕩
 ValidateRanks←{
   ! 1≥=𝕩
-  𝕩↩⥊𝕩
+  𝕩⥊↩
   ! (1⊸≤∧≤⟜3)≠𝕩
   ! ∧´Int¨𝕩
   𝕩
 }
+# Extract the appropriate ranks/depths for a call
+# Use negative indexing and wrap with |
 _ranks ← {⟨2⟩⊘⟨1,0⟩ ((⊣-1+|)˜⟜≠⊑¨<∘⊢) ValidateRanks∘𝔽}
 _depthOp_←{
-  neg←0>n←𝕨𝔾_ranks𝕩 ⋄ F←𝔽 ⋄ B←{𝕏;𝕨˙⊸𝕏}
+  n ← 𝕨 𝔾_ranks 𝕩
+  neg←0>n ⋄ F←𝔽
   _d←{
-    R←(𝕗+neg)_d
-    𝕨(2⥊(neg∧𝕗≥0)∨(0⌈𝕗)≥⋈○≡)◶(⟨R¨,R⟜(𝕩˙)¨∘⊣⟩≍⟨(𝕨 B r)¨∘⊢,F⟩)𝕩
+    R←(𝕗+neg)_d                    # Increment
+    rec ← 2⥊(neg∧𝕗≥0)∨(0⌈𝕗)≥𝕨⋈○≡𝕩  # Whether to recurse into 𝕨⊣𝕩 and 𝕩
+    𝕨 rec◶(⟨R¨,R⟜(𝕩˙)¨∘⊣⟩≍⟨(𝕨{𝕏;𝕨˙⊸𝕏}r)¨∘⊢,F⟩) 𝕩
   }
   𝕨 n _d 𝕩
 }
 _rankOp_←{
-  k←𝕨(⋈○= (0≤⊢)◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩
-  Enc←{
-    f←⊑⟜(≢𝕩)¨↕𝕨
+  k←𝕨(⋈○= 0⊸≤◶⟨⌊⟜-,0⌈-⟩¨ 𝔾_ranks)𝕩 # Effective frame length
+  # Enclose (-𝕨)-cells of 𝕩, that is, <⎉((=𝕩)-𝕨) 𝕩
+  EncK←{
+    f←⊑⟜(≢𝕩)¨↕𝕨  # 𝕨↑≢𝕩
     c←×´s←𝕨Cell𝕩
     f⥊⊑⟜(⥊𝕩)¨∘((s⥊↕c)+c×⊢)¨↕×´f
   }
-  Enc↩(>⟜0×1+≥⟜=)◶⟨<⊢,Enc,<⌜⊢⟩
+  # Use <⊢ if k=0 (required to handle atoms correctly), and <⌜⊢ if k==𝕩
+  Enc←(>⟜0×1+≥⟜=)◶⟨<⊢,EncK,<⌜⊢⟩
   > ((⊑k)Enc𝕨) 𝔽¨ ((1-˜≠)⊸⊑k)Enc𝕩
 }
+
 _insert←{
   ! 1≤=𝕩
   𝕨 𝔽´ <˘𝕩
@@ -261,25 +273,25 @@ _insert←{
 _scan←{
   ! IsArray 𝕩
   ! 1≤=𝕩
-  F←𝔽
-  cs←1 Cell 𝕩
+  c←×´cs←1 Cell 𝕩
   ! (cs≡≢)𝕨
-  l←≠r←⥊𝕩
+  l←≠r←⥊𝕩 ⋄ F←𝔽
   𝕨 (0<l)◶⊢‿{
-    c←×´cs
+    # Initial cell: cs⥊𝕨F¨c↑𝕩 if 𝕨 is given
     {r↩≥⟜c◶⟨⊑⟜(⥊𝕩)⊸F,⊢⟩⟜(⊑⟜r)¨↕l}𝕨
+    # For non-initial elements, apply F to index i-c and i
+    # Must be ordered to compute value i-c first
     (≢𝕩) ⥊ r {((𝕨-c)F○(⊑⟜𝕩)𝕨)𝕨_amend𝕩}´ (l-1)-↕l-c
   } 𝕩
 }
 _repeat_←{
-  n←𝕨𝔾𝕩
-  f←⊑𝕨⟨𝔽⟩⊘⟨𝕨𝔽⊢⟩𝕩
-  l←u←0
-  {!Int𝕩⋄!∞>|𝕩⋄l↩l⌊𝕩⋄u↩u⌈𝕩}⚇0 n
-  b←𝕨{𝕏⊣}˙⊘{𝕨˙{𝔽𝕏⊣}}0
-  i←⟨𝕩⟩⋄P←B⊸{𝕎`i∾↕𝕩}
-  pos←𝕗 P u
-  neg←𝕗 0⊸<◶⟨i,{𝕏⁼}⊸P⟩ -l
+  n←𝕨𝔾𝕩                       # Repetition numbers
+  l←u←0                       # Min and max repetitions
+  {!Int𝕩⋄!∞>|𝕩⋄l⌊↩𝕩⋄u⌈↩𝕩}⚇0 n
+  b←𝕨{⊢;𝕨{𝕗˙⊸𝕏}}0             # Bind 𝕨 to 𝕏 if necessary
+  i←⟨𝕩⟩⋄P←{𝕏⊣}∘B⊸{𝕎`i∾↕𝕩}     # P makes a list of repetition 0, 1, …
+  pos←𝕗 P u                   # Positive repetitions
+  neg←𝕗 0⊸<◶⟨i,{𝕏⁼}⊸P⟩ -l     # Negative repetitions
   (|⊑<⟜0⊑pos‿neg˙)⚇0 n
 }
 
@@ -296,6 +308,8 @@ _repeat_←{
 ⌽ ← Reverse        ⊘ Rotate
 / ← Indices        ⊘ Replicate
 
+# Multi-axis primitive: 𝔾 is applied to 𝕨 and determines the maximum
+# depth of the one-axis case
 _onAxes_←{
   F←𝔽
   (𝔾<≡)∘⊣◶{ # One axis
@@ -303,29 +317,29 @@ _onAxes_←{
     𝕨F𝕩
   }‿{ # Multiple axes
     ! 1≥=𝕨
-    ! 𝕨≤○≠≢𝕩
-    R←{(⊑𝕨)F(1 DropV 𝕨)⊸R˘𝕩}⍟{0<≠𝕨}
+    ! (≠𝕨)≤=𝕩
+    R←{(⊑𝕨)F(1 Drop1 𝕨)⊸R˘𝕩}⍟{0<≠𝕨}  # Recurse, then handle one axis
     𝕨R𝕩
   }⟜ToArray
 }
 
 SelSub←{
   ! IsArray 𝕨
-  ! ∧´⥊Int¨ 𝕨
-  ! ∧´⥊ 𝕨 (≥⟜-∧<) ≠𝕩
-  𝕨↩𝕨+(≠𝕩)×𝕨<0
+  ! ∧´⥊Int¨ 𝕨         # All integers
+  ! ∧´⥊ 𝕨 (≥⟜-∧<) ≠𝕩  # In range
+  𝕨 +↩ (≠𝕩)×𝕨<0       # Wrap negatives
   c←×´s←1 Cell 𝕩
-  ⊑⟜(⥊𝕩)¨(c×𝕨)+⌜s⥊↕c
+  ⊑⟜(⥊𝕩)¨(c×𝕨)+⌜s⥊↕c  # Extend each index to a whole cell
 }
 Select←ToArray⊸(SelSub _onAxes_ 1)
 
 JoinTo←{
   s←𝕨⋈○≢𝕩
-  a←1⌈´k←≠¨s
-  ! ∧´1≥a-k
-  c←(k¬a)+⟜(↕a-1)⊸⊏¨s
+  a←1⌈´k←≠¨s          # Argument ranks k and result rank a
+  ! ∧´1≥a-k           # Can add at most one axis
+  c←(k¬a)+⟜(↕a-1)⊸⊏¨s # Cell shapes
   ! ≡´c
-  l←+´(a=k)⊣◶1‿(⊑⊢)¨s
+  l←+´(a=k)⊣◶1‿(⊑⊢)¨s # Total length
   (⟨l⟩∾⊑c)⥊𝕨∾○⥊𝕩
 }
 
@@ -333,14 +347,17 @@ Take←{
   T←{
     ! Int 𝕨
     l←≠𝕩
+    # Indices, with clamp and modulus so that fills are all l
     i←(l+1)|¯1⌈l⌊((𝕨<0)×𝕨+l)+↕|𝕨
+    # Don't get the fill if not needed, as it can error
     i⊏JoinTo⟜(1⊸Cell⥊Fill)⍟(∨´l=i)𝕩
   }
+  # Add leading 1s to shape of 𝕩 first if necessary
   𝕨 T _onAxes_ 0 (⟨1⟩⥊˜0⌈𝕨-○≠⊢)⊸∾∘≢⊸⥊𝕩
 }
 Drop←{
-  s←(≠𝕨)(⊣↑⊢∾˜1⥊˜0⌈-⟜≠)≢𝕩
-  ((s×¯1⋆𝕨>0)+(-s)⌈s⌊𝕨)↑𝕩
+  s←(≠𝕨)(⊣↑⊢∾˜1⥊˜0⌈-⟜≠)≢𝕩  # Padded shape
+  ((s×¬⊸-𝕨>0)+(-s)⌈s⌊𝕨)↑𝕩  # Clamp and complement, then use Take
 }
 Prefixes ← {!1≤=𝕩 ⋄ (↕1+≠𝕩)Take¨<𝕩}
 Suffixes ← {!1≤=𝕩 ⋄ (↕1+≠𝕩)Drop¨<𝕩}
@@ -352,9 +369,9 @@ NudgeBack ← (1↑0↑⊢)⊸ShiftAfter
 
 Windows←{
   ! 1≥=𝕨
-  ! 𝕨≤○≠≢𝕩
+  ! (≠𝕨)≤=𝕩
   ! ∧´Nat¨⥊𝕨
-  s←(≠𝕨)↑≢𝕩
+  s←𝕨≠⊸↑≢𝕩
   ! ∧´𝕨≤1+s
   𝕨{(∾⟜(𝕨≠⊸↓≢𝕩)∘≢⥊>)<¨⊸⊏⟜𝕩¨s(¬+⌜○↕⊢)⥊𝕨}⍟(0<≠𝕨)𝕩
 }
@@ -447,7 +464,7 @@ ReorderAxes←{
   𝕩↩<⍟(0=≡)𝕩
   ! 1≥=𝕨
   𝕨↩⥊𝕨
-  ! 𝕨≤○≠≢𝕩
+  ! (≠𝕨)≤=𝕩
   ! ∧´Nat¨⥊𝕨
   r←(=𝕩)-+´¬∊𝕨
   ! ∧´𝕨<r
