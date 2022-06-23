@@ -1,0 +1,20 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN: Left Square Bracket ([)</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">help</a></div>
+<h1 id="left-square-bracket-"><a class="header" href="#left-square-bracket-">Left Square Bracket (<code><span class='Bracket'>[</span></code>)</a></h1>
+<h2 id="--begin-array"><a class="header" href="#--begin-array"><code><span class='Bracket'>[</span> <span class='Value'>...</span></code>: Begin array</a></h2>
+<p><a class="fulldoc" href="../doc/arrayrepr.html#high-rank-arrays">→full documentation</a></p>
+<p>Starts a high-rank array. Entries must be separated by <code><span class='Separator'>,</span></code> or <code><span class='Separator'>⋄</span></code>. These must have the same shape. They become major cells of the result.</p>
+<p>Must end with a corresponding <code><span class='Bracket'>]</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=WyJhYmMiLCAiZGVmIl0KClvihpU0LCDihpU1XQ==">↗️</a><pre>    <span class='Bracket'>[</span><span class='String'>&quot;abc&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;def&quot;</span><span class='Bracket'>]</span>
+┌─     
+╵"abc  
+  def" 
+      ┘
+
+    <span class='Bracket'>[</span><span class='Function'>↕</span><span class='Number'>4</span><span class='Separator'>,</span> <span class='Function'>↕</span><span class='Number'>5</span><span class='Bracket'>]</span>
+<span class='Error'>Error: >: Elements didn't have equal shapes (contained shapes ⟨4⟩ and ⟨5⟩)</span>
+</pre>
