@@ -3,9 +3,9 @@
 # Undertie (`‿`)
 
 ## `‿`: Strand
-[→full documentation](../doc/syntax.md#list-and-array-notation)
+[→full documentation](../doc/arrayrepr.md#strands)
 
-Create a list via [strand notation](../doc/arrayrepr.md#strands).
+Create a list via strand notation.
 
 Placing `‿` between valid BQN expressions will create a list out of the end results of those expressions.
 
