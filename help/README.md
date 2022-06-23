@@ -82,6 +82,8 @@
 | `?` | [Predicate](predicate.md) |
 | `⟨` | [Begin list](beginlist.md) |
 | `⟩` | [End list](endlist.md) |
+| `[` | [Begin array](beginarray.md) |
+| `]` | [End array](endarray.md) |
 | `‿` | [Strand](strand.md) |
 | `·` | [Nothing](nothing.md) |
 | `•` | [System](system.md) |
