@@ -373,7 +373,11 @@ Windows←{
   ! ∧´Nat¨⥊𝕨
   s←𝕨≠⊸↑≢𝕩
   ! ∧´𝕨≤1+s
-  𝕨{(∾⟜(𝕨≠⊸↓≢𝕩)∘≢⥊>)<¨⊸⊏⟜𝕩¨s(¬+⌜○↕⊢)⥊𝕨}⍟(0<≠𝕨)𝕩
+  𝕨{
+    i ← s(¬+⌜○↕⊢)⥊𝕨  # Cell indices in 𝕩: add leading and trailing axes
+    c ← ><¨⊸⊏⟜𝕩¨i    # Select the cells
+    ((≢i)∾𝕨≠⊸↓≢𝕩)⥊c  # Reshape in case it's empty
+  }⍟(0<≠𝕨)𝕩
 }
 
 Reverse ← {!1≤=𝕩 ⋄ (-↕⊸¬≠𝕩)⊏𝕩}
@@ -385,7 +389,8 @@ Indices←{
   ⟨⟩∾´𝕩⥊¨↕≠𝕩
 }
 Rep ← Indices⊸⊏
-Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩} _onAxes_ (1-0=≠)
+# Expand unit 𝕨 to length of 𝕩, and check length match for a list
+Replicate ← ({0<=𝕨}◶(⊣˘)‿{!𝕨=○≠𝕩⋄𝕨}Rep⊢) _onAxes_ (1-0=≠)
 
 
 #⌜
@@ -405,44 +410,45 @@ Replicate ← {0<=𝕨}◶(⥊˜⟜≠Rep⊢)‿{!𝕨=○≠𝕩⋄𝕨Rep𝕩}
 
 identity { f‿i←𝕨 ⋄ f˙⊸=◶𝕩‿i }´↩ ⟨ ∨‿0, ∧‿1 ⟩
 
-JoinEmpty ← ({!𝕨≤○≠𝕩⋄𝕨≠⊸((𝕨×≠⊸↑)∾↓)𝕩}○≢⥊⊢)⟜Fill⍟HasFill
+# Join of empty: multiply shape by (leading) fill shape
+JoinEmpty ← ({!𝕨≤○≠𝕩⋄𝕨≠⊸((𝕨×↑)∾↓)𝕩}○≢⥊⊢)⟜Fill⍟HasFill
 
 Join←(0<≠∘⥊)◶⟨JoinEmpty, (0<=)◶{!IsArray𝕩⋄>𝕩}‿{
   ! IsArray 𝕩
   s←≢¨𝕩
-  a←(≢𝕩){(s⊑˜(j=𝕩)⊸×)¨↕𝕨}¨j←↕r←=𝕩
-  h←(¬⟜(⌈´)≠¨)¨a
-  ! ∧´∧´¨0≤h
-  o←+`⊑¨h
-  t←(¯1⊑o)↓⊑s
-  l←h{𝕎𝕩}¨˜(»o){⊣◶⟨1,𝕨⊸⊑⟩¨⟜𝕩}¨a
-  ! s≡(<t)∾⌜´h⥊¨¨l
-  i←(<⟨⟩)∾⌜´h{((↕¯1⊸⊑)-𝕩/𝕨⥊¨»)+`𝕩}¨l
+  a←(≢𝕩){(s⊑˜(j=𝕩)⊸×)¨↕𝕨}¨j←↕r←=𝕩    # Skeleton: elements 0,0,…k,…0 along each axis
+  h←(¬⟜(⌈´)≠¨)¨a                     # Which positions have the axis
+  ! ∧´∧´¨0≤h                         # Rank can only change by 1 along a line
+  o←+`⊑¨h                            # Starting position of each axis in ⊑𝕩
+  t←(¯1⊑o)↓⊑s                        # Trailing axes
+  l←h{𝕎𝕩}¨˜(»o){⊣◶⟨1,𝕨⊸⊑⟩¨⟜𝕩}¨a      # Length of each position on each axis
+  ! s≡(<t)∾⌜´h⥊¨¨l                   # Shape agreement
+  i←(<⟨⟩)∾⌜´h{((↕¯1⊸⊑)-𝕩/𝕨⥊¨»)+`𝕩}¨l # Indices: ∾↕∘≢¨𝕩 if no trailing axes
   >i<¨⊸⊏⍟(0<≠∘⊣)¨l/𝕩
 }⟩
 
 Group←{
   ! IsArray 𝕩
-  𝕨↩⋈∘ToArray⍟(2>≡)𝕨
+  𝕨 ⋈∘ToArray⍟(2>≡)↩
   ! 1==𝕨
-  {!∧´Int¨𝕩⋄!∧´¯1≤𝕩}∘⥊¨𝕨
-  n←+´r←=¨𝕨
+  {!∧´Int¨𝕩⋄!∧´¯1≤𝕩}∘⥊¨𝕨  # Atoms in 𝕨 must be integers ≥¯1
+  n←+´r←=¨𝕨               # Number of ranks grouped for each result axis (r); total (n)
   ! n≤=𝕩
-  ld←(∾≢⌜𝕨)-n↑≢𝕩
-  ! ∧´(0⊸≤∧≤⟜(r/1=r))ld
-  dr←r⌊(0»+`r)⊏ld∾⟨0⟩
-  s←dr⊣◶⟨0,¯1⊸⊑⟩¨𝕨
-  𝕨↩dr(⥊¯1⊸↓⍟⊣)¨𝕨
-  s⌈↩1+¯1⌈´¨𝕨
-  𝕩↩((≠¨𝕨)∾n↓≢𝕩)⥊𝕩
-  (𝕨⊸=/𝕩˙)¨↕s
+  ld←(∾≢⌜𝕨)-n↑≢𝕩          # Extra elements
+  ! ∧´(0⊸≤∧≤⟜(r/1=r))ld   # Must be 0 extra, or possibly 1 for rank 1 components
+  dr←r⌊(0»+`r)⊏ld∾⟨0⟩     # Whether each result axis has a minimum length
+  s←dr⊣◶⟨0,¯1⊸⊑⟩¨𝕨        # Minimum shape required by extra elements
+  𝕨↩dr(⥊¯1⊸↓⍟⊣)¨𝕨         # Remove extra elements; deshape components
+  s⌈↩1+¯1⌈´¨𝕨             # Result shape
+  𝕩↩((≠¨𝕨)∾n↓≢𝕩)⥊𝕩        # Merge axes of 𝕩 that are handled together in 𝕨
+  (𝕨⊸=/𝕩˙)¨↕s             # Construct each result group by filtering
 }
 GroupInds←{
   ! 1==𝕩
   𝕩 ⊔ ↕ (1<≡)◶≠‿(∾≢¨) 𝕩
 }
 
-# Searching
+# Searching: use all-pairs comparisons
 IndexOf←{
   c←1-˜=𝕨
   ! 0≤c
@@ -452,7 +458,7 @@ IndexOf←{
 MarkFirst←{
   ! 1≤=𝕩
   u←0↑𝕩
-  (0<≠)◶⟨⟨⟩,{⊑𝕩∊u}◶{u↩u∾𝕩⋄1}‿0˘⟩𝕩
+  (0<≠)◶⟨⟨⟩,{⊑𝕩∊u}◶{u∾↩𝕩⋄1}‿0˘⟩𝕩
 }
 Find←{
   r←=𝕨
@@ -461,27 +467,31 @@ Find←{
 }○ToArray
 
 ReorderAxes←{
-  𝕩↩<⍟(0=≡)𝕩
+  𝕩<⍟(0=≡)↩
   ! 1≥=𝕨
-  𝕨↩⥊𝕨
+  𝕨⥊↩
   ! (≠𝕨)≤=𝕩
-  ! ∧´Nat¨⥊𝕨
-  r←(=𝕩)-+´¬∊𝕨
+  ! ∧´Nat¨𝕨
+  r←(=𝕩)-+´¬∊𝕨      # Result rank: duplicates in 𝕨 reduce it
   ! ∧´𝕨<r
-  𝕨↩𝕨∾𝕨(¬∘∊˜/⊢)↕r
-  (𝕨⊸⊏⊑𝕩˙)¨↕⌊´¨𝕨⊔≢𝕩
+  𝕨∾↩𝕨(¬∘∊˜/⊢)↕r    # Add unused axes to the end
+  (𝕨⊸⊏⊑𝕩˙)¨↕⌊´¨𝕨⊔≢𝕩 # Reorder indices to select result elements
 }
 Transpose←(0<=)◶⟨ToArray,(=-1˙)⊸ReorderAxes⟩
 
 # Sorting
 Cmp ← ⌈○IsArray◶{ # No arrays
-  𝕨(>-<)𝕩 # Assume they're numbers
+  𝕨(>-<)𝕩
 }‿{ # At least one array
   e←𝕨-˜○(∨´0=≢)𝕩
   𝕨(e=0)◶e‿{
+    # Backup ordering by rank
     c←𝕨×∘-○(IsArray+=)𝕩
+    # l is the number of elements to compare
+    # Also update backup ordering c if lengths differ
     s←≢𝕨 ⋄ t←≢𝕩 ⋄ r←𝕨⌊○=𝕩
-    l←s{i←+´∧`𝕨=𝕩⋄m←×´i↑𝕨⋄{c↩×-´𝕩⋄m↩m×⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i⋄m}○(r↑⌽)t
+    l←s{i←+´∧`𝕨=𝕩⋄m←×´i↑𝕨⋄{c↩×-´𝕩⋄m×↩⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i⋄m}○(r↑⌽)t
+    # Compare elements, stopping at the first difference
     a←⥊𝕨⋄b←⥊𝕩
     Trav←(=⟜l)◶{Trav∘(1+𝕩)⍟(0⊸=)a Cmp○(𝕩⊸⊑)b}‿c
     Trav 0
@@ -490,16 +500,21 @@ Cmp ← ⌈○IsArray◶{ # No arrays
 
 _grade←{
   ! 1≤=𝕩
+  # Compare all cells and break ties with indices
+  # Then sum and invert as a permutation
   i⊐˜+´˘(𝔽⎉∞‿¯1⎉¯1‿∞˜𝕩)(⌈⟜0+=⟜0⊸×)>⌜˜i←↕≠𝕩
 }
 _bins←{
-  c←1-˜=𝕨
+  c←1-˜=𝕨                       # Rank of compared cells
   ! 0≤c
   ! c≤=𝕩
-  LE←𝔽⎉c≤0˙
-  ! (0<≠)◶⟨1,∧´·LE˝˘2↕⊢⟩𝕨
-  𝕨 (0<≠𝕨)◶⟨0⎉c∘⊢,+˝LE⎉¯1‿∞⟩ 𝕩
+  LE←𝔽⎉c≤0˙                     # Does 𝕨 precede 𝕩?
+  ! (0<≠)◶⟨1,∧´·LE˝˘2↕⊢⟩𝕨       # 𝕨 must be ordered
+  𝕨 (0<≠𝕨)◶⟨0⎉c∘⊢,+˝LE⎉¯1‿∞⟩ 𝕩  # Number of 𝕨 cells preceding or matching each 𝕩 cell
 }
 
+# ⊐˜ ranks without breaking ties and ⍋∘⍋ breaks ties, so the
+# difference after adjusting ⊐˜ is the occurrence count
 OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
+# Tag each cell with an occurrence count, then search
 ProgressiveIndexOf ← {𝕨⊐○(((≢∾2˙)⥊≍˘⟜OccurrenceCount∘⥊)𝕨⊸⊐)𝕩}
