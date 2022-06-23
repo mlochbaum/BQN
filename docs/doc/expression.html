@@ -5,7 +5,7 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="expression-syntax"><a class="header" href="#expression-syntax">Expression syntax</a></h1>
-<p>BQN expressions are the part of <a href="syntax.html">syntax</a> that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like <a href="block.html">blocks</a> and <a href="namespace.html">namespaces</a> around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe <a href="syntax.html#constants">constant</a> and <a href="arrayrepr.html#list-literals">array</a> literals, which each form a single subject for grammatical purposes.</p>
+<p>BQN expressions are the part of <a href="syntax.html">syntax</a> that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like <a href="block.html">blocks</a> and <a href="namespace.html">namespaces</a> around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe <a href="syntax.html#constants">constant</a> and <a href="arrayrepr.html#array-literals">array</a> literals, which each form a single subject for grammatical purposes.</p>
 <p>The <a href="../tutorial/expression.html">first tutorial</a> also covers how to build and read BQN expressions.</p>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p>BQN expressions consist of subjects, functions, and modifiers arranged in sequence, with parentheses to group parts into subexpressions. Assignment arrows <code><span class='Gets'>←</span></code> and <code><span class='Gets'>↩</span></code> can also be present and mostly behave similar to functions. Functions can be applied to subjects or grouped into trains, while modifiers can be applied to subjects or functions. The most important kinds of application are:</p>
@@ -106,7 +106,7 @@
 </table>
 <p>Primitive tokens, since they have a fixed value, always have a role that matches their type. They are functions, unless they fall into one of the two modifier patterns. 1-modifiers have superscript glyphs, and 2-modifiers have glyphs with an unbroken circle—that is, one without a line through it, excluding functions <code><span class='Function'>⌽</span></code> and <code><span class='Function'>⍉</span></code>.</p>
 <p>Variable names can be written in any case and with underscores added, and these changes don't affect what <a href="lexical.html">identifier</a> the name refers to. <code><span class='Value'>ab</span></code>, <code><span class='Value'>aB</span></code>, <code><span class='Function'>AB</span></code>, and <code><span class='Modifier2'>_a_B_</span></code> are all the same variable. However, the spelling—specifically the first and last characters—determine the variable's role. A lowercase first letter indicates a subject, and an uppercase first letter makes it a function. A leading underscore (regardless of the following character) indicates a 1-modifier, and both leading and trailing underscores makes a 2-modifier.</p>
-<p>Besides these, character, string, and <a href="arrayrepr.html#list-literals">list literals</a> always have a subject role, and the role of a <a href="block.html">block</a> is determined by its type, which depends either on the header it has or which special variables it uses.</p>
+<p>Besides these, character, string, and <a href="arrayrepr.html#array-literals">array literals</a> always have a subject role, and the role of a <a href="block.html">block</a> is determined by its type, which depends either on the header it has or which special variables it uses.</p>
 <p>The role of a compound expression, formed by applying an operation to some inputs, depends on the operation applied. This system is discussed in the remaining sections below.</p>
 <h2 id="nothing"><a class="header" href="#nothing">Nothing</a></h2>
 <p>The character <code><span class='Nothing'>·</span></code> is called Nothing. While it can be easier to think of it as a value, it can't be passed around in variables, and so can also be interpreted as an element of syntax. The special name <code><span class='Value'>𝕨</span></code> also functions as Nothing if the block that contains it is called with one argument (the uppercase spelling <code><span class='Function'>𝕎</span></code> doesn't, but instead immediately causes an error). Both <code><span class='Nothing'>·</span></code> and <code><span class='Value'>𝕨</span></code> have a subject role.</p>
@@ -217,6 +217,16 @@
 
     <span class='Value'>s</span>
 ⟨ 0 1 2 3 ⟩
+</pre>
+<p>Array destructuring using <code><span class='Bracket'>[]</span></code> is also possible: it's equivalent to splitting the right-hand side with <code><span class='Function'>&lt;</span><span class='Modifier'>˘</span></code> and then applying list destructuring.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=W3QsdV0g4oaQIOKGlTLigL8zCgp1">↗️</a><pre>    <span class='Bracket'>[</span><span class='Value'>t</span><span class='Separator'>,</span><span class='Value'>u</span><span class='Bracket'>]</span> <span class='Gets'>←</span> <span class='Function'>↕</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span>
+┌─                         
+╵ ⟨ 0 0 ⟩ ⟨ 0 1 ⟩ ⟨ 0 2 ⟩  
+  ⟨ 1 0 ⟩ ⟨ 1 1 ⟩ ⟨ 1 2 ⟩  
+                          ┘
+
+    <span class='Value'>u</span>
+⟨ ⟨ 1 0 ⟩ ⟨ 1 1 ⟩ ⟨ 1 2 ⟩ ⟩
 </pre>
 <p>Namespace destructuring uses an overlapping syntax, fully described in <a href="namespace.html#imports">its own section</a>. The left hand side is a list of names or aliases <code><span class='Value'>to</span><span class='Gets'>⇐</span><span class='Value'>from</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ceKAv3Ig4oapIHtx4oeQMity4oeQMC41fSDii4QgcQ==">↗️</a><pre>    <span class='Value'>q</span><span class='Ligature'>‿</span><span class='Value'>r</span> <span class='Gets'>↩</span> <span class='Brace'>{</span><span class='Value'>q</span><span class='Gets'>⇐</span><span class='Number'>2</span><span class='Function'>+</span><span class='Value'>r</span><span class='Gets'>⇐</span><span class='Number'>0.5</span><span class='Brace'>}</span> <span class='Separator'>⋄</span> <span class='Value'>q</span>

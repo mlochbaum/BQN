@@ -55,7 +55,7 @@ It incorporates concepts developed over years of APL practice:
 * Lightweight [**anonymous functions**](doc/block.md) (like [dfns](https://aplwiki.com/wiki/Dfn)) borrow some power from Lisp.
 
 But it's redesigned from the ground up, with many features new to the array paradigm:
-* The [**based array model**](doc/based.md) eliminates the surprise of floating arrays and the hassle of explicit boxes, while dedicated [**list notation**](doc/arrayrepr.md#list-literals) does away with the [gotchas](doc/arrayrepr.md#why-not-whitespace) of [stranding](https://aplwiki.com/wiki/Strand_notation).
+* The [**based array model**](doc/based.md) eliminates the surprise of floating arrays and the hassle of explicit boxes, while dedicated [**array notation**](doc/arrayrepr.md#array-literals) does away with the [gotchas](doc/arrayrepr.md#why-not-whitespace) of [stranding](https://aplwiki.com/wiki/Strand_notation).
 * [**Context-free grammar**](doc/context.md) makes it easier for machines and humans to understand code, and naturally leads to [**first-class functions**](doc/functional.md), which can even be used to [reinvent control structures](doc/control.md).
 * [**New symbols**](keymap.md) for built-in functionality make the syntactic role of every primitive instantly visible, and aim to be more consistent and intuitive.
 * No-nonsense [**namespace syntax**](doc/namespace.md) encapsulates data and even allows for a little [object-oriented programming](doc/oop.md).

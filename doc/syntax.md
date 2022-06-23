@@ -20,8 +20,9 @@ Glyph(s)        | Meaning
 `⇐`             | [Export](expression.md#exports)
 `↩`             | [Change](expression.md#assignment)
 `⋄,` or newline | Statement or element [separator](#separators)
-`⟨⟩`            | [List](#list-notation) (rank-1 array)
-`‿`             | [Strand](#list-notation) (lightweight list syntax)
+`⟨⟩`            | [List](#list-and-array-notation)
+`[]`            | [Array](#list-and-array-notation)
+`‿`             | [Strand](#list-and-array-notation) (lightweight list syntax)
 `{}`            | [Block](#blocks) such as a function definition
 `:`             | [Block header](block.md#block-headers)
 `;`             | [Block body separator](block.md#multiple-bodies)
@@ -74,19 +75,21 @@ The four [roles](expression.md#syntactic-role) (subject, function, two kinds of 
 
 The double arrow `⇐` is used for functionality relating to [namespaces](namespace.md). It has a few purposes: exporting assignment `name⇐value`, plain export `name⇐`, and aliasing `⟨alias⇐field⟩←namespace`. A block that uses it for export returns a namespace rather than the result of its last statement. The other namespace-related bit of syntax is field access `ns.field`.
 
-## Lists and blocks
+## Arrays and blocks
 
-Lists and code blocks can both be represented as sequences of expressions in source code. They both have paired bracket representations, using `⟨⟩` for lists and `{}` for blocks, as well as a shortcut "stranding" notation using `‿` for lists.
+Arrays and code blocks can both be represented as sequences of expressions in source code. There are paired bracket representations, using `⟨⟩` for lists, `[]` for arrays, and `{}` for blocks, as well as a shortcut "stranding" notation using `‿` for lists.
 
 ### Separators
 
 The characters `⋄` and `,` and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a block. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.
 
-### List notation
+### List and array notation
 
-*[Full documentation](arrayrepr.md#list-literals)*
+*[Full documentation](arrayrepr.md#array-literals)*
 
 Lists (1-dimensional arrays) are enclosed in angle brackets `⟨⟩`, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character `‿`. This character has higher binding strength than any part of an expression except `.` for namespace field access. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.
+
+Arrays, or at least non-empty ones with rank 1 or more, can be written with square brackets `[]`. These work just like angle brackets but [merge](couple.md#merge-and-array-theory) the elements so that they form cells of the result.
 
 ### Blocks
 

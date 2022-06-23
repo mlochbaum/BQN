@@ -158,9 +158,9 @@
 ⟨⟩
 </pre>
 <p>This case also covers empty lists, which are shown as <code><span class='Bracket'>⟨⟩</span></code>. This includes an empty string, as the only difference between an empty string and any other empty list is its fill element and array displays don't depend on the fill.</p>
-<h2 id="list-literals"><a class="header" href="#list-literals">List literals</a></h2>
+<h2 id="array-literals"><a class="header" href="#array-literals">Array literals</a></h2>
 <p><em>The tutorial section <a href="../tutorial/list.html#list-notation">here</a> also covers this topic.</em></p>
-<p>There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the <a href="fill.html">fill</a>) and the other two can combine any sequence of elements.</p>
+<p>There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the <a href="fill.html">fill</a>) and the other two can combine any sequence of elements. Additionally, there's a square bracket notation that can form higher-rank arrays.</p>
 <h3 id="strings"><a class="header" href="#strings">Strings</a></h3>
 <p>A <strong>string</strong> consists of a sequence of characters surrounded by double quotes <code><span class='String'>&quot;&quot;</span></code>. The only rule for the characters inside is that any double quote must be escaped by repeating it twice; otherwise the string ends at that point.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Ii0nw5clIiIqIgoKIi0nw5clIioiICAjIEVzY2FwaW5nIGZhaWx1cmU=">↗️</a><pre>    <span class='String'>&quot;-'×%&quot;&quot;*&quot;</span>
@@ -192,6 +192,16 @@
   <span class='String'>&quot;e6&quot;</span>
 <span class='Bracket'>⟩</span>
 </pre>
+<h4 id="high-rank-arrays"><a class="header" href="#high-rank-arrays">High-rank arrays</a></h4>
+<p>Higher-rank arrays can be written with <code><span class='Bracket'>[]</span></code>, an <strong>array notation</strong> that indicates each element is to be used as a <a href="array.html#cells">cell</a> of its result. It's identical to forming a list and applying <a href="couple.html#merge-and-array-theory">Merge</a> (<code><span class='Bracket'>[</span><span class='Value'>…</span><span class='Bracket'>]</span></code> is the same as <code><span class='Function'>&gt;</span><span class='Bracket'>⟨</span><span class='Value'>…</span><span class='Bracket'>⟩</span></code>).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=WzLigL8zLCA04oC/MSwgMOKAvzVd">↗️</a><pre>    <span class='Bracket'>[</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Bracket'>]</span>
+┌─     
+╵ 2 3  
+  4 1  
+  0 5  
+      ┘
+</pre>
+<p>This syntax doesn't work for creating rank 0 arrays—use <a href="enclose.html">Enclose</a> <code><span class='Function'>&lt;</span></code> for these—or empty arrays. The notation <code><span class='Bracket'>[]</span></code> would be ambiguous, so it's not allowed (although it can be used for destructuring, which works with an existing array). To create a specific empty array, <a href="reshape.html">Reshape</a> (<code><span class='Function'>⥊</span></code>) is probably the best approach.</p>
 <h3 id="strands"><a class="header" href="#strands">Strands</a></h3>
 <p><strong>Strand notation</strong> is another way to write lists of length two or more. The elements are connected with the ligature character <code><span class='Ligature'>‿</span></code>. It has a precedence lower than the <a href="namespace.html">namespace</a> dot but higher than anything else other than paired brackets <code><span class='Paren'>()</span></code>, <code><span class='Brace'>{}</span></code>, and <code><span class='Bracket'>⟨⟩</span></code>, so compound elements generally need to be placed in parentheses. Expressions joined by ligatures behave exactly the same as those in list notation: they are evaluated in order and placed in a list.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K+KAv8K04oC/4oiY4oC/w5cKCivigL/CtOKAv+KImOKAv8OXICDiiaEgIOKfqCsswrQs4oiYLMOX4p+p">↗️</a><pre>    <span class='Function'>+</span><span class='Ligature'>‿</span><span class='Modifier'>´</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Function'>×</span>
@@ -213,20 +223,3 @@
 <p>Explicit stranding is also more general, because it applies equally to elements of any role. <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>+</span><span class='Ligature'>‿</span><span class='Number'>3</span></code> is a perfectly fine list in BQN—maybe it's part of an AST—while <code><span class='Number'>2</span> <span class='Function'>+</span> <span class='Number'>3</span></code> is clearly not a list. Meanwhile J and K restrict their stranding even further, to numbers only. It does mean that issues with stranding show up in fewer cases, but it also means that changing one element of a list from a constant to a variable requires rewriting the whole list.</p>
 <p>Why couldn't the more explicit list notation <code><span class='Bracket'>⟨</span><span class='Value'>a</span><span class='Separator'>,</span><span class='Value'>b</span><span class='Separator'>,</span><span class='Value'>c</span><span class='Bracket'>⟩</span></code> drop the separators? This is also largely for reasons of generality—even more important here since <code><span class='Bracket'>⟨⟩</span></code> is the more general-purpose list notation. Writing <code><span class='Bracket'>⟨</span><span class='Function'>÷</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩</span></code> without the <code><span class='Separator'>,</span></code> won't go well. For something like <code><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Function'>×</span><span class='Value'>c</span><span class='Separator'>,</span><span class='Value'>b</span><span class='Function'>-</span><span class='Number'>1</span><span class='Bracket'>⟩</span></code>, maybe the interpreter could sort it out but it would be pretty confusing. Pretty soon you're going through the list character by character trying to figure out which space is actually a separator. And cursing, probably.</p>
 <p>Fortunately, I find that after a reasonable period of adjustment typing ligatures instead of spaces doesn't feel strange, and reading code is improved overall by the more explicit notation. A minor note is that lists of literal numbers, where APL-style stranding is best, tend to show up more in the snippets that beginners write to test out the language than in programs even in the tens of lines. So this issue sticks out in first experiences with BQN, but will come up less later on.</p>
-<h3 id="array-notation"><a class="header" href="#array-notation">Array notation?</a></h3>
-<p>BQN has literal notation for lists only right now. To get an array with rank other than 1, either <a href="reshape.html">reshape</a> a list, or <a href="couple.html#merge-and-array-theory">merge</a> a list of arrays:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oiY4oC/MiDipYog4p+oMiwzLCA0LDEsIDAsNeKfqQoKWzLigL8zLCA04oC/MSwgMOKAvzVd">↗️</a><pre>    <span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⥊</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
-┌─     
-╵ 2 3  
-  4 1  
-  0 5  
-      ┘
-
-    <span class='Bracket'>[</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Bracket'>]</span>
-┌─     
-╵ 2 3  
-  4 1  
-  0 5  
-      ┘
-</pre>
-<p>The characters <code><span class='Bracket'>[]</span></code> are reserved to potentially combine list notation with merging, allowing the above to be written <code><span class='Bracket'>[</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Bracket'>]</span></code>. This would allow non-empty arrays with rank one or more to be written without a primitive, but not rank 0 or empty arrays. Since creating arrays in general would still require primitives like <code><span class='Function'>&lt;</span></code> or <code><span class='Function'>⥊</span></code>, it's not clear whether this notation is worth it. General array notation is a surprisingly complicated topic; see the article about it <a href="https://aplwiki.com/wiki/Array_notation">on the APL Wiki</a>.</p>
