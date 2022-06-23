@@ -84,11 +84,11 @@ The second is for lists with simple enough elements, which are displayed on one 
 
 This case also covers empty lists, which are shown as `⟨⟩`. This includes an empty string, as the only difference between an empty string and any other empty list is its fill element and array displays don't depend on the fill.
 
-## List literals
+## Array literals
 
 *The tutorial section [here](../tutorial/list.md#list-notation) also covers this topic.*
 
-There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the [fill](fill.md)) and the other two can combine any sequence of elements.
+There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the [fill](fill.md)) and the other two can combine any sequence of elements. Additionally, there's a square bracket notation that can form higher-rank arrays.
 
 ### Strings
 
@@ -121,6 +121,14 @@ BQN's separator rules give list notation a very flexible structure. You can put 
       "e6"
     ⟩
 
+#### High-rank arrays
+
+Higher-rank arrays can be written with `[]`, an **array notation** that indicates each element is to be used as a [cell](array.md#cells) of its result. It's identical to forming a list and applying [Merge](couple.md#merge-and-array-theory) (`[…]` is the same as `>⟨…⟩`).
+
+        [2‿3, 4‿1, 0‿5]
+
+This syntax doesn't work for creating rank 0 arrays—use [Enclose](enclose.md) `<` for these—or empty arrays. The notation `[]` would be ambiguous, so it's not allowed (although it can be used for destructuring, which works with an existing array). To create a specific empty array, [Reshape](reshape.md) (`⥊`) is probably the best approach.
+
 ### Strands
 
 **Strand notation** is another way to write lists of length two or more. The elements are connected with the ligature character `‿`. It has a precedence lower than the [namespace](namespace.md) dot but higher than anything else other than paired brackets `()`, `{}`, and `⟨⟩`, so compound elements generally need to be placed in parentheses. Expressions joined by ligatures behave exactly the same as those in list notation: they are evaluated in order and placed in a list.
@@ -146,13 +154,3 @@ Explicit stranding is also more general, because it applies equally to elements 
 Why couldn't the more explicit list notation `⟨a,b,c⟩` drop the separators? This is also largely for reasons of generality—even more important here since `⟨⟩` is the more general-purpose list notation. Writing `⟨÷,-,4⟩` without the `,` won't go well. For something like `⟨2×c,b-1⟩`, maybe the interpreter could sort it out but it would be pretty confusing. Pretty soon you're going through the list character by character trying to figure out which space is actually a separator. And cursing, probably.
 
 Fortunately, I find that after a reasonable period of adjustment typing ligatures instead of spaces doesn't feel strange, and reading code is improved overall by the more explicit notation. A minor note is that lists of literal numbers, where APL-style stranding is best, tend to show up more in the snippets that beginners write to test out the language than in programs even in the tens of lines. So this issue sticks out in first experiences with BQN, but will come up less later on.
-
-### Array notation?
-
-BQN has literal notation for lists only right now. To get an array with rank other than 1, either [reshape](reshape.md) a list, or [merge](couple.md#merge-and-array-theory) a list of arrays:
-
-        ∘‿2 ⥊ ⟨2,3, 4,1, 0,5⟩
-
-        [2‿3, 4‿1, 0‿5]
-
-The characters `[]` are reserved to potentially combine list notation with merging, allowing the above to be written `[2‿3, 4‿1, 0‿5]`. This would allow non-empty arrays with rank one or more to be written without a primitive, but not rank 0 or empty arrays. Since creating arrays in general would still require primitives like `<` or `⥊`, it's not clear whether this notation is worth it. General array notation is a surprisingly complicated topic; see the article about it [on the APL Wiki](https://aplwiki.com/wiki/Array_notation).

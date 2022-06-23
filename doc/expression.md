@@ -2,7 +2,7 @@
 
 # Expression syntax
 
-BQN expressions are the part of [syntax](syntax.md) that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like [blocks](block.md) and [namespaces](namespace.md) around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe [constant](syntax.md#constants) and [array](arrayrepr.md#list-literals) literals, which each form a single subject for grammatical purposes.
+BQN expressions are the part of [syntax](syntax.md) that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like [blocks](block.md) and [namespaces](namespace.md) around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe [constant](syntax.md#constants) and [array](arrayrepr.md#array-literals) literals, which each form a single subject for grammatical purposes.
 
 The [first tutorial](../tutorial/expression.md) also covers how to build and read BQN expressions.
 
@@ -54,7 +54,7 @@ Primitive tokens, since they have a fixed value, always have a role that matches
 
 Variable names can be written in any case and with underscores added, and these changes don't affect what [identifier](lexical.md) the name refers to. `ab`, `aB`, `AB`, and `_a_B_` are all the same variable. However, the spelling—specifically the first and last characters—determine the variable's role. A lowercase first letter indicates a subject, and an uppercase first letter makes it a function. A leading underscore (regardless of the following character) indicates a 1-modifier, and both leading and trailing underscores makes a 2-modifier.
 
-Besides these, character, string, and [list literals](arrayrepr.md#list-literals) always have a subject role, and the role of a [block](block.md) is determined by its type, which depends either on the header it has or which special variables it uses.
+Besides these, character, string, and [array literals](arrayrepr.md#array-literals) always have a subject role, and the role of a [block](block.md) is determined by its type, which depends either on the header it has or which special variables it uses.
 
 The role of a compound expression, formed by applying an operation to some inputs, depends on the operation applied. This system is discussed in the remaining sections below.
 
@@ -113,6 +113,12 @@ The left hand side of assignment in a subject expression can be *compound*, so t
         r
 
         s
+
+Array destructuring using `[]` is also possible: it's equivalent to splitting the right-hand side with `<˘` and then applying list destructuring.
+
+        [t,u] ← ↕2‿3
+
+        u
 
 Namespace destructuring uses an overlapping syntax, fully described in [its own section](namespace.md#imports). The left hand side is a list of names or aliases `to⇐from`.
 
