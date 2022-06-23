@@ -3,7 +3,7 @@
 # Mathematical Right Angle Bracket (`⟩`)
 
 ## `... ⟩`: End list
-[→full documentation](../doc/syntax.md#list-and-array-notation)
+[→full documentation](../doc/arrayrepr.md#brackets)
 
 Ends a list started by a `⟨`. See [Begin List](beginlist.md) for more details.
 
