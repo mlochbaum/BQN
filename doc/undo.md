@@ -18,7 +18,7 @@ Here it undoes a function to decrement the last character by incrementing that c
 
 ## The rules
 
-If `𝔽` can be inverted exactly, then Undo just does that. However, there are also some other functions that BQN inverts. For example, the squaring function `×˜` has both a positive and a negative inverse, and yet:
+If `𝔽` can be inverted exactly, then Undo just does that (or tries). However, there are also some other functions that BQN inverts. For example, the squaring function `×˜` has both a positive and a negative inverse, and yet:
 
         ×˜ ¯3
         ×˜⁼ ×˜ ¯3  # It's not the same!
@@ -40,6 +40,7 @@ A few notable inverses are the [logarithm](arithmetic.md#basic-arithmetic) `⋆�
 Structural functions like [Take](take.md) and [shifts](shift.md) that remove elements from `𝕩` can't be inverted, because given the result there's no way to know what the elements should be. However, there are two special cases that have inverses defined despite losing data: these are `⊣⁼` and `k⁼` where `k` is a constant (a data type, or `k˙`). For these, `𝕩` is required to [match](match.md) the always returned value `𝕨` or `k`, and this value is also used for the result—even though any result would be valid, as these functions ignore `𝕩`.
 
         3 ⊣⁼ 4
+
         3 ⊣⁼ 3
 
 ## Undo headers
@@ -51,4 +52,7 @@ Of course BQN will never be able to invert all the functions you could write (if
       𝕊⁼𝕩: 𝕩÷1-𝕩
     }
 
-The above function could also be defined with the automatically invertible `1⊸+⌾÷`, but maybe there's a numerical reason to use the definition above. Like a normal header, an undo header reflects the normal use, but it includes `⁼` and possibly `˜` addition to the function and arguments.
+The above function could also be defined with the automatically invertible `1⊸+⌾÷`, but maybe there's a numerical reason to use the definition above. Like a normal header, an undo header reflects the normal use, but it includes `⁼` and possibly `˜` addition to the function and arguments. Any header that includes a function can have these modifiers added—even a fancy modifier header like `𝔽_m1⁼a‿b:` or plain label like `𝕊⁼:`. The three forms are `𝕊⁼𝕩:`, `𝕨𝕊⁼𝕩:`, and `𝕨𝕊˜⁼𝕩:`, and the two dyadic forms are also used to derive `k⊸F⁼𝕩` and `F⟜k⁼𝕩` with a constant `k`.
+
+        G ← { 𝕊˜⁼:𝕩-2×𝕨 ; 𝕨+2×𝕩 }
+        G⟜2⁼ 7
