@@ -5,10 +5,10 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="windows"><a class="header" href="#windows">Windows</a></h1>
-<p>In BQN, it's strongly preferred to use functions, and not modifiers, for array manipulation. Functions are simpler as they have fewer moving parts. They are more concrete, since the array results can always be viewed right away. They are easier to implement with reasonable performance as well, since there is no need to recognize many possible function operands as special cases.</p>
-<p>The Window function replaces APL's Windowed Reduction, J's more general Infix operator, and Dyalog's Stencil, which is adapted from one case of J's Cut operator.</p>
-<h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
-<p>We'll start with the one-axis case. Here Window's left argument is a number between <code><span class='Number'>0</span></code> and <code><span class='Number'>1</span><span class='Function'>+≠</span><span class='Value'>𝕩</span></code>. The result is composed of slices of <code><span class='Value'>𝕩</span></code> (contiguous sections of major cells) with length <code><span class='Value'>𝕨</span></code>, starting at each possible index in order.</p>
+<p>The Windows function returns all slices, or contiguous subarrays, with shape (well, shape prefix) <code><span class='Value'>𝕨</span></code> from <code><span class='Value'>𝕩</span></code>. It might also be seen as sliding a moving window along <code><span class='Value'>𝕩</span></code>.</p>
+<p>This function replaces APL's Windowed Reduction, J's more general Infix operator, and Dyalog APL's Stencil, which is adapted from one case of J's Cut operator. In BQN, it's strongly preferred to use functions, and not modifiers, for array manipulation. Functions are simpler with fewer moving parts, and more concrete, since the array results can always be viewed right away.</p>
+<h2 id="basic-case"><a class="header" href="#basic-case">Basic case</a></h2>
+<p>We'll start with the one-axis case. Here <code><span class='Value'>𝕨</span></code> is a number between <code><span class='Number'>0</span></code> and <code><span class='Number'>1</span><span class='Function'>+≠</span><span class='Value'>𝕩</span></code>. The result is composed of slices of <code><span class='Value'>𝕩</span></code> (contiguous sections of <a href="array.html#cells">major cells</a>) with length <code><span class='Value'>𝕨</span></code>, starting at each possible index in order.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NeKGlSJhYmNkZWZnIg==">↗️</a><pre>    <span class='Number'>5</span><span class='Function'>↕</span><span class='String'>&quot;abcdefg&quot;</span>
 ┌─       
 ╵"abcde  
@@ -17,68 +17,16 @@
         ┘
 </pre>
 <p>There are <code><span class='Number'>1</span><span class='Function'>+</span><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕨</span></code>, or <code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>¬</span><span class='Value'>𝕨</span></code>, of these sections, because the starting index must be at least <code><span class='Number'>0</span></code> and at most <code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>𝕨</span></code>. Another way to find this result is to look at the number of cells in or before a given slice: there are always <code><span class='Value'>𝕨</span></code> in the slice and there are only <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code> in total, so the number of slices is the range <a href="logic.html">spanned</a> by these two endpoints.</p>
-<p>You can take a slice of an array <code><span class='Value'>𝕩</span></code> that has length <code><span class='Value'>l</span></code> and starts at index <code><span class='Value'>i</span></code> using <a href="take.html">Take</a> with Drop or <a href="reverse.html#rotate">Rotate</a>: <code><span class='Value'>l</span><span class='Function'>↑</span><span class='Value'>i</span><span class='Function'>↓</span><span class='Value'>𝕩</span></code> or <code><span class='Value'>l</span><span class='Function'>↑</span><span class='Value'>i</span><span class='Function'>⌽</span><span class='Value'>𝕩</span></code>. The <a href="prefixes.html">Prefixes</a> function returns all the slices that end at the end of the array (<code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>=</span><span class='Value'>i</span><span class='Function'>+</span><span class='Value'>l</span></code>), and Suffixes gives the slices that start at the beginning (<code><span class='Value'>i</span><span class='Function'>=</span><span class='Number'>0</span></code>). Windows gives yet another collection of slices: the ones that have a fixed length <code><span class='Value'>l</span><span class='Function'>=</span><span class='Value'>𝕨</span></code>. Selecting one cell from its result gives you the slice starting at that cell's index:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKKjzXihpUiYWJjZGVmZyIKNeKGkTLihpMiYWJjZGVmZyI=">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>⊏</span><span class='Number'>5</span><span class='Function'>↕</span><span class='String'>&quot;abcdefg&quot;</span>
+<p>A single slice of an array <code><span class='Value'>𝕩</span></code> with length <code><span class='Value'>l</span></code> and starting index <code><span class='Value'>i</span></code> is <code><span class='Value'>l</span><span class='Function'>↑</span><span class='Value'>i</span><span class='Function'>↓</span><span class='Value'>𝕩</span></code>, using <a href="take.html">Take and Drop</a>. The <a href="prefixes.html">Prefixes</a> function returns all the slices that end at the end of the array (<code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>=</span><span class='Value'>i</span><span class='Function'>+</span><span class='Value'>l</span></code>), and Suffixes gives the slices that start at the beginning (<code><span class='Value'>i</span><span class='Function'>=</span><span class='Number'>0</span></code>). Windows gives yet another collection of slices: the ones that have a fixed length <code><span class='Value'>l</span><span class='Function'>=</span><span class='Value'>𝕨</span></code>. Selecting one cell from its result gives the slice starting at that cell's index:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKKjzXihpUiYWJjZGVmZyIKCjXihpEy4oaTImFiY2RlZmci">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>⊏</span><span class='Number'>5</span><span class='Function'>↕</span><span class='String'>&quot;abcdefg&quot;</span>
 "cdefg"
+
     <span class='Number'>5</span><span class='Function'>↑</span><span class='Number'>2</span><span class='Function'>↓</span><span class='String'>&quot;abcdefg&quot;</span>
 "cdefg"
 </pre>
-<p>Windows differs from Prefixes and Suffixes in that it doesn't add a layer of nesting (it doesn't enclose each slice). This is possible because the slices have a fixed size.</p>
-<h3 id="multiple-dimensions"><a class="header" href="#multiple-dimensions">Multiple dimensions</a></h3>
-<p>The above description applies to a higher-rank right argument. As an example, we'll look at two-row slices of a shape <code><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span></code> array. For convenience, we will enclose each slice. Note that slices always have the same rank as the argument array.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=POKOiTIgMuKGlSIwMTIzIuKIviJhYmNkIuKJjSJBQkNEIg==">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>2</span> <span class='Number'>2</span><span class='Function'>↕</span><span class='String'>&quot;0123&quot;</span><span class='Function'>∾</span><span class='String'>&quot;abcd&quot;</span><span class='Function'>≍</span><span class='String'>&quot;ABCD&quot;</span>
-┌─                   
-· ┌─       ┌─        
-  ╵"0123   ╵"abcd    
-    abcd"    ABCD"   
-         ┘        ┘  
-                    ┘
-</pre>
-<p>Passing a list as the left argument to Windows takes slices along any number of leading axes. Here are all the shape <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span></code> slices:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=POKOiTIgMuKAvzLihpUiMDEyMyLiiL4iYWJjZCLiiY0iQUJDRCI=">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>2</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>↕</span><span class='String'>&quot;0123&quot;</span><span class='Function'>∾</span><span class='String'>&quot;abcd&quot;</span><span class='Function'>≍</span><span class='String'>&quot;ABCD&quot;</span>
-┌─                      
-╵ ┌─     ┌─     ┌─      
-  ╵"01   ╵"12   ╵"23    
-    ab"    bc"    cd"   
-       ┘      ┘      ┘  
-  ┌─     ┌─     ┌─      
-  ╵"ab   ╵"bc   ╵"cd    
-    AB"    BC"    CD"   
-       ┘      ┘      ┘  
-                       ┘
-</pre>
-<p>The slices are naturally arranged along multiple dimensions according to their starting index. Once again the equivalence <code><span class='Value'>i</span><span class='Function'>⊏</span><span class='Value'>l</span><span class='Function'>↕</span><span class='Value'>x</span></code> ←→ <code><span class='Value'>l</span><span class='Function'>↑</span><span class='Value'>i</span><span class='Function'>↓</span><span class='Value'>x</span></code> holds, provided <code><span class='Value'>i</span></code> and <code><span class='Value'>l</span></code> have the same length.</p>
-<p>If <code><span class='Value'>𝕨</span></code> has length <code><span class='Number'>0</span></code>, then <code><span class='Value'>𝕩</span></code> is not sliced along any dimensions. The only slice that results—the entire argument—is then arranged along an additional zero dimensions. In the end, the result is <code><span class='Value'>𝕩</span></code>, unchanged.</p>
-<h3 id="more-formally"><a class="header" href="#more-formally">More formally</a></h3>
-<p><code><span class='Value'>𝕩</span></code> is an array. <code><span class='Value'>𝕨</span></code> is a number, or numeric list or unit, with <code><span class='Value'>𝕨</span><span class='Function'>≤</span><span class='Modifier2'>○</span><span class='Function'>≠≢</span><span class='Value'>𝕩</span></code>. The result <code><span class='Value'>z</span></code> has shape <code><span class='Value'>𝕨</span><span class='Function'>∾¬</span><span class='Modifier2'>⟜</span><span class='Value'>𝕨</span><span class='Modifier2'>⌾</span><span class='Paren'>((</span><span class='Function'>≠</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Function'>≢</span><span class='Value'>𝕩</span></code>, and element <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>z</span></code> is <code><span class='Value'>𝕩</span><span class='Function'>⊑</span><span class='Modifier'>˜</span><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕨</span><span class='Paren'>)(</span><span class='Function'>↑+</span><span class='Modifier2'>⌾</span><span class='Paren'>((</span><span class='Function'>≠</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Function'>↓</span><span class='Paren'>)</span><span class='Value'>i</span></code>.</p>
-<p>Using <a href="group.html">Group</a> we could also write <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>z</span></code> ←→ <code><span class='Value'>𝕩</span><span class='Function'>⊑</span><span class='Modifier'>˜</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Function'>↕</span><span class='Modifier2'>∘</span><span class='Function'>≠</span><span class='Paren'>)</span><span class='Function'>≢</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Function'>+</span><span class='Modifier'>´¨</span><span class='Modifier2'>∘</span><span class='Function'>⊔</span> <span class='Value'>i</span></code>.</p>
-<h2 id="symmetry"><a class="header" href="#symmetry">Symmetry</a></h2>
-<p>Let's look at an earlier example, along with its <a href="transpose.html">Transpose</a> (<code><span class='Function'>⍉</span></code>).</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=e+KfqPCdlaks4o2J8J2VqeKfqX014oaVImFiY2RlZmci">↗️</a><pre>    <span class='Brace'>{</span><span class='Bracket'>⟨</span><span class='Value'>𝕩</span><span class='Separator'>,</span><span class='Function'>⍉</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span><span class='Brace'>}</span><span class='Number'>5</span><span class='Function'>↕</span><span class='String'>&quot;abcdefg&quot;</span>
-┌─                   
-· ┌─        ┌─       
-  ╵"abcde   ╵"abc    
-    bcdef     bcd    
-    cdefg"    cde    
-          ┘   def    
-              efg"   
-                  ┘  
-                    ┘
-</pre>
-<p>Although the two arrays have different shapes, they are identical where they overlap.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omh4peLKDPigL8z4oq44oaRKeKfnOKNiTXihpUiYWJjZGVmZyI=">↗️</a><pre>    <span class='Function'>≡</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Modifier2'>⟜</span><span class='Function'>⍉</span><span class='Number'>5</span><span class='Function'>↕</span><span class='String'>&quot;abcdefg&quot;</span>
-1
-</pre>
-<p>In other words, the i'th element of slice j is the same as the j'th element of slice i: it is the <code><span class='Value'>i</span><span class='Function'>+</span><span class='Value'>j</span></code>'th element of the argument. So transposing still gives a possible result of Windows, but with a different slice length.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyg14oaV8J2VqSniiaHijYkoM+KGlfCdlakpfSJhYmNkZWZnIg==">↗️</a><pre>    <span class='Brace'>{</span><span class='Paren'>(</span><span class='Number'>5</span><span class='Function'>↕</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>≡⍉</span><span class='Paren'>(</span><span class='Number'>3</span><span class='Function'>↕</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Brace'>}</span><span class='String'>&quot;abcdefg&quot;</span>
-1
-</pre>
-<p>In general, we need a more complicated transpose—swapping the first set of <code><span class='Function'>≠</span><span class='Value'>𝕨</span></code> axes with the second set. Note again the use of <a href="logic.html">Span</a>, our slice-length to slice-number converter.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eygoNeKAvzbCrDLigL8yKeKGlfCdlakpIOKJoSAy4oC/M+KNiSgy4oC/MuKGlfCdlakpfSDihpU14oC/NuKAvzc=">↗️</a><pre>    <span class='Brace'>{</span><span class='Paren'>((</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Function'>¬</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Paren'>)</span><span class='Function'>↕</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Function'>≡</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Function'>⍉</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>↕</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Brace'>}</span> <span class='Function'>↕</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span>
-1
-</pre>
-<h2 id="applications"><a class="header" href="#applications">Applications</a></h2>
-<p>Windows can be followed up with a <a href="fold.html#insert">reduction</a> on each slice to give a windowed reduction. Here we take running sums of 3 values.</p>
+<p>Windows differs from Prefixes and Suffixes in that it doesn't add a layer of nesting (it doesn't enclose each slice). This is possible because the slices have a fixed size, so they fit together as cells of an array.</p>
+<h2 id="windowed-reduction"><a class="header" href="#windowed-reduction">Windowed reduction</a></h2>
+<p>Windows can be followed up with <a href="fold.html#insert">Insert</a> on each slice to give a windowed reduction or fold. Here we take running sums of 3 values.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8udy5gz4oaVIOKfqDIsNiwwLDEsNCwz4p+p">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>˝˘</span><span class='Number'>3</span><span class='Function'>↕</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>6</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Bracket'>⟩</span>
 ⟨ 8 7 5 8 ⟩
 </pre>
@@ -93,3 +41,62 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KCvLneKJoOKGlSgy4qWKMCniirjiiL4pIOKfqDIsNiwwLDEsNCwz4p+p">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>˝</span><span class='Function'>≠↕</span><span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='Number'>0</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Paren'>)</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>6</span><span class='Separator'>,</span><span class='Number'>0</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Bracket'>⟩</span>
 ⟨ 2 8 8 7 5 8 ⟩
 </pre>
+<h2 id="symmetry"><a class="header" href="#symmetry">Symmetry</a></h2>
+<p>Let's look at the first example, paired with its <a href="transpose.html">Transpose</a> (<code><span class='Function'>⍉</span></code>).</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouI4p+c4o2JIDXihpUiYWJjZGVmZyI=">↗️</a><pre>    <span class='Function'>⋈</span><span class='Modifier2'>⟜</span><span class='Function'>⍉</span> <span class='Number'>5</span><span class='Function'>↕</span><span class='String'>&quot;abcdefg&quot;</span>
+┌─                   
+· ┌─        ┌─       
+  ╵"abcde   ╵"abc    
+    bcdef     bcd    
+    cdefg"    cde    
+          ┘   def    
+              efg"   
+                  ┘  
+                    ┘
+</pre>
+<p>Although the two arrays have different shapes, they're identical in the 3×3 region where they overlap.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omh4peLKDPigL8z4oq44oaRKeKfnOKNiSA14oaVImFiY2RlZmci">↗️</a><pre>    <span class='Function'>≡</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Modifier2'>⟜</span><span class='Function'>⍉</span> <span class='Number'>5</span><span class='Function'>↕</span><span class='String'>&quot;abcdefg&quot;</span>
+1
+</pre>
+<p>More concretely, the <code><span class='Value'>i</span></code>th element of slice <code><span class='Value'>j</span></code> is the same as the <code><span class='Value'>j</span></code>th element of slice <code><span class='Value'>i</span></code>: it's the <code><span class='Value'>i</span><span class='Function'>+</span><span class='Value'>j</span></code>th element of the argument. So transposing still gives a possible result of Windows, but with a different slice length. The two lengths are related by <a href="logic.html">Span</a>, which converts between length and number of slices.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyg14oaV8J2VqSniiaHijYkoM+KGlfCdlakpfSJhYmNkZWZnIgoKKOKJoCJhYmNkZWZnIikgwqwgMw==">↗️</a><pre>    <span class='Brace'>{</span><span class='Paren'>(</span><span class='Number'>5</span><span class='Function'>↕</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>≡⍉</span><span class='Paren'>(</span><span class='Number'>3</span><span class='Function'>↕</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Brace'>}</span><span class='String'>&quot;abcdefg&quot;</span>
+1
+
+    <span class='Paren'>(</span><span class='Function'>≠</span><span class='String'>&quot;abcdefg&quot;</span><span class='Paren'>)</span> <span class='Function'>¬</span> <span class='Number'>3</span>
+5
+</pre>
+<h2 id="multiple-dimensions"><a class="header" href="#multiple-dimensions">Multiple dimensions</a></h2>
+<p>The right argument can have rank more than 1, and it's viewed as a list of major cells following <a href="leading.html">leading axis</a> principles. As an example, Windows can take two-row slices of a shape <code><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span></code> array.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ICAgIDLihpVbIjAxMjMiLCJhYmNkIiwiQUJDRCJdCgo84o6JMiAy4oaVWyIwMTIzIiwiYWJjZCIsIkFCQ0QiXQ==">↗️</a><pre>        <span class='Number'>2</span><span class='Function'>↕</span><span class='Bracket'>[</span><span class='String'>&quot;0123&quot;</span><span class='Separator'>,</span><span class='String'>&quot;abcd&quot;</span><span class='Separator'>,</span><span class='String'>&quot;ABCD&quot;</span><span class='Bracket'>]</span>
+┌─      
+╎"0123  
+  abcd  
+        
+ ·abcd  
+  ABCD" 
+       ┘
+
+    <span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>2</span> <span class='Number'>2</span><span class='Function'>↕</span><span class='Bracket'>[</span><span class='String'>&quot;0123&quot;</span><span class='Separator'>,</span><span class='String'>&quot;abcd&quot;</span><span class='Separator'>,</span><span class='String'>&quot;ABCD&quot;</span><span class='Bracket'>]</span>
+┌─                   
+· ┌─       ┌─        
+  ╵"0123   ╵"abcd    
+    abcd"    ABCD"   
+         ┘        ┘  
+                    ┘
+</pre>
+<p>In the second version we've enclosed each slice with <code><span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>2</span></code> for viewing—a slice has rank 2, the same as <code><span class='Value'>𝕩</span></code>. Passing a list as the left argument to Windows takes slices along any number of leading axes. Here are all the shape <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span></code> slices:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=POKOiTIgMuKAvzLihpVbIjAxMjMiLCJhYmNkIiwiQUJDRCJd">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>2</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>↕</span><span class='Bracket'>[</span><span class='String'>&quot;0123&quot;</span><span class='Separator'>,</span><span class='String'>&quot;abcd&quot;</span><span class='Separator'>,</span><span class='String'>&quot;ABCD&quot;</span><span class='Bracket'>]</span>
+┌─                      
+╵ ┌─     ┌─     ┌─      
+  ╵"01   ╵"12   ╵"23    
+    ab"    bc"    cd"   
+       ┘      ┘      ┘  
+  ┌─     ┌─     ┌─      
+  ╵"ab   ╵"bc   ╵"cd    
+    AB"    BC"    CD"   
+       ┘      ┘      ┘  
+                       ┘
+</pre>
+<p>The slices are naturally arranged along multiple dimensions according to their starting index. Once again the equivalence <code><span class='Value'>i</span><span class='Function'>⊏</span><span class='Value'>l</span><span class='Function'>↕</span><span class='Value'>x</span></code> ←→ <code><span class='Value'>l</span><span class='Function'>↑</span><span class='Value'>i</span><span class='Function'>↓</span><span class='Value'>x</span></code> holds, provided <code><span class='Value'>i</span></code> and <code><span class='Value'>l</span></code> have the same length.</p>
+<p>If <code><span class='Value'>𝕨</span></code> has length <code><span class='Number'>0</span></code>, then <code><span class='Value'>𝕩</span></code> is not sliced along any dimensions. The only slice that results—the entire argument—is then arranged along an additional zero dimensions. In the end, the result is <code><span class='Value'>𝕩</span></code>, unchanged.</p>
+<p>Here's a more formal definition: <code><span class='Value'>𝕩</span></code> is an array. <code><span class='Value'>𝕨</span></code> is a number, or numeric list or unit, with <code><span class='Value'>𝕨</span><span class='Function'>≤</span><span class='Modifier2'>○</span><span class='Function'>≠≢</span><span class='Value'>𝕩</span></code>. The result <code><span class='Value'>z</span></code> has shape <code><span class='Value'>𝕨</span><span class='Function'>∾¬</span><span class='Modifier2'>⟜</span><span class='Value'>𝕨</span><span class='Modifier2'>⌾</span><span class='Paren'>((</span><span class='Function'>≠</span><span class='Value'>𝕨</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Function'>≢</span><span class='Value'>𝕩</span></code>, and element <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>z</span></code> is <code><span class='Value'>i</span><span class='Function'>⊑</span><span class='Value'>z</span></code> ←→ <code><span class='Value'>𝕩</span><span class='Function'>⊑</span><span class='Modifier'>˜</span><span class='Function'>+</span><span class='Modifier'>´¨</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>∾</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Function'>↕</span><span class='Modifier2'>∘</span><span class='Function'>≠</span><span class='Paren'>)</span><span class='Function'>≢</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>⊔</span><span class='Value'>i</span></code>.</p>

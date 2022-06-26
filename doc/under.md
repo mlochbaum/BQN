@@ -60,15 +60,15 @@ A *structural function* is one that moves elements around without performing com
 
         1⊸⌽⌾(⊏˘) a
 
-When used with Under, the function `1⊸⌽` applies to the first column, rotating it. The result of `𝔽` needs to be compatible with the selection function, so Rotate works but trying to remove an element is no good:
+When used with Under, the function `1⊸⌽` applies to the first column, [rotating](reverse.md#rotate) it. The result of `𝔽` needs to be compatible with the selection function, so Rotate works but trying to drop an element is no good:
 
         1⊸↓⌾(⊏˘) a
 
-BQN can detect lots of structural functions when written in [tacit](tacit.md) form; see the list of functions [in the spec](../spec/inferred.md#required-structural-inverses). You can also include computations on the shape. For example, here's a function to reverse the first half of a list.
+BQN can detect lots of structural functions when written [tacitly](tacit.md); see the list of recognized forms [in the spec](../spec/inferred.md#required-structural-inverses). You can also include computations on the shape. For example, here's a function to reverse the first half of a list.
 
         ⌽⌾(⊢↑˜≠÷2˙) "abcdef"
 
-But you can't use a computation that uses array values, such as `10⊸+⌾((<⊸5)⊸/)` to add 10 to each element below 5. This is because Under can change the array values, so that the function `𝔾` doesn't select the same elements before and after applying it (at the same time, Under can't change array structure, or at least not the parts that matter to `𝔾`). To use a dynamic selection function, compute the mask or indices based on a copy of the argument and use those as part of `𝔾`.
+But you can't use a computation that uses array values, such as `10⊸+⌾((<⊸5)⊸/)` to add 10 to each element below 5. This is because Under can change the array values, so that the function `𝔾` doesn't select the same elements before and after applying it (contrarily, Under can't change array structure, or at least not the parts that matter to `𝔾`). To use a dynamic selection function, compute the mask or indices based on a copy of the argument and use those as part of `𝔾`.
 
         {10⊸+⌾((𝕩<5)⊸/)𝕩} 3‿8‿2‿2‿6
 
@@ -92,17 +92,17 @@ Under is the idiomatic way to do a round-to-nearest function:
 
         ⌊⌾(10⊸×) 3.524‿6.799‿2.031
 
-See how it works? `⌊` rounds down to an integer, but we can get it to round down to a decimal by first multiplying by 10 (single decimals are now integers), then rounding, then undoing that multiplication. A related idea is to not just round but produce a range. Suppose I want the arithmetic progression 4, 7, 10, ... <20. If I had the right range `↕n`, then it would be `4+3×↕n`, or `(4+3×⊢)↕n`. By using the *inverse* of this transformation function on the desired endpoint, I can make sure it's applied on the way out, and BQN figures out what to do on the way in as if by magic.
+See how it works? `⌊` rounds down to an integer, but we can get it to round down to a decimal by first multiplying by 10 (so that single decimals become integers), then rounding, then undoing that multiplication. A related idea is to not just round but produce a range. Suppose I want the arithmetic progression 4, 7, 10, ... <20. If I had the right range `↕n`, then it would be `4+3×↕n`, or `(4+3×⊢)↕n`. By using the *inverse* of this transformation function on the desired endpoint, I can make sure it's applied on the way out, and BQN figures out what to do on the way in as if by magic.
 
         ↕∘⌈⌾((4+3×⊢)⁼) 20
 
-Well, really it's a bit of simple algebra, but if it wants to wear a pointy hat and wave a wand around I won't judge.
+Well, really it's some simple algebra, but if it wants to wear a pointy hat and wave a wand around I won't judge.
 
 ## Left argument
 
 When called dyadically, Under applies `𝔽` dyadically, like [Over](compose.md#over). This doesn't affect the undoing part of Under, which still tries to put the result of `𝔽` back into `𝕩` for structural Under or invert `𝔾` for computational. In fact, `𝕨 𝔽⌾𝔾 𝕩` is equivalent to `(𝔾𝕨)˙⊸𝔽⌾𝔾 𝕩` so no exciting language stuff is happening here at all.
 
-But you can still do some cool stuff with it! One pattern is simply to set `𝔽` to `⊣`, the [identity](identity.md) function that just returns its left argument. Now structural Under will replace everything that `𝔾` selects from `𝕩` with the corresponding values in `𝕨`. Here's an example that replaces elements with indices `1` and `2`.
+But you can still do cool things with it! One pattern is simply to set `𝔽` to `⊣`, the [identity](identity.md) function that just returns its left argument. Now structural Under will replace everything that `𝔾` selects from `𝕩` with the corresponding values in `𝕨`. Here's an example that replaces elements with indices `1` and `2`.
 
         "abcd" ⊣⌾(1‿2⊸⊏) "0123"
 
