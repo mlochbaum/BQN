@@ -6,7 +6,7 @@
 DrawComp ≍"∘○"
 -->
 
-Atop and Over are 2-modifiers that extend the idea of "apply this, then that" in two different ways. They're modelled after the mathematical notation f∘g to compose two functions, and both do the same thing when there's one argument: `F∘G x` or `F○G x` is `F G x`.
+Atop and Over are 2-modifiers that extend the idea of "apply this, then that" in two different ways. They're modelled after the mathematical notation f∘g to compose two functions, and both do the same thing when there's one argument: either `F∘G x` or `F○G x` is `F G x`.
 
 | `Cmp` | `Cmp 𝕩` | `𝕨 Cmp 𝕩`      | Unified     | On list
 |-------|---------|:--------------:|:-----------:|:-------:
@@ -17,7 +17,7 @@ When there are two arguments, we might say Atop treats the right operand `𝔾` 
 
 ## Atop
 
-Of the two modifiers on this page, Atop is more common but less impactful. The composition `F∘G` is equivalent to the 2-[train](train.md) `F G` (the trains page has hints on when you'd choose one or the other). Its definition `{F𝕨G𝕩}` means that `G` is applied to one or two arguments and `F` is applied monadically to the result. It could be considered a "default way" to compose two functions. Keeps [tacit](tacit.md) programming syntax running smoothly, without making noise about it. Not like that busybody `⊸`. Some examples:
+Of the two modifiers on this page, Atop is more common but less impactful. The composition `F∘G` is equivalent to the 2-[train](train.md) `F G` (the trains page has hints on when you'd choose one or the other). Its definition `{F𝕨G𝕩}` means that `G` is applied to one or two arguments and `F` is applied monadically to the result. It's sort of a "default way" to compose two functions. Keeps [tacit](tacit.md) programming syntax running smoothly, without making noise about it. Not like that busybody `⊸`. Some examples:
 
 `↕∘≠` is useful with one argument: `↕≠l` is a list of indices for `l`.
 
@@ -35,7 +35,7 @@ Once you get used to Over, it's painful to go without it. I'd use it all the tim
 
 Usually Over is used just for the dyadic meaning. If you have a composition that only works with one argument it's typical to write it with Atop (`∘`). And cases that work with one or two arguments do come up from time to time, but they're fairly rare, so the examples below are just for two arguments.
 
-A classic is the function `≡○∧`, which tests whether `𝕨` is a reordering of `𝕩`. The idea is to sort both arrays with `∧` to remove the ordering information
+A classic is the function `≡○∧`, which tests whether `𝕨` is a reordering of `𝕩`. The idea is to sort both arrays with `∧` to remove the ordering information, then see if they match.
 
         "BQN" ≡○∧ "QNB"
         "BQN" ≡○∧ "BBQ"

@@ -6,9 +6,9 @@ As BQN is an array language, it's often helpful to understand what an array is w
 
 In BQN, as in APL, arrays are multidimensional, instead of strictly linear. Languages like Python, Javascript, or Haskell offer only one-dimensional arrays with `[]` syntax, and typically represent multidimensional data with nested arrays. Multidimensional arrays have fundamental differences relative to this model.
 
-BQN's arrays are immutable, meaning that an array is entirely defined by its attributes, and there is no way to modify an existing array, only to produce another array that has changes relative to it. As a result, an array can never contain itself, and arrays form an inductive type. BQN's [mutable](lexical.md#mutation) types are operations and namespaces.
+BQN's arrays are immutable, meaning that an array is entirely defined by its attributes, and there's no way to modify an existing array, only to produce another array that has changes relative to it. As a result, an array can never contain itself. BQN's [mutable](lexical.md#mutation) types are operations and namespaces.
 
-An array might also have a [fill element](fill.md) that captures some structural information about its elements and is used by a few operations. The fill, as an inferred property, isn't considered to truly be part of the array but is instead some information about the array that the interpreter keeps track of. So it's out of scope here.
+An array might also have a [fill element](fill.md) that captures some structural information about its elements and is used by a few operations. As an inferred property, the fill isn't considered to truly be part of the array, but is instead some information about it that the interpreter keeps track of. So it's out of scope here.
 
 <!--GEN
 xt ← ∾˝ Highlight∘•Repr¨ xv ← 3‿2‿6⥊×˜2+3×↕5
@@ -87,7 +87,7 @@ The array also needs to be complete. Every element—every combination of positi
 
 ## Ordering and indices
 
-To finish this definition of an array we also need to nail down the idea of a position. The positions along one dimension can't be labelled in any way, but they have a linear ordering (mathematically speaking, a [total order](https://en.wikipedia.org/wiki/Total_order): out of any two different positions one comes earlier and the other later). BQN keeps track of this order: for example, when we [join](join.md) two arrays it places positions in `𝕨` before those of `𝕩` and otherwise maintains the original ordering.
+To finish this definition of an array we also need to nail down the idea of a position. The positions along one dimension can't have labels attached to them, but they have a linear ordering (mathematically speaking, a [total order](https://en.wikipedia.org/wiki/Total_order): out of any two different positions one comes earlier and the other later). BQN keeps track of this order: for example, when we [join](join.md) two arrays it places positions in `𝕨` before those of `𝕩` and otherwise maintains the original orderings.
 
         "before" ∾ "after"
 
@@ -103,19 +103,19 @@ The total number of elements in an array is its **bound**, and can be found usin
 
 ## Elements
 
-Any BQN value can be used as an array element, including another array (BQN, as a dynamically-typed language, doesn't restrict the types that can be used in one context without a good reason). However, BQN arrays are restricted relative to other array models. Frameworks like NumPy or Julia have mutable arrays, so that the value of an element can be changed after the array is created. This allows an array to be its own element, by creating an array and then inserting it into itself. This would be unnatural in BQN, where an array can only be formed from elements that already exist. In BQN only operations and namespaces are [mutable](lexical.md#mutation).
+Any BQN value can be used as an array element, including another array (BQN, as a dynamically-typed language, doesn't restrict the types that can be used in one context without a good reason). However, BQN arrays are in some sense restricted relative to other array models. Frameworks like NumPy or Julia have mutable arrays, so that the value of an element can be changed after the array is created. This allows an array to be its own element, by creating an array and then inserting it into itself. This would be unnatural in BQN, where an array can only be formed from elements that already exist. In BQN only operations and namespaces are [mutable](lexical.md#mutation).
 
-An array with no elements (a bound of 0) is called **empty**. These arrays can cause problems when a property should be computed from the elements of an array, like the sum `+´𝕩` or shape of the [merged](couple.md#merge-and-array-theory) array `>𝕩`. BQN has two mechanisms to make these cases work better. First, reductions like `+´` have [identity values](fold.md#identity-values) for certain functions, so that `+´⟨⟩` is `0` for example. Second, every array might have a [fill element](fill.md), a special "typical element" for the array. Functions like Merge use this element's structure to determine the result shape when there are no actual elements to be used.
+An array with no elements (a bound of 0) is called **empty**. These arrays can cause problems when a property should be computed from the elements of an array, like the sum `+´𝕩` or shape of the [merged](couple.md#merge-and-array-theory) array `>𝕩`. BQN has two mechanisms to make these cases work better. First, Fold (`´`) and Insert (`˝`) have [identity values](fold.md#identity-values) for certain functions, so that `+´⟨⟩` is `0` for example. Second, every array might have a [fill element](fill.md), a special "typical element" for the array. Functions like Merge use this element's structure to determine the result shape when there are no actual elements to be used.
 
 ## Cells
 
-The contents of an array are its elements, but it also makes sense to split up an array into subarrays of elements called cells. The most important kind of cell, a **major cell** consists of all the elements that have indices beginning with some particular index `i`. For this to make sense, `i` must be between `0` and the length `l` of the array's first axis, so that there are `l` major cells each identified by an index.
+The contents of an array are its elements, but it also makes sense to split up an array into subarrays of elements called cells. The most important kind of cell, a **major cell**, consists of all the elements whose indices begin with some particular index `i`. For this to make sense, `i` must be between `0` and the length `n` of the array's first axis, so that there are `n` major cells each identified by an index.
 
         2‿3‿4 ×⌜ 1‿5‿8‿11
 
         1 ⊏ 2‿3‿4 ×⌜ 1‿5‿8‿11  # Major cell 1
 
-A major cell still has an array structure: it retains all the axes of the original array other than the first. So it has its own major cells, identified by the index `i` of the original major cell and `j` within it. These are also cells of the original array. Generalizing, a **cell** with index list `l` is defined to be the array of all elements whose indices begin with `l`. In an array with rank `n`, the cell rank is `n-≠l`, and cells grouped using this rank. An `n`-cell mst have an empty cell index, so that it includes all elements—it's the entire array! An `n-1` cell, also called a ¯1-cell, is a major cell. A 0-cell has an index of length `n`, and contains a single element.
+A major cell still has an array structure: it retains all the axes of the original array other than the first. So it has its own major cells, identified by the index `i` of the original major cell and `j` within it. These are also cells of the original array. Generalizing, a **cell** with index list `l` is defined to be the array of all elements whose indices begin with `l`. In an array with rank `r`, the cell rank is `r-≠l`, and cells grouped using this rank. An `r`-cell must have an empty cell index, so that it includes all elements—it's the entire array! An `r-1` cell, also called a ¯1-cell, is a major cell. A 0-cell has an index of length `r`, and contains a single element.
 
 Cells are the center of the [leading axis model](leading.md) used to structure many array primitives.
 
@@ -123,9 +123,9 @@ Cells are the center of the [leading axis model](leading.md) used to structure m
 
 Summarizing, the values needed to define an array are its rank (the number of axes), its shape (the number of positions along each axis), and the value of each element (that is, at each combination of positions). Two arrays [match](match.md) when all these values match.
 
-If the rank is considered to be part of the shape, as it is when the shape is a BQN list, then the array is defined by its shape and element list—from [deshape](reshape.md).
+If the rank is considered to be part of the shape, as it is when the shape is a BQN list, then the array is defined by its shape, and element list as returned by [deshape](reshape.md).
 
-Here's a somewhat informal mathematical take. Given a set of possible element values `T`, a *list* of `T` of length `l` is a map from natural numbers less than `l` to `T`. An array is a rank `r`, along with a list `s` of natural numbers of length `r`, and a map from lists of natural numbers `i` that satisfy `i(j) < s(j)` for all natural numbers `j<r` to BQN values. Arrays are an inductive type, so that an array can only be defined using elements that already exist. As a result an array's elements are always values of lesser complexity and selecting one element of an array, then an element of that element, and so on, must eventually reach a non-array.
+Here's a somewhat informal mathematical take. Given a set of possible element values `T`, a *list* of `T` of length `l` is a map from natural numbers less than `l` to `T`. An array is a rank `r`, along with a list `s` of natural numbers of length `r`, and a map from lists of natural numbers `i` that satisfy `i(j) < s(j)` for all natural numbers `j<r` to BQN values. Arrays are an inductive type, so that an array can only be defined using elements that already exist. As a result, an array's elements are always values of lesser complexity than it: selecting one element of an array, then an element of that element, and so on, must eventually reach a non-array.
 
 ## Why arrays?
 

@@ -22,6 +22,7 @@
 <th>Symbol</th>
 <th>Dyad</th>
 <th>Monad</th>
+<th align="center">default <code><span class='Value'>𝕨</span></code></th>
 </tr>
 </thead>
 <tbody>
@@ -29,35 +30,41 @@
 <td><code><span class='Function'>+</span></code></td>
 <td>Add</td>
 <td><em>(Conjugate)</em></td>
+<td align="center">–</td>
 </tr>
 <tr>
 <td><code><span class='Function'>-</span></code></td>
 <td>Subtract</td>
 <td>Negate</td>
+<td align="center">0</td>
 </tr>
 <tr>
 <td><code><span class='Function'>×</span></code></td>
 <td>Multiply</td>
 <td>Sign</td>
+<td align="center">–</td>
 </tr>
 <tr>
 <td><code><span class='Function'>÷</span></code></td>
 <td>Divide</td>
 <td>Reciprocal</td>
+<td align="center">1</td>
 </tr>
 <tr>
 <td><code><span class='Function'>⋆</span></code></td>
 <td>Power</td>
 <td>Exponential</td>
+<td align="center"><em>e</em></td>
 </tr>
 <tr>
 <td><code><span class='Function'>√</span></code></td>
 <td>Root</td>
 <td>Square root</td>
+<td align="center">2</td>
 </tr>
 </tbody>
 </table>
-<p>The dyadic functions should all be familiar operations, and most likely you are familiar with the symbols <code><span class='Function'>+-×÷√</span></code>. In fact the large <code><span class='Function'>×</span></code> and <code><span class='Function'>÷</span></code> might strike you as a regression to early school years, before division was written vertically and multiplication with a simple dot or no symbol at all (BQN reserves the distinction of having no symbol for application and composition). Like these, raising to a power or exponentiation is made regular by giving it the symbol <code><span class='Function'>⋆</span></code>—a true Unicode star and <em>not</em> an asterisk. The Root function <code><span class='Function'>√</span></code> is also modified to be a binary function, which raises <code><span class='Value'>𝕩</span></code> to the power <code><span class='Function'>÷</span><span class='Value'>𝕨</span></code>. In ASCII programming languages <code><span class='Function'>×</span></code>, <code><span class='Function'>÷</span></code>, and <code><span class='Function'>⋆</span></code> are often written <code><span class='Value'>*</span></code>, <code><span class='Function'>/</span></code>, and <code><span class='Value'>^</span></code> or <code><span class='Value'>**</span></code>.</p>
+<p>The dyadic (two-argument) functions should all be familiar operations, and most likely you know the symbols <code><span class='Function'>+-×÷√</span></code>. In fact the large <code><span class='Function'>×</span></code> and <code><span class='Function'>÷</span></code> might strike you as a regression to early school years, before division was written vertically and multiplication with a simple dot or no symbol at all. Like these, raising to a power or exponentiation is made regular by giving it the symbol <code><span class='Function'>⋆</span></code>—a true Unicode star and <em>not</em> an asterisk. The Root function <code><span class='Function'>√</span></code> is also modified to be a binary function, which raises <code><span class='Value'>𝕩</span></code> to the power <code><span class='Function'>÷</span><span class='Value'>𝕨</span></code>. In ASCII programming languages <code><span class='Function'>×</span></code>, <code><span class='Function'>÷</span></code>, and <code><span class='Function'>⋆</span></code> are often written <code><span class='Value'>*</span></code>, <code><span class='Function'>/</span></code>, and <code><span class='Value'>^</span></code> or <code><span class='Value'>**</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiArIDPigL8x4oC/MOKAvzUKCjLigL81IC0gMeKAvzkKCjEuNeKAvzLigL8wLjUgw5cgMgoKM+KAvzTigL8xIMO3IDIKCjMg4ouGIDDigL8x4oC/MgoKNCDiiJogODE=">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>+</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span>
 ⟨ 5 3 2 7 ⟩
 
@@ -76,7 +83,7 @@
     <span class='Number'>4</span> <span class='Function'>√</span> <span class='Number'>81</span>
 3
 </pre>
-<p>Each of these functions also has a meaning with only one argument, although in mathematics only <code><span class='Function'>-</span></code> does. The relationship of negation to addition is extended to division (relative to multiplication) as well, so that <code><span class='Function'>÷</span><span class='Value'>𝕩</span></code> gives the reciprocal <code><span class='Number'>1</span><span class='Function'>÷</span><span class='Value'>𝕩</span></code> of its argument. Power (<code><span class='Function'>⋆</span></code>) is also extended with a default left argument of <a href="https://en.wikipedia.org/wiki/E_(mathematical_constant)">Euler's number</a> <em>e</em>. The default left argument for Root is 2, giving the well-known Square Root.</p>
+<p>Each of these functions also has a meaning with only one argument, although mathematics only defines <code><span class='Function'>-</span></code> in this way. The relationship of negation to addition is extended to division (relative to multiplication) as well, so that <code><span class='Function'>÷</span><span class='Value'>𝕩</span></code> gives the reciprocal <code><span class='Number'>1</span><span class='Function'>÷</span><span class='Value'>𝕩</span></code> of its argument. Power (<code><span class='Function'>⋆</span></code>) is also extended with a default left argument of <a href="https://en.wikipedia.org/wiki/E_(mathematical_constant)">Euler's number</a> <em>e</em>. The default left argument for Root is 2, giving the well-known Square Root.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LSA2CgrDtyAw4oC/MeKAvzIKCuKLhiAw4oC/MeKAvzIKCuKImiAw4oC/MeKAvzLigL80">↗️</a><pre>    <span class='Function'>-</span> <span class='Number'>6</span>
 ¯6
 
@@ -90,7 +97,7 @@
 ⟨ 0 1 1.414213562373095 2 ⟩
 </pre>
 <p>Take note of the difference between the function <code><span class='Function'>-</span></code>, and the &quot;high minus&quot; character <code><span class='Number'>¯</span></code>, which is a part of <a href="syntax.html#constants">numeric notation</a>. Also shown is the number <code><span class='Number'>∞</span></code>, which BQN supports along with <code><span class='Number'>¯∞</span></code> (but depending on implementation BQN may or may not keep track of <code><span class='Number'>¯0</span></code>. Integer optimization loses the distinction so it's best not to rely on it).</p>
-<p>The logarithm is written with Undo: <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>. As with Power, the default base is <em>e</em>, giving a natural logarithm.</p>
+<p>The logarithm is written with <a href="undo.html">Undo</a>: <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>. As with Power, the default base is <em>e</em>, giving a natural logarithm.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouG4oG8IDEwCgoyIOKLhuKBvCAxMDI0">↗️</a><pre>    <span class='Function'>⋆</span><span class='Modifier'>⁼</span> <span class='Number'>10</span>
 2.302585092994046
 
@@ -186,7 +193,7 @@
     <span class='Function'>|</span> <span class='Number'>¯∞</span><span class='Ligature'>‿</span><span class='Number'>¯6</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span>
 ⟨ ∞ 6 0 2 ⟩
 </pre>
-<p>Floor (<code><span class='Function'>⌊</span></code>) returns the largest integer less than or equal to the argument, and Ceiling (<code><span class='Function'>⌈</span></code>) returns the smallest one greater than or equal to it. For this purpose <code><span class='Number'>¯∞</span></code> and <code><span class='Number'>∞</span></code> are treated as integers, so that the floor or ceiling of an infinity is itself. Absolute value removes the argument's sign by negating it if it is less than 0, so that its result is always non-negative.</p>
+<p>Floor (<code><span class='Function'>⌊</span></code>) returns the largest integer less than or equal to the argument, and Ceiling (<code><span class='Function'>⌈</span></code>) returns the smallest one greater than or equal to it. For this purpose <code><span class='Number'>¯∞</span></code> and <code><span class='Number'>∞</span></code> are treated as integers, so that the floor or ceiling of an infinity is itself. Absolute value removes the sign of <code><span class='Value'>𝕩</span></code> by negating it if it's less than 0, so that its result is always non-negative.</p>
 <p>Minimum (<code><span class='Function'>⌊</span></code>) returns the smaller of its two arguments, and Maximum (<code><span class='Function'>⌈</span></code>) returns the larger. These functions are loosely related to Floor and Ceiling in their use of comparison, and can be defined similarly: for example, the minimum of two numbers is the largest number less than or equal to both of them. To take the minimum or maximum of an entire list, use a <a href="fold.html">fold</a>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDijIog4oaVOAoK4oy94oq44oyIIOKGlTg=">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>⌊</span> <span class='Function'>↕</span><span class='Number'>8</span>
 ⟨ 0 1 2 3 3 3 3 3 ⟩
@@ -194,7 +201,7 @@
     <span class='Function'>⌽</span><span class='Modifier2'>⊸</span><span class='Function'>⌈</span> <span class='Function'>↕</span><span class='Number'>8</span>
 ⟨ 7 6 5 4 4 5 6 7 ⟩
 </pre>
-<p>Modulus (<code><span class='Function'>|</span></code>) is similar to the modular division operation written <code><span class='Value'>%</span></code> in C-like languages, but it takes the arguments in the opposite order, and differs in its handling of negative arguments. It's defined to be <code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>-</span><span class='Value'>𝕨</span><span class='Function'>×⌊</span><span class='Value'>𝕩</span><span class='Function'>÷</span><span class='Value'>𝕨</span><span class='Brace'>}</span></code>, except that the multiplication should always return 0 if its right argument is 0, even if <code><span class='Value'>𝕨</span></code> is infinite.</p>
+<p>Modulus (<code><span class='Function'>|</span></code>) is similar to the modular division operation written <code><span class='Value'>%</span></code> in C-like languages, but it takes the arguments in the opposite order, and differs in its handling of negative arguments. It's the same computation as <code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Function'>-</span><span class='Value'>𝕨</span><span class='Function'>×⌊</span><span class='Value'>𝕩</span><span class='Function'>÷</span><span class='Value'>𝕨</span><span class='Brace'>}</span></code> but probably has better precision.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyB8IOKGlTgKCjMgfCDCrzU=">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>|</span> <span class='Function'>↕</span><span class='Number'>8</span>
 ⟨ 0 1 2 0 1 2 0 1 ⟩
 
@@ -291,11 +298,11 @@
   ⟨ ⟨ 1 0 ⟩ 1 1 ⟩  
                   ┘
 </pre>
-<p>With two arguments many combinations are possible. Arrays of equal shape are matched element-wise, and an atom is matched to every element of an array.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MTDigL8yMOKAvzMwICsgNeKAvzbigL83CgoxMCDDlyA04oC/M+KAvzLiiY024oC/N+KAvzg=">↗️</a><pre>    <span class='Number'>10</span><span class='Ligature'>‿</span><span class='Number'>20</span><span class='Ligature'>‿</span><span class='Number'>30</span> <span class='Function'>+</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span>
+<p>With two arguments, many combinations are possible. Arrays of equal shape are matched element-wise, and an atom is matched to every element of an array.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MTDigL8yMOKAvzMwICsgNeKAvzbigL83CgoxMCDDlyBbNOKAvzPigL8yLDbigL834oC/OF0=">↗️</a><pre>    <span class='Number'>10</span><span class='Ligature'>‿</span><span class='Number'>20</span><span class='Ligature'>‿</span><span class='Number'>30</span> <span class='Function'>+</span> <span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span>
 ⟨ 15 26 37 ⟩
 
-    <span class='Number'>10</span> <span class='Function'>×</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>≍</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>8</span>
+    <span class='Number'>10</span> <span class='Function'>×</span> <span class='Bracket'>[</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>8</span><span class='Bracket'>]</span>
 ┌─          
 ╵ 40 30 20  
   60 70 80  
