@@ -5,10 +5,10 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="array-notation-and-display"><a class="header" href="#array-notation-and-display">Array notation and display</a></h1>
-<p>This page documents ways arrays are represented in BQN: the notation you can use to write them and the way the REPL displays them.</p>
+<p>This page documents ways <a href="array.html">arrays</a> are represented in BQN: the notation you can use to write them and the way the REPL displays them.</p>
 <p>Array display is a feature of a BQN environment such as a REPL. You can also access it with <code><span class='Function'>•Fmt</span></code>, which takes a value and returns a string indicating how it would be formatted. Array notation is of course part of BQN source code, but you can also go from an array to one possible source code for it using the similar system function <code><span class='Function'>•Repr</span></code>.</p>
 <h2 id="array-display"><a class="header" href="#array-display">Array display</a></h2>
-<p>Although it's really part of the language environment and not BQN itself, let's look at display first so it's clear what arrays we're talking about later on. The BQN REPL prints arrays in a way that's meant to unambiguously show the structure and data, but doesn't correspond to BQN source code. A few examples are given below; of course, displays like this appear all over the documentation.</p>
+<p>Although it's really part of the language environment and not BQN itself, let's look at display first so it's clear what arrays we're talking about later on. A BQN session prints arrays in a way that's meant to unambiguously show the structure and data, but doesn't correspond to BQN source code. A few examples are given below; of course, displays like this appear all over the documentation.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVIDPigL80ICAgICAgICAgICAgICMgQXJyYXkgb2YgbGlzdHMKCjxAICAgICAgICAgICAgICAgICMgRW5jbG9zZWQgbnVsbAoK4p+o4oaVMywgInh5Iiwg4oaVMuKAvzDin6kgICMgQSBsaXN0IG9mIHRocmVlIGFycmF5cw==">↗️</a><pre>    <span class='Function'>↕</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>             <span class='Comment'># Array of lists
 </span>┌─                                 
 ╵ ⟨ 0 0 ⟩ ⟨ 0 1 ⟩ ⟨ 0 2 ⟩ ⟨ 0 3 ⟩  
@@ -42,7 +42,7 @@
        ┘       
               ┘
 </pre>
-<p>The lack of extra separation is to make it clear that the corners enclose the array rather than any of its elements (elements are still distinguishable becase an individual element won't contain whitespace except maybe between quotes). Now every set of corners indicates one array. This is a good fit for the <a href="based.html">based array model</a>, where data doesn't have to be in an array.</p>
+<p>The lack of extra separation is to make it clear that the corners enclose the whole array rather than any of its elements (elements are still distinguishable becase an individual element won't contain whitespace, except maybe between quotes). Every set of corners indicates one array. This is a good fit for the <a href="based.html">based array model</a>, where data doesn't have to be in an array.</p>
 <h4 id="rank-indicator"><a class="header" href="#rank-indicator">Rank indicator</a></h4>
 <p>The top left corner indicates the rank of an array. Here's a neat way using <a href="fold.html">Fold</a> (<code><span class='Modifier'>´</span></code>) and <a href="prefixes.html">Prefixes</a> (<code><span class='Function'>↑</span></code>) to nest ranks 0 through 6 together:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MCDipYrin5w8wrQg4oaRNuKlijE=">↗️</a><pre>    <span class='Number'>0</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Function'>&lt;</span><span class='Modifier'>´</span> <span class='Function'>↑</span><span class='Number'>6</span><span class='Function'>⥊</span><span class='Number'>1</span>
@@ -121,7 +121,7 @@
             ┘
 </pre>
 <h4 id="empty-arrays"><a class="header" href="#empty-arrays">Empty arrays</a></h4>
-<p>The top-left corner can show the rank of an array but not its shape; the shape must be seen from the data. An empty array has no data, and it's hard to tell shape from a bunch of blank space. In general, an empty array is printed as <code><span class='Function'>↕</span><span class='Value'>shape</span></code>. An empty list is shown using brackets <code><span class='Bracket'>⟨⟩</span></code>, which are discussed in the next section.</p>
+<p>The top-left corner can show the rank of an array but not its shape; the shape must be seen from the data. An empty array has no data, and it can be impossible to tell shape from a bunch of blank space. So an empty array is usually printed as <code><span class='Function'>↕</span><span class='Value'>shape</span></code>. An empty list is shown using brackets <code><span class='Bracket'>⟨⟩</span></code>, which are discussed in the next section.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oaVwqgg4p+oMOKAvzQsIDPigL8w4oC/MSwgMuKAvzDigL8wLCAw4p+p">↗️</a><pre>    <span class='Function'>↕</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Separator'>,</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Separator'>,</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Separator'>,</span> <span class='Number'>0</span><span class='Bracket'>⟩</span>
 ⟨ ↕0‿4 ↕3‿0‿1 ↕2‿0‿0 ⟨⟩ ⟩
 </pre>
@@ -157,10 +157,10 @@
     <span class='String'>&quot;&quot;</span>
 ⟨⟩
 </pre>
-<p>This case also covers empty lists, which are shown as <code><span class='Bracket'>⟨⟩</span></code>. This includes an empty string, as the only difference between an empty string and any other empty list is its fill element and array displays don't depend on the fill.</p>
+<p>This case also covers empty lists, which are shown as <code><span class='Bracket'>⟨⟩</span></code>. This includes an empty string: the only difference between an empty string and any other empty list is its fill element, and array displays don't depend on the fill.</p>
 <h2 id="array-literals"><a class="header" href="#array-literals">Array literals</a></h2>
 <p><em>The tutorial section <a href="../tutorial/list.html#list-notation">here</a> also covers this topic.</em></p>
-<p>There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the <a href="fill.html">fill</a>) and the other two can combine any sequence of elements. Additionally, there's a square bracket notation that can form higher-rank arrays.</p>
+<p>Now it's time to discuss ways to write arrays in a BQN program. There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the <a href="fill.html">fill</a>) and the other two can combine any sequence of elements. Additionally, there's a square bracket notation that can form higher-rank arrays.</p>
 <h3 id="strings"><a class="header" href="#strings">Strings</a></h3>
 <p>A <strong>string</strong> consists of a sequence of characters surrounded by double quotes <code><span class='String'>&quot;&quot;</span></code>. The only rule for the characters inside is that any double quote must be escaped by repeating it twice; otherwise the string ends at that point.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Ii0nw5clIiIqIgoKIi0nw5clIioiICAjIEVzY2FwaW5nIGZhaWx1cmU=">↗️</a><pre>    <span class='String'>&quot;-'×%&quot;&quot;*&quot;</span>
@@ -172,7 +172,7 @@
 <p>Even special characters like a newline can appear in a string literal, so that string literals are automatically multi-line.</p>
 <h3 id="brackets"><a class="header" href="#brackets">Brackets</a></h3>
 <p><strong>List notation</strong> uses angle brackets <code><span class='Bracket'>⟨⟩</span></code>. The contents are structurally identical to those of a <a href="block.html">block</a>, that is, a list of expressions <a href="syntax.html#separators">separated</a> by <code><span class='Separator'>,</span></code> or <code><span class='Separator'>⋄</span></code> or newlines. Unlike a block, a list doesn't need to have any expressions: <code><span class='Bracket'>⟨⟩</span></code> or <code><span class='Bracket'>⟨</span><span class='Separator'>⋄</span><span class='Bracket'>⟩</span></code> or <code><span class='Bracket'>⟨</span><span class='Separator'>,,⋄,</span><span class='Bracket'>⟩</span></code> will create an empty list. Other differences are that a list doesn't introduce a new <a href="lexical.html">scope</a> and all of the expressions have to result in a value, not <a href="expression.html#nothing">Nothing</a> (<code><span class='Nothing'>·</span></code>).</p>
-<p>Entries in a list are evaluated in source order, and the value will be the list of those results. The list has a subject role, even if it contains expressions with other roles. Any value can be an element.</p>
+<p>Entries in a list are evaluated in source order, and the value will be the list of those results. The list has a subject <a href="expression.html#syntactic-role">role</a>, even if it contains expressions with other roles. Any value can be an element.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oQCwg4o2Jy5gsIOKJjSJhYmMi4p+p">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='String'>@</span><span class='Separator'>,</span> <span class='Function'>⍉</span><span class='Modifier'>˘</span><span class='Separator'>,</span> <span class='Function'>≍</span><span class='String'>&quot;abc&quot;</span><span class='Bracket'>⟩</span>
 ┌─              
 · @ ⍉˘ ┌─       
@@ -180,7 +180,7 @@
              ┘  
                ┘
 </pre>
-<p>BQN's separator rules give list notation a very flexible structure. You can put all the elements on one line or spread them across lines, with the option of adding blank lines between elements. A separator at the end of a line is never needed but leading and trailing separators are allowed.</p>
+<p>BQN's separator rules give list notation a very flexible structure. You can put all the elements on one line or spread them across lines, with the option of adding blank lines between elements. A separator at the end of a line is never needed, but leading and trailing separators are allowed.</p>
 <pre><span class='Bracket'>⟨</span>
   <span class='String'>&quot;e0&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;e1&quot;</span>
   <span class='Bracket'>⟨</span>
@@ -201,9 +201,9 @@
   0 5  
       ┘
 </pre>
-<p>This syntax doesn't work for creating rank 0 arrays—use <a href="enclose.html">Enclose</a> <code><span class='Function'>&lt;</span></code> for these—or empty arrays. The notation <code><span class='Bracket'>[]</span></code> would be ambiguous, so it's not allowed (although it can be used for destructuring, which works with an existing array). To create a specific empty array, <a href="reshape.html">Reshape</a> (<code><span class='Function'>⥊</span></code>) is probably the best approach.</p>
+<p>This syntax doesn't work for creating rank 0 arrays—use <a href="enclose.html">Enclose</a> <code><span class='Function'>&lt;</span></code> for these—or empty arrays. The notation <code><span class='Bracket'>[]</span></code> would be ambiguous, so it's not allowed (although it can be used for destructuring, which works with an existing array). To create an empty array with a specific shape, <a href="reshape.html">Reshape</a> (<code><span class='Function'>⥊</span></code>) is probably the best approach.</p>
 <h3 id="strands"><a class="header" href="#strands">Strands</a></h3>
-<p><strong>Strand notation</strong> is another way to write lists of length two or more. The elements are connected with the ligature character <code><span class='Ligature'>‿</span></code>. It has a precedence lower than the <a href="namespace.html">namespace</a> dot but higher than anything else other than paired brackets <code><span class='Paren'>()</span></code>, <code><span class='Brace'>{}</span></code>, and <code><span class='Bracket'>⟨⟩</span></code>, so compound elements generally need to be placed in parentheses. Expressions joined by ligatures behave exactly the same as those in list notation: they are evaluated in order and placed in a list.</p>
+<p><strong>Strand notation</strong> is another way to write lists of length two or more. The elements are connected with the ligature character <code><span class='Ligature'>‿</span></code>. It has a precedence higher than anything else other than the <a href="namespace.html">namespace</a> dot <code><span class='Value'>.</span></code> and of course paired brackets <code><span class='Paren'>()</span></code>, <code><span class='Brace'>{}</span></code>, and <code><span class='Bracket'>⟨⟩</span></code>. This means complicated elements generally need to be placed in parentheses. Expressions joined by ligatures behave exactly the same as those in list notation: they are evaluated in order and placed in a list.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K+KAv8K04oC/4oiY4oC/w5cKCivigL/CtOKAv+KImOKAv8OXICDiiaEgIOKfqCsswrQs4oiYLMOX4p+p">↗️</a><pre>    <span class='Function'>+</span><span class='Ligature'>‿</span><span class='Modifier'>´</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span><span class='Ligature'>‿</span><span class='Function'>×</span>
 ⟨ + ´ ∘ × ⟩
 

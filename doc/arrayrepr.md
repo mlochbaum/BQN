@@ -2,13 +2,13 @@
 
 # Array notation and display
 
-This page documents ways arrays are represented in BQN: the notation you can use to write them and the way the REPL displays them.
+This page documents ways [arrays](array.md) are represented in BQN: the notation you can use to write them and the way the REPL displays them.
 
 Array display is a feature of a BQN environment such as a REPL. You can also access it with `•Fmt`, which takes a value and returns a string indicating how it would be formatted. Array notation is of course part of BQN source code, but you can also go from an array to one possible source code for it using the similar system function `•Repr`.
 
 ## Array display
 
-Although it's really part of the language environment and not BQN itself, let's look at display first so it's clear what arrays we're talking about later on. The BQN REPL prints arrays in a way that's meant to unambiguously show the structure and data, but doesn't correspond to BQN source code. A few examples are given below; of course, displays like this appear all over the documentation.
+Although it's really part of the language environment and not BQN itself, let's look at display first so it's clear what arrays we're talking about later on. A BQN session prints arrays in a way that's meant to unambiguously show the structure and data, but doesn't correspond to BQN source code. A few examples are given below; of course, displays like this appear all over the documentation.
 
         ↕ 3‿4             # Array of lists
 
@@ -26,7 +26,7 @@ Those top-left and bottom-right corners are a distinctive part of BQN's display,
 
         ⟨2,"xy"⟩≍⟨2‿2⥊"abcd",4⟩  # Nested 2×2 array
 
-The lack of extra separation is to make it clear that the corners enclose the array rather than any of its elements (elements are still distinguishable becase an individual element won't contain whitespace except maybe between quotes). Now every set of corners indicates one array. This is a good fit for the [based array model](based.md), where data doesn't have to be in an array.
+The lack of extra separation is to make it clear that the corners enclose the whole array rather than any of its elements (elements are still distinguishable becase an individual element won't contain whitespace, except maybe between quotes). Every set of corners indicates one array. This is a good fit for the [based array model](based.md), where data doesn't have to be in an array.
 
 #### Rank indicator
 
@@ -58,7 +58,7 @@ The pattern continues: 3-cells are separated by 2 spaces, 4-cells by 3, and so o
 
 #### Empty arrays
 
-The top-left corner can show the rank of an array but not its shape; the shape must be seen from the data. An empty array has no data, and it's hard to tell shape from a bunch of blank space. In general, an empty array is printed as `↕shape`. An empty list is shown using brackets `⟨⟩`, which are discussed in the next section.
+The top-left corner can show the rank of an array but not its shape; the shape must be seen from the data. An empty array has no data, and it can be impossible to tell shape from a bunch of blank space. So an empty array is usually printed as `↕shape`. An empty list is shown using brackets `⟨⟩`, which are discussed in the next section.
 
         ↕¨ ⟨0‿4, 3‿0‿1, 2‿0‿0, 0⟩
 
@@ -82,13 +82,13 @@ The second is for lists with simple enough elements, which are displayed on one 
 
         ""
 
-This case also covers empty lists, which are shown as `⟨⟩`. This includes an empty string, as the only difference between an empty string and any other empty list is its fill element and array displays don't depend on the fill.
+This case also covers empty lists, which are shown as `⟨⟩`. This includes an empty string: the only difference between an empty string and any other empty list is its fill element, and array displays don't depend on the fill.
 
 ## Array literals
 
 *The tutorial section [here](../tutorial/list.md#list-notation) also covers this topic.*
 
-There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the [fill](fill.md)) and the other two can combine any sequence of elements. Additionally, there's a square bracket notation that can form higher-rank arrays.
+Now it's time to discuss ways to write arrays in a BQN program. There are three kinds literal notation for lists: strings, list notation, and stranding. Strings indicate character lists (with space for the [fill](fill.md)) and the other two can combine any sequence of elements. Additionally, there's a square bracket notation that can form higher-rank arrays.
 
 ### Strings
 
@@ -104,11 +104,11 @@ Even special characters like a newline can appear in a string literal, so that s
 
 **List notation** uses angle brackets `⟨⟩`. The contents are structurally identical to those of a [block](block.md), that is, a list of expressions [separated](syntax.md#separators) by `,` or `⋄` or newlines. Unlike a block, a list doesn't need to have any expressions: `⟨⟩` or `⟨⋄⟩` or `⟨,,⋄,⟩` will create an empty list. Other differences are that a list doesn't introduce a new [scope](lexical.md) and all of the expressions have to result in a value, not [Nothing](expression.md#nothing) (`·`).
 
-Entries in a list are evaluated in source order, and the value will be the list of those results. The list has a subject role, even if it contains expressions with other roles. Any value can be an element.
+Entries in a list are evaluated in source order, and the value will be the list of those results. The list has a subject [role](expression.md#syntactic-role), even if it contains expressions with other roles. Any value can be an element.
 
         ⟨@, ⍉˘, ≍"abc"⟩
 
-BQN's separator rules give list notation a very flexible structure. You can put all the elements on one line or spread them across lines, with the option of adding blank lines between elements. A separator at the end of a line is never needed but leading and trailing separators are allowed.
+BQN's separator rules give list notation a very flexible structure. You can put all the elements on one line or spread them across lines, with the option of adding blank lines between elements. A separator at the end of a line is never needed, but leading and trailing separators are allowed.
 
     ⟨
       "e0", "e1"
@@ -127,11 +127,11 @@ Higher-rank arrays can be written with `[]`, an **array notation** that indicate
 
         [2‿3, 4‿1, 0‿5]
 
-This syntax doesn't work for creating rank 0 arrays—use [Enclose](enclose.md) `<` for these—or empty arrays. The notation `[]` would be ambiguous, so it's not allowed (although it can be used for destructuring, which works with an existing array). To create a specific empty array, [Reshape](reshape.md) (`⥊`) is probably the best approach.
+This syntax doesn't work for creating rank 0 arrays—use [Enclose](enclose.md) `<` for these—or empty arrays. The notation `[]` would be ambiguous, so it's not allowed (although it can be used for destructuring, which works with an existing array). To create an empty array with a specific shape, [Reshape](reshape.md) (`⥊`) is probably the best approach.
 
 ### Strands
 
-**Strand notation** is another way to write lists of length two or more. The elements are connected with the ligature character `‿`. It has a precedence lower than the [namespace](namespace.md) dot but higher than anything else other than paired brackets `()`, `{}`, and `⟨⟩`, so compound elements generally need to be placed in parentheses. Expressions joined by ligatures behave exactly the same as those in list notation: they are evaluated in order and placed in a list.
+**Strand notation** is another way to write lists of length two or more. The elements are connected with the ligature character `‿`. It has a precedence higher than anything else other than the [namespace](namespace.md) dot `.` and of course paired brackets `()`, `{}`, and `⟨⟩`. This means complicated elements generally need to be placed in parentheses. Expressions joined by ligatures behave exactly the same as those in list notation: they are evaluated in order and placed in a list.
 
         +‿´‿∘‿×
 
