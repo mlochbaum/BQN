@@ -24,7 +24,7 @@ Further details in the sections below.
 
 ### Self-hosted BQN
 
-This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all functionality specified so far. System value support varies at it's implemented separately in each host.
+This version of BQN is [implemented](implementation/README.md) mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows [embedding](doc/embed.md), where programs in the host language can include BQN code. It fully supports all functionality specified so far. System value support varies as it's implemented separately in each host.
 
 Support in the following languages has been implemented (details in the subsections below):
 - [C](https://github.com/dzaima/CBQN), targeting high performance. Usually fairly fast.
@@ -32,7 +32,7 @@ Support in the following languages has been implemented (details in the subsecti
 - BQN ([bqn.bqn](bqn.bqn)), for testing without a build step.
 - [Julia](https://github.com/andreypopp/BQN.jl) embedding, with common primitives implemented natively. Slow startup.
 - [C++](https://github.com/ashermancinelli/cxbqn), planning to enable GPU use. Still slow; some cool features.
-- [Rust](https://github.com/cannadayr/rsbqn/), motivated by web use (an [Erlang](https://github.com/cannadayr/ebqn) version is abandoned as too slow).
+- [Rust](https://github.com/cannadayr/rsbqn/), motivated by web use (an [Erlang](https://github.com/cannadayr/ebqn) version is abandoned as too slow). Note that CBQN [embeds in Rust](https://detegr.github.io/cbqn-rs/cbqn/) as well.
 
 #### Javascript
 
