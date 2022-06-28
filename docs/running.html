@@ -65,7 +65,7 @@
 </table>
 <p>Further details in the sections below.</p>
 <h3 id="self-hosted-bqn"><a class="header" href="#self-hosted-bqn">Self-hosted BQN</a></h3>
-<p>This version of BQN is <a href="implementation/index.html">implemented</a> mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows <a href="doc/embed.html">embedding</a>, where programs in the host language can include BQN code. It fully supports all functionality specified so far. System value support varies at it's implemented separately in each host.</p>
+<p>This version of BQN is <a href="implementation/index.html">implemented</a> mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows <a href="doc/embed.html">embedding</a>, where programs in the host language can include BQN code. It fully supports all functionality specified so far. System value support varies as it's implemented separately in each host.</p>
 <p>Support in the following languages has been implemented (details in the subsections below):</p>
 <ul>
 <li><a href="https://github.com/dzaima/CBQN">C</a>, targeting high performance. Usually fairly fast.</li>
@@ -73,7 +73,7 @@
 <li>BQN (<a href="https://github.com/mlochbaum/BQN/blob/master/bqn.bqn">bqn.bqn</a>), for testing without a build step.</li>
 <li><a href="https://github.com/andreypopp/BQN.jl">Julia</a> embedding, with common primitives implemented natively. Slow startup.</li>
 <li><a href="https://github.com/ashermancinelli/cxbqn">C++</a>, planning to enable GPU use. Still slow; some cool features.</li>
-<li><a href="https://github.com/cannadayr/rsbqn/">Rust</a>, motivated by web use (an <a href="https://github.com/cannadayr/ebqn">Erlang</a> version is abandoned as too slow).</li>
+<li><a href="https://github.com/cannadayr/rsbqn/">Rust</a>, motivated by web use (an <a href="https://github.com/cannadayr/ebqn">Erlang</a> version is abandoned as too slow). Note that CBQN <a href="https://detegr.github.io/cbqn-rs/cbqn/">embeds in Rust</a> as well.</li>
 </ul>
 <h4 id="javascript"><a class="header" href="#javascript">Javascript</a></h4>
 <p>The file <a href="https://github.com/mlochbaum/BQN/blob/master/docs/bqn.js">docs/bqn.js</a> is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script <a href="https://github.com/mlochbaum/BQN/blob/master/bqn.js">bqn.js</a>, passing a file and <code><span class='Value'>•args</span></code>, or <code><span class='Function'>-</span><span class='Value'>e</span></code> to execute all remaining arguments directly and print the results.</p>
