@@ -89,7 +89,7 @@ The possible roles are:
 * [**Identity value**](fold.md#identity-values): An inferred property of a function: the result of a reduction with this function on an empty array.
 
 * **Error**: A condition that stops compilation or execution (see [assert](assert.md)).
-* **Inferred property**: A property of a value that is derived by BQN based on constraints. If it cannot be derived then the value will not have the property. Includes identity values, fill elements, and behavior of Undo and Under.
+* **Inferred property**: A property of a value that is derived by BQN based on constraints. If it can't be derived then the value won't have the property. Includes identity values, fill elements, and behavior of Undo and Under.
 
 ## Namespaces
 

@@ -99,6 +99,6 @@ Shifting always works on the [first axis](leading.md) of `𝕩` (which must have
 
 In any instance of `»` or `«`, `𝕩` must have rank at least 1.
 
-For a dyadic shift function, `𝕨` must be [Join](join.md#join-to)-compatible with `𝕩` (that is, `𝕨∾𝕩` completes without error) and cannot have greater rank than `𝕩`. Then Shift Before (`»`) is `{(≠𝕩)↑𝕨∾𝕩}` and Shift After (`«`) is `{(-≠𝕩)↑𝕩∾𝕨}`
+For a dyadic shift function, `𝕨` must be [Join](join.md#join-to)-compatible with `𝕩` (that is, `𝕨∾𝕩` completes without error) and can't have greater rank than `𝕩`. Then Shift Before (`»`) is `{(≠𝕩)↑𝕨∾𝕩}` and Shift After (`«`) is `{(-≠𝕩)↑𝕩∾𝕨}`
 
 When called monadically, the default argument is a cell of fills `1↑0↑𝕩`. That is, Nudge (`»`) is `(1↑0↑⊢)⊸»` and Nudge Back (`«`) is `(1↑0↑⊢)⊸«`. This default argument always satisfies the compatibility requirement above and so the only conditions for nudge are that `𝕩` has rank at least 1 and has a fill element.
