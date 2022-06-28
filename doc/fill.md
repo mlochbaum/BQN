@@ -44,7 +44,7 @@ For [arithmetic](arithmetic.md) primitives, the fill is found by the rules of pe
 
         » "abc" + 4‿3‿2
 
-[Mapping](map.md) modifiers Each and Table (`¨⌜`) might try to follow a similar strategy, applying `𝔽` to argument fills to obtain the result fill. The absolute rule here is that this computation cannot cause side effects or an error, so for a complicated `𝔽` such as a block function this procedure is likely to be aborted to avoid disrupting the rest of the program.
+[Mapping](map.md) modifiers Each and Table (`¨⌜`) might try to follow a similar strategy, applying `𝔽` to argument fills to obtain the result fill. The absolute rule here is that this computation can't cause side effects or an error, so for a complicated `𝔽` such as a block function this procedure is likely to be aborted to avoid disrupting the rest of the program.
 
 Most other primitives fit in one of three broad categories as shown in the table below. Structural primitives, indicated by `⊢`, don't change the fill of `𝕩`. Combining structural primitives, indicated by `∩`, only depend on the fill of all combined arrays—elements of `𝕩` in the one-argument case, or `𝕨` and `𝕩` in the two-argument case. Finally, many functions such as [search functions](search.md) return only numbers and have a fill of `0`.
 

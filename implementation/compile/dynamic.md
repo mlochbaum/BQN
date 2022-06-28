@@ -83,7 +83,7 @@ If the implementation is able to make use of all available threads (possible whe
 
 ### Anticipation
 
-The [hot path](#hot-paths) strategy depends on targetting code for optimization based on history. Anticipation would identify in advance what code will take longer to run, and allocate a fraction of the time taken for optimizing that code. This is most useful for code that runs a small number of times on large arrays. An example where anticipation would be very important is for a programmer trying experimental one-off queries on a large dataset.
+The [hot path](#hot-paths) strategy depends on targeting code for optimization based on history. Anticipation would identify in advance what code will take longer to run, and allocate a fraction of the time taken for optimizing that code. This is most useful for code that runs a small number of times on large arrays. An example where anticipation would be very important is for a programmer trying experimental one-off queries on a large dataset.
 
 The end result seems similar to that obtained by thunks as discussed at Dyalog '18 ([video](https://dyalog.tv/Dyalog18/?v=-6no6N3i9Tg), [slides](https://www.dyalog.com/user-meetings/uploads/conference/dyalog18/presentations/D15_The_Interpretive_Advantage.zip)). A thunk runs as part of a primitive, detecting that computing the result will be slow and outputting a deferred computation instead. Anticipation is more powerful because it can scan ahead in the bytecode instead of deciding as primitives are called whether or not to expand the thunk.
 
