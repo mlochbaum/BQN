@@ -200,7 +200,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ut/˜↩hm⋄hx∨↩1=hr
   "Header with ⁼ must take arguments"_err_(hm/HI) hx<×ut
   cwh←hc/»hl⌈ha×1+he←0≠hk                   # Body 𝕨 for just headers
-  "Header with ˜⁼ must have left argument"_err_(HI) (0=cwh)∧ut2←2=ut
+  "Header with ˜⁼ must have left argument"_err_(hm/HI) (0=cwh)∧ut2←2=ut
   cw←(cwh⌈2×ut2)⌾(ch⊸/)1+-⟜«(»cq)<1(⊢<«)cf  # Body 𝕨: 0 no, 1 allowed, 2 required
   hl/˜↩hm⋄hu←(¬he)⌾(hi⊸⊏)hf                 # hu: mask of header special names
   hj←gi⊏˜he/hi⋄hd←2=he/hk                   # hj: header assignments; hd: which ones destructure
