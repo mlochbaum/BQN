@@ -36,7 +36,7 @@ Assignment to `lhsArray` destructures the major cells of right-hand-side value `
 
 A destructuring assignment is performed in program order, or equivalently index order, with each sub-assignment fully completed before beginning the next (a depth-first order). Thus if an assignment with `↩` encounters an error but it's caught with `⎊`, some of the assignment may have already been performed, changing variable values.
 
-*Modified assignment* is the subject assignment rule `lhs Derv "↩" subExpr?`. In this case, `lhs` is evaluated as if it were a `subExpr` (the syntax is a subset of `subExpr`), and passed as an argument to `Derv`. The full application is `lhs Derv subExpr`, if `subExpr` is given, and `Derv lhs` otherwise. Its value is assigned to `lhs`, and is also the result of the modified assignment expression.
+*Modified assignment* is the subject assignment rule `lhs Derv "↩" subExpr?`. This case results in an error if `lhs` contains `"·"` or an empty `lhsArray` node (one with no `LHS_ELT` components). With these conditions, the grammar for `lhs` is a subset of `subExpr`; the node is evaluated as if it were a `subExpr`, and passed as an argument to `Derv`. The full application is `lhs Derv subExpr`, if `subExpr` is given, and `Derv lhs` otherwise. Its value is assigned to `lhs`, and is also the result of the modified assignment expression.
 
 ### Expressions
 
