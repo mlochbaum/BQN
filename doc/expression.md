@@ -8,7 +8,7 @@ The [first tutorial](../tutorial/expression.md) also covers how to build and rea
 
 ## Overview
 
-BQN expressions consist of subjects, functions, and modifiers arranged in sequence, with parentheses to group parts into subexpressions. Assignment arrows `←` and `↩` can also be present and mostly behave similar to functions. Functions can be applied to subjects or grouped into trains, while modifiers can be applied to subjects or functions. The most important kinds of application are:
+BQN expressions consist of subjects, functions, and modifiers arranged in sequence, with parentheses to group parts into subexpressions. Assignment arrows `←` and `↩` can also be present and mostly act like functions. [Functions](ops.md#functions) can be applied to subjects or grouped into [trains](train.md), while [modifiers](ops.md#modifiers) can be applied to subjects or functions. The most important kinds of application are:
 
 | left  | main  | right | output     | name       | binding
 |-------|-------|-------|------------|------------|---------
@@ -17,15 +17,11 @@ BQN expressions consist of subjects, functions, and modifiers arranged in sequen
 |  `F`  | `_m`  |       | Function   | 1-Modifier | LtR, tighter
 |  `F`  | `_c_` |  `G`  | Function   | 2-Modifier |
 
-The four roles (subject, function, two kinds of modifier) describe expressions, not values. When an expression is evaluated, the value's [type](types.md) doesn't have to correspond to its role, and can even change from one evaluation to another. An expression's role is determined entirely by its source code, so it's fixed.
+The four [roles](#syntactic-role) (subject, function, two kinds of modifier) describe expressions, not values. When an expression is evaluated, the value's [type](types.md) doesn't have to correspond to its role, and can even change from one evaluation to another. An expression's role is determined entirely by its source code, so it's fixed.
 
 In the table, `?` marks an optional left argument. If there isn't a value in that position, or it's [Nothing](#nothing) (`·`), the middle function will be called with only one argument.
 
 If you're comfortable reading [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) and want to understand things in more detail than described below, you might check the [grammar specification](../spec/grammar.md) as well.
-
-## Parentheses
-
-As in most programming languages, parentheses `()` are for grouping. The code inside a balanced set of parentheses is a single expression, which produces one value to be used by the expression that contains it—for example, in `(2×3)+4`, `2×3` is a subexpression evaluating to `6`, so that larger expression is equivalent to `6+4`. The syntactic role of a set of parentheses is also the same as that of the expression inside.
 
 ## Syntactic role
 
@@ -41,7 +37,7 @@ Below, the function `{𝕎𝕩}` treats its left argument `𝕎` as a function a
 
 ### Role spellings
 
-The four roles are **subject**, **function**, **1-modifier**, and **2-modifier**, as shown in the table below. Each type has an associated role (with non-operation types all corresponding to subjects), and the value of an expression will often have a matching type, but it doesn't have to.
+The four roles are **subject**, **function**, **1-modifier**, and **2-modifier**, as shown in the table below. Each type has an associated role (non-operation types all correspond to subjects), and the value of an expression will often have a type that fits the role, but it doesn't have to.
 
 | BQN         | Names       | Primitives
 |-------------|-------------|-----------------
@@ -50,13 +46,17 @@ The four roles are **subject**, **function**, **1-modifier**, and **2-modifier**
 | 1-modifier  | `_leading`  | `` ˙˜˘¨⌜⁼´˝` ``
 | 2-modifier  | `_both_`    | `∘○⊸⟜⌾⊘◶⎉⚇⍟⎊`
 
-Primitive tokens, since they have a fixed value, always have a role that matches their type. They are functions, unless they fall into one of the two modifier patterns. 1-modifiers have superscript glyphs, and 2-modifiers have glyphs with an unbroken circle—that is, one without a line through it, excluding functions `⌽` and `⍉`.
+Primitive tokens, since they have a fixed value, always have a role that matches their type. They're functions by default, as the modifiers have glyphs that fit specific patterns. 1-modifiers have superscript glyphs, and 2-modifiers have glyphs with an unbroken circle—that is, one without a line through it, excluding functions `⌽` and `⍉`.
 
 Variable names can be written in any case and with underscores added, and these changes don't affect what [identifier](lexical.md) the name refers to. `ab`, `aB`, `AB`, and `_a_B_` are all the same variable. However, the spelling—specifically the first and last characters—determine the variable's role. A lowercase first letter indicates a subject, and an uppercase first letter makes it a function. A leading underscore (regardless of the following character) indicates a 1-modifier, and both leading and trailing underscores makes a 2-modifier.
 
-Besides these, character, string, and [array literals](arrayrepr.md#array-literals) always have a subject role, and the role of a [block](block.md) is determined by its type, which depends either on the header it has or which special variables it uses.
+Besides these, character, string, and [array literals](arrayrepr.md#array-literals) always have a subject role, and the role of a [block](block.md) is determined by its type, which depends either on the header it has or which special variables it uses. If headerless, a block is a subject if it has no special names, but a `𝕨` or `𝕩` makes it at least a function, an `𝔽` makes it a 1- or 2-modifier, and a `𝔾` always makes it a 2-modifier.
 
-The role of a compound expression, formed by applying an operation to some inputs, depends on the operation applied. This system is discussed in the remaining sections below.
+The role of a compound expression, formed by applying an operation to some inputs, depends on the operation applied. This system is covered in the remaining sections below.
+
+## Parentheses
+
+As in most programming languages, parentheses `()` are for grouping. The code inside a balanced set of parentheses is a single expression, which produces one value to be used by the expression that contains it—for example, in `(2×3)+4`, `2×3` is a subexpression evaluating to `6`, so that larger expression is equivalent to `6+4`. The syntactic role of a set of parentheses is also the same as that of the expression inside.
 
 ## Nothing
 
@@ -66,13 +66,13 @@ The following rules apply to Nothing:
 - If it's the left argument in a function call, the function is called with no left argument.
 - If it's the right argument, the function isn't called, and "returns" Nothing.
 
-For example, the expression `(F 2 G ·) H I j` is equivalent to `H I j`. But functions and arguments that would be discarded by the second rule are still evaluated, so that for example `(a+↩1) F ·` increments `a` when run.
+For example, the expression `(F 2 G ·) H I j` is equivalent to `H I j`. But functions and arguments that will be discarded by the second rule are still evaluated, so that for example `(a+↩1) F ·` increments `a` when run.
 
-Nothing can only be used as an argument to a function, or the left argument in a train (it can't be the right argument in a train because a train ends with a function by definition). In another position where a subject could appear, like as an operand or in a list, it causes an error: either at compile time, for `·`, or when the function is called with no left argument, for `𝕨`.
+Nothing can only be used as an argument to a function, or the left argument in a train (it can't be the right—a train ends with a function by definition). In another position where a subject could appear, like as an operand or in a list, it causes an error: either at compile time, for `·`, or when the function is called with no left argument, for `𝕨`.
 
 ## Kinds of application
 
-Here is a table of the modifier and function application rules:
+Here is a table of the [function and modifier](ops.md) application rules:
 
 | left  | main  | right | output     | name
 |-------|-------|-------|------------|------
@@ -83,16 +83,21 @@ Here is a table of the modifier and function application rules:
 |  `F*` | `_m`  |       | Function   | 1-Modifier
 |  `F*` | `_c_` |  `G*` | Function   | 2-Modifier
 
-A function with an asterisk indicates that a subject can also be used. Since the role doesn't exist after parsing, function and subject spellings are indistinguishable in these positions. Modifier applications bind more tightly than functions, and associate left-to-right while functions associate right-to-left.
+An asterisk `*` indicates that a subject can also be used. Since the role doesn't exist after parsing, function and subject spellings are indistinguishable in these positions. Modifier applications bind more tightly than functions, and associate left-to-right while functions associate right-to-left.
 
 ## Assignment
 
-Another element that can be included in expressions is assignment, which is written with `←` to *define* (also called "declare" in many other languages) a variable and `↩` to *change* its definition. A variable can only be defined once within a [scope](lexical.md), and can only be changed if it has already been defined. However, it can be shadowed, meaning that it is defined again in an inner scope even though it has a definition in an outer scope already.
+Expressions may also include assignment, which is written with `←` or `⇐` to *define* (similar to "declare" in many other languages) a variable and `↩` to *change* its definition. Assignment has a left-hand side (`name` below) which is usually a variable name, and a right-hand side (`↕4`) which can be any expression. The roles of the two sides have to match. It sets the value of the variable to be the result of the expression.
+
+        name ← ↕4
+        name
+
+A variable can only be defined once within a [scope](lexical.md), and can only be changed if it has already been defined. However, it can be shadowed, meaning that an inner scope can define it even if it has a definition in an outer scope already.
 
         x←1 ⋄ {x←2 ⋄ x↩3 ⋄ x}
         x
 
-Assignment can be used inline in an expression, and its result is always the value being assigned. The role of the identifier used must match the value being assigned.
+Assignment can be used inline in an expression, and its result is always the new value of the assignment target. Function or modifier assignment must be parenthesized, while subject assignment doesn't have to be: in a subject expression, assignment arrows have the same precedence as functions.
 
         2×a←(Neg←-)3
         a
@@ -114,13 +119,13 @@ The left hand side of assignment in a subject expression can be *compound*, so t
 
         s
 
-Array destructuring using `[]` is also possible: it's equivalent to splitting the right-hand side with `<˘` and then applying list destructuring.
+Array destructuring using [array notation](arrayrepr.md#high-rank-arrays) `[]` is also possible: it's equivalent to splitting the right-hand side with `<˘` and then applying list destructuring.
 
         [t,u] ← ↕2‿3
 
         u
 
-Namespace destructuring uses an overlapping syntax, fully described in [its own section](namespace.md#imports). The left hand side is a list of names or aliases `to⇐from`.
+Namespace destructuring uses an overlapping syntax, fully described in [its own section](namespace.md#imports). The left hand side is a list of names, or aliases `to⇐from`.
 
         q‿r ↩ {q⇐2+r⇐0.5} ⋄ q
 
@@ -130,13 +135,12 @@ With destructuring, you might want to discard some values from the right hand si
 
 ### Exports
 
-The double arrow `⇐` is used to export variables from a block or program, causing the result to be a [namespace](namespace.md). There are two ways to export variables. First, `←` in the variable definition can be replaced with `⇐` to export the variable as it's defined. Second, an export statement consisting of an assignment target followed by `⇐` with nothing to the right exports the variables in the assignment target and does nothing else. Export statements can be placed anywhere in the relevant program or body, including before declaration or on the last line, and a given variable can be exported any number of times.
+*[Full documentation](namespace.md#exports)*
 
-    ⟨alias⇐a, b, c0‿c1⇐c, b2⇐b⟩←{
-      b‿c⇐   # Non-definition exports can go anywhere
-      a⇐2    # Define and export
-      b←1+a
-      c←b‿"str"
+The double arrow `⇐` exports variables from a block or program, causing the result to be a namespace. It can be used either in place of normal definition `←`, or as a stand-alone statement with nothing to the right; in either case all the variables to its left are exported. An example with both uses, as well as namespace destructuring that uses `⇐` to define variable aliases, is shown below.
+
+    ⟨alias⇐a, b⟩ ← {
+      b‿c⇐
+      a⇐2
+      c←÷b←1+a
     }
-
-Fields of the resulting namespace can be accessed either directly using `namespace.field` syntax, or with a destructuring assignment as shown above. This assignment's target is a list where each element specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name (such as `b` above), which gives both, or a combination of the assignment target, then `⇐`, then a name. If `⇐` is never used, the names can be given as a strand with `‿`. To use `⇐` for aliases, bracket syntax `⟨⟩` is needed. Imported names can be repeated and can be spelled with any role (the role is ignored).

@@ -17,7 +17,7 @@ Glyph(s)        | Meaning
 `·`             | [Nothing](expression.md#nothing)
 `()`            | [Expression grouping](expression.md#parentheses)
 `←`             | [Define](expression.md#assignment)
-`⇐`             | [Export](expression.md#exports)
+`⇐`             | [Export](namespace.md#exports)
 `↩`             | [Change](expression.md#assignment)
 `⋄,` or newline | Statement or element [separator](#separators)
 `⟨⟩`            | [List](#list-and-array-notation)

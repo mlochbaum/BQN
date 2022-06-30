@@ -2,7 +2,7 @@
 
 # Using embedded BQN
 
-The Javascript implementation of BQN, [docs/bqn.js](../docs/bqn.js), can be [used](https://mlochbaum.github.io/BQN/try.html) as a standalone interpreter, but it can also be called from JS, which in combination with BQN's first-class functions allows the two language to interoperate well. Similar functionality will most likely be brought to other host languages in the future. Languages that (like JS) allow functions and arrays to be tagged with extra properties can host a full BQN implementation with good interoperability. Other languages would either require functions and arrays to be stored in specialized data structures, making interoperability a little harder, or would miss out on some inferred properties like function inverses and array fills.
+The Javascript implementation of BQN, [docs/bqn.js](../docs/bqn.js), can be [used](https://mlochbaum.github.io/BQN/try.html) as a standalone interpreter, but it can also be called from JS, which in combination with BQN's first-class functions allows the two languages to interoperate well. Similar functionality will most likely be brought to other host languages in the future (and there's a [Rust binding](https://detegr.github.io/cbqn-rs/cbqn/) to CBQN that works a lot like an embedding). Languages that (like JS) allow functions and arrays to be tagged with extra properties can host a full BQN implementation with good interoperability. Other languages would either require functions and arrays to be stored in specialized data structures, making interoperability a little harder, or would miss out on some inferred properties like function [inverses](undo.md) and array [fills](fill.md).
 
 There is only one mechanism to interface between the host language and BQN: the function `bqn` evaluates a string containing a BQN program and returns the result. Doesn't sound like much, especially considering these programs can't share any state such as global variables (BQN doesn't have those). But taking first-class functions and closures into account, it's all you could ever need!
 
@@ -14,7 +14,7 @@ Instead, return a function from BQN and call it: `bqn("{×´1+↕𝕩}")(n)`. Th
 
 BQN can also call JS functions, to use functionality that isn't native to BQN or interact with a program written in JS. For example, `bqn("{𝕏'a'+↕26}")(alert)` calls the argument `alert` from within BQN. The displayed output isn't quite right here, because a BQN string is stored as a JS array, not a string. See the next section for more information.
 
-Cool, but none of these examples really use closures, just self-contained functions. [Closures](lexical.md#closures) are functions that use outside state, which is maintained over the course of the program. Here's an example program that defines `i` and then returns a function that manipulates `i` and returns its new value.
+Cool, but none of these examples really use closures, just self-contained functions. [Closures](lexical.md#closures) are functions that use outside state, which is maintained over the course of the program. Here's an example program that defines `i`, and then returns a function that manipulates `i` and returns its new value.
 
     let push = bqn(`
         i←4⥊0
@@ -24,7 +24,7 @@ Cool, but none of these examples really use closures, just self-contained functi
     push(-2);   // [1,3,0,0]
     push(4);    // [5,4,3,0]
 
-Note that this program doesn't have any outer braces. It's only run once, and it initializes `i` and returns a function. Just putting braces around it wouldn't have any effect—it just changes it from a program that does something to a program that runs a block that does the same thing—but adding braces and using `𝕨` or `𝕩` inside them would turn it into a function that could be run multiple times to create different closures. For example, `pushGen = bqn("{i←4⥊𝕩⋄{i+↩𝕩»i}}")` causes `pushGen(n)` to create a new closure with `i` initialized to `4⥊n`.
+Note that this program doesn't have any outer braces. It's only run once, and it initializes `i` and returns a function. Just putting braces around it wouldn't have any effect—it just changes it from a program that does something to a program that runs a block that does the same thing—but adding braces and using `𝕨` or `𝕩` inside would turn it into a function that could be run multiple times to create different closures. For example, `pushGen = bqn("{i←4⥊𝕩⋄{i+↩𝕩»i}}")` causes `pushGen(n)` to create a new closure with `i` initialized to `4⥊n`.
 
 The program also returns only one function, which can be limiting. But it's possible to get multiple closures out of the same program by returning a list of functions. For example, the following program defines three functions that manipulate a shared array in different ways.
 
@@ -32,11 +32,11 @@ The program also returns only one function, which can be limiting. But it's poss
         a ← 3‿2⥊↕6
         RotX ← {a↩𝕩⌽˘a}
         RotY ← {a↩𝕩⌽a}
-        Flip ← {𝕤⋄a↩⍉a}
+        Flip ← {𝕊:a↩⍉a}
         RotX‿RotY‿Flip
     `);
 
-When defining closures for their side effects like this, make sure they are actually functions! For example, since `flip` ignores its argument (you can call it with `flip()`, because a right argument of `undefined` isn't valid but will just be ignored), it needs an extra `𝕤` in the definition to be a function instead of an immediate block.
+When defining closures for their side effects like this, make sure they are actually functions! For example, since `flip` ignores its argument (you can call it with `flip()`, because a right argument of `undefined` isn't valid but will just be ignored), it needs an `𝕊:` in the definition to be a function instead of an immediate block.
 
 You can also use an array to pass multiple functions or other values from JS into BQN all at once. However, a JS array can't be used directly in BQN because its shape isn't known. The function `list()` converts a JS array into a BQN list by using its length for the shape; the next section has a few more details.
 

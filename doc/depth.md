@@ -41,7 +41,7 @@ dim ← ⟨1.2+wd,1.3+dp⟩ ⋄ sh ← ⟨-2÷˜⊑dim,¯0.8⟩
 ⟩
 -->
 
-The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (`≡`) returns the depth of its argument, while the 2-modifier Depth (`⚇`) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.
+The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (`≡`) returns the depth of its argument, while the 2-modifier Depth (`⚇`) controls the way its left operand is applied based on the depth of its arguments. Several primitive functions also check the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.
 
 ## The Depth function
 
@@ -50,27 +50,26 @@ To find the depth of an array, use Depth (`≡`). For example, the depth of a li
         ≡ 2‿3‿4
         ≡ "a string is a list of characters"
 
-Depth is somewhat analogous to an array's [rank](shape.md) `=𝕩`, and in fact rank can be "converted" to depth by splitting rows with `<⎉1`, reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:
+Depth is somewhat analogous to an array's [rank](shape.md) `=𝕩`, and in fact rank can be "converted" to depth by splitting rows with `<⎉1` ([Enclose](enclose.md) [Rank](rank.md) 1), reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:
 
         ≡ 3‿4⥊"characters"
         ≡ (1+↕10)⥊"characters"
 
-Also unlike rank, Depth *does* care about the elements of its argument: in fact, to find the depth of an array, every element must be inspected.
+Also unlike rank, Depth *does* care about the elements of its argument: in fact, to find the depth of an array, every element must be inspected recursively.
 
         ≡ ⟨2,3,4,5⟩
         ≡ ⟨2,<3,4,5⟩
         ≡ ⟨2,<3,4,<<<5⟩
 
-As the above expressions suggest, the depth of an array is the maximum of its elements' depths, plus one. The base case, an atom (including a function or modifier), has depth 0.
+The depth of an array is the maximum of its elements' depths, plus one. The base case, an atom (including a function or modifier), has depth 0.
 
-        ≡'c'
-        F←+⋄≡f
-        ≡⟨'c',f,2⟩
-        ≡⟨5,⟨'c',f,2⟩⟩
+        ≡ 'c'
+        F←+ ⋄ ≡f
+        ≡ ⟨'c',f,2⟩
 
-If the function `IsArray` indicates whether its argument is an array, then we can write a recursive definition of Depth using the Choose modifier.
+Using `0=•Type` to test whether `𝕩` is an array, as well as the [Choose](choose.md) modifier, we can write a recursive definition of Depth.
 
-    Depth←IsArray◶0‿{1+0⌈´Depth¨⥊𝕩}
+    Depth ← (0=•Type)◶0‿{1+0⌈´Depth¨⥊𝕩}
 
 The minimum element depth of 0 implies that an empty array's depth is 1.
 
@@ -79,27 +78,27 @@ The minimum element depth of 0 implies that an empty array's depth is 1.
 
 ## Testing depth for multiple-axis primitives
 
-Several primitive functions use the left argument to manipulate the right argument along one or more axes, using [the leading axis convention](leading.md#multiple-axes).
+Several primitive functions manipulate `𝕩` along one or more axes based on `𝕨`, according to [the leading axis convention](leading.md#multiple-axes).
 
 | Single-axis depth | Functions
 |-------------------|----------
 | 0                 | `↑↓↕⌽⍉`
 | 1                 | `/⊏⊔`
 
-Functions such as [Take and Drop](take.md) use a single number per axis. When the left argument is a list of numbers, they apply to initial axes. But for convenience, a single number is also accepted, and applied to the first axis only. This is equivalent to [deshaping](reshape.md) the left argument before applying the function.
+Functions such as [Take and Drop](take.md) accept a single number per axis in `𝕨`. If given a list of numbers, they apply to initial axes. But for convenience, a single number is also accepted, and applied to the first axis only. This is equivalent to [deshaping](reshape.md) the left argument before applying the function.
 
         ≢2↑7‿7‿7‿7⥊"abc"
         ≢2‿1‿1↑7‿7‿7‿7⥊"abc"
 
-In these cases the flexibility seems trivial because the left argument has depth 1 or 0: it is an array or isn't, and it's obvious what a plain number should do. But for the second row in the table, the left argument is always an array. The general case ([Select](select.md) below) is that the left argument is a list and its elements correspond to right argument axes:
+In these cases the flexibility seems trivial because `𝕨` has depth 1 or 0: it is an array or isn't, and it's obvious what a plain number should do. But for the second row in the table, `𝕨` is always an array. The general case ([Select](select.md) below) is that its elements are lists, each corresponding to one axis of `𝕩`:
 
         ⟨3‿2,1‿4‿1⟩ ⊏ ↕6‿7
 
-This means the left argument is homogeneous of depth 2. What should an argument of depth 1, that is, an array of atoms, do? One option is to continue to require the left argument to be a list, and convert any atom argument into an array by enclosing it:
+This means `𝕨` is homogeneous of depth 2. What should an argument of depth 1, that is, an array of atoms, do? One option is to continue to require the left argument to be a list, and convert any atom argument into an array by enclosing it:
 
         ⟨3‿2,1⟩ <⍟(0=≡)¨⊸⊏ ↕6‿7
 
-While very consistent, this extension represents a small convenience and makes it difficult to act on a single axis, which for [Replicate](replicate.md) and [Group](group.md) is probably the most common way the primitive is used:
+While very consistent, this extension represents a small convenience and makes it difficult to act on a single axis, which (particularly for [Replicate](replicate.md) and [Group](group.md)) is probably the most common way the primitive is used:
 
         3‿2‿1‿2‿3 / "abcde"
 
@@ -111,9 +110,9 @@ For Select, the depth-1 case is still quite useful, but it may also be desirable
 
 ## The Depth modifier
 
-The Depth 2-modifier (`⚇`) is a generalization of [Each](map.md) that allows diving deeper into an array. To illustrate it we'll use a shape `4‿3` array of lists of lists.
+The Depth 2-modifier (`⚇`) is a generalization of [Each](map.md) that allows diving deeper into an array. To illustrate it we'll use a shape `4‿2` array of lists of lists.
 
-        ⊢ n ← <⎉1⍟2 4‿3‿2‿2⥊↕48
+        ⊢ n ← <⎉1⍟2 4‿2‿2‿3⥊↕48
         ≡ n
 
 Reversing `n` swaps all the rows:
