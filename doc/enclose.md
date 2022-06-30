@@ -2,7 +2,7 @@
 
 # Enclose
 
-The function enclose creates a unit array whose only element is `𝕩`.
+The function Enclose creates a unit array whose only element is `𝕩`.
 
         < "xyz"
 
@@ -21,7 +21,7 @@ If there are no axes, what use is an array? Rank 0 certainly qualifies as an edg
 
 This contrasts with an atom like `137`, which is considered a unit but not a unit *array*. An atom has no axes just because it doesn't have axes. But because it has no axes, it has the same shape `⟨⟩` as a unit array, by convention.
 
-Some unit arrays are made by removing an axis from an existing array. First Cell (`⊏`) or [Insert](fold.md) (`˝`) might do this:
+Some unit arrays are made by removing an axis from an existing array. [First Cell](select.md#first-cell) (`⊏`) or [Insert](fold.md) (`˝`) might do this:
 
         l ← 2‿7‿1‿8‿2‿8
         ⊏ l
@@ -31,11 +31,11 @@ Usually this is unwanted. You'd prefer to use `⊑` or `+´` in order to get an 
 
         +˝˘ 3‿4⥊↕12
 
-In this case each call to `+˝` returns a cell of the result. The result is a list, so its cells are units! Here, [Cells](rank.md) (`˘`) "hides" one axis from its operand, and the operand `+˝` reduces out an axis, leaving zero axes—until Cells assembles the results, putting its axis back. In this case, `+´` would also be tolerated. But it's wrong, because each result really should be a zero-axis array. We can reveal this by making an array whose elements aren't atoms.
+In this case each call to `+˝` returns a cell of the result. The result is a list, so its cells are units! Here, [Cells](rank.md) (`˘`) "hides" one axis from its operand, and the operand `+˝` reduces out an axis, leaving zero axes—until Cells assembles the results, putting its axis back. Here, `+´` would also be tolerated. But it's wrong, because each result really should be a zero-axis array. We can reveal this by making an array whose elements aren't atoms.
 
-        +´˘ ⟨↕2,"ab"⟩≍⟨↕3,"ABC"⟩
+        +´˘ [⟨↕2,"ab"⟩,⟨↕3,"ABC"⟩]
 
-        +˝˘ ⟨↕2,"ab"⟩≍⟨↕3,"ABC"⟩
+        +˝˘ [⟨↕2,"ab"⟩,⟨↕3,"ABC"⟩]
 
 The function `+´˘` tries to mix together the result elements into one big array, causing an error because they have different lengths, but `+˝˘` keeps them as elements.
 
@@ -51,13 +51,13 @@ Let's take a look at the following program, which uses [Table](map.md#table) (`�
 
         (<⟨⟩) <⊸∾⌜´ ⟨""‿"anti", "red"‿"blue"‿"green", "up"‿"down"⟩
 
-One use is in the function `<⊸∾`, which encloses the left argument before (`⊸`) [joining](join.md) (`∾`) it to the right argument. This is different from Join on its own because it treats the left argument as a single element.
+One use is in the function `<⊸∾`, which encloses the left argument [before](hook.md) (`⊸`) [joining](join.md) (`∾`) it to the right argument. This is different from Join on its own because it treats the left argument as a single element.
 
         "start" ∾ "middle"‿"end"
 
         "start" <⊸∾ "middle"‿"end"
 
-For this purpose `{⟨𝕩⟩}⊸∾`, which turns the left argument into a 1-element list, also works. But maybe it doesn't really capture the intended meaning: it makes `𝕨` into a whole new list to be added when all that's needed is to add one cell. This cell will be placed along the first axis, but it doesn't have an axis of its own. A similar example, showing how units are used as part of a computation, is to join each row of a matrix to the corresponding item of a list.
+For this purpose `⋈⊸∾`, which [enlists](pair.md) the left argument giving the list `⟨𝕨⟩`, also works. But maybe it doesn't really capture the intended meaning: it makes `𝕨` into a whole new list to be added when all that's needed is to add one cell. This cell will be placed along the first axis, but it doesn't have an axis of its own. A similar example, showing how units are used as part of a computation, is to join each row of a matrix to the corresponding item of a list.
 
         (=⌜˜↕4) ∾˘ ↕4
 
@@ -71,20 +71,20 @@ The other use of `<` in the original example is `(<⟨⟩)`, which is the left a
 
         <⊸∾⌜´ ⟨"up"‿"down"⟩
 
-But this is only an array of strings, and not an array of lists of strings: the right result is `⟨⟨"up"⟩,⟨"down"⟩⟩`. And that's not the extend of our troubles: without an initial value we'll get the wrong result on longer arguments too, because the elements of the rightmost array get joined to the result lists as lists, not as elements.
+But this is only an array of strings, and not an array of lists of strings: the right result is `⟨⟨"up"⟩,⟨"down"⟩⟩`. And that's not the extent of our troubles: without an initial value we'll get the wrong result on longer arguments too, because the elements of the rightmost array get joined to the result lists as lists, not as elements.
 
         <⊸∾⌜´ ⟨"red"‿"blue"‿"green", "up"‿"down"⟩
 
 To make things right, we need an array of lists for an initial value. Since it shouldn't add anything to the result, any lists it contains need to be empty. But what should its shape be? The result shape from Table is always the argument shapes joined together (`𝕨∾○≢𝕩`). The initial value shouldn't contribute the result shape, so it needs to have empty shape, or rank 0! We use Enclose to create the array `<⟨⟩` with no axes, because the result *will* have axes but the initial element needs to start without any. All the axes come from the list of choices.
 
-It goes deeper! The following (pretty tough) example uses arrays with various ranks in the argument, and they're handled quite well. The last one isn't really a choice, so it has no axes. If it were a one-element list then the result would have a meaningless length-1 axis. But not enclosing it would cause each character to be treated as an option, with unpleasant results.
+It goes deeper! The following (pretty tough) example uses arrays with various ranks in the argument, and they're handled just fine. The last one isn't really a choice, so it has no axes. If it were a one-element list then the result would have a meaningless length-1 axis. But not enclosing it would cause each character to be treated as an option, with unpleasant results.
 
         flavor ← ⍉ ∘‿2 ⥊ "up"‿"down"‿"charm"‿"strange"‿"top"‿"bottom"
         (<⟨⟩) <⊸∾⌜´ ⟨"red"‿"blue"‿"green", flavor, <"quark"⟩
 
 ### Broadcasting
 
-Table isn't the only mapping function that gets along well with units. Here's an example with Each (`¨`).
+Table isn't the only mapping function that gets along well with units. Here's an example with [Each](map.md#each) (`¨`).
 
         =‿≠‿≡‿≢ {𝕎𝕩}¨ < 3‿2⥊"abcdef"
 

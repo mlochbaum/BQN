@@ -64,7 +64,7 @@
   </g>
 </svg>
 
-<p>The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (<code><span class='Function'>≡</span></code>) returns the depth of its argument, while the 2-modifier Depth (<code><span class='Modifier2'>⚇</span></code>) can control the way its left operand is applied based on the depth of its arguments. Several primitive functions also use the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.</p>
+<p>The depth of an array is the greatest level of array nesting it attains, or, put another way, the greatest number of times you can pick an element starting from the original array before reaching an atom. The monadic function Depth (<code><span class='Function'>≡</span></code>) returns the depth of its argument, while the 2-modifier Depth (<code><span class='Modifier2'>⚇</span></code>) controls the way its left operand is applied based on the depth of its arguments. Several primitive functions also check the depth of the left argument to decide whether it applies to a single axis of the right argument or to several axes.</p>
 <h2 id="the-depth-function"><a class="header" href="#the-depth-function">The Depth function</a></h2>
 <p>To find the depth of an array, use Depth (<code><span class='Function'>≡</span></code>). For example, the depth of a list of numbers or characters is 1:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhIDLigL8z4oC/NAriiaEgImEgc3RyaW5nIGlzIGEgbGlzdCBvZiBjaGFyYWN0ZXJzIg==">↗️</a><pre>    <span class='Function'>≡</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span>
@@ -72,13 +72,13 @@
     <span class='Function'>≡</span> <span class='String'>&quot;a string is a list of characters&quot;</span>
 1
 </pre>
-<p>Depth is somewhat analogous to an array's <a href="shape.html">rank</a> <code><span class='Function'>=</span><span class='Value'>𝕩</span></code>, and in fact rank can be &quot;converted&quot; to depth by splitting rows with <code><span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>1</span></code>, reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:</p>
+<p>Depth is somewhat analogous to an array's <a href="shape.html">rank</a> <code><span class='Function'>=</span><span class='Value'>𝕩</span></code>, and in fact rank can be &quot;converted&quot; to depth by splitting rows with <code><span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>1</span></code> (<a href="enclose.html">Enclose</a> <a href="rank.html">Rank</a> 1), reducing the rank by 1 and increasing the depth. Unlike rank, Depth doesn't care at all about its argument's shape:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhIDPigL804qWKImNoYXJhY3RlcnMiCuKJoSAoMSvihpUxMCnipYoiY2hhcmFjdGVycyI=">↗️</a><pre>    <span class='Function'>≡</span> <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊</span><span class='String'>&quot;characters&quot;</span>
 1
     <span class='Function'>≡</span> <span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>+↕</span><span class='Number'>10</span><span class='Paren'>)</span><span class='Function'>⥊</span><span class='String'>&quot;characters&quot;</span>
 1
 </pre>
-<p>Also unlike rank, Depth <em>does</em> care about the elements of its argument: in fact, to find the depth of an array, every element must be inspected.</p>
+<p>Also unlike rank, Depth <em>does</em> care about the elements of its argument: in fact, to find the depth of an array, every element must be inspected recursively.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhIOKfqDIsMyw0LDXin6kK4omhIOKfqDIsPDMsNCw14p+pCuKJoSDin6gyLDwzLDQsPDw8NeKfqQ==">↗️</a><pre>    <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
 1
     <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Function'>&lt;</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
@@ -86,18 +86,16 @@
     <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Function'>&lt;</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Function'>&lt;&lt;&lt;</span><span class='Number'>5</span><span class='Bracket'>⟩</span>
 4
 </pre>
-<p>As the above expressions suggest, the depth of an array is the maximum of its elements' depths, plus one. The base case, an atom (including a function or modifier), has depth 0.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhJ2MnCkbihpAr4ouE4omhZgriiaHin6gnYycsZiwy4p+pCuKJoeKfqDUs4p+oJ2MnLGYsMuKfqeKfqQ==">↗️</a><pre>    <span class='Function'>≡</span><span class='String'>'c'</span>
+<p>The depth of an array is the maximum of its elements' depths, plus one. The base case, an atom (including a function or modifier), has depth 0.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omhICdjJwpG4oaQKyDii4Qg4omhZgriiaEg4p+oJ2MnLGYsMuKfqQ==">↗️</a><pre>    <span class='Function'>≡</span> <span class='String'>'c'</span>
 0
-    <span class='Function'>F</span><span class='Gets'>←</span><span class='Function'>+</span><span class='Separator'>⋄</span><span class='Function'>≡</span><span class='Value'>f</span>
+    <span class='Function'>F</span><span class='Gets'>←</span><span class='Function'>+</span> <span class='Separator'>⋄</span> <span class='Function'>≡</span><span class='Value'>f</span>
 0
-    <span class='Function'>≡</span><span class='Bracket'>⟨</span><span class='String'>'c'</span><span class='Separator'>,</span><span class='Value'>f</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩</span>
+    <span class='Function'>≡</span> <span class='Bracket'>⟨</span><span class='String'>'c'</span><span class='Separator'>,</span><span class='Value'>f</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩</span>
 1
-    <span class='Function'>≡</span><span class='Bracket'>⟨</span><span class='Number'>5</span><span class='Separator'>,</span><span class='Bracket'>⟨</span><span class='String'>'c'</span><span class='Separator'>,</span><span class='Value'>f</span><span class='Separator'>,</span><span class='Number'>2</span><span class='Bracket'>⟩⟩</span>
-2
 </pre>
-<p>If the function <code><span class='Function'>IsArray</span></code> indicates whether its argument is an array, then we can write a recursive definition of Depth using the Choose modifier.</p>
-<pre><span class='Function'>Depth</span><span class='Gets'>←</span><span class='Function'>IsArray</span><span class='Modifier2'>◶</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Brace'>{</span><span class='Number'>1</span><span class='Function'>+</span><span class='Number'>0</span><span class='Function'>⌈</span><span class='Modifier'>´</span><span class='Function'>Depth</span><span class='Modifier'>¨</span><span class='Function'>⥊</span><span class='Value'>𝕩</span><span class='Brace'>}</span>
+<p>Using <code><span class='Number'>0</span><span class='Function'>=•Type</span></code> to test whether <code><span class='Value'>𝕩</span></code> is an array, as well as the <a href="choose.html">Choose</a> modifier, we can write a recursive definition of Depth.</p>
+<pre><span class='Function'>Depth</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>=•Type</span><span class='Paren'>)</span><span class='Modifier2'>◶</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Brace'>{</span><span class='Number'>1</span><span class='Function'>+</span><span class='Number'>0</span><span class='Function'>⌈</span><span class='Modifier'>´</span><span class='Function'>Depth</span><span class='Modifier'>¨</span><span class='Function'>⥊</span><span class='Value'>𝕩</span><span class='Brace'>}</span>
 </pre>
 <p>The minimum element depth of 0 implies that an empty array's depth is 1.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omh4p+o4p+pCuKJoTLigL8w4oC/M+KlijA=">↗️</a><pre>    <span class='Function'>≡</span><span class='Bracket'>⟨⟩</span>
@@ -106,7 +104,7 @@
 1
 </pre>
 <h2 id="testing-depth-for-multiple-axis-primitives"><a class="header" href="#testing-depth-for-multiple-axis-primitives">Testing depth for multiple-axis primitives</a></h2>
-<p>Several primitive functions use the left argument to manipulate the right argument along one or more axes, using <a href="leading.html#multiple-axes">the leading axis convention</a>.</p>
+<p>Several primitive functions manipulate <code><span class='Value'>𝕩</span></code> along one or more axes based on <code><span class='Value'>𝕨</span></code>, according to <a href="leading.html#multiple-axes">the leading axis convention</a>.</p>
 <table>
 <thead>
 <tr>
@@ -125,24 +123,24 @@
 </tr>
 </tbody>
 </table>
-<p>Functions such as <a href="take.html">Take and Drop</a> use a single number per axis. When the left argument is a list of numbers, they apply to initial axes. But for convenience, a single number is also accepted, and applied to the first axis only. This is equivalent to <a href="reshape.html">deshaping</a> the left argument before applying the function.</p>
+<p>Functions such as <a href="take.html">Take and Drop</a> accept a single number per axis in <code><span class='Value'>𝕨</span></code>. If given a list of numbers, they apply to initial axes. But for convenience, a single number is also accepted, and applied to the first axis only. This is equivalent to <a href="reshape.html">deshaping</a> the left argument before applying the function.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omiMuKGkTfigL834oC/N+KAvzfipYoiYWJjIgriiaIy4oC/MeKAvzHihpE34oC/N+KAvzfigL834qWKImFiYyI=">↗️</a><pre>    <span class='Function'>≢</span><span class='Number'>2</span><span class='Function'>↑</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Function'>⥊</span><span class='String'>&quot;abc&quot;</span>
 ⟨ 2 7 7 7 ⟩
     <span class='Function'>≢</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Function'>↑</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Ligature'>‿</span><span class='Number'>7</span><span class='Function'>⥊</span><span class='String'>&quot;abc&quot;</span>
 ⟨ 2 1 1 7 ⟩
 </pre>
-<p>In these cases the flexibility seems trivial because the left argument has depth 1 or 0: it is an array or isn't, and it's obvious what a plain number should do. But for the second row in the table, the left argument is always an array. The general case (<a href="select.html">Select</a> below) is that the left argument is a list and its elements correspond to right argument axes:</p>
+<p>In these cases the flexibility seems trivial because <code><span class='Value'>𝕨</span></code> has depth 1 or 0: it is an array or isn't, and it's obvious what a plain number should do. But for the second row in the table, <code><span class='Value'>𝕨</span></code> is always an array. The general case (<a href="select.html">Select</a> below) is that its elements are lists, each corresponding to one axis of <code><span class='Value'>𝕩</span></code>:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oM+KAvzIsMeKAvzTigL8x4p+pIOKKjyDihpU24oC/Nw==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>⊏</span> <span class='Function'>↕</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span>
 ┌─                         
 ╵ ⟨ 3 1 ⟩ ⟨ 3 4 ⟩ ⟨ 3 1 ⟩  
   ⟨ 2 1 ⟩ ⟨ 2 4 ⟩ ⟨ 2 1 ⟩  
                           ┘
 </pre>
-<p>This means the left argument is homogeneous of depth 2. What should an argument of depth 1, that is, an array of atoms, do? One option is to continue to require the left argument to be a list, and convert any atom argument into an array by enclosing it:</p>
+<p>This means <code><span class='Value'>𝕨</span></code> is homogeneous of depth 2. What should an argument of depth 1, that is, an array of atoms, do? One option is to continue to require the left argument to be a list, and convert any atom argument into an array by enclosing it:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oM+KAvzIsMeKfqSA84o2fKDA94omhKcKo4oq44oqPIOKGlTbigL83">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Bracket'>⟩</span> <span class='Function'>&lt;</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>=≡</span><span class='Paren'>)</span><span class='Modifier'>¨</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span> <span class='Function'>↕</span><span class='Number'>6</span><span class='Ligature'>‿</span><span class='Number'>7</span>
 ⟨ ⟨ 3 1 ⟩ ⟨ 2 1 ⟩ ⟩
 </pre>
-<p>While very consistent, this extension represents a small convenience and makes it difficult to act on a single axis, which for <a href="replicate.html">Replicate</a> and <a href="group.html">Group</a> is probably the most common way the primitive is used:</p>
+<p>While very consistent, this extension represents a small convenience and makes it difficult to act on a single axis, which (particularly for <a href="replicate.html">Replicate</a> and <a href="group.html">Group</a>) is probably the most common way the primitive is used:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=M+KAvzLigL8x4oC/MuKAvzMgLyAiYWJjZGUi">↗️</a><pre>    <span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span> <span class='Function'>/</span> <span class='String'>&quot;abcde&quot;</span>
 "aaabbcddeee"
 </pre>
@@ -152,41 +150,41 @@
 ⟨ ⟨ 2 1 4 0 ⟩ ⟨ 2 1 4 1 ⟩ ⟩
 </pre>
 <h2 id="the-depth-modifier"><a class="header" href="#the-depth-modifier">The Depth modifier</a></h2>
-<p>The Depth 2-modifier (<code><span class='Modifier2'>⚇</span></code>) is a generalization of <a href="map.html">Each</a> that allows diving deeper into an array. To illustrate it we'll use a shape <code><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span></code> array of lists of lists.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIG4g4oaQIDzijokx4o2fMiA04oC/M+KAvzLigL8y4qWK4oaVNDgK4omhIG4=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>n</span> <span class='Gets'>←</span> <span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>1</span><span class='Modifier2'>⍟</span><span class='Number'>2</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊↕</span><span class='Number'>48</span>
-┌─                                                                         
-╵ ⟨ ⟨ 0 1 ⟩ ⟨ 2 3 ⟩ ⟩     ⟨ ⟨ 4 5 ⟩ ⟨ 6 7 ⟩ ⟩     ⟨ ⟨ 8 9 ⟩ ⟨ 10 11 ⟩ ⟩    
-  ⟨ ⟨ 12 13 ⟩ ⟨ 14 15 ⟩ ⟩ ⟨ ⟨ 16 17 ⟩ ⟨ 18 19 ⟩ ⟩ ⟨ ⟨ 20 21 ⟩ ⟨ 22 23 ⟩ ⟩  
-  ⟨ ⟨ 24 25 ⟩ ⟨ 26 27 ⟩ ⟩ ⟨ ⟨ 28 29 ⟩ ⟨ 30 31 ⟩ ⟩ ⟨ ⟨ 32 33 ⟩ ⟨ 34 35 ⟩ ⟩  
-  ⟨ ⟨ 36 37 ⟩ ⟨ 38 39 ⟩ ⟩ ⟨ ⟨ 40 41 ⟩ ⟨ 42 43 ⟩ ⟩ ⟨ ⟨ 44 45 ⟩ ⟨ 46 47 ⟩ ⟩  
-                                                                          ┘
+<p>The Depth 2-modifier (<code><span class='Modifier2'>⚇</span></code>) is a generalization of <a href="map.html">Each</a> that allows diving deeper into an array. To illustrate it we'll use a shape <code><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span></code> array of lists of lists.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIG4g4oaQIDzijokx4o2fMiA04oC/MuKAvzLigL8z4qWK4oaVNDgK4omhIG4=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>n</span> <span class='Gets'>←</span> <span class='Function'>&lt;</span><span class='Modifier2'>⎉</span><span class='Number'>1</span><span class='Modifier2'>⍟</span><span class='Number'>2</span> <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Function'>⥊↕</span><span class='Number'>48</span>
+┌─                                                             
+╵ ⟨ ⟨ 0 1 2 ⟩ ⟨ 3 4 5 ⟩ ⟩       ⟨ ⟨ 6 7 8 ⟩ ⟨ 9 10 11 ⟩ ⟩      
+  ⟨ ⟨ 12 13 14 ⟩ ⟨ 15 16 17 ⟩ ⟩ ⟨ ⟨ 18 19 20 ⟩ ⟨ 21 22 23 ⟩ ⟩  
+  ⟨ ⟨ 24 25 26 ⟩ ⟨ 27 28 29 ⟩ ⟩ ⟨ ⟨ 30 31 32 ⟩ ⟨ 33 34 35 ⟩ ⟩  
+  ⟨ ⟨ 36 37 38 ⟩ ⟨ 39 40 41 ⟩ ⟩ ⟨ ⟨ 42 43 44 ⟩ ⟨ 45 46 47 ⟩ ⟩  
+                                                              ┘
     <span class='Function'>≡</span> <span class='Value'>n</span>
 3
 </pre>
 <p>Reversing <code><span class='Value'>n</span></code> swaps all the rows:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oy9IG4=">↗️</a><pre>    <span class='Function'>⌽</span> <span class='Value'>n</span>
-┌─                                                                         
-╵ ⟨ ⟨ 36 37 ⟩ ⟨ 38 39 ⟩ ⟩ ⟨ ⟨ 40 41 ⟩ ⟨ 42 43 ⟩ ⟩ ⟨ ⟨ 44 45 ⟩ ⟨ 46 47 ⟩ ⟩  
-  ⟨ ⟨ 24 25 ⟩ ⟨ 26 27 ⟩ ⟩ ⟨ ⟨ 28 29 ⟩ ⟨ 30 31 ⟩ ⟩ ⟨ ⟨ 32 33 ⟩ ⟨ 34 35 ⟩ ⟩  
-  ⟨ ⟨ 12 13 ⟩ ⟨ 14 15 ⟩ ⟩ ⟨ ⟨ 16 17 ⟩ ⟨ 18 19 ⟩ ⟩ ⟨ ⟨ 20 21 ⟩ ⟨ 22 23 ⟩ ⟩  
-  ⟨ ⟨ 0 1 ⟩ ⟨ 2 3 ⟩ ⟩     ⟨ ⟨ 4 5 ⟩ ⟨ 6 7 ⟩ ⟩     ⟨ ⟨ 8 9 ⟩ ⟨ 10 11 ⟩ ⟩    
-                                                                          ┘
+┌─                                                             
+╵ ⟨ ⟨ 36 37 38 ⟩ ⟨ 39 40 41 ⟩ ⟩ ⟨ ⟨ 42 43 44 ⟩ ⟨ 45 46 47 ⟩ ⟩  
+  ⟨ ⟨ 24 25 26 ⟩ ⟨ 27 28 29 ⟩ ⟩ ⟨ ⟨ 30 31 32 ⟩ ⟨ 33 34 35 ⟩ ⟩  
+  ⟨ ⟨ 12 13 14 ⟩ ⟨ 15 16 17 ⟩ ⟩ ⟨ ⟨ 18 19 20 ⟩ ⟨ 21 22 23 ⟩ ⟩  
+  ⟨ ⟨ 0 1 2 ⟩ ⟨ 3 4 5 ⟩ ⟩       ⟨ ⟨ 6 7 8 ⟩ ⟨ 9 10 11 ⟩ ⟩      
+                                                              ┘
 </pre>
 <p>Depth <code><span class='Number'>¯1</span></code> is equivalent to Each, and reverses the larger lists, while depth <code><span class='Number'>¯2</span></code> applies Each twice to reverse the smaller lists:</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oy94pqHwq8xIG4K4oy94pqHwq8yIG4=">↗️</a><pre>    <span class='Function'>⌽</span><span class='Modifier2'>⚇</span><span class='Number'>¯1</span> <span class='Value'>n</span>
-┌─                                                                         
-╵ ⟨ ⟨ 2 3 ⟩ ⟨ 0 1 ⟩ ⟩     ⟨ ⟨ 6 7 ⟩ ⟨ 4 5 ⟩ ⟩     ⟨ ⟨ 10 11 ⟩ ⟨ 8 9 ⟩ ⟩    
-  ⟨ ⟨ 14 15 ⟩ ⟨ 12 13 ⟩ ⟩ ⟨ ⟨ 18 19 ⟩ ⟨ 16 17 ⟩ ⟩ ⟨ ⟨ 22 23 ⟩ ⟨ 20 21 ⟩ ⟩  
-  ⟨ ⟨ 26 27 ⟩ ⟨ 24 25 ⟩ ⟩ ⟨ ⟨ 30 31 ⟩ ⟨ 28 29 ⟩ ⟩ ⟨ ⟨ 34 35 ⟩ ⟨ 32 33 ⟩ ⟩  
-  ⟨ ⟨ 38 39 ⟩ ⟨ 36 37 ⟩ ⟩ ⟨ ⟨ 42 43 ⟩ ⟨ 40 41 ⟩ ⟩ ⟨ ⟨ 46 47 ⟩ ⟨ 44 45 ⟩ ⟩  
-                                                                          ┘
+┌─                                                             
+╵ ⟨ ⟨ 3 4 5 ⟩ ⟨ 0 1 2 ⟩ ⟩       ⟨ ⟨ 9 10 11 ⟩ ⟨ 6 7 8 ⟩ ⟩      
+  ⟨ ⟨ 15 16 17 ⟩ ⟨ 12 13 14 ⟩ ⟩ ⟨ ⟨ 21 22 23 ⟩ ⟨ 18 19 20 ⟩ ⟩  
+  ⟨ ⟨ 27 28 29 ⟩ ⟨ 24 25 26 ⟩ ⟩ ⟨ ⟨ 33 34 35 ⟩ ⟨ 30 31 32 ⟩ ⟩  
+  ⟨ ⟨ 39 40 41 ⟩ ⟨ 36 37 38 ⟩ ⟩ ⟨ ⟨ 45 46 47 ⟩ ⟨ 42 43 44 ⟩ ⟩  
+                                                              ┘
     <span class='Function'>⌽</span><span class='Modifier2'>⚇</span><span class='Number'>¯2</span> <span class='Value'>n</span>
-┌─                                                                         
-╵ ⟨ ⟨ 1 0 ⟩ ⟨ 3 2 ⟩ ⟩     ⟨ ⟨ 5 4 ⟩ ⟨ 7 6 ⟩ ⟩     ⟨ ⟨ 9 8 ⟩ ⟨ 11 10 ⟩ ⟩    
-  ⟨ ⟨ 13 12 ⟩ ⟨ 15 14 ⟩ ⟩ ⟨ ⟨ 17 16 ⟩ ⟨ 19 18 ⟩ ⟩ ⟨ ⟨ 21 20 ⟩ ⟨ 23 22 ⟩ ⟩  
-  ⟨ ⟨ 25 24 ⟩ ⟨ 27 26 ⟩ ⟩ ⟨ ⟨ 29 28 ⟩ ⟨ 31 30 ⟩ ⟩ ⟨ ⟨ 33 32 ⟩ ⟨ 35 34 ⟩ ⟩  
-  ⟨ ⟨ 37 36 ⟩ ⟨ 39 38 ⟩ ⟩ ⟨ ⟨ 41 40 ⟩ ⟨ 43 42 ⟩ ⟩ ⟨ ⟨ 45 44 ⟩ ⟨ 47 46 ⟩ ⟩  
-                                                                          ┘
+┌─                                                             
+╵ ⟨ ⟨ 2 1 0 ⟩ ⟨ 5 4 3 ⟩ ⟩       ⟨ ⟨ 8 7 6 ⟩ ⟨ 11 10 9 ⟩ ⟩      
+  ⟨ ⟨ 14 13 12 ⟩ ⟨ 17 16 15 ⟩ ⟩ ⟨ ⟨ 20 19 18 ⟩ ⟨ 23 22 21 ⟩ ⟩  
+  ⟨ ⟨ 26 25 24 ⟩ ⟨ 29 28 27 ⟩ ⟩ ⟨ ⟨ 32 31 30 ⟩ ⟨ 35 34 33 ⟩ ⟩  
+  ⟨ ⟨ 38 37 36 ⟩ ⟨ 41 40 39 ⟩ ⟩ ⟨ ⟨ 44 43 42 ⟩ ⟨ 47 46 45 ⟩ ⟩  
+                                                              ┘
 </pre>
 <p>While a negative depth tells how many levels to go down, a non-negative depth gives the maximum depth of the argument before applying the left operand. On a depth-3 array like above, depth <code><span class='Number'>2</span></code> is equivalent to <code><span class='Number'>¯1</span></code> and depth <code><span class='Number'>1</span></code> is equivalent to <code><span class='Number'>¯2</span></code>. A depth of <code><span class='Number'>0</span></code> means to descend all the way to the level of atoms, that is, apply <a href="arithmetic.html#pervasion">pervasively</a>, like an arithmetic function.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oJ2EnLCJiYyLin6kg4omN4pqHMCDin6gy4oC/Myw04p+p">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='String'>'a'</span><span class='Separator'>,</span><span class='String'>&quot;bc&quot;</span><span class='Bracket'>⟩</span> <span class='Function'>≍</span><span class='Modifier2'>⚇</span><span class='Number'>0</span> <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩</span>

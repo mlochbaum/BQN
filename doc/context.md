@@ -40,13 +40,7 @@ BQN's [expression grammar](expression.md) is a simplified version of the typical
 | 1-modifier  | Monadic operator | Adverb
 | 2-modifier  | Dyadic operator  | Conjunction
 
-Unlike variables, BQN primitives have only one spelling, and a fixed role (but their values can be used in a different role by storing them in variables). Superscript glyphs `` ˙˜˘¨⌜⁼´˝` `` are used for 1-modifiers, and glyphs `∘○⊸⟜⌾⊘◶⎉⚇⍟⎊` with an unbroken circle are 2-modifiers. Other primitives are functions. String and numeric literals are subjects.
-
-BQN's variables use another system, where the spelling indicates how the variable's value is used. A variable spelled with a lowercase first letter, like `var`, is a subject. Spelled with an uppercase first letter, like `Var`, it is a function. Underscores are placed where operands apply to indicate a 1-modifier `_var` or 2-modifier `_var_`. Other than the first letter or underscore, variables are case-insensitive.
-
-The associations between spelling and syntactic role are considered part of BQN's [token formation rules](../spec/token.md).
-
-One rule for typing is also best considered to be a pre-parsing rule like the spelling system: the role of a headerless [block](block.md) `{}` is determined by which special arguments it uses: it's a subject if there aren't any, but a `𝕨` or `𝕩` makes it at least a function, an `𝔽` makes it a 1- or 2-modifier, and a `𝔾` always makes it a 2-modifier.
+BQN uses [a few rules](expression.md#role-spellings) to determine what role various parts of the grammar have. Primitive glyphs follow patterns: 1-modifiers like `˝` are superscripts and 2-modifiers like `○` use circles. A variable can be spelled with different casing or underscores to indicate the role each time it's used.
 
 The syntactic role is a property of an expression, and BQN's grammar determines how roles interact in expressions. But [type](types.md) is a property of a value, and evaluation rules control what types can be used. This means that roles exist statically in the code (context-free grammar!) while values can change between or within runs of the program. This is necessary to have a context-free grammar with unrestricted dynamic types. Are unrestricted dynamic types useful? Read on…
 
