@@ -50,7 +50,7 @@ Functions can be formed by applying modifiers, or with trains. Modifiers are lef
 
 Subject expressions consist mainly of function application. We also define nothing-statements, which have very similar syntax to subject expressions but do not permit assignment. They can be used as an `STMT` or in place of a left argument.
 
-    arg      = subExpr
+    arg      = subject
              | ( subject | nothing )? Derv arg
     nothing  = "·"
              | ( subject | nothing )? Derv nothing

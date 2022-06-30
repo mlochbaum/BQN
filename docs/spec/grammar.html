@@ -46,7 +46,7 @@
          <span class='Function'>|</span> <span class='Function'>F</span> <span class='Function'>ASGN</span> <span class='Function'>FuncExpr</span>
 </pre>
 <p>Subject expressions consist mainly of function application. We also define nothing-statements, which have very similar syntax to subject expressions but do not permit assignment. They can be used as an <code><span class='Function'>STMT</span></code> or in place of a left argument.</p>
-<pre><span class='Value'>arg</span>      <span class='Function'>=</span> <span class='Value'>subExpr</span>
+<pre><span class='Value'>arg</span>      <span class='Function'>=</span> <span class='Value'>subject</span>
          <span class='Function'>|</span> <span class='Paren'>(</span> <span class='Value'>subject</span> <span class='Function'>|</span> <span class='Value'>nothing</span> <span class='Paren'>)</span><span class='Head'>?</span> <span class='Function'>Derv</span> <span class='Value'>arg</span>
 <span class='Value'>nothing</span>  <span class='Function'>=</span> <span class='String'>&quot;·&quot;</span>
          <span class='Function'>|</span> <span class='Paren'>(</span> <span class='Value'>subject</span> <span class='Function'>|</span> <span class='Value'>nothing</span> <span class='Paren'>)</span><span class='Head'>?</span> <span class='Function'>Derv</span> <span class='Value'>nothing</span>
