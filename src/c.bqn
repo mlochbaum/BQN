@@ -259,6 +259,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   aa←×gac←g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac        # Broadcast ac to the entire target
   api←/(𝕩=⊑bO)∧ap←aa∧2=no                   # Assignment placeholder
   "Can't use Nothing (·) in lists"_nerr (¬ap)×no×ns≤»lo∨ls
+  "Can't modify Nothing (·)"_err_(G) ap∧5=gac
   "Square brackets can't be empty"_err_(G) aa<(𝕩=6+⊑bB)∧1«ps
   ac-↩3×ah←6=ac                             # Assignment is header; 6→3
   nx⌈↩aa×1=no                               # Prevent assignment to 𝕨 if it's ·
