@@ -2,6 +2,8 @@
 
 # BQN for birdwatchers
 
+*There's now a [paper](https://dl.acm.org/doi/10.1145/3520306.3534504) on this topic! Wild!*
+
 Some people consider it reasonable to name [combinators](primitive.md#modifiers) after types of birds. [Here's](https://blog.lahteenmaki.net/combinator-birds.html) one compendium of such names, and [another](https://wiki.xxiivv.com/site/ornithodex.html) that lacks its obsessive completeness but makes up for it with [rambling accounts](https://wiki.xxiivv.com/site/logic.html) of imagined forests. There is something wrong with these people. Some of these birds are not even real. "Quixotic bird"? Have you not heard of a quail? Nonetheless, I don't judge such afflicted souls (certainly not publicly), and have provided this translation table to explain BQN in terms they can understand.
 
 |   BQN   | Bird 1   | 1        | Bird 2       | 2                              |
