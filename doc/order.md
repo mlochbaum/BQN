@@ -121,6 +121,30 @@ To see some of the possibilities of Grade, you might pick apart the following ex
 
 ## Bins
 
+<!--GEN
+{
+wt‿xt ← '''(∾∾⊣)¨¨"bins"‿"grades"
+b ← wt⍋xt
+tx ← ↕∘≠ xt ⋄ y ← +`0.5‿1.6‿0.8
+dim ← ⟨1.5+≠xt, 0.5+¯1⊑y⟩ ⋄ sh ← ¯1.8‿0
+ig ← "fill=currentColor|font-size=16|opacity=0.8|class=Number"
+pa ← "path"At"class=green|style=fill:none|stroke-width=2|stroke-linecap=round|opacity=0.9"
+PD ← ∾∾¨⟜FmtNum
+brk ← "m vv"PD 3×2‿¯6‿7‿¯1
+dot ← "hm hm h"⊸PD¨ (⊑d)×dl←(0.4⌾(¯1⊸⊑)⋈1⌾⊑) 7⥊0.12‿0.1‿0
+Paths ← lg Ge Line∘+⟜(≍˘⟜-0.2⋈˜0.04×·÷´-˝˘)¨
+
+((∾˜d)×((-∾+˜)1‿0.2)+sh∾dim) SVG g Ge ⟨
+  "rect" Elt rc ∾ sh Rp dim
+  Paths (⋈¨⟜tx˘(0.6-˜b⊸⊏)⊸≍tx) ≍¨⟜<˘ (0.3∾0.03×¯1‿2‿0)+⌾⥊2↕y
+  pa Elt "d"⋈∾("M "PD d×(-0.27+´⊑dl)⋈0.4+⊑y)⌾⊑⥊(<brk)≍˘dot(1⌽⌽⊸∾)3⥊<"h"PD⟨6-˜⊑d⟩
+  mg Ge (1‿1‿0⊏ci) "class="⊸∾⊸Ge¨ y (⋈˜¨⟜(↕≠)Text¨⊢)¨ ⟨wt,xt,FmtNum b⟩
+  ig Ge ((⋈⟜(0.25+⊑y)¨-⟜0.6) Text¨ FmtNum) ↕1+≠wt
+  cg Ge (¯0.8≍¨y) Text⟜Highlight¨ "𝕨"‿"𝕩"‿"𝕨⍋𝕩"
+⟩
+}
+-->
+
 The two Bins functions are written with the same symbols `⍋` and `⍒` as Grade, but take two arguments instead of one. More complicated? A little, but once you understand Bins you'll find that it's a basic concept that shows up in the real world all the time.
 
 Bins behaves like a [search function](search.md) with respect to rank: it looks up [cells](array.md#cells) from `𝕩` relative to major cells of `𝕨`. However, there's an extra requirement: the left argument to Bins must already be sorted according to whichever ordering is used. If it isn't, you'll get an error.
