@@ -179,6 +179,29 @@ Two arrays of the same shape are compared by comparing all their corresponding e
 
 The principle for arrays of different shapes is the same, but there are two factors that need to be taken into account. First, it's not obvious any more what it means to compare corresponding elements—what's the correspondence? Second, the two arrays can't match because they have different shapes. So even if all elements end up matching one of them needs to come earlier.
 
+<!--GEN
+{
+a   ← ⟨ 'a'+⥊⟜(↕×´)3‿3, 2‿5⥊"abdeghjlpo" ⟩
+dim ← 1.7‿0.6+⌈´s←⌽∘≢¨a ⋄ sh ← ¯1.2‿¯0.8
+p   ← 0‿0.2 × <1.5‿1
+cl  ← "class="⊸∾¨ "bluegreen"‿"yellow"
+cc  ← "class=lilac|stroke-width=3"
+cd  ← "class=red|stroke-width=3|style=fill:none"
+
+((∾˜d)×((-∾+˜)1.6‿0.2)+sh∾dim) SVG ⟨
+  "rect" Elt rc ∾ sh Rp dim
+  cl ∾⟜"|stroke-width=2|opacity=0.4"⊸Ge¨ p ("rect"⊸Elt +⟜(⋈˜-÷2) Rp ⊢)¨ s
+  g Ge cl Ge¨ p (<⊸+⟜(⋈˜⌜´·↕¨≢)Text¨⊢)¨ a
+  ("rect"At cc) Elt (2÷˜+´p) (-⟜(÷⟜2)Rp 2‿0+⊢) 0.7‿0.8
+  ("circle"At cd) Elt "r"‿"cx"‿"cy"≍˘FmtNum 22∾d×2‿0+2÷˜+´p
+  "font-size=14|text-anchor=middle|fill=currentColor" Ge ⟨
+    1.15‿0.62 Text "≤3 compared values"
+    ⟨¯0.2‿2.5,4.4‿¯0.3⟩ Text⟜(∾⟜"×"⊸∾´FmtNum∘⌽)¨ s
+  ⟩
+⟩
+}
+-->
+
 Let's discuss correspondence first. One way to think about how BQN makes arrays correspond is that they're simply laid on top of each other, lining up the first (as in `⊑`) elements. So a shape `⟨4⟩` array will match up with the first row of a shape `5‿3` array, but have an extra element off the end. A simple way to think about this is to say that the lower rank array is brought up to a matching rank by putting `1`s in front of the shape, and then lengths along each axis are matched up by padding the shorter array along that axis with a special "nothing" element. This "nothing" element will be treated as smaller than any actual array, because this rule recovers the "dictionary ordering" rule that a word that's a prefix of a longer word comes before that word. In the case of the shapes `⟨4⟩` and `5‿3`, if the three overlapping elements match then the fourth element comes from the first row and is present in the first array but not the second. So the shape `5‿3` array would be considered smaller without even looking at its other four rows.
 
 It can happen that two arrays of different shape have all matching elements with this procedure: either because one array's shape is the same as the other's but with some extra `1`s at the beginning, or because both arrays are empty. In this case, the arrays are compared first by rank, with the higher-rank array considered larger, and then by shape, beginning with the leading axes.

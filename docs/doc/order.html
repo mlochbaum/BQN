@@ -272,5 +272,43 @@
 <p>Comparing two atoms is defined to work the same way as the <a href="arithmetic.html#comparisons">comparison functions</a> <code><span class='Function'>≤&lt;&gt;≥</span></code>. Numbers come earlier than characters and otherwise these two types are ordered in the obvious way. To compare an atom to an array, the atom is enclosed and then compared with the array ordering defined below. The result of this comparison is used except when the two arrays match: in that case, the atom is considered smaller.</p>
 <p>Two arrays of the same shape are compared by comparing all their corresponding elements, in index order. This comparison stops at the first pair of different elements (which allows later elements to contain operations without causing an error). If any elements were different, then they decide the result of the comparison. If all the elements matched, then by definition the two arrays match.</p>
 <p>The principle for arrays of different shapes is the same, but there are two factors that need to be taken into account. First, it's not obvious any more what it means to compare corresponding elements—what's the correspondence? Second, the two arrays can't match because they have different shapes. So even if all elements end up matching one of them needs to come earlier.</p>
+<svg viewBox='-168 -68 594 272'>
+  <rect class='code' stroke-width='1.5' rx='12' x='-72' y='-54.4' width='402' height='244.8'/>
+  <g class='bluegreen' stroke-width='2' opacity='0.4'><rect x='-30' y='-34' width='180' height='204'/></g>
+  <g class='yellow' stroke-width='2' opacity='0.4'><rect x='-12' y='-20.4' width='300' height='136'/></g>
+  <g font-family='BQN,monospace' font-size='22px' text-anchor='middle'>
+    <g class='bluegreen'>
+      <text dy='0.32em' x='0' y='0'>a</text>
+      <text dy='0.32em' x='60' y='0'>b</text>
+      <text dy='0.32em' x='120' y='0'>c</text>
+      <text dy='0.32em' x='0' y='68'>d</text>
+      <text dy='0.32em' x='60' y='68'>e</text>
+      <text dy='0.32em' x='120' y='68'>f</text>
+      <text dy='0.32em' x='0' y='136'>g</text>
+      <text dy='0.32em' x='60' y='136'>h</text>
+      <text dy='0.32em' x='120' y='136'>i</text>
+    </g>
+    <g class='yellow'>
+      <text dy='0.32em' x='18' y='13.6'>a</text>
+      <text dy='0.32em' x='78' y='13.6'>b</text>
+      <text dy='0.32em' x='138' y='13.6'>d</text>
+      <text dy='0.32em' x='198' y='13.6'>e</text>
+      <text dy='0.32em' x='258' y='13.6'>g</text>
+      <text dy='0.32em' x='18' y='81.6'>h</text>
+      <text dy='0.32em' x='78' y='81.6'>j</text>
+      <text dy='0.32em' x='138' y='81.6'>l</text>
+      <text dy='0.32em' x='198' y='81.6'>p</text>
+      <text dy='0.32em' x='258' y='81.6'>o</text>
+    </g>
+  </g>
+  <rect class='lilac' stroke-width='3' x='-12' y='-20.4' width='162' height='54.4'/>
+  <circle class='red' stroke-width='3' style='fill:none' r='22' cx='129' cy='6.8'/>
+  <g font-size='14' text-anchor='middle' fill='currentColor'>
+    <text dy='0.32em' x='69' y='42.16'>≤3 compared values</text>
+    <text dy='0.32em' x='-12' y='170'>3×3</text>
+    <text dy='0.32em' x='264' y='-20.4'>2×5</text>
+  </g>
+</svg>
+
 <p>Let's discuss correspondence first. One way to think about how BQN makes arrays correspond is that they're simply laid on top of each other, lining up the first (as in <code><span class='Function'>⊑</span></code>) elements. So a shape <code><span class='Bracket'>⟨</span><span class='Number'>4</span><span class='Bracket'>⟩</span></code> array will match up with the first row of a shape <code><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>3</span></code> array, but have an extra element off the end. A simple way to think about this is to say that the lower rank array is brought up to a matching rank by putting <code><span class='Number'>1</span></code>s in front of the shape, and then lengths along each axis are matched up by padding the shorter array along that axis with a special &quot;nothing&quot; element. This &quot;nothing&quot; element will be treated as smaller than any actual array, because this rule recovers the &quot;dictionary ordering&quot; rule that a word that's a prefix of a longer word comes before that word. In the case of the shapes <code><span class='Bracket'>⟨</span><span class='Number'>4</span><span class='Bracket'>⟩</span></code> and <code><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>3</span></code>, if the three overlapping elements match then the fourth element comes from the first row and is present in the first array but not the second. So the shape <code><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>3</span></code> array would be considered smaller without even looking at its other four rows.</p>
 <p>It can happen that two arrays of different shape have all matching elements with this procedure: either because one array's shape is the same as the other's but with some extra <code><span class='Number'>1</span></code>s at the beginning, or because both arrays are empty. In this case, the arrays are compared first by rank, with the higher-rank array considered larger, and then by shape, beginning with the leading axes.</p>
