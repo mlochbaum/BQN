@@ -144,3 +144,24 @@ Finding how many times each index appears in a list of indices is often a useful
         /⁼ 2‿2‿4‿1‿2‿0
 
 The last of these is an extension defined in the language specification. As we said, the result of Indices is always sorted, so properly there's no argument that could return `2‿2‿4‿1‿2‿0`. But the index-counting function is very useful, so `/⁼` is defined to implicitly sort its argument (which is still required to be a list of natural numbers). Since `/⁼` is implemented as a single operation, it's the best way to perform this counting task.
+
+### Just rank 1?
+
+So if `𝕩` is a boolean list, `/𝕩` tells you where each 1 is located. What about a boolean array?
+
+        ⊢ r ← 1¨⌾(3‿8⊏⥊) 3‿6⥊0
+        /r
+
+Error. But the two 1s are located at `0‿3` and `1‿2`. What's wrong with those? First, let's note that you can find these indices if you need to, using Replicate. Make the list of all indices `↕≢𝕩`, and filter [Over](compose.md#over) [Deshape](reshape.md#deshape) (`○⥊`).
+
+        /○⥊⟜(↕≢) r
+
+The issue with this function is that it's not consistent with the result of `/` on a list. This is because the extension gives [element indices](indices.md#element-indices), which are lists, while the original `/` gives single-number indices, which is only possible when `𝕩` has rank 1.
+
+        /○⥊⟜(↕≢) 0‿1‿0‿1‿0‿0‿0‿0‿1‿0
+
+        /        0‿1‿0‿1‿0‿0‿0‿0‿1‿0
+
+So these functions can't be the same primitive. The only thing we can do—what some APLs do—is to use index lists when `𝕩` has rank not equal to 1 but index numbers otherwise. But supporting a partial function is hazardous: it means that code that works for ranks 4, 3, 2… might not work for rank 1. This isn't how BQN does things. So if you need this functionality, you need to spell it out.
+
+Which isn't too simple? The other part of the story, and why I think `/○⥊⟜(↕≢)` is good enough despite its length, is that I just don't like element indices. They force array nesting here, which is complicated and slow. There's usually a better approach, such as using arithmetic to skip indices entirely, or `⌾⥊` ([Under](under.md) Deshape) to temporarily work on the array as a list.
