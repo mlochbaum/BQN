@@ -10,10 +10,10 @@
 <h2 id="terminology"><a class="header" href="#terminology">Terminology</a></h2>
 <h3 id="array-model"><a class="header" href="#array-model">Array model</a></h3>
 <p>BQN uses the <a href="based.html">based array model</a>, which is fundamentally different from J's flat array model. BQN uses non-array values such as characters and numbers, called &quot;atoms&quot;, while in J every noun is an array. A BQN array can contain any values in any mixture, while a J array must be uniformly numbers, characters, or boxes (BQN doesn't use boxes).</p>
-<p>The J terms &quot;atom&quot; and &quot;element&quot; are used to mean different things by different authors. In BQN, an atom or rank-0 array is called a &quot;unit&quot;, and the values contained in an array—which may or may not be arrays—are called &quot;elements&quot;. Each element is contained in a 0-cell, or rank-0 subarray. BQN uses the term &quot;major cell&quot; for what J calls an &quot;item&quot; of an array: a cell with rank one less than that array. BQN shares the terms &quot;list&quot; and &quot;table&quot; for rank-1 and rank-2 arrays with J.</p>
+<p>The J terms &quot;atom&quot; and &quot;element&quot; are used to mean different things by different authors. In BQN, a rank-0 array or atom is called a &quot;unit&quot;, and the values contained in an array—which may or may not be arrays—are called &quot;elements&quot;. Each element is contained in a 0-cell, or rank-0 subarray. BQN uses the term &quot;major cell&quot; for what J calls an &quot;item&quot; of an array: a cell with rank one less than that array. BQN shares the terms &quot;list&quot; and &quot;table&quot; for rank-1 and rank-2 arrays with J.</p>
 <p>BQN uses &quot;<a href="depth.html">depth</a>&quot; rather than &quot;boxing level&quot;. BQN gives atoms depth 0, so that the depth of a BQN array is one higher than the boxing level of the corresponding J array.</p>
 <h3 id="roles"><a class="header" href="#roles">Roles</a></h3>
-<p>In J, the part of speech is an inherent property of a value, while in BQN it is determined by how the value is used in a particular expression, and can be different from the value's type. See <a href="context.html">context-free grammar</a>.</p>
+<p>In J, the part of speech is an inherent property of a value, while in BQN it's determined by how the value is used in a particular expression, and can be different from the value's type. See <a href="context.html">context-free grammar</a>.</p>
 <table>
 <thead>
 <tr>
@@ -58,7 +58,7 @@
 <tr>
 <td><code><span class='String'>'</span></code></td>
 <td><code><span class='String'>&quot;</span></code></td>
-<td><code><span class='String'>'</span></code> creates characters</td>
+<td><code><span class='String'>'</span></code> for character atoms</td>
 </tr>
 <tr>
 <td><code><span class='Function'>=</span><span class='Value'>.</span></code> and <code><span class='Function'>=</span><span class='Head'>:</span></code></td>
@@ -107,7 +107,7 @@
 </tr>
 </tbody>
 </table>
-<p>BQN's explicit functions and modifiers are called &quot;blocks&quot;, and have a more sophisticated syntax than J; see <a href="block.html">the documentation</a>. BQN uses <a href="lexical.html">lexical scope</a>, and has no global variables. BQN also has a <a href="arrayrepr.html#brackets">list notation</a> using <code><span class='Bracket'>⟨⟩</span></code>.</p>
+<p>BQN's explicit functions and modifiers are called <a href="block.html">blocks</a>, and have a more sophisticated syntax than J. BQN uses <a href="lexical.html">lexical scope</a>, and has no global variables. BQN also has a <a href="arrayrepr.html#brackets">list notation</a> using <code><span class='Bracket'>⟨⟩</span></code>, and <code><span class='Bracket'>[]</span></code> for higher-rank arrays.</p>
 <h2 id="for-reading"><a class="header" href="#for-reading">For reading</a></h2>
 <p>J analogues of BQN primitive functions are given below. They are not always the same; usually this is because BQN has extra functionality relative to J, although in some cases it has less or different functionality.</p>
 <p>Functions <code><span class='Function'>+</span></code> <code><span class='Function'>-</span></code> <code><span class='Function'>|</span></code> <code><span class='Function'>&lt;</span></code> <code><span class='Function'>&gt;</span></code> are the same in both languages.</p>
@@ -485,8 +485,8 @@
 </tr>
 <tr>
 <td><code><span class='Value'>%.</span></code></td>
-<td><code><span class='Function'>Inverse</span></code> from <a href="https://github.com/mlochbaum/bqn-libs/blob/master/matrix.bqn">here</a></td>
-<td><code><span class='Function'>Solve</span></code></td>
+<td><code><span class='Function'>Inverse</span></code>,</td>
+<td><code><span class='Function'>Solve</span></code> from <a href="https://github.com/mlochbaum/bqn-libs/blob/master/matrix.bqn">here</a></td>
 </tr>
 <tr>
 <td><code><span class='Value'>$</span></code></td>
@@ -516,7 +516,7 @@
 <tr>
 <td><code><span class='Separator'>,</span><span class='Head'>:</span></code></td>
 <td><code><span class='Function'>≍</span></code></td>
-<td></td>
+<td><code><span class='Function'>≍</span></code></td>
 </tr>
 <tr>
 <td><code><span class='Head'>;</span></code></td>
@@ -541,7 +541,7 @@
 <tr>
 <td><code><span class='Function'>!</span></code></td>
 <td><code><span class='Function'>×</span><span class='Modifier'>´</span><span class='Number'>1</span><span class='Function'>+↕</span></code></td>
-<td><code><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Paren'>(</span><span class='Function'>+÷</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>´</span><span class='Paren'>)</span><span class='Function'>⊢</span><span class='Paren'>)</span><span class='Number'>1</span><span class='Function'>+↕</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span></code></td>
+<td><code><span class='Paren'>(</span><span class='Function'>-÷</span><span class='Modifier2'>○</span><span class='Paren'>(</span><span class='Function'>×</span><span class='Modifier'>´</span><span class='Paren'>)</span><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>+</span><span class='Paren'>)</span><span class='Modifier2'>⟜</span><span class='Function'>↕</span><span class='Modifier'>˜</span></code></td>
 </tr>
 <tr>
 <td><code><span class='Function'>/</span><span class='Head'>:</span></code></td>

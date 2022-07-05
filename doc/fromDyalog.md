@@ -17,8 +17,7 @@ BQN uses the [based array model](based.md), so that a Dyalog simple scalar corre
 | Vector        | List  |
 | Matrix        | Table |
 
-BQN shares the terms "cell" and "major cell" with Dyalog, and uses
-"element" (which may mean different things to different Dyalog users) *not* for a 0-cell but for the value it contains.
+BQN shares the terms "[cell](array.md#cells)" and "major cell" with Dyalog, and uses "element" (which may mean different things to different Dyalog users) *not* for a 0-cell but for the value it contains.
 
 ### Roles
 
@@ -36,7 +35,7 @@ Dyalog uses value types (array, function, and so on) to determine syntax while B
 
 BQN comments are written with `#`, not `⍝`. BQN strings use double quotes `""` while single quotes `''` enclose a character.
 
-BQN's functions use `{}`, like Dyalog's dfns. The names for inputs and self-reference are different:
+BQN's [block](block.md) functions use `{}`, like Dyalog's dfns. The names for inputs and self-reference are different:
 
 | Dyalog | BQN |
 |--------|-----|
@@ -47,15 +46,15 @@ BQN's functions use `{}`, like Dyalog's dfns. The names for inputs and self-refe
 | `⍵⍵`   | `𝔾` |
 | `∇∇`   | `𝕣` |
 
-BQN doesn't have guards: it uses modifiers or [control structures](control.md) instead. However, BQN function and modifier blocks have headers that allow pattern matching. See the [block](block.md) documentation.
+Blocks don't have guards exactly, but headers and predicates support some similar functionality (first-class functions can also be used for [control structures](control.md)). Headers can also be used to make a block more explicit about its inputs, more like a tradfn.
 
 The assignment arrow `←` defines a new variable in a block, while `↩` modifies an existing one.
 
-BQN uses the ligature character `‿` for stranding, instead of plain juxtaposition. It also has a [list notation](arrayrepr.md#brackets) using `⟨⟩`.
+BQN uses the ligature character `‿` for stranding, instead of plain juxtaposition. It also has a [list notation](arrayrepr.md#brackets) using `⟨⟩`, and `[]` for higher-rank arrays.
 
 ## For reading
 
-Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs as APL. Correspondence can be approximate, and `⌽` is just used as a decorator to mean "reverse some things".
+Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs. Correspondence can be approximate, and `⌽` is just used as a decorator to mean "reverse some things".
 
 | BQN   | `⋆` | `√`      | `∧`   | `∨`   | `¬`   | `=`   | `≠` | `<` | `>` | `≢` | `⥊` |
 |:-----:|:---:|:--------:|:-----:|:-----:|:-----:|:-----:|:---:|:---:|:---:|:---:|:---:|
@@ -74,11 +73,15 @@ Here are some closest equivalents in Dyalog APL for the BQN functions that don't
 
 Modifiers are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
-| BQN    | `¨` | `⌜`  | `˝` | `⎉` | `⍟` | `˜` | `∘` | `○` | `⟜` |
-|:------:|:---:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| Dyalog | `¨` | `∘.` | `⌿` | `⍤` | `⍣` | `⍨` | `⍤` | `⍥` | `∘` |
+| BQN    | `¨` | `⌜`  | `˝` | `⎉`  | `⍟` | `˜` | `∘`  | `○` | `⟜` |
+|:------:|:---:|:----:|:---:|:----:|:---:|:---:|:----:|:---:|:---:|
+| Dyalog | `¨` | `∘.` | `⌿` | `⍤A` | `⍣` | `⍨` | `⍤f` | `⍥` | `∘` |
 
-In BQN `⎉` is Rank and `∘` is Atop. Dyalog's Atop (`⍤`) and Over (`⍥`) were added in version 18.0.
+Some other BQN modifiers have been proposed as future Dyalog extensions:
+
+| BQN             | `⌾` | `⚇` | `⊸` |
+|:---------------:|:---:|:---:|:---:|
+| Dyalog proposed | `⍢` [Under](https://aplwiki.com/wiki/Under) | `⍥` Depth | `⍛` [Reverse Compose](https://aplwiki.com/wiki/Reverse_Compose)
 
 ## For writing
 
@@ -91,7 +94,7 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><th> Glyph          </th><th> Monadic                      </th><th> Dyadic </th>               </tr>
 <tr><td> <code>*</code> </td><td colspan=2><code>⋆</code></td>                                      </tr>
 <tr><td> <code>⍟</code> </td><td colspan=2><code>⋆⁼</code></td>                                     </tr>
-<tr><td> <code>!</code> </td><td><code>×´1+↕</code>            </td><td> <code>-˜(+÷○(×´)⊢)1+↕∘⊣</code></td></tr>
+<tr><td> <code>!</code> </td><td><code>×´1+↕</code>            </td><td> <code>(-÷○(×´)1⊸+)⟜↕˜</code></td></tr>
 <tr><td> <code>○</code> </td><td> <code>π⊸×</code>             </td><td> <code>•math</code></td>    </tr>
 <tr><td> <code>~</code> </td><td> <code>¬</code>               </td><td> <code>¬∘∊/⊣</code></td>    </tr>
 <tr><td> <code>?</code> </td><td> <code>•rand.Range⚇0</code>   </td><td> <code>•rand.Deal</code></td></tr>
@@ -102,10 +105,10 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>⍪</code> </td><td> <code>⥊˘</code>              </td><td> <code>∾</code></td>        </tr>
 <tr><td> <code>⌽</code> </td><td colspan=2><code>⌽⎉0‿1</code></td>                                  </tr>
 <tr><td> <code>↑</code> </td><td> <code>></code>               </td><td> <code>↑</code></td>        </tr>
-<tr><td> <code>↓</code> </td><td> <code><˘</code>              </td><td> <code>↑</code></td>        </tr>
+<tr><td> <code>↓</code> </td><td> <code><˘</code>              </td><td> <code>↓</code></td>        </tr>
 <tr><td> <code>⊂</code> </td><td> <code><</code>               </td><td> <code>+`⊸⊔</code></td>     </tr>
 <tr><td> <code>⊆</code> </td><td> <code><⍟(0<≡)</code>         </td><td> <code>(¬-˜⊢×·+`»⊸>)⊸⊔</code></td></tr>
-<tr><td> <code>∊</code> </td><td> <code>{(∾𝕊¨)⍟(0<≡𝕩)⥊𝕩}</code></td><td> <code>∊</code></td>        </tr>
+<tr><td> <code>∊</code> </td><td> <code>{(∾𝕊¨)⍟(0<≡)⥊𝕩}</code> </td><td> <code>∊</code></td>        </tr>
 <tr><td> <code>⊃</code> </td><td colspan=2><code>⊑</code></td>                                      </tr>
 <tr><td> <code>⍀</code> </td><td>                              </td><td> <code>{𝕩⌾(𝕨⊸/)𝕨≠⊸↑0↑𝕩}</code></td></tr>
 <tr><td> <code>∩</code> </td><td>                              </td><td> <code>∊/⊣</code></td>      </tr>
@@ -118,8 +121,8 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>⍎</code> </td><td colspan=2><code>•BQN</code></td>                                   </tr>
 <tr><td> <code>⍕</code> </td><td colspan=2><code>•Fmt</code></td>                                   </tr>
 <tr><td> <code>⊥</code> </td><td>                              </td><td> <code>{+⟜(𝕨⊸×)´⌽𝕩}</code>    </td></tr>
-<tr><td> <code>⊤</code> </td><td>                              </td><td> <code>{>𝕨|⌊∘÷`⌾⌽𝕨«˜<𝕩}</code></td></tr>
-<tr><td> <code>⌹</code> </td><td><code>Inverse</code> from <a href="https://github.com/mlochbaum/bqn-libs/blob/master/matrix.bqn">here</a></td><td><code>Solve</code></td></tr>
+<tr><td> <code>⊤</code> </td><td>                              </td><td> <code>{𝕨|>⌊∘÷`⌾⌽𝕨«˜<𝕩}</code></td></tr>
+<tr><td> <code>⌹</code> </td><td><code>Inverse</code>,         </td><td> <code>Solve</code> from <a href="https://github.com/mlochbaum/bqn-libs/blob/master/matrix.bqn">here</a></td></tr>
 <tr><td> <code>⌷</code> </td><td> N/A                          </td><td> <code>⊏</code></td>        </tr>
 </table>
 

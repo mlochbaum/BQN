@@ -14,13 +14,13 @@ A guide to help users of J get up to speed with BQN quickly. For a higher-level 
 
 BQN uses the [based array model](based.md), which is fundamentally different from J's flat array model. BQN uses non-array values such as characters and numbers, called "atoms", while in J every noun is an array. A BQN array can contain any values in any mixture, while a J array must be uniformly numbers, characters, or boxes (BQN doesn't use boxes).
 
-The J terms "atom" and "element" are used to mean different things by different authors. In BQN, an atom or rank-0 array is called a "unit", and the values contained in an array—which may or may not be arrays—are called "elements". Each element is contained in a 0-cell, or rank-0 subarray. BQN uses the term "major cell" for what J calls an "item" of an array: a cell with rank one less than that array. BQN shares the terms "list" and "table" for rank-1 and rank-2 arrays with J.
+The J terms "atom" and "element" are used to mean different things by different authors. In BQN, a rank-0 array or atom is called a "unit", and the values contained in an array—which may or may not be arrays—are called "elements". Each element is contained in a 0-cell, or rank-0 subarray. BQN uses the term "major cell" for what J calls an "item" of an array: a cell with rank one less than that array. BQN shares the terms "list" and "table" for rank-1 and rank-2 arrays with J.
 
 BQN uses "[depth](depth.md)" rather than "boxing level". BQN gives atoms depth 0, so that the depth of a BQN array is one higher than the boxing level of the corresponding J array.
 
 ### Roles
 
-In J, the part of speech is an inherent property of a value, while in BQN it is determined by how the value is used in a particular expression, and can be different from the value's type. See [context-free grammar](context.md).
+In J, the part of speech is an inherent property of a value, while in BQN it's determined by how the value is used in a particular expression, and can be different from the value's type. See [context-free grammar](context.md).
 
 | J part of speech    | BQN role   |
 |---------------------|------------|
@@ -34,7 +34,7 @@ In J, the part of speech is an inherent property of a value, while in BQN it is 
 | J                 | BQN         | Remarks
 |-------------------|-------------|---------
 | `NB.`             | `#`         |
-| `'`               | `"`         | `'` creates characters
+| `'`               | `"`         | `'` for character atoms
 | `=.` and `=:`     | `←` and `↩` | `←` to define; `↩` to modify
 | `3 :…` or `{{…}}` | `{…}`       |
 | `:`               | `;`         | To separate function cases
@@ -45,7 +45,7 @@ In J, the part of speech is an inherent property of a value, while in BQN it is 
 | `[:`              | `·`         | Cap
 | `assert.`         | `!`         |
 
-BQN's explicit functions and modifiers are called "blocks", and have a more sophisticated syntax than J; see [the documentation](block.md). BQN uses [lexical scope](lexical.md), and has no global variables. BQN also has a [list notation](arrayrepr.md#brackets) using `⟨⟩`.
+BQN's explicit functions and modifiers are called [blocks](block.md), and have a more sophisticated syntax than J. BQN uses [lexical scope](lexical.md), and has no global variables. BQN also has a [list notation](arrayrepr.md#brackets) using `⟨⟩`, and `[]` for higher-rank arrays.
 
 ## For reading
 
@@ -122,18 +122,18 @@ The tables below give approximate implementations of J primitives. J has a whole
 | `*:` | `×˜`                    | `¬∧`
 | `-.` | `¬`                     | `¬∘∊/⊣`
 | `-:` | `÷⟜2`                   | `≡`
-| `%.` | `Inverse` from [here](https://github.com/mlochbaum/bqn-libs/blob/master/matrix.bqn) | `Solve`
+| `%.` | `Inverse`,              | `Solve` from [here](https://github.com/mlochbaum/bqn-libs/blob/master/matrix.bqn)
 | `$`  | `≢`                     | `⥊`
 | `~.` | `⍷`                     |
 | `~:` | `∊`                     | `≠`
 | `,`  | `⥊`                     | `∾`
 | `,.` | `⥊˘`                    | `∾˘`
-| `,:` | `≍`                     |
+| `,:` | `≍`                     | `≍`
 | `;`  | `∾`                     | `∾⟜(<⍟(1≥≡))`
 | `#`  | `≠`                     | `/`
 | `#.` | `+˜⊸+˜´∘⌽`              |
 | `#:` | `⌽2\|⌊∘÷⟜2⍟(↕1+·⌊2⋆⁼⊢)` | ``{𝕨\|1↓⌊∘÷`⌾⌽𝕨∾<𝕩}``
-| `!`  | `×´1+↕`                 | `-˜(+÷○(×´)⊢)1+↕∘⊣`
+| `!`  | `×´1+↕`                 | `(-÷○(×´)1⊸+)⟜↕˜`
 | `/:` | `⍋`                     | `⍋⊸⊏`
 | `\:` | `⍒`                     | `⍒⊸⊏`
 | `{`  | `(<⟨⟩)<⊸∾⌜´⊢`           | `⊏`

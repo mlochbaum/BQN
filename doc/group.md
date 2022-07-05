@@ -2,8 +2,6 @@
 
 # Group
 
-BQN replaces the Key operator from J or Dyalog APL, and [many forms of partitioning](https://aplwiki.com/wiki/Partition_representations), with a single (ambivalent) Group function `⊔`. This function is somewhat related to the K function `=` of the same name, but results in an array rather than a dictionary.
-
 <!--GEN
 Num ← ·Highlight •Repr
 Str ← ·Highlight '"'(∾∾⊣)⊢
@@ -48,9 +46,13 @@ b ← (0.4⌈0.2+≠¨zf) {∾"M vhv"∾¨FmtNum (0‿1‿1‿0‿1⊏d)×(⟨�
 ⟩
 -->
 
+The dyadic Group function places values into its result based on indices that tell where each should go. It's a little like a backwards version of [Select](select.md), but because any number of indices can point to the same place, result elements are groups, not single values from the argument.
+
+Group replaces the Key operator from J or Dyalog APL, and [many forms of partitioning](https://aplwiki.com/wiki/Partition_representations). It's related to the K function `=` of the same name, but results in an array rather than a dictionary.
+
 ## Definition
 
-Group operates on a list of atomic-number [indices](indices.md) `𝕨` and an array `𝕩`, treated as a list of its major cells, to produce a list of groups, each containing some of the cells from `𝕩`. The two arguments have the same length, and each cell in `𝕩` is paired with the index in `𝕨` at the same position, which indicates which result group should include that cell.
+Group operates on a list of atomic-number [indices](indices.md) `𝕨` and an array `𝕩`, treated as a list of its [major cells](array.md#cells), to produce a list of groups, each containing some of the cells from `𝕩`. The two arguments have the same length, and each cell in `𝕩` is paired with the index in `𝕨` at the same position, to indicate which result group should include that cell.
 
         0‿1‿2‿0‿1 ≍ "abcde"  # Corresponding indices and values
 
@@ -58,11 +60,11 @@ Group operates on a list of atomic-number [indices](indices.md) `𝕨` and an ar
 
 A few extra options can be useful in some circumstances. First, an "index" of `¯1` in `𝕨` indicates that the corresponding cell should be dropped and not appear in the result. Second, `𝕨` is allowed to have an extra element after the end, which gives a minimum length for the result: otherwise, the result will be just long enough to accomodate the highest index in `𝕨` (it might seem like the last element should be treated like an index, making the minimum length one higher, but the length version usually leads to simpler arithmetic).
 
-        0‿¯1‿2‿2‿¯1 ⊔ "abcde"  # Drop c and e
+        0‿¯1‿2‿2‿¯1 ⊔ "abcde"  # Drop b and e
 
         0‿1‿2‿2‿1‿6 ⊔ "abcde"  # Length-6 result
 
-A third extension is that `𝕨` doesn't really have to be a list: if not, then it groups `-=𝕨`-cells of `𝕩` instead of just `¯1`-cells. These cells are placed in index order. This extension isn't compatible with the second option from above, because it's usually not possible to add just one extra element to a non-list array. One usage is to group the diagonals of a table. See if you can figure out how the code below does this.
+A third extension is that `𝕨` doesn't really have to be a list: if not, then it groups `-=𝕨`-cells of `𝕩` instead of just `¯1`-cells. These cells are placed in index order. This extension isn't compatible with the second option from above, because it's usually not possible to add just one extra element to a non-list array. One usage is to group the diagonals of a table. See if you can find how the code below does this.
 
         ⊢ a ← 'a'+⥊⟜(↕×´)3‿5
 
@@ -71,7 +73,7 @@ A third extension is that `𝕨` doesn't really have to be a list: if not, then 
 For a concrete example, we might choose to group a list of words by length. Within each group, cells maintain the ordering they had in the list originally.
 
         phrase ← "BQN"‿"uses"‿"notation"‿"as"‿"a"‿"tool"‿"of"‿"thought"
-        ≍˘ ≠¨⊸⊔ phrase
+        ≍˘ ≠¨⊸⊔ phrase   # ≍˘ to format vertically
 
 (Could we define `phrase` more easily? See [below](#partitioning).)
 
@@ -97,35 +99,17 @@ But `𝕩` can also be a list of numeric arrays. In this case the indices `↕�
 
 ### Multidimensional grouping
 
-Dyadic Group allows the right argument to be grouped along multiple axes by using a nested left argument. In this case, the left argument must be a list of numeric lists, and the result has rank `≠𝕨` while its elements—as always—have the same rank as `𝕩`. The result shape is `1+⌈´¨𝕨`, while the shape of element `i⊑𝕨⊔𝕩` is `i+´∘=¨𝕨`. If every element of `𝕨` is sorted ascending and contains only non-negative numbers, we have `𝕩≡∾𝕨⊔𝕩`, that is, [Join](join.md#join) is the inverse of Partition.
+Dyadic Group allows the right argument to be grouped along multiple axes by using a nested left argument. In this case, `𝕨` must be a list of numeric lists, and the result has rank `≠𝕨` while its elements—as always—have the same rank as `𝕩`. The result shape is `1+⌈´¨𝕨`, while the shape of element `i⊑𝕨⊔𝕩` is `i+´∘=¨𝕨`. If every element of `𝕨` is sorted ascending and has no ¯1s, we have `𝕩≡∾𝕨⊔𝕩`, that is, [Join](join.md#join) is the inverse of partitioning.
 
 Here we split up a rank-2 array into a rank-2 array of rank-2 arrays. Along the first axis we simply separate the first pair and second pair of rows—a partition. Along the second axis we separate odd from even indices.
 
         ⟨0‿0‿1‿1,0‿1‿0‿1‿0‿1‿0⟩ ⊔ (10×↕4)+⌜↕7
 
-Each group `i⊑𝕨⊔𝕩` is composed of the cells `j<¨⊸⊏𝕩` such that `i≢j⊑¨𝕨`. The groups retain their array structure and ordering along each argument axis. Using multidimensional Replicate we can say that `i⊑𝕨⊔𝕩` is `(i=𝕨)/𝕩`.
-
-## Properties
-
-Group is closely related to the [inverse of Indices](replicate.md#inverse), `/⁼`. In fact, inverse Indices called on the index argument gives the length of each group:
-
-        ≠¨⊔ 2‿3‿1‿2
-        /⁼∧ 2‿3‿1‿2
-
-A related fact is that calling Indices on the result lengths of Group sorts all the indices passed to Group (removing any ¯1s). This is a kind of counting sort.
-
-        /≠¨⊔ 2‿3‿1‿¯1‿2
-
-Called dyadically, Group sorts the right argument according to the left and adds some extra structure. If this structure is removed with [Join](join.md#join), Group can be thought of as a kind of sorting.
-
-        ∾ 2‿3‿1‿¯1‿2 ⊔ "abcde"
-        2‿3‿1‿¯1‿2 {F←(0≤𝕨)⊸/ ⋄ 𝕨⍋⊸⊏○F𝕩} "abcde"
-
-Group can even be implemented with the same [techniques](../implementation/primitive/sort.md#counting-and-bucket-sort) as a bucket sort, making it branchless and fast.
+Each group `i⊑𝕨⊔𝕩` is composed of the cells `j<¨⊸⊏𝕩` such that `i≢j⊑¨𝕨`. The groups retain their array structure and ordering along each argument axis. Using multidimensional [Replicate](replicate.md) we can say that `i⊑𝕨⊔𝕩` is `(i=𝕨)/𝕩`.
 
 ## Applications
 
-The obvious application of Group is to group some values according to a known or computed property. If this property isn't a natural number, it can be turned into one using [Classify](selfcmp.md#classify) (`⊐`), which numbers the unique values in its argument by first occurrence.
+The most direct application of Group is to group some values according to a known or computed property. If this property isn't a natural number, it can be turned into one using [Classify](selfcmp.md#classify) (`⊐`), which numbers the unique values in its argument by first occurrence.
 
         ln ← "Phelps"‿"Latynina"‿"Bjørgen"‿"Andrianov"‿"Bjørndalen"
         co ← "US"    ‿"SU"      ‿"NO"     ‿"SU"       ‿"NO"
@@ -143,7 +127,7 @@ However, this solution will fail if there are trailing keys with no values. To f
 
 ### Partitioning
 
-In examples we have been using a list of strings stranded together. Often it's more convenient to write the string with spaces, and split it up as part of the code. In this case, the index corresponding to each word (that is, each letter in the word) is the number of spaces before it. We can get this number of spaces from a Plus-[Scan](scan.md) on the boolean list which is 1 at each space.
+Previous examples have used lists of strings stranded together. Often it's more convenient to write the string with spaces, and split it up as part of the code. In this case, the index corresponding to each word (that is, each letter in the word) is the number of spaces before it. We can get this number of spaces from a Plus-[Scan](scan.md) on the boolean list which is 1 at each space.
 
         ' '(+`∘=⊔⊢)"BQN uses notation as a tool of thought"
 
@@ -151,7 +135,7 @@ To avoid including spaces in the result, we should change the result index at ea
 
         ' '((⊢-˜¬×+`)∘=⊔⊢)"BQN uses notation as a tool of thought"
 
-A function with structural [Under](under.md), such as `` {¯1¨⌾(𝕩⊸/)+`𝕩} ``, would also work.
+A function with [Under](under.md), such as `` {¯1¨⌾(𝕩⊸/)+`𝕩} ``, would also work.
 
 In other cases, we might want to split on spaces, so that words are separated by any number of spaces, and extra spaces don't affect the output. Currently our function makes a new word with each space:
 
@@ -160,7 +144,27 @@ In other cases, we might want to split on spaces, so that words are separated by
 Trailing spaces are ignored because Group with equal-length arguments never produces trailing empty groups—to intentionally include them you'd replace `=` with `(=∾0˙)`. But in string processing we probably want to avoid empty words anywhere. To make this happen, we should increase the word index only once per group of spaces. We can do this by applying Plus Scan to a list that is 1 only for a space with no space before it. This list is produced using [Shift Before](shift.md) to get a list of previous elements. To treat the first element as though it's before a space (so that leading spaces have no effect rather than creating an initial empty group), we shift in a 1.
 
         (⊢≍1⊸»<⊢) ' '="  string with  spaces   "  # All, then filtered, spaces
+
         ≍⟜(⊢-˜¬×·+`1⊸»<⊢)' '="  string with  spaces   "  # More processing
+
         ' '((⊢-˜¬×·+`1⊸»<⊢)∘=⊔⊢)"  string with  spaces   "  # Final result
 
         ' '((¬-˜⊢×·+`»⊸>)∘≠⊔⊢)"  string with  spaces   "  # Slightly shorter
+
+## Group and sorting
+
+Group is closely related to the [inverse of Indices](replicate.md#inverse), `/⁼`. Calling that function on the index argument gives the length of each group:
+
+        ≠¨⊔ 2‿3‿1‿2
+
+        /⁼∧ 2‿3‿1‿2
+
+A related fact is that calling Indices on the result lengths of Group sorts all the indices passed to Group (removing any ¯1s). This is a kind of counting sort.
+
+        /≠¨⊔ 2‿3‿1‿¯1‿2
+
+Called dyadically, Group sorts the right argument according to the left and adds some extra structure. If this structure is removed with [Join](join.md#join), Group can be thought of as a kind of sorting.
+
+        ∾ 2‿3‿1‿2 ⊔ "abcd"
+
+        2‿3‿1‿2 ⍋⊸⊏ "abcd"

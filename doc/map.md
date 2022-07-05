@@ -64,7 +64,9 @@ A nice way to examine what's being applied here is to make an argument where eac
 
 The applications are performed in index order: index `…0‿0`, then `…0‿1`, `…0‿2` and so on, until `…1‿0`. This can affect a program where the operand has side effects, such as the following one that appends its argument to `o`.
 
-        o←⟨⟩ ⋄ {o∾⟜<↩𝕩}¨ "index"≍"order" ⋄ o
+        ["index","order"]
+
+        o←⟨⟩ ⋄ {o∾⟜<↩𝕩}¨ ["index","order"] ⋄ o
 
 When an array is displayed, index order is the same as the top-to-bottom, left-to-right reading order of English. It's also the same as the ordering of [Deshape](reshape.md#deshape)'s result, so that here `o` ends up being `⥊𝕩`. The dyadic cases described in the following sections will also have a defined evaluation order, but it's not as easy to describe it in terms of the arguments: instead, the *result* elements are produced in index order.
 
@@ -103,7 +105,7 @@ When an array is displayed, index order is the same as the top-to-bottom, left-t
 
 The Table modifier applies its operand function to every possible combination of one element from `𝕨` and one from `𝕩`, sort of like a structure-preserving and function-applying [Cartesian product](https://en.wikipedia.org/wiki/Cartesian_product). Below, it combines a length-3 list and a length-5 list into a shape `3‿5` table.
 
-        "ABC" ≍⌜ "01234"
+        "ABC" ⋈⌜ "01234"
 
 Its name comes from the "multiplication table" or "times table" often used to teach arithmetic, and with it you can easily make such a table, by repeating the same argument with [Self](swap.md) (`˜`):
 
@@ -111,9 +113,9 @@ Its name comes from the "multiplication table" or "times table" often used to te
 
 The arguments don't have to be lists (that is, rank 1). There's no restriction on their shapes at all! Much like the result shape is `m‿n` if `𝕨` is a list of length `m` and `𝕩` is a list of length `n`, the result shape for an array `𝕨` of shape `r` and `𝕩` of shape `s` is `r∾s`.
 
-        "A "‿"B " ∾⌜ "the"‿"first"‿"row"≍"and"‿"the"‿"second"
+        "A "‿"B " ∾⌜ ["the"‿"first"‿"row","and"‿"the"‿"second"]
 
-        ≢ "A "‿"B " ∾⌜ "the"‿"first"‿"row"≍"and"‿"the"‿"second"
+        ≢ "A "‿"B " ∾⌜ ["the"‿"first"‿"row","and"‿"the"‿"second"]
 
 Except for the more sophisticated shape, this result is exactly what you'd get if you deshaped each argument to a list. In each case, every element of `𝕨` is visited in turn, and each time the element is paired with every element of `𝕩`.
 
@@ -142,24 +144,24 @@ Except for the more sophisticated shape, this result is exactly what you'd get i
 
 Given two arguments of matching shapes, Each performs what's sometimes called a "zip", matching each element of `𝕨` to the corresponding element of `𝕩`.
 
-        "ABCD" ≍¨ "0123"
+        "ABCD" ⋈¨ "0123"
 
 This makes for a lot fewer applications than Table. Only the diagonal elements from Table's result are seen, as we can check with [Reorder Axes](transpose.md#reorder-axes).
 
-        0‿0 ⍉ "ABCD" ≍⌜ "0123"
+        0‿0 ⍉ "ABCD" ⋈⌜ "0123"
 
 If the argument lengths don't match then Each gives an error. This differs from zip in many languages, which drops elements from the longer argument (this is natural for linked lists). This flexibility is rarely wanted in BQN, and having an error right away saves debugging time.
 
-        "ABC" ≍¨ "01234"
+        "ABC" ⋈¨ "01234"
 
 Arguments can have any shape as long as the axis lengths match up. As with Table, the result elements don't depend on these shapes but the result shape does.
 
-        [20‿30‿10,50‿40‿60] +⟜↕¨ 2‿1‿0≍3‿2‿1
+        [20‿30‿10,50‿40‿60] +⟜↕¨ [2‿1‿0,3‿2‿1]
 
 But arguments don't have to have exactly the same shape: just the same length along corresponding axes. These axes are matched up by [leading axis agreement](leading.md#leading-axis-agreement), so that one argument's shape has to be a prefix of the other's. With equal ranks, the shapes do have to match as we've seen above.
 
-        ≢ (0‿2‿6⥊@) ≍¨ 0‿1⥊0  # Too small
+        ≢ (0‿2‿6⥊@) ⋈¨ 0‿1⥊0  # Too small
 
-        ≢ (0‿2‿6⥊@) ≍¨ 0‿3⥊0  # Too large
+        ≢ (0‿2‿6⥊@) ⋈¨ 0‿3⥊0  # Too large
 
-        ≢ (0‿2‿6⥊@) ≍¨ 0‿2⥊0  # Just right
+        ≢ (0‿2‿6⥊@) ⋈¨ 0‿2⥊0  # Just right

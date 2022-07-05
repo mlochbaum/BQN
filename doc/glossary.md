@@ -32,32 +32,22 @@ BQN uses standard terminology for particular sets of numbers, with natural numbe
 * **Real number** (more accurately, approximate doubly-extended real number): A number with no complex part.
 * **Complex number**: A real number plus *i* (one of the square roots of -1) times another real number.
 
-## Roles
-
-* [**Syntactic role**](expression.md#syntactic-role): One of four possible types for an expression, which are determined by the expression itself and not outside context and describe how it interacts with other parts of the syntax.
-
-The possible roles are:
-* **Subject**: Can be passed to a function or modifier.
-* **Function**: Can be called on subjects or passed to a modifier.
-* **1-modifier**: Can be called on one subject or function.
-* **2-modifier**: Can be called on two subjects or functions.
-
 ## Arrays
 
 * [**Array**](array.md): A multidimensional collection of values.
 * [**Element**](array.md#elements): One of the values contained in an array.
 * [**Axis**](array.md#rectangles): One dimension or direction in an array.
 * [**Rank**](array.md#dimensions): The number of dimensions an array has.
-* [**Shape**](shape.md): The number of elements an array has along each dimension.
-* [**Length**](shape.md): The number of elements an array has along the first dimension, or 1 if it has rank 0.
+* [**Shape**](shape.md): The number of positions an array has along each dimension.
+* [**Length**](shape.md): The number of positions an array has along the first dimension, or 1 if it has rank 0.
 * [**Depth**](depth.md): The greatest number of times an element can be selected from a value before reaching an atom.
 * [**Fill**](fill.md): A "prototypical" array element used in certain operations; it's an inferred property of an array.
 
-* **Empty**: Having no elements. An array is empty if its shape contains 0.
-* [**Cell**](array.md#cells): An array containing all elements of the original array whose indices share a particular prefix.
+* [**Empty**](array.md#elements): Having no elements. An array is empty if its shape contains 0.
+* [**Cell**](array.md#cells): An array selected from a larger array, containing all elements whose indices share a particular prefix.
 * [**k-Cell**](array.md#cells): A cell of rank *k*.
 * [**Major cell**](array.md#cells): A cell with rank one less than the original array.
-* [**Agreement**](leading.md#leading-axis-agreement): The way elements are paired when a function maps over two arrays.
+* [**Agreement**](leading.md#leading-axis-agreement): The way elements are paired when mapping over two arrays together (for example by Each).
 * [**Frame**](rank.md#frame-and-cells): A prefix of an array's shape, used for agreement with the Rank modifier.
 
 * **Unit**: An array of rank 0, or an atom.
@@ -91,15 +81,6 @@ The possible roles are:
 * **Error**: A condition that stops compilation or execution (see [assert](assert.md)).
 * **Inferred property**: A property of a value that is derived by BQN based on constraints. If it can't be derived then the value won't have the property. Includes identity values, fill elements, and behavior of Undo and Under.
 
-## Namespaces
-
-* [**Namespace**](namespace.md): A container for variables, some of which are exposed as fields.
-* **Field**: One of the variables accessible from outside a namespace.
-* **Access**: To get the current value of a field from a namespace.
-* [**Export**](namespace.md#exports): Declare a variable to be accessible from the outside, that is, make it a field.
-* [**Object**](oop.md): Informal term for a namespace that holds mutable state.
-* [**Alias**](namespace.md#imports): A different "outside" name chosen for a field in a destructuring assignment.
-
 ## Tokens
 
 * **Token formation** or tokenization: Splitting source code into a sequence of tokens.
@@ -113,14 +94,24 @@ The possible roles are:
 * [**Character literal**](syntax.md#constants): A literal written with single quotes `''`, indicating a string.
 * [**Null literal**](syntax.md#constants): The literal `@`, indicating the null character (code point 0).
 
-## Parsing
+## Grammar
 
-* **Parsing**: Analysis of the tokens of a program, which determines which actions will be taken to evaluate it.
-* [**Expression**](syntax.md#expressions): A piece of code that defines a (not necessarily constant) variable.
+* [**Expression**](syntax.md#expressions): A piece of code that describes the computation of a value.
 * [**Nothing**](expression.md#nothing): A special value-like entity that comes from `·`, `𝕨` in a function with no left argument, or a function called on nothing.
 * **Statement**: An expression, nothing (`·`), or an export (`var⇐`).
 * [**Ligature**](arrayrepr.md#strands): The character `‿`.
 * [**List notation**](arrayrepr.md#brackets): The angle brackets `⟨⟩` or ligatures used to indicate a list.
+* [**Array notation**](arrayrepr.md#high-rank-arrays): The square brackets `[]` used to form high-rank arrays.
+
+### Roles
+
+* [**Syntactic role**](expression.md#syntactic-role): One of four possible types for an expression, which are determined by the text of the expression, not outside context. The role describes how it interacts with other parts of the syntax.
+
+The possible roles are:
+* **Subject**: Can be passed to a function or modifier.
+* **Function**: Can be called on subjects or passed to a modifier.
+* **1-modifier**: Can be called on one subject or function.
+* **2-modifier**: Can be called on two subjects or functions.
 
 ## Assignment and scoping
 
@@ -135,7 +126,7 @@ The possible roles are:
 ## Blocks
 
 * [**Block**](block.md): A syntactic element surrounded in curly braces `{}`, which encapsulates code.
-* [**Immediate block**](block.md#headerless-blocks): A block that is evaluated and returns a value immediately; it has a subject role.
+* [**Immediate block**](block.md#headerless-blocks): A block that's evaluated giving a result immediately; it has a subject role.
 * **Block function**: A block defining a function.
 * **Block modifier**: A block defining a 1- or 2-modifier.
 * [**Immediate modifier**](block.md#operands): A modifier that's evaluated as soon as it receives its operands.
@@ -145,3 +136,12 @@ The possible roles are:
 * [**Label**](block.md#short-headers): A header consisting of a single name.
 * [**Predicate**](block.md#predicates): An expression followed by `?`, which acts as a condition for the body to continue running.
 * [**Tacit**](tacit.md): Code that defines functions without using blocks.
+
+## Namespaces
+
+* [**Namespace**](namespace.md): A container for variables, some of which are exposed as fields.
+* **Field**: One of the variables accessible from outside a namespace.
+* **Access**: To get the current value of a field from a namespace.
+* [**Export**](namespace.md#exports): Declare a variable to be accessible from the outside, that is, make it a field.
+* [**Object**](oop.md): Informal term for a namespace that holds mutable state.
+* [**Alias**](namespace.md#imports): A different "outside" name chosen for a field in a destructuring assignment.
