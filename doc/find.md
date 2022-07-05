@@ -6,7 +6,7 @@ Find (`⍷`) searches for occurrences of an array `𝕨` within `𝕩`. The resu
 
         "xx" ⍷ "xxbdxxxcx"
 
-More precisely `𝕨` needs to [match](match.md) a contiguous selection from `𝕩`, which for strings means a substring. These subarrays of `𝕩` are also exactly the cells in the result of [Windows](windows.md). In fact we can use Windows to see all the arrays `𝕨` will be compared against.
+More precisely, `𝕨` needs to [match](match.md) a contiguous selection from `𝕩`, which for strings means a substring. These subarrays of `𝕩` are also exactly the cells in the result of [Windows](windows.md). So we can use Windows to see all the arrays `𝕨` will be compared against.
 
         2 ↕ "xxbdxxxcx"
 
@@ -18,7 +18,7 @@ Like Windows, the result usually doesn't have the same dimensions as `𝕩`. Thi
 
         "string" (≢∘⊢↑⍷) "substring"  # APL style
 
-If `𝕨` is larger than `𝕩`, the result is empty, and there's no error even in cases where Windows would fail. One place this tends to come up is when applying [First](pick.md#first) (`⊑`) the result: `⊑⍷` tests whether `𝕨` appears in `𝕩` at the first position, that is, whether it's a prefix of `𝕩`. If `𝕨` is longer than `𝕩` it shouldn't be a prefix. First will fail but using a [fold](fold.md) `0⊣´⥊∘⍷` instead gives a 0 in this case.
+If `𝕨` is larger than `𝕩`, the result is empty, and there's no error even in cases where Windows would fail. One place this tends to come up is when applying [First](pick.md#first) (`⊑`) to the result: `⊑⍷` tests whether `𝕨` appears in `𝕩` at the first position, that is, whether it's a prefix of `𝕩`. If `𝕨` is longer than `𝕩` it shouldn't be a prefix. First will fail but using a [fold](fold.md) `0⊣´⍷` instead gives a 0 in this case.
 
         "loooooong" ⍷ "short"
 
@@ -26,7 +26,7 @@ If `𝕨` is larger than `𝕩`, the result is empty, and there's no error even 
 
         0 ⊣´ "loooooong" ⍷ "short"
 
-This pattern also works in the high-rank case discussed below, testing whether `𝕨` is a multi-dimensional prefix starting at the lowest-index corner of `𝕩`.
+Adding a [Deshape](reshape.md#deshape) gives `0⊣´⥊∘⍷`, which works with the high-rank case discussed below. It tests whether `𝕨` is a multi-dimensional prefix starting at the lowest-index corner of `𝕩`.
 
 ### Higher ranks
 
@@ -36,6 +36,6 @@ If `𝕨` and `𝕩` are two-dimensional then Find does a two-dimensional search
 
         (0‿3‿0≍0‿1‿0) ⍷ a
 
-It's also allowed for `𝕨` to have a smaller rank than `𝕩`; in this case leading axes of `𝕩` are mapped over so that axes of `𝕨` correspond to trailing axes of `𝕩`. This is a minor violation of the [leading axis](leading.md) principle, which would match axes of `𝕨` to leading axes of `𝕩` in order to make a function that's useful with the Rank operator, but such a function would be quite strange and hardly ever useful.
+It's also allowed for `𝕨` to have a smaller rank than `𝕩`; the axes of `𝕨` then correspond to trailing axes of `𝕩`, so that leading axes of `𝕩` are mapped over. This is a minor violation of the [leading axis](leading.md) principle, which would match axes of `𝕨` to leading axes of `𝕩` in order to make a function that's useful with the Rank operator, but such a function would be quite strange and hardly ever useful.
 
         0‿1‿0‿1 ⍷ a
