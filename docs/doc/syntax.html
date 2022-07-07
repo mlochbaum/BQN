@@ -6,6 +6,78 @@
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="syntax-overview"><a class="header" href="#syntax-overview">Syntax overview</a></h1>
 <p>BQN syntax consists of expressions where computation is done, with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control, so the design tries to do as much as possible with them before introducing special syntax.</p>
+<h2 id="precedence"><a class="header" href="#precedence">Precedence</a></h2>
+<p>Here's a full table of precedence for BQN's glyphs (broader than &quot;operator precedence&quot;, as an &quot;operator&quot; usually just corresponds to a function). Entries at the bottom make the biggest divisions in the program, while the ones further up are subdivisions.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Role</th>
+<th>Associativity</th>
+<th>Characters</th>
+<th>Plus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>High</td>
+<td>Brackets</td>
+<td></td>
+<td><code><span class='Paren'>()</span><span class='Bracket'>⟨⟩</span><span class='Brace'>{}</span><span class='Bracket'>[]</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="namespace.html#imports">Field access</a></td>
+<td>Left-to-right</td>
+<td><code><span class='Value'>.</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#list-and-array-notation">Stranding</a></td>
+<td>n-ary</td>
+<td><code><span class='Ligature'>‿</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Modifier</td>
+<td>Left-to-right</td>
+<td><code><span class='Modifier2'>∘⎉</span><span class='Modifier'>¨´</span></code>…</td>
+<td><code><span class='Gets'>↩</span></code> in <code><span class='Function'>Fn</span><span class='Gets'>↩</span></code></td>
+</tr>
+<tr>
+<td></td>
+<td>Function</td>
+<td>Right-to-left</td>
+<td><code><span class='Function'>+↕⊔⍉</span></code>…</td>
+<td><code><span class='Gets'>←↩⇐</span></code></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#separators">Separator</a></td>
+<td></td>
+<td><code><span class='Separator'>⋄,</span></code> and newline</td>
+<td><code><span class='Head'>?</span></code></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="block.html#block-headers">Header</a></td>
+<td></td>
+<td><code><span class='Head'>:</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td>Low</td>
+<td><a href="block.html#multiple-bodies">Body</a></td>
+<td></td>
+<td><code><span class='Head'>;</span></code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>While all of BQN's grammar fits into this table somehow, it's not really the whole story because subexpressions including parentheses and blocks might behave like functions or modifiers.</p>
 <h2 id="special-glyphs"><a class="header" href="#special-glyphs">Special glyphs</a></h2>
 <p>The following glyphs are used for BQN syntax. <a href="primitive.html">Primitives</a> (built-in functions and modifiers) are not listed in this table, and have their own page. Digits, characters, and the underscore <code><span class='Modifier2'>_</span></code> are used for numbers and variable names.</p>
 <table>
@@ -51,6 +123,10 @@
 <tr>
 <td><code><span class='Gets'>↩</span></code></td>
 <td><a href="expression.html#assignment">Change</a></td>
+</tr>
+<tr>
+<td><code><span class='Value'>.</span></code></td>
+<td>Namespace <a href="namespace.html#imports">field access</a></td>
 </tr>
 <tr>
 <td><code><span class='Separator'>⋄,</span></code> or newline</td>

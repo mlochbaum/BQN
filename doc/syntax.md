@@ -4,6 +4,23 @@
 
 BQN syntax consists of expressions where computation is done, with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control, so the design tries to do as much as possible with them before introducing special syntax.
 
+## Precedence
+
+Here's a full table of precedence for BQN's glyphs (broader than "operator precedence", as an "operator" usually just corresponds to a function). Entries at the bottom make the biggest divisions in the program, while the ones further up are subdivisions.
+
+| Level | Role                                  | Associativity | Characters       | Plus
+|-------|---------------------------------------|---------------|------------------|-------
+| High  | Brackets                              |               | `()⟨⟩{}[]`
+|       | [Field access](namespace.md#imports)  | Left-to-right | `.`
+|       | [Stranding](#list-and-array-notation) | n-ary         | `‿`
+|       | Modifier                              | Left-to-right | `∘⎉¨´`…          | `↩` in `Fn↩`
+|       | Function                              | Right-to-left | `+↕⊔⍉`…          | `←↩⇐`
+|       | [Separator](#separators)              |               | `⋄,` and newline | `?`
+|       | [Header](block.md#block-headers)      |               | `:`
+| Low   | [Body](block.md#multiple-bodies)      |               | `;`
+
+While all of BQN's grammar fits into this table somehow, it's not really the whole story because subexpressions including parentheses and blocks might behave like functions or modifiers.
+
 ## Special glyphs
 
 The following glyphs are used for BQN syntax. [Primitives](primitive.md) (built-in functions and modifiers) are not listed in this table, and have their own page. Digits, characters, and the underscore `_` are used for numbers and variable names.
@@ -19,6 +36,7 @@ Glyph(s)        | Meaning
 `←`             | [Define](expression.md#assignment)
 `⇐`             | [Export](namespace.md#exports)
 `↩`             | [Change](expression.md#assignment)
+`.`             | Namespace [field access](namespace.md#imports)
 `⋄,` or newline | Statement or element [separator](#separators)
 `⟨⟩`            | [List](#list-and-array-notation)
 `[]`            | [Array](#list-and-array-notation)
