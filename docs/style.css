@@ -58,6 +58,9 @@ table th {
   background-color: #eaeeee;
   border-bottom-color: #5a5f5d;
 }
+li ul {
+  padding-left: 1.2em;
+}
 
 @font-face{
   font-family: BQNMod;

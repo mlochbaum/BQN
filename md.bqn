@@ -17,7 +17,7 @@
 # - Indented code blocks
 # - Inline and raw HTML in a way that doesn't match the spec at all
 # - Tables
-# - Lists, unordered with single-line items only
+# - Lists, unordered with single-line items only; can be nested
 # - Inlines: code fully, links partially, and emphasis somewhat
 
 # Important missing features:
@@ -268,7 +268,20 @@ Markdown ← {filename𝕊𝕩:
   # List items start with a bullet (unordered) or number (ordered).
   LenBullet ← +⟜× ·≤⟜4⊸× ·Lead ' '=1⊸↓
   ProcBullet ← {
-    "ul" Html lf ∾ JoinLines ("li" Html ProcInline)¨ 𝕨 ↓¨ 𝕩
+    items ← 𝕨 ↓¨ 𝕩
+    indent ← (' '=⊑)¨𝕩
+    items ↩ { ∨´indent ?
+      # Require indented lines to form a nested list
+      Len ← { ! ∧´(⊑¨𝕩)∊"-+*" ⋄ LenBullet ⊑𝕩 }
+      start ← »⊸< indent
+      # Process items recursively
+      sub ← Len⊸ProcBullet¨ (1-˜indent×+`start) ⊔ items
+      # Append to the first line, which is assumed to stand alone
+      (ProcInline¨ indent ¬⊸/ items) JoinLines∘⋈¨ sub
+    ;
+      ProcInline¨ items
+    }
+    "ul" Html lf ∾ JoinLines "li"⊸Html¨ items
   }
   LenListNum ← { # Not used yet
     n ← Lead 1="0:"⍋𝕩
@@ -320,13 +333,14 @@ Markdown ← {filename𝕊𝕩:
   }⟜JoinLines
   ProcHtmlBlock ← extensions◶JoinLines‿(<⟜2◶ProcComment‿ProcHtml)
 
+  dig ← '0'+↕10
   [lineChars,lineClas,procFns] ← ⍉[
     ""    ‿ (!∘0)       ‿ ProcParagraph
     "#"   ‿ LenHeading  ‿ ProcHeading
     ""    ‿ 0           ‿ ProcCode
     ""    ‿ 0           ‿ ProcTable
     "-+*" ‿ LenBullet   ‿ ProcBullet
-  # •d    ‿ LenListNum  ‿ ProcListNum
+  # dig   ‿ LenListNum  ‿ ProcListNum
     "<"   ‿ IsHtmlBlock ‿ ProcHtmlBlock
   ]
 
@@ -432,7 +446,7 @@ Markdown ← {filename𝕊𝕩:
     include ∧↩ ¬ I2M ∧ ∾ eInds∾1+2↓eInds
     eInds ∾↩ ⟨codeBounds⟩
     eTags ← ∾ eInds ≠⊸⥊¨ 2‿2‿1 / ("<"‿"</"∾¨·<∾⟜">")¨ "em"‿"strong"‿"code"
-    eInds ↩ ∾ eInds
+    eInds ∾↩
 
     # Remove backslashes used for escaping
     include ∧↩ codeMask ∨ 1 « actual
@@ -456,7 +470,7 @@ Markdown ← {filename𝕊𝕩:
   # the line processor. Note that leading blanks aren't passed in.
   lineType‿lineDat ← <˘⍉ > ClassifyLine¨ blanks ↓¨ 𝕩
   # Empty lines have type ¯1.
-  lineType ↩ ¯1¨⌾((¬nonEmptyMask)⊸/) lineType
+  lineType ¯1¨⌾((¬nonEmptyMask)⊸/)↩
 
   # Chase HTML comments
   commentStart ← /(lineType=5)∧lineDat=2
@@ -467,8 +481,8 @@ Markdown ← {filename𝕊𝕩:
     𝕩 + ↕end¬𝕩  # A list of indices
   }¨ commentStart
   newBlock ← (≠𝕩)↑/⁼ ⊑¨ (0<≠¨)⊸/ comments
-  lineType ↩ 5¨⌾(comInd⊸⊏) lineType
-  lineDat  ↩ 2¨⌾(comInd⊸⊏) lineDat
+  lineType 5¨⌾(comInd⊸⊏)↩
+  lineDat  2¨⌾(comInd⊸⊏)↩
 
   # Lines that could be included in code blocks (will be refined)
   codeMask ← nonEmptyMask ∧ (lineType ≠ 5) ∧ blanks ≥ 4
@@ -487,13 +501,19 @@ Markdown ← {filename𝕊𝕩:
   delimValid ← (⊢ =○(≠∘⊔∘CutTableRow¨ ⊏⟜𝕩) -⟜1) / tableDelimMask
   headerMask ← « delimValid⌾(tableDelimMask⊸/) 0¨𝕩
   tableMask ↩ headerMask (⊢ ∧ ⊣ ∨ ⊣ PrecedesGroup <) tableMask
-  lineType ↩ 3¨⌾(tableMask⊸/) lineType
+  lineType 3¨⌾(tableMask⊸/)↩
 
   # Code blocks consist of indented lines, possibly with blank lines
   # in between. They must be separated from paragraphs by blank lines.
   codeMask ∧↩ ¬ paragraphMask PrecedesGroup codeMask
   codeMask ∨↩ codeMask (⊢ ∧ PrecedesGroup ∧ PrecedesGroup⌾⌽) lineType < 0
-  lineType ↩ 2¨⌾(codeMask⊸/) lineType
+  lineType 2¨⌾(codeMask⊸/)↩
+
+  # List items continue over following indented lines
+  listMask ← (0=blanks) ∧ 4 = lineType
+  listIndent ← blanks ≥ »blanks + listMask×lineDat
+  listMask ↩ codeMask < listMask (⊣ PrecedesGroup <) listIndent
+  lineType 4¨⌾(listMask⊸/)↩
 
   # Lines continue blocks if they are part of the same multi-line
   # type as the previous line, and otherwise start new ones.
