@@ -10,7 +10,7 @@ A program is a list of statements. Almost all statements are expressions. Namesp
 
     PROGRAM  = ⋄? ( STMT ⋄ )* STMT ⋄?
     STMT     = EXPR | nothing | EXPORT
-    ⋄        = ( "⋄" | "," | \n )+
+    ⋄        = ( "⋄" | "," | LF | CR )+
     EXPR     = subExpr | FuncExpr | _m1Expr | _m2Expr_
     EXPORT   = LHS_ELT? "⇐"
 
