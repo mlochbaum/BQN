@@ -12,7 +12,7 @@ Here's a full table of precedence for BQN's glyphs (broader than "operator prece
 |-------|---------------------------------------|---------------|------------------|-------
 | High  | Brackets                              |               | `()⟨⟩{}[]`
 |       | [Field access](namespace.md#imports)  | Left-to-right | `.`
-|       | [Stranding](#list-and-array-notation) | n-ary         | `‿`
+|       | [Stranding](arrayrepr.md#strands)     | n-ary         | `‿`
 |       | Modifier                              | Left-to-right | `∘⎉¨´`…          | `↩` in `Fn↩`
 |       | Function                              | Right-to-left | `+↕⊔⍉`…          | `←↩⇐`
 |       | [Separator](token.md#separators)      |               | `⋄,` and newline | `?`
@@ -38,19 +38,19 @@ Glyph(s)        | Meaning
 `↩`             | [Change](expression.md#assignment)
 `.`             | Namespace [field access](namespace.md#imports)
 `⋄,` or newline | Statement or element [separator](token.md#separators)
-`⟨⟩`            | [List](#list-and-array-notation)
-`[]`            | [Array](#list-and-array-notation)
-`‿`             | [Strand](#list-and-array-notation) (lightweight list syntax)
+`⟨⟩`            | [List](arrayrepr.md#brackets)
+`[]`            | [Array](arrayrepr.md#high-rank-arrays)
+`‿`             | [Strand](arrayrepr.md#strands) (lightweight list syntax)
 `{}`            | [Block](#blocks) such as a function definition
 `:`             | [Block header](block.md#block-headers)
 `;`             | [Block body separator](block.md#multiple-bodies)
 `?`             | [Predicate](block.md#predicates)
-`𝕨𝕎`            | [Left argument](#blocks)
-`𝕩𝕏`            | [Right argument](#blocks)
-`𝕤𝕊`            | [Function self-reference](#blocks)
-`𝕗𝔽`            | [Left operand of a modifier](#blocks)
-`𝕘𝔾`            | [Right operand of a 2-modifier](#blocks)
-`𝕣`             | [Modifier self-reference](#blocks)
+`𝕨𝕎`            | [Left argument](block.md#arguments)
+`𝕩𝕏`            | [Right argument](block.md#arguments)
+`𝕤𝕊`            | [Function self-reference](block.md#self-reference)
+`𝕗𝔽`            | [Left operand of a modifier](block.md#operands)
+`𝕘𝔾`            | [Right operand of a 2-modifier](block.md#operands)
+`𝕣`             | [Modifier self-reference](block.md#self-reference)
 
 ## Tokens
 

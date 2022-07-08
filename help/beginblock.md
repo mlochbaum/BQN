@@ -3,7 +3,7 @@
 # Left Curly Bracket (`{`)
 
 ## `{ ...`: Begin Block
-[→full documentation](../doc/syntax.md#blocks)
+[→full documentation](../doc/block.md)
 
 Starts a block, which can be one of:
 
