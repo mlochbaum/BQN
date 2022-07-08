@@ -273,9 +273,9 @@ Markdown ← {filename𝕊𝕩:
     items ↩ { ∨´indent ?
       # Require indented lines to form a nested list
       Len ← { ! ∧´(⊑¨𝕩)∊"-+*" ⋄ LenBullet ⊑𝕩 }
-      start ← »⊸< indent
       # Process items recursively
-      sub ← Len⊸ProcBullet¨ (1-˜indent×+`start) ⊔ items
+      groups ← 1 -˜ (indent∾1) × +` (¬indent)∾1
+      sub ← Len⊸ProcBullet⍟(0<≠)¨ groups ⊔ items
       # Append to the first line, which is assumed to stand alone
       (ProcInline¨ indent ¬⊸/ items) JoinLines∘⋈¨ sub
     ;

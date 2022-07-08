@@ -3,7 +3,7 @@
 # Infinity (`∞`)
 
 ## `∞`: Infinity
-[→full documentation](../doc/syntax.md#constants)
+[→full documentation](../doc/token.md#numbers)
 
 Mathematical constant Infinity, a numeric literal. Can be negative (`¯∞`).
 

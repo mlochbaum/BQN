@@ -19,6 +19,7 @@ References:
 - [BQN as combinatory logic](birds.md)
 
 Concepts:
+- [Tokens and constants](token.md)
 - [Expression syntax](expression.md)
   - [Context-free grammar](context.md)
 - [Arrays](array.md)

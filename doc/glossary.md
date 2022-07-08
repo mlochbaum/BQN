@@ -89,10 +89,10 @@ BQN uses standard terminology for particular sets of numbers, with natural numbe
 * [**Primitive**](primitive.md): One of several fixed operations defined by the language, denoted by a single-character token.
 * **Word**: A sequence of alphabetic or numeric characters.
 * **Name**: A word that starts with an alphabetic character. Names are compared case-insensitively and ignoring underscores `_`.
-* [**Numeric literal**](syntax.md#constants): A word that starts with a numeric character, indicating a number.
+* [**Numeric literal**](token.md#numbers): A word that starts with a numeric character, indicating a number.
 * [**String literal**](arrayrepr.md#strings): A literal written with double quotes `""`, indicating a string.
-* [**Character literal**](syntax.md#constants): A literal written with single quotes `''`, indicating a string.
-* [**Null literal**](syntax.md#constants): The literal `@`, indicating the null character (code point 0).
+* [**Character literal**](token.md#characters-and-strings): A literal written with single quotes `''`, indicating a string.
+* [**Null literal**](token.md#characters-and-strings): The literal `@`, indicating the null character (code point 0).
 
 ## Grammar
 

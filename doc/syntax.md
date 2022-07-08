@@ -15,11 +15,11 @@ Here's a full table of precedence for BQN's glyphs (broader than "operator prece
 |       | [Stranding](#list-and-array-notation) | n-ary         | `‿`
 |       | Modifier                              | Left-to-right | `∘⎉¨´`…          | `↩` in `Fn↩`
 |       | Function                              | Right-to-left | `+↕⊔⍉`…          | `←↩⇐`
-|       | [Separator](#separators)              |               | `⋄,` and newline | `?`
+|       | [Separator](token.md#separators)      |               | `⋄,` and newline | `?`
 |       | [Header](block.md#block-headers)      |               | `:`
 | Low   | [Body](block.md#multiple-bodies)      |               | `;`
 
-While all of BQN's grammar fits into this table somehow, it's not really the whole story because subexpressions including parentheses and blocks might behave like functions or modifiers.
+While all of BQN's grammar fits into this table somehow, it's not really the whole story because subexpressions including parentheses and blocks might behave like functions or modifiers. See [expressions](#expressions) and [blocks](#blocks).
 
 ## Special glyphs
 
@@ -27,17 +27,17 @@ The following glyphs are used for BQN syntax. [Primitives](primitive.md) (built-
 
 Glyph(s)        | Meaning
 ----------------|-----------
-`#`             | [Comment](#comments)
-`'"`            | [Character or string literal](#constants)
-`@`             | [Null character](#constants)
-`¯∞π`           | [Used in numeric literals](#constants)
+`#`             | [Comment](token.md#comments)
+`'"`            | [Character or string literal](token.md#characters-and-strings)
+`@`             | [Null character](token.md#characters-and-strings)
+`¯∞π`           | [Used in numeric literals](token.md#numbers)
 `·`             | [Nothing](expression.md#nothing)
 `()`            | [Expression grouping](expression.md#parentheses)
 `←`             | [Define](expression.md#assignment)
 `⇐`             | [Export](namespace.md#exports)
 `↩`             | [Change](expression.md#assignment)
 `.`             | Namespace [field access](namespace.md#imports)
-`⋄,` or newline | Statement or element [separator](#separators)
+`⋄,` or newline | Statement or element [separator](token.md#separators)
 `⟨⟩`            | [List](#list-and-array-notation)
 `[]`            | [Array](#list-and-array-notation)
 `‿`             | [Strand](#list-and-array-notation) (lightweight list syntax)
@@ -52,27 +52,16 @@ Glyph(s)        | Meaning
 `𝕘𝔾`            | [Right operand of a 2-modifier](#blocks)
 `𝕣`             | [Modifier self-reference](#blocks)
 
-## Comments
+## Tokens
 
-A comment starts with a `#` that isn't part of a character or string literal, and continues to the end of the line.
+*[Full documentation](token.md)*
 
-        '#' - 1  #This is the comment
-
-## Constants
-
-BQN has single-token notation for numbers, strings, and characters.
-
-[Numbers](types.md#numbers) are written as decimals, allowing `¯` for the negative sign (because `-` is a function) and `e` or `E` for scientific notation. They must have digits before and after the decimal point (so, `0.5` instead of `.5`), and any exponent must be an integer. Two special numbers `∞` and `π` are supported, possibly with a minus sign. If complex numbers are supported (no implementation to date has them), then they can be written with the components separated by `i` or `I`.
-
-        ⟨ ¯π ⋄ 0.5 ⋄ 5e¯1 ⋄ 1.5E3 ⋄ ∞ ⟩   # A list of numbers
-
-Strings—lists of characters—are written with double quotes `""`, and [characters](types.md#characters) with single quotes `''` with a single character in between. Only one character ever needs to be escaped: a double quote in a string is written twice. So `""""` is a one-character string of `"`, and if two string literals are next to each other, they have to be separated by a space. Character literals don't have even one escape, as the length is already known. Other than the double quote, character and string literals can contain anything: newlines, null characters, or any other Unicode.
-
-        ≠¨ ⟨ "str" ⋄ "s't""r" ⋄ 'c' ⋄ ''' ⋄ '"' ⟩   # "" is an escape
-
-        ≡¨ ⟨ "a" ⋄ 'a' ⟩   # A string is an array but a character isn't
-
-But including a null character in your source code is probably not a great idea for other reasons. The null character (code point 0) has a dedicated literal representation `@`. Null can be used with [character arithmetic](arithmetic.md#character-arithmetic) to directly convert between characters and numeric code points, which among many other uses allows tricky characters to be entered by code point: for example, a non-breaking space is `@+160`.
+BQN syntax is made up of tokens, which are mostly single characters. But there are a few exceptions:
+- [Comments](token.md#comments) start with `#` and end at the end of the line.
+- [Character literals](token.md#characters-and-strings) start and end with `'`, and have exactly one character in between.
+- [String literals](token.md#characters-and-strings) start and end with `"`. Pairs of quotes `""` in between represent one quote character, and other characters (including `'`) represent themselves.
+- [Numbers](token.md#numbers) support decimal (`.`) and scientific (`e`) notation, plus `π` and `∞`, and use `¯` for a minus sign.
+- [Variable names](token.md#names) allow letters, underscores, and numeric characters. They're matched case-insensitively, with a [spelling system](expression.md#role-spellings) that determines role.
 
 ## Expressions
 
@@ -95,11 +84,7 @@ The double arrow `⇐` is used for functionality relating to [namespaces](namesp
 
 ## Arrays and blocks
 
-Arrays and code blocks can both be represented as sequences of expressions in source code. There are paired bracket representations, using `⟨⟩` for lists, `[]` for arrays, and `{}` for blocks, as well as a shortcut "stranding" notation using `‿` for lists.
-
-### Separators
-
-The characters `⋄` and `,` and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a block. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.
+Arrays and code blocks can both be represented as sequences of expressions in source code. There are paired bracket representations, using `⟨⟩` for lists, `[]` for arrays, and `{}` for blocks, as well as a shortcut "stranding" notation using `‿` for lists. Elements within brackets are divided by [separators](token.md#separators): `,` or `⋄` or a line break.
 
 ### List and array notation
 

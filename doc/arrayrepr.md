@@ -92,7 +92,7 @@ Now it's time to discuss ways to write arrays in a BQN program. There are three 
 
 ### Strings
 
-A **string** consists of a sequence of characters surrounded by double quotes `""`. The only rule for the characters inside is that any double quote must be escaped by repeating it twice; otherwise the string ends at that point.
+A [**string** literal](token.md#characters-and-strings) consists of a sequence of characters surrounded by double quotes `""`. The only rule for the characters inside is that any double quote must be escaped by repeating it twice; otherwise the string ends at that point.
 
         "-'×%""*"
 
@@ -102,7 +102,7 @@ Even special characters like a newline can appear in a string literal, so that s
 
 ### Brackets
 
-**List notation** uses angle brackets `⟨⟩`. The contents are structurally identical to those of a [block](block.md), that is, a list of expressions [separated](syntax.md#separators) by `,` or `⋄` or newlines. Unlike a block, a list doesn't need to have any expressions: `⟨⟩` or `⟨⋄⟩` or `⟨,,⋄,⟩` will create an empty list. Other differences are that a list doesn't introduce a new [scope](lexical.md) and all of the expressions have to result in a value, not [Nothing](expression.md#nothing) (`·`).
+**List notation** uses angle brackets `⟨⟩`. The contents are structurally identical to those of a [block](block.md), that is, a list of expressions [separated](token.md#separators) by `,` or `⋄` or newlines. Unlike a block, a list doesn't need to have any expressions: `⟨⟩` or `⟨⋄⟩` or `⟨,,⋄,⟩` will create an empty list. Other differences are that a list doesn't introduce a new [scope](lexical.md) and all of the expressions have to result in a value, not [Nothing](expression.md#nothing) (`·`).
 
 Entries in a list are evaluated in source order, and the value will be the list of those results. The list has a subject [role](expression.md#syntactic-role), even if it contains expressions with other roles. Any value can be an element.
 

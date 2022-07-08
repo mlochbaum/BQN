@@ -56,7 +56,7 @@
 </tr>
 <tr>
 <td></td>
-<td><a href="#separators">Separator</a></td>
+<td><a href="token.html#separators">Separator</a></td>
 <td></td>
 <td><code><span class='Separator'>⋄,</span></code> and newline</td>
 <td><code><span class='Head'>?</span></code></td>
@@ -77,7 +77,7 @@
 </tr>
 </tbody>
 </table>
-<p>While all of BQN's grammar fits into this table somehow, it's not really the whole story because subexpressions including parentheses and blocks might behave like functions or modifiers.</p>
+<p>While all of BQN's grammar fits into this table somehow, it's not really the whole story because subexpressions including parentheses and blocks might behave like functions or modifiers. See <a href="#expressions">expressions</a> and <a href="#blocks">blocks</a>.</p>
 <h2 id="special-glyphs"><a class="header" href="#special-glyphs">Special glyphs</a></h2>
 <p>The following glyphs are used for BQN syntax. <a href="primitive.html">Primitives</a> (built-in functions and modifiers) are not listed in this table, and have their own page. Digits, characters, and the underscore <code><span class='Modifier2'>_</span></code> are used for numbers and variable names.</p>
 <table>
@@ -90,19 +90,19 @@
 <tbody>
 <tr>
 <td><code><span class='Comment'>#</span></code></td>
-<td><a href="#comments">Comment</a></td>
+<td><a href="token.html#comments">Comment</a></td>
 </tr>
 <tr>
 <td><code><span class='String'>'&quot;</span></code></td>
-<td><a href="#constants">Character or string literal</a></td>
+<td><a href="token.html#characters-and-strings">Character or string literal</a></td>
 </tr>
 <tr>
 <td><code><span class='String'>@</span></code></td>
-<td><a href="#constants">Null character</a></td>
+<td><a href="token.html#characters-and-strings">Null character</a></td>
 </tr>
 <tr>
 <td><code><span class='Number'>¯∞π</span></code></td>
-<td><a href="#constants">Used in numeric literals</a></td>
+<td><a href="token.html#numbers">Used in numeric literals</a></td>
 </tr>
 <tr>
 <td><code><span class='Nothing'>·</span></code></td>
@@ -130,7 +130,7 @@
 </tr>
 <tr>
 <td><code><span class='Separator'>⋄,</span></code> or newline</td>
-<td>Statement or element <a href="#separators">separator</a></td>
+<td>Statement or element <a href="token.html#separators">separator</a></td>
 </tr>
 <tr>
 <td><code><span class='Bracket'>⟨⟩</span></code></td>
@@ -186,25 +186,16 @@
 </tr>
 </tbody>
 </table>
-<h2 id="comments"><a class="header" href="#comments">Comments</a></h2>
-<p>A comment starts with a <code><span class='Comment'>#</span></code> that isn't part of a character or string literal, and continues to the end of the line.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=JyMnIC0gMSAgI1RoaXMgaXMgdGhlIGNvbW1lbnQ=">↗️</a><pre>    <span class='String'>'#'</span> <span class='Function'>-</span> <span class='Number'>1</span>  <span class='Comment'>#This is the comment
-</span>'"'
-</pre>
-<h2 id="constants"><a class="header" href="#constants">Constants</a></h2>
-<p>BQN has single-token notation for numbers, strings, and characters.</p>
-<p><a href="types.html#numbers">Numbers</a> are written as decimals, allowing <code><span class='Number'>¯</span></code> for the negative sign (because <code><span class='Function'>-</span></code> is a function) and <code><span class='Value'>e</span></code> or <code><span class='Function'>E</span></code> for scientific notation. They must have digits before and after the decimal point (so, <code><span class='Number'>0.5</span></code> instead of <code><span class='Number'>.5</span></code>), and any exponent must be an integer. Two special numbers <code><span class='Number'>∞</span></code> and <code><span class='Number'>π</span></code> are supported, possibly with a minus sign. If complex numbers are supported (no implementation to date has them), then they can be written with the components separated by <code><span class='Value'>i</span></code> or <code><span class='Function'>I</span></code>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oIMKvz4Ag4ouEIDAuNSDii4QgNWXCrzEg4ouEIDEuNUUzIOKLhCDiiJ4g4p+pICAgIyBBIGxpc3Qgb2YgbnVtYmVycw==">↗️</a><pre>    <span class='Bracket'>⟨</span> <span class='Number'>¯π</span> <span class='Separator'>⋄</span> <span class='Number'>0.5</span> <span class='Separator'>⋄</span> <span class='Number'>5e¯1</span> <span class='Separator'>⋄</span> <span class='Number'>1.5E3</span> <span class='Separator'>⋄</span> <span class='Number'>∞</span> <span class='Bracket'>⟩</span>   <span class='Comment'># A list of numbers
-</span>⟨ ¯3.141592653589793 0.5 0.5 1500 ∞ ⟩
-</pre>
-<p>Strings—lists of characters—are written with double quotes <code><span class='String'>&quot;&quot;</span></code>, and <a href="types.html#characters">characters</a> with single quotes <code><span class='String'>''</span></code> with a single character in between. Only one character ever needs to be escaped: a double quote in a string is written twice. So <code><span class='String'>&quot;&quot;&quot;&quot;</span></code> is a one-character string of <code><span class='String'>&quot;</span></code>, and if two string literals are next to each other, they have to be separated by a space. Character literals don't have even one escape, as the length is already known. Other than the double quote, character and string literals can contain anything: newlines, null characters, or any other Unicode.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4omgwqgg4p+oICJzdHIiIOKLhCAicyd0IiJyIiDii4QgJ2MnIOKLhCAnJycg4ouEICciJyDin6kgICAjICIiIGlzIGFuIGVzY2FwZQoK4omhwqgg4p+oICJhIiDii4QgJ2EnIOKfqSAgICMgQSBzdHJpbmcgaXMgYW4gYXJyYXkgYnV0IGEgY2hhcmFjdGVyIGlzbid0">↗️</a><pre>    <span class='Function'>≠</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span> <span class='String'>&quot;str&quot;</span> <span class='Separator'>⋄</span> <span class='String'>&quot;s't&quot;&quot;r&quot;</span> <span class='Separator'>⋄</span> <span class='String'>'c'</span> <span class='Separator'>⋄</span> <span class='String'>'''</span> <span class='Separator'>⋄</span> <span class='String'>'&quot;'</span> <span class='Bracket'>⟩</span>   <span class='Comment'># &quot;&quot; is an escape
-</span>⟨ 3 5 1 1 1 ⟩
-
-    <span class='Function'>≡</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span> <span class='String'>&quot;a&quot;</span> <span class='Separator'>⋄</span> <span class='String'>'a'</span> <span class='Bracket'>⟩</span>   <span class='Comment'># A string is an array but a character isn't
-</span>⟨ 1 0 ⟩
-</pre>
-<p>But including a null character in your source code is probably not a great idea for other reasons. The null character (code point 0) has a dedicated literal representation <code><span class='String'>@</span></code>. Null can be used with <a href="arithmetic.html#character-arithmetic">character arithmetic</a> to directly convert between characters and numeric code points, which among many other uses allows tricky characters to be entered by code point: for example, a non-breaking space is <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>160</span></code>.</p>
+<h2 id="tokens"><a class="header" href="#tokens">Tokens</a></h2>
+<p><em><a href="token.html">Full documentation</a></em></p>
+<p>BQN syntax is made up of tokens, which are mostly single characters. But there are a few exceptions:</p>
+<ul>
+<li><a href="token.html#comments">Comments</a> start with <code><span class='Comment'>#</span></code> and end at the end of the line.</li>
+<li><a href="token.html#characters-and-strings">Character literals</a> start and end with <code><span class='String'>'</span></code>, and have exactly one character in between.</li>
+<li><a href="token.html#characters-and-strings">String literals</a> start and end with <code><span class='String'>&quot;</span></code>. Pairs of quotes <code><span class='String'>&quot;&quot;</span></code> in between represent one quote character, and other characters (including <code><span class='String'>'</span></code>) represent themselves.</li>
+<li><a href="token.html#numbers">Numbers</a> support decimal (<code><span class='Value'>.</span></code>) and scientific (<code><span class='Value'>e</span></code>) notation, plus <code><span class='Number'>π</span></code> and <code><span class='Number'>∞</span></code>, and use <code><span class='Number'>¯</span></code> for a minus sign.</li>
+<li><a href="token.html#names">Variable names</a> allow letters, underscores, and numeric characters. They're matched case-insensitively, with a <a href="expression.html#role-spellings">spelling system</a> that determines role.</li>
+</ul>
 <h2 id="expressions"><a class="header" href="#expressions">Expressions</a></h2>
 <p><em><a href="expression.html">Full documentation</a></em></p>
 <p>BQN expressions are composed of subjects, functions, and modifiers, with parentheses to group parts into subexpressions. <a href="ops.html#functions">Functions</a> can be applied to subjects or grouped into <a href="train.html">trains</a>, while <a href="ops.html#modifiers">modifiers</a> can be applied to subjects or functions. The most important kinds of application are:</p>
@@ -263,9 +254,7 @@
 <p><a href="expression.html#assignment">Assignment</a> arrows <code><span class='Gets'>←</span></code>, <code><span class='Gets'>↩</span></code>, and <code><span class='Gets'>⇐</span></code> store expression results in variables: <code><span class='Gets'>←</span></code> and <code><span class='Gets'>⇐</span></code> create new variables while <code><span class='Gets'>↩</span></code> modifies existing ones. The general format is <code><span class='Function'>Name</span> <span class='Gets'>←</span> <span class='Function'>Value</span></code>, where the two sides have the same role. Additionally, <code><span class='Value'>lhs</span> <span class='Function'>F</span><span class='Gets'>↩</span> <span class='Value'>rhs</span></code> is a shortened form of <code><span class='Value'>lhs</span> <span class='Gets'>↩</span> <span class='Value'>lhs</span> <span class='Function'>F</span> <span class='Value'>rhs</span></code> and <code><span class='Value'>lhs</span> <span class='Function'>F</span><span class='Gets'>↩</span></code> expands to <code><span class='Value'>lhs</span> <span class='Gets'>↩</span> <span class='Function'>F</span> <span class='Value'>lhs</span></code>.</p>
 <p>The double arrow <code><span class='Gets'>⇐</span></code> is used for functionality relating to <a href="namespace.html">namespaces</a>. It has a few purposes: exporting assignment <code><span class='Value'>name</span><span class='Gets'>⇐</span><span class='Value'>value</span></code>, plain export <code><span class='Value'>name</span><span class='Gets'>⇐</span></code>, and aliasing <code><span class='Bracket'>⟨</span><span class='Value'>alias</span><span class='Gets'>⇐</span><span class='Value'>field</span><span class='Bracket'>⟩</span><span class='Gets'>←</span><span class='Value'>namespace</span></code>. A block that uses it for export returns a namespace rather than the result of its last statement. The other namespace-related bit of syntax is field access <code><span class='Value'>ns.field</span></code>.</p>
 <h2 id="arrays-and-blocks"><a class="header" href="#arrays-and-blocks">Arrays and blocks</a></h2>
-<p>Arrays and code blocks can both be represented as sequences of expressions in source code. There are paired bracket representations, using <code><span class='Bracket'>⟨⟩</span></code> for lists, <code><span class='Bracket'>[]</span></code> for arrays, and <code><span class='Brace'>{}</span></code> for blocks, as well as a shortcut &quot;stranding&quot; notation using <code><span class='Ligature'>‿</span></code> for lists.</p>
-<h3 id="separators"><a class="header" href="#separators">Separators</a></h3>
-<p>The characters <code><span class='Separator'>⋄</span></code> and <code><span class='Separator'>,</span></code> and newline are completely interchangeable and are used to separate expressions. An expression might be an element in a list or a line in a block. Empty sections—those that consist only of whitespace—are ignored. This means that any number of separators can be used between expressions, and that leading and trailing separators are also allowed. The expressions are evaluated in text order: left to right and top to bottom.</p>
+<p>Arrays and code blocks can both be represented as sequences of expressions in source code. There are paired bracket representations, using <code><span class='Bracket'>⟨⟩</span></code> for lists, <code><span class='Bracket'>[]</span></code> for arrays, and <code><span class='Brace'>{}</span></code> for blocks, as well as a shortcut &quot;stranding&quot; notation using <code><span class='Ligature'>‿</span></code> for lists. Elements within brackets are divided by <a href="token.html#separators">separators</a>: <code><span class='Separator'>,</span></code> or <code><span class='Separator'>⋄</span></code> or a line break.</p>
 <h3 id="list-and-array-notation"><a class="header" href="#list-and-array-notation">List and array notation</a></h3>
 <p><em><a href="arrayrepr.html#array-literals">Full documentation</a></em></p>
 <p>Lists (1-dimensional arrays) are enclosed in angle brackets <code><span class='Bracket'>⟨⟩</span></code>, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character <code><span class='Ligature'>‿</span></code>. This character has higher binding strength than any part of an expression except <code><span class='Value'>.</span></code> for namespace field access. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.</p>

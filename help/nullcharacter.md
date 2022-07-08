@@ -3,7 +3,7 @@
 # Commercial At (`@`)
 
 ## `@`: Null Character
-[→full documentation](../doc/syntax.md#constants)
+[→full documentation](../doc/token.md#characters-and-strings)
 
 Null character, code point 0 in ASCII. A shortcut character literal.
 

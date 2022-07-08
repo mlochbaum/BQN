@@ -49,7 +49,7 @@ Each of these functions also has a meaning with only one argument, although math
 
         √ 0‿1‿2‿4
 
-Take note of the difference between the function `-`, and the "high minus" character `¯`, which is a part of [numeric notation](syntax.md#constants). Also shown is the number `∞`, which BQN supports along with `¯∞` (but depending on implementation BQN may or may not keep track of `¯0`. Integer optimization loses the distinction so it's best not to rely on it).
+Take note of the difference between the function `-`, and the "high minus" character `¯`, which is a part of [numeric notation](token.md#numbers). Also shown is the number `∞`, which BQN supports along with `¯∞` (but depending on implementation BQN may or may not keep track of `¯0`. Integer optimization loses the distinction so it's best not to rely on it).
 
 The logarithm is written with [Undo](undo.md): `⋆⁼`. As with Power, the default base is *e*, giving a natural logarithm.
 
