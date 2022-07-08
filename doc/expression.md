@@ -2,7 +2,7 @@
 
 # Expression syntax
 
-BQN expressions are the part of [syntax](syntax.md) that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like [blocks](block.md) and [namespaces](namespace.md) around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe [constant](syntax.md#constants) and [array](arrayrepr.md#array-literals) literals, which each form a single subject for grammatical purposes.
+BQN expressions are the part of [syntax](syntax.md) that describes computations to perform. Programs are mainly made up of expressions with a little organizing material like [blocks](block.md) and [namespaces](namespace.md) around them. This page explains how functions, modifiers, and assignment combine with their inputs. It doesn't describe [constant](token.md) and [array](arrayrepr.md#array-literals) literals, which each form a single subject for grammatical purposes.
 
 The [first tutorial](../tutorial/expression.md) also covers how to build and read BQN expressions.
 

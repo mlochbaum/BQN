@@ -3,7 +3,7 @@
 # Pi (`π`)
 
 ## `π`: Pi
-[→full documentation](../doc/syntax.md#constants)
+[→full documentation](../doc/token.md#numbers)
 
 The mathematical constant pi, a numeric literal. Can be negative (`¯π`).
 

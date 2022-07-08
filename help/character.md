@@ -3,7 +3,7 @@
 # Single Quote (`'`)
 
 ## `'c'`: Character
-[→full documentation](../doc/syntax.md#constants)
+[→full documentation](../doc/token.md#characters-and-strings)
 
 A character literal whose value is the character between quotes. Any character can be used, even `'` and newline.
 

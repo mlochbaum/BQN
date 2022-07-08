@@ -3,7 +3,7 @@
 # Comma (`,`) and Diamond (`⋄`)
 
 ## `,` or `⋄`: Separator
-[→full documentation](../doc/syntax.md#separators)
+[→full documentation](../doc/token.md#separators)
 
 Separates statements in blocks, programs, and arrays. Characters `,` and `⋄` are interchangeable with each other and with newline.
 
