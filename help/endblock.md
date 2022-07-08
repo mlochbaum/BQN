@@ -3,7 +3,7 @@
 # Right Curly Bracket (`}`)
 
 ## `... }`: End Block
-[→full documentation](../doc/syntax.md#blocks)
+[→full documentation](../doc/block.md)
 
 Starts a block, which starts with `}`. See [Begin Block](beginblock.md) for more details.
 

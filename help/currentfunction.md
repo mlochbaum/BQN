@@ -3,7 +3,7 @@
 # Mathematical Double-struck S (`𝕊`)
 
 ## `𝕊`: Current Function
-[→full documentation](../doc/syntax.md#blocks)
+[→full documentation](../doc/block.md#self-reference)
 
 A variable assigned to the current function block. `𝕤` accesses the same value but has a subject role.
 
