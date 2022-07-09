@@ -135,8 +135,32 @@ When a variable's modified, functions with access to it see the new value. They 
         factor ↩ 5
         Mul 6   # A new result
 
-Only code with access to a variable can modify it! This means that if none of the code in a variable's scope modifies it, then the variable is a constant in each environment that contains it (not necessarily across environments). That is, constant once it's defined: remember that it's still possible to get an error if the variable is accessed before being defined.
+Only source code with access to a variable can modify it! This means that if none of the code in a variable's scope modifies it, then the variable is constant. That is, constant once it's defined: remember that it's still possible to get an error if the variable is accessed before being defined.
 
         { { a } ⋄ a←4 }
 
-With lexical scoping, variable mutation automatically leads to mutable data. This is because a function or modifier that depends on the variable value changes its behavior when the variable changes. For further discussion see the documentation on [mutable objects](oop.md#mutability).
+With lexical scoping, variable mutation automatically leads to mutable data. This is because a function or modifier that depends on the variable value changes its behavior when the variable changes. So do objects; this slightly more concrete case is discussed [here](oop.md#mutability). The behavior change is observed by calling operations, and by accessing object fields. These are the only two actions that might behave differently when applied to the same values!
+
+### Aliasing
+
+Mutable values exhibits *aliasing*. This means that when two variables refer to the same mutable value (or two copies of it exist generally), changes to one also affect the other.
+
+        record ← { r←⟨⟩ ⋄ { r ∾↩ <𝕩 } }
+        Record ∞
+
+        Record2 ← Record  # Copy the function
+        Record2 "new"
+
+        Record 0   # The added value "new" is seen here as well
+
+This could be said to conflict with arrays, where two variables might be copies of the same array but a change to one doesn't affect the other.
+
+        copy_a ← copy_b ← "array"
+
+        copy_b 'b'⌾⊑↩
+
+        copy_a
+
+But that's not really what's happening. Aliasing has nothing to do with variables: it's a property of mutation, and there's no such thing as array mutation. `'b'⌾⊑` creates a new but related array. And `↩` changes the value of `copy_b`, not *its* value `"array"`. Similarly, if we wrote `record2 ↩ @` then nothing would happen to `record`.
+
+You can tell whether two mutable values alias each other using Match (`≡`), because that's how it defines [block equality](match.md#block-equality). However, aliasing isn't the only way one mutable value can affect another: two functions might refer to the same variable, for instance. I think the idea that the function itself is mutable can cause some confusion, and sometimes prefer to think at a lower level—that variables don't belong to the function, but the function just knows about them. So a function is more like a file name (path) than a file. It's a static thing, but using it (calling the function or accessing the file) reads outside information that can change over time.

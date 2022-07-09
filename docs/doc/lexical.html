@@ -138,8 +138,32 @@
     <span class='Function'>Mul</span> <span class='Number'>6</span>   <span class='Comment'># A new result
 </span>30
 </pre>
-<p>Only code with access to a variable can modify it! This means that if none of the code in a variable's scope modifies it, then the variable is a constant in each environment that contains it (not necessarily across environments). That is, constant once it's defined: remember that it's still possible to get an error if the variable is accessed before being defined.</p>
+<p>Only source code with access to a variable can modify it! This means that if none of the code in a variable's scope modifies it, then the variable is constant. That is, constant once it's defined: remember that it's still possible to get an error if the variable is accessed before being defined.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=eyB7IGEgfSDii4QgYeKGkDQgfQ==">↗️</a><pre>    <span class='Brace'>{</span> <span class='Brace'>{</span> <span class='Value'>a</span> <span class='Brace'>}</span> <span class='Separator'>⋄</span> <span class='Value'>a</span><span class='Gets'>←</span><span class='Number'>4</span> <span class='Brace'>}</span>
 <span class='Error'>Error: Reading variable before its defined</span>
 </pre>
-<p>With lexical scoping, variable mutation automatically leads to mutable data. This is because a function or modifier that depends on the variable value changes its behavior when the variable changes. For further discussion see the documentation on <a href="oop.html#mutability">mutable objects</a>.</p>
+<p>With lexical scoping, variable mutation automatically leads to mutable data. This is because a function or modifier that depends on the variable value changes its behavior when the variable changes. So do objects; this slightly more concrete case is discussed <a href="oop.html#mutability">here</a>. The behavior change is observed by calling operations, and by accessing object fields. These are the only two actions that might behave differently when applied to the same values!</p>
+<h3 id="aliasing"><a class="header" href="#aliasing">Aliasing</a></h3>
+<p>Mutable values exhibits <em>aliasing</em>. This means that when two variables refer to the same mutable value (or two copies of it exist generally), changes to one also affect the other.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cmVjb3JkIOKGkCB7IHLihpDin6jin6kg4ouEIHsgciDiiL7ihqkgPPCdlakgfSB9ClJlY29yZCDiiJ4KClJlY29yZDIg4oaQIFJlY29yZCAgIyBDb3B5IHRoZSBmdW5jdGlvbgpSZWNvcmQyICJuZXciCgpSZWNvcmQgMCAgICMgVGhlIGFkZGVkIHZhbHVlICJuZXciIGlzIHNlZW4gaGVyZSBhcyB3ZWxs">↗️</a><pre>    <span class='Value'>record</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>r</span><span class='Gets'>←</span><span class='Bracket'>⟨⟩</span> <span class='Separator'>⋄</span> <span class='Brace'>{</span> <span class='Value'>r</span> <span class='Function'>∾</span><span class='Gets'>↩</span> <span class='Function'>&lt;</span><span class='Value'>𝕩</span> <span class='Brace'>}</span> <span class='Brace'>}</span>
+    <span class='Function'>Record</span> <span class='Number'>∞</span>
+⟨ ∞ ⟩
+
+    <span class='Function'>Record2</span> <span class='Gets'>←</span> <span class='Function'>Record</span>  <span class='Comment'># Copy the function
+</span>    <span class='Function'>Record2</span> <span class='String'>&quot;new&quot;</span>
+⟨ ∞ "new" ⟩
+
+    <span class='Function'>Record</span> <span class='Number'>0</span>   <span class='Comment'># The added value &quot;new&quot; is seen here as well
+</span>⟨ ∞ "new" 0 ⟩
+</pre>
+<p>This could be said to conflict with arrays, where two variables might be copies of the same array but a change to one doesn't affect the other.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Y29weV9hIOKGkCBjb3B5X2Ig4oaQICJhcnJheSIKCmNvcHlfYiAnYifijL7iipHihqkKCmNvcHlfYQ==">↗️</a><pre>    <span class='Value'>copy_a</span> <span class='Gets'>←</span> <span class='Value'>copy_b</span> <span class='Gets'>←</span> <span class='String'>&quot;array&quot;</span>
+
+    <span class='Value'>copy_b</span> <span class='String'>'b'</span><span class='Modifier2'>⌾</span><span class='Function'>⊑</span><span class='Gets'>↩</span>
+"brray"
+
+    <span class='Value'>copy_a</span>
+"array"
+</pre>
+<p>But that's not really what's happening. Aliasing has nothing to do with variables: it's a property of mutation, and there's no such thing as array mutation. <code><span class='String'>'b'</span><span class='Modifier2'>⌾</span><span class='Function'>⊑</span></code> creates a new but related array. And <code><span class='Gets'>↩</span></code> changes the value of <code><span class='Value'>copy_b</span></code>, not <em>its</em> value <code><span class='String'>&quot;array&quot;</span></code>. Similarly, if we wrote <code><span class='Value'>record2</span> <span class='Gets'>↩</span> <span class='String'>@</span></code> then nothing would happen to <code><span class='Value'>record</span></code>.</p>
+<p>You can tell whether two mutable values alias each other using Match (<code><span class='Function'>≡</span></code>), because that's how it defines <a href="match.html#block-equality">block equality</a>. However, aliasing isn't the only way one mutable value can affect another: two functions might refer to the same variable, for instance. I think the idea that the function itself is mutable can cause some confusion, and sometimes prefer to think at a lower level—that variables don't belong to the function, but the function just knows about them. So a function is more like a file name (path) than a file. It's a static thing, but using it (calling the function or accessing the file) reads outside information that can change over time.</p>
