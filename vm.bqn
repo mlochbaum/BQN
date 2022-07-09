@@ -3,8 +3,8 @@
 # References support some of the following fields:
 # - Get:  Get value
 # - GetC: Get value, and clear the slot (variable only)
-# - SetU: Define value
-# - SetN: Change value
+# - SetN: Define value
+# - SetU: Change value
 # - SetQ: Set value and return 0 if possible, and return 1 if not
 # - GetF: Get corresponding field from namespace 𝕩
 MakeVar ← { program 𝕊 name:
