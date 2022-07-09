@@ -147,7 +147,7 @@ Lets look at things more systematically. Suppose `x` has shape `4‿3‿2‿1‿
 
         ≢ ⊑ <⎉2 ↕4‿3‿2‿1‿0
 
-We can build a frame array using `<⎉2`, as shown above. In the general case, the frame remains conceptual: the actual array `<⎉2 x` is never created, and the result might also not have the shape `4‿3‿2`. But the result shape does always have `4‿3‿2` as a prefix. Rank maps over these axes, leaving them intact. And it can be defined in terms of the cell-splitting function `<⎉k`, and its inverse [Merge](couple.md#merge-and-array-theory) (`>`).
+We can build a frame array using `<⎉2`, as shown above. In the general case, the frame remains conceptual: the actual array `<⎉2 x` is never created, and the result might also not have the shape `4‿3‿2`. But the result shape does always have `4‿3‿2` as a prefix. Rank maps over these axes, leaving them intact. And it can be defined in terms of the cell-splitting function `<⎉k`, and its inverse [Merge](couple.md) (`>`).
 
     F⎉k x  ←→  >F¨<⎉k x
 

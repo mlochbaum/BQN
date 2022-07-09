@@ -25,7 +25,15 @@ Merge (`>`) takes one argument, but a nested one. `𝕩` is an array of arrays, 
         ≢ a
         ≢ > a
 
-Merge serves as a generalization of Solo and Couple, since Solo is `{>⟨𝕩⟩}` and Couple is `{>⟨𝕨,𝕩⟩}`. Since `≍` works on the "list" of arguments, it can only add one dimension, but `>` can take any number of dimensions as its input.
+If `𝕩` is empty, but has a [fill](fill.md) element, then its shape is used for the inner shape. If it doesn't have a fill, the inner shape is assumed to be empty, so that the result is `𝕩` with no changes.
+
+Merge serves as a generalization of Solo and Couple, since Solo is `{>⟨𝕩⟩}` and Couple is `{>⟨𝕨,𝕩⟩}`. These can be combined with [Pair](pair.md), giving `>⋈` for both. Since the result of `⋈` has rank 1, it can only add one dimension, but `>` can take any number of dimensions as its input.
+
+## Coupling units
+
+A note on the topic of Solo and Couple applied to [units](enclose.md#whats-a-unit). As always, one axis will be added, so that the result is a list (strangely, J's [laminate](https://code.jsoftware.com/wiki/Vocabulary/commaco#dyadic) differs from Couple in this one case, as it adds an axis to get a shape `2‿1` result). Solo on a unit is interchangeable with [Deshape](reshape.md) (`⥊`), and either primitive might be chosen for stylistic reasons. Couple on units is equivalent to [Join-to](join.md) (`∾`), but this is an irregular form of Join-to because it is the only case where Join-to adds an axis to both arguments instead of just one. Couple should be preferred in this case.
+
+As a consequence, [Pair](pair.md) (`⋈`) can be written `≍○<`, while `≍` is `>∘⋈` as discussed above. This gives the neat (but not useful) identities `≍ ←→ >∘≍○<`, and `⋈ ←→ >∘⋈○<`, which have the same form because adding `○<` commutes with adding `>∘`.
 
 ## Merge and array theory
 
@@ -36,7 +44,7 @@ In all cases, what these functions do is more like reinterpreting existing data 
         ⥊ ⥊¨ a
         ∾ ⥊ ⥊¨ a
 
-Somewhat like [Table](map.md#table) `⌜`, Merge might be considered a fundamental way to build up multidimensional arrays from lists. In both cases rank-0 or [unit](enclose.md#whats-a-unit) arrays are somewhat special. They are the [identity value](fold.md#identity-values) of a function with Table, and [Enclose](enclose.md) (`<`), which creates a unit, is a right inverse to Merge. Enclose is needed because Merge can't produce a rank 0 array on its own. Merge has another catch as well: it can't produce arrays with a 0 in the shape, except at the end, without relying on a [fill](fill.md) element.
+Somewhat like [Table](map.md#table) `⌜`, Merge might be considered a fundamental way to build up multidimensional arrays from lists. In both cases rank-0 or [unit](enclose.md#whats-a-unit) arrays are somewhat special. They are the [identity value](fold.md#identity-values) of a function with Table, and [Enclose](enclose.md) (`<`), which creates a unit, is a right inverse to Merge. Enclose is needed because Merge can't produce a rank 0 array on its own. Merge has another catch as well: it can't produce arrays with a 0 in the shape, except at the end, without relying on a fill element.
 
         ⊢ e ← ⟨⟩¨ ↕3
         ≢ > e
@@ -44,14 +52,8 @@ Somewhat like [Table](map.md#table) `⌜`, Merge might be considered a fundament
 
 Above we start with a list of three empty arrays. After merging once we get a shape `3‿0` array, sure, but what happens next? The shape added by another merge is the shared shape of that array's elements—and there aren't any! If the nested list kept some type information around then we might know, but extra type information is essentially how lists pretend to be arrays. True dynamic lists simply can't represent multidimensional arrays with a 0 in the middle of the shape. In this sense, arrays are a richer model than nested lists.
 
-## Coupling units
-
-A note on the topic of Solo and Couple applied to units. As always, one axis will be added, so that the result is a list (strangely, J's [laminate](https://code.jsoftware.com/wiki/Vocabulary/commaco#dyadic) differs from Couple in this one case, as it will add an axis to get a shape `2‿1` result). For Solo, this is interchangeable with [Deshape](reshape.md) (`⥊`), and either primitive might be chosen for stylistic reasons. For Couple, it is equivalent to [Join-to](join.md) (`∾`), but this is an irregular form of Join-to because it is the only case where Join-to adds an axis to both arguments instead of just one. Couple should be preferred in this case.
-
-The function [Pair](pair.md) (`⋈`) can be written `≍○<`, while `≍` in either valence is `>∘⋈`. As an interesting consequence, `≍ ←→ >∘≍○<`, and `⋈ ←→ >∘⋈○<`. These two identities have the same form because adding `○<` commutes with adding `>∘`.
-
 ## Definitions
 
-As discussed above, `≍` is equivalent to `>{⟨𝕩⟩;⟨𝕨,𝕩⟩}` or `>⋈`. To complete the picture we should describe Merge fully. Merge is defined on an array argument `𝕩` such that there's some shape `s` satisfying `∧´⥊(s≡≢)¨𝕩`. If `𝕩` is empty then any shape satisfies this expression; `s` should be chosen based on known type information for `𝕩` or otherwise assumed to be `⟨⟩`. If `s` is empty then `𝕩` is allowed to contain atoms as well as unit arrays, and these will be implicitly promoted to arrays by the `⊑` indexing used later. We construct the result by combining the outer and inner axes of the argument with Table; since the outer axes come first they must correspond to the left argument and the inner axes must correspond to the right argument. `𝕩` is a natural choice of left argument, and because no concrete array can be used, the right argument will be `↕s`, the array of indices into any element of `𝕩`. To get the appropriate element corresponding to a particular choice of index and element of `𝕩` we should select using that index. The result of Merge is `𝕩⊑˜⌜↕s`.
+We can define `≍` as `>⋈`. To complete the picture we should describe Merge fully. Merge is defined on an array argument `𝕩` such that there's some shape `s` satisfying `∧´⥊(s≡≢)¨𝕩`. If `𝕩` is empty then any shape satisfies this expression; `s` is then the shape of the [fill](fill.md) if there is one, or otherwise `⟨⟩`.
 
-Given this definition we can also describe Rank (`⎉`) in terms of Each (`¨`) and the simpler monadic function Enclose-Rank `<⎉k`. We assume effective ranks `j` for `𝕨` (if present) and `k` for `𝕩` have been computed. Then the correspondence is `𝕨F⎉k𝕩 ←→ >(<⎉j𝕨)F¨(<⎉k𝕩)`.
+Then the result of Merge is `𝕩⊑˜⌜↕s`. Here, [Table](map.md#table) is a nice way of combining outer and inner axes to produce the result; since the outer axes come first they should go on the left and the inner axes on the right. `𝕩` is a natural choice of left argument, and because no concrete array can be used, the right argument is `↕s`, the array of indices into any element of `𝕩`. Then [Pick](pick.md) selects all the elements. If `s` is empty, then `𝕩` is allowed to contain atoms as well as unit arrays. Pick will implicitly treat them as arrays.
