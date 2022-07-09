@@ -92,7 +92,7 @@ Arrays and code blocks can both be represented as sequences of expressions in so
 
 Lists (1-dimensional arrays) are enclosed in angle brackets `⟨⟩`, with the results of the expressions in between being the list's elements. Lists of two elements or more can also be written with the ligature character `‿`. This character has higher binding strength than any part of an expression except `.` for namespace field access. If one of the elements is a compound expression, then it will need to be enclosed in parentheses.
 
-Arrays, or at least non-empty ones with rank 1 or more, can be written with square brackets `[]`. These work just like angle brackets but [merge](couple.md#merge-and-array-theory) the elements so that they form cells of the result.
+Arrays, or at least non-empty ones with rank 1 or more, can be written with square brackets `[]`. These work just like angle brackets but [merge](couple.md) the elements so that they form cells of the result.
 
 ### Blocks
 

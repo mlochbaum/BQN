@@ -123,7 +123,7 @@ BQN's separator rules give list notation a very flexible structure. You can put 
 
 #### High-rank arrays
 
-Higher-rank arrays can be written with `[]`, an **array notation** that indicates each element is to be used as a [cell](array.md#cells) of its result. It's identical to forming a list and applying [Merge](couple.md#merge-and-array-theory) (`[…]` is the same as `>⟨…⟩`).
+Higher-rank arrays can be written with `[]`, an **array notation** that indicates each element is to be used as a [cell](array.md#cells) of its result. It's identical to forming a list and applying [Merge](couple.md) (`[…]` is the same as `>⟨…⟩`).
 
         [2‿3, 4‿1, 0‿5]
 
