@@ -1,0 +1,191 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>A quick start to BQN</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
+<h1 id="a-quick-start-to-bqn"><a class="header" href="#a-quick-start-to-bqn">A quick start to BQN</a></h1>
+<p>Here's a little BQN program:</p>
+<pre><span class='Comment'>#! /usr/bin/env bqn
+</span>
+<span class='Comment'># Case conversion utilities
+</span><span class='Value'>case</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+  <span class='Value'>diff</span> <span class='Gets'>←</span> <span class='Function'>-</span><span class='Modifier'>´</span> <span class='String'>&quot;Aa&quot;</span>
+  <span class='Function'>Lower</span> <span class='Gets'>⇐</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Value'>diff</span>
+  <span class='Function'>Upper</span> <span class='Gets'>⇐</span> <span class='Function'>Lower</span><span class='Modifier'>⁼</span>
+<span class='Brace'>}</span>
+
+<span class='Value'>hw</span> <span class='Gets'>←</span> <span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;helloworld&quot;</span>
+<span class='Value'>hw</span> <span class='Value'>case.</span><span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊑</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Gets'>↩</span>
+<span class='Function'>•Out</span> <span class='Value'>hw</span> <span class='Gets'>↩</span> <span class='Function'>∾</span> <span class='Function'>⥊⍉</span> <span class='Bracket'>[</span><span class='Value'>hw</span><span class='Separator'>,</span> <span class='String'>&quot;, &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;!&quot;</span><span class='Bracket'>]</span>  <span class='Comment'># Hello, World!
+</span>
+<span class='Comment'># Split at spaces and repeated characters
+</span><span class='Function'>Split</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+  <span class='Function'>!</span><span class='Number'>1</span><span class='Function'>==</span><span class='Value'>𝕩</span> <span class='Separator'>⋄</span> <span class='Paren'>(</span><span class='Function'>!</span><span class='Number'>2</span><span class='Function'>=•Type</span><span class='Paren'>)</span><span class='Modifier'>¨</span><span class='Value'>𝕩</span>
+  <span class='Function'>Proc</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+    <span class='Nothing'>·</span> <span class='Function'>𝕊</span> <span class='String'>' '</span><span class='Head'>:</span> <span class='Value'>spl</span><span class='Gets'>⇐</span><span class='Number'>1</span> <span class='Separator'>⋄</span> <span class='Value'>str</span><span class='Gets'>⇐</span><span class='String'>&quot;&quot;</span> <span class='Head'>;</span>    <span class='Comment'># Space: break and delete it
+</span>    <span class='Value'>prev</span> <span class='Function'>Proc</span> <span class='Value'>cur</span><span class='Head'>:</span> <span class='Value'>spl</span><span class='Ligature'>‿</span><span class='Value'>str</span><span class='Gets'>⇐</span>
+      <span class='Value'>spl</span><span class='Gets'>←</span><span class='Number'>0</span> <span class='Separator'>⋄</span> <span class='Value'>str</span><span class='Gets'>←</span><span class='Function'>⋈</span><span class='Value'>cur</span>           <span class='Comment'># Include and don't break...
+</span>      <span class='Brace'>{</span> <span class='Value'>prev</span><span class='Function'>≡</span><span class='Value'>cur</span> <span class='Head'>?</span> <span class='Value'>spl</span><span class='Function'>+</span><span class='Gets'>↩</span><span class='Number'>1</span> <span class='Head'>;</span> <span class='String'>@</span> <span class='Brace'>}</span>  <span class='Comment'># except at equal characters
+</span>  <span class='Brace'>}</span>
+  <span class='Value'>r</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Function'>»</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Function'>Proc</span><span class='Modifier'>¨</span> <span class='Value'>𝕩</span>
+  <span class='Function'>GV</span><span class='Gets'>←</span><span class='Brace'>{</span><span class='Value'>𝕩.str</span><span class='Brace'>}</span> <span class='Separator'>⋄</span> <span class='Function'>GS</span><span class='Gets'>←</span><span class='Brace'>{</span><span class='Bracket'>⟨</span><span class='Value'>s</span><span class='Gets'>⇐</span><span class='Value'>spl</span><span class='Bracket'>⟩</span><span class='Head'>:</span><span class='Value'>s</span><span class='Brace'>}</span>
+  <span class='Paren'>(</span><span class='Function'>∾</span><span class='Modifier'>¨</span> <span class='Function'>GV</span><span class='Modifier'>¨</span> <span class='Function'>⊔</span><span class='Modifier'>˜</span> <span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>GS</span><span class='Modifier'>¨</span><span class='Paren'>)</span> <span class='Value'>r</span>
+<span class='Brace'>}</span>
+<span class='Function'>•Show</span> <span class='Value'>shw</span> <span class='Gets'>←</span> <span class='Function'>Split</span> <span class='Value'>hw</span>  <span class='Comment'># ⟨ &quot;Hel&quot; &quot;lo,&quot; &quot;World!&quot; ⟩
+</span>
+<span class='Value'>fns</span> <span class='Gets'>←</span> <span class='Bracket'>⟨</span><span class='Function'>⌽</span><span class='Separator'>,</span> <span class='Value'>split</span>
+       <span class='Value'>case.</span><span class='Function'>Lower</span><span class='Modifier2'>⌾</span><span class='Function'>⊑</span><span class='Bracket'>⟩</span>
+<span class='Function'>•Show</span> <span class='Value'>fns</span> <span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Value'>shw</span>   <span class='Comment'># ⟨ &quot;leH&quot; ⟨ &quot;lo,&quot; ⟩ &quot;world!&quot; ⟩
+</span></pre>
+<p>It's not the most idiomatic BQN you'll see, but that's because this piece of code uses every piece of syntax in the language (and a good number of the primitives).</p>
+<p>If you save it with the name hello.bqn and have BQN <a href="../running.html">installed</a>, the script can be run with <code><span class='Value'>$</span> <span class='Value'>bqn</span> <span class='Value'>hello.bqn</span></code> from a shell. Because of the <code><span class='Comment'>#!</span></code> line at the top, <code><span class='Value'>$</span> <span class='Value'>.</span><span class='Function'>/</span><span class='Value'>hello.bqn</span></code> also works if <code><span class='Value'>bqn</span></code> is in your path and hello.bqn is executable. It can also be run from another BQN file in the same directory, or REPL started there, using <code><span class='Function'>•Import</span> <span class='String'>&quot;hello.bqn&quot;</span></code>. Or just copy-paste it into the <a href="https://mlochbaum.github.io/BQN/try.html">online REPL</a>.</p>
+<p>Now let's see how it works.</p>
+<h2 id="case-conversion"><a class="header" href="#case-conversion">Case conversion</a></h2>
+<pre><span class='Comment'># Case conversion utilities
+</span><span class='Value'>case</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+  <span class='Value'>diff</span> <span class='Gets'>←</span> <span class='Function'>-</span><span class='Modifier'>´</span> <span class='String'>&quot;Aa&quot;</span>
+  <span class='Function'>Lower</span> <span class='Gets'>⇐</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Value'>diff</span>
+  <span class='Function'>Upper</span> <span class='Gets'>⇐</span> <span class='Function'>Lower</span><span class='Modifier'>⁼</span>
+<span class='Brace'>}</span>
+</pre>
+<p>This part of the code defines a <a href="namespace.html">namespace</a> using braces <code><span class='Brace'>{}</span></code>, then <a href="expression.html#assignment">assigns</a> it to the name <code><span class='Value'>case</span></code>. There are three assignments inside the namespace too. Since BQN uses <a href="lexical.html">lexical scoping</a>, code outside the namespace can't access the variables <code><span class='Value'>diff</span></code>, <code><span class='Function'>Lower</span></code>, and <code><span class='Function'>Upper</span></code> directly. Oh, and the first line is a <a href="token.html#comments">comment</a>.</p>
+<p>The value <code><span class='Value'>diff</span></code> is the result of applying a <a href="ops.html#functions">function</a> <code><span class='Function'>-</span><span class='Modifier'>´</span></code> to the argument <code><span class='String'>&quot;Aa&quot;</span></code>. Function application is always written just by placing a function next to its arguments like this—a prefix application if there's one argument, infix if there are two, and that's the most arguments you can have. This doesn't limit BQN's capabilities because it's easy to pass a list as an argument. In fact, <code><span class='String'>&quot;Aa&quot;</span></code> is a <a href="token.html#characters-and-strings">string</a>, which means a list of characters. Characters are written with single quotes, so it's a list of <code><span class='String'>'A'</span></code> and <code><span class='String'>'a'</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LcK0ICJBYSIgICAgIyBQcmVmaXggYXBwbGljYXRpb24KCidBJyAtICdhJyAgIyBJbmZpeCBhcHBsaWNhdGlvbg==">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier'>´</span> <span class='String'>&quot;Aa&quot;</span>    <span class='Comment'># Prefix application
+</span>¯32
+
+    <span class='String'>'A'</span> <span class='Function'>-</span> <span class='String'>'a'</span>  <span class='Comment'># Infix application
+</span>¯32
+</pre>
+<p>The function <code><span class='Function'>-</span><span class='Modifier'>´</span></code> is a <em>compound</em> function, because it consists of another function <code><span class='Function'>-</span></code> (it's just <a href="arithmetic.html#basic-arithmetic">subtraction</a>) passed to a 1-<a href="ops.html#modifiers">modifier</a> <a href="fold.html">Fold</a> (<code><span class='Modifier'>´</span></code>). Fold applies its operand function <code><span class='Function'>-</span></code> between the elements of its list argument <code><span class='String'>&quot;Aa&quot;</span></code>. For a more familiar example, <code><span class='Function'>+</span><span class='Modifier'>´</span></code> could sum a list of numbers. But here we end up taking the difference between two characters, an instance of <a href="arithmetic.html#character-arithmetic">character arithmetic</a>. Characters are always Unicode code points, and this operation takes the difference between their numeric values. The important point is that the difference between any lowercase Latin character and its uppercase version is always the same number (specifically -32, which is written <code><span class='Number'>¯32</span></code> because <code><span class='Number'>¯</span></code> can be part of a <a href="token.html#numbers">numeric literal</a> while the function <code><span class='Function'>-</span></code> can't). Adding this number to a lowercase letter translates it to uppercase:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ZGlmZiDihpAgLcK0ICJBYSIKJ2InICsgZGlmZg==">↗️</a><pre>    <span class='Value'>diff</span> <span class='Gets'>←</span> <span class='Function'>-</span><span class='Modifier'>´</span> <span class='String'>&quot;Aa&quot;</span>
+    <span class='String'>'b'</span> <span class='Function'>+</span> <span class='Value'>diff</span>
+'B'
+</pre>
+<p>The function <code><span class='Function'>Lower</span></code> is defined to be <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Value'>diff</span></code>, but it uses a different arrow <code><span class='Gets'>⇐</span></code> to do this. This is an <a href="namespace.html#exports">export</a>, and it declares that <code><span class='Function'>Lower</span></code> is a <em>field</em> of a namespace that can be accessed from the outside. Having a <code><span class='Gets'>⇐</span></code> in it is also what makes the block define a namespace. <code><span class='Function'>Lower</span></code> isn't accessed in the rest of the program, but <code><span class='Function'>Upper</span></code> is, with <code><span class='Value'>case.</span><span class='Function'>Upper</span></code>.</p>
+<p><code><span class='Function'>Lower</span></code> is created with a modifier again, this time the 2-modifier <code><span class='Modifier2'>⟜</span></code>. We've now seen one each of the three <a href="primitive.html"><em>primitive</em></a> types: function, 1-modifier, and 2-modifier. There are a lot of primitives, but some simple rules tell you which type they have. Primitives are functions by default, but superscript characters are 1-modifiers (<code><span class='Modifier'>´˘¨˜`</span></code> in our program), and ones with an unbroken circle are 2-modifiers (<code><span class='Modifier2'>⟜∘⌾</span></code>; <code><span class='Function'>⍉</span></code> is a broken circle so it's a function). Variable names follow a <a href="expression.html#role-spellings">similar system</a>, where functions start with an uppercase letter and subjects with a lowercase one.</p>
+<p><a href="hook.html">After</a> (<code><span class='Modifier2'>⟜</span></code>) takes two operands, <code><span class='Function'>-</span></code> and <code><span class='Value'>diff</span></code>, to produce a function—specifically, it binds <code><span class='Value'>diff</span></code> as the right argument of <code><span class='Function'>-</span></code>, so that calling it on an argument subtracts <code><span class='Value'>diff</span></code> from that argument.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LeKfnGRpZmYgJ0cnCgonRycgLSBkaWZm">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Value'>diff</span> <span class='String'>'G'</span>
+'g'
+
+    <span class='String'>'G'</span> <span class='Function'>-</span> <span class='Value'>diff</span>
+'g'
+</pre>
+<p><code><span class='Function'>Upper</span></code> could be written the same way, with <code><span class='Function'>+</span><span class='Modifier2'>⟜</span><span class='Value'>diff</span></code> or <code><span class='Value'>diff</span><span class='Modifier2'>⊸</span><span class='Function'>+</span></code>. Instead, it's defined to be the inverse of <code><span class='Function'>Lower</span></code> with <a href="undo.html">Undo</a> (<code><span class='Modifier'>⁼</span></code>). BQN knows a few algebraic tricks to invert primitives and compound functions, and <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Value'>diff</span></code> is well within its capabilities.</p>
+<h2 id="saying-hello"><a class="header" href="#saying-hello">Saying hello</a></h2>
+<p>The next part of the program begins to use BQN's array-oriented capabilities. It consists of three statements, which BQN evaluates in order (after the previous statement, which defined <code><span class='Value'>case</span></code>).</p>
+<pre><span class='Value'>hw</span> <span class='Gets'>←</span> <span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;helloworld&quot;</span>
+<span class='Value'>hw</span> <span class='Value'>case.</span><span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊑</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Gets'>↩</span>
+<span class='Function'>•Out</span> <span class='Value'>hw</span> <span class='Gets'>↩</span> <span class='Function'>∾</span> <span class='Function'>⥊⍉</span> <span class='Bracket'>[</span><span class='Value'>hw</span><span class='Separator'>,</span> <span class='String'>&quot;, &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;!&quot;</span><span class='Bracket'>]</span>  <span class='Comment'># Hello, World!
+</span></pre>
+<p>The first one takes the string <code><span class='String'>&quot;helloworld&quot;</span></code> and turns it into a list of two strings.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PMuYIDLigL/iiJgg4qWKICJoZWxsb3dvcmxkIg==">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;helloworld&quot;</span>
+⟨ "hello" "world" ⟩
+</pre>
+<p>This is our first expression that evaluates two functions, and has a lot of other stuff going on besides. Let's draw out the expression grouping. The online REPL can also do this for you if you click &quot;Explain&quot; before running your expression.</p>
+<svg viewBox='-142.18 -34 512 188'>
+  <g font-family='BQN,monospace' font-size='18px' class='Paren' fill='currentColor'>
+    <rect class='code' stroke-width='1' rx='10' x='-21.68' y='-24' width='271' height='168'/>
+    <text><tspan class='Function'>&lt;</tspan><tspan class='Modifier'>˘</tspan> <tspan class='Number'>2</tspan><tspan class='Ligature'>‿</tspan><tspan class='Modifier2'>∘</tspan> <tspan class='Function'>⥊</tspan> <tspan class='String'>&quot;helloworld&quot;</tspan></text>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M162.6 2.4V50.4H81.3'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M37.94 2.4V26.4H37.94'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M59.62 2.4V26.4H37.94'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M37.94 26.4V50.4H81.3'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M81.3 50.4V98.4H16.26'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M5.42 2.4V74.4H16.26'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M16.26 74.4V98.4H16.26'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M16.26 98.4V122.4H-8.13'/>
+    <g font-size='15px' text-anchor='middle'>
+      <g class='codeCover' stroke-width='8' stroke-linejoin='round'>
+        <text x='162.6' y='55'>&quot;helloworld&quot;</text>
+        <text x='81.3' y='55'>⥊</text>
+        <text x='37.94' y='31'>2</text>
+        <text x='59.62' y='31'>∘</text>
+        <text x='16.26' y='79'>˘</text>
+        <text x='5.42' y='79'>&lt;</text>
+      </g>
+      <g opacity='0.9'>
+        <text x='162.6' y='55'><tspan class='String'>&quot;helloworld&quot;</tspan></text>
+        <text x='81.3' y='55'><tspan class='Function'>⥊</tspan></text>
+        <text x='37.94' y='31'><tspan class='Number'>2</tspan></text>
+        <text x='59.62' y='31'><tspan class='Modifier2'>∘</tspan></text>
+        <text x='16.26' y='79'><tspan class='Modifier'>˘</tspan></text>
+        <text x='5.42' y='79'><tspan class='Function'>&lt;</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
+
+<p>The two functions evaluated are <code><span class='Function'>&lt;</span><span class='Modifier'>˘</span></code> and <code><span class='Function'>⥊</span></code>. Functions all have the same precedence, and are evaluated from right to left—the same order as <code><span class='Value'>f</span><span class='Paren'>(</span><span class='Value'>g</span><span class='Paren'>(</span><span class='Value'>h</span><span class='Paren'>(</span><span class='Value'>x</span><span class='Paren'>)))</span></code> in math but without the parentheses. Applying a modifier like <code><span class='Modifier'>˘</span></code> has higher precedence than function application, and so does <a href="arrayrepr.html#strands">stranding</a> <code><span class='Ligature'>‿</span></code>. Stranding is a quick way to write a list; <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span></code> could also be written <code><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='Modifier2'>∘</span><span class='Bracket'>⟩</span></code> using the <a href="arrayrepr.html#brackets">brackets</a> found later in the program. Elements can be anything: here <code><span class='Number'>2</span></code> is a list and <code><span class='Modifier2'>∘</span></code> is a 2-modifier.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAv+KImA==">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span>
+⟨ 2 ∘ ⟩
+</pre>
+<p>The first function applied is <a href="reshape.html">Reshape</a>, which reshapes its right argument according to the shape on the left. So a shape of <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span></code> would turn our 10-character list into a 2×5 array. But <code><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span></code> isn't really a shape: the <code><span class='Modifier2'>∘</span></code> indicates a <a href="reshape.html">computed length</a> to be filled in based on the size of the array being reshaped.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAvzUg4qWKICJoZWxsb3dvcmxkIgoy4oC/4oiYIOKliiAiaGVsbG93b3JsZCI=">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>5</span> <span class='Function'>⥊</span> <span class='String'>&quot;helloworld&quot;</span>
+┌─       
+╵"hello  
+  world" 
+        ┘
+    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;helloworld&quot;</span>
+┌─       
+╵"hello  
+  world" 
+        ┘
+</pre>
+<p>This result is a 2-dimensional <a href="array.html">array</a> of characters. A list is also a kind of array, but with only one dimension. We say a list has <em>rank</em> 1, while the new array has rank 2. But the next thing we do is turn our array into a list of lists:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PMuYIDLigL/iiJgg4qWKICJoZWxsb3dvcmxkIg==">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;helloworld&quot;</span>
+⟨ "hello" "world" ⟩
+</pre>
+<p>The function that does this is <a href="enclose.html">Enclose</a> <a href="rank.html">Cells</a>, <code><span class='Function'>&lt;</span><span class='Modifier'>˘</span></code>. The Cells modifier means we're working with <em>major cells</em>, which are the parts of an array with one less dimension. For a rank-2 array, these are its rows, while for a list, they're rank-0 arrays (or <a href="enclose.html#whats-a-unit">units</a>), each containing a single element. Enclose Cells applies Enclose to each major cell of its argument to produce the major cells of its result. Enclosing a cell wraps it up in a rank-0 array, and using these for the result's major cells creates a list, whose elements are the rows of the rank-2 array. What happens to this list of lists next?</p>
+<h3 id="title-case"><a class="header" href="#title-case">Title case</a></h3>
+<pre><span class='Value'>hw</span> <span class='Value'>case.</span><span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊑</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Gets'>↩</span>
+</pre>
+<p>This statement consists of the name <code><span class='Value'>hw</span></code> just defined, a compound function, and then the new character <code><span class='Gets'>↩</span></code>. This is another form of <a href="expression.html#assignment">assignment</a>, like <code><span class='Gets'>←</span></code>, but it changes the value of an existing variable instead of defining a new one. There's also some special <code><span class='Gets'>↩</span></code> syntax here: the expression <code><span class='Value'>val</span> <span class='Function'>Fn</span><span class='Gets'>↩</span></code> is shorthand for <code><span class='Value'>val</span> <span class='Gets'>↩</span> <span class='Function'>Fn</span> <span class='Value'>val</span></code>, avoiding the need to write the name <code><span class='Value'>hw</span></code> twice (and <code><span class='Value'>val</span> <span class='Function'>Fn</span><span class='Gets'>↩</span> <span class='Value'>arg</span></code> means <code><span class='Value'>val</span> <span class='Gets'>↩</span> <span class='Value'>val</span> <span class='Function'>Fn</span> <span class='Value'>arg</span></code>, like <code><span class='Function'>+=</span></code> and so on from C). So we are modifying <code><span class='Value'>hw</span></code> by applying this function <code><span class='Value'>case.</span><span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊑</span><span class='Modifier'>¨</span><span class='Paren'>)</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=aHcg4oaQIDzLmCAy4oC/4oiYIOKliiAiaGVsbG93b3JsZCIKVXBwZXIg4oaQIC3in5woLcK0IkFhIinigbwKClVwcGVy4oy+KOKKkcKoKSBodwoKaHcgVXBwZXLijL4o4oqRwqgp4oapICAjIFNldHMgbmV3IHZhbHVlIGZvciBodw==">↗️</a><pre>    <span class='Value'>hw</span> <span class='Gets'>←</span> <span class='Function'>&lt;</span><span class='Modifier'>˘</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;helloworld&quot;</span>
+    <span class='Function'>Upper</span> <span class='Gets'>←</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>-</span><span class='Modifier'>´</span><span class='String'>&quot;Aa&quot;</span><span class='Paren'>)</span><span class='Modifier'>⁼</span>
+
+    <span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊑</span><span class='Modifier'>¨</span><span class='Paren'>)</span> <span class='Value'>hw</span>
+⟨ "Hello" "World" ⟩
+
+    <span class='Value'>hw</span> <span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊑</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Gets'>↩</span>  <span class='Comment'># Sets new value for hw
+</span>⟨ "Hello" "World" ⟩
+</pre>
+<p>That converts the first character of each string to uppercase! <code><span class='Value'>case.</span><span class='Function'>Upper</span></code> is the case conversion function defined before, so that part makes sense. The rest of the function, <code><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊑</span><span class='Modifier'>¨</span><span class='Paren'>)</span></code>, would be pronounced &quot;<a href="under.html">Under</a> the <a href="pick.html#first">First</a> of <a href="map.html#one-argument-mapping">Each</a>&quot;, which… pretty much makes sense too? The First Each function extracts the first element of each list in <code><span class='Value'>hw</span></code>, the part that used to be <code><span class='String'>&quot;hw&quot;</span></code> but is now <code><span class='String'>&quot;HW&quot;</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqRwqggaHcKClVwcGVyICJodyI=">↗️</a><pre>    <span class='Function'>⊑</span><span class='Modifier'>¨</span> <span class='Value'>hw</span>
+"HW"
+
+    <span class='Function'>Upper</span> <span class='String'>&quot;hw&quot;</span>
+"HW"
+</pre>
+<p>The Under modifier keeps track of where that string came from and puts it <em>back</em>, to produce a new, altered array. It's kind of special, like Undo, but works on all sorts of fancy selections. It's also worth pointing out that <code><span class='Function'>Upper</span></code> applies to a string here, not an individual character. That's because arithmetic is <a href="arithmetic.html#pervasion">pervasive</a>, so that functions made of arithmetic naturally work on arrays. Although in this case it wasn't really necessary, because it's also possible to map over the two strings and uppercase the first character of each separately:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=VXBwZXLijL7iipHCqCAiaGVsbG8i4oC/IndvcmxkIg==">↗️</a><pre>    <span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Function'>⊑</span><span class='Modifier'>¨</span> <span class='String'>&quot;hello&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;world&quot;</span>
+⟨ "Hello" "World" ⟩
+</pre>
+<p>Modifiers are applied from left to right, opposite to functions (1-modifiers also take the operand on the left while prefix functions have the argument on the right). So <code><span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Function'>⊑</span><span class='Modifier'>¨</span></code> means <code><span class='Paren'>(</span><span class='Function'>Upper</span><span class='Modifier2'>⌾</span><span class='Function'>⊑</span><span class='Paren'>)</span><span class='Modifier'>¨</span></code>.</p>
+<h3 id="punctuation-and-printing"><a class="header" href="#punctuation-and-printing">Punctuation and printing</a></h3>
+<p>The variable <code><span class='Value'>hw</span></code> is modified one more time, then printed, producing the output Hello, World!</p>
+<pre><span class='Function'>•Out</span> <span class='Value'>hw</span> <span class='Gets'>↩</span> <span class='Function'>∾</span> <span class='Function'>⥊⍉</span> <span class='Bracket'>[</span><span class='Value'>hw</span><span class='Separator'>,</span> <span class='String'>&quot;, &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;!&quot;</span><span class='Bracket'>]</span>  <span class='Comment'># Hello, World!
+</span></pre>
+<p>None of these functions have a subject to the left, so they're all evaluated as prefix functions. But first, we have the <a href="arrayrepr.html#high-rank-arrays">array notation</a> <code><span class='Bracket'>[]</span></code>. This syntax forms an array from its major cells <code><span class='Value'>hw</span></code> and <code><span class='String'>&quot;, &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;!&quot;</span></code> (another strand, a list of two strings). Because the major cells are both lists, we have another rank 2 array.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=W2h3LCAiLCAi4oC/IiEiXQ==">↗️</a><pre>    <span class='Bracket'>[</span><span class='Value'>hw</span><span class='Separator'>,</span> <span class='String'>&quot;, &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;!&quot;</span><span class='Bracket'>]</span>
+┌─                 
+╵ "Hello" "World"  
+  ", "    "!"      
+                  ┘
+</pre>
+<p>The reason for forming this array is to interleave the elements, or we might say to read down the columns rather than across the rows. This ordering is done with a <a href="transpose.html">Transpose</a> to exchange the two axes, then a <a href="reshape.html#deshape">Deshape</a> to flatten it out, giving a list.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4o2JIFtodywgIiwgIuKAvyIhIl0KCuKliiDijYkgW2h3LCAiLCAi4oC/IiEiXQ==">↗️</a><pre>    <span class='Function'>⍉</span> <span class='Bracket'>[</span><span class='Value'>hw</span><span class='Separator'>,</span> <span class='String'>&quot;, &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;!&quot;</span><span class='Bracket'>]</span>
+┌─              
+╵ "Hello" ", "  
+  "World" "!"   
+               ┘
+
+    <span class='Function'>⥊</span> <span class='Function'>⍉</span> <span class='Bracket'>[</span><span class='Value'>hw</span><span class='Separator'>,</span> <span class='String'>&quot;, &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;!&quot;</span><span class='Bracket'>]</span>
+⟨ "Hello" ", " "World" "!" ⟩
+</pre>
+<p>Finally, <a href="join.html">Join</a> combines this list of strings into a single string.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=aHcg4oapIOKIviDipYrijYkgW2h3LCAiLCAi4oC/IiEiXQpodw==">↗️</a><pre>    <span class='Value'>hw</span> <span class='Gets'>↩</span> <span class='Function'>∾</span> <span class='Function'>⥊⍉</span> <span class='Bracket'>[</span><span class='Value'>hw</span><span class='Separator'>,</span> <span class='String'>&quot;, &quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;!&quot;</span><span class='Bracket'>]</span>
+    <span class='Value'>hw</span>
+"Hello, World!"
+</pre>
+<p>The full statement stores this back in <code><span class='Value'>hw</span></code> with <code><span class='Gets'>↩</span></code>, then prints it using <code><span class='Function'>•Out</span></code>. Assignment can be used inline, much like a function! <code><span class='Function'>•Out</span></code> is our first <a href="../spec/system.html">system function</a> (see <a href="../spec/system.html#input-and-output">this section</a>), and prints a string directly as output. We have now printed that which new programmers must print, and covered the basics of BQN expressions!</p>
