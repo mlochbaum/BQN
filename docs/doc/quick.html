@@ -240,4 +240,93 @@
 <pre><span class='Function'>GV</span><span class='Ligature'>‿</span><span class='Function'>GS</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Function'>𝕏</span><span class='Modifier'>¨</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Bracket'>⟨</span> <span class='Brace'>{</span><span class='Bracket'>⟨</span><span class='Value'>s</span><span class='Gets'>⇐</span><span class='Value'>str</span><span class='Bracket'>⟩</span><span class='Head'>:</span><span class='Value'>s</span><span class='Head'>;</span><span class='String'>&quot;&quot;</span><span class='Brace'>}</span>
                 <span class='Brace'>{</span><span class='Value'>𝕩.spl</span><span class='Brace'>}</span> <span class='Bracket'>⟩</span>
 </pre>
-<p>Going left to right, <code><span class='Function'>GV</span><span class='Ligature'>‿</span><span class='Function'>GS</span></code> indicates <a href="expression.html#destructuring">destructuring assignment</a>, which will expect a list of two values on the right and take it apart to assign the two names.</p>
+<p>Going left to right, <code><span class='Function'>GV</span><span class='Ligature'>‿</span><span class='Function'>GS</span></code> indicates <a href="expression.html#destructuring">destructuring assignment</a>, which will expect a list of two values on the right and take it apart to assign the two names. The right hand side is the function <code><span class='Brace'>{</span><span class='Function'>𝕏</span><span class='Modifier'>¨</span><span class='Brace'>}</span><span class='Modifier'>¨</span></code> applied to a list.</p>
+<p><code><span class='Brace'>{</span><span class='Function'>𝕏</span><span class='Modifier'>¨</span><span class='Brace'>}</span></code> is a block function, like <code><span class='Function'>Split</span></code> but a lot shorter. It uses the uppercase <code><span class='Function'>𝕏</span></code> instead of <code><span class='Value'>𝕩</span></code>, so that it treats <code><span class='Value'>𝕩</span></code> as a function (it doesn't <em>require</em> it to be a function, though: see <a href="context.html#mixing-roles">mixing roles</a>. It adds an Each <code><span class='Modifier'>¨</span></code> onto its argument. This is used to convert the two functions in the list from functions that work on a namespaces to functions that work on a list of them.</p>
+<p>The list is split across two lines, using newline as a <a href="token.html#separators">separator</a> instead of <code><span class='Separator'>,</span></code> or <code><span class='Separator'>⋄</span></code>. Its second function <code><span class='Brace'>{</span><span class='Value'>𝕩.spl</span><span class='Brace'>}</span></code> is simpler: it takes a namespace <code><span class='Value'>𝕩</span></code> and gets the field named <code><span class='Value'>spl</span></code>.</p>
+<p>The first function is more complicated, because the argument namespace might or might not have an <code><span class='Value'>str</span></code> field. The list-like notation <code><span class='Bracket'>⟨</span><span class='Value'>s</span><span class='Gets'>⇐</span><span class='Value'>str</span><span class='Bracket'>⟩</span></code> is another example of destructuring assignment, but this time it destructures a namespace, using an <a href="namespace.html#imports">alias</a> to give it a short name. This header leaves off the function name <code><span class='Function'>𝕊</span></code>, using a <a href="block.html#case-headers">special rule</a> for one-argument functions. Arguments in headers are very similar to assignment targets, but if the destructuring doesn't match it tries the next body (if there is one) instead of giving an error. So if the argument is a namespace with an <code><span class='Value'>str</span></code> field then <code><span class='Brace'>{</span><span class='Bracket'>⟨</span><span class='Value'>s</span><span class='Gets'>⇐</span><span class='Value'>str</span><span class='Bracket'>⟩</span><span class='Head'>:</span><span class='Value'>s</span><span class='Head'>;</span><span class='String'>&quot;&quot;</span><span class='Brace'>}</span></code> returns that field's value, and otherwise it returns <code><span class='String'>&quot;&quot;</span></code>.</p>
+<h3 id="assembly"><a class="header" href="#assembly">Assembly</a></h3>
+<p>Now that <code><span class='Function'>Split</span></code> has defined <code><span class='Function'>Proc</span></code>, <code><span class='Function'>GV</span></code> (get value), and <code><span class='Function'>GS</span></code> (get split), it's ready to do its work.</p>
+<pre><span class='Value'>r</span> <span class='Gets'>←</span> <span class='Function'>Proc</span><span class='Brace'>{</span><span class='Function'>»𝔽</span><span class='Modifier'>¨</span><span class='Function'>⊢</span><span class='Brace'>}</span> <span class='Value'>𝕩</span>
+<span class='Paren'>(</span><span class='Function'>∾</span><span class='Modifier'>¨</span> <span class='Function'>GV</span> <span class='Function'>⊔</span><span class='Modifier'>˜</span> <span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>GS</span><span class='Paren'>)</span> <span class='Value'>r</span>
+</pre>
+<p>The first line here applies <code><span class='Function'>Proc</span></code> to each character and the one before it, using <code><span class='String'>' '</span></code> as the character &quot;before&quot; the first. <code><span class='Function'>Proc</span><span class='Brace'>{</span><span class='Function'>»𝔽</span><span class='Modifier'>¨</span><span class='Function'>⊢</span><span class='Brace'>}</span> <span class='Value'>𝕩</span></code> is a fancy way to write <code><span class='Paren'>(</span><span class='Function'>»</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Function'>Proc</span><span class='Modifier'>¨</span> <span class='Value'>𝕩</span></code>, which we'll explain in a moment. First, here's what the <a href="shift.html">Nudge</a> function <code><span class='Function'>»</span></code> does.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=aHcKwrtodw==">↗️</a><pre>    <span class='Value'>hw</span>
+"Hello, World!"
+    <span class='Function'>»</span><span class='Value'>hw</span>
+" Hello, World"
+</pre>
+<p>It moves its argument forward by one, adding a space character (the array's <a href="fill.html">fill</a>) but keeping the same length. This gives the previous characters that we want to use for <code><span class='Function'>Proc</span></code>'s left argument. Here <a href="map.html#each">Each</a> is used with two arguments, so that it iterates over them simultaneously, like a &quot;zip&quot; in some languages.</p>
+<p>What about the fancy syntax <code><span class='Function'>Proc</span><span class='Brace'>{</span><span class='Function'>»𝔽</span><span class='Modifier'>¨</span><span class='Function'>⊢</span><span class='Brace'>}</span> <span class='Value'>𝕩</span></code>? The block <code><span class='Brace'>{</span><span class='Function'>»𝔽</span><span class='Modifier'>¨</span><span class='Function'>⊢</span><span class='Brace'>}</span></code> is an immediate 1-modifier because it uses <code><span class='Function'>𝔽</span></code> for an <a href="block.html#operands">operand</a> but not the arguments <code><span class='Value'>𝕨</span></code> or <code><span class='Value'>𝕩</span></code>. This means it acts on <code><span class='Function'>Proc</span></code> only, giving <code><span class='Function'>»Proc</span><span class='Modifier'>¨</span><span class='Function'>⊢</span></code>, which is a <a href="train.html">train</a> because it ends in a function <code><span class='Function'>⊢</span></code>. Following the rules for a 3-train, <code><span class='Paren'>(</span><span class='Function'>»Proc</span><span class='Modifier'>¨</span><span class='Function'>⊢</span><span class='Paren'>)</span><span class='Value'>𝕩</span></code> expands to <code><span class='Paren'>(</span><span class='Function'>»</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Function'>Proc</span><span class='Modifier'>¨</span> <span class='Paren'>(</span><span class='Function'>⊢</span><span class='Value'>𝕩</span><span class='Paren'>)</span></code>, and since <code><span class='Function'>⊢</span></code> is the <a href="identity.html">identity function</a>, <code><span class='Function'>⊢</span><span class='Value'>𝕩</span></code> is <code><span class='Value'>𝕩</span></code>.</p>
+<p>Since a display of lots of namespaces isn't too enlightening, we'll skip ahead and show what the results of <code><span class='Function'>GV</span></code> and <code><span class='Function'>GS</span></code> on those lists would be. <code><span class='Function'>GV</span></code> turns each character into a string, except it makes a space into the empty string. <code><span class='Function'>GS</span></code> has a <code><span class='Number'>1</span></code> in the places where we want to split the string.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=c3Ag4oaQICcgJz1odwpndiDihpAgKDEtc3ApIOKlisKoIGh3CmdzIOKGkCBzcCDiiKggwrviirg9IGh3CgpndgoKZ3M=">↗️</a><pre>    <span class='Value'>sp</span> <span class='Gets'>←</span> <span class='String'>' '</span><span class='Function'>=</span><span class='Value'>hw</span>
+    <span class='Value'>gv</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>-</span><span class='Value'>sp</span><span class='Paren'>)</span> <span class='Function'>⥊</span><span class='Modifier'>¨</span> <span class='Value'>hw</span>
+    <span class='Value'>gs</span> <span class='Gets'>←</span> <span class='Value'>sp</span> <span class='Function'>∨</span> <span class='Function'>»</span><span class='Modifier2'>⊸</span><span class='Function'>=</span> <span class='Value'>hw</span>
+
+    <span class='Value'>gv</span>
+⟨ "H" "e" "l" "l" "o" "," ⟨⟩ "W" "o" "r" "l" "d" "!" ⟩
+
+    <span class='Value'>gs</span>
+⟨ 0 0 0 1 0 0 1 0 0 0 0 0 0 ⟩
+</pre>
+<h3 id="more-assembly"><a class="header" href="#more-assembly">More assembly</a></h3>
+<pre><span class='Paren'>(</span><span class='Function'>∾</span><span class='Modifier'>¨</span> <span class='Function'>GV</span> <span class='Function'>⊔</span><span class='Modifier'>˜</span> <span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>GS</span><span class='Paren'>)</span> <span class='Value'>r</span>
+</pre>
+<p>The next part is a bigger train. Trains are grouped into threes starting at the end, which takes some time to get used to. Here's a diagram showing how this one works.</p>
+<svg viewBox='-180.12 -34 512 236'>
+  <g font-family='BQN,monospace' font-size='18px' class='Paren' fill='currentColor'>
+    <rect class='code' stroke-width='1' rx='10' x='-21.68' y='-24' width='195.12' height='216'/>
+    <text><tspan class='Function'>∾</tspan><tspan class='Modifier'>¨</tspan> <tspan class='Function'>GV</tspan> <tspan class='Function'>⊔</tspan><tspan class='Modifier'>˜</tspan> <tspan class='Nothing'>·</tspan><tspan class='Function'>+</tspan><tspan class='Modifier'>`</tspan><tspan class='Function'>GS</tspan></text>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M140.92 2.4V50.4H124.66'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M113.82 2.4V26.4H124.66'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M124.66 26.4V50.4H124.66'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M124.66 50.4V98.4H81.3'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M70.46 2.4V74.4H81.3'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M81.3 74.4V98.4H81.3'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M43.36 2.4V98.4H81.3'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M81.3 98.4V146.4H16.26'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M5.42 2.4V122.4H16.26'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M16.26 122.4V146.4H16.26'/>
+    <path stroke='currentColor' fill='none' stroke-width='1' d='M16.26 146.4V170.4H-8.13'/>
+    <g font-size='15px' text-anchor='middle'>
+      <g class='codeCover' stroke-width='8' stroke-linejoin='round'>
+        <text x='140.92' y='55'>GS</text>
+        <text x='124.66' y='31'>`</text>
+        <text x='113.82' y='31'>+</text>
+        <text x='81.3' y='79'>˜</text>
+        <text x='70.46' y='79'>⊔</text>
+        <text x='43.36' y='103'>GV</text>
+        <text x='16.26' y='127'>¨</text>
+        <text x='5.42' y='127'>∾</text>
+      </g>
+      <g opacity='0.9'>
+        <text x='140.92' y='55'><tspan class='Function'>GS</tspan></text>
+        <text x='124.66' y='31'><tspan class='Modifier'>`</tspan></text>
+        <text x='113.82' y='31'><tspan class='Function'>+</tspan></text>
+        <text x='81.3' y='79'><tspan class='Modifier'>˜</tspan></text>
+        <text x='70.46' y='79'><tspan class='Function'>⊔</tspan></text>
+        <text x='43.36' y='103'><tspan class='Function'>GV</tspan></text>
+        <text x='16.26' y='127'><tspan class='Modifier'>¨</tspan></text>
+        <text x='5.42' y='127'><tspan class='Function'>∾</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
+
+<p>There are actually three train groupings here: from right to left, <code><span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>GS</span></code>, <code><span class='Function'>GV</span> <span class='Function'>⊔</span><span class='Modifier'>˜</span> <span class='Value'>…</span></code>, and <code><span class='Function'>∾</span><span class='Modifier'>¨</span> <span class='Value'>…</span></code>. Two of them are 2-trains, which apply one function to the result of another, but the one with <code><span class='Function'>⊔</span></code> is a 3-train, applying a function to two results. In the end, functions <code><span class='Function'>GS</span></code> and <code><span class='Function'>GV</span></code> are applied to <code><span class='Value'>r</span></code>. In fact, to evaluate the entire train we can replace these two functions with their results, giving <code><span class='Function'>∾</span><span class='Modifier'>¨</span> <span class='Paren'>(</span><span class='Function'>GV</span> <span class='Value'>r</span><span class='Paren'>)</span> <span class='Function'>⊔</span><span class='Modifier'>˜</span> <span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Paren'>(</span><span class='Function'>GS</span> <span class='Value'>r</span><span class='Paren'>)</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oi+wqggZ3Yg4oqUy5wgwrcrYGdz">↗️</a><pre>    <span class='Function'>∾</span><span class='Modifier'>¨</span> <span class='Value'>gv</span> <span class='Function'>⊔</span><span class='Modifier'>˜</span> <span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Value'>gs</span>
+⟨ "Hel" "lo," "World!" ⟩
+</pre>
+<p>In this expression, <a href="expression.html#nothing">Nothing</a> can be removed without changing the meaning. It's used in the train to force <code><span class='Function'>+</span><span class='Modifier'>`</span></code> to apply to <code><span class='Function'>GS</span></code> as a 2-train instead of also taking <code><span class='Function'>⊔</span><span class='Modifier'>˜</span></code> as a left argument. The <a href="scan.html">Scan</a> <code><span class='Function'>+</span><span class='Modifier'>`</span></code> is a prefix sum, progressively adding up the numbers in <code><span class='Value'>gs</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Z3MKCitgZ3M=">↗️</a><pre>    <span class='Value'>gs</span>
+⟨ 0 0 0 1 0 0 1 0 0 0 0 0 0 ⟩
+
+    <span class='Function'>+</span><span class='Modifier'>`</span><span class='Value'>gs</span>
+⟨ 0 0 0 1 1 1 2 2 2 2 2 2 2 ⟩
+</pre>
+<p>The next bit uses <a href="swap.html">Swap</a> to switch the order: <code><span class='Value'>gv</span> <span class='Function'>⊔</span><span class='Modifier'>˜</span> <span class='Function'>+</span><span class='Modifier'>`</span><span class='Value'>gs</span></code> is <code><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Value'>gs</span><span class='Paren'>)</span> <span class='Function'>⊔</span> <span class='Value'>gv</span></code>, but sometimes the different order can read better (here it was mostly to squeeze Nothing into the program, I'll admit). <a href="group.html">Group</a> then splits <code><span class='Value'>gv</span></code> up based on the indices given: the first three elements become element 0 of the result, the next three element 1, and the rest element 2.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=KCtgZ3MpIOKKlCBndg==">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Value'>gs</span><span class='Paren'>)</span> <span class='Function'>⊔</span> <span class='Value'>gv</span>
+┌─                                                                
+· ⟨ "H" "e" "l" ⟩ ⟨ "l" "o" "," ⟩ ⟨ ⟨⟩ "W" "o" "r" "l" "d" "!" ⟩  
+                                                                 ┘
+</pre>
+<p>Then Join Each uses two functions we've seen before to build the final result!</p>
