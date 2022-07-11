@@ -225,4 +225,62 @@ Once `Proc` is applied to all the characters, we'll end up with a list of namesp
     GV‿GS ← {𝕏¨}¨ ⟨ {⟨s⇐str⟩:s;""}
                     {𝕩.spl} ⟩
 
-Going left to right, `GV‿GS` indicates [destructuring assignment](expression.md#destructuring), which will expect a list of two values on the right and take it apart to assign the two names.
+Going left to right, `GV‿GS` indicates [destructuring assignment](expression.md#destructuring), which will expect a list of two values on the right and take it apart to assign the two names. The right hand side is the function `{𝕏¨}¨` applied to a list.
+
+`{𝕏¨}` is a block function, like `Split` but a lot shorter. It uses the uppercase `𝕏` instead of `𝕩`, so that it treats `𝕩` as a function (it doesn't *require* it to be a function, though: see [mixing roles](context.md#mixing-roles). It adds an Each `¨` onto its argument. This is used to convert the two functions in the list from functions that work on a namespaces to functions that work on a list of them.
+
+The list is split across two lines, using newline as a [separator](token.md#separators) instead of `,` or `⋄`. Its second function `{𝕩.spl}` is simpler: it takes a namespace `𝕩` and gets the field named `spl`.
+
+The first function is more complicated, because the argument namespace might or might not have an `str` field. The list-like notation `⟨s⇐str⟩` is another example of destructuring assignment, but this time it destructures a namespace, using an [alias](namespace.md#imports) to give it a short name. This header leaves off the function name `𝕊`, using a [special rule](block.md#case-headers) for one-argument functions. Arguments in headers are very similar to assignment targets, but if the destructuring doesn't match it tries the next body (if there is one) instead of giving an error. So if the argument is a namespace with an `str` field then `{⟨s⇐str⟩:s;""}` returns that field's value, and otherwise it returns `""`.
+
+### Assembly
+
+Now that `Split` has defined `Proc`, `GV` (get value), and `GS` (get split), it's ready to do its work.
+
+    r ← Proc{»𝔽¨⊢} 𝕩
+    (∾¨ GV ⊔˜ ·+`GS) r
+
+The first line here applies `Proc` to each character and the one before it, using `' '` as the character "before" the first. `Proc{»𝔽¨⊢} 𝕩` is a fancy way to write `(»𝕩) Proc¨ 𝕩`, which we'll explain in a moment. First, here's what the [Nudge](shift.md) function `»` does.
+
+        hw
+        »hw
+
+It moves its argument forward by one, adding a space character (the array's [fill](fill.md)) but keeping the same length. This gives the previous characters that we want to use for `Proc`'s left argument. Here [Each](map.md#each) is used with two arguments, so that it iterates over them simultaneously, like a "zip" in some languages.
+
+What about the fancy syntax `Proc{»𝔽¨⊢} 𝕩`? The block `{»𝔽¨⊢}` is an immediate 1-modifier because it uses `𝔽` for an [operand](block.md#operands) but not the arguments `𝕨` or `𝕩`. This means it acts on `Proc` only, giving `»Proc¨⊢`, which is a [train](train.md) because it ends in a function `⊢`. Following the rules for a 3-train, `(»Proc¨⊢)𝕩` expands to `(»𝕩) Proc¨ (⊢𝕩)`, and since `⊢` is the [identity function](identity.md), `⊢𝕩` is `𝕩`.
+
+Since a display of lots of namespaces isn't too enlightening, we'll skip ahead and show what the results of `GV` and `GS` on those lists would be. `GV` turns each character into a string, except it makes a space into the empty string. `GS` has a `1` in the places where we want to split the string.
+
+        sp ← ' '=hw
+        gv ← (1-sp) ⥊¨ hw
+        gs ← sp ∨ »⊸= hw
+
+        gv
+
+        gs
+
+### More assembly
+
+    (∾¨ GV ⊔˜ ·+`GS) r
+
+The next part is a bigger train. Trains are grouped into threes starting at the end, which takes some time to get used to. Here's a diagram showing how this one works.
+
+<!--GEN
+"gv"‿"gs" DrawEval "∾¨ GV ⊔˜ ·+`GS"
+-->
+
+There are actually three train groupings here: from right to left, ``·+`GS``, `GV ⊔˜ …`, and `∾¨ …`. Two of them are 2-trains, which apply one function to the result of another, but the one with `⊔` is a 3-train, applying a function to two results. In the end, functions `GS` and `GV` are applied to `r`. In fact, to evaluate the entire train we can replace these two functions with their results, giving ``∾¨ (GV r) ⊔˜ ·+`(GS r)``.
+
+        ∾¨ gv ⊔˜ ·+`gs
+
+In this expression, [Nothing](expression.md#nothing) can be removed without changing the meaning. It's used in the train to force `` +` `` to apply to `GS` as a 2-train instead of also taking `⊔˜` as a left argument. The [Scan](scan.md) `` +` `` is a prefix sum, progressively adding up the numbers in `gs`.
+
+        gs
+
+        +`gs
+
+The next bit uses [Swap](swap.md) to switch the order: ``gv ⊔˜ +`gs`` is ``(+`gs) ⊔ gv``, but sometimes the different order can read better (here it was mostly to squeeze Nothing into the program, I'll admit). [Group](group.md) then splits `gv` up based on the indices given: the first three elements become element 0 of the result, the next three element 1, and the rest element 2.
+
+        (+`gs) ⊔ gv
+
+Then Join Each uses two functions we've seen before to build the final result!
