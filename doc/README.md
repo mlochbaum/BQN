@@ -4,6 +4,8 @@
 
 BQN's documentation describes what features it has, how to use them (with examples), and why they were chosen. For a linear introduction to the language, see the [tutorials](../tutorial/README.md). For all of the particulars without so much discussion, see the [specification](../spec/README.md).
 
+The [quick start](quick.md) page is a hands-on way to see what features BQN offers so you can start with the parts you're most interested in.
+
 Overview:
 - [Syntax](syntax.md)
 - [Types](types.md)
