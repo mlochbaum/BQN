@@ -21,22 +21,19 @@ Here's a little BQN program:
     Split ← {
       !1==𝕩 ⋄ (!2=•Type)¨𝕩
       Proc ← {
-        · 𝕊 ' ': spl⇐1 ⋄ str⇐"" ;    # Space: break and delete it
-        prev Proc cur: spl‿str⇐
-          spl←0 ⋄ str←⋈cur           # Include and don't break...
-          { prev≡cur ? spl+↩1 ; @ }  # except at equal characters
+        · 𝕊 ' ': spl⇐1 ;             # Space: break and delete it
+        prev Fn cur: ⟨spl,str⟩⇐
+          spl←0 ⋄ str←⟨cur⟩          # Include and don't break...
+          { prev=cur ? spl+↩1 ; @ }  # except at equal characters
       }
-      r ← (»𝕩) Proc¨ 𝕩
-      GV←{𝕩.str} ⋄ GS←{⟨s⇐spl⟩:s}
-      (∾¨ GV¨ ⊔˜ ·+`GS¨) r
+      GV‿GS ← {𝕏¨}¨ ⟨ {⟨s⇐str⟩:s;""}
+                      {𝕩.spl} ⟩
+      r ← Proc{»𝔽¨⊢} 𝕩
+      (∾¨ GV ⊔˜ ·+`GS) r
     }
-    •Show shw ← Split hw  # ⟨ "Hel" "lo," "World!" ⟩
+    •Show Split hw  # ⟨ "Hel" "lo," "World!" ⟩
 
-    fns ← ⟨⌽, split
-           case.Lower⌾⊑⟩
-    •Show fns {𝕎𝕩}¨ shw   # ⟨ "leH" ⟨ "lo," ⟩ "world!" ⟩
-
-It's not the most idiomatic BQN you'll see, but that's because this piece of code uses every piece of syntax in the language (and a good number of the primitives).
+It's not the most idiomatic BQN you'll see, but that's because this piece of code uses nearly all the syntax in the language (and a good number of the primitives).
 
 If you save it with the name hello.bqn and have BQN [installed](../running.md), the script can be run with `$ bqn hello.bqn` from a shell. Because of the `#!` line at the top, `$ ./hello.bqn` also works if `bqn` is in your path and hello.bqn is executable. It can also be run from another BQN file in the same directory, or REPL started there, using `•Import "hello.bqn"`. Or just copy-paste it into the [online REPL](https://mlochbaum.github.io/BQN/try.html).
 
@@ -64,7 +61,7 @@ The function `-´` is a *compound* function, because it consists of another func
         diff ← -´ "Aa"
         'b' + diff
 
-The function `Lower` is defined to be `-⟜diff`, but it uses a different arrow `⇐` to do this. This is an [export](namespace.md#exports), and it declares that `Lower` is a *field* of a namespace that can be accessed from the outside. Having a `⇐` in it is also what makes the block define a namespace. `Lower` isn't accessed in the rest of the program, but `Upper` is, with `case.Upper`.
+The function `Lower` is defined to be `-⟜diff`, but it uses a different arrow `⇐` to do this. This is an [export](namespace.md#exports), and it declares that `Lower` is a *field* of a namespace that can be accessed from the outside. Having a `⇐` in it is also what makes the block define a namespace. `Lower` itself won't be used for a while, but `Upper` is accessed a few lines down, with `case.Upper`.
 
 `Lower` is created with a modifier again, this time the 2-modifier `⟜`. We've now seen one each of the three [*primitive*](primitive.md) types: function, 1-modifier, and 2-modifier. There are a lot of primitives, but some simple rules tell you which type they have. Primitives are functions by default, but superscript characters are 1-modifiers (`` ´˘¨˜` `` in our program), and ones with an unbroken circle are 2-modifiers (`⟜∘⌾`; `⍉` is a broken circle so it's a function). Variable names follow a [similar system](expression.md#role-spellings), where functions start with an uppercase letter and subjects with a lowercase one.
 
@@ -156,3 +153,76 @@ Finally, [Join](join.md) combines this list of strings into a single string.
         hw
 
 The full statement stores this back in `hw` with `↩`, then prints it using `•Out`. Assignment can be used inline, much like a function! `•Out` is our first [system function](../spec/system.md) (see [this section](../spec/system.md#input-and-output)), and prints a string directly as output. We have now printed that which new programmers must print, and covered the basics of BQN expressions!
+
+## Breaking hello
+
+Now we're going to play around with the string `hw` or `"Hello, World!"` that we've constructed, and see a few ways to construct functions. If you're starting out you won't need many of the details here for a while, so you may want to stop after getting the basic idea and revisit this page later.
+
+    # Split at spaces and repeated characters
+    Split ← {
+      !1==𝕩 ⋄ (!2=•Type)¨𝕩
+      Proc ← {
+        · 𝕊 ' ': spl⇐1 ;             # Space: break and delete it
+        prev Fn cur: ⟨spl,str⟩⇐
+          spl←0 ⋄ str←⟨cur⟩          # Include and don't break...
+          { prev=cur ? spl+↩1 ; @ }  # except at equal characters
+      }
+      GV‿GS ← {𝕏¨}¨ ⟨ {⟨s⇐str⟩:s;""}
+                      {𝕩.spl} ⟩
+      r ← Proc{»𝔽¨⊢} 𝕩
+      (∾¨ GV ⊔˜ ·+`GS) r
+    }
+    •Show Split hw  # ⟨ "Hel" "lo," "World!" ⟩
+
+The big definition `Split` is a [block function](block.md), using `{}` like the namespace `case`—that was an immediate block. The difference is that `Split` contains an `𝕩`, which indicates an argument. We also see that blocks can be nested within each other. The inner blocks contain other characters like `⇐` and `𝔽` that can change the nature of a block, but these only affect the block immediately containing them.
+
+To begin with, `Split` tests its argument `𝕩`. There are two tests, with a statement [separator](token.md#separators) `⋄` between them. The diamond, as well as `,`, is interchangeable with a newline. The tests are done with the function [Assert](assert.md) (`!`).
+
+    !1==𝕩 ⋄ (!2=•Type)¨𝕩
+
+First, `Split` requires that the [rank](shape.md) `=𝕩` be 1, that is, `𝕩` must be a list. In `1==𝕩`, `=` has two meanings, depending on whether it has a left argument. Next, it checks that each element has a character [type](../spec/system.md#operation-properties).
+
+The subexpression `!2=•Type` is a function [train](train.md), and it happens to have a simple expansion, as `(!2=•Type)e` is `!2=•Type e`. It matters that `2` is just a number; if it were a function it would be applied to `e`. We'll discuss trains more later. This one is applied with [Each](map.md#one-argument-mapping) to test every element of `𝕩`. This does form an array result, but it's not used.
+
+### Subfunction
+
+The function `Proc` is called on each character of `𝕩` along with the previous character, and says what to at that position. Also, it's deliberately inconsistent to cover more BQN features. Here's the whole thing:
+
+    Proc ← {
+      · 𝕊 ' ': spl⇐1 ;             # Space: break and delete it
+      prev Fn cur: ⟨spl,str⟩⇐
+        spl←0 ⋄ str←⟨cur⟩          # Include and don't break...
+        { prev=cur ? spl+↩1 ; @ }  # except at equal characters
+    }
+
+Unlike `Split`, which only contains a sequence of statements, `Proc` has some structure. Let's reduce each block *body* to a `…` to see it better.
+
+    Proc ← {
+      · 𝕊 ' ': … ;
+      prev Fn cur: …
+    }
+
+This function has two bodies with `;` in between. Each one has a *header*, separated from the body with a `:`. A header indicates the kind of the block as a whole, and also which inputs the body after it works on. It mirrors the way the block should be used. In the right context, both `· 𝕊 ' '` and `prev Fn cur` would be valid function calls. Which tells us `Proc` is a function.
+
+The first header, `· 𝕊 ' ':`, is more specific. The function is unlabelled, since `𝕊` just indicates the block function it's in (useful for [recursion](block.md#self-reference)). The right argument is `' '`, a space character, so this body will only be used if `𝕩` is a space. And the left argument is… `·`, which is called [Nothing](expression.md#nothing). Both here and as an assignment target, Nothing indicates an ignored value. This body *does* require a left argument, but it doesn't name it. And the body itself is just `spl⇐1`. The `⇐` makes this body (only this one!) return a namespace, which has only the field `spl`.
+
+The next header, `prev Fn cur:` sets names for the function and its arguments, but doesn't constrain them other than requiring two arguments. So it applies in all the cases where the previous one didn't match, that is, when `𝕩` isn't `' '`. The body starts with `⟨spl,str⟩⇐`, and the `⇐` means it will return a namespace too. This is an [export statement](namespace.md#exports), which declares `spl` and `str` to be fields but doesn't define them—they must be defined somewhere else in the block, which is what happens next.
+
+    prev Fn cur: ⟨spl,str⟩⇐
+      spl←0 ⋄ str←⟨cur⟩          # Include and don't break...
+      { prev=cur ? spl+↩1 ; @ }  # except at equal characters
+
+Both `⟨spl,str⟩` and `⟨cur⟩` are written with [list notation](arrayrepr.md#brackets), giving a list of two names, then one value. While `⟨spl,str⟩` can also be written `spl‿str`, there's no way to write `⟨cur⟩` with stranding.
+
+On the last line we're now three blocks deep! This block also has two bodies, but they don't have headers. A [predicate](block.md#predicates) `prev=cur ?` tests whether to use the first body, which increments `spl` with [modified assignment](expression.md#assignment). Note that `𝕨=𝕩` wouldn't work here, because the special names `𝕨` and `𝕩` pertain only to the surrounding block, and `Proc` is a level up. However, the idiomatic way to write this part would be the much shorter `spl←prev=cur`, since BQN's booleans are 0 and 1.
+
+The end result of `Proc` is always a namespace. It has a field `spl` set to 1 if `𝕩` is `' '` or the two arguments are equal. And if `𝕩` isn't `' '`, it has another field `str` set to `⟨𝕩⟩`.
+
+### Extraction
+
+Once `Proc` is applied to all the characters, we'll end up with a list of namespaces (which, yes, is over-engineered for what we're doing). The following statement defines two functions `GV` and `GS` to extract fields from this list.
+
+    GV‿GS ← {𝕏¨}¨ ⟨ {⟨s⇐str⟩:s;""}
+                    {𝕩.spl} ⟩
+
+Going left to right, `GV‿GS` indicates [destructuring assignment](expression.md#destructuring), which will expect a list of two values on the right and take it apart to assign the two names.
