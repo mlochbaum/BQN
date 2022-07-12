@@ -97,7 +97,7 @@ If `𝕨` is `⟨⟩`, then it has depth 1, but is handled with the multidimensi
 
 The monadic form of `/` is much simpler than the dyadic one, with no multidimensional case or mismatched argument ranks. `𝕩` has to be a list of natural numbers, and `/𝕩` is the list `𝕩/↕≠𝕩`. Its elements are the [indices](indices.md) for `𝕩`, with index `i` repeated `i⊑𝕩` times.
 
-        / 3‿0‿1‿2
+        / 3‿0‿2‿1
 
 A unit argument isn't allowed, and isn't very useful: for example, `/6` might indicate an array of six zeros, but this can be written `/⥊6` or `6⥊0` with hardly any extra effort.
 
