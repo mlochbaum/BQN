@@ -66,39 +66,39 @@
 </table>
 <h2 id="objects"><a class="header" href="#objects">Objects</a></h2>
 <p>An object in BQN is simply a namespace: its fields and methods are variables in the namespace, and a variable can be accessed outside of the namespace with dot syntax if it's exported with <code><span class='Gets'>⇐</span></code>. Unexported variables are instance-private in OOP parlance, meaning that they're only visible to the object containing them. They could be utilities, or hold state for the object. As an example, the object below implements the <a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi">Tower of Hanoi</a> puzzle with five disks. You can view the state (a list of disks occupying each of the three rods) with <code><span class='Value'>towerOfHanoi.</span><span class='Function'>View</span></code>, or move the top disk from one rod to another with <code><span class='Value'>towerOfHanoi.</span><span class='Function'>Move</span></code>.</p>
-<pre><span class='Value'>towerOfHanoi</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
-  <span class='Value'>l</span> <span class='Gets'>←</span> <span class='Function'>↕</span><span class='Modifier'>¨</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span>
-  <span class='Function'>View</span> <span class='Gets'>⇐</span> <span class='Brace'>{</span><span class='Value'>𝕤</span>
-    <span class='Value'>l</span>
-  <span class='Brace'>}</span>
-  <span class='Function'>Move</span> <span class='Gets'>⇐</span> <span class='Brace'>{</span><span class='Value'>from</span><span class='Ligature'>‿</span><span class='Value'>to</span><span class='Head'>:</span>
-    <span class='Value'>l</span> <span class='Gets'>↩</span> <span class='Function'>Transfer</span><span class='Modifier'>´</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Value'>𝕩</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span><span class='Paren'>)</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Function'>≠</span><span class='Modifier'>´</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Value'>l</span>
-  <span class='Brace'>}</span>
-  <span class='Comment'># Move a disk from 𝕨 to 𝕩
-</span>  <span class='Function'>Transfer</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
-    <span class='String'>&quot;No disk to move&quot;</span><span class='Function'>!</span><span class='Number'>0</span><span class='Function'>&lt;≠</span><span class='Value'>𝕨</span>
-    <span class='String'>&quot;Can't place larger disk on smaller one&quot;</span><span class='Function'>!</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>&lt;≠</span><span class='Paren'>)</span><span class='Modifier2'>◶</span><span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Value'>𝕨</span><span class='Function'>&lt;</span><span class='Modifier2'>○</span><span class='Function'>⊑⊢</span><span class='Bracket'>⟩</span><span class='Value'>𝕩</span>
-    <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Function'>↓</span><span class='Value'>𝕨</span><span class='Separator'>,</span> <span class='Value'>𝕨</span><span class='Function'>⊏</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span>
-  <span class='Brace'>}</span>
-<span class='Brace'>}</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dG93ZXJPZkhhbm9pIOKGkCB7CiAgbCDihpAg4oaVwqg14oC/MOKAvzAKICBWaWV3IOKHkCB78J2VpAogICAgbAogIH0KICBNb3ZlIOKHkCB7ZnJvbeKAv3RvOgogICAgbCDihqkgVHJhbnNmZXLCtOKMvijwnZWp4oq44oqPKeKNnyjiiaDCtPCdlakpIGwKICB9CiAgIyBNb3ZlIGEgZGlzayBmcm9tIPCdlaggdG8g8J2VqQogIFRyYW5zZmVyIOKGkCB7CiAgICAiTm8gZGlzayB0byBtb3ZlIiEwPOKJoPCdlagKICAgICJDYW4ndCBwbGFjZSBsYXJnZXIgZGlzayBvbiBzbWFsbGVyIG9uZSIhKDA84omgKeKXtuKfqDEs8J2VqDzil4viipHiiqLin6nwnZWpCiAgICDin6gx4oaT8J2VqCwg8J2VqOKKj+KKuOKIvvCdlanin6kKICB9Cn0=">↗️</a><pre>    <span class='Value'>towerOfHanoi</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+      <span class='Value'>l</span> <span class='Gets'>←</span> <span class='Function'>↕</span><span class='Modifier'>¨</span><span class='Number'>5</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span>
+      <span class='Function'>View</span> <span class='Gets'>⇐</span> <span class='Brace'>{</span><span class='Value'>𝕤</span>
+        <span class='Value'>l</span>
+      <span class='Brace'>}</span>
+      <span class='Function'>Move</span> <span class='Gets'>⇐</span> <span class='Brace'>{</span><span class='Value'>from</span><span class='Ligature'>‿</span><span class='Value'>to</span><span class='Head'>:</span>
+        <span class='Value'>l</span> <span class='Gets'>↩</span> <span class='Function'>Transfer</span><span class='Modifier'>´</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Value'>𝕩</span><span class='Modifier2'>⊸</span><span class='Function'>⊏</span><span class='Paren'>)</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Function'>≠</span><span class='Modifier'>´</span><span class='Value'>𝕩</span><span class='Paren'>)</span> <span class='Value'>l</span>
+      <span class='Brace'>}</span>
+      <span class='Comment'># Move a disk from 𝕨 to 𝕩
+</span>      <span class='Function'>Transfer</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+        <span class='String'>&quot;No disk to move&quot;</span><span class='Function'>!</span><span class='Number'>0</span><span class='Function'>&lt;≠</span><span class='Value'>𝕨</span>
+        <span class='String'>&quot;Can't place larger disk on smaller one&quot;</span><span class='Function'>!</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'>&lt;≠</span><span class='Paren'>)</span><span class='Modifier2'>◶</span><span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Separator'>,</span><span class='Value'>𝕨</span><span class='Function'>&lt;</span><span class='Modifier2'>○</span><span class='Function'>⊑⊢</span><span class='Bracket'>⟩</span><span class='Value'>𝕩</span>
+        <span class='Bracket'>⟨</span><span class='Number'>1</span><span class='Function'>↓</span><span class='Value'>𝕨</span><span class='Separator'>,</span> <span class='Value'>𝕨</span><span class='Function'>⊏</span><span class='Modifier2'>⊸</span><span class='Function'>∾</span><span class='Value'>𝕩</span><span class='Bracket'>⟩</span>
+      <span class='Brace'>}</span>
+    <span class='Brace'>}</span>
 </pre>
 <p>Two variables <code><span class='Value'>l</span></code> and <code><span class='Function'>Transfer</span></code> aren't exported, for two different reasons. <code><span class='Value'>l</span></code> encodes the state of the tower, but it's only exposed with the function <code><span class='Function'>View</span></code>, which allows the internal representation to be changed freely. <code><span class='Function'>Transfer</span></code> is just a utility function. While it's not dangerous to use outside of the object, there's no reason to expose it through <code><span class='Value'>towerOfHanoi</span></code>'s interface. If it's wanted in another place it should be moved to a common location.</p>
 <p>Here are the results of a few applications of these functions.</p>
-<pre>    <span class='Value'>t</span> <span class='Gets'>←</span> <span class='Value'>towerOfHanoi</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dCDihpAgdG93ZXJPZkhhbm9pCnQuVmlld0AKCnQuTW92ZSAw4oC/MgoKdC5Nb3ZlIDHigL8yCgp0Lk1vdmUgMOKAvzEKCnQuTW92ZSAy4oC/MQ==">↗️</a><pre>    <span class='Value'>t</span> <span class='Gets'>←</span> <span class='Value'>towerOfHanoi</span>
     <span class='Value'>t.</span><span class='Function'>View</span><span class='String'>@</span>
-<span class='Bracket'>⟨</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨⟩</span> <span class='Bracket'>⟨⟩</span> <span class='Bracket'>⟩</span>
+⟨ ⟨ 0 1 2 3 4 ⟩ ⟨⟩ ⟨⟩ ⟩
 
     <span class='Value'>t.</span><span class='Function'>Move</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span>
-<span class='Bracket'>⟨</span> <span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟩</span>
+⟨ ⟨ 1 2 3 4 ⟩ ⟨⟩ ⟨ 0 ⟩ ⟩
 
     <span class='Value'>t.</span><span class='Function'>Move</span> <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span>
-<span class='Function'>!</span> <span class='String'>&quot;No disk to move&quot;</span>
+<span class='Error'>Error: No disk to move</span>
 
     <span class='Value'>t.</span><span class='Function'>Move</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
-<span class='Bracket'>⟨</span> <span class='Bracket'>⟨</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟩</span>
+⟨ ⟨ 2 3 4 ⟩ ⟨ 1 ⟩ ⟨ 0 ⟩ ⟩
 
     <span class='Value'>t.</span><span class='Function'>Move</span> <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>1</span>
-<span class='Bracket'>⟨</span> <span class='Bracket'>⟨</span> <span class='Number'>2</span> <span class='Number'>3</span> <span class='Number'>4</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨</span> <span class='Number'>0</span> <span class='Number'>1</span> <span class='Bracket'>⟩</span> <span class='Bracket'>⟨⟩</span> <span class='Bracket'>⟩</span>
+⟨ ⟨ 2 3 4 ⟩ ⟨ 0 1 ⟩ ⟨⟩ ⟩
 </pre>
 <h2 id="classes"><a class="header" href="#classes">Classes</a></h2>
 <p>The object above is a singleton: there's just one of it, at least in the scope it occupies. It's often more useful to have a class that can be used to create objects. What we'll call a &quot;class&quot; is a namespace function, that is, a function that contains <code><span class='Gets'>⇐</span></code> and so returns a namespace. It's very easy to convert a singleton object to a class: <a href="control.html#blocks-and-functions">just add</a> a no-op <code><span class='Value'>𝕤</span></code> line to force it to be a function, and call it with <code><span class='String'>@</span></code> when needed.</p>

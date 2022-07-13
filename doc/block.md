@@ -20,7 +20,11 @@ Because they use [lexical scoping](lexical.md), blocks also encapsulate code. If
 
 In the simplest case a block is just a list of statements, which are executed to *evaluate* the block. A block with no special names like `𝕨` or `𝕩` is called an *immediate block*, and is evaluated as soon as it is reached. The only thing such a block does is group some statements, and create a scope for them so that definitions made there are discarded when the block finishes. Even this small amount of functionality could be useful; as an example the following program can build up an array from named components without polluting the rest of the program with those names.
 
-        updown ← { up←↕5 ⋄ down←⌽up ⋄ up∾down }
+        updown ← {
+          up ← ↕5
+          down ← ⌽up
+          up∾down
+        }
         updown
 
 An immediate block is only ever evaluated once, and can't be used for control flow in a program. Special names can be used to define [functions and modifiers](ops.md), which have a broader range of uses. All special names are listed below:
@@ -105,9 +109,10 @@ Because `𝕣` only ever refers to a 1-modifier or 2-modifer, it can never make 
 
 As a program becomes larger, it often becomes necessary to name inputs to blocks rather than just using special names. It can also become difficult to identify what kind of block is being defined, as it requires scanning through the block for special names. A *block header*, which is separated from the body of a block by a colon `:`, specifies the kind of block and can declare names for the block and its inputs.
 
-    Fact ← { F n:
-      n × (0⊸<)◶1‿F n-1
-    }
+        Fact_head ← { F n:
+          n × (0⊸<)◶1‿F n-1
+        }
+        Fact_head 7
 
 Its syntax mirrors an application of the block. As suggested by the positioning, the names given in a header apply only inside the block: for example `F` above is only defined inside the `{}` braces while `Fact` could be used either outside or inside. Some other possibilites are given below.
 
@@ -175,7 +180,11 @@ Blocks can include more than one body, separated by semicolons `;`. The body use
 
 Bodies with headers come before any that don't have them. When a block is called, its headers are checked in order for compatibility with the arguments, and the first body with a compatible header is used.
 
-        CaseAdd ← { 2𝕊3:0‿5 ; 2𝕊𝕩:⟨1,2+𝕩⟩ ; 𝕊𝕩:2‿𝕩 }
+        CaseAdd ← {
+          2𝕊3: 0‿5 ;
+          2𝕊𝕩: ⟨1,2+𝕩⟩ ;
+           𝕊𝕩: 2‿𝕩
+        }
 
         2 CaseAdd 3
 
@@ -191,12 +200,13 @@ If no header is compatible, the call results in an error.
 
 A special rule allows for convenient case-matching syntax for one-argument functions. In any function header with one argument, the function name can be omitted as long as the argument is *not* a plain identifier—it must be `𝕩` or a compound value like a list to distinguish it from an immediate block label.
 
-    Test ← {
-      "abc": "string" ;
-      ⟨2,b⟩: ⌽𝕩       ;
-      5:     "number" ;
-      𝕩:     "default"
-    }
+        Test ← {
+          "abc": "string" ;
+          ⟨2,b⟩: ⌽𝕩       ;
+          5:     "number" ;
+          𝕩:     "default"
+        }
+        Test 5
 
 These case-style headers function exactly the same as if they were preceded by `𝕊`, and can be mixed with other kinds of headers.
 

@@ -213,18 +213,25 @@ Markdown ← {filename𝕊𝕩:
     # If every line is indented by at least 4 additional spaces, we will
     # execute each one and insert the results.
     addRslt ← ∧´ ' ' = ∾ 4 (⌊⟜≠ ↑ ⊢)¨ 𝕩
-    # Don't show assignment results by default
-    ShowRslt ← {
-      depth ← +` "(){}⟨⟩[]" (⊣(≠⊸>×¯1⋆2|⊢)⊐) 𝕩
-      𝕩 /˜↩ ¬ ∨`⌾⌽ (0=depth) ∧ (∧`𝕩≠'#') ∧ 𝕩∊"⋄,"  # Just the last statement
-      g ← 𝕩∊"←↩"
-      (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ 𝕩
+    r‿ri ← {
+      ¬addRslt ? ⋈˜⟨⟩ ;
+      # Find the top-level separators sep
+      m ← NotCommentOrString code
+      depth ← +` m × "(){}⟨⟩[]" (⊣(≠⊸>×·¬⊸-2|⊢)⊐) code
+      sep ← (0=depth) ∧ m ∧ code∊"⋄,"∾lf
+      # Divide code
+      gr ← (1+´sl) ∾˜ (⊢-˜+`×¬) sl←sep∧lf=code
+      # Don't show assignment results by default
+      ShowRslt ← {
+        c ← (¬ ∨`⌾⌽ 𝕨) / 𝕩
+        g ← c∊"←↩"
+        (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ c
+      }
+      ShowErr ← lf∾˜"span class='Error'"Html"Error: "∾(∧`lf⊸≠)⊸/⎊•Repr
+      E ← ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec∘⊢
+      r ← (gr⊔sep) E⎊(ShowErr∘•CurrentError⊢)⍟(0<≠∘⊢)¨ gr⊔code
+      ⟨r, /sl∾1⟩
     }
-    ShowErr ← lf∾˜"span class='Error'"Html"Error: "∾(∧`lf⊸≠)⊸/⎊•Repr
-    r‿ri ← addRslt◶(⋈˜⟨⟩)‿{
-      ⟨ (ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec)⎊(ShowErr∘•CurrentError)⍟(0<≠)¨ 𝕩
-        1 -˜ +` 1 + ≠¨ 𝕩   ⟩ # Don't forget the trailing newline
-    } 𝕩
 
     Link ← {
       c ← tryURL ∾ Base64 ¯1 ↓ JoinLines 4↓¨𝕩
@@ -598,12 +605,8 @@ hlchars‿classTag ← {
   classTag ← ""‿"" ∾ > {⟨"<span class='"∾𝕩∾"'>","</span>"⟩}¨ 1↓classes
   chars‿classTag
 }
-GetHighlights ← {
-  # Find each character's group, sending unknowns to 1 and # to 0.
-  col ← (1-˜≠hlchars) (⊢-⊣×≤) hlchars FindGroup 𝕩
-  col-↩ 4×(𝕩='.')>«𝕩∊'0'+↕10 # Namespace dot: 5→1
 
-  # Locate comments and strings.
+CommentStringLocations ← {
   c ← 𝕩='#'
   le← / (𝕨 ⊢⊘∨ 𝕩=lf) ∾ 1
   # Line endings (le) end every comment (/c) on the line, so take a copy
@@ -616,12 +619,28 @@ GetHighlights ← {
   cse ← ∾ ⟨ 2+s ⋄  1↓d ⋄ ce ⟩ # Corresponding end indices
   # If 𝕨 is given, filter out strings with ends in different divisions.
   {css‿cse <∘=○(⊏⟜(+`0∾𝕩))´⊸(/¨)↩} 𝕨
-  # Now b is a table of (start,end) pairs
+  # Table of (start,end) pairs
   b ← css Trace cse
+  # Return the table, and a mask of which rows are comments
+  ⟨b, (⊏˘b)⊏c⟩
+}
+NotCommentOrString ← {
+  i‿c ← 𝕨 CommentStringLocations 𝕩
+  i +↩ (¬c) ×⌜ 0‿1  # Strings include ending character; comments don't
+  1 ≠` (≠𝕩) ↑ 2|/⁼⥊i
+}
+
+GetHighlights ← {
+  # Find each character's group, sending unknowns to 1 and # to 0.
+  col ← (1-˜≠hlchars) (⊢-⊣×≤) hlchars FindGroup 𝕩
+  col-↩ 4×(𝕩='.')>«𝕩∊'0'+↕10 # Namespace dot: 5→1
+
+  # Table of start/end pairs, and which are comments
+  b‿c ← 𝕨 CommentStringLocations 𝕩
   # Given a list of pairs, get a mask indicating included regions
   ToMask ← (≠`∨⊢) (≠𝕩)↑/⁼∘∾
   # Split rows and group into text‿comments
-  tc ← ((⊏˘b)⊏c) ∾⟜2⊸⊔ <˘b
+  tc ← c ∾⟜2⊸⊔ <˘b
   # Color with "String" and "Comment"
   col ⌈↩ +´ (2‿1-˜≠classTag) × ToMask¨ tc
 
