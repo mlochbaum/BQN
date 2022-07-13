@@ -131,7 +131,7 @@ This syntax doesn't work for creating rank 0 arrays—use [Enclose](enclose.md) 
 
 ### Strands
 
-**Strand notation** is another way to write lists of length two or more. The elements are connected with the ligature character `‿`. It has a precedence higher than anything else other than the [namespace](namespace.md) dot `.` and of course paired brackets `()`, `{}`, and `⟨⟩`. This means complicated elements generally need to be placed in parentheses. Expressions joined by ligatures behave exactly the same as those in list notation: they are evaluated in order and placed in a list.
+**Strand notation** is another way to write lists of length two or more. The elements are connected with the ligature character `‿`. It has a precedence higher than anything else other than the [namespace](namespace.md) dot `.` and of course paired brackets `()`, `{}`, `⟨⟩`, and `[]`. This means complicated elements generally need to be placed in parentheses. Expressions joined by ligatures behave exactly the same as those in list notation: they are evaluated in order and placed in a list.
 
         +‿´‿∘‿×
 
