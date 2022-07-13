@@ -106,4 +106,4 @@ The slices are naturally arranged along multiple dimensions according to their s
 
 If `𝕨` has length `0`, then `𝕩` is not sliced along any dimensions. The only slice that results—the entire argument—is then arranged along an additional zero dimensions. In the end, the result is `𝕩`, unchanged.
 
-Here's a more formal definition: `𝕩` is an array. `𝕨` is a number, or numeric list or unit, with `𝕨≤○≠≢𝕩`. The result `z` has shape `𝕨∾¬⟜𝕨⌾((≠𝕨)⊸↑)≢𝕩`, and element `i⊑z` is `i⊑z` ←→ `𝕩⊑˜+´¨(𝕨∾○(↕∘≠)≢𝕩)⊔i`.
+Here's a more formal definition: `𝕩` is an array. `𝕨` is a number, or numeric list or unit, with length `l←≠𝕨` so that `l≤=𝕩`. The result `z` has shape `𝕨 ∾ ¬⟜𝕨⌾(l⊸↑)≢𝕩`, and element `i⊑z` is `j⊑𝕩`, with `j←+´¨(l∾○↕=𝕩)⊔i`. That is, the index list `i` starts with two length-`l` sequences that are added together to produce the first `l` values in `j`. We might also say that each of the first `l` values in `j` is split into two values in `i`.
