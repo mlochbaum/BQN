@@ -5,6 +5,55 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">doc</a></div>
 <h1 id="windows"><a class="header" href="#windows">Windows</a></h1>
+<svg viewBox='-144 -132 520 304'>
+  <g fill='currentColor' font-family='BQN,monospace' text-anchor='middle' font-size='18px'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-96' y='-116' width='424' height='272'/>
+    <g text-anchor='end'>
+      <text dy='0.33em' x='-48' y='-80'><tspan class='Value'>𝕩</tspan></text>
+      <text dy='0.33em' x='-48' y='60'><tspan class='Number'>5</tspan><tspan class='Function'>↕</tspan><tspan class='Value'>𝕩</tspan></text>
+    </g>
+    <g fill='none' stroke-width='1' stroke='currentColor'>
+      <rect class='purple' style='fill:none' x='-16' y='-16' width='192' height='32'/>
+      <rect class='red' style='fill:none' x='-16' y='24' width='192' height='32'/>
+      <rect class='yellow' style='fill:none' x='-16' y='64' width='192' height='32'/>
+      <rect class='green' style='fill:none' x='-16' y='104' width='192' height='32'/>
+      <rect class='purple' style='fill:none' x='-16' y='-99' width='192' height='32'/>
+      <rect class='red' style='fill:none' x='24' y='-97' width='192' height='32'/>
+      <rect class='yellow' style='fill:none' x='64' y='-95' width='192' height='32'/>
+      <rect class='green' style='fill:none' x='104' y='-93' width='192' height='32'/>
+    </g>
+    <path class='bluegreen' stroke-width='3' stroke-linecap='round' style='fill:none' opacity='0.7' d='M-24 -95l-6 15l6 15M304 -95l6 15l-6 15M168 144h20v-20M2 -24h-30v30'/>
+    <text dy='0.33em' x='0' y='-80'><tspan class='Number'>0</tspan></text>
+    <text dy='0.33em' x='40' y='-80'><tspan class='Number'>1</tspan></text>
+    <text dy='0.33em' x='80' y='-80'><tspan class='Number'>2</tspan></text>
+    <text dy='0.33em' x='120' y='-80'><tspan class='Number'>3</tspan></text>
+    <text dy='0.33em' x='160' y='-80'><tspan class='Number'>4</tspan></text>
+    <text dy='0.33em' x='200' y='-80'><tspan class='Number'>5</tspan></text>
+    <text dy='0.33em' x='240' y='-80'><tspan class='Number'>6</tspan></text>
+    <text dy='0.33em' x='280' y='-80'><tspan class='Number'>7</tspan></text>
+    <text dy='0.33em' x='0' y='0'><tspan class='Number'>0</tspan></text>
+    <text dy='0.33em' x='40' y='0'><tspan class='Number'>1</tspan></text>
+    <text dy='0.33em' x='80' y='0'><tspan class='Number'>2</tspan></text>
+    <text dy='0.33em' x='120' y='0'><tspan class='Number'>3</tspan></text>
+    <text dy='0.33em' x='160' y='0'><tspan class='Number'>4</tspan></text>
+    <text dy='0.33em' x='0' y='40'><tspan class='Number'>1</tspan></text>
+    <text dy='0.33em' x='40' y='40'><tspan class='Number'>2</tspan></text>
+    <text dy='0.33em' x='80' y='40'><tspan class='Number'>3</tspan></text>
+    <text dy='0.33em' x='120' y='40'><tspan class='Number'>4</tspan></text>
+    <text dy='0.33em' x='160' y='40'><tspan class='Number'>5</tspan></text>
+    <text dy='0.33em' x='0' y='80'><tspan class='Number'>2</tspan></text>
+    <text dy='0.33em' x='40' y='80'><tspan class='Number'>3</tspan></text>
+    <text dy='0.33em' x='80' y='80'><tspan class='Number'>4</tspan></text>
+    <text dy='0.33em' x='120' y='80'><tspan class='Number'>5</tspan></text>
+    <text dy='0.33em' x='160' y='80'><tspan class='Number'>6</tspan></text>
+    <text dy='0.33em' x='0' y='120'><tspan class='Number'>3</tspan></text>
+    <text dy='0.33em' x='40' y='120'><tspan class='Number'>4</tspan></text>
+    <text dy='0.33em' x='80' y='120'><tspan class='Number'>5</tspan></text>
+    <text dy='0.33em' x='120' y='120'><tspan class='Number'>6</tspan></text>
+    <text dy='0.33em' x='160' y='120'><tspan class='Number'>7</tspan></text>
+  </g>
+</svg>
+
 <p>The Windows function returns all slices, or contiguous subarrays, with shape (well, shape prefix) <code><span class='Value'>𝕨</span></code> from <code><span class='Value'>𝕩</span></code>. It might also be seen as sliding a moving window along <code><span class='Value'>𝕩</span></code>.</p>
 <p>This function replaces APL's Windowed Reduction, J's more general Infix operator, and Dyalog APL's Stencil, which is adapted from one case of J's Cut operator. In BQN, it's strongly preferred to use functions, and not modifiers, for array manipulation. Functions are simpler with fewer moving parts, and more concrete, since the array results can always be viewed right away.</p>
 <h2 id="basic-case"><a class="header" href="#basic-case">Basic case</a></h2>
