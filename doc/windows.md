@@ -2,6 +2,42 @@
 
 # Windows
 
+<!--GEN
+zt ← (w←5) ↕ xt ← Highlight∘•Repr¨ ↕8
+d ← 40‿40
+
+Ge ← "g"⊸At⊸Enc
+rc ← At "class=code|stroke-width=1.5|rx=12"
+g  ← "fill=currentColor|font-family=BQN,monospace|text-anchor=middle|font-size=18px"
+bg ← "class=bluegreen|stroke-width=3|stroke-linecap=round|style=fill:none|opacity=0.7"
+sg ← "fill=none|stroke-width=1|stroke=currentColor"
+col ← {"class"‿𝕩≍"style"‿"fill:none"}¨"purple"‿"red"‿"yellow"‿"green"
+
+Text ← ("text" Attr "dy"‿"0.33em"∾·Pos d⊸×)⊸Enc
+Rect ← "rect" Elt Pos⊸∾⟜("width"‿"height"≍˘FmtNum)˝{𝕨⊢⊘∾𝔽𝕩}
+Path ← ("path"At⊣) Elt "d"⋈⊢
+
+ay ← ¯2 ⋄ lx ← ¯1.2
+Exp ← (-≍+˜)⊸+
+dim ← 48‿36 Exp d⊸×˘ lx‿ay ≍ ⟨lx-˜zt-○≠⊏xt,-ay⟩ + ¯1⊑¨ tx‿ty ← ⌽↕¨≢zt
+my ← 2÷˜¯1⊑ty
+
+Pd ← ∾∾¨⟜FmtNum
+l ← 6‿15
+br ← ∾ ((0.6-⊸⋈⊸+0⋈1-˜≠xt)((0‿¯1×l)+d×⋈)¨ay) ("M l l "Pd⥊∘∾)¨ ⋈⟜⌽ -⌾⊑⊸≍l
+bp ← ⥊⌽(20×1.5‿¯1) (+⌾⊑ ≍ -⊸≍∘⊣)˘ 28‿24-⊸≍⊸+ d×⍉>0‿¯1⊸⊏¨tx‿ty
+sl ← (0⋈¨ty)≍ty⋈¨ay+0.05×ty-my
+
+(⥊48‿16 Exp dim) SVG g Ge ⟨
+  rc Rect dim
+  "text-anchor=end" Ge ay‿my lx⊸⋈⊸Text⟜Highlight¨ (⊢⋈(FmtNum w)∾"↕"∾⊢)"𝕩"
+  sg Ge col Rect⟜{d⊸×˘¯0.1 Exp (¯0.5+𝕩)≍⟨≠tx,1⟩}¨⎉1 sl
+  bg Path br ∾ "M hv" ∾˜⊸Pd bp
+  ((↕≠xt)⋈⌜ay) Text¨ xt
+  (⍉tx⋈⌜ty) Text¨ zt
+⟩
+-->
+
 The Windows function returns all slices, or contiguous subarrays, with shape (well, shape prefix) `𝕨` from `𝕩`. It might also be seen as sliding a moving window along `𝕩`.
 
 This function replaces APL's Windowed Reduction, J's more general Infix operator, and Dyalog APL's Stencil, which is adapted from one case of J's Cut operator. In BQN, it's strongly preferred to use functions, and not modifiers, for array manipulation. Functions are simpler with fewer moving parts, and more concrete, since the array results can always be viewed right away.
