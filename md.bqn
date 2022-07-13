@@ -215,22 +215,23 @@ Markdown ← {filename𝕊𝕩:
     addRslt ← ∧´ ' ' = ∾ 4 (⌊⟜≠ ↑ ⊢)¨ 𝕩
     r‿ri ← {
       ¬addRslt ? ⋈˜⟨⟩ ;
-      # Find the top-level separators sep
+      # Top-level separators are those not inside brackets
       m ← NotCommentOrString code
       depth ← +` m × "(){}⟨⟩[]" (⊣(≠⊸>×·¬⊸-2|⊢)⊐) code
-      sep ← (0=depth) ∧ m ∧ code∊"⋄,"∾lf
-      # Divide code
-      gr ← (1+´sl) ∾˜ (⊢-˜+`×¬) sl←sep∧lf=code
-      # Don't show assignment results by default
-      ShowRslt ← {
-        c ← (¬ ∨`⌾⌽ 𝕨) / 𝕩
-        g ← c∊"←↩"
-        (⊑g⊐1) (<⟜(≠g))◶⟨1,¬(" "∾∾idChars)∧´∘∊˜↑⟩ c
-      }
+      sep ← (0=depth) ∧ m ∧ code∊"⋄,"∾lf  # Top-level separators
+      break ← sep∧lf=code                 # Mask of line breaks
+      # Grouping argument to split lines
+      ! 1=¯1⊑break
+      gr ← (⊢-˜+`×¬) break
+      # Don't show assignment result
+      a ← code∊"←↩" ⋄ id ← code∊" "∾∾idChars
+      sa ← a ∧ ¬(¬sep) PrecedesGroup id∨a  # Silent assignment
+      show ← ¬ break / sa PrecedesGroup ¬sa∨»sep
+      # Evaluate
+      E ← ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt⊢⟩⟜CodeExec
       ShowErr ← lf∾˜"span class='Error'"Html"Error: "∾(∧`lf⊸≠)⊸/⎊•Repr
-      E ← ShowRslt ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt∘⊢⟩ CodeExec∘⊢
-      r ← (gr⊔sep) E⎊(ShowErr∘•CurrentError⊢)⍟(0<≠∘⊢)¨ gr⊔code
-      ⟨r, /sl∾1⟩
+      r ← show E⎊(ShowErr∘•CurrentError⊢)⍟(0<≠∘⊢)¨ gr⊔code
+      ⟨r, /break⟩
     }
 
     Link ← {
