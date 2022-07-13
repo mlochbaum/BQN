@@ -24,7 +24,8 @@ Array displays show only the array shape and elements. The [fill](fill.md) is an
 
 Those top-left and bottom-right corners are a distinctive part of BQN's display, as other systems almost always completely enclose the contents. BQN could add the other two corners, naturally; it just doesn't. Within the corners, elements are separated by whitespace only, and generally aligned to the top left.
 
-        ⟨2,"xy"⟩≍⟨2‿2⥊"abcd",4⟩  # Nested 2×2 array
+        [⟨2         , "xy"⟩
+         ⟨2‿2⥊"abcd", 4   ⟩]
 
 The lack of extra separation is to make it clear that the corners enclose the whole array rather than any of its elements (elements are still distinguishable becase an individual element won't contain whitespace, except maybe between quotes). Every set of corners indicates one array. This is a good fit for the [based array model](based.md), where data doesn't have to be in an array.
 
@@ -44,9 +45,9 @@ Up to one axis can be oriented horizontally, and then all the rest are laid out 
 
 We've seen already that elements of a list are placed side by side, while the rows of a table (rank-2 array) are stacked on top of each other.
 
-        <¨ ↕5        # A list of units
+        <¨ ↕5          # A list of units
 
-        2‿3‿4≍1‿0‿5  # A table
+        [2‿3‿4,1‿0‿5]  # A table
 
 The 2-cells of a rank 3 array are *also* stacked on top of each other, but separated by a space. Below is a list of two examples. The second cell in the character array is marked with a `·` to indicate that the gap above it really separates cells as opposed to just being a row of space characters.
 
@@ -110,16 +111,16 @@ Entries in a list are evaluated in source order, and the value will be the list 
 
 BQN's separator rules give list notation a very flexible structure. You can put all the elements on one line or spread them across lines, with the option of adding blank lines between elements. A separator at the end of a line is never needed, but leading and trailing separators are allowed.
 
-    ⟨
-      "e0", "e1"
-      ⟨
-        'e'
-        '2'
-      ⟩
-      "e3", "e4", "e5"
+        ⟨
+          "e0", "e1"
+          ⟨
+            'e'
+            '2'
+          ⟩
+          "e3", "e4", "e5"
 
-      "e6"
-    ⟩
+          "e6"
+        ⟩
 
 #### High-rank arrays
 

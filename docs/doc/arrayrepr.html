@@ -33,8 +33,9 @@
 <p>Array displays show only the array shape and elements. The <a href="fill.html">fill</a> is an inferred property and the display never indicates or depends on it.</p>
 <h3 id="corners"><a class="header" href="#corners">Corners</a></h3>
 <p>Those top-left and bottom-right corners are a distinctive part of BQN's display, as other systems almost always completely enclose the contents. BQN could add the other two corners, naturally; it just doesn't. Within the corners, elements are separated by whitespace only, and generally aligned to the top left.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oMiwieHki4p+p4omN4p+oMuKAvzLipYoiYWJjZCIsNOKfqSAgIyBOZXN0ZWQgMsOXMiBhcnJheQ==">↗️</a><pre>    <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Separator'>,</span><span class='String'>&quot;xy&quot;</span><span class='Bracket'>⟩</span><span class='Function'>≍</span><span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;abcd&quot;</span><span class='Separator'>,</span><span class='Number'>4</span><span class='Bracket'>⟩</span>  <span class='Comment'># Nested 2×2 array
-</span>┌─             
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=W+KfqDIgICAgICAgICAsICJ4eSLin6kKIOKfqDLigL8y4qWKImFiY2QiLCA0ICAg4p+pXQ==">↗️</a><pre>    <span class='Bracket'>[⟨</span><span class='Number'>2</span>         <span class='Separator'>,</span> <span class='String'>&quot;xy&quot;</span><span class='Bracket'>⟩</span>
+     <span class='Bracket'>⟨</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Function'>⥊</span><span class='String'>&quot;abcd&quot;</span><span class='Separator'>,</span> <span class='Number'>4</span>   <span class='Bracket'>⟩]</span>
+┌─             
 ╵ 2      "xy"  
   ┌─     4     
   ╵"ab         
@@ -69,14 +70,14 @@
 </pre>
 <h4 id="high-rank-layout"><a class="header" href="#high-rank-layout">High-rank layout</a></h4>
 <p>We've seen already that elements of a list are placed side by side, while the rows of a table (rank-2 array) are stacked on top of each other.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PMKoIOKGlTUgICAgICAgICMgQSBsaXN0IG9mIHVuaXRzCgoy4oC/M+KAvzTiiY0x4oC/MOKAvzUgICMgQSB0YWJsZQ==">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier'>¨</span> <span class='Function'>↕</span><span class='Number'>5</span>        <span class='Comment'># A list of units
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=PMKoIOKGlTUgICAgICAgICAgIyBBIGxpc3Qgb2YgdW5pdHMKClsy4oC/M+KAvzQsMeKAvzDigL81XSAgIyBBIHRhYmxl">↗️</a><pre>    <span class='Function'>&lt;</span><span class='Modifier'>¨</span> <span class='Function'>↕</span><span class='Number'>5</span>          <span class='Comment'># A list of units
 </span>┌─                               
 · ┌·    ┌·    ┌·    ┌·    ┌·     
   · 0   · 1   · 2   · 3   · 4    
       ┘     ┘     ┘     ┘     ┘  
                                 ┘
 
-    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>≍</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span>  <span class='Comment'># A table
+    <span class='Bracket'>[</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>3</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Separator'>,</span><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>5</span><span class='Bracket'>]</span>  <span class='Comment'># A table
 </span>┌─       
 ╵ 2 3 4  
   1 0 5  
@@ -181,16 +182,17 @@
                ┘
 </pre>
 <p>BQN's separator rules give list notation a very flexible structure. You can put all the elements on one line or spread them across lines, with the option of adding blank lines between elements. A separator at the end of a line is never needed, but leading and trailing separators are allowed.</p>
-<pre><span class='Bracket'>⟨</span>
-  <span class='String'>&quot;e0&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;e1&quot;</span>
-  <span class='Bracket'>⟨</span>
-    <span class='String'>'e'</span>
-    <span class='String'>'2'</span>
-  <span class='Bracket'>⟩</span>
-  <span class='String'>&quot;e3&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;e4&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;e5&quot;</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4p+oCiAgImUwIiwgImUxIgogIOKfqAogICAgJ2UnCiAgICAnMicKICDin6kKICAiZTMiLCAiZTQiLCAiZTUiCgogICJlNiIK4p+p">↗️</a><pre>    <span class='Bracket'>⟨</span>
+      <span class='String'>&quot;e0&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;e1&quot;</span>
+      <span class='Bracket'>⟨</span>
+        <span class='String'>'e'</span>
+        <span class='String'>'2'</span>
+      <span class='Bracket'>⟩</span>
+      <span class='String'>&quot;e3&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;e4&quot;</span><span class='Separator'>,</span> <span class='String'>&quot;e5&quot;</span>
 
-  <span class='String'>&quot;e6&quot;</span>
-<span class='Bracket'>⟩</span>
+      <span class='String'>&quot;e6&quot;</span>
+    <span class='Bracket'>⟩</span>
+⟨ "e0" "e1" "e2" "e3" "e4" "e5" "e6" ⟩
 </pre>
 <h4 id="high-rank-arrays"><a class="header" href="#high-rank-arrays">High-rank arrays</a></h4>
 <p>Higher-rank arrays can be written with <code><span class='Bracket'>[]</span></code>, an <strong>array notation</strong> that indicates each element is to be used as a <a href="array.html#cells">cell</a> of its result. It's identical to forming a list and applying <a href="couple.html">Merge</a> (<code><span class='Bracket'>[</span><span class='Value'>…</span><span class='Bracket'>]</span></code> is the same as <code><span class='Function'>&gt;</span><span class='Bracket'>⟨</span><span class='Value'>…</span><span class='Bracket'>⟩</span></code>).</p>

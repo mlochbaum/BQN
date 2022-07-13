@@ -41,12 +41,12 @@ Now let's see how it works.
 
 ## Case conversion
 
-    # Case conversion utilities
-    case ← {
-      diff ← -´ "Aa"
-      Lower ⇐ -⟜diff
-      Upper ⇐ Lower⁼
-    }
+        # Case conversion utilities
+        case ← {
+          diff ← -´ "Aa"
+          Lower ⇐ -⟜diff
+          Upper ⇐ Lower⁼
+        }
 
 This part of the code defines a [namespace](namespace.md) using braces `{}`, then [assigns](expression.md#assignment) it to the name `case`. There are three assignments inside the namespace too. Since BQN uses [lexical scoping](lexical.md), code outside the namespace can't access the variables `diff`, `Lower`, and `Upper` directly. Oh, and the first line is a [comment](token.md#comments).
 
@@ -113,23 +113,22 @@ The function that does this is [Enclose](enclose.md) [Cells](rank.md), `<˘`. Th
 This statement consists of the name `hw` just defined, a compound function, and then the new character `↩`. This is another form of [assignment](expression.md#assignment), like `←`, but it changes the value of an existing variable instead of defining a new one. There's also some special `↩` syntax here: the expression `val Fn↩` is shorthand for `val ↩ Fn val`, avoiding the need to write the name `hw` twice (and `val Fn↩ arg` means `val ↩ val Fn arg`, like `+=` and so on from C). So we are modifying `hw` by applying this function `case.Upper⌾(⊑¨)`.
 
         hw ← <˘ 2‿∘ ⥊ "helloworld"
-        Upper ← -⟜(-´"Aa")⁼
 
-        Upper⌾(⊑¨) hw
+        case.Upper⌾(⊑¨) hw
 
-        hw Upper⌾(⊑¨)↩  # Sets new value for hw
+        hw case.Upper⌾(⊑¨)↩  # Sets new value for hw
 
 That converts the first character of each string to uppercase! `case.Upper` is the case conversion function defined before, so that part makes sense. The rest of the function, `⌾(⊑¨)`, would be pronounced "[Under](under.md) the [First](pick.md#first) of [Each](map.md#one-argument-mapping)", which… pretty much makes sense too? The First Each function extracts the first element of each list in `hw`, the part that used to be `"hw"` but is now `"HW"`.
 
         ⊑¨ hw
 
-        Upper "hw"
+        case.Upper "hw"
 
-The Under modifier keeps track of where that string came from and puts it *back*, to produce a new, altered array. It's kind of special, like Undo, but works on all sorts of fancy selections. It's also worth pointing out that `Upper` applies to a string here, not an individual character. That's because arithmetic is [pervasive](arithmetic.md#pervasion), so that functions made of arithmetic naturally work on arrays. Although in this case it wasn't really necessary, because it's also possible to map over the two strings and uppercase the first character of each separately:
+The Under modifier keeps track of where that string came from and puts it *back*, to produce a new, altered array. It's kind of special, like Undo, but works on all sorts of fancy selections. It's also worth pointing out that `case.Upper` applies to a string here, not an individual character. That's because arithmetic is [pervasive](arithmetic.md#pervasion), so that functions made of arithmetic naturally work on arrays. Although in this case it wasn't really necessary, because it's also possible to map over the two strings and uppercase the first character of each separately:
 
-        Upper⌾⊑¨ "hello"‿"world"
+        case.Upper⌾⊑¨ "hello"‿"world"
 
-Modifiers are applied from left to right, opposite to functions (1-modifiers also take the operand on the left while prefix functions have the argument on the right). So `Upper⌾⊑¨` means `(Upper⌾⊑)¨`.
+Modifiers are applied from left to right, opposite to functions (1-modifiers also take the operand on the left while prefix functions have the argument on the right). So `case.Upper⌾⊑¨` means `(case.Upper⌾⊑)¨`.
 
 ### Punctuation and printing
 

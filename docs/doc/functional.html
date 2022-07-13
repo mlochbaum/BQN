@@ -70,14 +70,13 @@
 <p>What does functional programming in BQN look like? How is it different from the typical APL style of manipulating functions with operators?</p>
 <h3 id="working-with-roles"><a class="header" href="#working-with-roles">Working with roles</a></h3>
 <p>First, let's look at the basics: a small program that has functions as its argument and result. The function <code><span class='Function'>Lin</span></code> below gives a <a href="https://en.wikipedia.org/wiki/Linear_approximation">linear approximation</a> to its function argument based on the values at 0 and 1. To find these two values, we call the argument as a function by using its uppercase spelling, <code><span class='Function'>𝕏</span></code>.</p>
-<pre><span class='Function'>Lin</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
-  <span class='Value'>v0</span> <span class='Gets'>←</span> <span class='Function'>𝕏</span> <span class='Number'>0</span>
-  <span class='Value'>v0</span> <span class='Function'>+</span> <span class='Paren'>((</span><span class='Function'>𝕏</span> <span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Value'>v0</span><span class='Paren'>)</span> <span class='Function'>×</span> <span class='Function'>⊢</span>
-<span class='Brace'>}</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=TGluIOKGkCB7CiAgdjAg4oaQIPCdlY8gMAogIHYwICsgKCjwnZWPIDEpIC0gdjApIMOXIOKKogp9">↗️</a><pre>    <span class='Function'>Lin</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+      <span class='Value'>v0</span> <span class='Gets'>←</span> <span class='Function'>𝕏</span> <span class='Number'>0</span>
+      <span class='Value'>v0</span> <span class='Function'>+</span> <span class='Paren'>((</span><span class='Function'>𝕏</span> <span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Value'>v0</span><span class='Paren'>)</span> <span class='Function'>×</span> <span class='Function'>⊢</span>
+    <span class='Brace'>}</span>
 </pre>
 <p>We can pass it the <a href="arithmetic.html#basic-arithmetic">exponential</a> function as an argument by giving it the name <code><span class='Function'>Exp</span></code> and then referring to it in lowercase (that is, in a subject role). The result is a <a href="train.html">train</a> that adds 1 to <em>e</em>-1 times the argument (we'll discuss only tacit functions here; for blocks see <a href="lexical.html">lexical scoping</a>).</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=TGluIOKGkCB7IHYw4oaQ8J2VjzAg4ouEIHYwKygo8J2VjzEpLXYwKcOX4oqiIH0gICMgKGNvcHkgb2YgYWJvdmUpCkV4cCDihpAg4ouGCkxpbiBleHA=">↗️</a><pre>    <span class='Function'>Lin</span> <span class='Gets'>←</span> <span class='Brace'>{</span> <span class='Value'>v0</span><span class='Gets'>←</span><span class='Function'>𝕏</span><span class='Number'>0</span> <span class='Separator'>⋄</span> <span class='Value'>v0</span><span class='Function'>+</span><span class='Paren'>((</span><span class='Function'>𝕏</span><span class='Number'>1</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>v0</span><span class='Paren'>)</span><span class='Function'>×⊢</span> <span class='Brace'>}</span>  <span class='Comment'># (copy of above)
-</span>    <span class='Function'>Exp</span> <span class='Gets'>←</span> <span class='Function'>⋆</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RXhwIOKGkCDii4YKTGluIGV4cA==">↗️</a><pre>    <span class='Function'>Exp</span> <span class='Gets'>←</span> <span class='Function'>⋆</span>
     <span class='Function'>Lin</span> <span class='Value'>exp</span>
 1+1.718281828459045×⊢
 </pre>
@@ -95,14 +94,13 @@
 148.4131591025766
 </pre>
 <p>Note also in this case that we could have used a modifier with a very similar definition to <code><span class='Function'>Lin</span></code>. The modifier is identical in definition except that <code><span class='Function'>𝕏</span></code> is replaced with <code><span class='Function'>𝔽</span></code>.</p>
-<pre><span class='Modifier'>_lin</span> <span class='Gets'>↩</span> <span class='Brace'>{</span>
-  <span class='Value'>v0</span> <span class='Gets'>←</span> <span class='Function'>𝔽</span> <span class='Number'>0</span>
-  <span class='Value'>v0</span> <span class='Function'>+</span> <span class='Paren'>((</span><span class='Function'>𝔽</span> <span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Value'>v0</span><span class='Paren'>)</span> <span class='Function'>×</span> <span class='Function'>⊢</span>
-<span class='Brace'>}</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=X2xpbiDihqkgewogIHYwIOKGkCDwnZS9IDAKICB2MCArICgo8J2UvSAxKSAtIHYwKSDDlyDiiqIKfQ==">↗️</a><pre>    <span class='Modifier'>_lin</span> <span class='Gets'>↩</span> <span class='Brace'>{</span>
+      <span class='Value'>v0</span> <span class='Gets'>←</span> <span class='Function'>𝔽</span> <span class='Number'>0</span>
+      <span class='Value'>v0</span> <span class='Function'>+</span> <span class='Paren'>((</span><span class='Function'>𝔽</span> <span class='Number'>1</span><span class='Paren'>)</span> <span class='Function'>-</span> <span class='Value'>v0</span><span class='Paren'>)</span> <span class='Function'>×</span> <span class='Function'>⊢</span>
+    <span class='Brace'>}</span>
 </pre>
 <p>Its call syntax is simpler as well. In other cases, however, the function version might be preferable, for example when dealing with arrays of functions or many arguments including a function.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=X2xpbiDihqkgeyB2MOKGkPCdlL0wIOKLhCB2MCsoKPCdlL0xKS12MCnDl+KKoiB9ICAjIChjb3B5IGFnYWluKQpFeHAgX2xpbiA1">↗️</a><pre>    <span class='Modifier'>_lin</span> <span class='Gets'>↩</span> <span class='Brace'>{</span> <span class='Value'>v0</span><span class='Gets'>←</span><span class='Function'>𝔽</span><span class='Number'>0</span> <span class='Separator'>⋄</span> <span class='Value'>v0</span><span class='Function'>+</span><span class='Paren'>((</span><span class='Function'>𝔽</span><span class='Number'>1</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Value'>v0</span><span class='Paren'>)</span><span class='Function'>×⊢</span> <span class='Brace'>}</span>  <span class='Comment'># (copy again)
-</span>    <span class='Function'>Exp</span> <span class='Modifier'>_lin</span> <span class='Number'>5</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RXhwIF9saW4gNQ==">↗️</a><pre>    <span class='Function'>Exp</span> <span class='Modifier'>_lin</span> <span class='Number'>5</span>
 9.591409142295225
 </pre>
 <h3 id="arrays-of-functions"><a class="header" href="#arrays-of-functions">Arrays of functions</a></h3>

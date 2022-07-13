@@ -23,21 +23,21 @@ Mixins              | Not really (needs `this`)
 
 An object in BQN is simply a namespace: its fields and methods are variables in the namespace, and a variable can be accessed outside of the namespace with dot syntax if it's exported with `⇐`. Unexported variables are instance-private in OOP parlance, meaning that they're only visible to the object containing them. They could be utilities, or hold state for the object. As an example, the object below implements the [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) puzzle with five disks. You can view the state (a list of disks occupying each of the three rods) with `towerOfHanoi.View`, or move the top disk from one rod to another with `towerOfHanoi.Move`.
 
-    towerOfHanoi ← {
-      l ← ↕¨5‿0‿0
-      View ⇐ {𝕤
-        l
-      }
-      Move ⇐ {from‿to:
-        l ↩ Transfer´⌾(𝕩⊸⊏)⍟(≠´𝕩) l
-      }
-      # Move a disk from 𝕨 to 𝕩
-      Transfer ← {
-        "No disk to move"!0<≠𝕨
-        "Can't place larger disk on smaller one"!(0<≠)◶⟨1,𝕨<○⊑⊢⟩𝕩
-        ⟨1↓𝕨, 𝕨⊏⊸∾𝕩⟩
-      }
-    }
+        towerOfHanoi ← {
+          l ← ↕¨5‿0‿0
+          View ⇐ {𝕤
+            l
+          }
+          Move ⇐ {from‿to:
+            l ↩ Transfer´⌾(𝕩⊸⊏)⍟(≠´𝕩) l
+          }
+          # Move a disk from 𝕨 to 𝕩
+          Transfer ← {
+            "No disk to move"!0<≠𝕨
+            "Can't place larger disk on smaller one"!(0<≠)◶⟨1,𝕨<○⊑⊢⟩𝕩
+            ⟨1↓𝕨, 𝕨⊏⊸∾𝕩⟩
+          }
+        }
 
 Two variables `l` and `Transfer` aren't exported, for two different reasons. `l` encodes the state of the tower, but it's only exposed with the function `View`, which allows the internal representation to be changed freely. `Transfer` is just a utility function. While it's not dangerous to use outside of the object, there's no reason to expose it through `towerOfHanoi`'s interface. If it's wanted in another place it should be moved to a common location.
 
@@ -45,19 +45,14 @@ Here are the results of a few applications of these functions.
 
         t ← towerOfHanoi
         t.View@
-    ⟨ ⟨ 0 1 2 3 4 ⟩ ⟨⟩ ⟨⟩ ⟩
 
         t.Move 0‿2
-    ⟨ ⟨ 1 2 3 4 ⟩ ⟨⟩ ⟨ 0 ⟩ ⟩
 
         t.Move 1‿2
-    ! "No disk to move"
 
         t.Move 0‿1
-    ⟨ ⟨ 2 3 4 ⟩ ⟨ 1 ⟩ ⟨ 0 ⟩ ⟩
 
         t.Move 2‿1
-    ⟨ ⟨ 2 3 4 ⟩ ⟨ 0 1 ⟩ ⟨⟩ ⟩
 
 ## Classes
 

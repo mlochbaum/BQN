@@ -102,14 +102,13 @@ What does functional programming in BQN look like? How is it different from the 
 
 First, let's look at the basics: a small program that has functions as its argument and result. The function `Lin` below gives a [linear approximation](https://en.wikipedia.org/wiki/Linear_approximation) to its function argument based on the values at 0 and 1. To find these two values, we call the argument as a function by using its uppercase spelling, `𝕏`.
 
-    Lin ← {
-      v0 ← 𝕏 0
-      v0 + ((𝕏 1) - v0) × ⊢
-    }
+        Lin ← {
+          v0 ← 𝕏 0
+          v0 + ((𝕏 1) - v0) × ⊢
+        }
 
 We can pass it the [exponential](arithmetic.md#basic-arithmetic) function as an argument by giving it the name `Exp` and then referring to it in lowercase (that is, in a subject role). The result is a [train](train.md) that adds 1 to *e*-1 times the argument (we'll discuss only tacit functions here; for blocks see [lexical scoping](lexical.md)).
 
-        Lin ← { v0←𝕏0 ⋄ v0+((𝕏1)-v0)×⊢ }  # (copy of above)
         Exp ← ⋆
         Lin exp
 
@@ -128,14 +127,13 @@ Not the most accurate approximation, though.
 
 Note also in this case that we could have used a modifier with a very similar definition to `Lin`. The modifier is identical in definition except that `𝕏` is replaced with `𝔽`.
 
-    _lin ↩ {
-      v0 ← 𝔽 0
-      v0 + ((𝔽 1) - v0) × ⊢
-    }
+        _lin ↩ {
+          v0 ← 𝔽 0
+          v0 + ((𝔽 1) - v0) × ⊢
+        }
 
 Its call syntax is simpler as well. In other cases, however, the function version might be preferable, for example when dealing with arrays of functions or many arguments including a function.
 
-        _lin ↩ { v0←𝔽0 ⋄ v0+((𝔽1)-v0)×⊢ }  # (copy again)
         Exp _lin 5
 
 ### Arrays of functions
