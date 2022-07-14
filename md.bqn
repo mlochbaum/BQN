@@ -203,8 +203,8 @@ Markdown ← {filename𝕊𝕩:
   # Non-empty lines in code blocks have 4 leading spaces
   ProcCode ← {
     # Strip the leading spaces
-    𝕩 ↩ 4 ↓¨ 𝕩
-    code ← JoinLines 𝕩
+    lines ← 4 ↓¨ 𝕩
+    code ← JoinLines lines
 
     # Highlight and unescape html-unsafe characters
     c‿ci ← extensions◶(⋈˜⟨⟩)‿GetHighlights code
@@ -212,34 +212,39 @@ Markdown ← {filename𝕊𝕩:
 
     # If every line is indented by at least 4 additional spaces, we will
     # execute each one and insert the results.
-    addRslt ← ∧´ ' ' = ∾ 4 (⌊⟜≠ ↑ ⊢)¨ 𝕩
-    r‿ri ← {
-      ¬addRslt ? ⋈˜⟨⟩ ;
+    r‿ri‿link ← {
+      extensions ?
+      ∧´ ' ' = ∾ 4 (⌊⟜≠ ↑ ⊢)¨ lines ?
       # Top-level separators are those not inside brackets
       m ← NotCommentOrString code
       depth ← +` m × "(){}⟨⟩[]" (⊣(≠⊸>×·¬⊸-2|⊢)⊐) code
-      sep ← (0=depth) ∧ m ∧ code∊"⋄,"∾lf  # Top-level separators
-      break ← sep∧lf=code                 # Mask of line breaks
-      # Grouping argument to split lines
-      ! 1=¯1⊑break
-      gr ← (⊢-˜+`×¬) break
+      top ← m ∧ 0=depth
+      sep ← top ∧ code∊"⋄,"∾lf  # Top-level separators
+      break ← sep∧lf=code       # Mask of line breaks
       # Don't show assignment result
-      a ← code∊"←↩" ⋄ id ← code∊" "∾∾idChars
-      sa ← a ∧ ¬(¬sep) PrecedesGroup id∨a  # Silent assignment
-      show ← ¬ break / sa PrecedesGroup ¬sa∨»sep
+      PG ← PrecedesGroup
+      a ← m∧code∊"←↩" ⋄ sid ← m∧code∊" "∾∾idChars
+      sa ← a ∧ ¬(¬sep) PG sid∨a       # Silent assignment
+      show ← ¬ break / sa PG ¬sa∨»sep # If last expression began with one
+      # Remove indentation and split lines
+      notIndent ← (0⊸=∨4⊸<) CountRuns ¬m∧lf=code
+      parts ← code ⊔˜ 1 -˜ (notIndent∧¬break) × 1+`break
       # Evaluate
       E ← ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt⊢⟩⟜CodeExec
       ShowErr ← lf∾˜"span class='Error'"Html"Error: "∾(∧`lf⊸≠)⊸/⎊•Repr
-      r ← show E⎊(ShowErr∘•CurrentError⊢)⍟(0<≠∘⊢)¨ gr⊔code
-      ⟨r, /break⟩
+      r ← show E⎊(ShowErr∘•CurrentError⊢)⍟(0<≠∘⊢)¨ parts
+
+      # Link that runs the code
+      lu ← tryURL ∾ Base64 ¯1 ↓ JoinLines parts
+      l ← "a class=""replLink"" title=""Open in the REPL"" target=""_blank"" href="
+      link ← (l∾""""(∾∾⊣)lu) Html "↗️"
+      ⟨r, /break, link⟩
+    ;
+      3⥊<⟨⟩
     }
 
-    Link ← {
-      c ← tryURL ∾ Base64 ¯1 ↓ JoinLines 4↓¨𝕩
-      ("a class=""replLink"" title=""Open in the REPL"" target=""_blank"" href="∾""""(∾∾⊣)c) Html "↗️"
-    }
     mod ← ⟨em,e∾c∾r,ei∾ci∾ri⟩ Modify code
-    𝕩 Link⊸∾⍟addRslt "pre" Html "code" Html⍟(¬extensions) mod
+    link ∾ "pre" Html "code" Html⍟(¬extensions) mod
   }
 
   # Headings start with #, and require 1-6 #s followed by a space.
