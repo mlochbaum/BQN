@@ -8,6 +8,7 @@ let bqn = require("./docs/bqn.js");
 module.exports = bqn;
 let {fmt,fmtErr,sysvals,sysargs,makebqn,makerepl}=bqn;
 let {has,list,str,unstr,dynsys,req1str,makens}=bqn.util;
+let strlist = l=>list(l.map(str),str(""));
 let bqn_state=makebqn((x,w,u,s)=>(u(s,w),x));
 let bqn_nostate=makebqn(x=>x);
 
@@ -30,7 +31,7 @@ let ff = (fr,fw,o) => resolve => (x,w) => {
   else { return fr(fs.readFileSync(f,o)); }
 };
 let fchars = ff(str,unstr,"utf-8");
-let flines = ff(s=>list(s.replace(/\n$/,'').split('\n').map(str)),s=>s.map(unstr).join('\n')+'\n',"utf-8");
+let flines = ff(s=>strlist(s.replace(/\n$/,'').split('\n')),s=>s.map(unstr).join('\n')+'\n',"utf-8");
 let fbytes = ff(s=>list(Array.from(s).map(c=>String.fromCodePoint(c))),s=>Buffer.from(s.map(c=>c.codePointAt(0))));
 sysvals.fchars = withres("•FChars",fchars);
 sysvals.flines = withres("•FLines",flines);
@@ -51,7 +52,7 @@ sysvals.file = dynsys(state => {
     basename:  (x,w) => str(path.parse(req1str("•file.BaseName",x,w)).name),
     parent:    (x,w) => str(dir(path.dirname(res("•file.Parent")(x,w)))),
     parts:     (x,w) => { let p=path.parse(res("•file.Parts")(x,w));
-                          return list([dir(p.dir),p.name,p.ext].map(str)); },
+                          return strlist([dir(p.dir),p.name,p.ext]); },
 
     // Metadata
     exists: (x,w) => fs.existsSync(res("•file.Exists")(x,w))?1:0,
@@ -81,7 +82,7 @@ sysvals.file = dynsys(state => {
         fs.chmodSync(f,(mode&fs.constants.S_IFMT)|p); return w;
       } else {
         let p=[]; for (let i=3;i--;) { p[i]=mode&7; mode=Math.floor(mode/8); }
-        return list(p);
+        return list(p,0);
       }
     },
     owner: (x,w) => {
@@ -90,7 +91,7 @@ sysvals.file = dynsys(state => {
         if (!w.sh||w.sh.length!==1||w.sh[0]!==2) throw Error("•file.Owner: 𝕨 must be a uid‿gid pair");
         fs.chownSync(f,w[0],w[1]); return w;
       } else {
-        let s=fs.statSync(f); return list([s.uid,s.gid]);
+        let s=fs.statSync(f); return list([s.uid,s.gid],0);
       }
     },
 
@@ -100,7 +101,7 @@ sysvals.file = dynsys(state => {
     createdir: (x,w) => {let f=res("•file.CreateDir")(x,w); fs.mkdirSync(f); return str(f);},
     remove:    (x,w) => {fs.rmSync(res("•file.Remove")(x,w)); return 1;},
     removedir: (x,w) => {fs.rmSync(res("•file.RemoveDir")(x,w),{recursive:true,force:true}); return 1;},
-    list:  (x,w) => list(fs.readdirSync(res("•file.List")(x,w)).map(str)),
+    list:  (x,w) => strlist(fs.readdirSync(res("•file.List")(x,w))),
     chars: fchars(res("•file.Chars")),
     lines: flines(res("•file.Lines")),
     bytes: fbytes(res("•file.Bytes")),
@@ -177,7 +178,7 @@ if (!module.parent) {
       }
     });
   } else if (arg0[0] !== '-' || (arg0==='-f'&&(arg0=(args=args.slice(1))[0],1))) {
-    let f=arg0, a=list(args.slice(1).map(str));
+    let f=arg0, a=strlist(args.slice(1));
     exec(s=>bqn_file(sysargs, path.resolve(f),s,a))(fs.readFileSync(f,'utf-8'));
   } else if (arg0 === '-e' || arg0 === '-p') {
     let ev=bqn_nostate(cl_state());
