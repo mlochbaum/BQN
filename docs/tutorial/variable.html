@@ -24,11 +24,11 @@
 ⟨ 3 7 ⟩
 </pre>
 <p>A variable can't be defined twice in the same <em>scope</em>. Later we'll work with functions and other pieces of code that create their own scopes, but for now all you need to know is that all the code in a tutorial runs in the same scope. So <code><span class='Value'>three</span></code> is already defined, and can't be defined again.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4oaQIDQ=">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>4</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4ouIIHRlbiAtIHRocmVlIOKGkCAzCnRocmVlIOKGkCA0">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>4</span>
 <span class='Error'>Error: Redefinition</span>
 </pre>
 <p>It's a little crazy to call them variables if the definition can never change, right? Doesn't &quot;variable&quot; <em>mean</em> &quot;able to change&quot;? Fortunately, this is one way in which BQN isn't crazy. You can <em>modify</em> a variable's value with the arrow <code><span class='Gets'>↩</span></code> provided it's already been defined. This never does anything to the original value: that value stays the same; it's just (probably) not the value of the modified variable any more.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4oapIDQKCnRocmVlID0gMyAgICMgV2FpdCB3aHkgZGlkIEkgZG8gdGhhdAoKMyA9IHRocmVlIOKGqSAzCgpmb3VyIOKGqSAzICAgICMgZm91ciBpc24ndCBkZWZpbmVkIHlldA==">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>↩</span> <span class='Number'>4</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4ouIIHRlbiAtIHRocmVlIOKGkCAzCnRocmVlIOKGkCA0CnRocmVlIOKGqSA0Cgp0aHJlZSA9IDMgICAjIFdhaXQgd2h5IGRpZCBJIGRvIHRoYXQKCjMgPSB0aHJlZSDihqkgMwoKZm91ciDihqkgMyAgICAjIGZvdXIgaXNuJ3QgZGVmaW5lZCB5ZXQ=">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>↩</span> <span class='Number'>4</span>
 
     <span class='Value'>three</span> <span class='Function'>=</span> <span class='Number'>3</span>   <span class='Comment'># Wait why did I do that
 </span>0
@@ -46,7 +46,7 @@
 </pre>
 <p>Does BQN not know about capital letters? Does it object to self-reference? Why is &quot;<code><span class='Function'>BQN</span></code>&quot; green? At least there's an error message, and a &quot;role&quot; is something we've heard about before. <em>Assignment</em> means anything written with a leftward arrow—either definition or modification.</p>
 <p>I'll first confuse you a little more by pointing out that BQN's variables are case-insensitive, and even underscore-insensitive!</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUKdGhyRWUKVGhSZUUKdGhyX0VFCl9fdGhyZWUKX1RfSF9SX0VfRV8=">↗️</a><pre>    <span class='Value'>three</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4ouIIHRlbiAtIHRocmVlIOKGkCAzCnRocmVlIOKGkCA0CnRocmVlIOKGqSA0CjMgPSB0aHJlZSDihqkgMwp0aHJlZQp0aHJFZQpUaFJlRQp0aHJfRUUKX190aHJlZQpfVF9IX1JfRV9FXw==">↗️</a><pre>    <span class='Value'>three</span>
 3
     <span class='Value'>thrEe</span>
 3
@@ -60,7 +60,7 @@
 3
 </pre>
 <p>But the syntax highlighter still seems to care, and you'll get a strange result if you try to apply a function to one of the uppercase spellings:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LSBUaHJlZQoKLSBfdGhyZWU=">↗️</a><pre>    <span class='Function'>-</span> <span class='Function'>Three</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4ouIIHRlbiAtIHRocmVlIOKGkCAzCnRocmVlIOKGkCA0CnRocmVlIOKGqSA0CjMgPSB0aHJlZSDihqkgMwotIFRocmVlCgotIF90aHJlZQ==">↗️</a><pre>    <span class='Function'>-</span> <span class='Function'>Three</span>
 -3{𝔽}
 
     <span class='Function'>-</span> <span class='Modifier'>_three</span>
@@ -118,7 +118,7 @@
 </pre>
 <p>This strategy allows us to break down a program into smaller parts. However, you can only name a function in this way, not an expression. We'll explain later how to turn an expression into an explicit function. But one thing remains true regardless of how a function is created: functions are just another kind of BQN value, and giving a function a name uses the ordinary definition arrow <code><span class='Gets'>←</span></code>, not any special syntax.</p>
 <p>Even if you define a variable to be a function at first, you're not locked in to that choice. You can modify the variable to have a different value (but remember to change the casing to match the new value's role!). If it's a data value, you'll still be able to call it as a function: it will return itself.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QmFzZTIKCmJhc2UyIOKGqSAxNiAgICMgQ2hhbmdlIGl0IHRvIGEgbnVtYmVyCgpCYXNlMgoKQmFzZTIgNg==">↗️</a><pre>    <span class='Function'>Base2</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=QmFzZTIg4oaQICvin5woMuKKuMOXKcK04oiY4oy9CkJhc2UyCgpiYXNlMiDihqkgMTYgICAjIENoYW5nZSBpdCB0byBhIG51bWJlcgoKQmFzZTIKCkJhc2UyIDY=">↗️</a><pre>    <span class='Function'>Base2</span>
 +⟜(2⊸×)´∘⌽
 
     <span class='Value'>base2</span> <span class='Gets'>↩</span> <span class='Number'>16</span>   <span class='Comment'># Change it to a number
@@ -312,7 +312,7 @@
 ⟨ 4 5 6 ⟩
 </pre>
 <p>But this changes the value of <code><span class='Value'>a</span></code> to a completely unrelated value. What if I want to apply a transformation to <code><span class='Value'>a</span></code>, for example to subtract one? Of course I can write the value <code><span class='Value'>a</span></code> on the right hand side of the assignment, but that's extra work and doesn't really seem to represent what I'm doing, which is conceptually just to apply a function to <code><span class='Value'>a</span></code>. So BQN also has a shorthand, called <em>modified assignment</em>. Here, the modified assignment <code><span class='Function'>-</span><span class='Gets'>↩</span></code> subtracts a value from <code><span class='Value'>a</span></code>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihqkgYSAtIDEKYQoKYSAt4oapIDE=">↗️</a><pre>    <span class='Value'>a</span> <span class='Gets'>↩</span> <span class='Value'>a</span> <span class='Function'>-</span> <span class='Number'>1</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNCAgICAgICAgICAgICMgRmlyc3QgaXQncyBhIG51bWJlcgphIOKGqSA04oC/NeKAvzYgICAgICAgICMgTm93IGl0J3MgYSBsaXN0IQphIOKGqSBhIC0gMQphCgphIC3ihqkgMQ==">↗️</a><pre>    <span class='Value'>a</span> <span class='Gets'>↩</span> <span class='Value'>a</span> <span class='Function'>-</span> <span class='Number'>1</span>
     <span class='Value'>a</span>
 ⟨ 3 4 5 ⟩
 
@@ -320,31 +320,31 @@
 ⟨ 2 3 4 ⟩
 </pre>
 <p>(In case you're wondering why I didn't have to write <code><span class='Value'>a</span></code> again that last time, the evaluator suppresses the printed result for ordinary assignments but not modified ones. This is a feature of my website software and not the BQN language). It looks a lot like the special assignment operators <code><span class='Function'>+=</span></code>, <code><span class='Function'>/=</span></code>, and so on that you'll see in C or Javascript. What BQN brings to the table is that you can use any two-argument function at all here, because two-argument function are always written as operators. For example, we can prepend some elements to <code><span class='Value'>a</span></code>:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDiiL7LnOKGqSAw4oC/MQ==">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>∾</span><span class='Modifier'>˜</span><span class='Gets'>↩</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNCAgICAgICAgICAgICMgRmlyc3QgaXQncyBhIG51bWJlcgphIOKGqSA04oC/NeKAvzYgICAgICAgICMgTm93IGl0J3MgYSBsaXN0IQphIOKGqSBhIC0gMQphIC3ihqkgMQphIOKIvsuc4oapIDDigL8x">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>∾</span><span class='Modifier'>˜</span><span class='Gets'>↩</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 ⟨ 0 1 2 3 4 ⟩
 </pre>
 <p>But what about functions with only one argument? It's possible to do this using a dummy right argument such as the null character, <code><span class='String'>@</span></code>. To turn a function that takes one argument into one that takes two, we can compose it with a function that takes two arguments and returns one of them. The left one, since the variable to modify is on the left hand side. Perhaps… Left? (<code><span class='Function'>⊣</span></code>)?</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ImFiY2QiIOKMveKImOKKoyAid3h5eiIKCmEg4oy94oiY4oqj4oapIEA=">↗️</a><pre>    <span class='String'>&quot;abcd&quot;</span> <span class='Function'>⌽</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span> <span class='String'>&quot;wxyz&quot;</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNCAgICAgICAgICAgICMgRmlyc3QgaXQncyBhIG51bWJlcgphIOKGqSA04oC/NeKAvzYgICAgICAgICMgTm93IGl0J3MgYSBsaXN0IQphIOKGqSBhIC0gMQphIC3ihqkgMQphIOKIvsuc4oapIDDigL8xCiJhYmNkIiDijL3iiJjiiqMgInd4eXoiCgphIOKMveKImOKKo+KGqSBA">↗️</a><pre>    <span class='String'>&quot;abcd&quot;</span> <span class='Function'>⌽</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span> <span class='String'>&quot;wxyz&quot;</span>
 "dcba"
 
     <span class='Value'>a</span> <span class='Function'>⌽</span><span class='Modifier2'>∘</span><span class='Function'>⊣</span><span class='Gets'>↩</span> <span class='String'>@</span>
 ⟨ 4 3 2 1 0 ⟩
 </pre>
 <p>But fortunately, there's a simpler syntax as well: write your one-argument function before <code><span class='Gets'>↩</span></code> with no right hand side. Bit of a Yoda vibe: &quot;<code><span class='Value'>a</span></code> reversed is&quot;.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDijL3ihqkKCmEgNOKKuC3ihqkgICAgICAgICAgICMgQW5kIGJhY2sgYWdhaW4=">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>⌽</span><span class='Gets'>↩</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNCAgICAgICAgICAgICMgRmlyc3QgaXQncyBhIG51bWJlcgphIOKGqSA04oC/NeKAvzYgICAgICAgICMgTm93IGl0J3MgYSBsaXN0IQphIOKGqSBhIC0gMQphIC3ihqkgMQphIOKIvsuc4oapIDDigL8xCmEg4oy94oiY4oqj4oapIEAKYSDijL3ihqkKCmEgNOKKuC3ihqkgICAgICAgICAgICMgQW5kIGJhY2sgYWdhaW4=">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>⌽</span><span class='Gets'>↩</span>
 ⟨ 0 1 2 3 4 ⟩
 
     <span class='Value'>a</span> <span class='Number'>4</span><span class='Modifier2'>⊸</span><span class='Function'>-</span><span class='Gets'>↩</span>           <span class='Comment'># And back again
 </span>⟨ 4 3 2 1 0 ⟩
 </pre>
 <p>Notice that there's no need for parentheses: modifiers bind more strongly than the assignment character. Now what if we want to decrease the last two elements of <code><span class='Value'>a</span></code>? That is, we want to compute the following array while storing it in <code><span class='Value'>a</span></code>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=LeKfnDTijL4owq8y4oq44oaRKSBhCgphICAgICAgICAgICAgICAgICMgSXQgaGFzbid0IGNoYW5nZWQsIG9mIGNvdXJzZQ==">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>4</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span> <span class='Value'>a</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNCAgICAgICAgICAgICMgRmlyc3QgaXQncyBhIG51bWJlcgphIOKGqSA04oC/NeKAvzYgICAgICAgICMgTm93IGl0J3MgYSBsaXN0IQphIOKGqSBhIC0gMQphIC3ihqkgMQphIOKIvsuc4oapIDDigL8xCmEg4oy94oiY4oqj4oapIEAKYSDijL3ihqkKYSA04oq4LeKGqSAgICAgICAgICAgIyBBbmQgYmFjayBhZ2Fpbgot4p+cNOKMvijCrzLiirjihpEpIGEKCmEgICAgICAgICAgICAgICAgIyBJdCBoYXNuJ3QgY2hhbmdlZCwgb2YgY291cnNl">↗️</a><pre>    <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>4</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span> <span class='Value'>a</span>
 ⟨ 4 3 2 ¯3 ¯4 ⟩
 
     <span class='Value'>a</span>                <span class='Comment'># It hasn't changed, of course
 </span>⟨ 4 3 2 1 0 ⟩
 </pre>
 <p>The code to do this looks the same as what we did with Reverse (<code><span class='Function'>⌽</span></code>). Again we don't have to parenthesize the function, because modifiers associate from left to right, so Under (<code><span class='Modifier2'>⌾</span></code>) binds to its operands before Compose (<code><span class='Modifier2'>∘</span></code>) does.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSAt4p+cNOKMvijCrzLiirjihpEp4oap">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>4</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Gets'>↩</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNCAgICAgICAgICAgICMgRmlyc3QgaXQncyBhIG51bWJlcgphIOKGqSA04oC/NeKAvzYgICAgICAgICMgTm93IGl0J3MgYSBsaXN0IQphIOKGqSBhIC0gMQphIC3ihqkgMQphIOKIvsuc4oapIDDigL8xCmEg4oy94oiY4oqj4oapIEAKYSDijL3ihqkKYSA04oq4LeKGqSAgICAgICAgICAgIyBBbmQgYmFjayBhZ2FpbgphIC3in5w04oy+KMKvMuKKuOKGkSnihqk=">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>4</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Gets'>↩</span>
 ⟨ 4 3 2 ¯3 ¯4 ⟩
 </pre>

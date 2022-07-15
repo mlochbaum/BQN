@@ -36,7 +36,7 @@
 </span>⟨ 1 2 2 4 3 5 6 ⟩
 </pre>
 <p>In this way <code><span class='Function'>»</span></code> refers to a sequence containing the previous element at each position. By default the array's fill is used for the element before the first, and a right argument can be given to provide a different one.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oieIMK7IHMKCuKKj+KKuMK7IHM=">↗️</a><pre>    <span class='Number'>∞</span> <span class='Function'>»</span> <span class='Value'>s</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgMeKAvzLigL8y4oC/NOKAvzPigL814oC/NgriiJ4gwrsgcwoK4oqP4oq4wrsgcw==">↗️</a><pre>    <span class='Number'>∞</span> <span class='Function'>»</span> <span class='Value'>s</span>
 ⟨ ∞ 1 2 2 4 3 5 ⟩
 
     <span class='Function'>⊏</span><span class='Modifier2'>⊸</span><span class='Function'>»</span> <span class='Value'>s</span>
@@ -44,7 +44,7 @@
 </pre>
 <p>It may appear backwards that <code><span class='Function'>»</span></code>, which typically means &quot;go to the next item&quot;, is used to represent the previous item. In fact there is no conflict: the symbol <code><span class='Function'>»</span></code> describes what position each cell of <code><span class='Value'>𝕩</span></code> will have in the result, but in this context we are interested in knowing what argument value occurs in a particular result position. By moving all numbers into the future we ensure that a number in the present comes from the past. To keep your intuition functioning in these situations, it may help to think of the arrow point as fixed at some position in the result while the tail stretches back to land on the argument position where it comes from.</p>
 <p>Switching the direction of the arrow, we get an operation that pulls the next value into each position:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDiiY0gwqtzCsKr4oq4LSBz">↗️</a><pre>    <span class='Value'>s</span> <span class='Function'>≍</span> <span class='Function'>«</span><span class='Value'>s</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgMeKAvzLigL8y4oC/NOKAvzPigL814oC/NgpzIOKJjSDCq3MKwqviirgtIHM=">↗️</a><pre>    <span class='Value'>s</span> <span class='Function'>≍</span> <span class='Function'>«</span><span class='Value'>s</span>
 ┌─               
 ╵ 1 2 2 4 3 5 6  
   2 2 4 3 5 6 0  
@@ -53,7 +53,7 @@
 ⟨ 1 0 2 ¯1 2 1 ¯6 ⟩
 </pre>
 <p>The differences here are the same as <code><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span> <span class='Value'>s</span></code>, except that they are shifted over by one, and it is the <em>last</em> value in the sequence that is compared with a fill value, not the first. These techniques adapt easily to more complicated operations. A symmetric difference is found by subtracting the previous element from the next, and dividing by two:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MsO3y5wgKMK7LcKrKSBzCgoyw7fLnCAo4oqjy53iirjCuyAtIOKKosud4oq4wqspIHMgICMgUmVwZWF0IGF0IHRoZSBlbmRzIGluc3RlYWQgb2YgdXNpbmcgZmlsbHM=">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>÷</span><span class='Modifier'>˜</span> <span class='Paren'>(</span><span class='Function'>»-«</span><span class='Paren'>)</span> <span class='Value'>s</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgMeKAvzLigL8y4oC/NOKAvzPigL814oC/Ngoyw7fLnCAowrstwqspIHMKCjLDt8ucICjiiqPLneKKuMK7IC0g4oqiy53iirjCqykgcyAgIyBSZXBlYXQgYXQgdGhlIGVuZHMgaW5zdGVhZCBvZiB1c2luZyBmaWxscw==">↗️</a><pre>    <span class='Number'>2</span><span class='Function'>÷</span><span class='Modifier'>˜</span> <span class='Paren'>(</span><span class='Function'>»-«</span><span class='Paren'>)</span> <span class='Value'>s</span>
 ⟨ ¯1 ¯0.5 ¯1 ¯0.5 ¯0.5 ¯1.5 2.5 ⟩
 
     <span class='Number'>2</span><span class='Function'>÷</span><span class='Modifier'>˜</span> <span class='Paren'>(</span><span class='Function'>⊣</span><span class='Modifier'>˝</span><span class='Modifier2'>⊸</span><span class='Function'>»</span> <span class='Function'>-</span> <span class='Function'>⊢</span><span class='Modifier'>˝</span><span class='Modifier2'>⊸</span><span class='Function'>«</span><span class='Paren'>)</span> <span class='Value'>s</span>  <span class='Comment'># Repeat at the ends instead of using fills
@@ -72,7 +72,7 @@
 </span>⟨ 1 1 0 1 1 0 0 0 ⟩
 </pre>
 <p>With a number in big-endian format, a right shift might be logical, shifting in zeros, or arithmetic, shifting in copies of the highest-order bit (for little-endian numbers, this applies to left shifts rather than right ones). The two kinds of shift can be performed with similar code, using <code><span class='Number'>0</span></code> or <code><span class='Function'>⊏</span><span class='Value'>𝕩</span></code> for the inserted cell.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MyDipYrin5ww4oq4wrsgaSAgICAjIExvZ2ljYWwgcmlnaHQgc2hpZnQKCjMgKOKliuKfnOKKj8K74oqiKSBpICAjIEFyaXRobWV0aWMgcmlnaHQgc2hpZnQ=">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>»</span> <span class='Value'>i</span>    <span class='Comment'># Logical right shift
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGkg4oaQICIxMDAxMTAxMSItJzAnCjMg4qWK4p+cMOKKuMK7IGkgICAgIyBMb2dpY2FsIHJpZ2h0IHNoaWZ0CgozICjipYrin5ziio/Cu+KKoikgaSAgIyBBcml0aG1ldGljIHJpZ2h0IHNoaWZ0">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Number'>0</span><span class='Modifier2'>⊸</span><span class='Function'>»</span> <span class='Value'>i</span>    <span class='Comment'># Logical right shift
 </span>⟨ 0 0 0 1 0 0 1 1 ⟩
 
     <span class='Number'>3</span> <span class='Paren'>(</span><span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Function'>⊏»⊢</span><span class='Paren'>)</span> <span class='Value'>i</span>  <span class='Comment'># Arithmetic right shift

@@ -52,20 +52,20 @@
 ⟨ 0 1 2 3 0 0 4 1 3 5 6 ⟩
 </pre>
 <p>Each <code><span class='String'>'t'</span></code> is <code><span class='Number'>0</span></code>, each <code><span class='String'>'a'</span></code> is <code><span class='Number'>1</span></code>, and so on. We'd like to discard some of the information from Classify, to just find whether each major cell had a new value. Here are the input and desired result:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=c2Mg4omNIOKIiiAidGFjaXR0cmFpbnMi">↗️</a><pre>    <span class='Value'>sc</span> <span class='Function'>≍</span> <span class='Function'>∊</span> <span class='String'>&quot;tacittrains&quot;</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHNjIOKGkCDiipAgInRhY2l0dHJhaW5zIgpzYyDiiY0g4oiKICJ0YWNpdHRyYWlucyI=">↗️</a><pre>    <span class='Value'>sc</span> <span class='Function'>≍</span> <span class='Function'>∊</span> <span class='String'>&quot;tacittrains&quot;</span>
 ┌─                       
 ╵ 0 1 2 3 0 0 4 1 3 5 6  
   1 1 1 1 0 0 1 0 0 1 1  
                         ┘
 </pre>
 <p>The result should be <code><span class='Number'>1</span></code> when a new number appears, higher than all the previous numbers. To do this, we first find the highest previous number by taking the <a href="arithmetic.html#additional-arithmetic">maximum</a>-<a href="scan.html">scan</a> <code><span class='Function'>⌈</span><span class='Modifier'>`</span></code> of the argument, then <a href="shift.html">shifting</a> to move the previous maximum to the current position. The first cell is always new, so we shift in a <code><span class='Number'>¯1</span></code>, so it will be less than any element of the argument.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=wq8xIMK7IOKMiGBzYwoowq8xwrvijIhgKSBzYw==">↗️</a><pre>    <span class='Number'>¯1</span> <span class='Function'>»</span> <span class='Function'>⌈</span><span class='Modifier'>`</span><span class='Value'>sc</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHNjIOKGkCDiipAgInRhY2l0dHJhaW5zIgrCrzEgwrsg4oyIYHNjCijCrzHCu+KMiGApIHNj">↗️</a><pre>    <span class='Number'>¯1</span> <span class='Function'>»</span> <span class='Function'>⌈</span><span class='Modifier'>`</span><span class='Value'>sc</span>
 ⟨ ¯1 0 1 2 3 3 3 4 4 4 5 ⟩
     <span class='Paren'>(</span><span class='Number'>¯1</span><span class='Function'>»⌈</span><span class='Modifier'>`</span><span class='Paren'>)</span> <span class='Value'>sc</span>
 ⟨ ¯1 0 1 2 3 3 3 4 4 4 5 ⟩
 </pre>
 <p>Now we compare the original list with the list of previous-maximums.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=c2MgPiDCrzHCu+KMiGBzYwoo4oqiPsKvMcK74oyIYCkgc2M=">↗️</a><pre>    <span class='Value'>sc</span> <span class='Function'>&gt;</span> <span class='Number'>¯1</span><span class='Function'>»⌈</span><span class='Modifier'>`</span><span class='Value'>sc</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHNjIOKGkCDiipAgInRhY2l0dHJhaW5zIgpzYyA+IMKvMcK74oyIYHNjCijiiqI+wq8xwrvijIhgKSBzYw==">↗️</a><pre>    <span class='Value'>sc</span> <span class='Function'>&gt;</span> <span class='Number'>¯1</span><span class='Function'>»⌈</span><span class='Modifier'>`</span><span class='Value'>sc</span>
 ⟨ 1 1 1 1 0 0 1 0 0 1 1 ⟩
     <span class='Paren'>(</span><span class='Function'>⊢&gt;</span><span class='Number'>¯1</span><span class='Function'>»⌈</span><span class='Modifier'>`</span><span class='Paren'>)</span> <span class='Value'>sc</span>
 ⟨ 1 1 1 1 0 0 1 0 0 1 1 ⟩

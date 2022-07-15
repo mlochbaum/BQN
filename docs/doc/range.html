@@ -86,14 +86,14 @@
 ⟨ 0 1 2 0 0 0 6 0 ⟩
 </pre>
 <p>Now at any given position the index of the last 1, if there is any, is the <a href="arithmetic.html#additional-arithmetic">maximum</a> of all the adjusted indices so far. That's a <a href="scan.html">scan</a> <code><span class='Function'>⌈</span><span class='Modifier'>`</span></code>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oyIYCBiIMOXIOKGleKJoGIKCijijIhgIOKKoiDDlyDihpXiiJjiiaApIGIgICAjIEFzIGEgdGFjaXQgZnVuY3Rpb24=">↗️</a><pre>    <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Value'>b</span> <span class='Function'>×</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGIg4oaQIDDigL8x4oC/MeKAvzDigL8w4oC/MOKAvzHigL8wCuKMiGAgYiDDlyDihpXiiaBiCgoo4oyIYCDiiqIgw5cg4oaV4oiY4omgKSBiICAgIyBBcyBhIHRhY2l0IGZ1bmN0aW9u">↗️</a><pre>    <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Value'>b</span> <span class='Function'>×</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
 ⟨ 0 1 2 2 2 2 6 6 ⟩
 
     <span class='Paren'>(</span><span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Function'>⊢</span> <span class='Function'>×</span> <span class='Function'>↕</span><span class='Modifier2'>∘</span><span class='Function'>≠</span><span class='Paren'>)</span> <span class='Value'>b</span>   <span class='Comment'># As a tacit function
 </span>⟨ 0 1 2 2 2 2 6 6 ⟩
 </pre>
 <p>Where there aren't any previous 1s, this returns an index of 0, which is the same as the result where there is a 1 at index 0. If it's important to distinguish these possibilities, the indices can be increased by one, so that the result is 0 if there are no 1s, and 1 for a 1 at the start. To bring it back into alignment with the argument, either this result can be decreased by 1 or an initial element can be added to the argument.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oyIYCBiIMOXIDEgKyDihpXiiaBi">↗️</a><pre>    <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Value'>b</span> <span class='Function'>×</span> <span class='Number'>1</span> <span class='Function'>+</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGIg4oaQIDDigL8x4oC/MeKAvzDigL8w4oC/MOKAvzHigL8wCuKMiGAgYiDDlyAxICsg4oaV4omgYg==">↗️</a><pre>    <span class='Function'>⌈</span><span class='Modifier'>`</span> <span class='Value'>b</span> <span class='Function'>×</span> <span class='Number'>1</span> <span class='Function'>+</span> <span class='Function'>↕≠</span><span class='Value'>b</span>
 ⟨ 0 2 3 3 3 3 7 7 ⟩
 </pre>
 <h2 id="list-range"><a class="header" href="#list-range">List range</a></h2>

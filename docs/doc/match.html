@@ -67,7 +67,7 @@
 </span>13
 </pre>
 <p>(A side note is that BQN restricts what can cause these side effects: they can only happen by calling a block function or modifier, and never a primitive or purely <a href="tacit.html">tacit</a> operation). Now suppose we share the value of <code><span class='Function'>F</span></code> with another variable like <code><span class='Function'>F1</span></code> below. When we apply <code><span class='Function'>G</span></code>, the result of <code><span class='Function'>F</span></code> might change, but so does <code><span class='Function'>F1</span></code>! This effect is called <a href="https://en.wikipedia.org/wiki/Aliasing_(computing)">aliasing</a>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RjEg4oaQIEYKe/CdlY8gNn3CqCBG4oC/RjEKCkcgMwp78J2VjyA2fcKoIEbigL9GMQ==">↗️</a><pre>    <span class='Function'>F1</span> <span class='Gets'>←</span> <span class='Function'>F</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RuKAv0cg4oaQIHsgYeKGkDEwIOKLhCB7YSvwnZWpfeKAv3th4oap8J2VqX0gfQpGMSDihpAgRgp78J2VjyA2fcKoIEbigL9GMQoKRyAzCnvwnZWPIDZ9wqggRuKAv0Yx">↗️</a><pre>    <span class='Function'>F1</span> <span class='Gets'>←</span> <span class='Function'>F</span>
     <span class='Brace'>{</span><span class='Function'>𝕏</span> <span class='Number'>6</span><span class='Brace'>}</span><span class='Modifier'>¨</span> <span class='Function'>F</span><span class='Ligature'>‿</span><span class='Function'>F1</span>
 ⟨ 14 14 ⟩
 
@@ -77,7 +77,7 @@
 ⟨ 9 9 ⟩
 </pre>
 <p>In some cases you might not be able to demonstrate aliasing so cleanly. A function such as a random number generator changes its own state, so calling one function will change the other. But comparison tells you directly whether two blocks are the same.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ZiA9IGYx">↗️</a><pre>    <span class='Value'>f</span> <span class='Function'>=</span> <span class='Value'>f1</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=RuKAv0cg4oaQIHsgYeKGkDEwIOKLhCB7YSvwnZWpfeKAv3th4oap8J2VqX0gfQpGMSDihpAgRgpmID0gZjE=">↗️</a><pre>    <span class='Value'>f</span> <span class='Function'>=</span> <span class='Value'>f1</span>
 1
 </pre>
 <p>As with other kinds of functions, just because two blocks always behave the same doesn't mean they are equal. Any function that's written as <code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> will always work the same as other functions spelled that way, but the two functions below are different instances because they come from two different places in the source code.</p>
@@ -92,7 +92,7 @@
 ⟨ 8 12 ⟩
 </pre>
 <p>These functions both have the definition <code><span class='Brace'>{</span><span class='Value'>a</span><span class='Function'>×</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code>, but give different results! They are different <em>instances</em> of the same block, and have different environments: for <code><span class='Function'>T2</span></code>, <code><span class='Value'>a</span></code> is <code><span class='Number'>2</span></code>, and for <code><span class='Function'>T3</span></code>, it's <code><span class='Number'>3</span></code>.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dDIgPSB0Mw==">↗️</a><pre>    <span class='Value'>t2</span> <span class='Function'>=</span> <span class='Value'>t3</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dDIg4oaQIEdlbiAyCnQzIOKGkCBHZW4gMwp0MiA9IHQz">↗️</a><pre>    <span class='Value'>t2</span> <span class='Function'>=</span> <span class='Value'>t3</span>
 0
 </pre>
 <p>Some definitions should help to make things clearer. A &quot;block&quot; is not actually a BQN value, but a region of source code enclosed in <code><span class='Brace'>{}</span></code> brackets. When the program encounters a block function or modifier, it creates an instance of this block, and then uses this instance in the rest of the expression (actually, an immediate block also creates an instance, but this instance is immediately run, and discarded when it finishes, so it can't be accessed as a value). Every time the function <code><span class='Function'>Gen</span></code> is run, it evaluates the statements it contains, and the second statement <code><span class='Brace'>{</span><span class='Value'>a</span><span class='Function'>×</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> creates a block instance. So <code><span class='Function'>Gen</span></code> creates a new block instance each time. This is necessary for <code><span class='Function'>Gen</span></code> to work correctly: each time it runs, it creates a new scope, so it needs to create a new function that will be tied to that scope.</p>

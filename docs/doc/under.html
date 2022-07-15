@@ -58,7 +58,7 @@
           ┘
 </pre>
 <p>When used with Under, the function <code><span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>⌽</span></code> applies to the first column, <a href="reverse.html#rotate">rotating</a> it. The result of <code><span class='Function'>𝔽</span></code> needs to be compatible with the selection function, so Rotate works but trying to drop an element is no good:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MeKKuOKGk+KMvijiio/LmCkgYQ==">↗️</a><pre>    <span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊏</span><span class='Modifier'>˘</span><span class='Paren'>)</span> <span class='Value'>a</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIGEg4oaQIDTigL8z4qWK4oaVMTIKMeKKuOKGk+KMvijiio/LmCkgYQ==">↗️</a><pre>    <span class='Number'>1</span><span class='Modifier2'>⊸</span><span class='Function'>↓</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊏</span><span class='Modifier'>˘</span><span class='Paren'>)</span> <span class='Value'>a</span>
 <span class='Error'>Error: ⁼: Inverse not found</span>
 </pre>
 <p>BQN can detect lots of structural functions when written <a href="tacit.html">tacitly</a>; see the list of recognized forms <a href="../spec/inferred.html#required-structural-inverses">in the spec</a>. You can also include computations on the shape. For example, here's a function to reverse the first half of a list.</p>

@@ -94,7 +94,7 @@
 <span class='Error'>Error: 𝕨⌽𝕩: Length of compound 𝕨 must be at most rank of 𝕩</span>
 </pre>
 <p>The expression below rotates the first (vertical) axis of <code><span class='Value'>tab</span></code> by one element, and second by two. So the line of capital letters goes from being one away from the top, up to the top, and the column with <code><span class='String'>'2'</span></code> goes from horizontal index 2 to index 0.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MeKAvzIg4oy9IHRhYg==">↗️</a><pre>    <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⌽</span> <span class='Value'>tab</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHRhYiDihpAgM+KAvzTipYoiYWJjZEFCQ0QwMTIzIgox4oC/MiDijL0gdGFi">↗️</a><pre>    <span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span> <span class='Function'>⌽</span> <span class='Value'>tab</span>
 ┌─      
 ╵"CDAB  
   2301  
@@ -102,7 +102,7 @@
        ┘
 </pre>
 <p>The vertical and horizontal rotations are independent, and could also be done with two <code><span class='Function'>⌽</span></code>s and a <code><span class='Modifier'>˘</span></code>. The multi-axis form is more convenient, and can potentially be evaluated faster than multiple separate rotations in the cases where it shows up.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MSDijL0gMiDijL3LmCB0YWI=">↗️</a><pre>    <span class='Number'>1</span> <span class='Function'>⌽</span> <span class='Number'>2</span> <span class='Function'>⌽</span><span class='Modifier'>˘</span> <span class='Value'>tab</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHRhYiDihpAgM+KAvzTipYoiYWJjZEFCQ0QwMTIzIgoxIOKMvSAyIOKMvcuYIHRhYg==">↗️</a><pre>    <span class='Number'>1</span> <span class='Function'>⌽</span> <span class='Number'>2</span> <span class='Function'>⌽</span><span class='Modifier'>˘</span> <span class='Value'>tab</span>
 ┌─      
 ╵"CDAB  
   2301  
