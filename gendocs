@@ -1,5 +1,11 @@
-#! /usr/bin/env bash
+#! /usr/bin/env bqn
 
 # Generate HTML files from markdown ones
-# Argument gives specific files if present; otherwise convert everything
-bqn md.bqn ${1-*.md */*.md */*/*.md} ${@:2:$#}
+# •args gives a list of files if present; otherwise convert everything
+files ← { 0<≠•args ? •args ;
+  # All markdown files in directories corresponding to ones in docs/
+  At‿List‿Type ← •file
+  SubDirs ← { 𝕩 <⊸∾ ∾ 𝕊¨ ('d'=Type¨)⊸/ 𝕩⊸At¨ List 𝕩 }
+  ∾ (<At¨·(".md"≡¯3⊸↑)¨⊸/List)¨ (≠↓¨SubDirs) At "docs/"
+}
+files •Import "md.bqn"
