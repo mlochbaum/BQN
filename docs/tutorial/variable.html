@@ -24,11 +24,11 @@
 ⟨ 3 7 ⟩
 </pre>
 <p>A variable can't be defined twice in the same <em>scope</em>. Later we'll work with functions and other pieces of code that create their own scopes, but for now all you need to know is that all the code in a tutorial runs in the same scope. So <code><span class='Value'>three</span></code> is already defined, and can't be defined again.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4ouIIHRlbiAtIHRocmVlIOKGkCAzCnRocmVlIOKGkCA0">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>4</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cGnigL9l4oC/dGVuIOKGkCDin6ggz4AsIOKLhjEsIDEwIOKfqQp0aHJlZSDii4ggdGVuIC0gdGhyZWUg4oaQIDMKdGhyZWUg4oaQIDQ=">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>←</span> <span class='Number'>4</span>
 <span class='Error'>Error: Redefinition</span>
 </pre>
 <p>It's a little crazy to call them variables if the definition can never change, right? Doesn't &quot;variable&quot; <em>mean</em> &quot;able to change&quot;? Fortunately, this is one way in which BQN isn't crazy. You can <em>modify</em> a variable's value with the arrow <code><span class='Gets'>↩</span></code> provided it's already been defined. This never does anything to the original value: that value stays the same; it's just (probably) not the value of the modified variable any more.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4ouIIHRlbiAtIHRocmVlIOKGkCAzCnRocmVlIOKGkCA0CnRocmVlIOKGqSA0Cgp0aHJlZSA9IDMgICAjIFdhaXQgd2h5IGRpZCBJIGRvIHRoYXQKCjMgPSB0aHJlZSDihqkgMwoKZm91ciDihqkgMyAgICAjIGZvdXIgaXNuJ3QgZGVmaW5lZCB5ZXQ=">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>↩</span> <span class='Number'>4</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cGnigL9l4oC/dGVuIOKGkCDin6ggz4AsIOKLhjEsIDEwIOKfqQp0aHJlZSDii4ggdGVuIC0gdGhyZWUg4oaQIDMKdGhyZWUg4oaQIDQKdGhyZWUg4oapIDQKCnRocmVlID0gMyAgICMgV2FpdCB3aHkgZGlkIEkgZG8gdGhhdAoKMyA9IHRocmVlIOKGqSAzCgpmb3VyIOKGqSAzICAgICMgZm91ciBpc24ndCBkZWZpbmVkIHlldA==">↗️</a><pre>    <span class='Value'>three</span> <span class='Gets'>↩</span> <span class='Number'>4</span>
 
     <span class='Value'>three</span> <span class='Function'>=</span> <span class='Number'>3</span>   <span class='Comment'># Wait why did I do that
 </span>0
@@ -46,7 +46,7 @@
 </pre>
 <p>Does BQN not know about capital letters? Does it object to self-reference? Why is &quot;<code><span class='Function'>BQN</span></code>&quot; green? At least there's an error message, and a &quot;role&quot; is something we've heard about before. <em>Assignment</em> means anything written with a leftward arrow—either definition or modification.</p>
 <p>I'll first confuse you a little more by pointing out that BQN's variables are case-insensitive, and even underscore-insensitive!</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4ouIIHRlbiAtIHRocmVlIOKGkCAzCnRocmVlIOKGkCA0CnRocmVlIOKGqSA0CjMgPSB0aHJlZSDihqkgMwp0aHJlZQp0aHJFZQpUaFJlRQp0aHJfRUUKX190aHJlZQpfVF9IX1JfRV9FXw==">↗️</a><pre>    <span class='Value'>three</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cGnigL9l4oC/dGVuIOKGkCDin6ggz4AsIOKLhjEsIDEwIOKfqQp0aHJlZSDii4ggdGVuIC0gdGhyZWUg4oaQIDMKdGhyZWUg4oaQIDQKdGhyZWUg4oapIDQKMyA9IHRocmVlIOKGqSAzCnRocmVlCnRockVlClRoUmVFCnRocl9FRQpfX3RocmVlCl9UX0hfUl9FX0Vf">↗️</a><pre>    <span class='Value'>three</span>
 3
     <span class='Value'>thrEe</span>
 3
@@ -60,7 +60,7 @@
 3
 </pre>
 <p>But the syntax highlighter still seems to care, and you'll get a strange result if you try to apply a function to one of the uppercase spellings:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGhyZWUg4ouIIHRlbiAtIHRocmVlIOKGkCAzCnRocmVlIOKGkCA0CnRocmVlIOKGqSA0CjMgPSB0aHJlZSDihqkgMwotIFRocmVlCgotIF90aHJlZQ==">↗️</a><pre>    <span class='Function'>-</span> <span class='Function'>Three</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cGnigL9l4oC/dGVuIOKGkCDin6ggz4AsIOKLhjEsIDEwIOKfqQp0aHJlZSDii4ggdGVuIC0gdGhyZWUg4oaQIDMKdGhyZWUg4oaQIDQKdGhyZWUg4oapIDQKMyA9IHRocmVlIOKGqSAzCi0gVGhyZWUKCi0gX3RocmVl">↗️</a><pre>    <span class='Function'>-</span> <span class='Function'>Three</span>
 -3{𝔽}
 
     <span class='Function'>-</span> <span class='Modifier'>_three</span>
