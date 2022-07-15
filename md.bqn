@@ -583,31 +583,6 @@ Markdown ← {filename𝕊𝕩:
 
 
 ################################
-# Testing
-# Uses the test cases at https://spec.commonmark.org/0.29/spec.json
-# since Github doesn't seem to have published theirs
-TestSections ← {
-  tests ← ¯2 ↓˘ 8⊸(÷˜⟜≠∾⊣)⊸⥊ 2↓•file.Lines"spec.json"
-  tests ↩ ((⊑2+⊐⟜':')¨∘⊏ ((-','=¯1⊑⊢)↓↓)¨⎉1 ⊢) tests
-  testSection ← (1↓¯1↓⊢)¨ 5⊏˘tests
-  UnEscape ← {
-    EscapeChar ← { ("\""tn"⊐𝕩) ⊏ "\"""∾@+9‿10 }
-    esc ← IsEscaped 𝕩
-    (¬«esc) / EscapeChar⌾(esc⊸/) 𝕩
-  }
-  RunTest ← {
-    in‿exp ← UnEscape∘(1↓¯1↓⊢)¨2↑𝕩
-    out ← 0 Markdown (@+10) ((⊢-˜¬×+`)∘=⊔⊢) in
-    ⟨exp≡out,in,exp,out,2⊑𝕩⟩
-  }
-
-  ignore ← (2 ⊏˘ tests) ∊ ⟨"47","85"⟩
-  res ← 1 ↓˘ (¬⊏˘)⊸/ RunTest˘ tests /˜ ignore < testSection ∊ 𝕩
-  res
-}
-
-
-################################
 # Syntax highlighting
 
 # Characters in identifiers. These are also used in ProcCode to detect
@@ -766,3 +741,5 @@ ConvertFile ← {
 }
 
 ConvertFile¨ •args
+
+Markdown  # Used by tester test/commonmark.bqn
