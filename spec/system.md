@@ -83,7 +83,7 @@ The following functions manipulate paths and don't access files. Each takes a re
 | Name        | Summary
 |-------------|--------------------------
 | `path`      | Path of this source file, that is, `•path`
-| `At`        | Absolute path of file, with optional base `𝕨`
+| `At`        | Join base path `𝕨`, or `•path` if not given, to `𝕩`
 | `Name`      | File name including extension
 | `Parent`    | Path of the containing directory, with trailing backslash
 | `BaseName`  | File name, with dot and extension removed
