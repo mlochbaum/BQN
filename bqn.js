@@ -44,8 +44,8 @@ sysvals.file = dynsys(state => {
     // Paths and parsing
     path: p,
     at: (x,w) => {
-      let e="•file.At", f=res(e)(has(w)?w:x);
-      return str(has(w)?path.resolve(f,req1str(e,x)):f);
+      let e="•file.At";
+      return str(has(w)?path.join(req1str(e,w),req1str(e,x)):res(e)(x));
     },
     name:      (x,w) => str(path.basename(req1str("•file.Name",x,w))),
     extension: (x,w) => str(path.extname (req1str("•file.Extension",x,w))),

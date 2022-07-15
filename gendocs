@@ -6,6 +6,6 @@ files ← { 0<≠•args ? •args ;
   # All markdown files in directories corresponding to ones in docs/
   At‿List‿Type ← •file
   SubDirs ← { 𝕩 <⊸∾ ∾ 𝕊¨ ('d'=Type¨)⊸/ 𝕩⊸At¨ List 𝕩 }
-  ∾ (<At¨·(".md"≡¯3⊸↑)¨⊸/List)¨ (≠↓¨SubDirs) At "docs/"
+  ∾ (<At¨·(".md"≡¯3⊸↑)¨⊸/List)¨ (≠↓¨SubDirs) "docs/"
 }
 files •Import "md.bqn"
