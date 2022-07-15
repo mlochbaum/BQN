@@ -203,13 +203,20 @@ Markdown ← {filename𝕊𝕩:
   # Function to build REPL link
   # May include previous statements to define variables
   makeLink ← {
-    lines ← names ← nline ← ⟨⟩
-    { used‿assigned‿aline 𝕊 ls:
-      prev ← lines ⊏˜ ⍷∧ (names ∊ used) / nline
-      names ∾↩ assigned
-      nline ∾↩ (≠lines) + aline
+    lines ← names ← deps ← ⟨⟩
+    { ns‿assigned‿line 𝕊 𝕩:
+      M ← ⍷∘∧∘∾                       # Merge
+      n ← ≠ ls ← 𝕩 ⊏˜ ⍷line           # Lines with variables
+      lc ← (≠lines) + ↕n              # Indices they'll have
       lines ∾↩ ls
-      JoinLines prev ∾ 𝕩
+      JoinLines 𝕩 ∾˜ lines ⊏˜ (-n) ↓ M lc { l𝕊[n,a]:
+        e ← (≠names) > i ← names ⊐ n  # Look up the names
+        d ← l ∾˜ M (e/i) ⊏ deps       # Dependencies for this line
+        deps M⟜d¨⌾(((a∧e)/i)⊸⊏)↩      # Add these to reassigned names
+        names ∾↩ new ← (a∧¬e) / n     # Add new names
+        deps ∾↩ d¨ new                # With this line's dependencies
+        d
+      }⟜⍉¨ (⊐line) ⊔ ns≍˘assigned
     }
   }
 
@@ -249,20 +256,23 @@ Markdown ← {filename𝕊𝕩:
 
       # Link that runs the code
       # Parse assignments and variables to add previous lines if needed
+      # First locate the names
       In ← 1=+⟜(↕2)⊸⍋
-      Names ← (((-´"aA")×"AZ"⊸In)⊸+code) ⊔˜ 1-˜('_'≠code)⊸×
       ma‿sp‿st ← {m∧code=𝕩}¨"↩ ‿" ⋄ id←sp<sid
-      unames ← ("az"In⊑¨)⊸/ Names id×+`»⊸<id  # Used names
-      fma ← ma PG⌾⌽ ¬sp∨ma         # Assume anything before ↩ with no space is modified assignment
-      ea ← top ∧ »⊸< a ∨ fma       # Character after assignment target
+      idInd ← / word ← »⊸<id          # Starts of words
+      lc ← ((-´"aA")×"AZ"In⊢)⊸+ code  # Lowercase code
+      names ← lc ⊔˜ 1 -˜ (id∧'_'≠code) × +`word  # Used names
+      names‿idInd ("az"In⊑¨names)⊸/¨↩ # Filter out numbers
+      names (∧`'.'⊸≠)⊸/¨↩
+      iline ← idInd ⊏ +`break         # Line number
+      # Find the top-level assignments
+      fma ← ma PG⌾⌽ ¬sp∨ma            # Assume anything before ↩ with no space is modified assignment
+      ea ← top ∧ »⊸< a ∨ fma          # Character after assignment target
       cont ← sp ∨ (»⊸∧ id) ∨ (»⊸∨ st PG sp) ∨ » 0<depth
-      target ← id ∧ « ea PG⌾⌽ cont # Top-level assignment targets
-      tnum ← +` »⊸< target         # Number of assignments so far
-      anames ← Names target×tnum   # Assigned names
-      ai ← {+`⁼(𝕩-1)⊏tnum}⊸/ /ea   # Indices where assigned
-      aline ← ai ⊏ +`break         # Line number
+      target ← « ea PG⌾⌽ cont         # Top-level assignment targets
+      ia ← idInd ⊏ target             # Whether each name is assigned
       # Build the link element
-      lu ← tryURL ∾ Base64 ¯1 ↓ unames‿anames‿aline MakeLink parts
+      lu ← tryURL ∾ Base64 ¯1 ↓ names‿ia‿iline MakeLink parts
       l ← "a class=""replLink"" title=""Open in the REPL"" target=""_blank"" href="
       link ← (l∾""""(∾∾⊣)lu) Html "↗️"
       ⟨r, /break, link⟩
