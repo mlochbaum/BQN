@@ -232,7 +232,7 @@ Markdown ← {filename𝕊𝕩:
       # Evaluate
       E ← ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt⊢⟩⟜CodeExec
       ShowErr ← lf∾˜"span class='Error'"Html"Error: "∾(∧`lf⊸≠)⊸/⎊•Repr
-      r ← show E⎊(ShowErr∘•CurrentError⊢)⍟(0<≠∘⊢)¨ parts
+      r ← show ('#'≠⊑∘⊢)◶⟨"",E⎊(ShowErr∘•CurrentError⊢)⟩⍟(0<≠∘⊢)¨ parts
 
       # Link that runs the code
       lu ← tryURL ∾ Base64 ¯1 ↓ JoinLines parts
