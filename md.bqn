@@ -200,6 +200,19 @@ Markdown ← {filename𝕊𝕩:
     ⟨¬ useEntity , entities ⊏˜ useEntity/ind , /useEntity⟩
   }
 
+  # Function to build REPL link
+  # May include previous statements to define variables
+  makeLink ← {
+    lines ← names ← nline ← ⟨⟩
+    { used‿assigned‿aline 𝕊 ls:
+      prev ← lines ⊏˜ ⍷∧ (names ∊ used) / nline
+      names ∾↩ assigned
+      nline ∾↩ (≠lines) + aline
+      lines ∾↩ ls
+      JoinLines prev ∾ 𝕩
+    }
+  }
+
   # Non-empty lines in code blocks have 4 leading spaces
   ProcCode ← {
     # Strip the leading spaces
@@ -235,7 +248,21 @@ Markdown ← {filename𝕊𝕩:
       r ← show ('#'≠⊑∘⊢)◶⟨"",E⎊(ShowErr∘•CurrentError⊢)⟩⍟(0<≠∘⊢)¨ parts
 
       # Link that runs the code
-      lu ← tryURL ∾ Base64 ¯1 ↓ JoinLines parts
+      # Parse assignments and variables to add previous lines if needed
+      In ← 1=+⟜(↕2)⊸⍋
+      Names ← (((-´"aA")×"AZ"⊸In)⊸+code) ⊔˜ 1-˜('_'≠code)⊸×
+      ma‿sp‿st ← {m∧code=𝕩}¨"↩ ‿" ⋄ id←sp<sid
+      unames ← ("az"In⊑¨)⊸/ Names id×+`»⊸<id  # Used names
+      fma ← ma PG⌾⌽ ¬sp∨ma         # Assume anything before ↩ with no space is modified assignment
+      ea ← top ∧ »⊸< a ∨ fma       # Character after assignment target
+      cont ← sp ∨ (»⊸∧ id) ∨ (»⊸∨ st PG sp) ∨ » 0<depth
+      target ← id ∧ « ea PG⌾⌽ cont # Top-level assignment targets
+      tnum ← +` »⊸< target         # Number of assignments so far
+      anames ← Names target×tnum   # Assigned names
+      ai ← {+`⁼(𝕩-1)⊏tnum}⊸/ /ea   # Indices where assigned
+      aline ← ai ⊏ +`break         # Line number
+      # Build the link element
+      lu ← tryURL ∾ Base64 ¯1 ↓ unames‿anames‿aline MakeLink parts
       l ← "a class=""replLink"" title=""Open in the REPL"" target=""_blank"" href="
       link ← (l∾""""(∾∾⊣)lu) Html "↗️"
       ⟨r, /break, link⟩

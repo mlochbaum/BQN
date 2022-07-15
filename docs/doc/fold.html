@@ -195,7 +195,7 @@
 ⟨ 9 7 12 ⟩
 </pre>
 <p>The Insert (<code><span class='Modifier'>˝</span></code>) modifier will do this for you. And because it works on the <a href="leading.html">leading axis</a> of the argument, Insert can be applied to axes other than the first with Rank. Sum each row (second axis) with <a href="rank.html#cells">Cells</a> (<code><span class='Modifier'>˘</span></code>), for example.</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=K8udy5ggdGFi">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>˝˘</span> <span class='Value'>tab</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHRhYiDihpAgKDIr4oaVNSkgfOKMnCA5K+KGlTMKK8udy5ggdGFi">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>˝˘</span> <span class='Value'>tab</span>
 ⟨ 2 3 6 5 12 ⟩
 </pre>
 <p>This case is tricky, because <code><span class='Function'>+</span><span class='Modifier'>´˘</span> <span class='Value'>tab</span></code> yields the same result but is actually unsound—if <code><span class='Value'>tab</span></code> contains arrays then they will be merged together at the end. Remember: if you want to reduce along one axis of an array and get an array of results out, you should use Insert (possibly adding Each to work on elements instead of cells; see <a href="#apl2-reduction">APL2 reduction</a> below).</p>
@@ -243,7 +243,7 @@
 <p>As a historical note, Insert is named after J's adverb <code><span class='Function'>/</span></code>, which comes from SHARP APL's <code><span class='Value'>⌿</span></code>, reduce-down. In the original APL, only arithmetic reductions were defined, and nested arrays didn't exist—arrays were either all characters or all numbers. SHARP extended them by splitting the array into cells as we've shown. However, there's another interpretation, which is what you'll find in mainstream APLs today…</p>
 <h2 id="apl2-reduction"><a class="header" href="#apl2-reduction">APL2 reduction?</a></h2>
 <p>The function <code><span class='Value'>⍪⌿</span></code> in Dyalog APL gives very different results from BQN's <code><span class='Function'>∾</span><span class='Modifier'>˝</span></code>. Instead of combining the cells like we see above, APL applies the function on pairs of <em>elements</em> much like Fold. The difference is that, because reduction happens only along one axis but an array might have other axes, there can be multiple values in the result, so that it will always be an array like the argument. BQN can perform this operation as well: <code><span class='Value'>⍪⌿</span></code> is written <code><span class='Function'>∾</span><span class='Modifier'>¨˝</span></code> in BQN (but please use <code><span class='Function'>&lt;</span><span class='Modifier'>˘</span><span class='Function'>⍉</span></code> instead).</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=dGFiCgriiL7CqMudIHRhYg==">↗️</a><pre>    <span class='Value'>tab</span>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHRhYiDihpAgKDIr4oaVNSkgfOKMnCA5K+KGlTMKdGFiCgriiL7CqMudIHRhYg==">↗️</a><pre>    <span class='Value'>tab</span>
 ┌─       
 ╵ 1 0 1  
   0 1 2  
