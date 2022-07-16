@@ -4,10 +4,10 @@ If you have [CBQN](https://github.com/dzaima/CBQN) installed as `bqn` somewhere 
 
     $ ./gendocs [file.md...]
 
-If no files are given, this builds all docs. It's a thin wrapper around `md.bqn`, and the following version lets you run without the shell path set up:
+If no files are given, this builds all docs. It's a BQN script, so the following version lets you run without the shell path set up:
 
-    $ /path/to/BQN md.bqn file.md...
+    $ /path/to/BQN gendocs file.md...
 
 With Node.js but no CBQN, you can also run JS BQN, which takes somewhere around 5 seconds plus 1-10 seconds per file.
 
-    $ ./bqn.js md.bqn file.md...
+    $ ./bqn.js gendocs file.md...
