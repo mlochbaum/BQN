@@ -67,6 +67,12 @@ The [Repeat](repeat.md) (`⍟`) modifier makes a nice "if" conditional. `F⍟G`,
 
 For more complicated "if-else" or "select" type conditionals, use [Choose](choose.md) (`◶`). Watch for ordering here: `F◶⟨G0,G1⟩` puts the two parts in the opposite order to Repeat, and list element 1 comes after element 0 even though it might seem more intuitive for the "true" value to come first.
 
+## Valences
+
+An ambivalent function is one that can take one or two arguments. Tacit code has a hot-and-cold kind of relationship with it. In cases that fit well with Atop, Over, and trains, it tends to work very well. In others, it might [not work](../commentary/problems.md#cant-always-transfer-ambivalence-in-tacit-code) at all. An example is the `{𝕨𝔽𝔾𝕩}` combinator: there's just no tacit equivalent. However, any ambivalent *function* can still be represented, because [Valences](valences.md) (`⊘`) combines a separate monadic and dyadic case.
+
+When designing complex ambivalent functions, it's often best to mix tacit programming with blocks. I usually think of the block as the base for this, since `𝕨` tends to work with, and might put small tacit functions like `⊢⊘∾` inside, or tack on shared functionality such as `⌽∘…` on the outside.
+
 ## Example: combinations
 
 As an example, we'll look at the following [combinations function](https://en.wikipedia.org/wiki/Binomial_coefficient) implementation from bqncrate (substituting the conventional `k` and `n` in for `i0` and `j0`):
@@ -87,7 +93,7 @@ This says there are 10 ways to choose 3 out of 5 different options. Of course it
 
         k {(×´𝕩-↕𝕨)÷×´1+↕𝕨} n
 
-But we are on the tacit page, so we'd like to make it tacit. For better or for worse. There's a mechanical way to do this for many functions, using only identity functions and trains, and making no simplifications. First parenthesize all monadic functions, as these will become 2-trains. Then replace `𝕨` and `𝕩` with `⊣` and `⊢`, and add a `˙` to constants. For the number `1` the added `˙` isn't necessary unless it comes at the end of a train, but we include it here to show the principle.
+But we are on the tacit page, so we'd like to make it tacit. For better or for worse. There's a mechanical way to do this for many functions, using only identity functions and trains, and making no simplifications. First parenthesize all monadic function calls, as these will become 2-trains. Then replace `𝕨` and `𝕩` with `⊣` and `⊢`, and add a `˙` to constants. For the number `1` the added `˙` isn't necessary unless it comes at the end of a train, but we include it here to show the principle.
 
     {(×´𝕩-↕𝕨)÷×´1+↕𝕨}
 
