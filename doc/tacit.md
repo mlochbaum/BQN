@@ -66,3 +66,61 @@ The [Repeat](repeat.md) (`⍟`) modifier makes a nice "if" conditional. `F⍟G`,
         3 (2÷˜⊢)⍟< 7  # halve 𝕩 if greater than 𝕨
 
 For more complicated "if-else" or "select" type conditionals, use [Choose](choose.md) (`◶`). Watch for ordering here: `F◶⟨G0,G1⟩` puts the two parts in the opposite order to Repeat, and list element 1 comes after element 0 even though it might seem more intuitive for the "true" value to come first.
+
+## Example: combinations
+
+As an example, we'll look at the following [combinations function](https://en.wikipedia.org/wiki/Binomial_coefficient) implementation from bqncrate (substituting the conventional `k` and `n` in for `i0` and `j0`):
+
+    k(-÷○(×´)1⊸+)⟜↕˜n  # Number of unordered selections (combinations) of k items from n choices
+
+This function takes the typical approach of multiplying numbers that start at `n` and go down, and dividing by numbers starting at `1` and going up. It's easier to understand from the BQN code, really:
+
+        n←5 ⋄ k←3
+
+        ⟨n-↕k, 1+↕k⟩
+
+        (×´n-↕k) ÷ (×´1+↕k)
+
+(The `3` can be eliminated by replacing `k` with `k⌊n-k`. Figuring out how to do that can be a tacit exercise for later?)
+
+This says there are 10 ways to choose 3 out of 5 different options. Of course it's easy enough to make it into a function of `k` and `n`:
+
+        k {(×´𝕩-↕𝕨)÷×´1+↕𝕨} n
+
+But we are on the tacit page, so we'd like to make it tacit. For better or for worse. There's a mechanical way to do this for many functions, using only identity functions and trains, and making no simplifications. First parenthesize all monadic functions, as these will become 2-trains. Then replace `𝕨` and `𝕩` with `⊣` and `⊢`, and add a `˙` to constants. For the number `1` the added `˙` isn't necessary unless it comes at the end of a train, but we include it here to show the principle.
+
+    {(×´𝕩-↕𝕨)÷×´1+↕𝕨}
+
+    {(×´𝕩-(↕𝕨))÷(×´1+(↕𝕨))}  # Parenthesize monadic functions
+
+     (×´⊢-(↕⊣))÷(×´1˙+(↕⊣))   # 𝕨 to ⊣ and 𝕩 to ⊢
+
+It's not pretty, but does give the same result.
+
+        k ((×´⊢-(↕⊣))÷(×´1˙+(↕⊣))) n
+
+This misses entirely the draw of tacit programming for this example, which is that it allows us to combine the repeated `↕` and `×´` functions—not that we can't do it in a block function, but it turns out to be more natural in tacit code. Here's a list of transformations that turn the block into *nice* tacit code, not just any tacit code.
+
+    {(×´𝕩-↕𝕨)÷×´1+↕𝕨}
+
+    ↕⊸{(×´𝕩-𝕨)÷×´1+𝕨}   # The ↕ is applied to every instance of 𝕨
+
+    ↕⊸((×´⊢-⊣)÷(×´1+⊣)) # Mechanically transform to tacit
+
+    ↕⊸((×´-˜)÷(×´1+⊣))  # ⊢-⊣ is -˜
+
+    ↕⊸(-˜÷○(×´)1+⊣)     # Both arguments to ÷ have ×´ applied
+
+    (-÷○(×´)1+⊢)⟜↕˜     # Move ˜ to the outside
+
+The bqncrate version changes `1+⊢` to `1⊸+`, but otherwise matches the final line. As you can see, there are a few slightly different ways to write this function. This is a common situation. You might choose one version based on personal style, or which parts of the function you want to emphasize.
+
+        k (-÷○(×´)1⊸+)⟜↕˜ n
+
+A side effect of moving to tacit code is that the function is now defined in the monadic case, where it gave an error previously. It copies the left argument over to the right, and the number of ways to choose `n` items out of `n` is always `1`, so this is a pretty useless addition.
+
+        {(×´𝕩-↕𝕨)÷×´1+↕𝕨} 10
+
+        (-÷○(×´)1⊸+)⟜↕˜ 10
+
+But it can confuse the reader, who might try to work out what the monadic case does before realizing this. So it's good practice to make sure the context indicates how many arguments a tacit function takes, because the function itself doesn't tell. This is also a reason to move to blocks with headers as functions get larger.
