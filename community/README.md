@@ -14,6 +14,7 @@ See also:
 
 - [My retrospective](aoc.md) on the many BQN solutions published for [Advent of Code](https://adventofcode.com/) 2021
 - Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
+- Miguel Raz's [Anki deck](https://github.com/miguelraz/miguelraz.github.io/blob/e772dc681330b37544a55d38b3d1537699616420/ankis/bqn-glyphs.apkg), from [this page](https://miguelraz.github.io/teaching/) of resources.
 - Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs, and a few of Conor Hoekstra's [videos](https://www.youtube.com/c/codereport/videos) have BQN sections as well.
 - Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh?tab=notebooks) based on BQN.
 - [bqrpn](https://yiyus.info/bqrpn/) is a reverse-Polish calculator powered by BQN in Javascript.
