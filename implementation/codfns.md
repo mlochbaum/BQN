@@ -2,7 +2,7 @@
 
 # Co-dfns versus BQN's implementation
 
-*Co-dfns is under active development so this document might not reflect its current state. Last update 2022-05-05.*
+*Co-dfns is under active development so this document might not reflect its current state. Last update 2022-07-18.*
 
 The BQN self-hosted compiler is directly inspired by the [Co-dfns](https://github.com/Co-dfns/Co-dfns) project, a compiler for a subset of [Dyalog APL](../doc/fromDyalog.md). I'm very grateful to Aaron for showing that array-oriented compilation is even possible! In addition to the obvious difference of target language, BQN differs from Co-dfns both in goals and methods.
 
@@ -26,7 +26,9 @@ Co-dfns initially didn't check for compilation errors, but has started to add so
 
 ## Comments
 
-Aaron advocates the almost complete separation of code from comments (thesis) in addition to his very terse style as a general programming methodology. I find that this practice makes it hard to connect the documentation to the code, and is very slow in providing a summary or reminder of functionality that a comment might. One comment on each line makes a better balance of compactness and faster accessibility in my opinion. Recently Co-dfns has added comments in a similar volume, with a full-line comment for every group of two to three lines.
+At the time I began work on BQN, Aaron advocated the almost complete separation of code from comments (thesis) in addition to his very terse style as a general programming methodology. I find that such a style makes it hard to connect the documentation to the code, and is very slow in providing a summary or reminder of functionality that a comment might. I chose one comment per line as a better balance of compactness and faster accessibility.
+
+Subsequently Co-dfns undertook perhaps the greatest shift in comment-to-code ratio that's ever happened. Aaron began by adding a full-line comment for every group of two to three lines, not too far from BQN. Then he converted the whole thing to a literate program using the noweb framework and is working on writing the prose half, perhaps a half page per line of code. This could make development harder but it seems like a great way to make it easier to get into a difficult style of programming, so I'm interested to see how it goes.
 
 ## Is it a good idea?
 
