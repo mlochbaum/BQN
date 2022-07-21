@@ -11,7 +11,7 @@ The remaining part, a Virtual Machine (VM), can be implemented in any language t
 - [The BQN virtual machine and runtime](vm.md): the non-self-hosted parts of the BQN implementation, or those needed to port it to a new platform.
 - [Notes on implementing primitives](primitive/README.md)
 - [Notes on compilation](compile/README.md)
-- [Comparison to Co-dfns](codfns.md), the only other array-based compiler.
+- [Comparison to Co-dfns](codfns.md), the other array-based compiler (plus the newer Pareas).
 
 I held a few early forum discussions on the workings of the self-hosted compiler, but aborted these because the interactive format wasn't doing too much. I haven't yet started on non-interactive replacements.
 
