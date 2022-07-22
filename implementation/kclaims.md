@@ -44,7 +44,7 @@ As of 2020, Q supports [multithreaded primitives](https://code.kx.com/q/kb/mt-pr
 
 ## Instruction cache
 
-A more specific claim about K is that the key to its speed is that the interpreter, or some part of it, fits in L1 cache. I know Arthur Whitney himself has said this; I can't find that now but [here](https://kx.com/blog/what-makes-time-series-database-kdb-so-fast/)'s some material from KX about the "L1/2 cache". Maybe this was a relevant factor in the early days of K around 2000—I'm doubtful. In the 2020s it's ridiculous to say that instruction caching matters.
+A more specific claim about K is that the key to its speed is that the interpreter, or some part of it, fits in L1 cache. This is often attributed to Arthur Whitney, and I also seem to remember reading an interview where he mentioned caching, but I haven't found any publication that backs this up. KX has at least published [this article](https://kx.com/blog/what-makes-time-series-database-kdb-so-fast/) that talks about the "L1/2 cache". Maybe instruction caching was a relevant factor in the early days of K around 2000—I'm doubtful. In the 2020s it's ridiculous to say that it matters.
 
 Let's clarify terms first. The CPU cache is a set of storage areas that are smaller and faster than RAM; memory is copied there when it's used so it will be faster to access it again later. L1 is the smallest and fastest level. On a typical CPU these days it might consist of 64KB of *data* cache for memory to be read and written, and 64KB of *instruction* cache for memory to be executed by the CPU. When I've seen it the L1 cache claim is specifically about the K interpreter (and not the data it works with) fitting in the cache, so it clearly refers to the instruction cache.
 
