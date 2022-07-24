@@ -69,7 +69,7 @@ For a longer example, here's an expression for the [volume of a sphere](https://
 
         (4÷3) × π × 2⋆3
 
-The evaluation order is diagrammed below, with the function `⋆` on the first line evaluated first, then `×` on the next, and so on. The effect of the parentheses is that `÷` is evaluated before the leftmost `×`.
+The evaluation order is diagrammed below, with the function `⋆` at the highest level evaluated first, then `×` below it, and so on. The effect of the parentheses is that `÷` is evaluated before the leftmost `×`.
 
 <!--GEN evalexp.bqn
 DrawEval "(4÷3) × π × 2⋆3"
@@ -97,15 +97,15 @@ wh↩19⌾(¯1⊸⊑)wh
 DrawEval "(√3 + 2×√2) - 1+√2"
 -->
 
-But wait: how do we know that `√` in the expressions above uses the one-argument form? Remember that it can also take a left argument. For that matter, how do we know that `-` takes two arguments and not just one? Maybe this looks trivial right now: a good enough answer while we're only doing arithmetic is that a function is called with one argument if there is nothing to its left, or another function, and with two arguments otherwise. But it will get more complicated as we expand the syntax with expressions that can return functions and so on, so it's a good idea to discuss the foundations that will allow us to handle that complexity. In BQN, the way expressions are evaluated—the sequence of function calls and other operations—is determined by the *syntactic role* of the things it contains. A few rules of roles make sense of the syntax seen so far:
+But wait: how do we know that `√` in the expressions above uses the one-argument form? Remember that it can also take a left argument. For that matter, how do we know that `-` takes two arguments and not just one? Maybe this looks trivial right now: a good enough answer while we're only doing arithmetic is that a function is called with one argument if there is nothing to its left, or another function, and with two arguments otherwise. But it'll get more complicated as we expand the syntax with expressions that can return functions and so on, so it's a good idea to discuss the foundations that will allow us to handle that complexity. In BQN, the way expressions are evaluated—the sequence of function calls and other operations—is determined by the *syntactic role* of the things it contains. A few rules of roles make sense of the syntax seen so far:
 
 * *Numeric literals* such as `1` and `π` are *subjects*.
 * *Primitive functions* are *functions* (gasp).
-* A function's arguments are subjects. To call a function it must have a subject on the right, and may have a subject on the left, which is used as the left argument.
+* A function's arguments are subjects. To call a function it must have a subject on the right, and may have a subject on the left, which becomes the left argument.
 * A function's result is a subject—or, more precisely, a function call expression is a subject.
 * A set of parentheses has the same role as whatever's inside it.
 
-Perhaps more than you thought! To really get roles, it's important to understand that a role is properly a property of an expression, and not its value. In language implementation terms, roles are used only to parse expressions, giving a syntax tree, but don't dictate what values are possible when the tree is evaluated. So it's possible to have a function with a number role or a number with a function role. The reason this doesn't happen with the numeric literals and primitives we've introduced is that these tokens have a constant value. `×` or `∞` have the same value in any possible program, and so it makes sense that their types and roles should correspond. When we introduce identifiers, we'll see this correspondence break down—and why that's good!
+Perhaps more than you thought! To really get roles, it's important to understand that a role is properly a property of an expression, and not its value. In language implementation terms, roles are used only to parse expressions, giving a syntax tree, but don't dictate what values may appear when the tree is evaluated. So it's possible to have a function with a number role or a number with a function role. The reason this doesn't happen with the numeric literals and primitives we've introduced is that these tokens have a constant value. `×` or `∞` have the same value in any possible program, and so it makes sense that their types and roles should correspond. When we introduce identifiers, we'll see this correspondence break down—and why that's good!
 
 ## Character arithmetic
 
@@ -113,7 +113,7 @@ Gosh, that's a lot of arithmetic up there. Maybe adding characters will mix thin
 
         'c'
 
-A character is written with single quotes. As in the C language, it's not the same as a string, which is written with double quotes. There are no escapes for characters: any source code character between single quotes becomes a character literal, even a newline. Some kinds of arithmetic e[x](https://xkcd.com/1537/)tend to characters:
+A character is written with single quotes. As in the C language, it's not the same as a string, which is written with double quotes. There are no character escapes: any source code character between single quotes becomes a character literal, even a newline. Some kinds of arithmetic e[x](https://xkcd.com/1537/)tend to characters:
 
         'c' + 1
         'h' - 'a'
@@ -149,7 +149,7 @@ Addition and subtraction with affine characters have all the same algebraic prop
 
 ## Modifiers
 
-Functions are nice and all, but to really bring us into the space age BQN has a second level of function called *modifiers* (the space age in this case is when operators were introduced to APL in the early 60s—hey, did you know the [second APL conference](https://aplwiki.com/wiki/APL_conference#1970) was held at Goddard Space Flight Center?). While functions apply to subjects, modifiers can apply to functions *or* subjects, and return functions. For example, the 1-modifier `˜` modifies one function—that's where the 1 comes from—by swapping the arguments before calling it (Swap), or copying the right argument to the left if there's only one (Self).
+Functions are nice and all, but to really bring us into the space age BQN has a second level of function called *modifiers* (the space age in this case is when operators were introduced to APL in the early 60s—hey, did you know the [second APL conference](https://aplwiki.com/wiki/APL_conference#1970) was held at Goddard Space Flight Center?). While functions apply to subjects, modifiers apply to functions *or* subjects, and return functions. For example, the 1-modifier `˜` modifies one function—that's where the 1 comes from—by swapping the arguments before calling it (Swap), or copying the right argument to the left if there's only one (Self).
 
         2 -˜ 'd'  # Subtract from
         +˜ 3      # Add to itself
@@ -164,18 +164,19 @@ What's wrong with `4⋆2`? Depends on the context. Because of the way evaluation
 <!--GEN
 Primitives ⟨"˜%`%Swap%Self", "⁼%3%Undo", "˙%""%Constant"⟩
 -->
-Another 1-modifier is Undo (`⁼`). BQN has just enough computer algebra facilities to look like a tool for Neanderthals next to a real computer algebra system, and among them is the ability to invert some primitives. In general you can't be sure when Undo will work (it might even be undecidable), but the examples I'll give here are guaranteed by [the spec](../spec/inferred.md#undo) to always work in the same way. Starting with a *third* way to square a number:
+Another 1-modifier is Undo (`⁼`). BQN has just enough computer algebra facilities to look like a tool for Neanderthals next to a real computer algebra system, and among them is the ability to invert some primitives. Undo has a [specification](../spec/inferred.md#undo) that fixes results for some functions and modifiers, but allows implementations to go further. In the tutorials we'll stick to the required stuff, which is definitely enough to be practically useful. Starting with a *third* way to square a number:
 
         √⁼ 4
 
 But the most important use for Undo in arithmetic is the logarithm, written `⋆⁼`. That's all a logarithm is: it undoes the Power function! With no left argument `⋆⁼` is the natural logarithm. If there's a left argument then Undo considers it part of the function to be undone. The result in this case is that `⋆⁼` with two arguments is the logarithm of the right argument with base given by the left one.
 
         ⋆⁼ 10
+
         2 ⋆⁼ 32    # Log base 2
         2 ⋆ 2 ⋆⁼ 32
         10 ⋆⁼ 1e4  # Log base 10 of a number in scientific notation
 
-Another 1-modifier, which at the moment is tremendously useless, is Constant `˙`. It turns its operand into a constant function that always returns the operand (inputs to modifiers are called *operands* because *modificands* is just too horrible).
+Another 1-modifier, which at the moment is tremendously useless, is Constant (`˙`). It turns its operand into a constant function that always returns the operand (inputs to modifiers are called *operands* because *modificands* is just too horrible).
 
         2 3˙ 4
 
@@ -185,7 +186,7 @@ With three examples you may have noticed that 1-modifiers tend to cluster at the
 
 ## 2-modifiers
 
-Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop `∘`, which composes two functions as in mathematics. The resulting function allows one or two arguments like any BQN function: these are all passed to the function on the right, and the result of that application is passed to the function on the left. So the function on the left is only ever called with one argument.
+Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop (`∘`), which composes two functions as in mathematics. The resulting function allows one or two arguments like any BQN function: these are all passed to the function on the right, and the result of that application is passed to the function on the left. So the function on the left is only ever called with one argument.
 
         3 ×˜∘+ 4  # Square of 3 plus 4
         -∘(×˜) 5  # Negative square of 5
@@ -203,9 +204,9 @@ DrawEval "3 ×˜∘+ 4"
 
 This ordering is more consistent with the rule that a 1-modifier's operand should go to its left. If we tried going from right to left we'd end up with `×(˜∘+)`, which uses `˜` as an operand to `∘`. But a modifier can't be used as an operand. To make it work we'd have to give 1-modifiers a higher precedence than 2-modifiers.
 
-In fact, the rules for modifiers are exactly the same as those for functions, but reversed. So why is there a distinction between 1- and 2-modifiers, when for functions we can look to the left to see whether there is a left argument? The reason is that it's natural to follow a 1-modifier by a subject or function that isn't supposed to be its operand. Using an example from the last section, `+˜ 3` has a subject to the right of the 1-modifier `˜`. Even worse, `+˜ ÷ 3` looks just like `+∘ ÷ 3`, but it's two functions `+˜` and `÷` applied to `3` while the version with Atop is a single function `+∘÷` applied to `3`. So the two-layer system of functions and modifiers forces modifiers to have a fixed number of operands even though every function (including those derived by applying modifiers) can be called with one or two arguments.
+In fact, the rules for modifiers are exactly the same as those for functions, but reversed. So why is there a distinction between 1- and 2-modifiers, when for functions we can look to the left to see whether there's a left argument? The reason is that it's natural to follow a 1-modifier by a subject or function that isn't supposed to be its operand. Using an example from the last section, `+˜ 3` has a subject to the right of the 1-modifier `˜`. Even worse, `+˜ ÷ 3` looks just like `+∘ ÷ 3`, but it's two functions `+˜` and `÷` applied to `3` while the version with Atop is a single function `+∘÷` applied to `3`. So the two-layer system of functions and modifiers forces modifiers to have a fixed number of operands even though every function (including those derived by applying modifiers) can be called with one or two arguments.
 
-Remember that 1-modifiers are all superscripts? The characters for 2-modifiers use a different rule: each contains an *unbroken* circle (that is, lines might touch it but not go through it). The 2-modifiers in BQN are the combinators `∘○⊸⟜⊘`, the sort-of-combinators  `⌾◶⍟`, and the not-at-all-combinators `⎉⚇⎊`. And the functions that make that unbroken circle rule necessary are written `⌽⍉`. Since every primitive is a function, 1-modifier, or 2-modifier, you can always tell what type (and role) it has: a superscript is a 1-modifier, an unbroken circle makes it a 2-modifier, and otherwise it's a function.
+Remember how 1-modifiers are all superscripts? The characters for 2-modifiers use a different rule: each contains an *unbroken* circle (that is, lines might touch it but not go through it). The 2-modifiers in BQN are the combinators `∘○⊸⟜⊘`, the sort-of-combinators  `⌾◶⍟`, and the not-at-all-combinators `⎉⚇⎊`. And the functions that make that "unbroken" part necessary are written `⌽⍉`. Since every primitive is a function, 1-modifier, or 2-modifier, you can always tell what type (and role) it has: a superscript is a 1-modifier, an unbroken circle makes it a 2-modifier, and otherwise it's a function.
 
 ## Summary
 

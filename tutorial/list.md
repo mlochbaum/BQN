@@ -41,7 +41,7 @@ The two characters `,` and `⋄` are completely interchangeable, and newline is 
 <!--GEN
 Primitives ⟨"#%%Comment", "‿% %Strand"⟩
 -->
-Finally, *strand notation* is a shortcut for simple lists, like one that just lists a few numbers. It's written with the *ligature* `‿`, which has a higher precedence than either functions or operators (and on the BQN keyboard, the ligature is written with a backslash, then a space). A sequence of values joined with ligatures becomes a list, so that for example the following two expressions are equivalent:
+Finally, *strand notation* is a shortcut for simple lists, like one that just lists a few numbers. It's written with the *ligature* `‿`, which has a higher precedence than either functions or operators (and is typed with backslash-space on the BQN keyboard). A sequence of values joined with ligatures becomes a list, so that for example the following two expressions are equivalent:
 
     ⟨2,+,-⟩
     2‿+‿-
@@ -90,7 +90,7 @@ FS ← {𝕩 Enc˜ "g"Attr⟨"font-size",(Fmt𝕨)∾"px"⟩}
 ⟩
 -->
 
-Lists are just one-dimensional arrays. Types are divided into *data types*, which tend to have a subject role, and *operation types*, which tend to have a role matching their type. Also, any value that's not an array, such as everything we used in the last tutorial, is called an *atom*.
+Lists are just one-dimensional arrays. These types are divided into *data types*, which correspond to a subject role, and *operation types*, which each have a matching role. Also, any value that's not an array, such as everything we used in the last tutorial, is called an *atom*.
 
 ## Arithmetic on lists
 
@@ -140,6 +140,7 @@ Reverse (`⌽`) puts the list back to front.
 With a left argument `⌽` means Rotate instead, and shifts values over by the specified amount, wrapping those that go off the end to the other side. A positive value rotates to the left, and a negative one rotates right.
 
         2 ⌽ ⟨0,1,2,3,4⟩
+
         ¯1 ⌽ "bcdea"
 
 ### …and modifiers
@@ -147,7 +148,7 @@ With a left argument `⌽` means Rotate instead, and shifts values over by the s
 <!--GEN
 Primitives ⟨"¨%2%Each", "´%5%Fold", "∾%,%Join%Join To"⟩
 -->
-The 1-modifier Each (`¨`) applies its operand to every element of a list argument: it's the same as `map` in a functional programming language. With two list arguments (which have to have the same length), Each pairs the corresponding elements from each, a bit like a `zip` function. If one argument is a list and one's an atom, the atom is reused every time instead.
+The 1-modifier Each (`¨`) applies its operand to every element of a list argument, like `map` in a functional programming language. With two list arguments, Each pairs the corresponding elements like arithmetic does, or a bit like a `zip` function (unlike arithmetic, it only goes one level deep). If one argument is a list and one's an atom, the atom is reused every time instead.
 
         ⌽¨ "abcd"‿"ABCDEF"‿"01"
 
@@ -167,7 +168,7 @@ To match the order of BQN evaluation, Fold moves over its argument array from ri
 
 With this evaluation order, `-´` gives the *alternating sum* of its argument. Think of it this way: the left argument of each `-` is a single number, while the right argument is made up of all the numbers to the right subtracted together. So each `-` flips the sign of every number to its right, and every number is negated by all the `-`s to its left. The first number (`1` above) never gets negated, the second is negated once, the third is negated twice, returning it to its original value… the signs alternate.
 
-*Hey, isn't it dissonant that the first, second, and third numbers are negated zero, one, and two times? If they were the zeroth, first, and second it wouldn't be…*
+*Hey, isn't it dissonant that the first, second, and third numbers are negated zero, one, and two times? Not if you call them the zeroth, first, and second…*
 
 You can fold with the Join To function to join several lists together:
 
@@ -179,7 +180,7 @@ But you shouldn't! Just `∾` will do the job for you—with no left argument it
 
 ## Example: base decoding
 
-Some people like to imagine that robots or other techno-beings speak entirely in binary-encoded ASCII, like for instance "01001110 01100101 01110010 01100100 00100001". This is dumb for a lot of reasons, and the encoded text probably just says something inane, but you're a slave to curiosity and can't ignore it. Are one and a half tutorials of BQN enough to clear your conscience?
+Some people like to imagine that robots or other techno-beings speak entirely in binary-encoded ASCII, like for instance "01001110 01100101 01110010 01100100 00100001". This is dumb for a lot of reasons, and the encoded text probably just says something inane, but you're a slave to curiosity and can't ignore it. Are one and two-thirds tutorials of BQN enough to clear your conscience?
 
 <!--GEN
 Primitives ⟨"↕%d%Range%", "⊸%h%Bind?%"⟩
@@ -188,7 +189,7 @@ Almost. It's really close. There are just two things missing, so I'll cover thos
 
         ↕ 8
 
-Natural numbers in BQN start at 0. I'll get to the second function in a moment, but first let's consider how we'd decode just one number in binary. I'll pick a smaller one: 9 is 1001 in binary. Like the first 1 in decimal 1001 counts for one thousand or `10⋆3`, the first one in binary 1001 counts for 8, which is `2⋆3`. We can put each number next to its place value like this:
+Natural numbers in BQN start at 0. I'll get to the second primitive in a moment, but first let's consider how we'd decode just one number in binary. I'll pick a smaller one: 9 is 1001 in binary. Like the first 1 in decimal 1001 counts for one thousand or `10⋆3`, the first one in binary 1001 counts for 8, which is `2⋆3`. We can put each number next to its place value like this:
 
         8‿4‿2‿1 ⋈¨ 1‿0‿0‿1
 
@@ -248,7 +249,7 @@ Was it as anticlimactic as you'd hoped? In fact there's a simpler way to do the 
 
 ## Summary
 
-There are three types of syntax that create lists: the `"string literal"` for lists of characters and either enclosing angle brackets `⟨⟩` with `,` or `⋄` or newline characters or connecting ligatures `‿` for lists with arbitrary elements. The ligature has a higher precedence than functions or modifiers, so we should add it to our precedence table:
+There are three types of syntax that create lists. `"string literal"` gives a list of characters. For arbitrary lists, use enclosing angle brackets `⟨⟩` with `,` or `⋄` or newline between elements, or just connect elements with ligatures `‿`. The ligature has a higher precedence than functions or modifiers and might require parentheses, so we should add it to our precedence table:
 
 Precedence | Role     | Associativity
 -----------|----------|--------------
@@ -257,9 +258,9 @@ Precedence | Role     | Associativity
 2          | Modifier | Left-to-right
 3          | Function | Right-to-left
 
-The elements of a list can have any syntactic role; it's ignored and the list as a whole is a subject.
+The elements of a list can have any syntactic role. It's ignored and the list as a whole is a subject.
 
-We introduced a few new primitives. The links below go to the full documentation pages for them.
+We introduced a few new primitives. The links in the table go to their full documentation pages.
 
 Glyph | 1 arg                        | 2 args
 ------|------------------------------|--------
@@ -270,6 +271,6 @@ Glyph | 1 arg                        | 2 args
 `¨`   | [Each](../doc/map.md)        | [Each](../doc/map.md#each)
 `´`   | [Fold](../doc/fold.md#fold)
 
-Additionally, we saw that the arithmetic functions work naturally on lists, automatically applying to every element of a single list argument or pairing up the elements of two list arguments.
+And we saw that the arithmetic functions work naturally on lists, automatically applying to every element of a single list argument or pairing up the elements of two list arguments.
 
 Even this small amount of list functionality is enough to tackle some little problems. We haven't even introduced a function notation yet!
