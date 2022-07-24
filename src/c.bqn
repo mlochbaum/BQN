@@ -137,14 +137,16 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   # Open brackets have role ¯1 and closed ones have role 0
   "Empty program" ! 0<≠𝕩
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gb←g⊏r=¯1       # Paren (actually any bracket type) depth and grade
-  ErrMismatchedBrackets∘𝕩⍟¬ (g⊏p)(>⟜0⊸/≡1-˜<⟜0⊸/)gx←g⊏𝕩
+  ErrMismatchedBrackets∘𝕩⍟¬ (gp←g⊏p)(>⟜0⊸/≡1-˜<⟜0⊸/)gx←g⊏𝕩
   "Swapped open and closed brackets"_err_(1↑G) 0>(⊑g)⊑pd
-  "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧sep⊸=)gbx←gb/gx
-  "Punctuation : ; ? outside block top level"_err_((sep≠GBX)/gb/G) (⊑bB)⊸≤⊸(⊣<1»(2+⊑bB)⊸=⊸<˜)sep⊸≠⊸/gbx
+  "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧sep⊸=)gb/gx
+  bt←(1=gp)(+`∘⊣⊏2∾(2+⊑bB)=/)gx             # Surrounding bracket type: 1 block, 2 none
+  "Punctuation : ; ? outside block top level"_err_(G) (1=bt)<gx M bH
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)>𝕩/0∾gx}1⊸«⊸∧1∾gb
   dl←«⊸∨dc←r=4                              # Dot left
   r-↩(𝕩=⊑bG)>ec←«dc<0≤r+p                   # Role ¯4 for exports: ⊑bG is ⇐
   "Invalid assignment or stranding use"_err_(↕≠) ((¯4⊸<∧≤⟜¯2)r)>(ec∨𝕩=2+⊑bG)∧»dc<0≤r
+  "Can't use export statement as expression"_err_(G) (0<bt)<g⊏¯4=r
   "Can't use export statement as predicate"_err_(↕≠) (»¯4=r)∧𝕩=pred
   "Dot must be followed by a name"_err_(↕≠) dc>«𝕩 M vi‿nv
   sr←»⌾(((⍋⊏⟜dl)⊸⊏g)⊸⊏)sl←«⊸∨r=¯2⋄ns←¬sl∨sr # Strand right and left; not stranded
