@@ -139,9 +139,8 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   g←⍋pd←+`p←(¯1-2×r)×𝕩 M bB⋄gb←g⊏r=¯1       # Paren (actually any bracket type) depth and grade
   ErrMismatchedBrackets∘𝕩⍟¬ (g⊏p)(>⟜0⊸/≡1-˜<⟜0⊸/)gx←g⊏𝕩
   "Swapped open and closed brackets"_err_(1↑G) 0>(⊑g)⊑pd
-  "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧pred⊸=∨sep⊸=)gbx←gb/gx
-  BE←=∨+⟜2⊸=                                # Bracket equals: match ⟨[ or ⟩] given ⟨ or ⟩ only
-  "Predicates can't be placed inside lists"_err_((sep≠GBX)/gb/G) ((4+⊑bB)⊸BE»⊸∧pred⊸=)sep⊸≠⊸/gbx
+  "Parentheses can't contain separators"_err_(gb/G) ((⊑bB)⊸=»⊸∧sep⊸=)gbx←gb/gx
+  "Punctuation : ; ? outside block top level"_err_((sep≠GBX)/gb/G) (⊑bB)⊸≤⊸(⊣<1»(2+⊑bB)⊸=⊸<˜)sep⊸≠⊸/gbx
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)>𝕩/0∾gx}1⊸«⊸∧1∾gb
   dl←«⊸∨dc←r=4                              # Dot left
   r-↩(𝕩=⊑bG)>ec←«dc<0≤r+p                   # Role ¯4 for exports: ⊑bG is ⇐
@@ -161,6 +160,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   𝕩⊏˜↩rev⋄dc⊏˜↩rev⋄i⊏˜↩rev⋄e⊏˜↩rev
 
   # Compute parsing ordering gr≡g⊏rev
+  BE←=∨+⟜2⊸=                                # Bracket equals: match ⟨[ or ⟩] given ⟨ or ⟩ only
   g↩⍋+`p↩br-˜rev⊏p⋄bp←0(<⋈○(/⟜g)>)g⊏p       # Order by non-brace bracket depth
   g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev                     # Now by dots
   sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩BE˜5+⊑bB  # Strand length; list starts
@@ -168,10 +168,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
 
   # Headers
-  hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH⋄qm←𝕩=pred             # Case header : and separator ; and predicate ?
-  "Punctuation : ; ? not allowed outside blocks"_err_(↕≠) (∨`b)<hh∨cs∨qm
+  hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH                       # Case header : and separator ;
   fi←+`cb←b∨cs⋄H←cb¬∘PN⊢                    # Body index fi; which bodies Have a property
-  cq←(H qm)∨ch←H hh                         # ch: body has : header ; cq: or ? predicate
+  cq←(H𝕩=pred)∨ch←H hh                      # ch: body has : header ; cq: or ? predicate
   cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co                 # cf: body is first; cm: body is one of multiple
   "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)cq
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓cq
