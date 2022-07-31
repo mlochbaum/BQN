@@ -344,7 +344,7 @@
     <span class='Value'>a</span>                <span class='Comment'># It hasn't changed, of course
 </span>⟨ 4 3 2 1 0 ⟩
 </pre>
-<p>The code to do this looks the same as what we did with Reverse (<code><span class='Function'>⌽</span></code>). Again we don't have to parenthesize the function, because modifiers associate from left to right, so Under (<code><span class='Modifier2'>⌾</span></code>) binds to its operands before Compose (<code><span class='Modifier2'>∘</span></code>) does.</p>
+<p>The code to do this looks the same as what we did with Reverse (<code><span class='Function'>⌽</span></code>).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgNCAgICAgICAgICAgICMgRmlyc3QgaXQncyBhIG51bWJlcgphIOKGqSA04oC/NeKAvzYgICAgICAgICMgTm93IGl0J3MgYSBsaXN0IQphIOKGqSBhIC0gMQphIC3ihqkgMQphIOKIvsuc4oapIDDigL8xCmEg4oy94oiY4oqj4oapIEAKYSDijL3ihqkKYSA04oq4LeKGqSAgICAgICAgICAgIyBBbmQgYmFjayBhZ2FpbgphIC3in5w04oy+KMKvMuKKuOKGkSnihqk=">↗️</a><pre>    <span class='Value'>a</span> <span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Number'>4</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Number'>¯2</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Paren'>)</span><span class='Gets'>↩</span>
 ⟨ 4 3 2 ¯3 ¯4 ⟩
 </pre>
