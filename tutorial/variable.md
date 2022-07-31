@@ -252,6 +252,6 @@ Notice that there's no need for parentheses: modifiers bind more strongly than t
 
         a                # It hasn't changed, of course
 
-The code to do this looks the same as what we did with Reverse (`⌽`). Again we don't have to parenthesize the function, because modifiers associate from left to right, so Under (`⌾`) binds to its operands before Compose (`∘`) does.
+The code to do this looks the same as what we did with Reverse (`⌽`). Again we don't have to parenthesize the function, because modifiers associate from left to right, so Under (`⌾`) binds to its operands before Modified Assignment (`↩`) does.
 
         a -⟜4⌾(¯2⊸↑)↩
