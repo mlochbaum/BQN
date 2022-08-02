@@ -19,10 +19,10 @@ Some people consider it reasonable to name [combinators](primitive.md#modifiers)
 |   `⟜`   | Starling | `S`      | ~Dove        | `D`-like: `labcd.ac(bd)`       |
 |   `˜`   | Warbler  | `W`      | Cardinal     | `C`                            |
 | `k G H` | Dove     | `D`      | Eagle        | `E`                            |
-| `F G H` | Phoenix  | `S'`     | Golden Eagle | `Ê`-like: `labcde.a(bde)(cde)` |
+| `F G H` | Phoenix  | `Φ`      | Pheasant     | `Φ₁`                           |
 
 Lambda calculus doesn't have BQN's polymorphism on one or two arguments, so each BQN combinator corresponds to two lambda calculus forms depending on the number of arguments, giving the two columns of birds above.
 
 Inputs are mapped to lambda calculus arguments according to the ordering `𝔽𝔾𝕨𝕩`, and `GFH` for a 3-train `F G H`. For example, when I write that the combination `𝕨 𝔽˜ 𝕩` corresponds to a call of `C` or `labc.acb`, `a` is `𝔽` and `bc` are `𝕨𝕩`.
 
-The name "Golden Eagle" is a [fever dream](https://nitter.net/code_report/status/1440208242529882112#m) of bird enthusiast Conor Hoekstra, who saw it emerge disordered from the Bald Eagle when arguments `fg` are set equal to `cd`.
+Note that the name "Pheasant" comes from [Hoekstra 2022](https://github.com/codereport/Content/blob/main/Publications/Combinatory_Logic_and_Combinators_in_Array_Languages.pdf). It was previously nicknamed ["Golden Eagle"](https://nitter.net/code_report/status/1440208242529882112#m) before Conor discovered Haskell Curry had introduced this combinator in his 1931 paper [The universal quantifier in combinatory logic](https://www.jstor.org/stable/1968422).
