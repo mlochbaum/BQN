@@ -17,6 +17,7 @@ All these websites run BQN (on your computer, except Attempt This Online):
 | [Attempt This Online](https://ato.pxeger.com/run?1=m704qTBvwYKlpSVpuhZoFJQGAA) | TIO | CBQN | Server-side
 | [Do Stuff Online](https://dso.surge.sh/#bqn)     | TIO | JS
 | [Razetime](https://razetime.github.io/bqn-repl/) | Session  | JS
+| [ktye/zoo](https://ktye.github.io/zoo/index.html#bqn) | Session | JS | Many array languages
 | [Observable](https://observablehq.com/@lsh/bqn)  | Notebook | JS | For import in Observable
 | [BQN-80](https://dancek.github.io/bqn-80)        | One-shot | JS | Create animations
 
