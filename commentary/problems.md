@@ -10,7 +10,7 @@ This list is meant to be specific, so it addresses particular features rather th
 A pretty fundamental problem with dynamically-typed array languages: when computing something (say, a sum) that depends on all elements, if there are no elements then the structure of the result is indeterminate. Shape arithmetic means the shape of a cell is always known, except when using the Rank modifier so that every cell is computed independently. [Fills](../doc/fill.md) are BQN's solution for deeper structure, but they're incomplete. They store only types and not data, but operations like Reshape that use data to determine type are common enough to make this unreliable.
 
 ### Incoherent monad-dyad builtin pairs
-BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason (that is, both function valences match the symbol but they don't match with each other). I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved. In some future language, that is, as BQN is past the point of being able to change these.
+BQN inherits the functions `+×⌊⌈|`, and adds the functions `∧∨<>=≠≡≢↕⍷`, that are only paired for their glyphs and not for any other reason (that is, both function valences match the symbol but they don't match with each other). I find there are just not enough good glyphs to separate all of these out, but I'm sure the pairings could be improved. In some future language, that is, as BQN is past the point of being able to change these.
 
 ### Glyphs are hard to type
 There's been a lot of work done on this. Still there, still a problem. On the other hand, glyphs are easy to read, and write by hand!
@@ -130,7 +130,7 @@ A positive operand to Rank indicates the cell rank, so positive zero means to ac
 Since `𝕨F⊸G𝕩` is `(F𝕨)G𝕩` and `𝕨F⟜G𝕩` is `𝕨F G𝕩` in the dyadic case, we might expect these to devolve to `G𝕩` and `F G𝕩` when `𝕨` is not present. Not so: instead `𝕩` is substituted for the missing `𝕨`. And Before and After are also the main places where a programmer might try to use `𝕨` as an operand, which doesn't work either (the right way is the train `𝕨F⊢`). It's also a little strange that `v F˜·` is `·`, while `·F v` is `F v`.
 
 ### Glyphs that aren't great
-Blanket issue for unintuitive glyphs. Currently I find `⥊⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
+Blanket issue for unintuitive glyphs. Currently I find `⊏⊑⊐⊒⍷⁼⎉⚇` to not be particularly good fits for what they describe.
 
 ### Can't access array ordering directly
 Only `⍋⍒` use array ordering rather than just array equality or numeric ordering. Getting at the actual ordering to just compare two arrays is not hard but also not obvious: `⍋⌾⋈` is TAO `≤`.
