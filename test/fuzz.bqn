@@ -9,22 +9,24 @@ Fuzz testing. Options:
   -n: Number of iterations (100)
   -t: Element type (0 3 4 5 6)
   -p: Primitives: both | mon%dy | mon%dy%both
+  -m: Modifier operands (dyadic arithmetic)
 
 Any number of types or bounds can be given; all combinations are tested."
 
-  o ← "-h"‿"--help"‿"-b"‿"-n"‿"-t"‿"-p"‿"-r"
+  o ← "-h"‿"--help"‿"-b"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
   oo ← (≠o) = oi ← o ⊐ a←•args
   •Exit∘•Out∘help⍟(∨´2⊸>) oi
 
   opts ← 2↓o≠⊸↑ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
-  bounds‿num‿types‿prims‿seed ⇐ •BQN¨¨⌾(¯2⊸↓) opts
+  bounds‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
   _default_ ← { (∾"Only one "‿𝕘‿" can be given") ! 1≥≠𝕨 ⋄ 𝕩𝔽∘⊣´𝕨 }
   num ⊢_default_"iteration number"↩ 100
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
   bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
   seed "u"⊸≡◶⟨•BQN,•Show(2⋆31)|⌊∘•UnixTime⟩_default_"random seed"↩ 1
 
-  prims ↩ ((⊢-˜¬×+`+2×·¬∨´)'%'⊸=)¨⊸(⊔○∾) prims
+  modop ∾↩
+  prims ((⊢-˜¬×+`+2×·¬∨´)'%'⊸=)¨⊸(⊔○∾)↩
   "At most three %-separated primitive groups allowed" ! 3≥≠prims
   prims ↩ 2 (↑((¬∘∊/⊣)∾⊢)¨⊏) 3 ↑ prims
 }
@@ -148,6 +150,17 @@ _testDyArith ← {f←𝕗
   }
 }
 
+_testMonFold ← {
+  l ← 𝕨 gen.Arith RandBound 𝕩
+  Pad ← gen.Arith∘1⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘⊢)  # Avoid missing identity
+  modop {m←𝕩 ⋄ ! 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
+}
+_testDyFold ← {
+  i‿l ← ¯1 (⊑⋈↓) 𝕨 gen.Arith 1 + RandBound 𝕩
+  modop {m←𝕩 ⋄ ! i⊸(𝕨_m) _testConsistent_ FlatMatch l }⌜ 𝕗
+}
+testMonScan‿testDyScan ← testMonFold‿testDyFold
+
 _testMonStruct ← { # ⥊≍⌽⍉⊏
   k ← 3|1+ ⌽‿⊏ ⊐ 𝕗
   sh ← k ⊏ {𝕏𝕨}` (1+⌈´k) ↑ ⟨RandShape 𝕩, 1⊸∾⍟(0=≠), 1⊸∾⍟(0=⊑)⟩
@@ -200,7 +213,7 @@ _testSelect ← { # /⊏
   g { ! (l𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
 }
 
-cases ← ⟨
+cases ← [
   ⟨∾`"+-×÷⋆√⌊⌈¬|"‿"∧∨≤<>≥=≠", testMonArith‿testDyArith⟩
   ⟨"⥊≍⌽⍉⊏"‿"⥊↑↓↕⌽⍉", testMonStruct‿testDyStruct⟩  # Monadic «» hard to test
   ⟨"≠=≢"‿"", testDim‿@⟩
@@ -208,10 +221,12 @@ cases ← ⟨
   ⟨"⊐⊒∊⍷∧∨⍋⍒"‿"⊐⊒∊⍋⍒", testMonSearch‿testDySearch⟩
   ⟨"/⊔"‿"/⊏⊔", testIndices‿testSelect⟩
 # ↕<∾↑↓≡>⊑ % ⊑⍷
-# ˘⎉¨⚇⌜⁼⍟´˝`
-⟩
+  ⟨"´"‿"´", testMonFold‿testDyFold⟩
+  ⟨"˝`"‿"˝`", testMonScan‿testDyScan⟩
+# ˘⎉¨⚇⌜⁼⍟
+]
 MakeTests ← {
-  prim‿test ← <∘>˘ ⍉> 𝕨
+  prim‿test ← <∘>˘ ⍉ 𝕨
   m ← 𝕩 ∊¨⎉1 prim
   ((∾"Unsupported primitives: "‿"%"∾¨/¨⟜𝕩) ! 0˙)⍟(∨´∨´¨) ¬∨˝m
   p ← •BQN∘⥊¨¨ 𝕩
@@ -219,5 +234,6 @@ MakeTests ← {
   1 {𝕎⊢𝕏}´ t
 }
 
-pr ← (⊑⊑cases)⍟(0=·+´≠¨) opts.prims
+pr ← (⊑cases)⍟(0=·+´≠¨) opts.prims
+modop ← •BQN∘⥊¨ (1⊑⊑cases)⍟(0=≠) opts.modop
 opts.types (cases MakeTests pr)⌜ opts.num/opts.bounds
