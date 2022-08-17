@@ -4,7 +4,7 @@
 
 BQN syntax consists of expressions where computation is done, with a little organizing structure around them like assignment, functions, and list notation. Expressions are where the programmer is in control, so the design tries to do as much as possible with them before introducing special syntax.
 
-A *program* is a unit of source code that's evaluated, such as a source file, or one line of REPL input (one run of the `bqn` executable often involves multiple programs). Like a [block](#blocks), it's a sequence of expressions to be evaluated in order. It has a result, which is used it the program was evaluated from BQN with `•BQN`, `•Import` or similar. An error might occur when a program is running; this ends execution unless it's [caught](assert.md#catch).
+A *program* is a unit of source code that's evaluated, such as a source file, or one line of REPL input (one run of the `bqn` executable often involves multiple programs). Like a [block](#blocks), it's a sequence of expressions to be evaluated in order. It has a result, which is used if the program was evaluated from BQN with `•BQN`, `•Import` or similar. An error might occur when a program is running; this ends execution unless it's [caught](assert.md#catch).
 
 ## Precedence
 
