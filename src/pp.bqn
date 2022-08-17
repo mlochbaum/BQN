@@ -26,8 +26,8 @@ Tokenize←{
   s‿d←/¨2↑sm‿dm‿c‿n←𝕩⊸=¨"'""#"∾lf
   g←⍋q←∾⟨  s⋄¯1↓d⋄/c⟩ ⋄q↩g⊏q                # Open indices
   e← g⊏∾⟨2+s⋄ 1↓d⋄-⟜»∘⊏⟜(0∾+`c)⊸//n∾1⟩      # Matching close indices
-  Se←{(⊏˜𝕨)Se 1¨⌾((𝕩/𝕨)⊸⊏)𝕩}⍟(0=¯1⊑⊢)       # Mark reachable openings
-  ab←(≠𝕩)↑/⁼⥊((≠↑∾⟜≠Se 1∾0¨)q⍋e)/⍉q≍e       # Open/close masks
+  Se←≠(>/⊢)∾⟜≠{(⊏˜𝕨)𝕊⍟(≠○(¯1⊸⊑))𝕩∾𝕩⊏𝕨}⟨0⟩˙  # Find reachable openings
+  ab←(≠𝕩)↑/⁼⥊(Se q⍋e)⊏⍉q≍e                  # Open/close masks
 
   k←(n∧ab)<»(𝕩='•')∨(∧⟜«𝕩∊wc)∨≠`ab          # Token continuation mask
   (¯1+`¬k)⊔𝕩

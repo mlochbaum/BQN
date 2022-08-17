@@ -87,23 +87,23 @@ PrecedesGroup ← {
 Trace ← {
   # 𝕨 is a list with one index for each possible start, giving a later
   # start that is known to be enabled if that one is.
-  # 𝕩 is a mask of all starts known to be enabled.
+  # 𝕩 is a list of all starts known to be enabled.
   # A "stop" position that follows all expressions tells when to stop.
   # At each step the distance from a start to its successor in 𝕨 is
   # doubled, so the maximum number of steps is about 2⋆⁼≠𝕩.
   En ← {
-    𝕩 ↩ 1¨⌾((𝕩/𝕨)⊸⊏)𝕩  # Starts following from an enabled one are enabled
+    𝕩 ∾↩ 𝕩⊏𝕨           # Add starts following from an enabled one
     𝕨 ↩ ⊏˜ 𝕨           # Double the number of steps in 𝕨
     𝕨 En 𝕩             # Repeat
-  }⍟{0=¯1⊑𝕩}           #        until the stop is enabled
+  }⍟{end≠¯1⊑𝕩}         #        until the end is reached
 
   g ← ⍋𝕨               # Order expressions by starting index
   start ← g⊏𝕨
   end   ← g⊏𝕩
   next ← start ⍋ end   # An expression's successor starts after it ends
-  next ∾↩ ≠next        # The stop node is its own successor
-  enabled ← ¯1 ↓ next En (≠next)↑1  # Search and remove the stop
-  enabled / start≍˘end # List of enabled starts and ends
+  next ∾↩ end←≠next    # The stop node is its own successor
+  enabled ← end⊸>⊸/ next En ⋈0  # Search, then remove stops
+  enabled ⊏ start≍˘end # List of enabled starts and ends
 }
 
 # Join lines with newline characters. Include a trailing newline.
