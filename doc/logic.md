@@ -36,9 +36,31 @@ And the [scans](scan.md) `` ∧` `` and `` ∨` `` extend this notion to prefixe
 
         ∨` 0‿1‿0‿0‿1‿0‿1
 
+Not (`¬`) isn't complicated: for example `¬a=b` indicates that `a` is *not* equal to `b`. Or `a≠b`, but you can't just put a slash through every symbol. One less obvious use is to convert a boolean to plus or minus 1, using the [hook](hook.md) modifiers. `b-¬b` leaves 1 unchanged but subtracts 1 from 0, while `(¬b)-b` is the negation, converting 0 to 1 and 1 to ¯1.
+
+        -⟜¬ 0‿1
+
+        ¬⊸- 0‿1
+
+### Span
+
+Span isn't a logic function, given that `1¬0` is `2`, not a boolean. It's defined to be `1+𝕨-𝕩` (I like to think of the line hanging off the right side as the 1 to be added). The reason it's called Span is that if the arguments are whole numbers with `𝕩≤𝕨`, this is the length of the sequence `𝕩, 𝕩+1,… 𝕨`.
+
+        4 ¬ 1   # 1, 2, 3, 4
+
+        9 ¬ 7   # 7, 8, 9
+
+The fact that Not and Span share a glyph is no coincidence. `¬𝕩` is `0¬𝕩`, because this is equal to `1-𝕩` and `1-0‿1` is `1‿0`. And because `¬𝕩` is defined to be `1-𝕩` not just for booleans but for all numbers, it's also true that `𝕨¬𝕩` is `𝕨+¬𝕩`.
+
+        5 + ¬ 0‿1‿1
+
+        5 ¬ 0‿1‿1
+
+The identities `¬𝕩 ←→ 0¬𝕩` and `𝕨¬𝕩 ←→ 𝕨+¬𝕩` are also true with `-` in place of `¬`! That's because `¬` is `{1+𝕨-𝕩}`, or `1+-`, in either case. Changing between `-` and `¬` only adds or subtracts 1 from both sides of the identities.
+
 ## Definitions
 
-We define
+The three logic functions can be defined easily in terms of other arithmetic. They're convenience functions in that sense.
 
     Not ← 1+-  # also Span
     And ← ×
