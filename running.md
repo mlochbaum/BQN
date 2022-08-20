@@ -47,7 +47,7 @@ CBQN is developed on Linux, and as-is will only run on Unix-like systems (includ
 
 `genRuntime` can also be run with another BQN implementation (the Node.js one works but takes up to a minute), and plain `./genRuntime` uses your system's `bqn` executable. I symlink `…/CBQN/BQN` to `~/bin/bqn` so I can easily use CBQN for scripting.
 
-CBQN uses the self-hosted runtime to achieve full primitive coverage, and implements specific primitives or parts of primitives natively to speed them up. This means primitives with native support—including everything used by the compiler—are fairly fast while others are much slower.
+CBQN has native support for most primitive functionality and falls back to the self-hosted runtime to fill the gaps. The most important operations are fast, and it's almost always possible to write code that sticks to them. However, some cases, particularly those that deal with multiple axes, are much slower (although still fine for most use cases).
 
 ### dzaima/BQN
 
