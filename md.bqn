@@ -95,14 +95,14 @@ Trace ← {
     𝕩 ∾↩ 𝕩⊏𝕨           # Add starts following from an enabled one
     𝕨 ↩ ⊏˜ 𝕨           # Double the number of steps in 𝕨
     𝕨 En 𝕩             # Repeat
-  }⍟{end≠¯1⊑𝕩}         #        until the end is reached
+  }⍟{stop≠¯1⊑𝕩}        #        until the stop is reached
 
   g ← ⍋𝕨               # Order expressions by starting index
   start ← g⊏𝕨
   end   ← g⊏𝕩
   next ← start ⍋ end   # An expression's successor starts after it ends
-  next ∾↩ end←≠next    # The stop node is its own successor
-  enabled ← end⊸>⊸/ next En ⋈0  # Search, then remove stops
+  next ∾↩ stop←≠next   # The stop node is its own successor
+  enabled ← stop⊸>⊸/ next En ⋈0  # Search, then remove stops
   enabled ⊏ start≍˘end # List of enabled starts and ends
 }
 
