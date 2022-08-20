@@ -183,7 +183,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   ut←un/»us⋄hi/˜↩0=us                       # Undo type: 0 normal, 1 ⁼, 2 ˜⁼
   hr←(⊏⟜ns×⊏⟜r)rev⊏˜hi                      # Header component roles
   hl←2=hn←(1⊸»+«)hc←¯1=hr                   # hl: is label, hc: is :
-  "Only one header per body allowed"_err_(hc/HI) (1+hc/hi)⊏hf
+  "Only one header per body allowed"_err_(hc/HI) (g⊏˜1+gi⊏˜hc/hi)⊏hf
   ho←(»∨·«(hr=3)∧⊢)hl<hy←2≤hr               # Header operands
   "Missing operand in header"_err_(HI) (ut∧hr=3)∨ho∧hc∨hy
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
