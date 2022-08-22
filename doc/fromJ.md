@@ -73,7 +73,7 @@ Functions `+` `-` `|` `<` `>` are the same in both languages.
 
 | BQN   | `⍋`  | `⍒`     | `⊏`  | `⊑`     | `⊐`     | `⊒` | `∊`  | `⍷`  | `⊔`       |
 |:-----:|:----:|:-------:|:----:|:-------:|:-------:|:---:|:----:|:----:|:---------:|
-| Monad | `/:` | `/:`    | `{.` | `0{::,` | `i.~~.` | `…` | `~:` | `~.` | `</.i.@#` |
+| Monad | `/:` | `\:`    | `{.` | `0{::,` | `i.~~.` | `…` | `~:` | `~.` | `</.i.@#` |
 | Dyad  | `I.` | `I.&:-` | `{`  | `{::`   | `i.`    | `…` | `e.` | `E.` | `</.`     |
 
 Most of BQN's combinators have J equivalents. The J equivalent `"_` for `˙` assumes a noun operand, but `˙` makes a constant function for any operand. `◶` has arguments reversed relative to `@.`, and uses an actual array of functions rather than gerunds. Besides these, BQN's `⟜` is like a J hook, that is, `F⟜G` is `(F G)`, and `⊸` applies in the opposite direction.
