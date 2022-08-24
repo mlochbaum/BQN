@@ -4,6 +4,14 @@
 
 This page covers the [search functions](../../doc/search.md), dyadic `⊐⊒∊`, and [self-search functions](../../doc/selfcmp.md), monadic `⊐⊒∊⍷`. Generally speaking, hash tables or plain lookup tables are the fastest way to implement these functions, because they transform the problem of searching into random access, which is something computers specialize in. In some edge cases, and when the search becomes large enough that caches can't speed up random access, other methods can be relevant.
 
+## Lookup table
+
+For the purposes of these notes, a lookup table is storage, indexed by some key, that contains at most one entry per key. This means reading the value for a given key is a simple load—differing from a hash table, which might have collisions where multiple keys indicate the same entry. Lookup table operations are very fast, but the entire table needs to be initialized and stay in cache. So they're useful when the number of possible values (that is, size of the table) is small: a 1-byte or 2-byte type, or small-range integers.
+
+For example, a lookup table algorithm for dyadic `⊐` might traverse `𝕨`, writing each value's index to the table. Doing this step in reverse index order makes sure the lowest index "wins". Similarly, empty entries must be initialized to `≠𝕨` beforehand. Then the result is `𝕩⊏t` where `t` is the table constructed this way. A nonzero minimum value can be handled for free by subtracting it from the table pointer.
+
+Set operations can be handled with a packed bit table, but reading a bit is slower so this should be done only if the space savings are really needed.
+
 ## Reverse lookups
 
 The classic pattern for searching is to build an index of the data to be searched, then use it for each searched-for value. This is an optimization though: the obvious way is to search for one value at a time. What I call a reverse lookup returns to this method in a sense, and is useful if the searched-in array is larger than searched-for by a factor of 2 or so.
@@ -22,4 +30,4 @@ One option is [partitioning](sort.md#partitioning) as in quicksort, but the unst
 
 Partitioning doesn't really have to interact with hash insertions or lookups: after the data is partitioned at a suitable size, it will just hash faster because it only accesses part of the hash table at a time. It's also possible to save space by using a smaller hash table and doing one partition with it, then the next, and so on.
 
-If enough data is stored in the hash table to distinguish one pass from the next, the hash doesn't need to be re-initialized on each step. This means a very low load factor can be used, which is a big deal because a basic hash is very fast in these conditions!
+There are a few tricks to avoid having to re-initialize the table on each pass. This is a big deal because it means a very low load factor can be used, which allows for faster hash or even a lookup table! First, and more generally, the table can be cleaned up *after* a pass by walking through the elements again (possibly in reverse for some hash designs). Second, if enough data is stored in the hash table to distinguish one pass from the next, then values from previous passes can be interpreted as empty so that no re-initialization is necessary.
