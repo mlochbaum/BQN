@@ -6,6 +6,7 @@ Commentary on the best methods I know for implementing various primitives. Often
 
 - [Replicate](replicate.md)
 - [Sorting](sort.md)
+- [Searching](search.md)
 - [Transpose](transpose.md)
 - [Randomness](random.md)
 
