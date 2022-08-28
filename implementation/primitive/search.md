@@ -4,13 +4,30 @@
 
 This page covers the [search functions](../../doc/search.md), dyadic `⊐⊒∊`, and [self-search functions](../../doc/selfcmp.md), monadic `⊐⊒∊⍷`. Generally speaking, hash tables or plain lookup tables are the fastest way to implement these functions, because they transform the problem of searching into random access, which is something computers specialize in. In some edge cases, and when the search becomes large enough that caches can't speed up random access, other methods can be relevant.
 
-## Lookup table
+Searching is closely related to [sorting](sort.md). I've found it helpful to think of a search function as an ordered lookup according to an unspecified order. The advantage over a predefined order is that the order can be shuffled with a hash function to randomize the distribution. The fact that the wanted result is in the original argument order, not sorted, also means that sparse tables are more effective—there is never any need to traverse the table to pack ordered values as in sorting.
+
+## Lookup tables
 
 For the purposes of these notes, a lookup table is storage, indexed by some key, that contains at most one entry per key. This means reading the value for a given key is a simple load—differing from a hash table, which might have collisions where multiple keys indicate the same entry. Lookup table operations are very fast, but the entire table needs to be initialized and stay in cache. So they're useful when the number of possible values (that is, size of the table) is small: a 1-byte or 2-byte type, or small-range integers.
 
 For example, a lookup table algorithm for dyadic `⊐` might traverse `𝕨`, writing each value's index to the table. Doing this step in reverse index order makes sure the lowest index "wins". Similarly, empty entries must be initialized to `≠𝕨` beforehand. Then the result is `𝕩⊏t` where `t` is the table constructed this way. A nonzero minimum value can be handled for free by subtracting it from the table pointer.
 
 Set operations can be handled with a packed bit table, but reading a bit is slower so this should be done only if the space savings are really needed.
+
+## Hash tables
+
+A hash table is a more sophisticated design where there are more possible keys than table entries. For good performance it depends on not having too many *actual* keys packed into a small space, which is why this method is named after the hash function. If the data is expected to be random then no hash function is needed (the identity function can be used), but I don't think that happens much with searching. Hash tables generally degrade to the performance of a linear lookup if the hash is defeated, so it's ideal to have a way to escape and use a sorting-based method if too many hashes collide.
+
+Hashing is really the only way to get a performant lookup on arbitrary data. For 2-byte and small-range data, lookups are better, and in several 4-byte cases, lookup with [partitioning](#partitioning) is competitive for smaller arrays and much better for large ones as the hash table outgrows the cache (>1e5 elements to be hashed or so).
+
+While hash tables are well studied, almost all the work is focused on large persistent tables, meaning that they're not too suited for a one-shot search function. Abseil's [flat\_hash\_map](https://github.com/abseil/abseil-cpp/blob/master/absl/container/flat_hash_map.h) is fine, I guess. Roger Hui's [Index-Of, a 30-Year Quest](https://www.jsoftware.com/papers/indexof/indexof.htm) works as an introduction to hashing in APL, although it has begun to suffer from the small number of years in places, and some details have serious issues (with a power-of-two table size, multiplying by a prime causes high bits to be lost and so is hardly better than no hash). The second half of my "Sub-nanosecond Searches" talk ([video](https://dyalog.tv/Dyalog18/?v=paxIkKBzqBU), [slides](https://www.dyalog.com/user-meetings/uploads/conference/dyalog18/presentations/D08_Searches_Using_Vector_Instructions.zip)) covers a difficult 4-byte design that's very good for membership and negative lookups (in particular, it's perfect for the reverse lookup as described in the next section).
+
+I'd take the following choices as a given for an array language hash design:
+- Power-of-two size
+- Open addressing
+- Linear probing
+
+The main cost for larger data is the hashing itself; [wyhash](https://github.com/wangyi-fudan/wyhash) appears to be one of the best choices at the time of writing. 4- and 8-byte lookups are where all the fancy optimizations are wanted. Hashes on these fixed sizes should be reversible and are often called mixing functions in the literature. A CRC instruction makes a good one if available.
 
 ## Reverse lookups
 
