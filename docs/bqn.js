@@ -227,7 +227,10 @@ let m1 = m=>{let r= f   =>setrepr(()=>[4,f,r  ], m(f  )); r.m=1; return r;}
 let m2 = m=>{let r=(f,g)=>setrepr(()=>[5,f,r,g], m(f,g)); r.m=2; return r;}
 let ctrans = (c,t) => String.fromCodePoint(c.codePointAt(0)+t);
 let plus = (x,w) => {
-  if (!has(w)) return x;
+  if (!has(w)) {
+    if (!isnum(x)) throw Error("+: Argument must be a number");
+    return x;
+  }
   let s=typeof w, t=typeof x;
   if (s==="number" && t==="number") return w+x;
   if (s==="number" && t==="string") return ctrans(x,w);
