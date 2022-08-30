@@ -195,11 +195,11 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   hk×↩¬hc∨hl∧0=hr                           # Treat subject labels like special names
   hm>↩hc⋄hr/˜↩hm⋄hx←(1»hc)/ha               # Header-derived role hr and immediacy ¬hx
   ut-↩-⟜»ut×ho                              # Shift ⁼ from right operand to main name
-  "Invalid Undo header syntax"_err_(HI) hm<×ut
+  "Invalid Undo header syntax"_err_(HI) hm<0<ut
   "Header left argument without right"_err_(HI) ha>hc+`⊸⊏hx∾0
   "Header operation must be a plain name"_err_(HI) hma>hk≠2
   ut/˜↩hm⋄hx∨↩1=hr
-  "Header with ⁼ must take arguments"_err_(hm/HI) hx<×ut
+  "Header with ⁼ must take arguments"_err_(hm/HI) hx<0<ut
   cwh←hc/»hl⌈ha×1+he←0≠hk                   # Body 𝕨 for just headers
   "Header with ˜⁼ must have left argument"_err_(hm/HI) (0=cwh)∧ut2←2=ut
   cw←(cwh⌈2×ut2)⌾(ch⊸/)1+-⟜«(»cq)<1(⊢<«)cf  # Body 𝕨: 0 no, 1 allowed, 2 required
@@ -257,7 +257,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
   ak←af+(0≤ar)+(ai⊏ma)+(⊑bG)-˜ai⊏𝕩          # Class of assignment: 1⇐ 2⇐? 3←? 4↩? 5+↩?
   at∾↩hj⋄ac←«⊸-(ak∾6¨hj)⌾(at⊸⊏)0¨𝕩          # Header assignment is 6 temporarily
-  aa←×gac←g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac        # Broadcast ac to the entire target
+  aa←0<gac←g⊏ac↩»+`(1⊸»⊸∨0=+`)⊸×gi⊏ac       # Broadcast ac to the entire target
   mat←5=gac                                 # Modified assignment target
   api←/(𝕩=⊑bO)∧ap←aa∧2=no                   # Assignment placeholder
   "Can't use Nothing (·) in lists"_nerr no×ap<ns≤»lo∨ls
