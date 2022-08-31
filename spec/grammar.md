@@ -51,7 +51,7 @@ Functions can be formed by applying modifiers, or with trains. Modifiers are lef
 Subject expressions consist mainly of function application. We also define nothing-statements, which have very similar syntax to subject expressions but do not permit assignment. They can be used as an `STMT` or in place of a left argument.
 
     arg      = subject
-             | ( subject | nothing )? Derv arg
+             | ( subject | nothing )? Derv subExpr
     nothing  = "·"
              | ( subject | nothing )? Derv nothing
     subExpr  = arg
@@ -119,11 +119,11 @@ Three additional rules apply to blocks, allowing the ambiguous grammar above to 
 | `_blMod1`          | `𝕗𝕣`   | `𝔽`    | `_𝕣`    |          | `Mod1Lab`
 | `_blMod2_`         | `𝕘`    | `𝔾`    | None    | `_𝕣_`    | `Mod2Lab`
 
-The rules for special names can be expressed in BNF by making many copies of all expression rules above. For each "level", or row in the table, a new version of every rule should be made that allows that level but not higher ones, and another version should be made that requires exactly that level. The values themselves should be included in `s`, `F`, `_m`, and `_c_` for these copies. Then the "allowed" rules are made simply by replacing the terms they contain (excluding `blSub` and so on) with the same "allowed" versions, and "required" rules are constructed using both "allowed" and "required" rules. For every part of a production rule, an alternative should be created that requires the relevant name in that part while allowing it in the others. For example, `( subject | nothing )? Derv arg` would be transformed to
+The rules for special names can be expressed in BNF by making many copies of all expression rules above. For each "level", or row in the table, a new version of every rule should be made that allows that level but not higher ones, and another version should be made that requires exactly that level. The values themselves should be included in `s`, `F`, `_m`, and `_c_` for these copies. Then the "allowed" rules are made simply by replacing the terms they contain (excluding `blSub` and so on) with the same "allowed" versions, and "required" rules are constructed using both "allowed" and "required" rules. For every part of a production rule, an alternative should be created that requires the relevant name in that part while allowing it in the others. For example, the definition of `arg` as `subject | ( subject | nothing )? Derv subExpr` would be transformed to
 
-    arg_req1 = subExpr_req1
-             | ( subject_req1 | nothing_req1 ) Derv_allow1 arg_allow1
-             | ( subject_allow1 | nothing_allow1 )? Derv_req1 arg_allow1
-             | ( subject_allow1 | nothing_allow1 )? Derv_allow1 arg_req1
+    arg_req1 = subject_req1
+             | ( subject_req1 | nothing_req1 ) Derv_allow1 subExpr_allow1
+             | ( subject_allow1 | nothing_allow1 )? Derv_req1 subExpr_allow1
+             | ( subject_allow1 | nothing_allow1 )? Derv_allow1 subExpr_req1
 
 Quite tedious. The explosion of rules is partly due to the fact that the block-typing rule falls into a weaker class of grammars than the other rules. Most of BQN is [deterministic context-free](https://en.wikipedia.org/wiki/Deterministic_context-free_grammar) but block-typing is not, only context-free. Fortunately block typing does not introduce the parsing difficulties that can be present in a general context-free grammar, and it can easily be performed in linear time: after [scanning](token.md) but before parsing, move through the source code maintaining a stack of the current top-level set of braces. Whenever a colon or special name is encountered, annotate that set of braces to indicate that it is present. When a closing brace is encountered and the top brace is popped off the stack, the type is needed if there was no colon, and can be found based on which names were present. One way to present this information to the parser is to replace the brace tokens with new tokens that indicate the type.
