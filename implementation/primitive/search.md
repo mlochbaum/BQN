@@ -6,6 +6,16 @@ This page covers the [search functions](../../doc/search.md), dyadic `⊐⊒∊`
 
 Searching is closely related to [sorting](sort.md). I've found it helpful to think of a search function as an ordered lookup according to an unspecified order. The advantage over a predefined order is that the order can be shuffled with a hash function to randomize the distribution. The fact that the wanted result is in the original argument order, not sorted, also means that sparse tables are more effective—there is never any need to traverse the table to pack ordered values as in sorting.
 
+## Small arguments
+
+When one argument to a search function is small, it's best to use a linear-time method—that is, linear in both arguments, O(mn). The simplest versions:
+
+- For self-search, branchlessly compare to all previous elements, or use insertion sort.
+- With small searched-for, search for each element one at a time.
+- With small searched-in, compare each one to all searched-for elements and accumulate.
+
+Each of these easily allows for SIMD comparison. A more effective use of SIMD (unless the size of the small argument is 1, up to maybe 3) is a vector binary search as presented in the first half of my "Sub-nanosecond Searches" talk ([video](https://dyalog.tv/Dyalog18/?v=paxIkKBzqBU), [slides](https://www.dyalog.com/user-meetings/uploads/conference/dyalog18/presentations/D08_Searches_Using_Vector_Instructions.zip)). This search of sorted values is performed by using shuffle instructions to independently select a pivot for each value, and adding a pivot index bit based on the result of comparing. It can be used as a [reverse lookup](#sparse-and-reverse-lookups) as well, performing a non-SIMD update whenever a match is found. Multiple registers can be searched, but each one has to be touched at every step leading to O(mn) asymptotic performance despite the binary search.
+
 ## Lookup tables
 
 For the purposes of these notes, a lookup table is storage, indexed by some key, that contains at most one entry per key. This means reading the value for a given key is a simple load—differing from a hash table, which might have collisions where multiple keys indicate the same entry. Lookup table operations are very fast, but they need to cache table accesses to be fast. So they're useful when the number of possible values (that is, size of the table) is small: a 1-byte or 2-byte type, or small-range integers. You might expect the entire table has to be initialized, but it doesn't always: see [sparse lookups](#sparse-and-reverse-lookups).
@@ -13,6 +23,8 @@ For the purposes of these notes, a lookup table is storage, indexed by some key,
 For example, a lookup table algorithm for dyadic `⊐` might traverse `𝕨`, writing each value's index to the table. Doing this step in reverse index order makes sure the lowest index "wins". Similarly, empty entries must be initialized to `≠𝕨` beforehand. Then the result is `𝕩⊏t` where `t` is the table constructed this way. A nonzero minimum value can be handled for free by subtracting it from the table pointer.
 
 Set operations can be handled with a packed bit table, but reading a bit is slower so this should be done only if the space savings are really needed.
+
+A 1-byte lookup can be packed into vector registers for extra-fast searching. To look up a byte, select the appropriate byte from the table with the top 5 bits, and a mask from another table with the bottom 3. Put these together and pack into bits with compare-movemask.
 
 ## Hash tables
 
