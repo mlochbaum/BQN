@@ -134,6 +134,6 @@ It gets worse.
     │0│1│2│
     └─┴─┴─┘
 
-This should not be possible. `f` here doesn't behave like `+`, or quite like `|.`: in fact there is no function that does what `f` does. The result of `f` depends on the entire argument, but `<@f` encloses rank 0 components! How long would it take you to debug an issue like this? It's rare, but I've run into it in my own code and seen similar reports on the forums.
+This should not be possible. `f` here doesn't behave like `-`, or quite like `|.`: in fact there is no function that does what `f` does. The result of `f` depends on the entire argument, but `<@f` encloses rank 0 components! How long would it take you to debug an issue like this? It's rare, but I've run into it in my own code and seen similar reports on the forums.
 
 The cause is that the value of `f` here—a named `g` function—is not just a name, but also comes with a function rank. The function rank is set by the assignment `f =: g`, and doesn't change along with `g`. Calling `f` doesn't rely on the rank, but `@` does, so `<@f` effectively becomes `<@|."-`, mixing the two versions of `g`. The only explanation I have for this one is implementation convenience.
