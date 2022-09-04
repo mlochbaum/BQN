@@ -148,7 +148,8 @@ _testDyArith ← {f←𝕗
       k←𝕩
       rca ← Atom¨⟨gen.Char,gen.Arith⟩{k𝕎𝕩}¨sh
       Fit ← -⟜(@+1-˜17×2⋆16)⌈-⟜@⌊⊢
-      ⟨⌽⍟(Rand 2)-∘Fit⟜-`,Fit`,(1+Fit)`⟩ { (𝕎rca)_t 𝕩 }¨¨ pmn
+      # Remove -⟜@ to test full-range ¬ (extended from 1+-)
+      ⟨⌽⍟(Rand 2)-∘Fit⟜-`,Fit`,(-⟜@⌊1+Fit)`⟩ { (𝕎rca)_t 𝕩 }¨¨ pmn
       { (sh (k gen.Char ⊣)⌾(1⊸⊑) rca)_t¨ 𝕩 }⍟(0<≠) ∾1↓pmn
     }⍟(ch∧0⊸<∧≤⟜5) 𝕨
   }
