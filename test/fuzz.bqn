@@ -120,8 +120,11 @@ gen ← {
 }
 
 _testConsistent_ ← {Match←𝔾
-  v ← <˘⍉> (5⌊´≠¨)⊸(((0∾Rand⌾(-⟜1))⟜≠⊏⊢)¨) ListVariations¨ a←𝕨⋈𝕩
-  (ClearRefs@) ⊢ (∧´ ⊏ Match¨ 1⊸↓) (𝕨 (𝔽⊑∘⊢)⊘(𝔽´⊢) Variation¨⟜a)¨ v
+  Arr ← 0=•Type
+  ListVar ← Arr◶(5⥊@)‿ListVariations
+  Var ← Arr∘⊢◶⊢‿Variation
+  v ← <˘⍉> (5⌊´≠¨)⊸(((0∾Rand⌾(-⟜1))⟜≠⊏⊢)¨) ListVar¨ a←𝕨⋈𝕩
+  (ClearRefs@) ⊢ (∧´ ⊏ Match¨ 1⊸↓) (𝕨 (𝔽⊑∘⊢)⊘(𝔽´⊢) Var¨⟜a)¨ v
 }
 
 FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
@@ -138,11 +141,12 @@ _testDyArith ← {f←𝕗
   ch ← 0<+´≠¨ pmn ← (∊⟜f⥊¨⊢) +‿-‿¬
   {
     sh ← RandDyShape 𝕩
+    Atom ← ⊑⍟(Rand∘2)⍟(⟨⟩≡≢)
     _t ← { ! 𝕏 _testConsistent_ FlatMatch´ 𝕗 }
-    (𝕨⊸gen.Arith¨ sh)_t¨ f
+    (Atom¨ 𝕨⊸gen.Arith¨ sh)_t¨ f
     {
       k←𝕩
-      rca ← ⟨gen.Char,gen.Arith⟩{k𝕎𝕩}¨sh
+      rca ← Atom¨⟨gen.Char,gen.Arith⟩{k𝕎𝕩}¨sh
       Fit ← -⟜(@+1-˜17×2⋆16)⌈-⟜@⌊⊢
       ⟨⌽⍟(Rand 2)-∘Fit⟜-`,Fit`,(1+Fit)`⟩ { (𝕎rca)_t 𝕩 }¨¨ pmn
       { (sh (k gen.Char ⊣)⌾(1⊸⊑) rca)_t¨ 𝕩 }⍟(0<≠) ∾1↓pmn
