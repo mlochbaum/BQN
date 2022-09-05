@@ -378,7 +378,7 @@ Windows←{
     c ← ><¨⊸⊏⟜𝕩¨i    # Select the cells
     ((≢i)∾𝕨≠⊸↓≢𝕩)⥊c  # Reshape in case it's empty
   }⍟(0<≠𝕨)𝕩
-}
+}⟜ToArray
 
 Reverse ← {!1≤=𝕩 ⋄ (-↕⊸¬≠𝕩)⊏𝕩}
 Rotate ← {!Int𝕨 ⋄ l←≠𝕩⋄(l|𝕨+↕l)⊏𝕩} _onAxes_ 0

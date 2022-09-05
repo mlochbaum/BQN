@@ -668,7 +668,7 @@ Range ← IsArray◶(↕⊣RangeCheck)‿{
 }
 Windows←{
   "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
-  r←≠𝕨↩Deshape 𝕨
+  r←≠𝕨↩Deshape 𝕨 ⋄ 𝕩↩ToArray𝕩
   𝕨{
     "𝕨↕𝕩: Length of 𝕨 must be at most rank of 𝕩" ! r≤=𝕩
     "𝕨↕𝕩: 𝕨 must consist of natural numbers" ! ×´Nat⌜𝕨
