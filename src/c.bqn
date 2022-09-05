@@ -1,4 +1,5 @@
 func‿mod1‿mod2 ← •args
+na←¯1⊑≢alph←("aA"+⌜↕26)∾˘"àÀ"+⌜(↕23)∾24+↕7
 lf←@+10‿13
 charSet‿cgl←(∾ ⋈ ≠¨)⟨
   func                  # Function
@@ -14,7 +15,7 @@ charSet‿cgl←(∾ ⋈ ≠¨)⟨
   ¯1⊏˘11‿∘⥊"𝕊𝕏𝕎𝔽𝔾𝕤𝕩𝕨𝕣𝕗𝕘"# Input
   ".¯π∞"                # Numeric
   '0'+↕10               # Digit
-  "_"∾˜⥊"aA"+⌜↕na←26    # Alphabetic
+  "_"∾˜⥊alph            # Alphabetic
   "•"∾(¯1↓"𝕨")∾" "∾@+9  # Whitespace (or special name prefix in UTF-16)
   "#'""@"               # Preprocessed characters
 ⟩
