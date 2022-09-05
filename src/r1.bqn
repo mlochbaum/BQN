@@ -224,14 +224,14 @@ IndicesInv←{
 SelfClas ← (PermInv∘⍋∘/˜⊏˜¯1+`⊢) _self
 OccurrenceCount ← ↕∘≠⊸(⊣-¨·⌈`×¨) _self
 
-Transpose←(0<=)◶⟨ToArray,{
+Transpose←(1<=)◶⟨ToArray,{
   l←≠𝕩 ⋄ m←1×´c←1 Cell 𝕩
   (⥊𝕩)⊏˜(c⥊↕m)+⟜(m⊸×)⌜↕l
 }_fillBy_⊢⟩
 TransposeInv←{
   r←1-˜=𝕩 ⋄ s←≢𝕩 ⋄ l←r⊑s ⋄ c←r↑s
   (⥊𝕩)⊏˜(↕l)+⟜(l⊸×)⌜c⥊↕1×´c
-}_fillBy_⊢⍟{IX IsArray𝕩⋄0<=𝕩}
+}_fillBy_⊢⍟{IX IsArray𝕩⋄1<=𝕩}
 
 _reorderAxesSub_←{
   "𝕨⍉𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
