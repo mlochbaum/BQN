@@ -292,12 +292,12 @@
 </span>6
 </pre>
 <p>This gives us two nice ways to square a number:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w5fLnCA0CjIg4ouGy5wgNA==">↗️</a><pre>    <span class='Function'>×</span><span class='Modifier'>˜</span> <span class='Number'>4</span>
-16
-    <span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier'>˜</span> <span class='Number'>4</span>
-16
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=w5fLnCA1CjIg4ouGy5wgNQ==">↗️</a><pre>    <span class='Function'>×</span><span class='Modifier'>˜</span> <span class='Number'>5</span>
+25
+    <span class='Number'>2</span> <span class='Function'>⋆</span><span class='Modifier'>˜</span> <span class='Number'>5</span>
+25
 </pre>
-<p>What's wrong with <code><span class='Number'>4</span><span class='Function'>⋆</span><span class='Number'>2</span></code>? Depends on the context. Because of the way evaluation flows from right to left, it's usually best if the right argument to a function is the one that's being manipulated directly while the left argument is sort of a &quot;control value&quot; that describes how to manipulate it. That way several manipulations can be done in a row without any parentheses required. <code><span class='Function'>⋆</span></code> can go either way, but if &quot;squaring&quot; is the operation being done then the <em>left</em> argument is the one being squared, so it's the active value. The Swap modifier allows us to put it on the right instead.</p>
+<p>What's wrong with <code><span class='Number'>5</span><span class='Function'>⋆</span><span class='Number'>2</span></code>? Depends on the context. Because of the way evaluation flows from right to left, it's usually best if the right argument to a function is the one that's being manipulated directly while the left argument is sort of a &quot;control value&quot; that describes how to manipulate it. That way several manipulations can be done in a row without any parentheses required. <code><span class='Function'>⋆</span></code> can go either way, but if &quot;squaring&quot; is the operation being done then the <em>left</em> argument is the one being squared, so it's the active value. The Swap modifier allows us to put it on the right instead.</p>
 <table class='primitives'>
   <tr>
     <td><span class='Modifier'>˜</span></td>
@@ -318,8 +318,8 @@
 </table>
 
 <p>Another 1-modifier is Undo (<code><span class='Modifier'>⁼</span></code>). BQN has just enough computer algebra facilities to look like a tool for Neanderthals next to a real computer algebra system, and among them is the ability to invert some primitives. Undo has a <a href="../spec/inferred.html#undo">specification</a> that fixes results for some functions and modifiers, but allows implementations to go further. In the tutorials we'll stick to the required stuff, which is definitely enough to be practically useful. Starting with a <em>third</em> way to square a number:</p>
-<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oia4oG8IDQ=">↗️</a><pre>    <span class='Function'>√</span><span class='Modifier'>⁼</span> <span class='Number'>4</span>
-16
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oia4oG8IDU=">↗️</a><pre>    <span class='Function'>√</span><span class='Modifier'>⁼</span> <span class='Number'>5</span>
+25
 </pre>
 <p>But the most important use for Undo in arithmetic is the logarithm, written <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code>. That's all a logarithm is: it undoes the Power function! With no left argument <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code> is the natural logarithm. If there's a left argument then Undo considers it part of the function to be undone. The result in this case is that <code><span class='Function'>⋆</span><span class='Modifier'>⁼</span></code> with two arguments is the logarithm of the right argument with base given by the left one.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4ouG4oG8IDEwCgoyIOKLhuKBvCAzMiAgICAjIExvZyBiYXNlIDIKMiDii4YgMiDii4bigbwgMzIKMTAg4ouG4oG8IDFlNCAgIyBMb2cgYmFzZSAxMCBvZiBhIG51bWJlciBpbiBzY2llbnRpZmljIG5vdGF0aW9u">↗️</a><pre>    <span class='Function'>⋆</span><span class='Modifier'>⁼</span> <span class='Number'>10</span>
