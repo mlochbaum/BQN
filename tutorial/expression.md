@@ -156,17 +156,17 @@ Functions are nice and all, but to really bring us into the space age BQN has a 
 
 This gives us two nice ways to square a number:
 
-        ×˜ 4
-        2 ⋆˜ 4
+        ×˜ 5
+        2 ⋆˜ 5
 
-What's wrong with `4⋆2`? Depends on the context. Because of the way evaluation flows from right to left, it's usually best if the right argument to a function is the one that's being manipulated directly while the left argument is sort of a "control value" that describes how to manipulate it. That way several manipulations can be done in a row without any parentheses required. `⋆` can go either way, but if "squaring" is the operation being done then the *left* argument is the one being squared, so it's the active value. The Swap modifier allows us to put it on the right instead.
+What's wrong with `5⋆2`? Depends on the context. Because of the way evaluation flows from right to left, it's usually best if the right argument to a function is the one that's being manipulated directly while the left argument is sort of a "control value" that describes how to manipulate it. That way several manipulations can be done in a row without any parentheses required. `⋆` can go either way, but if "squaring" is the operation being done then the *left* argument is the one being squared, so it's the active value. The Swap modifier allows us to put it on the right instead.
 
 <!--GEN
 Primitives ⟨"˜%`%Swap%Self", "⁼%3%Undo", "˙%""%Constant"⟩
 -->
 Another 1-modifier is Undo (`⁼`). BQN has just enough computer algebra facilities to look like a tool for Neanderthals next to a real computer algebra system, and among them is the ability to invert some primitives. Undo has a [specification](../spec/inferred.md#undo) that fixes results for some functions and modifiers, but allows implementations to go further. In the tutorials we'll stick to the required stuff, which is definitely enough to be practically useful. Starting with a *third* way to square a number:
 
-        √⁼ 4
+        √⁼ 5
 
 But the most important use for Undo in arithmetic is the logarithm, written `⋆⁼`. That's all a logarithm is: it undoes the Power function! With no left argument `⋆⁼` is the natural logarithm. If there's a left argument then Undo considers it part of the function to be undone. The result in this case is that `⋆⁼` with two arguments is the logarithm of the right argument with base given by the left one.
 
