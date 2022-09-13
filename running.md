@@ -4,7 +4,7 @@
 
 [CBQN](https://github.com/dzaima/CBQN) is the primary offline implementation. Scripts in this repository start with `#! /usr/bin/env bqn` in order to look up the user's `bqn` executable, which is expected to be CBQN.
 
-Third-party packages to build some BQN implementations are available for both Nix and Arch Linux. For general use I recommend `cbqn` from nixpkgs (Nix) and `cbqn-git` from the AUR (Arch). There are also third party [Windows builds](https://github.com/actalley/WinBQN) hosted on Github.
+Some Linux distributions have third-party BQN packages: for general use I recommend `cbqn` from nixpkgs (Nix), `cbqn-git` from the AUR (Arch), and `bqn` in development Guix (not 1.3.0). There are also third party [Windows builds](https://github.com/actalley/WinBQN) hosted on Github.
 
 For tools related to running BQN, see the [editor plugins](editors/README.md) and [fonts page](https://mlochbaum.github.io/BQN/fonts.html).
 
