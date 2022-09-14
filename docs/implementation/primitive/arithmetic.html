@@ -1,0 +1,94 @@
+<head>
+  <link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../../style.css" rel="stylesheet"/>
+  <title>BQN: Implementation of arithmetic</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../../index.html">BQN</a> / <a href="../index.html">implementation</a> / <a href="index.html">primitive</a></div>
+<h1 id="implementation-of-arithmetic"><a class="header" href="#implementation-of-arithmetic">Implementation of arithmetic</a></h1>
+<p>The dyadic arithmetic functions are <code><span class='Function'>+-×÷⋆√⌊⌈|¬∧∨&lt;&gt;≠=≤≥</span></code>. There are also monadic arithmetic functions, but they're mostly easy to optimize.</p>
+<h2 id="boolean-functions"><a class="header" href="#boolean-functions">Boolean functions</a></h2>
+<p>Many arithmetic functions give boolean results when both arguments are boolean. Because there are only 16 possible functions like this, they overlap a lot. Here's a categorization:</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ZiDihpAg4oin4oC/4oio4oC/POKAvz7igL/iiaDigL894oC/4omk4oC/4oml4oC/K+KAvy3igL/Dl+KAv8O34oC/4ouG4oC/4oia4oC/4oyK4oC/4oyI4oC/fOKAv8KsCgpidCDihpAge+KlivCdlY/ijJzLnOKGlTJ9wqhmCuKIp+KMvijijL3CqOKMvijiio/LmCkpIGJ0ICjijbfiiJjiiqPiiY3LmOKKkOKKuOKKlCnil4soKOKIp8K04oiY4oiK4p+cKOKGlTIpwqhidCniirgvKSBm">↗️</a><pre>    <span class='Value'>f</span> <span class='Gets'>←</span> <span class='Function'>∧</span><span class='Ligature'>‿</span><span class='Function'>∨</span><span class='Ligature'>‿</span><span class='Function'>&lt;</span><span class='Ligature'>‿</span><span class='Function'>&gt;</span><span class='Ligature'>‿</span><span class='Function'>≠</span><span class='Ligature'>‿</span><span class='Function'>=</span><span class='Ligature'>‿</span><span class='Function'>≤</span><span class='Ligature'>‿</span><span class='Function'>≥</span><span class='Ligature'>‿</span><span class='Function'>+</span><span class='Ligature'>‿</span><span class='Function'>-</span><span class='Ligature'>‿</span><span class='Function'>×</span><span class='Ligature'>‿</span><span class='Function'>÷</span><span class='Ligature'>‿</span><span class='Function'>⋆</span><span class='Ligature'>‿</span><span class='Function'>√</span><span class='Ligature'>‿</span><span class='Function'>⌊</span><span class='Ligature'>‿</span><span class='Function'>⌈</span><span class='Ligature'>‿</span><span class='Function'>|</span><span class='Ligature'>‿</span><span class='Function'>¬</span>
+
+    <span class='Value'>bt</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Function'>⥊𝕏</span><span class='Modifier'>⌜˜</span><span class='Function'>↕</span><span class='Number'>2</span><span class='Brace'>}</span><span class='Modifier'>¨</span><span class='Value'>f</span>
+    <span class='Function'>∧</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⌽</span><span class='Modifier'>¨</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Function'>⊏</span><span class='Modifier'>˘</span><span class='Paren'>))</span> <span class='Value'>bt</span> <span class='Paren'>(</span><span class='Function'>⍷</span><span class='Modifier2'>∘</span><span class='Function'>⊣≍</span><span class='Modifier'>˘</span><span class='Function'>⊐</span><span class='Modifier2'>⊸</span><span class='Function'>⊔</span><span class='Paren'>)</span><span class='Modifier2'>○</span><span class='Paren'>((</span><span class='Function'>∧</span><span class='Modifier'>´</span><span class='Modifier2'>∘</span><span class='Function'>∊</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>↕</span><span class='Number'>2</span><span class='Paren'>)</span><span class='Modifier'>¨</span><span class='Value'>bt</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>/</span><span class='Paren'>)</span> <span class='Value'>f</span>
+┌─                       
+╵ ⟨ 0 1 0 0 ⟩ ⟨ < ⟩      
+  ⟨ 0 0 1 0 ⟩ ⟨ > ⟩      
+  ⟨ 0 1 1 0 ⟩ ⟨ ≠ ⟩      
+  ⟨ 0 0 0 1 ⟩ ⟨ ∧ × ⌊ ⟩  
+  ⟨ 1 0 0 1 ⟩ ⟨ = ⟩      
+  ⟨ 0 1 0 1 ⟩ ⟨ √ ⟩      
+  ⟨ 1 1 0 1 ⟩ ⟨ ≤ ⟩      
+  ⟨ 1 0 1 1 ⟩ ⟨ ≥ ⋆ ⟩    
+  ⟨ 0 1 1 1 ⟩ ⟨ ∨ ⌈ ⟩    
+                        ┘
+</pre>
+<p>Some functions have fast implementations when one argument is boolean. The only ones that really matter are <code><span class='Function'>×</span></code>/<code><span class='Function'>∧</span></code>, which can be implemented with a bitmask, and <code><span class='Function'>∨</span></code>, which changes the other argument to 1 when the boolean argument is 1 and otherwise leaves it alone. <code><span class='Function'>⋆</span></code> is <code><span class='Function'>∨</span><span class='Modifier2'>⟜</span><span class='Function'>¬</span></code> when <code><span class='Value'>𝕩</span></code> is boolean.</p>
+<p>A function of an atom and a boolean array, or a monadic function on a boolean array, can be implemented by a lookup performed with (preferably SIMD) bitmasking.</p>
+<h2 id="strength-reductions"><a class="header" href="#strength-reductions">Strength reductions</a></h2>
+<h3 id="trivial-cases"><a class="header" href="#trivial-cases">Trivial cases</a></h3>
+<p>Several cases where either one argument is an atom, or both arguments match, have a trivial result. Either the result value is constant, or it matches the argument.</p>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Constant</th>
+<th>Identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td><code><span class='Value'>a</span><span class='Function'>+</span><span class='Number'>0</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>a</span><span class='Function'>-</span><span class='Value'>a</span></code></td>
+<td></td>
+<td><code><span class='Value'>a</span><span class='Function'>-</span><span class='Number'>0</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>a</span><span class='Function'>¬</span><span class='Value'>a</span></code></td>
+<td></td>
+<td><code><span class='Value'>a</span><span class='Function'>¬</span><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Value'>a</span><span class='Function'>×</span><span class='Number'>0</span></code>*</td>
+<td><code><span class='Value'>a</span><span class='Function'>×</span><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Value'>a</span><span class='Function'>∨</span><span class='Number'>1</span></code></td>
+<td><code><span class='Value'>a</span><span class='Function'>∨</span><span class='Number'>0</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>a</span><span class='Function'>÷</span><span class='Value'>a</span></code>*</td>
+<td><code><span class='Number'>0</span><span class='Function'>÷</span><span class='Value'>a</span></code>*</td>
+<td><code><span class='Value'>a</span><span class='Function'>÷</span><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td></td>
+<td><code><span class='Value'>a</span><span class='Function'>⋆</span><span class='Number'>0</span></code></td>
+<td><code><span class='Value'>a</span><span class='Function'>⋆</span><span class='Number'>1</span></code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code><span class='Number'>¯∞</span><span class='Function'>⌊</span><span class='Value'>a</span></code>, <code><span class='Number'>∞</span><span class='Function'>⌈</span><span class='Value'>n</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Value'>a</span><span class='Function'>&gt;</span><span class='Value'>a</span></code> etc.</td>
+<td></td>
+<td><code><span class='Value'>a</span><span class='Function'>⌊</span><span class='Value'>a</span></code>, <code><span class='Value'>a</span><span class='Function'>⌈</span><span class='Value'>a</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>None of the constant column entries work for NaNs, except <code><span class='Value'>a</span><span class='Function'>⋆</span><span class='Number'>0</span></code> which really is always 1. Starred entries have some values of <code><span class='Value'>a</span></code> that result in NaN instead of the expected constant: <code><span class='Number'>0</span></code> for division and <code><span class='Number'>∞</span></code> for multiplication. This means that constant-result <code><span class='Function'>÷</span></code> always requires checking for NaN while the other entries work for integers without a check.</p>
+<h3 id="division-and-modulus"><a class="header" href="#division-and-modulus">Division and modulus</a></h3>
+<p>Division, integer division, and Modulus by an atom (<code><span class='Value'>a</span><span class='Function'>÷</span><span class='Value'>n</span></code>, <code><span class='Value'>a</span><span class='Function'>⌊</span><span class='Modifier2'>∘</span><span class='Function'>÷</span><span class='Value'>n</span></code>, <code><span class='Value'>n</span><span class='Function'>|</span><span class='Value'>a</span></code>) are subject to many optimizations.</p>
+<ul>
+<li>Floating-point with FMA: <a href="http://marc-b-reynolds.github.io/math/2019/03/12/FpDiv.html">this page</a> gives a slightly slower method that works for all divisors and a faster one that can be proven to work on over half of divisors.</li>
+<li>Integer division: see <a href="https://github.com/ridiculousfish/libdivide">libdivide</a>. Most important is a mask for power-of-two <code><span class='Value'>n</span></code>. For smaller integer types, using SIMD code with 32-bit floats is also fast.</li>
+</ul>
