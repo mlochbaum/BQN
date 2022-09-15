@@ -54,22 +54,39 @@ BQN uses the ligature character `‿` for stranding, instead of plain juxtaposit
 
 ## For reading
 
-Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs. Correspondence can be approximate, and `⌽` is just used as a decorator to mean "reverse some things".
+Glyphs `+-×÷⌊⌈|⊣⊢⌽⍉` have nearly the same meaning in BQN as APL. Closest equivalents in Dyalog APL for the other functions are below (except `!`, Assert).
 
-| BQN   | `⋆` | `√`      | `∧`   | `∨`   | `¬`   | `=`   | `≠` | `<` | `>` | `≢` | `⥊` |
-|:-----:|:---:|:--------:|:-----:|:-----:|:-----:|:-----:|:---:|:---:|:---:|:---:|:---:|
-| Monad | `*` | `*∘(÷2)` | `[⍋]` | `[⍒]` | `~`   | `≢⍤⍴` | `≢` | `⊂` | `↑` | `⍴` | `,` |
-| Dyad  | `*` | `*∘÷⍨`   | `∧`   | `∨`   | `1+-` | `=`   | `≠` | `<` | `>` | `≢` | `⍴` |
-
-| BQN   | `∾`   | `≍`    | `⋈`   | `↑`  | `↓`     | `↕`  | `»`          | `«`           |
-|:-----:|:-----:|:------:|:-----:|:----:|:-------:|:----:|:------------:|:-------------:|
-| Monad | `⊃,⌿` | `↑,⍥⊂` | `,⍥⊂` | `,⍀` | `⌽,⌽⍀⌽` | `⍳`  | `≢↑(¯1-≢)↑⊢` | `-⍤≢↑(1+≢)↑⊢` |
-| Dyad  | `⍪`   | `↑,⍥⊂` | `,⍥⊂` | `↑`  | `↓`     | `,⌿` | `≢⍤⊢↑⍪`      | `-⍤≢⍤⊢↑⍪⍨`    |
-
-| BQN   | `/` | `⍋` | `⍒`   | `⊏`  | `⊑` | `⊐`   | `⊒` | `∊` | `⍷` | `⊔`        |
-|:-----:|:---:|:---:|:-----:|:----:|:---:|:-----:|:---:|:---:|:---:|:----------:|
-| Monad | `⍸` | `⍋` | `⍒`   | `⊣⌿` | `⊃` | `∪⍳⊢` | `…` | `≠` | `∪` | `⌸`        |
-| Dyad  | `⌿` | `⍸` | `⌽⍸⌽` | `⌷`  | `⊃` | `⍳`   | `…` | `∊` | `⍷` | `⌸` or `⊆` |
+| BQN | Monad         | Dyad
+|-----|---------------|-----
+| `⋆` | `*`           | `*`
+| `√` | `*∘(÷2)`      | `*∘÷⍨`
+| `∧` | `{⍵[⍋⍵]}`     | `∧`
+| `∨` | `{⍵[⍒⍵]}`     | `∨`
+| `¬` | `~`           | `1+-`
+| `=` | `≢⍤⍴`         | `=`
+| `≠` | `≢`           | `≠`
+| `<` | `⊂`           | `<`
+| `>` | `↑`           | `>`
+| `≢` | `⍴`           | `≢`
+| `⥊` | `,`           | `⍴`
+| `∾` | `⊃,⌿`         | `⍪`
+| `≍` | `↑,⍥⊂`        | `↑,⍥⊂`
+| `⋈` | `,⍥⊂`         | `,⍥⊂`
+| `↑` | `,⍀`          | `↑`
+| `↓` | `{⌽,⍨⍀⌽⍵}`    | `↓`
+| `↕` | `⍳`           | `,⌿`
+| `»` | ` ≢↑(¯1-≢)↑⊢` | `  ≢⍤⊢↑⍪`
+| `«` | `-⍤≢↑(1+≢)↑⊢` | `-⍤≢⍤⊢↑⍪⍨`
+| `/` | `⍸`           | `⌿`
+| `⍋` | `⍋`           | `⍸`
+| `⍒` | `⍒`           | `⍸`, reversed order
+| `⊏` | `⊣⌿`          | `⌷`
+| `⊑` | `⊃`           | `⊃`
+| `⊐` | `∪⍳⊢`         | `⍳`
+| `⊒` | `+⌿∘.≡⍨∧∘.<⍨∘(⍳≢)` | `{R←≢⍤⊢⍴∘⍋∘⍋⍺⍳⍪⍨⋄⍺(R⍨⍳R)⍵}`
+| `∊` | `≠`           | `∊`
+| `⍷` | `∪`           | `⍷`
+| `⊔` | `⌸`           | `⌸` or `⊆`
 
 Modifiers are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
@@ -81,7 +98,7 @@ Some other BQN modifiers have been proposed as future Dyalog extensions:
 
 | BQN             | `⌾` | `⚇` | `⊸` |
 |:---------------:|:---:|:---:|:---:|
-| Dyalog proposed | `⍢` [Under](https://aplwiki.com/wiki/Under) | `⍥` Depth | `⍛` [Reverse Compose](https://aplwiki.com/wiki/Reverse_Compose)
+| Dyalog proposed | `⍢` [Under](https://aplwiki.com/wiki/Under) | `⍥` [Depth](https://aplwiki.com/wiki/Depth_(operator)) | `⍛` [Reverse Compose](https://aplwiki.com/wiki/Reverse_Compose)
 
 ## For writing
 
@@ -107,9 +124,10 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>↑</code> </td><td> <code>></code>               </td><td> <code>↑</code></td>        </tr>
 <tr><td> <code>↓</code> </td><td> <code><˘</code>              </td><td> <code>↓</code></td>        </tr>
 <tr><td> <code>⊂</code> </td><td> <code><</code>               </td><td> <code>+`⊸⊔</code></td>     </tr>
-<tr><td> <code>⊆</code> </td><td> <code><⍟(0<≡)</code>         </td><td> <code>(¬-˜⊢×·+`»⊸>)⊸⊔</code></td></tr>
-<tr><td> <code>∊</code> </td><td> <code>{(∾𝕊¨)⍟(0<≡)⥊𝕩}</code> </td><td> <code>∊</code></td>        </tr>
+<tr><td> <code>⊆</code> </td><td> <code><⍟(1≥≡)</code>         </td><td> <code>(¬-˜⊢×·+`»⊸>)⊸⊔</code></td></tr>
+<tr><td> <code>∊</code> </td><td> <code>{(∾𝕊¨)⍟(1<≡)⥊𝕩}</code> </td><td> <code>∊</code></td>        </tr>
 <tr><td> <code>⊃</code> </td><td colspan=2><code>⊑</code></td>                                      </tr>
+<tr><td> <code>⌿</code> </td><td>                              </td><td> <code>/</code></td>        </tr>
 <tr><td> <code>⍀</code> </td><td>                              </td><td> <code>{𝕩⌾(𝕨⊸/)𝕨≠⊸↑0↑𝕩}</code></td></tr>
 <tr><td> <code>∩</code> </td><td>                              </td><td> <code>∊/⊣</code></td>      </tr>
 <tr><td> <code>∪</code> </td><td> <code>⍷</code>               </td><td> <code>⊣∾∊˜¬⊸/⊢</code></td> </tr>
