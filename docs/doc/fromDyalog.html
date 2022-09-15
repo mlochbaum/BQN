@@ -109,136 +109,160 @@
 <p>The assignment arrow <code><span class='Gets'>←</span></code> defines a new variable in a block, while <code><span class='Gets'>↩</span></code> modifies an existing one.</p>
 <p>BQN uses the ligature character <code><span class='Ligature'>‿</span></code> for stranding, instead of plain juxtaposition. It also has a <a href="arrayrepr.html#brackets">list notation</a> using <code><span class='Bracket'>⟨⟩</span></code>, and <code><span class='Bracket'>[]</span></code> for higher-rank arrays.</p>
 <h2 id="for-reading"><a class="header" href="#for-reading">For reading</a></h2>
-<p>Here are some closest equivalents in Dyalog APL for the BQN functions that don't use the same glyphs. Correspondence can be approximate, and <code><span class='Function'>⌽</span></code> is just used as a decorator to mean &quot;reverse some things&quot;.</p>
+<p>Glyphs <code><span class='Function'>+-×÷⌊⌈|⊣⊢⌽⍉</span></code> have nearly the same meaning in BQN as APL. Closest equivalents in Dyalog APL for the other functions are below (except <code><span class='Function'>!</span></code>, Assert).</p>
 <table>
 <thead>
 <tr>
-<th align="center">BQN</th>
-<th align="center"><code><span class='Function'>⋆</span></code></th>
-<th align="center"><code><span class='Function'>√</span></code></th>
-<th align="center"><code><span class='Function'>∧</span></code></th>
-<th align="center"><code><span class='Function'>∨</span></code></th>
-<th align="center"><code><span class='Function'>¬</span></code></th>
-<th align="center"><code><span class='Function'>=</span></code></th>
-<th align="center"><code><span class='Function'>≠</span></code></th>
-<th align="center"><code><span class='Function'>&lt;</span></code></th>
-<th align="center"><code><span class='Function'>&gt;</span></code></th>
-<th align="center"><code><span class='Function'>≢</span></code></th>
-<th align="center"><code><span class='Function'>⥊</span></code></th>
+<th>BQN</th>
+<th>Monad</th>
+<th>Dyad</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Monad</td>
-<td align="center"><code><span class='Value'>*</span></code></td>
-<td align="center"><code><span class='Value'>*</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>÷</span><span class='Number'>2</span><span class='Paren'>)</span></code></td>
-<td align="center"><code><span class='Bracket'>[</span><span class='Function'>⍋</span><span class='Bracket'>]</span></code></td>
-<td align="center"><code><span class='Bracket'>[</span><span class='Function'>⍒</span><span class='Bracket'>]</span></code></td>
-<td align="center"><code><span class='Value'>~</span></code></td>
-<td align="center"><code><span class='Function'>≢</span><span class='Value'>⍤⍴</span></code></td>
-<td align="center"><code><span class='Function'>≢</span></code></td>
-<td align="center"><code><span class='Value'>⊂</span></code></td>
-<td align="center"><code><span class='Function'>↑</span></code></td>
-<td align="center"><code><span class='Value'>⍴</span></code></td>
-<td align="center"><code><span class='Separator'>,</span></code></td>
+<td><code><span class='Function'>⋆</span></code></td>
+<td><code><span class='Value'>*</span></code></td>
+<td><code><span class='Value'>*</span></code></td>
 </tr>
 <tr>
-<td align="center">Dyad</td>
-<td align="center"><code><span class='Value'>*</span></code></td>
-<td align="center"><code><span class='Value'>*</span><span class='Modifier2'>∘</span><span class='Function'>÷</span><span class='Value'>⍨</span></code></td>
-<td align="center"><code><span class='Function'>∧</span></code></td>
-<td align="center"><code><span class='Function'>∨</span></code></td>
-<td align="center"><code><span class='Number'>1</span><span class='Function'>+-</span></code></td>
-<td align="center"><code><span class='Function'>=</span></code></td>
-<td align="center"><code><span class='Function'>≠</span></code></td>
-<td align="center"><code><span class='Function'>&lt;</span></code></td>
-<td align="center"><code><span class='Function'>&gt;</span></code></td>
-<td align="center"><code><span class='Function'>≢</span></code></td>
-<td align="center"><code><span class='Value'>⍴</span></code></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th align="center">BQN</th>
-<th align="center"><code><span class='Function'>∾</span></code></th>
-<th align="center"><code><span class='Function'>≍</span></code></th>
-<th align="center"><code><span class='Function'>⋈</span></code></th>
-<th align="center"><code><span class='Function'>↑</span></code></th>
-<th align="center"><code><span class='Function'>↓</span></code></th>
-<th align="center"><code><span class='Function'>↕</span></code></th>
-<th align="center"><code><span class='Function'>»</span></code></th>
-<th align="center"><code><span class='Function'>«</span></code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">Monad</td>
-<td align="center"><code><span class='Value'>⊃</span><span class='Separator'>,</span><span class='Value'>⌿</span></code></td>
-<td align="center"><code><span class='Function'>↑</span><span class='Separator'>,</span><span class='Value'>⍥⊂</span></code></td>
-<td align="center"><code><span class='Separator'>,</span><span class='Value'>⍥⊂</span></code></td>
-<td align="center"><code><span class='Separator'>,</span><span class='Value'>⍀</span></code></td>
-<td align="center"><code><span class='Function'>⌽</span><span class='Separator'>,</span><span class='Function'>⌽</span><span class='Value'>⍀</span><span class='Function'>⌽</span></code></td>
-<td align="center"><code><span class='Value'>⍳</span></code></td>
-<td align="center"><code><span class='Function'>≢↑</span><span class='Paren'>(</span><span class='Number'>¯1</span><span class='Function'>-≢</span><span class='Paren'>)</span><span class='Function'>↑⊢</span></code></td>
-<td align="center"><code><span class='Function'>-</span><span class='Value'>⍤</span><span class='Function'>≢↑</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>+≢</span><span class='Paren'>)</span><span class='Function'>↑⊢</span></code></td>
+<td><code><span class='Function'>√</span></code></td>
+<td><code><span class='Value'>*</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Function'>÷</span><span class='Number'>2</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Value'>*</span><span class='Modifier2'>∘</span><span class='Function'>÷</span><span class='Value'>⍨</span></code></td>
 </tr>
 <tr>
-<td align="center">Dyad</td>
-<td align="center"><code><span class='Value'>⍪</span></code></td>
-<td align="center"><code><span class='Function'>↑</span><span class='Separator'>,</span><span class='Value'>⍥⊂</span></code></td>
-<td align="center"><code><span class='Separator'>,</span><span class='Value'>⍥⊂</span></code></td>
-<td align="center"><code><span class='Function'>↑</span></code></td>
-<td align="center"><code><span class='Function'>↓</span></code></td>
-<td align="center"><code><span class='Separator'>,</span><span class='Value'>⌿</span></code></td>
-<td align="center"><code><span class='Function'>≢</span><span class='Value'>⍤</span><span class='Function'>⊢↑</span><span class='Value'>⍪</span></code></td>
-<td align="center"><code><span class='Function'>-</span><span class='Value'>⍤</span><span class='Function'>≢</span><span class='Value'>⍤</span><span class='Function'>⊢↑</span><span class='Value'>⍪⍨</span></code></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th align="center">BQN</th>
-<th align="center"><code><span class='Function'>/</span></code></th>
-<th align="center"><code><span class='Function'>⍋</span></code></th>
-<th align="center"><code><span class='Function'>⍒</span></code></th>
-<th align="center"><code><span class='Function'>⊏</span></code></th>
-<th align="center"><code><span class='Function'>⊑</span></code></th>
-<th align="center"><code><span class='Function'>⊐</span></code></th>
-<th align="center"><code><span class='Function'>⊒</span></code></th>
-<th align="center"><code><span class='Function'>∊</span></code></th>
-<th align="center"><code><span class='Function'>⍷</span></code></th>
-<th align="center"><code><span class='Function'>⊔</span></code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">Monad</td>
-<td align="center"><code><span class='Value'>⍸</span></code></td>
-<td align="center"><code><span class='Function'>⍋</span></code></td>
-<td align="center"><code><span class='Function'>⍒</span></code></td>
-<td align="center"><code><span class='Function'>⊣</span><span class='Value'>⌿</span></code></td>
-<td align="center"><code><span class='Value'>⊃</span></code></td>
-<td align="center"><code><span class='Value'>∪⍳</span><span class='Function'>⊢</span></code></td>
-<td align="center"><code><span class='Value'>…</span></code></td>
-<td align="center"><code><span class='Function'>≠</span></code></td>
-<td align="center"><code><span class='Value'>∪</span></code></td>
-<td align="center"><code><span class='Value'>⌸</span></code></td>
+<td><code><span class='Function'>∧</span></code></td>
+<td><code><span class='Brace'>{</span><span class='Value'>⍵</span><span class='Bracket'>[</span><span class='Function'>⍋</span><span class='Value'>⍵</span><span class='Bracket'>]</span><span class='Brace'>}</span></code></td>
+<td><code><span class='Function'>∧</span></code></td>
 </tr>
 <tr>
-<td align="center">Dyad</td>
-<td align="center"><code><span class='Value'>⌿</span></code></td>
-<td align="center"><code><span class='Value'>⍸</span></code></td>
-<td align="center"><code><span class='Function'>⌽</span><span class='Value'>⍸</span><span class='Function'>⌽</span></code></td>
-<td align="center"><code><span class='Value'>⌷</span></code></td>
-<td align="center"><code><span class='Value'>⊃</span></code></td>
-<td align="center"><code><span class='Value'>⍳</span></code></td>
-<td align="center"><code><span class='Value'>…</span></code></td>
-<td align="center"><code><span class='Function'>∊</span></code></td>
-<td align="center"><code><span class='Function'>⍷</span></code></td>
-<td align="center"><code><span class='Value'>⌸</span></code> or <code><span class='Value'>⊆</span></code></td>
+<td><code><span class='Function'>∨</span></code></td>
+<td><code><span class='Brace'>{</span><span class='Value'>⍵</span><span class='Bracket'>[</span><span class='Function'>⍒</span><span class='Value'>⍵</span><span class='Bracket'>]</span><span class='Brace'>}</span></code></td>
+<td><code><span class='Function'>∨</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>¬</span></code></td>
+<td><code><span class='Value'>~</span></code></td>
+<td><code><span class='Number'>1</span><span class='Function'>+-</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>=</span></code></td>
+<td><code><span class='Function'>≢</span><span class='Value'>⍤⍴</span></code></td>
+<td><code><span class='Function'>=</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≠</span></code></td>
+<td><code><span class='Function'>≢</span></code></td>
+<td><code><span class='Function'>≠</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>&lt;</span></code></td>
+<td><code><span class='Value'>⊂</span></code></td>
+<td><code><span class='Function'>&lt;</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>&gt;</span></code></td>
+<td><code><span class='Function'>↑</span></code></td>
+<td><code><span class='Function'>&gt;</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≢</span></code></td>
+<td><code><span class='Value'>⍴</span></code></td>
+<td><code><span class='Function'>≢</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⥊</span></code></td>
+<td><code><span class='Separator'>,</span></code></td>
+<td><code><span class='Value'>⍴</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>∾</span></code></td>
+<td><code><span class='Value'>⊃</span><span class='Separator'>,</span><span class='Value'>⌿</span></code></td>
+<td><code><span class='Value'>⍪</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>≍</span></code></td>
+<td><code><span class='Function'>↑</span><span class='Separator'>,</span><span class='Value'>⍥⊂</span></code></td>
+<td><code><span class='Function'>↑</span><span class='Separator'>,</span><span class='Value'>⍥⊂</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⋈</span></code></td>
+<td><code><span class='Separator'>,</span><span class='Value'>⍥⊂</span></code></td>
+<td><code><span class='Separator'>,</span><span class='Value'>⍥⊂</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>↑</span></code></td>
+<td><code><span class='Separator'>,</span><span class='Value'>⍀</span></code></td>
+<td><code><span class='Function'>↑</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>↓</span></code></td>
+<td><code><span class='Brace'>{</span><span class='Function'>⌽</span><span class='Separator'>,</span><span class='Value'>⍨⍀</span><span class='Function'>⌽</span><span class='Value'>⍵</span><span class='Brace'>}</span></code></td>
+<td><code><span class='Function'>↓</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>↕</span></code></td>
+<td><code><span class='Value'>⍳</span></code></td>
+<td><code><span class='Separator'>,</span><span class='Value'>⌿</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>»</span></code></td>
+<td><code> <span class='Function'>≢↑</span><span class='Paren'>(</span><span class='Number'>¯1</span><span class='Function'>-≢</span><span class='Paren'>)</span><span class='Function'>↑⊢</span></code></td>
+<td><code>  <span class='Function'>≢</span><span class='Value'>⍤</span><span class='Function'>⊢↑</span><span class='Value'>⍪</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>«</span></code></td>
+<td><code><span class='Function'>-</span><span class='Value'>⍤</span><span class='Function'>≢↑</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>+≢</span><span class='Paren'>)</span><span class='Function'>↑⊢</span></code></td>
+<td><code><span class='Function'>-</span><span class='Value'>⍤</span><span class='Function'>≢</span><span class='Value'>⍤</span><span class='Function'>⊢↑</span><span class='Value'>⍪⍨</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>/</span></code></td>
+<td><code><span class='Value'>⍸</span></code></td>
+<td><code><span class='Value'>⌿</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍋</span></code></td>
+<td><code><span class='Function'>⍋</span></code></td>
+<td><code><span class='Value'>⍸</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍒</span></code></td>
+<td><code><span class='Function'>⍒</span></code></td>
+<td><code><span class='Value'>⍸</span></code>, reversed order</td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊏</span></code></td>
+<td><code><span class='Function'>⊣</span><span class='Value'>⌿</span></code></td>
+<td><code><span class='Value'>⌷</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊑</span></code></td>
+<td><code><span class='Value'>⊃</span></code></td>
+<td><code><span class='Value'>⊃</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊐</span></code></td>
+<td><code><span class='Value'>∪⍳</span><span class='Function'>⊢</span></code></td>
+<td><code><span class='Value'>⍳</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊒</span></code></td>
+<td><code><span class='Function'>+</span><span class='Value'>⌿</span><span class='Modifier2'>∘</span><span class='Value'>.</span><span class='Function'>≡</span><span class='Value'>⍨</span><span class='Function'>∧</span><span class='Modifier2'>∘</span><span class='Value'>.</span><span class='Function'>&lt;</span><span class='Value'>⍨</span><span class='Modifier2'>∘</span><span class='Paren'>(</span><span class='Value'>⍳</span><span class='Function'>≢</span><span class='Paren'>)</span></code></td>
+<td><code><span class='Brace'>{</span><span class='Function'>R</span><span class='Gets'>←</span><span class='Function'>≢</span><span class='Value'>⍤</span><span class='Function'>⊢</span><span class='Value'>⍴</span><span class='Modifier2'>∘</span><span class='Function'>⍋</span><span class='Modifier2'>∘</span><span class='Function'>⍋</span><span class='Value'>⍺⍳⍪⍨</span><span class='Separator'>⋄</span><span class='Value'>⍺</span><span class='Paren'>(</span><span class='Function'>R</span><span class='Value'>⍨⍳</span><span class='Function'>R</span><span class='Paren'>)</span><span class='Value'>⍵</span><span class='Brace'>}</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>∊</span></code></td>
+<td><code><span class='Function'>≠</span></code></td>
+<td><code><span class='Function'>∊</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⍷</span></code></td>
+<td><code><span class='Value'>∪</span></code></td>
+<td><code><span class='Function'>⍷</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>⊔</span></code></td>
+<td><code><span class='Value'>⌸</span></code></td>
+<td><code><span class='Value'>⌸</span></code> or <code><span class='Value'>⊆</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -289,7 +313,7 @@
 <tr>
 <td align="center">Dyalog proposed</td>
 <td align="center"><code><span class='Value'>⍢</span></code> <a href="https://aplwiki.com/wiki/Under">Under</a></td>
-<td align="center"><code><span class='Value'>⍥</span></code> Depth</td>
+<td align="center"><code><span class='Value'>⍥</span></code> <a href="https://aplwiki.com/wiki/Depth_(operator)">Depth</a></td>
 <td align="center"><code><span class='Value'>⍛</span></code> <a href="https://aplwiki.com/wiki/Reverse_Compose">Reverse Compose</a></td>
 </tr>
 </tbody>
@@ -315,9 +339,10 @@
 <tr><td> <code><span class='Function'>↑</span></code> </td><td> <code><span class='Function'>></span></code>               </td><td> <code><span class='Function'>↑</span></code></td>        </tr>
 <tr><td> <code><span class='Function'>↓</span></code> </td><td> <code><span class='Function'><</span><span class='Modifier'>˘</span></code>              </td><td> <code><span class='Function'>↓</span></code></td>        </tr>
 <tr><td> <code><span class='Value'>⊂</span></code> </td><td> <code><span class='Function'><</span></code>               </td><td> <code><span class='Function'>+</span><span class='Modifier'>`</span><span class='Modifier2'>⊸</span><span class='Function'>⊔</span></code></td>     </tr>
-<tr><td> <code><span class='Value'>⊆</span></code> </td><td> <code><span class='Function'><</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'><≡</span><span class='Paren'>)</span></code>         </td><td> <code><span class='Paren'>(</span><span class='Function'>¬-</span><span class='Modifier'>˜</span><span class='Function'>⊢×</span><span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>»</span><span class='Modifier2'>⊸</span><span class='Function'>></span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>⊔</span></code></td></tr>
-<tr><td> <code><span class='Function'>∊</span></code> </td><td> <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>∾𝕊</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>0</span><span class='Function'><≡</span><span class='Paren'>)</span><span class='Function'>⥊</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> </td><td> <code><span class='Function'>∊</span></code></td>        </tr>
+<tr><td> <code><span class='Value'>⊆</span></code> </td><td> <code><span class='Function'><</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'>≥≡</span><span class='Paren'>)</span></code>         </td><td> <code><span class='Paren'>(</span><span class='Function'>¬-</span><span class='Modifier'>˜</span><span class='Function'>⊢×</span><span class='Nothing'>·</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>»</span><span class='Modifier2'>⊸</span><span class='Function'>></span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>⊔</span></code></td></tr>
+<tr><td> <code><span class='Function'>∊</span></code> </td><td> <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>∾𝕊</span><span class='Modifier'>¨</span><span class='Paren'>)</span><span class='Modifier2'>⍟</span><span class='Paren'>(</span><span class='Number'>1</span><span class='Function'><≡</span><span class='Paren'>)</span><span class='Function'>⥊</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code> </td><td> <code><span class='Function'>∊</span></code></td>        </tr>
 <tr><td> <code><span class='Value'>⊃</span></code> </td><td colspan=2><code><span class='Function'>⊑</span></code></td>                                      </tr>
+<tr><td> <code><span class='Value'>⌿</span></code> </td><td>                              </td><td> <code><span class='Function'>/</span></code></td>        </tr>
 <tr><td> <code><span class='Value'>⍀</span></code> </td><td>                              </td><td> <code><span class='Brace'>{</span><span class='Value'>𝕩</span><span class='Modifier2'>⌾</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Modifier2'>⊸</span><span class='Function'>/</span><span class='Paren'>)</span><span class='Value'>𝕨</span><span class='Function'>≠</span><span class='Modifier2'>⊸</span><span class='Function'>↑</span><span class='Number'>0</span><span class='Function'>↑</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code></td></tr>
 <tr><td> <code><span class='Value'>∩</span></code> </td><td>                              </td><td> <code><span class='Function'>∊/⊣</span></code></td>      </tr>
 <tr><td> <code><span class='Value'>∪</span></code> </td><td> <code><span class='Function'>⍷</span></code>               </td><td> <code><span class='Function'>⊣∾∊</span><span class='Modifier'>˜</span><span class='Function'>¬</span><span class='Modifier2'>⊸</span><span class='Function'>/⊢</span></code></td> </tr>
