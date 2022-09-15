@@ -73,9 +73,9 @@ Here are some closest equivalents in Dyalog APL for the BQN functions that don't
 
 Modifiers are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
-| BQN    | `¨` | `⌜`  | `˝` | `⎉`  | `⍟` | `˜` | `∘`  | `○` | `⟜` |
-|:------:|:---:|:----:|:---:|:----:|:---:|:---:|:----:|:---:|:---:|
-| Dyalog | `¨` | `∘.` | `⌿` | `⍤A` | `⍣` | `⍨` | `⍤f` | `⍥` | `∘` |
+| BQN    | `¨` | `⌜`  | `˝` | `` ` `` | `⎉`  | `⍟` | `˜` | `∘`  | `○` | `⟜` |
+|:------:|:---:|:----:|:---:|:-------:|:----:|:---:|:---:|:----:|:---:|:---:|
+| Dyalog | `¨` | `∘.` | `⌿` |   `⍀`   | `⍤A` | `⍣` | `⍨` | `⍤f` | `⍥` | `∘` |
 
 Some other BQN modifiers have been proposed as future Dyalog extensions:
 
