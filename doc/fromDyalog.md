@@ -54,7 +54,7 @@ BQN uses the ligature character `‿` for stranding, instead of plain juxtaposit
 
 ## For reading
 
-Glyphs `+-×÷⌊⌈|⊣⊢⌽⍉` have nearly the same meaning in BQN as APL. Closest equivalents in Dyalog APL for the other functions are below (except `!`, Assert).
+Glyphs `+-×÷⌊⌈|⊣⊢⍉` have nearly the same meaning in BQN as APL. The other primitive functions (except `!`, Assert) are translated loosely to Dyalog APL below.
 
 | BQN | Monad         | Dyad
 |-----|---------------|-----
@@ -77,6 +77,7 @@ Glyphs `+-×÷⌊⌈|⊣⊢⌽⍉` have nearly the same meaning in BQN as APL. C
 | `↕` | `⍳`           | `,⌿`
 | `»` | ` ≢↑(¯1-≢)↑⊢` | `  ≢⍤⊢↑⍪`
 | `«` | `-⍤≢↑(1+≢)↑⊢` | `-⍤≢⍤⊢↑⍪⍨`
+| `⌽` | `⊖`           | `⊖`
 | `/` | `⍸`           | `⌿`
 | `⍋` | `⍋`           | `⍸`
 | `⍒` | `⍒`           | `⍸`, reversed order
@@ -86,7 +87,7 @@ Glyphs `+-×÷⌊⌈|⊣⊢⌽⍉` have nearly the same meaning in BQN as APL. C
 | `⊒` | `+⌿∘.≡⍨∧∘.<⍨∘(⍳≢)` | `{R←≢⍤⊢⍴∘⍋∘⍋⍺⍳⍪⍨⋄⍺(R⍨⍳R)⍵}`
 | `∊` | `≠`           | `∊`
 | `⍷` | `∪`           | `⍷`
-| `⊔` | `⌸`           | `⌸` or `⊆`
+| `⊔` | `{⊂⍵}⌸`       | `{⊂⍵}⌸` or `⊆`
 
 Modifiers are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
@@ -133,8 +134,8 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>∪</code> </td><td> <code>⍷</code>               </td><td> <code>⊣∾∊˜¬⊸/⊢</code></td> </tr>
 <tr><td> <code>⍳</code> </td><td> <code>↕</code>               </td><td> <code>⊐</code></td>        </tr>
 <tr><td> <code>⍸</code> </td><td> <code>/</code>               </td><td> <code>⍋</code></td>        </tr>
-<tr><td> <code>⍋</code> </td><td> <code>⍋</code>               </td><td> Give up </td>              </tr>
-<tr><td> <code>⍒</code> </td><td> <code>⍒</code>               </td><td> Give up </td>              </tr>
+<tr><td> <code>⍋</code> </td><td> <code>⍋</code>               </td><td> <code>⍋⊐</code></td>       </tr>
+<tr><td> <code>⍒</code> </td><td> <code>⍒</code>               </td><td> <code>⍒⊐</code></td>       </tr>
 <tr><td> <code>≢</code> </td><td> <code>≠</code>               </td><td> <code>≢</code></td>        </tr>
 <tr><td> <code>⍎</code> </td><td colspan=2><code>•BQN</code></td>                                   </tr>
 <tr><td> <code>⍕</code> </td><td colspan=2><code>•Fmt</code></td>                                   </tr>
