@@ -204,11 +204,11 @@ _testDySearch ← { # ⊐⊒∊⍋⍒
   as { ! 𝕨 𝕏 _testConsistent_ ≡ b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
 }
 
-RandRep ← -⟜»∘∧ 1⊸+⊸gen.Index⟜⥊
-_testIndices ← { # /
+RandRep ← -⟜((0⌊1⊸↑)⊸»)∘∧ 1⊸+⊸gen.Index⟜⥊
+_testIndices ← { # /⊔
   (RandRep○RandBound˜ 𝕩)⊸{ ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
-_testSelect ← { # /⊏
+_testSelect ← { # /⊏⊔
   l‿sh ← (⍋≠¨)⊸⊏ RandShape¨ 𝕩‿𝕩
   n ← RandBound 𝕩
   d ← 𝕨 gen.Struct sh
