@@ -4,13 +4,45 @@
 
 The replicate family of functions contains not just primitives but powerful tools for implementing other functionality. The most important is converting [bits to indices](#booleans-to-indices): AVX-512 extensions implement this natively for various index sizes, and even with no SIMD support at all there are surprisingly fast table-based algorithms for it.
 
-[General replication](#replicate) is more complex. Branching will slow many useful cases down considerably when using the obvious solution. However, branch-free techniques introduce overhead for larger replication amounts. Hybridizing these seems to be the only way, but it's finicky.
+[General replication](#replicate) is more complex. The main enemy is branching but there are reasonable approaches.
 
 Replicate by a [constant amount](#constant-replicate) (so `𝕨` is a single number) is not too common in itself, but it's notable because it can be the fastest way to implement outer products and arithmetic with prefix agreement.
 
+| Normal                  | Boolean
+|-------------------------|--------
+| [Indices](#indices)     | [Where](#where)
+| [Replicate](#replicate) | [Compress](#compress)
+| ([by constant](#constant-replicate))
+
 ## Indices
 
-Branchless algorithms are fastest, but with unbounded values in `𝕨` a fully branchless algorithm is impossible because you can't write an arbitrary amount of memory without branching. So the best algorithms depend on bounding `𝕨`. Fortunately the most useful case is that `𝕨` is boolean.
+Because it's somewhat simpler to discuss, we'll begin with the case `/𝕩` where `𝕩` has an integer type (the boolean case is discussed [below](#compress)). The obvious C loop works fine when the average of `𝕩` is large enough, because it auto-vectorizes to write many values at a time. When the average is smaller, this vectorization becomes less effective, but the main problem is branching, which takes many cycles for each element in `𝕩` if the values aren't predictable.
+
+Indices is half of a [counting sort](sort.md#distribution-sorts): for sparse values, it's the slower half. Making it fast makes counting sort viable for much larger range-to-length ratios.
+
+I know two main ways to tackle the branching problem. The elegant way is a three-pass method computing ``+`/⁼+`𝕩``. First, zero out the result array. Then traverse `𝕩` with a running sum index and increment the result value at that index at each step. Then sum the result. Somehow C compilers still don't know how to vectorize a prefix sum so you'll need to do it manually for best performance. Three passes is bad for caching so this method needs to be done in blocks to work well for large arrays. A slightly faster variation is that instead of incrementing you can write indices and take a max-scan `` ⌈` `` at the end.
+
+The other way is to try to make the lengths less variable by rounding up. Later writes will overwrite earlier ones anyway. This gets messy. If the maximum value in `𝕩` is, say, 8, then generating indices is fairly fast: for each element, write 8 indices and then move the output pointer forward by that much. But if it's not bounded (and why would it be?) you'll end up with gaps. You could just accept some branching and write 8 more indices. You could also use a sparse *where* algorithm to get the indices of large elements in `𝕩`, and do the long writes for those either before or after the short ones. Overall I'm kind of skeptical of these approaches here. However, they are definitely a valid approach to constant Replicate, where `𝕨` is inherently bounded.
+
+## Replicate
+
+Most techniques for Indices can be adapted to Replicate, and the same considerations about branching apply.
+
+An additional approach that becomes available is essentially `/⊸⊏`: apply Indices to portions of `𝕨` with the result in a temporary buffer, and select to produce the result. With small enough sections you can use 8-bit indices which can save time. As far as I can tell this method isn't an improvement for Replicate but is for the boolean case, Compress.
+
+The running sum method needs to be modified slightly: instead of incrementing result values by one always, add the difference between the current value in `𝕩` and the previous one. It's possible to use xor instead of addition and subtraction but it shouldn't ever make much of a difference to performance. In the boolean case xor-ing trailing bits instead of single bits allows part of an xor-scan to be skipped; see [Expanding Bits in Shrinking Time](https://www.dyalog.com/blog/2018/06/expanding-bits-in-shrinking-time/).
+
+### Constant replicate
+
+The case where `𝕨` is constant is useful for outer products and leading-axis extension, where elements of one argument need to be repeated a few times. This connection is also discussed in [Expanding Bits](https://www.dyalog.com/blog/2018/06/expanding-bits-in-shrinking-time/).
+
+The same approaches apply, but the branches in the branchless ones become a lot more predictable. So the obvious loops are now okay instead of bad even for small values. C compilers will generate decent code for constant small numbers as well, but I think they're still not as good as specialized code with shuffle, and can sometimes be beaten by scan-based methods.
+
+## Booleans
+
+The case where the replication amount is boolean is called Where or Compress based on older APL names for these functions before Replicate was extended to natural numbers.
+
+When the amounts to replicate are natural numbers you're pretty much stuck going one at a time. With booleans there are huge advantages to doing bytes or larger units at once. This tends to lead to an outer replicate-like pattern where the relevant amount is the *sum* of a group of booleans, as well as an inner pattern based on the individual 0s and 1s.
 
 ### Booleans to indices
 
@@ -20,25 +52,13 @@ To generate indices, use a 256×8-byte lookup table that goes from bytes to 8-by
 
 Some other methods discussed by [Langdale](https://branchfree.org/2018/05/22/bits-to-indexes-in-bmi2-and-avx-512/) and [Lemire](https://lemire.me/blog/2018/03/08/iterating-over-set-bits-quickly-simd-edition/). I think very large lookup tables are not good for an interpreter because they cause too much cache pressure if used occasionally on smaller arrays. This rules out many of these strategies.
 
-### Non-booleans to indices
-
-If the maximum value in `𝕩` is, say, 8, then generating indices is fairly fast: for each element, write 8 indices and then move the output pointer forward by that much. This is much like the lookup table algorithm above, minus the lookup table. If the indices need to be larger than one byte, it's fine to expand them, and possibly add an offset, after generation (probably in chunks).
-
-There are two ways I know to fill in the gaps that this method would leave with elements that are too large. First is to stop after such an element and fill remaining space branchfully (maybe with `memset`). This is maximally efficient if `𝕩` is dominated by large elements—particularly for 2-byte indices when it skips index expansion—but not good if there are a lot of elements near the threshold. Second, initialize the buffer with 0 and perform `` ⌈` `` afterwards, or other variations. This eliminates all but a fixed amount of branching, but it's a lot of overhead and I think unless a more sophisticated strategy arises it's best to stick with the first method.
-
-Indices is half of a counting sort: for sparse values, it's the slower half. Making it fast makes counting sort viable for much larger range-to-length ratios.
-
-## Replicate
-
-For the most part, understanding Indices is the best way to implement Replicate quickly. But this is not the case if `𝕩` is boolean because then its elements are smaller than any useful index, and faster methods are available.
-
 ### Compress
 
 Most of the methods listed below can be performed in place.
 
 For booleans, use BMI2's PEXT (parallel bits extract) instruction, or an emulation of it. The result can be built recursively alongside the also-required popcount using masked shifts.
 
-The generally best method for small elements seems to be to generate 1-byte indices into a buffer 256 at a time and select with those. There's a branchless method on one bit at a time which is occasionally better, but I don't think the improvement is enough to justify using it.
+A good general method is to generate 1-byte indices into a buffer 256 at a time and select with those. There's a branchless method on one bit at a time which is occasionally better, but I don't think the improvement is enough to justify using it.
 
 For 1- and 2-byte elements, a shuffle-based solution is a substantial improvement, if a vector shuffle is available. AVX-512 has compresses on several sizes built-in.
 
@@ -48,15 +68,7 @@ For medium-sized cells copying involves partial writes and so is somewhat ineffi
 
 The grouped algorithm, as well as a simpler sparse algorithm that just finds each 1 in `𝕨`, can also better for small elements. Whether to use these depends on the value of `+´𝕨` (sparse) or `+´»⊸<𝕨` (clumped). The checking is fast and these cases are common, but the general case is also fast enough that this is not a particularly high priority.
 
-### Replicate
-
-Like Compress I think the best algorithm is often to generate small indices in a buffer and then select. But this is inefficient when `𝕨` contains large values, so those need to be detected and handled. Very tricky.
-
-#### Constant replicate
-
-Useful for outer products and leading-axis extension. See [Expanding Bits in Shrinking Time](https://www.dyalog.com/blog/2018/06/expanding-bits-in-shrinking-time/) for the boolean case. C compilers will generate decent code for constant small numbers and variable large ones, but I think specialized code with shuffle would be better for small numbers.
-
-### Higher ranks
+## Higher ranks
 
 When replicating along the first axis only, additional axes only change the element size (these are the main reason why a large element method is given). Replicating along a later axis offers a few opportunities for improvement relative to replicating each cell individually.
 
