@@ -2,15 +2,11 @@
 
 # Implementation of Indices and Replicate
 
-The replicate family of functions contains not just primitives but powerful tools for implementing other functionality. The most important is converting [bits to indices](#booleans-to-indices): AVX-512 extensions implement this natively for various index sizes, and even with no SIMD support at all there are surprisingly fast table-based algorithms for it.
-
-[General replication](#replicate) is more complex. The main enemy is branching but there are reasonable approaches.
-
-Replicate by a [constant amount](#constant-replicate) (so `𝕨` is a single number) is not too common in itself, but it's notable because it can be the fastest way to implement outer products and arithmetic with prefix agreement.
+The replicate family of functions contains not just primitives but powerful tools for implementing other functionality. Most important is the boolean case, which can be used to ignore unwanted values without branching. Replicate by a constant amount (so `𝕨` is a single number) is not too common in itself, but it's notable because it can be the fastest way to implement outer products and arithmetic with prefix agreement. Fast implementations can be much better than the obvious C code, particularly for the boolean case.
 
 | Normal                  | Boolean
 |-------------------------|--------
-| [Indices](#indices)     | [Where](#where)
+| [Indices](#indices)     | [Where](#booleans-to-indices)
 | [Replicate](#replicate) | [Compress](#compress)
 | ([by constant](#constant-replicate))
 
@@ -40,13 +36,17 @@ The same approaches apply, but the branches in the branchless ones become a lot 
 
 ## Booleans
 
-The case where the replication amount is boolean is called Where or Compress based on older APL names for these functions before Replicate was extended to natural numbers.
+The case with a boolean replication amount is called Where or Compress, based on APL names for these functions from before Replicate was extended to natural numbers.
 
-When the amounts to replicate are natural numbers you're pretty much stuck going one at a time. With booleans there are huge advantages to doing bytes or larger units at once. This tends to lead to an outer replicate-like pattern where the relevant amount is the *sum* of a group of booleans, as well as an inner pattern based on the individual 0s and 1s.
+When the amounts to replicate are natural numbers you're pretty much stuck going one at a time. With booleans there are huge advantages to doing bytes or larger units at once. This tends to lead to a two-level model: an outer replicate-like pattern where the relevant amount is the *sum* of a group of booleans, as well as an inner pattern based on the individual 0s and 1s.
+
+The standard branchless strategy is to write each result value regardless of whether it should actually be included, then increment the result pointer only if it is. This works best if done in an unrolled loop handling 8 bits at a time. But it's still not competitive with other methods using hardware extensions or lookup tables, so these should be used when there's more implementation time available.
 
 ### Booleans to indices
 
-Indices (`/`) on a boolean `𝕩` of 256 or fewer bits can be made very fast on generic 64-bit hardware using a lookup table on 8 bits at a time. This algorithm can write past the end by up to 8 bytes (7 if trailing 0s are excluded), but never writes more than 256 bytes total. This means it's suitable for writing to an overallocated result array or a 256-byte buffer.
+Generally, Compress implementations can be adapted to implement Where, and this tends to be the best way to do it. In the other direction, a Where implementation on 1 or 2 bytes can be used to implement Where or Compress on larger types. To do this, traverse the boolean argument in blocks; for each, get the indices and either add the current offset to them (Where) or use them to select from the argument (Compress). This is close to but not necessarily the fastest method for 4-byte and 8-byte outputs. It's a bargain given the low amount of effort required though.
+
+Indices from 256 or fewer bits is fastest with hardware extensions as discussed in the next section. But it can be done pretty fast on generic 64-bit hardware using a lookup table on 8 bits at a time. This algorithm can write past the end by up to 8 bytes (7 if trailing 0s are excluded), but never writes more than 256 bytes total. This means it's suitable for writing to an overallocated result array or a 256-byte buffer.
 
 To generate indices, use a 256×8-byte lookup table that goes from bytes to 8-byte index lists, and either a popcount instruction or another lookup table to get the sum of each byte. For each byte in `𝕨`, get the corresponding indices, add an increment, and write them to the current index in the output. Then increase the output index by the byte's sum. The next indices will overlap the 8 bytes written, with the actual indices kept and junk values at the end overwritten. The increment added is an 8-byte value where each byte contains the current input index (always a multiple of 8); it can be added or bitwise or-ed with the lookup value.
 
@@ -54,19 +54,27 @@ Some other methods discussed by [Langdale](https://branchfree.org/2018/05/22/bit
 
 ### Compress
 
-Most of the methods listed below can be performed in place.
+Branchless writes and blocked indices are possible methods as discussed above. The ones below use extended instruction sets. Note that older AMD processors do BMI2 operations very slowly. Compress can often be performed in-place.
 
 For booleans, use BMI2's PEXT (parallel bits extract) instruction, or an emulation of it. The result can be built recursively alongside the also-required popcount using masked shifts.
 
-A good general method is to generate 1-byte indices into a buffer 256 at a time and select with those. There's a branchless method on one bit at a time which is occasionally better, but I don't think the improvement is enough to justify using it.
+AVX-512 has compresses on all sizes up to 8 bytes, split across several sub-extensions.
 
-For 1- and 2-byte elements, a shuffle-based solution is a substantial improvement, if a vector shuffle is available. AVX-512 has compresses on several sizes built-in.
+For 1- and 2-byte elements and no AVX-512 support, there are two methods with similar performance on Intel hardware. Both work with one byte at a time from the boolean argument. One uses BMI2, first using PDEP (1-byte case) or a lookup table (2-byte case) to expand each bit to the result element size, then applies PEXT to that and a word from the compressed argument. The other is to use a 256-entry lookup table where each entry is 8 indices for a vector shuffle instruction, a total of 2KB of data. Shuffling may also be competitive for 4-byte elements but it's no longer automatically the best.
 
-Odd-sized cells could be handled with an index buffer like small elements, using oversized writes and either overallocating or handling the last element specially.
+### Sparse compress
 
-For medium-sized cells copying involves partial writes and so is somewhat inefficient. It's better to split `𝕨` into groups of 1s in order to copy larger chunks from `𝕩` at once. So the algorithm repeatedly searches `𝕨` for the next 1, then the next 0, then copies the corresponding value from `𝕩` to the result. This might be better for small odd-sized cells as well; I haven't implemented the algorithm with oversized writes to compare.
+When `𝕨` is sparse (or `𝕩` for Indices), that is, has a small sum relative to its length, there are methods that lower the per-input cost by doing more work for each output.
 
-The grouped algorithm, as well as a simpler sparse algorithm that just finds each 1 in `𝕨`, can also better for small elements. Whether to use these depends on the value of `+´𝕨` (sparse) or `+´»⊸<𝕨` (clumped). The checking is fast and these cases are common, but the general case is also fast enough that this is not a particularly high priority.
+The best known sparse method is to work on a full word of bits. At each step, find the first index with count-trailing-zeros, and then remove that bit with a bitwise and, `w &= w-1` in C. However, this method has a loop whose length is the number of 1s in the word, a variable. CPUs are very good at predicting this length in benchmarks, but in practice it's likely to be less predictable! In CBQN it's only used for densities below 1/128, one bit every two words.
+
+For marginal cases, I found a branchless algorithm that can work on blocks of up to `2⋆11` elements. The idea is to split each word into a few segments, and write the bits and relative offset for each segment to the appropriate position in the result of a zeroed buffer. Then traverse the buffer, maintaining bits and a cumulative offset. At each step, the index is obtained from those bits with count-trailing-zeros just as in the branching algorithm. The bits will all be removed exactly when the next segment is reached, so new values from the buffer can be incorporated just by adding them.
+
+### Grouped compress
+
+The sparse method can also be adapted to find groups of 1s instead of individual 1s, by searching for the first 1 and then the first 0 after that. This is useful if `𝕨` changes value rarely, that is, if `+´»⊸<𝕨` is small. Computing this value can be expensive so it's best to compute the threshold first, then update it in blocks and stop if it exceeds the threshold.
+
+For copying medium-sized cells with memcpy, all the branching here is pretty cheap relative to the actual operation, and it may as well be used all the time. This may not be true for smaller cells copied with overwriting, but I haven't implemented overwriting so I'm not sure.
 
 ## Higher ranks
 
