@@ -32,7 +32,9 @@ The running sum method needs to be modified slightly: instead of incrementing re
 
 The case where `𝕨` is constant is useful for outer products and leading-axis extension, where elements of one argument need to be repeated a few times. This connection is also discussed in [Expanding Bits](https://www.dyalog.com/blog/2018/06/expanding-bits-in-shrinking-time/).
 
-The same approaches apply, but the branches in the branchless ones become a lot more predictable. So the obvious loops are now okay instead of bad even for small values. C compilers will generate decent code for constant small numbers as well, but I think they're still not as good as specialized code with shuffle, and can sometimes be beaten by scan-based methods.
+The same approaches apply, but the branches in the branchless ones become a lot more predictable. So the obvious loops are now okay instead of bad even for small values. C compilers will generate decent code for constant small numbers—better for powers of two, but still not optimal it seems?
+
+For top performance, the result should be constructed from one shuffle per output, and some haggling with lanes for odd values in AVX. This means the number of shuffle constants is the value of `𝕨`, so as the numbers get larger there's a question of how much space in the binary you're willing to devote to it. Although it's not really so bad because the overhead for non-specialized code gets lower as `𝕨` increases. But JIT compiling would be very useful here, of course.
 
 ## Booleans
 
@@ -48,7 +50,7 @@ Generally, Compress implementations can be adapted to implement Where, and this 
 
 Indices from 256 or fewer bits is fastest with hardware extensions as discussed in the next section. But it can be done pretty fast on generic 64-bit hardware using a lookup table on 8 bits at a time. This algorithm can write past the end by up to 8 bytes (7 if trailing 0s are excluded), but never writes more than 256 bytes total. This means it's suitable for writing to an overallocated result array or a 256-byte buffer.
 
-To generate indices, use a 256×8-byte lookup table that goes from bytes to 8-byte index lists, and either a popcount instruction or another lookup table to get the sum of each byte. For each byte in `𝕨`, get the corresponding indices, add an increment, and write them to the current index in the output. Then increase the output index by the byte's sum. The next indices will overlap the 8 bytes written, with the actual indices kept and junk values at the end overwritten. The increment added is an 8-byte value where each byte contains the current input index (always a multiple of 8); it can be added or bitwise or-ed with the lookup value.
+To generate indices, use a 256×8-byte lookup table that goes from bytes to 8-byte index lists, and either a popcount instruction or another lookup table to get the sum of each byte. For each byte, get the corresponding indices, add an increment, and write them to the current index in the output. Then increase the output index by the byte's sum. The next indices will overlap the 8 bytes written, with the actual indices kept and junk values at the end overwritten. The increment added is an 8-byte value where each byte contains the current input index (always a multiple of 8); it can be added or bitwise or-ed with the lookup value.
 
 Some other methods discussed by [Langdale](https://branchfree.org/2018/05/22/bits-to-indexes-in-bmi2-and-avx-512/) and [Lemire](https://lemire.me/blog/2018/03/08/iterating-over-set-bits-quickly-simd-edition/). I think very large lookup tables are not good for an interpreter because they cause too much cache pressure if used occasionally on smaller arrays. This rules out many of these strategies.
 
