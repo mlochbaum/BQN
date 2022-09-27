@@ -6,7 +6,43 @@
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="index.html">BQN</a></div>
 <h1 id="how-to-run-bqn"><a class="header" href="#how-to-run-bqn">How to run BQN</a></h1>
 <p><a href="https://github.com/dzaima/CBQN">CBQN</a> is the primary offline implementation. Scripts in this repository start with <code><span class='Comment'>#! /usr/bin/env bqn</span></code> in order to look up the user's <code><span class='Value'>bqn</span></code> executable, which is expected to be CBQN.</p>
-<p>Some Linux distributions have third-party BQN packages: for general use I recommend <code><span class='Value'>cbqn</span></code> from nixpkgs (Nix), <code><span class='Value'>cbqn</span><span class='Function'>-</span><span class='Value'>git</span></code> from the AUR (Arch), and <code><span class='Value'>bqn</span></code> in development Guix (not 1.3.0). There are also third party <a href="https://github.com/actalley/WinBQN">Windows builds</a> hosted on Github.</p>
+<p>Third-party packages are available for Windows and a few Linux distributions. Our <a href="https://github.com/mlochbaum/Singeli">Singeli</a> code is used for faster implementations of primitives on x86; generally, for the best performance, you'll have to compile CBQN for the target hardware instead of using packages.</p>
+<table>
+<thead>
+<tr>
+<th>OS/distro</th>
+<th>Package</th>
+<th>Type</th>
+<th>Singeli</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows download</td>
+<td><a href="https://github.com/actalley/WinBQN">WinBQN</a></td>
+<td>Binary</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Arch AUR</td>
+<td><code><span class='Value'>cbqn</span><span class='Function'>-</span><span class='Value'>git</span></code></td>
+<td>Source</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Nix</td>
+<td><code><span class='Value'>cbqn</span></code></td>
+<td>Source/Binary</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Guix</td>
+<td><code><span class='Value'>cbqn</span></code></td>
+<td>Source/Binary</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 <p>For tools related to running BQN, see the <a href="editors/index.html">editor plugins</a> and <a href="https://mlochbaum.github.io/BQN/fonts.html">fonts page</a>.</p>
 <p>All these websites run BQN (on your computer, except Attempt This Online):</p>
 <table>
