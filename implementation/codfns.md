@@ -2,7 +2,7 @@
 
 # Co-dfns versus BQN's implementation
 
-*Co-dfns is under active development so this document might not reflect its current state. Last update 2022-07-18.*
+*Co-dfns is under active development so this document might not reflect its current state. Last update 2022-10-02.*
 
 The BQN self-hosted compiler is directly inspired by the [Co-dfns](https://github.com/Co-dfns/Co-dfns) project, a compiler for a subset of [Dyalog APL](../doc/fromDyalog.md). I'm very grateful to Aaron for showing that array-oriented compilation is even possible! In addition to the obvious difference of target language, BQN differs from Co-dfns both in goals and methods.
 
@@ -26,9 +26,7 @@ Co-dfns initially didn't check for compilation errors, but has started to add so
 
 ## Comments
 
-At the time I began work on BQN, Aaron advocated the almost complete separation of code from comments (thesis) in addition to his very terse style as a general programming methodology. I find that such a style makes it hard to connect the documentation to the code, and is very slow in providing a summary or reminder of functionality that a comment might. I chose one comment per line as a better balance of compactness and faster accessibility.
-
-Subsequently Co-dfns undertook perhaps the greatest shift in comment-to-code ratio that's ever happened. Aaron began by adding a full-line comment for every group of two to three lines, not too far from BQN. Then he converted the whole thing to a literate program using the noweb framework and is working on writing the prose half, perhaps a half page per line of code. This could make development harder but it seems like a great way to make it easier to get into a difficult style of programming, so I'm interested to see how it goes.
+At the time I began work on BQN, Aaron advocated the almost complete separation of code from comments (thesis) in addition to his very terse style as a general programming methodology. I find that such a style makes it hard to connect the documentation to the code, and is very slow in providing a summary or reminder of functionality that a comment might. I chose one comment per line as a better balance of compactness and faster accessibility. Co-dfns has since fluctuated wildly in its approach to documenting the code, including a stab at literate programming with perhaps half a page to describe each line for the parts that were finished.
 
 ## Is it a good idea?
 
@@ -58,7 +56,7 @@ There are a few factors to consider regarding the difference in results:
 
 - CBQN is a different runtime from Dyalog. We've profiled the compiler and implemented lots of things in SIMD, and I'm confident CBQN runs the compiler at least as fast as Dyalog 17.0, the latest version for Aaron's thesis, would have.
 - Co-dfns and BQN use different compilation strategies. I think that my methods are at least as fast, and scale better to a full compiler.
-- The portion of the compiler implemented by Co-dfns could be better for arrays than other sections, which in fact seems likely to me—I would say parsing is the worst for array relative to scalar programming.
+- The portion of the compiler implemented for the paper could be better for arrays than other sections, which in fact seems likely to me—I would say parsing is the worst for array relative to scalar programming.
 - The Co-dfns and nanopass implementations are pass-for-pass equivalent, while BQN and Java are only comparable as a whole. As the passes were chosen to be ideal for Co-dfns, there's some chance this could be slowing down nanopass in a way that doesn't translate to real-world performance.
 
 I reckon that most of the effect is that the nanopass compiler just isn't very fast. I see our whole-compiler results as superseding Aaron's comparison, and it's worth noting as well that C could probably beat Java for a BQN compiler. So I conclude that, with current technology, array-based compilers are competitive with scalar compilers on the CPU and not vastly better. This result is still remarkable! APL and BQN are high-level dynamically-typed languages, and wouldn't be expected to go near the performance of a compiled language like Java. However, it makes it much harder to recommend array-based compilation than the numbers from the Co-dfns paper would.
