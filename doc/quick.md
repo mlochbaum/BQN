@@ -185,7 +185,7 @@ The subexpression `!2=•Type` is a function [train](train.md), and it happens t
 
 ### Subfunction
 
-The function `Proc` is called on each character of `𝕩` along with the previous character, and says what to at that position. Also, it's deliberately inconsistent to cover more BQN features. Here's the whole thing:
+The function `Proc` is called on each character of `𝕩` along with the previous character, and says what to do at that position. Also, it's deliberately inconsistent to cover more BQN features. Here's the whole thing:
 
     Proc ← {
       · 𝕊 ' ': spl⇐1 ;             # Space: break and delete it
@@ -205,7 +205,7 @@ This function has two bodies with `;` in between. Each one has a *header*, separ
 
 The first header, `· 𝕊 ' ':`, is more specific. The function is unlabelled, since `𝕊` just indicates the block function it's in (useful for [recursion](block.md#self-reference)). The right argument is `' '`, a space character, so this body will only be used if `𝕩` is a space. And the left argument is… `·`, which is called [Nothing](expression.md#nothing). Both here and as an assignment target, Nothing indicates an ignored value. This body *does* require a left argument, but it doesn't name it. And the body itself is just `spl⇐1`. The `⇐` makes this body (only this one!) return a namespace, which has only the field `spl`.
 
-The next header, `prev Fn cur:` sets names for the function and its arguments, but doesn't constrain them other than requiring two arguments. So it applies in all the cases where the previous one didn't match, that is, when `𝕩` isn't `' '`. The body starts with `⟨spl,str⟩⇐`, and the `⇐` means it will return a namespace too. This is an [export statement](namespace.md#exports), which declares `spl` and `str` to be fields but doesn't define them—they must be defined somewhere else in the block, which is what happens next.
+The next header, `prev Fn cur:`, sets names for the function and its arguments, but doesn't constrain them other than requiring two arguments. So it applies in all the cases where the previous one didn't match, that is, when `𝕩` isn't `' '`. The body starts with `⟨spl,str⟩⇐`, and the `⇐` means it will return a namespace too. This is an [export statement](namespace.md#exports), which declares `spl` and `str` to be fields but doesn't define them—they must be defined somewhere else in the block, which is what happens next.
 
     prev Fn cur: ⟨spl,str⟩⇐
       spl←0 ⋄ str←⟨cur⟩          # Include and don't break...
@@ -226,7 +226,7 @@ Once `Proc` is applied to all the characters, we'll end up with a list of namesp
 
 Going left to right, `GV‿GS` indicates [destructuring assignment](expression.md#destructuring), which will expect a list of two values on the right and take it apart to assign the two names. The right hand side is the function `{𝕏¨}¨` applied to a list.
 
-`{𝕏¨}` is a block function, like `Split` but a lot shorter. It uses the uppercase `𝕏` instead of `𝕩`, so that it treats `𝕩` as a function (it doesn't *require* it to be a function, though: see [mixing roles](context.md#mixing-roles). It adds an Each `¨` onto its argument. This is used to convert the two functions in the list from functions that work on a namespaces to functions that work on a list of them.
+`{𝕏¨}` is a block function, like `Split` but a lot shorter. It uses the uppercase `𝕏` instead of `𝕩`, so that it treats `𝕩` as a function (it doesn't *require* it to be a function, though: see [mixing roles](context.md#mixing-roles)). It adds an Each `¨` onto its argument. This is used to convert the two functions in the list from functions that work on a namespaces to functions that work on a list of them.
 
 The list is split across two lines, using newline as a [separator](token.md#separators) instead of `,` or `⋄`. Its second function `{𝕩.spl}` is simpler: it takes a namespace `𝕩` and gets the field named `spl`.
 
