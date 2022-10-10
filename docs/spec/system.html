@@ -633,7 +633,7 @@
 <p>In <code><span class='Function'>Range</span></code>, <code><span class='Value'>𝕩</span></code> may be <code><span class='Number'>0</span></code>. In this case the result consists of floating-point numbers in the unit interval from 0 to 1. The numbers should have an overall uniform distribution, but their precision and whether the endpoints 0 and 1 are possible may depend on the implementation.</p>
 <p>Ranges up to <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>32</span></code> must be supported (that is, a maximum integer result of <code><span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>32</span><span class='Paren'>)</span><span class='Function'>-</span><span class='Number'>1</span></code>) if the number system accommodates it. In implementations based on double-precision floats it's preferable but not required to support ranges up to <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>53</span></code>.</p>
 <h2 id="bitwise-operations"><a class="header" href="#bitwise-operations">Bitwise operations</a></h2>
-<p>The system namespace <code><span class='Value'>•bits</span></code> gives functions for efficiently applying bitwise and two's complement integer operations to arrays of data. These functions should compute result values with native CPU instructions, preferably SIMD if available.</p>
+<p>The system namespace <code><span class='Value'>•bit</span></code> gives functions for efficiently applying bitwise and two's complement integer operations to arrays of data. These functions should compute result values with native CPU instructions, preferably SIMD if available.</p>
 <table>
 <thead>
 <tr>

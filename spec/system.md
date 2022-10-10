@@ -313,7 +313,7 @@ Ranges up to `2⋆32` must be supported (that is, a maximum integer result of `(
 
 ## Bitwise operations
 
-The system namespace `•bits` gives functions for efficiently applying bitwise and two's complement integer operations to arrays of data. These functions should compute result values with native CPU instructions, preferably SIMD if available.
+The system namespace `•bit` gives functions for efficiently applying bitwise and two's complement integer operations to arrays of data. These functions should compute result values with native CPU instructions, preferably SIMD if available.
 
 | Name     | Args | Type     | Behavior
 |----------|------|----------|---------
