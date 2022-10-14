@@ -148,15 +148,17 @@ With a left argument `⌽` means Rotate instead, and shifts values over by the s
 <!--GEN
 Primitives ⟨"¨%2%Each", "´%5%Fold", "∾%,%Join%Join To"⟩
 -->
-The 1-modifier Each (`¨`) applies its operand to every element of a list argument, like `map` in a functional programming language. With two list arguments, Each pairs the corresponding elements like arithmetic does, or a bit like a `zip` function (unlike arithmetic, it only goes one level deep). If one argument is a list and one's an atom, the atom is reused every time instead.
+The 1-modifier Each (`¨`) applies its operand to every element of a list argument, like `map` in a functional programming language. So here's how we'd reverse each of three lists.
 
         ⌽¨ "abcd"‿"ABCDEF"‿"01"
 
+Given two list arguments, Each pairs the corresponding elements—first with first, second with second, and so on, like a `zip` function. If just one argument's a list and the other's an atom, it reuses the atom in every pair instead. This many-to-many or one-to-many pairing is the same as we saw for arithmetic. But Each only ever goes one level deep while arithmetic keeps going until it reaches a non-list.
+
+        "abc" ⋈¨ "ABC"
+
         "string"‿"list"‿"array" ∾¨ 's'
 
-        "abc" ⋈¨ ⌽ "abc"
-
-Fold (`´`) is the higher-order function also known as reduce or accumulate. It applies its operand function between each pair of elements in a list argument. For example, `+´` gives the sum of a list and `×´` gives its product.
+Next, Fold (`´`) is the higher-order function also known as reduce or accumulate. The argument has to be a list, and it applies its operand function between all the elements of that list. For example, `+´` gives the sum of a list and `×´` gives its product.
 
         +´ 2‿3‿4
         ×´ 2‿3‿4
@@ -166,7 +168,7 @@ To match the order of BQN evaluation, Fold moves over its argument array from ri
         -´ 1‿2‿3‿4‿5
         1-2-3-4-5
 
-With this evaluation order, `-´` gives the *alternating sum* of its argument. Think of it this way: the left argument of each `-` is a single number, while the right argument is made up of all the numbers to the right subtracted together. So each `-` flips the sign of every number to its right, and every number is negated by all the `-`s to its left. The first number (`1` above) never gets negated, the second is negated once, the third is negated twice, returning it to its original value… the signs alternate.
+With this evaluation order, `-´` gives the *alternating sum* of its argument, which comes up in math once in a while. Think of it this way: the left argument of each `-` is a single number, while the right argument is made up of all the numbers to the right subtracted together. So each `-` flips the sign of every number to its right, and every number is negated by all the `-`s to its left. The first number (`1` above) never gets negated, the second is negated once, the third is negated twice, returning it to its original value… the signs alternate.
 
 *Hey, isn't it dissonant that the first, second, and third numbers are negated zero, one, and two times? Not if you call them the zeroth, first, and second…*
 
