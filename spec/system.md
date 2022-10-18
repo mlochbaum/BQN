@@ -325,7 +325,6 @@ The system namespace `•bit` gives functions for efficiently applying bitwise a
 | `_add`   | 2    | integer  | `+`
 | `_sub`   | 2    | integer  | `-`
 | `_mul`   | 2    | integer  | `×`
-| `_mulu`  | 2    | unsigned | `×`
 
 An operation is exposed as a 1-modifier that takes up to four numbers for its operand.
 - Operation width
@@ -338,7 +337,7 @@ An example call is `a 16‿1•bit._add b`, to perform 16-bit additions on two b
 
 To apply a bitwise operation, each argument is represented as a stream of bits based on the width given for it, then split into units whose width is the operation width. The operation is applied to these units. The result is again treated as a stream of bits and split according to the result width, with each unit forming a result element.
 
-The operation width, along with the "Type" column above, determines what operation is performed. For bit operations it has no effect, except to constrain the argument sizes according to the shape rules below. Integer (meaning signed) and unsigned operations support widths of 8 and above, and should support higher values such as 128 if available.
+The operation width, along with the "Type" column above, determines what operation is performed. For bit operations it has no effect, except to constrain the argument sizes according to the shape rules below. Integer operations support widths of 8 and above, and should support higher values such as 128 if available. For all of them, there is no difference between wrapping signed and unsigned operations given that the argument and result widths are the same.
 
 Argument and result widths correspond to little-endian binary representations according to the following table (operation widths don't—see the "type" field in the table above). Here "boolean" indicates value 0 or 1, "signed integer" indicates two's complement representation, and "character" is a code point in an unsigned representation. Either type may be used for an argument, but the result will always use a primary type.
 
