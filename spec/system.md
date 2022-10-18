@@ -325,8 +325,9 @@ The system namespace `•bit` gives functions for efficiently applying bitwise a
 | `_add`   | 2    | integer  | `+`
 | `_sub`   | 2    | integer  | `-`
 | `_mul`   | 2    | integer  | `×`
+| `_cast`  | 1    | any      | identity
 
-An operation is exposed as a 1-modifier that takes up to four numbers for its operand.
+The `_cast` modifier is special and not considered an operation; see below. Each operation is exposed as a 1-modifier that takes up to four numbers for its operand.
 - Operation width
 - Result element width
 - Right argument element width
@@ -349,6 +350,6 @@ Argument and result widths correspond to little-endian binary representations ac
 | 32    | Signed integer  | Character
 | 64    | IEEE 754 double |
 
-An argument must be an array of numbers or an array of characters. Its elements must fit into the appropriate type. The "cell size" is the length in bits of a 1-cell, that is, `width×¯1⊑1∾≢arg`, and must be a multiple of the operation width. Both arguments must have the same cell size, and the same leading shape `¯1↓≢arg`. The result shape is this leading shape followed by the cell size divided by the result element width.
+An argument must be an array of numbers or an array of characters. Its elements must fit into the appropriate type. The "cell size" is the length in bits of a 1-cell, that is, `width×¯1⊑1∾≢arg`, and must be a multiple of the operation width. The "leading shape" is `¯1↓≢arg`. For two-argument functions one argument can be scalar-extended if it has rank 1 and cell size equal to the operation width. Otherwise both arguments must have the same cell size, and the same leading shape. The result shape is the leading shape of any non-extended argument followed by its cell size divided by the result element width. As a scalar-extended argument indicates a single operation input, it's reused every time the operation is applied.
 
 Another tool is provided for performing direct conversions, with no operation applied. The 1-modifier `•bit._cast` takes a two-element operand and one argument, for example `⟨8,16‿'c'⟩•bit._cast ints` to convert each pair of numbers in `ints` into a 2-byte character. Each element of `𝕗` is a number or number-character pair giving width and type. The argument is encoded according to the first and decoded according to the second.
