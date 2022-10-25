@@ -251,7 +251,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   s←𝕩=sep⋄fo←𝕩∊⟨2+⊑bB,1+⊑bH⟩                # Separators, function open { or ;
   ls←s∧fo<○IT lo←𝕩BE˜4+⊑bB                  # List Separators: after ⟨lo, not {fo
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
-  mm←𝕩=2+⊑bG⋄ma←tr<mm∧«ir≥1⋄mm∧↩1»ps        # Modified assignment; monadic modified
+  mm←𝕩=2+⊑bG⋄ma←tr<mm∧«0¨⌾(¯1⊸↑)ir≥1⋄mm∧↩1»ps # Modified assignment; monadic modified
   "No right-hand side in non-modified assignment"_err_(G) ma<mm
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r⋄ar←at⊏r       # Assignment target; af for actual (non-export) assignment
