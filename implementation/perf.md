@@ -2,20 +2,29 @@
 
 # How does BQN perform?
 
-How fast is the performance-oriented BQN implementation, [CBQN](https://github.com/dzaima/CBQN)? Before answering this question I must ask, why do you care? People are out there looking for the fastest array language before they've even tried *any* of them to see if it works for them. Which is kind of strange: programs usually have a point where they are fast enough, and for the ones that don't, the slow part is often a concentrated piece of the program that's better handled by an existing specialized tool like LAPACK. Even in these cases, a laser focus on performance from the beginning makes your code more difficult to understand and can lead to major missed opportunities. I think it's best to start with the most expressive language in order to work out strategy, and begin thinking about tactics once you know when and how the performance falls short. Without this understanding, benchmarks are just a dick measuring contest. And it's not even your own dick. It's public, you're just using it.
+How fast is the performance-oriented BQN implementation, [CBQN](https://github.com/dzaima/CBQN)? I must ask, why do you care? People are out there looking for the fastest array language before they've tried any one to see if it works for them. Which is kind of strange: most programs have a point where they are just fast enough, and CPUs have gotten pretty good at reaching that point. When that's not true, there's often a concentrated slow part that's easily handed off to a specialized tool like LAPACK. Regardless, a laser focus on performance from the beginning will cause you to miss the fast solutions you'd find by deeply understanding the problem. Start with clean code in the most expressive language to work out strategy, and begin thinking about tactics once you know when and how the performance falls short. Without this understanding, benchmarks are just a dick measuring contest. And it's not even your own dick. It's public, you're just using it.
 
-Anyway, BQN's dick is pretty fast. Compiles its own compiler in 3ms. Builds this whole site—a megabyte or so of markdown—in a second and a half. First hundred million primes in a second. That sort of thing. For CBQN right now, performance splits into three major cases:
+Anyway, BQN's dick is pretty fast. Compiles its own compiler in 3ms. Builds this whole site—a megabyte or so of markdown—in a second and a half. Lists the primes under a hundred million in a second. That sort of thing. For CBQN right now, performance splits into three major cases:
 - Scalar code, mostly using atoms. CBQN is faster than other array languages and on par with lightweight interpreters (not JIT compilers).
 - Flat lists, particularly integers and characters. CBQN is rarely too slow for these and often beats other array languages, as well as idiomatic C.
 - Multidimensional arrays. These are slow, but not pathologically so. CBQN has few optimizations for them, and often falls back to the runtime which has implementations using a lot of scalar code.
 
-The spotty optimization coverage means that it's more accurate to say CBQN can be fast, not that it will be fast. Have to learn how to use it. I would definitely recommend getting on the forum if you're having trouble with performance so you can find some tricks to use or request improvements. Also see per-primitive benchmarks in [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html).
+Currently we aim for high performance on a single CPU core, and are focusing on 64-bit x86. CBQN won't use additional cores or a GPU for acceleration. It does make substantial use of x86 vector instructions up to AVX2 (2013) in the Singeli build, and will have more slow cases if built without Singeli. Comparisons are the hardest hit, as they rarely take too long with Singeli but can become a bottleneck without it.
 
-Currently we aim for high performance on a single CPU core, and are focusing on 64-bit x86. CBQN won't use additional cores or a GPU for acceleration. It does make substantial use of x86 vector instructions up to AVX2 (2013) in the Singeli build, and will have a few more slow cases if built without Singeli—including on ARM and other architectures.
+## Performance resources
+
+The spotty optimization coverage means that it's more accurate to say CBQN can be fast, not that it will be fast. Have to learn how to use it. Definitely ask on the forum if you're having performance troubles so you can find some tricks to use or request improvements.
+
+There are two measurement tools in the [time](../spec/system.md#time) system values. `•MonoTime` is a high-precision timer for performance measurements; you can take a time before and after some operation or section of a program and subtract them to get a time in seconds (a profiling tool to do this automatically would be nice, but we don't have one). More convenient for small snippets, `•_timed` returns the time to evaluate `𝔽𝕩`, averaging over `𝕨` runs if given. For two argument functions you can write `w⊸F•_timed x` or `F´•_timed w‿x`. CBQN also has a `)time` command that prints the time taken by an entire expression, not counting compilation time.
+
+    100 +´•_timed ↕1e6  # Time +´ only
+    )time:100 +´↕1e6    # Time entire expression
+
+The [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html) tool has a page showing primitive benchmarks with some explanations.
 
 ## Versus other array languages
 
-Things get hard when you try to put array languages up next to each other. You can get completely different results depending on what sort of problems you want to solve and how you write code, and all those different results are valid. Because people ask for it, I'll try to give an account for the implementations I'm familiar with. I'm of course biased towards the languages I've worked on, Dyalog and BQN; if nothing else, these tend to prioritize just the features I find important! Note also that the situation can change over time; these comments are from 2022.
+Things get hard when you try to put array languages up next to each other. You can get completely different results depending on what sort of problems you want to solve and how you write code, and all those different results are valid. Because people ask for it, I'll try to give some description for the implementations I'm familiar with. I'm of course biased towards the languages I've worked on, Dyalog and BQN; if nothing else, these tend to prioritize just the features I find important! Note also that the situation can change over time; these comments are from 2022.
 
 The implementations I use for comparison are Dyalog APL, ngn/k, and J. I don't benchmark against proprietary K implementations because the anti-benchmarking clauses in their licenses would prevent me from sharing the results (discussed [here](kclaims.md)).
 
