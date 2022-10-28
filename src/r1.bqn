@@ -735,7 +735,7 @@ Reshape←{
 _group←{
   "⊔: Grouping argument must consist of integers" ! 1×´Int⌜𝕩
   "⊔: Grouping argument values cannot be less than ¯1" ! 1×´¯1⊸≤⌜𝕩
-  GL←GroupLen⋄𝕩↩𝕨(-˜⟜≠{GL↩(𝕨⊑𝕩)GL⊢⋄𝕨↑𝕩}⊢)⍟(0⊘⊣)𝕩
+  GL←GroupLen⋄𝕩↩𝕨(-˜⟜≠{GL↩(0⌈𝕨⊑𝕩)GL⊢⋄𝕨↑𝕩}⊢)⍟(0⊘⊣)𝕩
   d←(l←GL𝕩)GroupOrd𝕩
   i←0⋄(𝔽d⊏˜{(i+↩𝕩)⊢i⊸+⌜↕𝕩})⌜l
 }
