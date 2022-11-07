@@ -30,7 +30,7 @@ A 1-byte lookup can be packed into vector registers for extra-fast searching. To
 
 A hash table is a more sophisticated design where there are more possible keys than table entries. For good performance it depends on not having too many *actual* keys packed into a small space, which is why this method is named after the hash function. If the data is expected to be random then no hash function is needed (the identity function can be used), but I don't think that happens much with searching. Hash tables generally degrade to the performance of a linear lookup if the hash is defeated, so it's ideal to have a way to escape and use a sorting-based method if too many hashes collide.
 
-Hashing is really the only way to get a performant lookup on arbitrary data. For 2-byte and small-range data, lookups are better, and in several 4-byte cases, lookup with [partitioning](#partitioning) is competitive for smaller arrays and much better for large ones as the hash table outgrows the cache (>1e5 elements to be hashed or so).
+Hashing is really the only way to get a performant lookup on arbitrary data. For 2-byte and small-range data, lookups are better, and in several 4-byte cases, lookup with [partitioning](#partitioning) is okay for smaller arrays and much better for large ones as the hash table outgrows the cache (>1e5 elements to be hashed or so).
 
 While hash tables are well studied, almost all the work is focused on large persistent tables, meaning that they're not too suited for a one-shot search function. Abseil's [flat\_hash\_map](https://github.com/abseil/abseil-cpp/blob/master/absl/container/flat_hash_map.h) is fine, I guess. Roger Hui's [Index-Of, a 30-Year Quest](https://www.jsoftware.com/papers/indexof/indexof.htm) works as an introduction to hashing in APL, although it has begun to suffer from the small number of years in places, and some details have serious issues (with a power-of-two table size, multiplying by a prime causes high bits to be lost and so is hardly better than no hash). The second half of my "Sub-nanosecond Searches" talk ([video](https://dyalog.tv/Dyalog18/?v=paxIkKBzqBU), [slides](https://www.dyalog.com/user-meetings/uploads/conference/dyalog18/presentations/D08_Searches_Using_Vector_Instructions.zip)) covers a difficult 4-byte design that's very good for membership and negative lookups (in particular, it's perfect for the reverse lookup as described in the next section).
 
@@ -40,6 +40,36 @@ I'd take the following choices as a given for an array language hash design:
 - Linear probing
 
 The main cost for larger data is the hashing itself; [wyhash](https://github.com/wangyi-fudan/wyhash) appears to be one of the best choices at the time of writing. 4- and 8-byte lookups are where all the fancy optimizations are wanted. Hashes on these fixed sizes should be reversible and are often called mixing functions in the literature. A CRC instruction makes a good one if available.
+
+### Resizing hash tables
+
+When performing a one-shot array operation, the maximum hash table size needed is known in advance. However, if the array to be hashed doesn't have many unique elements, allocating a table this large will have extra costs because it needs to be initialized and the hash probes won't cache as well (they're random by design!). Starting with a smaller hash table and resizing mitigates these costs. But! Getting the resizing policy right is difficult, and any way you do it there's going to be some overhead from resizing when the large size is needed. And hash tables are already somewhat adaptive to small numbers of unique values, because these hit fewer memory regions, avoiding cache penalties. With a factor of 2 to 4 upside, this is not a very high-value use of time.
+
+Hash model resizing is usually based on a counter of the number of values in the hash. I like using a collision counter instead, because tracking it has the same cost (possibly a little less) and can protect from a compromised hash function. Whenever a value is inserted, add the difference between the index computed from the hash and the index it was actually inserted at. This is the number of collisions for that value and measures the cost of inserting or looking it up. It can be checked for a resizing condition periodically, since checking at every step would be expensive.
+
+#### Resizing math
+
+Here's a model for when to resize in a self-search function, assuming the average number of collisions increases linearly as values are inserted. Suppose we've reached position `i` of `n` and observed an average of `c÷2` collisions per element. When is resizing now better than resizing later? There will be two changes: cache-related costs which we'll say will change by `d` per element, and collision related costs which will change by `c` per element (times a constant; we can absorb this into `d` and later `s` as well). So it's better to switch now instead of a step later as soon as `c > d`.
+
+But resizing also incurs a one-time cost. We'll call it `s`, which is some coefficient times the table size, and we now need to look at all future hashes to see if the averaged cost `s÷n-i` per element is worth it. We assume the collision-related costs will go down by a constant factor, but the future cost remaining is proportional to an adjustment factor `(i+n)÷i`, because with linearly increasing collisions we'd average `i÷2` before and `(i+n)÷2` after the current position. Setting `r←n-i`, this is `(2n-r)÷(n-r)`, or `2×(1-r÷2n)÷(1-r÷n)`. Now we want to resize at some point if:
+
+    0 > d - (c×(1-r÷2n)÷(1-r÷n)) + s÷r
+
+Solve for `c`, and drop several terms to give an approximation that's exact at `r=0` and larger when `r>0`. This is good because the assumption of linearly increasing `c` is definitely not always going to hold so being more hesitant to resize early is good.
+
+    c > (d + s÷r) × (1 - r÷n)÷(1 - r÷2n)
+      > (d + s÷r) × (1 - r÷n)×(1 + r÷2n)
+      > (d + s÷r) × (1 - r÷2n)
+      = d + (-d×r÷2n) + (s÷r) - s÷2n
+      > d + (s÷r) - s÷2n
+      = d + s×(2n-r)÷(2n×r)
+      = d + s×(n+i)÷(2n×r)
+
+Some rearrangement gives this form, which doesn't divide by any variables. `ct` is the total number of collisions, `i×c`.
+
+    (r × ct-d×i) > i×(n+i)×s÷n
+
+Now you have two parameters to tune, `d` and `s`. And the coefficient for `d` depends on the current size of the table. Try not to go insane.
 
 ## Sparse and reverse lookups
 
