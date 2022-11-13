@@ -143,7 +143,7 @@ With lexical scoping, variable mutation automatically leads to mutable data. Thi
 
 ### Aliasing
 
-Mutable values exhibits *aliasing*. This means that when two variables refer to the same mutable value (or two copies of it exist generally), changes to one also affect the other.
+Mutable values exhibit *aliasing*. This means that when two variables refer to the same mutable value (or two copies of it exist generally), changes to one also affect the other.
 
         record ← { r←⟨⟩ ⋄ { r ∾↩ <𝕩 } }
         Record ∞
