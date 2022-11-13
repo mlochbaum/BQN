@@ -4,14 +4,14 @@
 
 [CBQN](https://github.com/dzaima/CBQN) is the primary offline implementation. Scripts in this repository start with `#! /usr/bin/env bqn` in order to look up the user's `bqn` executable, which is expected to be CBQN.
 
-Third-party packages are available for Windows and a few Linux distributions. Our [Singeli](https://github.com/mlochbaum/Singeli) code is used for faster implementations of primitives on x86; generally, for the best performance, you'll have to compile CBQN for the target hardware instead of using packages.
+Third-party packages are available for Windows and a few Linux distributions. Because they run on an unknown target system, none of these packages are built with the highest-performance settings. If you need top speed (you probably don't!) you should compile CBQN for the target hardware instead.
 
-| OS/distro        | Package                                      | Type          | Singeli
-|------------------|----------------------------------------------|---------------|--------
-| Windows download | [WinBQN](https://github.com/actalley/WinBQN) | Binary        | No
-| Arch AUR         | `cbqn-git`                                   | Source        | No
-| Nix              | `cbqn`                                       | Source/Binary | No
-| Guix             | `cbqn`                                       | Source/Binary | Yes
+| OS/distro        | Package                                      | Type
+|------------------|----------------------------------------------|--------------
+| Windows download | [WinBQN](https://github.com/actalley/WinBQN) | Binary
+| Arch AUR         | `cbqn-git`                                   | Source
+| Nix              | `cbqn`                                       | Source/Binary
+| Guix             | `cbqn`                                       | Source/Binary
 
 For tools related to running BQN, see the [editor plugins](editors/README.md) and [fonts page](https://mlochbaum.github.io/BQN/fonts.html).
 
