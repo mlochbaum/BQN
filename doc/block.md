@@ -157,6 +157,8 @@ Any element of a function or modifier header can be left nameless by using the c
 
 The name `𝕨` in this context can refer to either a left argument or no left argument, allowing a header with arguments to be used even for an ambiguous function. Recall that `𝕨` is the only token other than `·` that can have no value. If an identifier or list is given as the left argument, then the function must be called with a left argument.
 
+If a header consists of `𝕊` with one argument, like `𝕊 a‿b:` or `𝕊𝕩:`, the `𝕊` can be left off. See [case headers](#case-headers) below for examples. The exception is if the argument is a plain name, as in `𝕊 arg:`, because the header `arg:` is a label for an immediate block as described in the next section.
+
 ### Short headers
 
 A header can also be a plain name with no inputs, called a *label*. A label specifies the type of the block and gives an internal name that can be used to refer to it, but doesn't specify the inputs.
@@ -198,7 +200,7 @@ If no header is compatible, the call results in an error.
 
 ### Case headers
 
-A special rule allows for convenient case-matching syntax for one-argument functions. In any function header with one argument, the function name can be omitted as long as the argument is *not* a plain identifier—it must be `𝕩` or a compound value like a list to distinguish it from an immediate block label.
+The optional `𝕊` rule makes for convenient case-matching syntax in one-argument functions.
 
         Test ← {
           "abc": "string" ;
