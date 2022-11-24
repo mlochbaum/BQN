@@ -38,7 +38,6 @@ let makens = (keys, vals) => {
   let n = Array(keys.length).fill().map((_,i)=>i);
   n.names=keys.map(k=>k.toLowerCase()); vals.ns=n; return vals;
 }
-let obj2ns = (obj, keys, f) => makens(keys, keys.map(k=>(f?f:(v=>v))(obj[k])));
 let listkeys = x => {
   let s=x.ns, k=Object.keys(s).filter(n=>!isNaN(n));
   return k.map(n=>s.names[+n]).sort();
@@ -661,16 +660,52 @@ let primitives = dynsys(state => {
   return list(gl.map((g,i) => list([g,rt[i]])));
 });
 
+let isint = n => isnum(n) && n===(n|0);
+let isnat = n => isint(n) && n>=0;
+let fact = (x,w) => {
+  if (has(w)) throw Error("•math.Fact: Left argument not allowed");
+  if (!isnat(x)) throw Error("•math.Fact: Argument other than a natural number not yet supported");
+  let p = 1; while (x>0 && p<Infinity) { p*=x; x--; }
+  return p;
+}
+let comb = (x,w) => {
+  if (!has(w)) throw Error("•math.Comb: Left argument required");
+  if (!(isint(w) && isint(x))) throw Error("•math.Comb: Non-integer arguments not yet supported");
+  let n=w, k=Math.min(x, n-x);
+  let sgn = 1;
+  if (n >= 0) {
+    if (k<0) return 0;
+  } else {
+    let j=n-k; if (j<0) return 0; if (j&1) sgn = -1;
+    let t = Math.min(j, -1-n); n = -1-k; k = t;
+  }
+  if (k > 514) return Infinity;
+  let p = 1;
+  for (let i=0; i<k; i++) {
+    p*= (n-i) / (k-i);
+    if (p === Infinity) return sgn*p;
+  }
+  return sgn * Math.round(p);
+}
+let gcd = (x,w) => {
+  if (!has(w)) throw Error("•math.GCD: Left argument required");
+  if (!(isnat(w) && isnat(x))) throw Error("•math.GCD: Arguments other than natural numbers not yet supported");
+  while (w) { let t=w; w=x%w; x=t; }
+  return x;
+}
+let lcm = (x,w) => w===0 ? 0 : (w / gcd(x,w)) * x;
+let pervfn = f => { f.prim=null; return runtime[61](f,0); } // ⚇
 let mathfn = f => {
-  f.prim=null; let p=runtime[61](f,0); // ⚇
+  let p=pervfn(f);
   return f!==Math.atan2 && f!==Math.hypot
     ? ((x,w) => {if ( has(w)) throw Error("Left argument not allowed"); return p(x);})
     : ((x,w) => {if (!has(w)) throw Error("Left argument required");    return p(x,w);});
 }
 let trig = "cos cosh sin sinh tan tanh".split(" ");
-let mathns = obj2ns(Math,
-  trig.concat(trig.map(n=>"a"+n),"cbrt expm1 hypot log10 log1p log2 round trunc atan2".split(" ")),
-  f=>typeof f==="function"?mathfn(f):f
+let mathkeys = trig.concat(trig.map(n=>"a"+n),"cbrt expm1 hypot log10 log1p log2 round trunc atan2".split(" "));
+let mathns = makens(
+  mathkeys.concat(["fact","comb","gcd","lcm"]),
+  mathkeys.map(k=>mathfn(Math[k])).concat([fact,comb,gcd,lcm].map(pervfn))
 );
 trig.map((_,i)=>{let f=mathns[i],g=mathns[i+trig.length]; f.inverse=g; g.inverse=f;});
 

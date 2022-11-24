@@ -291,6 +291,10 @@ Other correctly-rounded arithmetic: monadic `Cbrt⇐3⊸√`, `Log2⇐2⋆⁼⊢
 
 Standard trigonometric functions `Sin`, `Cos`, `Tan`, `Sinh`, `Cosh`, `Tanh`, with inverses preceded by `a` (`ASin`, etc.) and accessable with `⁼`. Additionally, the dyadic function `ATan2` giving the angle of vector `𝕨‿𝕩` relative to `1‿0`. All trig functions measure angles in radians.
 
+Special functions `Fact` and `LogFact` giving the factorial and its natural logarithm, possibly generalized to reals as the gamma function Γ(1+𝕩), and `Comb` giving the binomial function "`𝕨` choose `𝕩`". Also the error function `Erf` and its complement `ErfC`. The implementations `LogFact ← ⋆⁼Fact` and `ErfC ← 1-Erf` are mathematically correct but these two functions should support greater precision for a large argument.
+
+The greatest common divison `GCD` and least common multiple `LCM` of two numbers. Behavior for arguments other than natural numbers is not yet specified.
+
 ## Random generation
 
 `•MakeRand` initializes a deterministic pseudorandom number generator with seed value `𝕩`. `•rand`, if it exists, is a globally accessible generator initialized at first use; this initialization should use randomness from an outside source if available. These random generators aren't required to be cryptographically secure and should always be treated as insecure. A random generator has the following member functions:
