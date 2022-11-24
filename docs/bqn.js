@@ -669,7 +669,7 @@ let mathfn = f => {
 }
 let trig = "cos cosh sin sinh tan tanh".split(" ");
 let mathns = obj2ns(Math,
-  trig.concat(trig.map(n=>"a"+n),"LN10 LN2 LOG10E LOG2E cbrt expm1 hypot log10 log1p log2 round trunc atan2".split(" ")),
+  trig.concat(trig.map(n=>"a"+n),"cbrt expm1 hypot log10 log1p log2 round trunc atan2".split(" ")),
   f=>typeof f==="function"?mathfn(f):f
 );
 trig.map((_,i)=>{let f=mathns[i],g=mathns[i+trig.length]; f.inverse=g; g.inverse=f;});
