@@ -8,6 +8,8 @@
 
 Editor plugins and other tools for allowing BQN input are in [this folder](https://github.com/mlochbaum/BQN/tree/master/editors). Input always uses the layout shown [here](https://mlochbaum.github.io/BQN/keymap.html) ([want another?](#alternate-layouts)), and is usually performed with a backslash `\` prefix, but sometimes with a modifier key such as alt. To type an actual backslash, hit the backslash key twice.
 
+Both the online REPL and the REPLXX build of CBQN (`make REPLXX=1`) support backslash input with no configuration required.
+
 [This bookmarklet](https://abrudz.github.io/lb/bqn) enables BQN input in any webpage in your **browser**.
 
 [This userscript](https://gist.github.com/dzaima/35ca0ce12b5e215a62460f00e693984f) highlights BQN code on **GitHub**. The highlighting library [prism.js](https://prismjs.com/) also supports BQN.
