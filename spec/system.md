@@ -287,7 +287,7 @@ More accurately the modifier `•_maxTime_` *may* fail if execution of `𝔽` ta
 
 System namespace `•math` contains mathematical utilities that are not easily implemented with basic arithmetic, analogous to C's `math.h`.
 
-Other correctly-rounded arithmetic: monadic `Cbrt⇐3⊸√`, `Log2⇐2⋆⁼⊢`, `Log10⇐10⋆⁼⊢`, `Log1p⇐⋆⁼1⊸+`, `Expm1⇐1-˜⋆`; dyadic `Hypot⇐+⌾(×˜)`.
+Correctly-rounded arithmetic functions: monadic `Cbrt⇐3⊸√`, `Log2⇐2⋆⁼⊢`, `Log10⇐10⋆⁼⊢`, `Log1p⇐⋆⁼1⊸+`, `Expm1⇐1-˜⋆`; dyadic `Hypot⇐+⌾(×˜)`.
 
 Standard trigonometric functions `Sin`, `Cos`, `Tan`, `Sinh`, `Cosh`, `Tanh`, with inverses preceded by `a` (`ASin`, etc.) and accessable with `⁼`. Additionally, the dyadic function `ATan2` giving the angle of vector `𝕨‿𝕩` relative to `1‿0`. All trig functions measure angles in radians.
 
