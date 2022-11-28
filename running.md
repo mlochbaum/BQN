@@ -15,7 +15,7 @@ Third-party packages are available for Windows and a few Linux distributions. Be
 
 For tools related to running BQN, see the [editor plugins](editors/README.md) and [fonts page](https://mlochbaum.github.io/BQN/fonts.html).
 
-All these websites run BQN (on your computer, except Attempt This Online):
+All these websites run BQN (on your computer, except the CBQN ones):
 
 | Link | Style | Engine | Comments
 |------|-------|--------|---------
@@ -27,6 +27,7 @@ All these websites run BQN (on your computer, except Attempt This Online):
 | [ktye/zoo](https://ktye.github.io/zoo/index.html#bqn) | Session | JS | Many array languages
 | [Observable](https://observablehq.com/@lsh/bqn)  | Notebook | JS | For import in Observable
 | [BQN-80](https://dancek.github.io/bqn-80)        | One-shot | JS | Create animations
+| [week.golf](https://week.golf)                   | Challenge | CBQN | Code golf
 
 Further details in the sections below.
 
