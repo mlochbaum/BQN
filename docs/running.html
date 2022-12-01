@@ -5,7 +5,7 @@
 </head>
 <div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="index.html">BQN</a></div>
 <h1 id="how-to-run-bqn"><a class="header" href="#how-to-run-bqn">How to run BQN</a></h1>
-<p><a href="https://github.com/dzaima/CBQN">CBQN</a> is the primary offline implementation. Scripts in this repository start with <code><span class='Comment'>#! /usr/bin/env bqn</span></code> in order to look up the user's <code><span class='Value'>bqn</span></code> executable, which is expected to be CBQN.</p>
+<p>CBQN is the primary offline implementation, and has <a href="https://github.com/dzaima/CBQN">build instructions in its own repository</a>. Here and elsewhere it's expected to be installed as <code><span class='Value'>bqn</span></code>. For Windows, build in <a href="https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux">WSL</a> or see WinBQN below.</p>
 <p>Third-party packages are available for Windows and a few Linux distributions. Because they run on an unknown target system, none of these packages are built with the highest-performance settings. If you need top speed (you probably don't!) you should compile CBQN for the target hardware instead.</p>
 <table>
 <thead>
@@ -39,7 +39,7 @@
 </tbody>
 </table>
 <p>For tools related to running BQN, see the <a href="editors/index.html">editor plugins</a> and <a href="https://mlochbaum.github.io/BQN/fonts.html">fonts page</a>.</p>
-<p>All these websites run BQN (on your computer, except the CBQN ones):</p>
+<p>All these websites run BQN, in your browser unless marked with &quot;server-side&quot; (JS is native Javascript; the Wasm engine is WebAssembly compiled from CBQN).</p>
 <table>
 <thead>
 <tr>
@@ -102,36 +102,25 @@
 <td><a href="https://week.golf">week.golf</a></td>
 <td>Challenge</td>
 <td>CBQN</td>
-<td>Code golf</td>
+<td>Code golf, server-side</td>
 </tr>
 </tbody>
 </table>
-<p>Further details in the sections below.</p>
-<h3 id="self-hosted-bqn"><a class="header" href="#self-hosted-bqn">Self-hosted BQN</a></h3>
-<p>This version of BQN is <a href="implementation/index.html">implemented</a> mainly in BQN itself, but a host language supplies basic functionality and can also replace primitives for better performance. This also allows <a href="doc/embed.html">embedding</a>, where programs in the host language can include BQN code. It fully supports all functionality specified so far. System value support varies as it's implemented separately in each host.</p>
-<p>Support in the following languages has been implemented (details in the subsections below):</p>
+<p>Details about CBQN as well as the Javascript and other implementations follow.</p>
+<h2 id="self-hosted-bqn"><a class="header" href="#self-hosted-bqn">Self-hosted BQN</a></h2>
+<p>Both CBQN and JS BQN are <a href="implementation/index.html">implemented</a> using components written in BQN itself: the compiler, and primitive implementations. The host language provides a bytecode VM and basic functionality for the primitives, and can replace primitives with native implementations for better performance. It also provides system values, so that which ones are supported depends on the host. This setup allows <a href="doc/embed.html">embedding</a>, where programs in the host language can evaluate BQN code.</p>
+<p>Support in the following languages has been implemented:</p>
 <ul>
-<li><a href="https://github.com/dzaima/CBQN">C</a>, targeting high performance. Usually fairly fast.</li>
+<li><a href="https://github.com/dzaima/CBQN">CBQN</a> in C, targeting high <a href="implementation/perf.html">performance</a> with mostly native primitives.</li>
 <li>Javascript, in this repository. Slow (compiles at ~5kB/s) but usable.</li>
 <li>BQN (<a href="https://github.com/mlochbaum/BQN/blob/master/bqn.bqn">bqn.bqn</a>), for testing without a build step.</li>
 <li><a href="https://github.com/andreypopp/BQN.jl">Julia</a> embedding, with common primitives implemented natively. Slow startup.</li>
 <li><a href="https://github.com/ashermancinelli/cxbqn">C++</a>, planning to enable GPU use. Still slow; some cool features.</li>
-<li><a href="https://github.com/cannadayr/rsbqn/">Rust</a>, motivated by web use (an <a href="https://github.com/cannadayr/ebqn">Erlang</a> version is abandoned as too slow). Note that CBQN <a href="https://detegr.github.io/cbqn-rs/cbqn/">embeds in Rust</a> as well.</li>
+<li><a href="https://github.com/cannadayr/rsbqn/">Rust</a>, motivated by web use (an <a href="https://github.com/cannadayr/ebqn">Erlang</a> version is abandoned as too slow). Note that CBQN <a href="https://detegr.github.io/cbqn-rs/cbqn/">can run from Rust</a> as well.</li>
 </ul>
-<h4 id="javascript"><a class="header" href="#javascript">Javascript</a></h4>
 <p>The file <a href="https://github.com/mlochbaum/BQN/blob/master/docs/bqn.js">docs/bqn.js</a> is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script <a href="https://github.com/mlochbaum/BQN/blob/master/bqn.js">bqn.js</a>, passing a file and <code><span class='Value'>•args</span></code>, or <code><span class='Function'>-</span><span class='Value'>e</span></code> to execute all remaining arguments directly and print the results.</p>
-<h4 id="cbqn"><a class="header" href="#cbqn">CBQN</a></h4>
-<p>C sources are kept in the <a href="https://github.com/dzaima/CBQN">CBQN</a> repository, but it also depends on bytecode from the BQN sources here. Running <code><span class='Value'>make</span></code> gets a working copy right away with saved bytecode. Then to use the latest bytecode, call <code><span class='Value'>$</span> <span class='Value'>.</span><span class='Function'>/BQN</span> <span class='Value'>genRuntime</span> <span class='Value'>…</span><span class='Function'>/BQN</span></code>, where <code><span class='Value'>…</span><span class='Function'>/BQN</span></code> points to this repository, and run <code><span class='Value'>make</span></code> again.</p>
-<p>CBQN is developed on Linux, and as-is will only run on Unix-like systems (including macOS). To run on Windows, <a href="https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux">WSL</a> has the best support but there are also native builds based on each of Cygwin and Mingw <a href="https://github.com/actalley/WinBQN">here</a>.</p>
-<p><code><span class='Value'>genRuntime</span></code> can also be run with another BQN implementation (the Node.js one works but takes up to a minute), and plain <code><span class='Value'>.</span><span class='Function'>/</span><span class='Value'>genRuntime</span></code> uses your system's <code><span class='Value'>bqn</span></code> executable. I symlink <code><span class='Value'>…</span><span class='Function'>/CBQN/BQN</span></code> to <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>bin</span><span class='Function'>/</span><span class='Value'>bqn</span></code> so I can easily use CBQN for scripting.</p>
-<p>CBQN has native support for most primitive functionality and falls back to the self-hosted runtime to fill the gaps. The most important operations are fast, and it's almost always possible to write code that sticks to them. However, some cases, particularly those that deal with multiple axes, are much slower (although still fine for most use cases).</p>
-<h3 id="dzaimabqn"><a class="header" href="#dzaimabqn">dzaima/BQN</a></h3>
+<h2 id="dzaimabqn"><a class="header" href="#dzaimabqn">dzaima/BQN</a></h2>
 <p><a href="https://github.com/dzaima/BQN/">dzaima/BQN</a> is an implementation in Java created by modifying the existing dzaima/APL, and should be easy to run on desktop Linux and Android. It was historically the main implementation, but is now updated only to stay up to date with language changes. Major missing functionality is dyadic Depth (<code><span class='Modifier2'>⚇</span></code>) and set functions <code><span class='Function'>⊐⊒∊⍷</span></code> with rank &gt;1, and there are various small differences from the BQN spec, mostly to do with rank, handling of atoms, fills, and headers. It uses UTF-16 instead of UTF-32, so that characters like <code><span class='Value'>𝕩</span></code> don't behave correctly.</p>
-<p>To get an executable that works like CBQN, make a script with the following contents. Scripts may use <code><span class='Comment'>#! /usr/bin/env dbqn</span></code> to run with dzaima/BQN specifically, but this is rare now (in this repository, only <code><span class='Value'>test</span><span class='Function'>/</span><span class='Value'>dzaima</span></code> does it).</p>
-<pre><span class='Comment'>#! /bin/bash
-</span>
-<span class='Value'>java</span> <span class='Function'>-</span><span class='Value'>jar</span> <span class='Function'>/</span><span class='Value'>path</span><span class='Function'>/</span><span class='Value'>to</span><span class='Function'>/</span><span class='Value'>dzaima</span><span class='Function'>/BQN/BQN</span><span class='Value'>.jar</span> <span class='String'>&quot;$@&quot;</span>
-</pre>
-<p>If compiled with Native Image, <code><span class='Value'>nBQN</span></code> can be used directly instead.</p>
-<h3 id="bqn2ngn"><a class="header" href="#bqn2ngn">BQN2NGN</a></h3>
+<p>The only remaining dzaima/BQN script here is <code><span class='Value'>test</span><span class='Function'>/</span><span class='Value'>dzaima</span></code>, which can be used to test the self-hosted primitives but has been superseded by <code><span class='Value'>test</span><span class='Function'>/</span><span class='Value'>unit</span></code>.</p>
+<h2 id="bqn2ngn"><a class="header" href="#bqn2ngn">BQN2NGN</a></h2>
 <p><a href="https://github.com/mlochbaum/BQN2NGN">BQN2NGN</a> is a prototype implementation in Javascript built to experiment with the language. It's now abandoned.</p>
