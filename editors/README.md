@@ -16,6 +16,8 @@ Both the online REPL and the REPLXX build of CBQN (`make REPLXX=1`) support back
 
 For **Android**, [this fork](https://github.com/dzaima/hackerskeyboard/releases/latest) adds APL and BQN to Hacker's Keyboard.
 
+For **iPhone**, [this repository](https://github.com/gitonthescene/APLKeyboard) includes a BQN keyboard for the Pythonista IDE.
+
 The file [inputrc](https://github.com/mlochbaum/BQN/blob/master/editors/inputrc) can be copied or appended to `~/.inputrc` to enable backslash input in **bash**, BQN with **rlwrap**, and other software that uses GNU Readline.
 
 Support for other editors, OSes, or workflows will be gladly accepted!
