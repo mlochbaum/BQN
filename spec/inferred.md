@@ -32,7 +32,7 @@ Additionally, the identity of `∾˝` must be recognized: if `0=≠𝕩` and `1<
 
 ## Fill elements
 
-Any BQN array can have a *fill element*, which is a sort of "default" value for the array. The reference implementations use `Fill` to access this element, and it is used primarily for Take (`↑`), First (`⊑`), and Nudge (`«`, `»`). One way to extract the fill element of an array `a` in BQN is `⊑0⥊a`.
+Any BQN array can have a *fill element*, which is a sort of "default" value for the array. The reference implementations use `Fill` to access this element, and it is used primarily for Take (`↑`) and Nudge (`«`, `»`). One way to extract the fill element of an array `a` in BQN is `⊑»1↑⥊a`.
 
 A fill element can be either `0`, `' '`, or an array of valid fill elements. If the fill element is an array, then it may also have a fill element (since it is an ordinary BQN array). The fill element is meant to describe the shared structure of the elements of an array: for example, the fill element of an array of numbers should be `0`, while the fill element for an array of variable-length lists should probably be `⟨⟩`. However, the fill element, unlike other inferred properties, does not satisfy any particular constraints that relate it to its array. The fill element of a primitive's result, including functions derived from primitive modifiers, must depend only on its inputs.
 
