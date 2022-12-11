@@ -264,7 +264,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Can't use Nothing (·) in lists"_nerr no×ap<ns≤»lo∨ls
   "Can't modify Nothing (·)"_err_(G) mat∧ap
   "Square brackets can't be empty"_err_(G) (mat<aa)<(𝕩=6+⊑bB)∧1«ps
-  ac-↩3×ah←6=ac                             # Assignment is header; 6→3
+  ac-↩3×6=ac⋄ah←6=gac                       # Assignment is header; 6→3
   nx⌈↩aa×1=no                               # Prevent assignment to 𝕨 if it's ·
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
   fw←H gi⊏nx                                # Bodies where 𝕨 must be defined
@@ -274,9 +274,9 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   cw⌈↩2×fw⋄cw×↩fx
   nn←g⊏fi⊏2=cw⋄no(⊣-=)↩nn⋄ne(⊣-=)↩nn        # 2=cw indicates 𝕨 is never Nothing
   aid←(¯6⊸≤∧<⟜nv)𝕩-vi                       # Assignable identifer
-  hq←/hp←(g⊏ah)∧𝕩≥nv+vi                     # Header constant
+  hq←/hp←ah∧𝕩≥nv+vi                         # Header constant
   atc←(hg<ps<«aa∧r≥0)<aid∨hp∨(ps>«𝕩=⊑bL)∨𝕩(=⟜(3+⊑)<M)bB
-  "Assignment target must be a name or list of targets"_err_(G) (a∨atc∨ap)<aa
+  "Assignment target must be a name or list of targets"_err_(G) aa>((g⊏dc)∨ro>ah∨op)<a∨atc∨ap
   "Can't nest assignments (write aliases with ⇐)"_err_(ai⊏G) ((ai⊏mat)<ak=2)<ai⊏aa
   "Can't use result of function/modifier assignment without parentheses"_err_(G) hg<(0<er)∧(0≤r)∧»⊸>aa
   af>↩alm←ai⊏aa⋄al←alm/ai                   # aliases al
