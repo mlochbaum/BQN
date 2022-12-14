@@ -6,47 +6,52 @@
 
 <center>
 
-[Narazaki Shuji](https://github.com/shnarazk/advent-of-code/tree/main/bqn/2022) •
 [Jack Franklin](https://github.com/jhfranklin/aoc/tree/main/2022) •
-[Antti Keränen](https://github.com/Detegr/aoc2022) •
-[sterni](https://code.tvl.fyi/tree/users/sterni/exercises/aoc/2022) •
-[Brian E](https://github.com/Brian-ED/BQN-Advent-Of-Code/tree/main/2022) •
 [Raghu R](https://github.com/razetime/aoc/tree/main/22/bqn) •
-[saltysylvi](https://github.com/saltysylvi/bqn-aoc2022) •
-[Caleb Quilley](https://github.com/icendoan/aoc22) •
-[Michael Percival](https://github.com/mpizzzle/AdventOfCode/tree/master/2022) •
+[Sylvia](https://github.com/saltysylvi/bqn-aoc2022) •
 [frasiyav](https://github.com/frasiyav/AoC2022) •
 [dzaima](https://github.com/dzaima/aoc/tree/master/2022/BQN) •
 [Dimitri Lozeve](https://github.com/dlozeve/aoc2022) •
-[Skye Soss](https://github.com/Skyb0rg007/Advent-of-Code/tree/master/2022) •
+[sterni](https://code.tvl.fyi/tree/users/sterni/exercises/aoc/2022) •
 [Karim Elmougi](https://github.com/karimElmougi/aoc/tree/master/2022) •
-[eissplitter](https://github.com/eissplitter/aoc) •
-[Rampoina](https://codeberg.org/Rampoina/aoc/src/branch/master/2022) •
-[Olodus](https://github.com/Olodus/advent_of_code2021/tree/main/2022) •
 [Joshua Suskalo](https://git.sr.ht/~srasu/bqn-aoc/tree/main/item/src/aoc2022) •
+[Caleb Quilley](https://github.com/icendoan/aoc22) •
+[Michael Percival](https://github.com/mpizzzle/AdventOfCode/tree/master/2022) •
+[Narazaki Shuji](https://github.com/shnarazk/advent-of-code/tree/main/bqn/2022) •
+[Antti Keränen](https://github.com/Detegr/aoc2022) •
+[Rampoina](https://codeberg.org/Rampoina/aoc/src/branch/master/2022) •
+[eissplitter](https://github.com/eissplitter/aoc) •
+[Choram](https://github.com/Choram/AoC2022BQN) •
 [Juuso Haavisto](https://github.com/jhvst/advent2022) •
-[Dunya Kirkali](https://github.com/dunyakirkali/aoc.bqn/tree/main/2022) •
 [Johnny](https://github.com/devcordde/adventofcode-22) •
+[Olodus](https://github.com/Olodus/advent_of_code2021/tree/main/2022) •
 [Samuel](https://github.com/SamuelSarle/advent/tree/master/adv_2022) •
-[axelbdt](https://github.com/axelbdt/aoc/tree/main/2022/bqn) •
 [N\`hlest](https://github.com/Nhlest/AoC2022/tree/main/bqn) •
-[Alpha Chen](https://github.com/kejadlen/advent-of-code/tree/main/2022/bqn) •
+[Brian E](https://github.com/Brian-ED/BQN-Advent-Of-Code/tree/main/2022) •
 [ynk](https://github.com/AugustUnderground/AoC2022) •
-[James Sully](https://github.com/sullyj3/adventofcode2022) •
+[Skye Soss](https://github.com/Skyb0rg007/Advent-of-Code/tree/master/2022) •
 [Hannu Hartikainen](https://github.com/dancek/bqn-advent2022) •
+[Toma](https://github.com/TomaSajt/AOC/tree/master/bqn/2022) •
+[Dunya Kirkali](https://github.com/dunyakirkali/aoc.bqn/tree/main/2022) •
+[James Sully](https://github.com/sullyj3/adventofcode2022) •
+[axelbdt](https://github.com/axelbdt/aoc/tree/main/2022/bqn) •
+[dankeyy](https://github.com/dankeyy/aoc22) •
 [Conor Hoekstra](https://github.com/codereport/Advent-of-Code-2022) •
+[Alpha Chen](https://github.com/kejadlen/advent-of-code/tree/main/2022/bqn) •
+[akamayu ouo](https://github.com/akamayu-ouo/AoC/tree/master/2022) •
+[David Cromp](https://github.com/DavidCromp/aoc2022/tree/main/BQN) •
+[Perigord](https://github.com/Trouble-Truffle/Solutions/tree/main/AOC-2022) •
 [Asher Harvey-Smith](https://github.com/asherbhs/aoc2022) •
 [extorious](https://github.com/extorious/aoc2022) •
-[Joona Piirainen](https://github.com/japiirainen/aoc-2022/tree/main/hs) •
+[Felix Riedel](https://github.com/felixr/advent-of-code/tree/main/2022) •
 [Doug Kelkhoff](https://github.com/dgkf/advent-of-code/tree/master/2022) •
 [Adam Juraszek](https://github.com/juriad/advent2022) •
-[dankeyy](https://github.com/dankeyy/aoc22) •
 [Akshay Nair](https://github.com/phenax/advent-of-coolio-2022) •
 [Ben Dean](https://github.com/bddean/aoc/tree/main/2022)
 
 </center>
 
-I'm posting statistics in the [forum](forums.md) for now, and will update here once things have settled down some!
+[The chart](https://gist.githubusercontent.com/mlochbaum/97127f270d0e2f06f566cf1899dd5fd8/raw/aoc2022.svg) keeps track of who's done what, updated at least daily.
 
 ### Last year
 
