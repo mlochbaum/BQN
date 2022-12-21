@@ -18,7 +18,7 @@ First major cell of `𝕩`.
 ## `𝕨 ⊏ 𝕩`: Select
 [→full documentation](../doc/select.md)
 
-Select the major cells of `𝕨` at the indices in `𝕩`.
+Select the major cells of `𝕩` at the indices in `𝕨`.
 
         2‿0 ⊏ ⟨1, 2, 3⟩
 
