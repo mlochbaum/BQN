@@ -251,10 +251,12 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   s←𝕩=sep⋄fo←𝕩∊⟨2+⊑bB,1+⊑bH⟩                # Separators, function open { or ;
   ls←s∧fo<○IT lo←𝕩BE˜4+⊑bB                  # List Separators: after ⟨lo, not {fo
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
-  mm←𝕩=2+⊑bG⋄ma←tr<mm∧«0¨⌾(¯1⊸↑)ir≥1⋄mm∧↩1»ps # Modified assignment; monadic modified
+  mm←𝕩=2+⊑bG⋄ma←tr<mm∧«ir≥1⋄mm∧↩1»ps        # Modified assignment; monadic modified
   "No right-hand side in non-modified assignment"_err_(G) ma<mm
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
-  at←1+⊏⟜os⊸+ai←/a⋄af←¯4≠ai⊏r⋄ar←at⊏r       # Assignment target; af for actual (non-export) assignment
+  at←1+⊏⟜os⊸+ai←/a                          # Assignment target
+  "Assignment role mismatch or missing modified assignment target"_err_(at-⟜1⊸⊏G) at⊏ps∾1
+  af←¯4≠ai⊏r⋄ar←at⊏r                        # af for actual (non-export) assignment; assignment role
   "Role of the two sides in assignment must match"_err_(at⊏G) af∧ar≠0⌈at⊏er
   ak←af+(0≤ar)+(ai⊏ma)+(⊑bG)-˜ai⊏𝕩          # Class of assignment: 1⇐ 2⇐? 3←? 4↩? 5+↩?
   at∾↩hj⋄ac←«⊸-(ak∾6¨hj)⌾(at⊸⊏)0¨𝕩          # Header assignment is 6 temporarily
