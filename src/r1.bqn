@@ -912,7 +912,7 @@ PrimInverse ← INF _lookup_ ⟨
   '↑', ¯1⊸⊑_invChk_↑ ⊘ (IA∘0)
   '↓',  0⊸⊑_invChk_↓ ⊘ (IA∘0)
   '↕', ≢_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
-  '⌽', ⌽ ⊘ (-⊸⌽)
+  '⌽', ⌽ ⊘ (-⊸⌽ ⊣ IX∘IsArray∘⊢)
   '⍉', TransposeInv ⊘ ReorderAxesInv
   '/', IndicesInv ⊘ (IA∘0)
   '⊔', GroupIndsInv ⊘ GroupInv
