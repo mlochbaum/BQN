@@ -47,7 +47,8 @@
 [Doug Kelkhoff](https://github.com/dgkf/advent-of-code/tree/master/2022) •
 [Adam Juraszek](https://github.com/juriad/advent2022) •
 [Akshay Nair](https://github.com/phenax/advent-of-coolio-2022) •
-[Ben Dean](https://github.com/bddean/aoc/tree/main/2022)
+[Ben Dean](https://github.com/bddean/aoc/tree/main/2022) •
+[Mitchell Kember](https://github.com/mk12/aoc/tree/main/src/bqn)
 
 </center>
 
