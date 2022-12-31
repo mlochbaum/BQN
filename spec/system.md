@@ -159,16 +159,19 @@ Not yet specified.
 
 ## Input and output
 
-| Name    | Summary
-|---------|----------------------
-| `•Out`  | Print argument string
-| `•Show` | Print argument value
-| `•Repr` | String representation of `𝕩`, if possible
-| `•Fmt`  | Format value for printing
+| Name          | Summary
+|---------------|----------------------
+| `•Out`        | Print argument string
+| `•Show`       | Print argument value
+| `•Repr`       | String representation of `𝕩`, if possible
+| `•Fmt`        | Format value for printing
+| `•ParseFloat` | Convert from string to floating point number
 
 `•Out` prints a string to stdout, with a trailing newline. `•Show` displays a BQN value to the programmer (the representation is not specified, and does not need to be plain text). `•Fmt` returns a string (not a character table: lines are separated by linefeeds) indicating how `𝕩` would be printed by the interactive environment. Both `•Show` and `•Fmt` may take a left argument configuring how the value should be formatted.
 
 `•Repr` attempts to return a string so that `•BQN •Repr 𝕩` matches `𝕩`. If `𝕩` contains any mutable values (operations or namespaces), this is not possible. However, if such a values is stateless, in the sense that they don't access variables outside of their own scopes, it is permissible for `•Repr` to return source code that would create a value with identical behavior.
+
+`•ParseFloat` returns the numeric value given by a string `𝕩` in integer, decimal, or scientific notation. The whole of `𝕩` must match the regular expression `-?(\.[0-9]+|[0-9]+\.?[0-9]*)([eE][-+]?[0-9]+)?` or an error is given. This format is similar to BQN's numeric literals but with many differences. Only `-` (not `¯`) can be used for a negative sign, and a positive exponent may be optionally preceded by `+`. A dot `.` indicates the decimal regardless of locale. The function should make an effort to return the nearest possible value to the exact one represented, but is not required to round perfectly in all cases.
 
 ### Terminal I/O
 
