@@ -13,12 +13,12 @@ All system values described in the BQN specification are optional: an implementa
 | [Execution](#execution) | `•BQN`, `•ReBQN`, `•primitives`
 | [Scripts](#scripts) | `•Import`, `•args`, `•Exit`, …
 | [Files](#files) ([paths](#file-paths), [metadata](#file-metadata), [access](#file-access), [opened](#open-file-object)) | `•file`, `•FChars`, `•FLines`, `•FBytes`
-| [Input and output](#input-and-output) ([terminal](#terminal-io)) | `•Out`, `•Show`, `•Repr`, `•Fmt`
+| [Input and output](#input-and-output) ([terminal](#terminal-io)) | `•Out`, `•Show`, `•Repr`, `•Fmt`, …, `•term`
 | [Interface](#interface) ([FFI](#foreign-function-interface)) | `•SH`, `•FFI`
 | [Operation properties](#operation-properties) | `•Type`, `•Glyph`, `•Source`, `•Decompose`
 | [Time](#time) | `•UnixTime`, `•Delay`, `•_timed`, …
 | [Math](#math) | `•math`
-| [Random generation](#random-generation) | `•rand`
+| [Random generation](#random-generation) | `•rand`, `•MakeRand`
 | [Bitwise operations](#bitwise-operations) | `•bit`
 
 ## Execution
@@ -171,7 +171,7 @@ Not yet specified.
 
 `•Repr` attempts to return a string so that `•BQN •Repr 𝕩` matches `𝕩`. If `𝕩` contains any mutable values (operations or namespaces), this is not possible. However, if such a values is stateless, in the sense that they don't access variables outside of their own scopes, it is permissible for `•Repr` to return source code that would create a value with identical behavior.
 
-`•ParseFloat` returns the numeric value given by a string `𝕩` in integer, decimal, or scientific notation. The whole of `𝕩` must match the regular expression `-?(\.[0-9]+|[0-9]+\.?[0-9]*)([eE][-+]?[0-9]+)?` or an error is given. This format is similar to BQN's numeric literals but with many differences. Only `-` (not `¯`) can be used for a negative sign, and a positive exponent may be optionally preceded by `+`. A dot `.` indicates the decimal regardless of locale. The function should make an effort to return the nearest possible value to the exact one represented, but is not required to round perfectly in all cases.
+`•ParseFloat` returns the numeric value given by a string `𝕩` in integer, decimal, or scientific notation. The whole of `𝕩` must match the regular expression `-?(\.[0-9]+|[0-9]+\.?[0-9]*)([eE][-+]?[0-9]+)?` or an error is given. This format is similar to BQN's numeric literals but with many differences. Only `-` (not `¯`) can be used for a negative sign, and a positive exponent may be optionally preceded by `+`. A dot `.` indicates the decimal regardless of locale, and digits can be absent either before or after it, but not both. The function should make an effort to return the nearest possible value to the exact one represented, but is not required to round perfectly in all cases.
 
 ### Terminal I/O
 
