@@ -86,12 +86,12 @@
 <p>Dividing the stall number by total cycles gives us percentage of program time that can be attributed to L1 instruction misses.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=bCDihpAgIkoi4oC/IkJRTiLigL8iQlFOIuKAvyJQeXRob24iCmwg4omNy5ggMTAwIMOXIDU24oC/NC414oC/NDk04oC/MjUgw7cgMV80NTfigL8yMzLigL81XzYzM+KAvzQ5OQ==">↗️</a><pre>    <span class='Value'>l</span> <span class='Gets'>←</span> <span class='String'>&quot;J&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;BQN&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;BQN&quot;</span><span class='Ligature'>‿</span><span class='String'>&quot;Python&quot;</span>
     <span class='Value'>l</span> <span class='Function'>≍</span><span class='Modifier'>˘</span> <span class='Number'>100</span> <span class='Function'>×</span> <span class='Number'>56</span><span class='Ligature'>‿</span><span class='Number'>4.5</span><span class='Ligature'>‿</span><span class='Number'>494</span><span class='Ligature'>‿</span><span class='Number'>25</span> <span class='Function'>÷</span> <span class='Number'>1_457</span><span class='Ligature'>‿</span><span class='Number'>232</span><span class='Ligature'>‿</span><span class='Number'>5_633</span><span class='Ligature'>‿</span><span class='Number'>499</span>
-┌─                            
-╵ "J"      3.843514070006863  
-  "BQN"    1.939655172413793  
-  "BQN"    8.76974968933073   
-  "Python" 5.01002004008016   
-                             ┘
+┌─                             
+╵ "J"      3.8435140700068633  
+  "BQN"    1.9396551724137931  
+  "BQN"    8.76974968933073    
+  "Python" 5.01002004008016    
+                              ┘
 </pre>
 <p>So, roughly 4%, 2 to 9%, and 5%. The cache miss counts are also broadly in line with these numbers. Note that full cache misses are pretty rare, so that most misses just hit L2 or L3 and don't suffer a large penalty. Also note that instruction cache misses are mostly lower than data misses, as expected.</p>
 <p>Don't get me wrong, I'd love to improve performance even by 2%. But it's not exactly world domination, is it? The perf results are an upper bound for how much these programs could be sped up with better treatment of the instruction cache. If K is faster by more than that, it's because of other optimizations.</p>
