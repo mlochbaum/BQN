@@ -12,7 +12,7 @@ There are a few repositories [tagged BQN](https://github.com/topics/bqn) on Gith
 
 See also:
 
-- [My retrospective](aoc.md) on the many BQN solutions published for [Advent of Code](https://adventofcode.com/) 2021
+- [Links and retrospectives](aoc.md) on the many BQN solutions published for [Advent of Code](https://adventofcode.com/)
 - Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
 - Sylvia's [tacit to block converter](https://saltysylvi.github.io/bqn-tacit-helper/)
 - Miguel Raz's [Anki deck](https://github.com/miguelraz/miguelraz.github.io/blob/e772dc681330b37544a55d38b3d1537699616420/ankis/bqn-glyphs.apkg), from [this page](https://miguelraz.github.io/teaching/) of resources.
