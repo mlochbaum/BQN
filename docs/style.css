@@ -83,13 +83,18 @@ li ul {
   src: url(JuliaMono_sub.woff2) format('woff2');
 }
 @font-face{
+  font-family: JetBrainsMono;
+  src: url(JetBrainsMono_sub.woff2) format('woff2');
+}
+@font-face{
   font-family: f3270;
   src: url(3270_sub.woff2) format('woff2');
 }
 pre.DejaVu , .DejaVu  .key, .DejaVu  .code, .DejaVu  .highlight, .DejaVu  .rslt { font-family:BQNMod,monospace; }
 pre.BQN386 , .BQN386  .key, .BQN386  .code, .BQN386  .highlight, .BQN386  .rslt { font-family:BQN,monospace; }
-pre.Iosevka, .Iosevka .key, .Iosevka .code, .Iosevka .highlight, .Iosevka .rslt { font-family:Iosevka,f3270,monospace; }
+pre.Iosevka, .Iosevka .key, .Iosevka .code, .Iosevka .highlight, .Iosevka .rslt { font-family:Iosevka,monospace; }
 pre.Julia  , .Julia   .key, .Julia   .code, .Julia   .highlight, .Julia   .rslt { font-family:JuliaMono,monospace; }
+pre.JetBr  , .JetBr   .key, .JetBr   .code, .JetBr   .highlight, .JetBr   .rslt { font-family:JetBrainsMono,monospace; }
 pre.Fairfax, .Fairfax .key, .Fairfax .code, .Fairfax .highlight, .Fairfax .rslt { font-family:FFHD,monospace; font-size:1.1rem; line-height:1.01; }
 .Fairfax .key { line-height:1.25; }
 pre.f3270  , .f3270   .key, .f3270   .code, .f3270   .highlight, .f3270   .rslt { font-family:f3270,monospace; font-size:1rem; line-height:1.1; }
