@@ -190,8 +190,8 @@ appendHTML(doc.kb, '<div class="kbext"></div>');
 doc.kbext = doc.kb.querySelector('.kbext');
 
 if (doc.demo) {
-  let fonts=[["BQN386"],["DejaVu","Mod"],["Fairfax","HD"],["3270","font"],["Iosevka","Term"],["Julia","Mono"]];
-  let fclass = f => f==="3270"?"f"+f:f
+  let fonts=[["BQN386"],["DejaVu","Mod"],["Fairfax","HD"],["3270","font"],["Iosevka","Term"],["Julia","Mono"],["JetBrains","Mono"]];
+  let fclass = f => f==="3270"?"f"+f:f==="JetBrains"?"JetBr":f;
   let fontsel = '<select title="Select font">'+fonts.map(f =>
       '<option value="'+f[0]+'">'+f[0]+(f[1]?' '+f[1]:'')+'</option>'
     ).join("")+'select';
