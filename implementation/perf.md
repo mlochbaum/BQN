@@ -15,10 +15,12 @@ Currently we aim for high performance on a single CPU core, and are focusing on 
 
 The spotty optimization coverage means that it's more accurate to say CBQN can be fast, not that it will be fast. Have to learn how to use it. Definitely ask on the forum if you're having performance troubles so you can find some tricks to use or request improvements.
 
-There are two measurement tools in the [time](../spec/system.md#time) system values. `•MonoTime` is a high-precision timer for performance measurements; you can take a time before and after some operation or section of a program and subtract them to get a time in seconds (a profiling tool to do this automatically would be nice, but we don't have one). More convenient for small snippets, `•_timed` returns the time to evaluate `𝔽𝕩`, averaging over `𝕨` runs if given. For two-argument functions you can write `w⊸F•_timed x` or `F´•_timed w‿x`. CBQN also has a `)time` command that prints the time taken by an entire expression, not counting compilation time.
+There are two measurement tools in the [time](../spec/system.md#time) system values. `•MonoTime` is a high-precision timer for performance measurements; you can take a time before and after some operation or section of a program and subtract them to get a time in seconds (a profiling tool to do this automatically would be nice, but we don't have one). More convenient for small snippets, `•_timed` returns the time to evaluate `𝔽𝕩`, averaging over `𝕨` runs if given. For two-argument functions you can write `w⊸F•_timed x` or `F´•_timed w‿x`.
 
     100 +´•_timed ↕1e6  # Time +´ only
     )time:100 +´↕1e6    # Time entire expression
+
+CBQN also has a `)time` command that prints the time taken by an entire expression, not counting compilation time. And a `)profile` command that samples where time was spent by the line—execution naturally has to be spread over several lines for this to be useful, and should take at least a few milliseconds too.
 
 The [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html) tool has a page showing primitive benchmarks with some explanations.
 
