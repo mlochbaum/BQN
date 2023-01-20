@@ -32,7 +32,7 @@ Looking for a modern, powerful language centered on Ken Iverson's array programm
 
 BQN **will provide**:
 
-- State of the art array [performance](implementation/perf.md): CBQN credibly competes with the fastest array languages, but isn't dominant yet.
+- State of the art array [performance](implementation/perf.md): CBQN beats the fastest array languages much of the time, but not always!
 - Libraries with interfaces for common file formats like JSON and CSV
 - A standard system to install and use libraries and packages, and support for package managers
 
