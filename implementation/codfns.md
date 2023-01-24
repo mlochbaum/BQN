@@ -22,7 +22,7 @@ Neither BQN nor Co-dfns significantly optimize their output at the time of writi
 
 ## Error reporting
 
-Co-dfns initially didn't check for compilation errors, but has started to add some checks with messages. It's behind BQN, which has complete error checking and good error messages, and includes source positions in compiler errors as well as in the compiled code for use in runtime errors. Position tracking and error checking add up to a little more than 20% overhead for the compiler, both in runtime and lines of code. And improving the way errors are reported once found has no cost for working programs, because reporting code only needs to be run if there's a compiler error. The only thing that really takes advantage of this now is the reporting for bracket matching, which goes over all brackets with a stack-based (not array-oriented or parallel) method.
+Co-dfns initially didn't check for compilation errors, but has started to add some checks with messages. It's behind BQN, which has complete error checking and good error messages, and includes source positions in compiler errors as well as in the compiled code for use in runtime errors. Position tracking and error checking together add about 20% to the number of lines in compiler and 10% to compile times. And improving the way errors are reported once found has no cost for working programs, because reporting code only needs to be run if there's a compiler error. The only thing that really takes advantage of this now is the reporting for bracket matching, which goes over all brackets with a stack-based (not array-oriented or parallel) method.
 
 ## Comments
 
