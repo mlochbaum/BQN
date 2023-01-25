@@ -1,8 +1,8 @@
 glyphs ← •Import "../glyphs.bqn"
 gl ← ("⟨"∾"⟩"«∾","⊸∾¨'"'(⊣∾∾˜)¨glyphs)      # Has to replace •args in c.bqn
 
-f ← "../c.bqn"‿"boot1.bqn"‿"boot2.bqn"      # Files to test
-c ← (1‿2/⟨glyphs⊸•Import,•Import⟩) {𝕎𝕩}¨ f  # Resulting compilers
+f ← ⟨"../c.bqn"⟩∾("boot"∾∾⟜".bqn")¨'1'+↕3   # Files to test
+c ← (1‿3/⟨glyphs⊸•Import,•Import⟩) {𝕎𝕩}¨ f  # Resulting compilers
 c ↩ (∾glyphs){𝕗⊸𝕏}¨ c
 t ← (∾∾⟜(@+10)¨)¨ (¯5⊸↓∾gl˙)⌾⊑⌾⊑ •FLines¨ f # Compiler source
 
@@ -12,3 +12,5 @@ t ← (∾∾⟜(@+10)¨)¨ (¯5⊸↓∾gl˙)⌾⊑⌾⊑ •FLines¨ f # Compi
 •Out "Boot -1 verified!"
 ! ≡○(⋈⁼∘∾⍟=¨⌾(2⊑¨2⊸⊑) 4⊸↑)´ (0‿2⊏c) {𝕎𝕩}¨ 1⊏t
 •Out "Boot -2 verified!"
+! ≡○(⋈⁼∘∾⍟=¨⌾(2⊑¨2⊸⊑) 4⊸↑)´ (0‿3⊏c) {𝕎𝕩}¨ 2⊏t
+•Out "Boot -3 verified!"
