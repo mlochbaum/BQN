@@ -14,10 +14,10 @@
     (⊑"0")+↕10            # Digit
     ⥊"aA"+⌜↕na←26         # Alphabetic
     " "                   # Whitespace
-    sc←"#""@"             # Preprocessed characters
+    sc←⟨35,34,64⟩+@       # Preprocessed characters: hash, double quote, @
   ⟩
   cm←((0»+`)⋈¨⊢)cgl←≠¨chars
-  bS←3⊑cm⋄bG←4⊑cm⋄bB←5⊑cm⋄bI←6⊑cm⋄bN←7⊑cm⋄bA←9⊑cm⋄bW←10⊑cm
+  bS←3⊑cm⋄bG←4⊑cm⋄bB←5⊑cm⋄bN←7⊑cm⋄bA←9⊑cm⋄bW←10⊑cm
   sep←⊑bS
   vi←⊑bN  # Start of identifier numbering
   charRole←∾cgl⥊¨⟨1,2,3,¯1,¯3,⟨¯1,0⟩,⟨1,0,0⟩,0,0,26/⟨0,1⟩,4,0⟩
@@ -33,12 +33,12 @@
 
   # Extract words: identifiers and numbers
   t←charSet⊐f/𝕩                             # Tokens
+  r←t⊏charRole                              # Role
   l←(t≥⊑bN)∧t<⊑bW⋄w←l>»l                    # Word chars l, start w
   wi←(⊑bA)≤w/t                              # Type: 0 number, 1 identifier
-  r←t⊏charRole                              # Role
-  t↩t-na×l∧t≥na+⊑bA                         # Case-insensitive
-  i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
-  ide←(1-˜i×+`w>n)⊔t⊏charSet                # Identifiers
+  t↩t-na×l∧r=1                              # Case-insensitive
+  n←l∧(+`w)⊏0∾¬wi                           # Number mask
+  ide←(1-˜(l>n)×+`w>n)⊔t⊏charSet            # Identifiers
 
   # Numbers, at most 2 digits
   nt←((⊢∨«)0∾n)/0∾t×l                       # Number tokens separated by 0
@@ -120,7 +120,7 @@
   ta←tr∧2(>∨|)ps(⊢-TT)+`¬ro                 # Train argument (first-level)
   fa←/(ta∨ro∨(«∨⊢)ps<aa)<(r=1)∨»op          # Active functions
   dy←fa⊏«(tr∧r≥0)∨ro<r=0                    # Dyadic
-  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/𝕩<sep         # Objects to be loaded
+  pr←𝕩⊏˜pi←/𝕩<sep⋄ob←pr⊏/¯1(⊢-»)u←⍷∧pr      # Objects to be loaded
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob↩ob∾(cl-˜≠u)+lt⊏𝕩  # Constants
   bk←bc⊏gi                                  # Block loads
   lb←/𝕩=5+⊑bB                               # List starts
