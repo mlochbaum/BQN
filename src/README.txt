@@ -10,6 +10,7 @@ Compiler toolchain:
 - pp.bqn      General preprocessing
 - pr.bqn      Preprocess the runtime
 - cjs.bqn     Format compiler output as Javascript literals
+- bootstrap/  Simpler compilers for bootstrapping (see README there)
 
 Compilation targets:
 
