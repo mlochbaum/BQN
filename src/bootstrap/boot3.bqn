@@ -72,15 +72,13 @@
   rev←⍋+`¯1↓(¯1∾gb)((⍋⊣)⊏((⍋⊢)⊏⊣)¬⊏˜)⍋(+`+⊢)1∾gb⊏r=¯1
 
   # Lexical resolution, no nesting
-  # The last-use indicator ⌽∊⌽ii has to be done in rev ordering which
-  # prevents some improvements
   rx←rev⊏𝕩
   iv←/(rx≥⊑bI)∧rx<vi+nv                     # Variable indices
   vv←(iv⊏rx)-vi                             # Variable name
   ii←3↓⊐(¯3+↕3)∾vv                          # Slot within frame
   va←iv⊏»rx⋄vb←(va≥⊑bG)∧va<+´bG             # Variable assignment, if it's there
   idor←∾3/⟨iv⟩                              # Identifier bytecode ordering
-  idoc←⟨32+vb+2×vb<⌽∊⌽ii,0¨ii,ii⟩           # Identifier bytecode: instruction, depth, slot
+  idoc←⟨32+vb,0¨ii,ii⟩                      # Identifier bytecode: instruction, depth, slot
   dn←⟨⟨⟩,(va=⊑bG)/vv⟩                       # Identifier name ID, per-block
 
   # Parsing
@@ -97,7 +95,7 @@
   dy←fa⊏«(tr∧r≥0)∨op<r=0                    # Dyadic
   pr←𝕩⊏˜pi←/𝕩<sep⋄ob←pr⊏/¯1(⊢-»)u←⍷∧pr      # Objects to be loaded
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob↩ob∾(cl-˜≠u)+lt⊏𝕩  # Constants
-  bk←(𝕩=3+⊑bB)/⍋g                           # Block loads
+  bk←/𝕩=2+⊑bB                               # Block loads
   lb←/𝕩=5+⊑bB                               # List starts
   ll←(¬lo/1«ps)+(⊢-»)1↓(lo∾1)/+`ls∾0        # List Length
   dr←/xs>ls⋄rt←/fo                          # Drop (block separator) and return
