@@ -6,11 +6,17 @@ c ← (1‿3/⟨glyphs⊸•Import,•Import⟩) {𝕎𝕩}¨ f  # Resulting com
 c ↩ (∾glyphs){𝕗⊸𝕏}¨ c
 t ← (∾∾⟜(@+10)¨)¨ (¯5⊸↓∾gl˙)⌾⊑⌾⊑ •FLines¨ f # Compiler source
 
-# 4⊸↑ to strip source info
-# ⋈⁼∘∾⍟=¨⌾(2⊑¨2⊸⊑) to turn only-dyadic functions to ambivalent
-! ≡○(4⊸↑)´ (2↑c) {𝕎𝕩}¨ ⊏t
-•Out "Boot -1 verified!"
-! ≡○(⋈⁼∘∾⍟=¨⌾(2⊑¨2⊸⊑) 4⊸↑)´ (0‿2⊏c) {𝕎𝕩}¨ 1⊏t
-•Out "Boot -2 verified!"
-! ≡○(⋈⁼∘∾⍟=¨⌾(2⊑¨2⊸⊑) 4⊸↑)´ (0‿3⊏c) {𝕎𝕩}¨ 2⊏t
-•Out "Boot -3 verified!"
+# Check that compiler 𝕩 compiles 𝕩-1 same as full compiler
+Ver ← {
+  norm ← {𝕎𝕏}˜´ (2⌊𝕩) ↑ ⟨
+    4⊸↑              # Strip source info, always
+    ⋈⁼∘∾⍟=¨⌾(2⊑¨2⊸⊑) # Turn only-dyadic functions to ambivalent, only ≥2
+  ⟩
+  ! ≡○Norm´ (0‿𝕩⊏c) {𝕎𝕩}¨ (𝕩-1)⊏t
+  •Out ∾⟨"Boot -",'0'+𝕩," verified!"⟩
+}
+Ver¨ 1+↕3
+
+•Out ""
+•Out "Compile times, in milliseconds:"
+•Show 1e3÷˜⌊1e6× (1≥-)◶∞‿{30(𝕨⊑c)•_timed𝕩⊑t}⌜˜ ↕≠c
