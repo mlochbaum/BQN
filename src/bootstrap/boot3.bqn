@@ -70,14 +70,14 @@
   r↩r+cp×»ir                                # Roles at cp were 0; set them now
 
   # Reverse each expression: *more* complicated than it looks
-  rev←⍋+`¯1↓(¯1∾gb)((⍋⊣)⊏((⍋⊢)⊏⊣)¬⊏˜)⍋(+`+⊢)1∾gb⊏r=¯1
+  rev←⍋+`¯1↓(¯1∾gb)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾gb⊏r=¯1
 
   # Lexical resolution, no nesting
   rx←rev⊏𝕩
   iv←/(rx≥⊑bI)∧rx<vi+nv                     # Variable indices
   vv←(iv⊏rx)-vi                             # Variable name
   ii←3↓⊐(¯3+↕3)∾vv                          # Slot within frame
-  va←iv⊏»rx⋄vb←(va≥⊑bG)∧va<+´bG             # Variable assignment, if it's there
+  vb←bG M˜ va←iv⊏»rx                        # Variable assignment, if it's there
   idor←∾3/⟨iv⟩                              # Identifier bytecode ordering
   idoc←⟨32+vb,0¨ii,ii⟩                      # Identifier bytecode: instruction, depth, slot
   dn←⟨⟨⟩,(va=⊑bG)/vv⟩                       # Identifier name ID, per-block
@@ -92,9 +92,9 @@
   xs←𝕩=sep⋄fo←𝕩=2+⊑bB                       # Separators, function open {
   ls←xs∧fo<○IT lo←𝕩=4+⊑bB                   # List Separators: after ⟨lo, not {fo
   ta←tr∧2(>∨|)ps(⊢-TT)+`¬op                 # Train argument (first-level)
-  fa←/(ta∨op∨«⊸∨ps<aa)<(r=1)∨»op            # Active functions
+  fa←/(ta∨op∨aa)<(r=1)∨»op                  # Active functions
   dy←fa⊏«(tr∧r≥0)∨op<r=0                    # Dyadic
-  pr←𝕩⊏˜pi←/𝕩<sep⋄ob←pr⊏/¯1(⊢-»)u←⍷∧pr      # Objects to be loaded
+  pr←𝕩⊏˜pi←/𝕩<sep⋄ob←pr⊐˜u←∧⍷pr             # Objects to be loaded
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob↩ob∾(cl-˜≠u)+lt⊏𝕩  # Constants
   bk←/𝕩=2+⊑bB                               # Block loads
   lb←/𝕩=5+⊑bB                               # List starts
