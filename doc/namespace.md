@@ -46,7 +46,7 @@ There are also two ways to get values out of a namespace, such as `example` defi
 
     {n⇐7}.n
 
-The part on the left can be anything with a subject role, although it will often need to be parenthesized because `.` has higher precedence than any operator. This allows it to be chained like `a.b.c` if a namespace has a value that is also a namespace (and so on).
+The part on the left can be anything with a subject [role](expression.md#syntactic-role), although it will often need to be parenthesized because `.` has higher precedence than any operator. So it can be chained like `a.b.c` if a field has a value that is also a namespace (and so on). The overall role is determined by the last name: for example `•math.Sin` has a function role.
 
 Second, a namespace might be used in a [destructuring](expression.md#destructuring) assignment like the one below. This assignment's target looks like a list, where each entry specifies one of the names exported by the block and what it should be assigned to. The element can be either a single name, like `b`, which gives both, or an aliasing expression like `b2⇐b`. In this case, the value `b` from the namespace is used, but it's given the name `b2` instead of `b`. Imported names can be repeated—but the variable names defined can't be—and all the names can be spelled with any role (the role is ignored).
 

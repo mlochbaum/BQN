@@ -22,12 +22,12 @@ BQN uses "[depth](depth.md)" rather than "boxing level". BQN gives atoms depth 0
 
 In J, the part of speech is an inherent property of a value, while in BQN it's determined by how the value is used in a particular expression, and can be different from the value's type. See [context-free grammar](context.md).
 
-| J part of speech    | BQN role   |
-|---------------------|------------|
-| Noun                | Subject    |
-| Verb                | Function   |
-| Adverb              | 1-modifier |
-| Conjunction         | 2-modifier |
+| J part of speech    | BQN role   | Spelling    |
+|---------------------|------------|-------------|
+| Noun                | Subject    | `lowerCase` |
+| Verb                | Function   | `UpperCase` |
+| Adverb              | 1-modifier | `_leading`  |
+| Conjunction         | 2-modifier | `_both_`    |
 
 ## Syntax
 
