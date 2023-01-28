@@ -248,7 +248,7 @@ Parse ← {⟨r,vn,def⟩←𝕨⋄nv←≠vn
   ta←tr∧2(>∨|)ps(⊢-T)+`¬ro                  # Train argument (first-level)
   fa←/(hg∨ta∨ro∨«⊸∨ps<aa)<(r=1)∨»op         # Active functions: cases fe are excluded
   dy←2≠ny←fa⊏2«no⌈2×¬(tr∧r≥0)∨ro<r=0        # Dyadic
-  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/hg<𝕩<sep      # Objects to be loaded
+  ob←pr⊐˜u←∧⍷pr←𝕩⊏˜pi←/hg<𝕩<sep             # Objects to be loaded
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob∾↩(cl-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length
