@@ -19,7 +19,6 @@
   cm←⋈¨˜⟜(0»+`)cgl←≠¨chars
   bS←3⊑cm⋄bG←4⊑cm⋄bB←5⊑cm⋄bI←6⊑cm⋄bN←7⊑cm⋄bA←9⊑cm⋄bW←10⊑cm
   M←1⊸⊑(0⊸≤∧>)-⟜⊑   # ∊ for an init,length pair 𝕩 as above
-  sep←⊑bS
   vi←⊑bN  # Start of identifier numbering
   charRole←∾cgl⥊¨⟨1,2,3,¯1,¯3,⟨¯1,0⟩,⟨1,0,0⟩,0,0,26/⟨0,1⟩,4,0⟩
   TT←⌈`× ⋄ IT←↕∘≠⊸TT
@@ -51,14 +50,13 @@
   ki←(wi⍒⊸⊏/w)∾(ci∾/ss)⊏+`»f                # Indices in t
   k←⟨ide,⟨⟩,num,chr,str⟩                    # Constants
   k↩k(⊢>¯1»⌈`)⊸/¨˜j←⊐¨k                     # IDs j into uniques k
-  wr←w∨¬l∨t M bW⋄r↩wr/r
-  t↩wr/(∾j++`vi»≠¨k)⌾(ki⊸⊏)t                # Add IDs; remove words/whitespace
-  t↩t-t(M×-⟜⊑)bS                            # Separators are equivalent
-  pb←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep              # Separator group boundaries (excludes leading and trailing)
+  wr←w∨¬l∨t M bW⋄r↩wr/r                     # Remove words/whitespace
+  t↩wr/(∾j++`vi»≠¨k)⌾(ki⊸⊏)t                # Add IDs
+  pb←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)ts←t M bS          # Separator group boundaries (excludes leading and trailing)
   eb←⟨3,5⟩+⊑bB                              # End brackets that allow separators
   sk←sb/˜pb>∨⟜«eb∊˜pb+(sb-pb)⊏t             # Keep the first of each group that's not just inside a bracket
-  sr←(t≠⊸↑/⁼sk)∨t≠sep⋄r↩sr/r⋄t↩sr/t         # Remove the rest
-  𝕩↩t⋄nv←≠⊑k
+  sr←ts≤t≠⊸↑/⁼sk⋄r↩sr/r⋄t↩sr/t              # Remove the rest
+  𝕩↩t⋄ev←vi+≠⊑k
   # End of tokenization!
 
   # Bracket roles
@@ -74,7 +72,7 @@
 
   # Lexical resolution, no nesting
   rx←rev⊏𝕩
-  iv←/(rx≥⊑bI)∧rx<vi+nv                     # Variable indices
+  iv←/(rx≥⊑bI)∧rx<ev                        # Variable indices
   vv←(iv⊏rx)-vi                             # Variable name
   ii←3↓⊐(¯3+↕3)∾vv                          # Slot within frame
   vb←bG M˜ va←iv⊏»rx                        # Variable assignment, if it's there
@@ -85,28 +83,28 @@
   # Parsing
   gr←rev⊏˜g←⍋+`rev⊏p                        # Order by bracket depth
   𝕩↩gr⊏𝕩⋄r↩gr⊏r⋄ir↩gr⊏ir
-  at←/aa←»a←¯3=r                            # Assignment target
+  at←/aa←»a←r=¯3                            # Assignment target
   ao←(a/𝕩)-⊑bG                              # Assignment opcode
-  tr←ir⊏˜IT»ps←a<r<0                        # tr: train or modifier expression, ps: part separator
+  tr←ir⊏˜IT»ps←r=¯1                         # tr: train or modifier expression, ps: part separator
   oa←⌽/op←r=2                               # op: active modifiers; op: mod or right operand
-  xs←𝕩=sep⋄fo←𝕩=2+⊑bB                       # Separators, function open {
-  ls←xs∧fo<○IT lo←𝕩=4+⊑bB                   # List Separators: after ⟨lo, not {fo
   ta←tr∧2(>∨|)ps(⊢-TT)+`¬op                 # Train argument (first-level)
   fa←/(ta∨op∨aa)<(r=1)∨»op                  # Active functions
-  dy←fa⊏«(tr∧r≥0)∨op<r=0                    # Dyadic
-  pr←𝕩⊏˜pi←/𝕩<sep⋄ob←pr⊐˜u←∧⍷pr             # Objects to be loaded
-  cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob↩ob∾(cl-˜≠u)+lt⊏𝕩  # Constants
-  bk←/𝕩=2+⊑bB                               # Block loads
-  lb←/𝕩=5+⊑bB                               # List starts
-  ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0          # List Length
-  dr←/xs>ls⋄rt←/fo                          # Drop (block separator) and return
   os←⌽↕∘≠⊸(⊣-TT)⌽¬op                        # Operator skip: distance rightward to derived function start
+  dy←fa⊏«(tr∧r≥0)∨op<r=0                    # Dyadic
   fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
+  u←∧⍷pr←𝕩⊏˜pi←/𝕩<⊑bS⋄lt←/𝕩≥ev              # Primitives and literals
+  cn←pi∾lt⋄ob←(u⊐pr)∾(ev-˜≠u)+lt⊏𝕩          # Locations and object numbers
+  bk←/𝕩=2+⊑bB⋄rt←bk                         # Block load and return
+  lb←/𝕩=5+⊑bB                               # List starts
+  xs←𝕩 M bS                                 # Separators
+  ls←xs∧∨`lo←𝕩=4+⊑bB                        # List Separators after ⟨lo
+  dr←/ls<xs                                 # Drop at block separators
+  ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0          # List Length
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
   fsc←3×fx←↕2                               # Body immediacy ¬fx, special name count
-  or←⍋idor∾g⊏˜∾⟨cn,cn,bk,bk,2/lb,at,dr,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,⥊⍉(11+lb⊏aa)≍ll,48+ao,6¨dr
+  or←⍋idor∾g⊏˜∾⟨cn,cn,bk,bk,lb,lb,at,dr,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,11+lb⊏aa,ll,48+ao,6¨dr
                24+oa⊏r,16+dy+4×fa⊏tr,¯1↓rc←7¨fx⟩
   # Output
   fz←⟨0¨fx,¬fx,↕≠fx⟩                        # Per-function data
