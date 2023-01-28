@@ -57,46 +57,48 @@
   sk←sb/˜pb>∨⟜«eb∊˜pb+(sb-pb)⊏t             # Keep the first of each group that's not just inside a bracket
   sr←ts≤t≠⊸↑/⁼sk⋄r↩sr/r⋄t↩sr/t              # Remove the rest
   𝕩↩t⋄ev←vi+≠⊑k
-  # End of tokenization!
 
   # Bracket roles
   # Open brackets initially have role ¯1 and closed ones have role 0
   gb←⍋+`p←(¯1-2×r)×𝕩 M bB                   # Paren (actually any bracket type) depth and grade
   r↩r+𝕩=3+⊑bB                               # Assume blocks are functions
   cp←𝕩=1+⊑bB                                # Closed paren
-  ir←(IT cp⊸≤)⊸⊏0<r                         # Role of the expression ending at each position
-  r↩r+cp×»ir                                # Roles at cp were 0; set them now
+  r↩r+cp×»(IT cp⊸≤)⊸⊏0<r                    # Propagate functions through parens
 
   # Reverse each expression: *more* complicated than it looks
   rev←⍋+`¯1↓(¯1∾gb)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾gb⊏r=¯1
+  gr←rev⊏˜g←⍋+`rev⊏p                        # Then order by bracket depth
+  𝕩↩gr⊏𝕩⋄r↩gr⊏r
 
-  # Parsing
-  gr←rev⊏˜g←⍋+`rev⊏p                        # Order by bracket depth
-  𝕩↩gr⊏𝕩⋄r↩gr⊏r⋄ir↩gr⊏ir
-  at←/aa←»a←r=¯3                            # Assignment target
-  ao←(a/𝕩)-⊑bG                              # Assignment opcode
-  iv←/(𝕩≥⊑bI)∧𝕩<ev                          # Variable indices
-  ii←(iv⊏𝕩)-⊑bI                             # Variable slot
-  tr←ir⊏˜IT»ps←r=¯1                         # tr: train or modifier expression, ps: part separator
-  oa←⌽/op←r=2                               # op: active modifiers; op: mod or right operand
-  ta←tr∧2(>∨|)ps(⊢-TT)+`¬op                 # Train argument (first-level)
-  fa←/(ta∨op∨aa)<(r=1)∨»op                  # Active functions
-  os←⌽↕∘≠⊸(⊣-TT)⌽¬op                        # Operator skip: distance rightward to derived function start
-  dy←fa⊏«(tr∧r≥0)∨op<r=0                    # Dyadic
-  fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
+  # Constants
   u←∧⍷pr←𝕩⊏˜pi←/𝕩<⊑bS⋄lt←/𝕩≥ev              # Primitives and literals
   cn←pi∾lt⋄ob←(u⊐pr)∾(ev-˜≠u)+lt⊏𝕩          # Locations and object numbers
+  # Blocks and lists
+  xs←𝕩 M bS⋄ps←r=¯1                         # Separator token; part separator includes {⟨
   bk←/𝕩=2+⊑bB⋄rt←bk                         # Block load and return
   lb←/𝕩=5+⊑bB                               # List starts
-  xs←𝕩 M bS                                 # Separators
   ls←xs∧∨`lo←𝕩=4+⊑bB                        # List Separators after ⟨lo
   dr←/ls<xs                                 # Drop at block separators
   ll←(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0          # List Length
+  # Assignment
+  at←/aa←»a←r=¯3                            # Assignment target
+  ao←(a/𝕩)-⊑bG                              # Assignment opcode
+  v←/(𝕩≥⊑bI)∧𝕩<ev                           # Variable indices
+  vs←(v⊏𝕩)-⊑bI                              # Variable slot
+  # Functions and modifiers
+  tr←0<r⊏˜IT»ps                             # Train
+  oa←/op←r=2                                # Modifier
+  ta←tr∧2(>∨|)ps(⊢-TT)+`¬op                 # Train argument (first-level)
+  fa←/(ta∨op∨aa)<(r=1)∨»op                  # Active function
+  os←⌽↕∘≠⊸(⊣-TT)⌽¬op                        # Operator skip: distance rightward to derived function start
+  dy←fa⊏«(tr∧r≥0)∨op<r=0                    # Dyadic
+  fl←(dy×⊏⟜os)⊸+fa+dy                       # Function application site
+  ol←⊏⟜os⊸+oa                               # Modifier application site
 
-  # Object code generation: numbers oc ordered by source location (after rev) oi
+  # Object code generation: numbers oc ordered by source location after rev
   fsc←3×fx←↕2                               # Body immediacy ¬fx, special name count
-  or←⍋g⊏˜∾⟨iv,iv,iv,cn,cn,bk,bk,lb,lb,at,dr,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏ ∾⟨32+iv⊏aa,0¨iv,ii,0¨cn,ob,1¨bk,1+↕≠bk,11+lb⊏aa,ll,48+ao,6¨dr
+  or←⍋g⊏˜∾⟨v,v,v,cn,cn,bk,bk,lb,lb,at,dr,ol,fl,rt⟩
+  oc←or⊏ ∾⟨32+v⊏aa,0¨v,vs,0¨cn,ob,1¨bk,1+↕≠bk,11+lb⊏aa,ll,48+ao,6¨dr
            24+oa⊏r,16+dy+4×fa⊏tr,¯1↓rc←7¨fx⟩
   # Output
   fz←⟨0¨fx,¬fx,↕≠fx⟩                        # Per-function data
