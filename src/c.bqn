@@ -321,7 +321,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   fa←/(fe←hg∨ta∨ro∨«⊸∨ps<aa)<ff←(r=1)∨»op   # Active functions: cases fe are excluded
   "Second-level parts of a train must be functions"_err_(G) tr>fe∨ff
   dy←2≠ny←fa⊏2«no⌈2×¬(tr∧r≥0)∨ro<r=0        # Dyadic
-  ob←pr⊏/¯1(⊢-»)u←⍷∧pr←𝕩⊏˜pi←/hg<𝕩<sep      # Objects to be loaded
+  ob←pr⊐˜u←∧⍷pr←𝕩⊏˜pi←/hg<𝕩<sep             # Objects to be loaded
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob∾↩(cl-˜≠u)+lt⊏𝕩    # Constants
   bk←c⊏gi                                   # Block loads
   ll←sll∾˜(¬lo/1«ps)+-⟜»1↓(lo∾1)/+`ls∾0     # List Length

@@ -120,7 +120,7 @@
   ta←tr∧2(>∨|)ps(⊢-TT)+`¬ro                 # Train argument (first-level)
   fa←/(ta∨ro∨(«∨⊢)ps<aa)<(r=1)∨»op          # Active functions
   dy←fa⊏«(tr∧r≥0)∨ro<r=0                    # Dyadic
-  pr←𝕩⊏˜pi←/𝕩<sep⋄ob←pr⊏/¯1(⊢-»)u←⍷∧pr      # Objects to be loaded
+  pr←𝕩⊏˜pi←/𝕩<sep⋄ob←pr⊐˜u←∧⍷pr             # Objects to be loaded
   cn←pi∾lt←/𝕩≥cl←vi+nv⋄ob↩ob∾(cl-˜≠u)+lt⊏𝕩  # Constants
   bk←bc⊏gi                                  # Block loads
   lb←/𝕩=5+⊑bB                               # List starts
