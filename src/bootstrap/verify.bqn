@@ -9,13 +9,24 @@ t ← (∾∾⟜(@+10)¨)¨ (¯5⊸↓∾gl˙)⌾⊑⌾⊑ •FLines¨ f # Compi
 # Check that compiler 𝕩 compiles 𝕩-1 same as full compiler
 Ver ← {
   norm ← {𝕎𝕏}˜´ 𝕩 ↑ ⟨
-    4⊸↑              # Strip source info, always
-    ⋈⁼∘∾⍟=¨⌾(2⊑¨2⊸⊑) # Turn only-dyadic functions to ambivalent, only ≥2
-    (⊢-2×34⊸=)⌾⊑     # VARU to VARO, could hit non-opcode numbers, oh well
+    4⊸↑                  # Strip source info, always
+    ⋈⁼∘∾⍟=¨⌾(2⊑¨2⊸⊑)     # Turn only-dyadic functions to ambivalent if ≥2
+    NormVar⌾(⊑⋈2⊑¯1⊑3⊑⊢) # Normalize variable opcodes if =3, defined below
   ⟩
   ! ≡○Norm´ (0‿𝕩⊏c) {𝕎𝕩}¨ (𝕩-1)⊏t
   •Out ∾⟨"Boot -",'0'+𝕩," verified!"⟩
 }
+NormVar ← {
+  ba ← /´'0'-˜⟨ # For each instruction, number of:
+    "11411311121111111315114131131111=111"  # Codes until next opcode
+    "111000111100000000002221100000000111"  # Arguments
+  ⟩
+  Se←≠(>/⊢)∾⟜≠{(⊏˜𝕨)𝕊⍟(≠○(¯1⊸⊑))𝕩∾𝕩⊏𝕨}⟨0⟩˙
+  m ← (≠𝕩)↑/⁼ Se (↕≠𝕩)+1+ba(⊣⊏˜≠⊸>×⊢)𝕩  # Mask of opcode starts
+  𝕩 (⊢-m∧2×34⊸=)↩ # VARU to VARO
+  ⟨⊏⟜((↕⊸-3)∾𝕨)⌾((0‿0»m∧𝕩∊32‿33)⊸/) 𝕩,↕≠𝕨⟩
+}˜´
+
 Ver¨ 1+↕3
 
 •Out ""
