@@ -70,21 +70,13 @@
   # Reverse each expression: *more* complicated than it looks
   rev←⍋+`¯1↓(¯1∾gb)(⊣⍋⊸⊏⊏˜⟜⍋¬⊏˜)⍋+`⊸+1∾gb⊏r=¯1
 
-  # Lexical resolution, no nesting
-  rx←rev⊏𝕩
-  iv←/(rx≥⊑bI)∧rx<ev                        # Variable indices
-  vv←(iv⊏rx)-vi                             # Variable name
-  ii←3↓⊐(¯3+↕3)∾vv                          # Slot within frame
-  vb←bG M˜ va←iv⊏»rx                        # Variable assignment, if it's there
-  idor←∾3/⟨iv⟩                              # Identifier bytecode ordering
-  idoc←⟨32+vb,0¨ii,ii⟩                      # Identifier bytecode: instruction, depth, slot
-  dn←⟨⟨⟩,(va=⊑bG)/vv⟩                       # Identifier name ID, per-block
-
   # Parsing
   gr←rev⊏˜g←⍋+`rev⊏p                        # Order by bracket depth
   𝕩↩gr⊏𝕩⋄r↩gr⊏r⋄ir↩gr⊏ir
   at←/aa←»a←r=¯3                            # Assignment target
   ao←(a/𝕩)-⊑bG                              # Assignment opcode
+  iv←/(𝕩≥⊑bI)∧𝕩<ev                          # Variable indices
+  ii←(iv⊏𝕩)-⊑bI                             # Variable slot
   tr←ir⊏˜IT»ps←r=¯1                         # tr: train or modifier expression, ps: part separator
   oa←⌽/op←r=2                               # op: active modifiers; op: mod or right operand
   ta←tr∧2(>∨|)ps(⊢-TT)+`¬op                 # Train argument (first-level)
@@ -103,11 +95,12 @@
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
   fsc←3×fx←↕2                               # Body immediacy ¬fx, special name count
-  or←⍋idor∾g⊏˜∾⟨cn,cn,bk,bk,lb,lb,at,dr,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,11+lb⊏aa,ll,48+ao,6¨dr
-               24+oa⊏r,16+dy+4×fa⊏tr,¯1↓rc←7¨fx⟩
+  or←⍋g⊏˜∾⟨iv,iv,iv,cn,cn,bk,bk,lb,lb,at,dr,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏ ∾⟨32+iv⊏aa,0¨iv,ii,0¨cn,ob,1¨bk,1+↕≠bk,11+lb⊏aa,ll,48+ao,6¨dr
+           24+oa⊏r,16+dy+4×fa⊏tr,¯1↓rc←7¨fx⟩
   # Output
   fz←⟨0¨fx,¬fx,↕≠fx⟩                        # Per-function data
+  dn←⟨⟨⟩,↕+´0=ao⟩                           # Identifier name ID, per-block
   cz←⟨/1∾or≥oc-○≠rt,fsc+≠¨dn,dn,0¨¨dn⟩      # Per-body data
   ⟨oc∾¯1⊑rc,∾⟨u⊏𝕨⟩∾1↓k,<˘⍉>fz,<˘⍉>cz⟩       # Overall output
 }
