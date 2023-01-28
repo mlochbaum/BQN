@@ -83,7 +83,7 @@
   𝕩↩gr⊏𝕩⋄r↩gr⊏r⋄ir↩gr⊏ir
 
   # Parsing part 1
-  a←¯3=r⋄ps←a<r<0                           # a: assignment, ps: part separator
+  a←r=¯3⋄ps←r=¯1                            # a: assignment, ps: part separator
   tr←ir⊏˜IT»ps                              # tr: train or modifier expression
   oa←⌽/op←r≥2⋄ro←op∨«op∧r=3                 # op: active modifiers; ro: mod or right operand
   xs←𝕩=sep⋄fo←𝕩=2+⊑bB                       # Separators, function open {
@@ -129,8 +129,8 @@
   fl←(⊢+dy×⊢⊏os˙)fa+dy                      # Function application site
 
   # Object code generation: numbers oc ordered by source location (after rev) oi
-  or←⍋idor∾g⊏˜∾⟨cn,cn,bk,bk,2/lb,at,dr,oa+1⌈oa⊏os,fl,rt⟩
-  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,⥊⍉(11+lb⊏aa)≍ll,48+ao,6¨dr
+  or←⍋idor∾g⊏˜∾⟨cn,cn,bk,bk,lb,lb,at,dr,oa+1⌈oa⊏os,fl,rt⟩
+  oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,11+lb⊏aa,ll,48+ao,6¨dr
                24+oa⊏r,16+dy+4×fa⊏tr,¯1↓rc←7¨fx⟩
   # Output
   fz←⟨0¨fx,¬fx,↕≠fx⟩                        # Per-function data
