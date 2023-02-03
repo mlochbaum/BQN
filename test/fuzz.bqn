@@ -64,9 +64,13 @@ RandPart ← ¯1 (⊢-») (Subset∾⊢)○(-⟜1)
     (0⌈-⟜1) ⌊ Rand∘(1⌈⌈)⌾((2⋆3+⊢)⁼) + ¯7+Rand∘15 # Near power of two
   ⟩_randChoose
 
-  P ← ×´opts.zerobound⌈⊢
+  z ← opts.zerobound
+  Squash ← {                       # Multiply by constant so product is ≤𝕨
+    a←(∧`𝕨>×`÷⊢⋆1+↕∘≠)⊸/∘∨⍟z 𝕩     # Numbers that don't need to go below 1, if z
+    ⌊ 𝕩 × (≠a) √ Sigmoid⊸÷1⌈𝕨÷˜×´a
+  }
   Augment ← {
-    d ← 1+⌊𝕨÷1⌈P𝕩          # Maximum bound that can be added, plus 1
+    d ← 1+⌊𝕨÷1⌈×´z⌈𝕩       # Maximum bound that can be added, plus 1
     C ← 10⊸+ Rand⊸< 1.2⊸√  # Decide whether to add
     d (𝕨 𝕊 ⟨∾,∾˜⟩_randChoose⟜RandBound˜)⍟(C⊣) 𝕩
   }
@@ -75,7 +79,7 @@ RandPart ← ¯1 (⊢-») (Subset∾⊢)○(-⟜1)
     ×´¨ (⊐·Rand¨⥊˜∘≠)⊸⊔∘⊢                   # Distribute randomly
   ⟩_randChoose
   RandShape ⇐ ⊢ Augment ⟨
-    ⊢ (⊢ ⌊∘× ⊢ ≠⊸√ (Sigmoid⊸÷1⌈×´⊸÷˜)) · Rand¨ (RandRank⌈√<Rand)⊸⥊
+    ⊢ Squash · Rand¨ (RandRank⌈√<Rand)⊸⥊
     ⊢ Combine⟜Factor 1⌈RandBound
   ⟩_randChoose
 }
