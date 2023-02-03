@@ -6,6 +6,7 @@ Fuzz testing. Options:
   -h, --help: Print this message and exit
   -r: Random seed, u to use •UnixTime then print (1)
   -b: Maximum bound (1e3)
+  -z: Don't generate large zero-product shapes (0)
   -n: Number of iterations (100)
   -t: Element type (0 3 4 5 6)
   -p: Primitives: both | mon%dy | mon%dy%both
@@ -13,16 +14,17 @@ Fuzz testing. Options:
 
 Any number of types or bounds can be given; all combinations are tested."
 
-  o ← "-h"‿"--help"‿"-b"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
+  o ← "-h"‿"--help"‿"-b"‿"-z"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
   oo ← (≠o) = oi ← o ⊐ a←•args
   •Exit∘•Out∘help⍟(∨´2⊸>) oi
 
   opts ← 2↓o≠⊸↑ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
-  bounds‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
+  bounds‿zerobound‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
   _default_ ← { (∾"Only one "‿𝕘‿" can be given") ! 1≥≠𝕨 ⋄ 𝕩𝔽∘⊣´𝕨 }
   num ⊢_default_"iteration number"↩ 100
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
   bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
+  zerobound ↩ 0⊣´zerobound
   seed "u"⊸≡◶⟨•BQN,•Show(2⋆31)|⌊∘•UnixTime⟩_default_"random seed"↩ 1
 
   modop ∾↩
@@ -62,8 +64,9 @@ RandPart ← ¯1 (⊢-») (Subset∾⊢)○(-⟜1)
     (0⌈-⟜1) ⌊ Rand∘(1⌈⌈)⌾((2⋆3+⊢)⁼) + ¯7+Rand∘15 # Near power of two
   ⟩_randChoose
 
+  P ← ×´opts.zerobound⌈⊢
   Augment ← {
-    d ← 1+⌊𝕨÷1⌈×´𝕩         # Maximum bound that can be added, plus 1
+    d ← 1+⌊𝕨÷1⌈P𝕩          # Maximum bound that can be added, plus 1
     C ← 10⊸+ Rand⊸< 1.2⊸√  # Decide whether to add
     d (𝕨 𝕊 ⟨∾,∾˜⟩_randChoose⟜RandBound˜)⍟(C⊣) 𝕩
   }
