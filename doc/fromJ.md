@@ -162,7 +162,7 @@ Some J modifier expressions are translated below. BQN doesn't keep track of the 
 | `x F&.>/ y`    | `x F⌜ y`
 | `x F/ y`       | `x F⎉r‿∞ y` where `r` is `F`'s left rank
 | ``F`G`H@.C``   | `C◶⟨F,G,H⟩`
-| `x y} z`       | `x⌾(y⊸⊏) z`
+| `x y} z`       | `x⌾(y⊸⊏) z` (`x¨` if `x` is an atom)
 | `x F/ . G y`   | `x F˝∘G⎉1‿∞ y`
 | `F :. G`       | `{𝕊: 𝕨F𝕩; 𝕊⁼: 𝕨G𝕩}`
 | `<;._1`        | ``((1-˜¬×+`)=⟜⊏⊘⊣)⊔⊢``
