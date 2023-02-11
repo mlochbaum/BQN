@@ -102,7 +102,7 @@
            24+oa⊏r,16+dy+4×fa⊏tr,¯1↓rc←7¨fx⟩
   # Output
   fz←⟨0¨fx,¬fx,↕≠fx⟩                        # Per-function data
-  dn←⟨⟨⟩,↕+´0=ao⟩                           # Identifier name ID, per-block
-  cz←⟨/1∾or≥oc-○≠rt,fsc+≠¨dn,dn,0¨¨dn⟩      # Per-body data
+  lc←0⋈+´0=ao                               # Body locals count
+  cz←⟨/1∾or≥oc-○≠rt,fsc+lc,↕¨lc,⥊⟜0¨lc⟩     # Per-body data
   ⟨oc∾¯1⊑rc,∾⟨u⊏𝕨⟩∾1↓k,<˘⍉>fz,<˘⍉>cz⟩       # Overall output
 }
