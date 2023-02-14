@@ -713,7 +713,7 @@ ReshapeT ← "∘⌊⌽↑"_glyphLookup_(↕5)
 Reshape←{
   "𝕨⥊𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
   s←Deshape 𝕨
-  sp←0+´p←(1-Nat)⌜s
+  sp←0+´p←Nat◶⟨1,∞⊸=⟩⌜s
   "𝕨⥊𝕩: 𝕨 must consist of natural numbers" ! 1≥sp
   n←≠d←Deshape 𝕩
   l←sp◶(1×´⊢)‿{
