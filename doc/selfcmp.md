@@ -50,7 +50,7 @@ When the argument is a list, its major cells are units and thus contain one elem
 
 The result has one number for each major cell, or in other words is a list with the same length as its argument. Three self-search functions follow this pattern, but Deduplicate (`⍷`) is different: it returns an array of the same rank but possibly a shorter length than the argument.
 
-### Deduplicate
+## Deduplicate
 
 Deduplicate removes every major cell from the argument that matches an earlier cell, resulting in an array with the same rank but possibly a shorter length. It might also be described as returning the unique major cells of the argument, ordered by first occurrence. Deduplicate [Under](under.md) [Reverse](reverse.md) (`⍷⌾⌽`) orders by last occurrence instead.
 
@@ -93,7 +93,7 @@ One way to view this relationship is from the perspective of linear algebra, whe
 
 Applying both Classify and Deduplicate gives an array that has both properties (this isn't the case for all pairs of projections—we need to know that Classify maintains the uniqueness property for Deduplicate and vice-versa). It has no duplicate major cells, *and* it's a list of natural numbers that starts with 0 and never goes up by more than one. Taken together, these are a tight constraint! The first element of the argument has to be 0. The next can't be 0 because it's already appeared, but it can't be more than one higher—it has to be 1. The next can't be 0 or 1, and has to be 2. And so on. So the result is always `↕n` for some `n`. It's possible to determine the length as well, by noting that each function preserves the number of unique major cells in its argument. Classify does this because distinct numbers in the output correspond exactly to distinct major cells in the input; Deduplicate does this because it only removes duplicate cells, not distinct ones. So the final result is `↕n`, where `n` is the number of unique major cells in the argument.
 
-### Mark Firsts
+## Mark Firsts
 
 Mark Firsts (`∊`) is the simplest numeric self-search function: it returns `0` for any major cell of the argument that is a duplicate of an earlier cell and `1` for a major cell that's the first with its value. To implement [Deduplicate](#deduplicate) in terms of Mark Firsts, just [filter](replicate.md) out the duplicates with `∊⊸/`.
 
@@ -109,7 +109,7 @@ What about marking the elements that appear exactly once? There's a trick for th
 
 Remember that you don't have to apply the result of Mark Firsts to the same array you got it from! For example, it might be useful in a database application to find unique values in a particular column but use these to filter the entire table, or one other column.
 
-### Occurrence Count
+## Occurrence Count
 
 Occurrence Count (`⊒`) is a somewhat more sophisticated take on the idea behind Mark Firsts: instead of just testing whether a cell is a duplicate, it returns a number indicating how many previous cells match it. This means that Mark Firsts can be implemented with `0=⊒`.
 
