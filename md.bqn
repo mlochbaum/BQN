@@ -250,7 +250,7 @@ Markdown ← {filename𝕊𝕩:
       notIndent ← (0⊸=∨4⊸<) CountRuns ¬m∧lf=code
       parts ← code ⊔˜ 1 -˜ (notIndent∧¬break) × 1+`break
       # Evaluate
-      E ← ⊣◶⟨"",(⥊∾⟜lf⎉1)∘Fmt⊢⟩⟜CodeExec
+      E ← ⊣◶⟨"",(⥊∾⟜lf⎉1)∘•Fmt⊢⟩⟜CodeExec
       ShowErr ← lf∾˜"span class='Error'"Html"Error: "∾(∧`lf⊸≠)⊸/⎊•Repr
       r ← show ('#'≠⊑∘⊢)◶⟨"",E⎊(ShowErr∘•CurrentError⊢)⟩⍟(0<≠∘⊢)¨ parts
 
@@ -697,12 +697,6 @@ GetMultiHighlights ← {
   adj ← div ((1-˜⍋⟜pos) ⊏ -˜)○/ mask > 𝕨
   ⟨c, pos + adj⟩
 }
-
-
-################################
-# Format an array to a string
-tn ← "*"⊸(∾∾⊣)¨"array"‿"function"‿"1-modifier"‿"2-modifier"‿"namespace"
-fmt ← ⊑ (•Import "src/f.bqn"){𝔽} ⟨•Type,•Decompose,•Glyph⎊(tn⊑˜2-˜•Type),"0"⍟("¯0"⊸≡)•Repr⟩
 
 
 ################################
