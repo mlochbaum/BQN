@@ -10,6 +10,8 @@ Editor plugins and other tools for allowing BQN input are in [this folder](https
 
 Both the online REPL and the REPLXX build of CBQN (`make REPLXX=1`) support backslash input with no configuration required.
 
+[Beacon](https://github.com/x86y/beacon) is **a dedicated IDE** designed for BQN.
+
 [This bookmarklet](https://abrudz.github.io/lb/bqn) enables BQN input in any webpage in your **browser**.
 
 [This userscript](https://gist.github.com/dzaima/35ca0ce12b5e215a62460f00e693984f) highlights BQN code on **GitHub**. The highlighting library [prism.js](https://prismjs.com/) also supports BQN.
