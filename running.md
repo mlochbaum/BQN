@@ -13,7 +13,7 @@ Third-party packages are available for Windows and a few Linux distributions. Be
 | Nix              | `cbqn`                                       | Source/Binary
 | Guix             | `cbqn`                                       | Source/Binary
 
-For tools related to running BQN, see the [editor plugins](editors/README.md) and [fonts page](https://mlochbaum.github.io/BQN/fonts.html).
+For tools related to running BQN, see the [editor plugins](editors/README.md) and [fonts page](https://mlochbaum.github.io/BQN/fonts.html). And [Beacon](https://github.com/x86y/beacon) is an IDE just for BQN!
 
 All these websites run BQN, in your browser unless marked with "server-side" (JS is native Javascript; the Wasm engine is WebAssembly compiled from CBQN).
 
