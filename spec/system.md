@@ -16,6 +16,7 @@ All system values described in the BQN specification are optional: an implementa
 | [Input and output](#input-and-output) ([terminal](#terminal-io)) | `•Out`, `•Show`, `•Repr`, `•Fmt`, …, `•term`
 | [Interface](#interface) ([FFI](#foreign-function-interface)) | `•SH`, `•FFI`
 | [Operation properties](#operation-properties) | `•Type`, `•Glyph`, `•Source`, `•Decompose`
+| [Namespaces](#namespaces) | `•ns`
 | [Time](#time) | `•UnixTime`, `•Delay`, `•_timed`, …
 | [Math](#math) | `•math`
 | [Random generation](#random-generation) | `•rand`, `•MakeRand`
@@ -267,6 +268,18 @@ Each function in this section is monadic.
 | 3-train       |  3   | `f,g,h`
 | 1-mod         |  4   | `𝕗,𝕣`
 | 2-mod         |  5   | `𝕗,𝕣,𝕘`
+
+## Namespaces
+
+The system namespace `•ns` contains functionality for working with namespaces.
+
+| Name   | Summary
+|--------|-------------------------------
+| `Keys` | List of normalized field names in `𝕩`
+| `Has`  | `1` if `𝕨` contains a field named `𝕩` and `0` otherwise
+| `Get`  | Current value in `𝕨` of the field named `𝕩`
+
+`Keys` returns field names as strings, normalized in the sense that all underscores are removed and alphabetic characters are converted to lowercase. The order of the names is unspecified. `Has` and `Get` accept names with any spelling. `Get` causes an error if `𝕩` isn't the name of a field of `𝕨`, while `Has` causes an error only if it isn't a string, returning `0` for any string that isn't a valid name.
 
 ## Time
 

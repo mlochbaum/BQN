@@ -41,6 +41,10 @@
 <td><code><span class='Function'>•Type</span></code>, <code><span class='Function'>•Glyph</span></code>, <code><span class='Function'>•Source</span></code>, <code><span class='Function'>•Decompose</span></code></td>
 </tr>
 <tr>
+<td><a href="#namespaces">Namespaces</a></td>
+<td><code><span class='Value'>•ns</span></code></td>
+</tr>
+<tr>
 <td><a href="#time">Time</a></td>
 <td><code><span class='Function'>•UnixTime</span></code>, <code><span class='Function'>•Delay</span></code>, <code><span class='Modifier'>•_timed</span></code>, …</td>
 </tr>
@@ -569,6 +573,31 @@
 </tr>
 </tbody>
 </table>
+<h2 id="namespaces"><a class="header" href="#namespaces">Namespaces</a></h2>
+<p>The system namespace <code><span class='Value'>•ns</span></code> contains functionality for working with namespaces.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>Keys</span></code></td>
+<td>List of normalized field names in <code><span class='Value'>𝕩</span></code></td>
+</tr>
+<tr>
+<td><code><span class='Function'>Has</span></code></td>
+<td><code><span class='Number'>1</span></code> if <code><span class='Value'>𝕨</span></code> contains a field named <code><span class='Value'>𝕩</span></code> and <code><span class='Number'>0</span></code> otherwise</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Get</span></code></td>
+<td>Current value in <code><span class='Value'>𝕨</span></code> of the field named <code><span class='Value'>𝕩</span></code></td>
+</tr>
+</tbody>
+</table>
+<p><code><span class='Function'>Keys</span></code> returns field names as strings, normalized in the sense that all underscores are removed and alphabetic characters are converted to lowercase. The order of the names is unspecified. <code><span class='Function'>Has</span></code> and <code><span class='Function'>Get</span></code> accept names with any spelling. <code><span class='Function'>Get</span></code> causes an error if <code><span class='Value'>𝕩</span></code> isn't the name of a field of <code><span class='Value'>𝕨</span></code>, while <code><span class='Function'>Has</span></code> causes an error only if it isn't a string, returning <code><span class='Number'>0</span></code> for any string that isn't a valid name.</p>
 <h2 id="time"><a class="header" href="#time">Time</a></h2>
 <table>
 <thead>
