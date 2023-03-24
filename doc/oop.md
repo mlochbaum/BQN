@@ -107,20 +107,17 @@ It's also possible to copy several variables and only export some of them, with 
 
 ## Self-reference
 
-An object's class is given by `𝕊`. Remember, a class is an ordinary BQN function! It might be useful for an object to produce another object of the same class (particularly if it's immutable), and an object might also expose a field `class⇐𝕤` to test whether an object `o` belongs to a class `c` with `o.class = c`.
+An object's class is given by `𝕊` in examples like `MakeStack` above. Remember, a class is an ordinary BQN function! It might be useful for an object to produce another object of the same class (particularly if it's immutable), and an object might also expose a field `class⇐𝕤` to test whether an object `o` belongs to a class `c` with `o.class = c`.
 
-It's not currently possible for an object to know its own value without some outside help, such as a special constructor:
+For an object to know its own value it needs some outside help, such as a special constructor:
 
-    IntrospectiveClass ← { 𝕊 init:
-      obj ← {
-        This ⇐ { this↩𝕩 }
-        # Now the actual object initialization
-        value ⇐ init
-      }
-      obj.This obj
+    IntrospectiveClass ← {𝕩.This 𝕩}∘{
+      This ⇐ { this↩𝕩 }
+      # Now the object definition as usual
+      value ⇐ 𝕩
     }
 
-The two levels of braces and inability to use `𝕩` in initialization is kind of ugly. It would be possible for BQN to define a system value `•this` that just gets the namespace's value. It would work only at the top level, so it would have to be assigned (`this←•this`) in order to use it in functions. This means it's always used before the namespace is done being defined, so a drawback is that it introduces the possibility that an object used in a program has undefined fields. Currently a namespace can only be created with all fields set: a block body doesn't have any sort of control flow other than the early exit `?`, so it can only finish by executing every statement, including every field definition, in order.
+Why not a system value `•this` that just gets the current namespace's value? First, the concept of the "current namespace" is a little fuzzy; above `this` uses lexical scope, which system values normally don't have access to. Also, if `•this` is used before the namespace is done being defined, it could be an object with undefined fields, something that doesn't exist in BQN now (a block body doesn't have any sort of control flow other than the early exit `?`, so it can only finish by executing every statement, and a namespace is only available once its block returns). So setting `this` at the end seems to be a better match for BQN's namespace semantics.
 
 ## Class members
 
