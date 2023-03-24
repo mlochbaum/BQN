@@ -111,15 +111,16 @@ An object's class is given by `𝕊`. Remember, a class is an ordinary BQN funct
 
 It's not currently possible for an object to know its own value without some outside help, such as a special constructor:
 
-    IntrospectiveClass ← {𝕤
+    IntrospectiveClass ← { 𝕊 init:
       obj ← {
-        this⇐@
-        SetThis ⇐ { !this≡@ ⋄ this↩𝕩 }
+        This ⇐ { this↩𝕩 }
+        # Now the actual object initialization
+        value ⇐ init
       }
-      obj.SetThis obj
+      obj.This obj
     }
 
-This is a pretty clunky solution, and exports a useless method `SetThis` (which gives an error if it's ever called). It would be possible for BQN to define a system value `•this` that just gets the namespace's value. It would work only at the top level, so it would have to be assigned (`this←•this`) in order to use it in functions. This means it's always used before the namespace is done being defined, so a drawback is that it introduces the possibility that an object used in a program has undefined fields. Currently a namespace can only be created with all fields set: a block body doesn't have any sort of control flow other than the early exit `?`, so it can only finish by executing every statement, including every field definition, in order.
+The two levels of braces and inability to use `𝕩` in initialization is kind of ugly. It would be possible for BQN to define a system value `•this` that just gets the namespace's value. It would work only at the top level, so it would have to be assigned (`this←•this`) in order to use it in functions. This means it's always used before the namespace is done being defined, so a drawback is that it introduces the possibility that an object used in a program has undefined fields. Currently a namespace can only be created with all fields set: a block body doesn't have any sort of control flow other than the early exit `?`, so it can only finish by executing every statement, including every field definition, in order.
 
 ## Class members
 
