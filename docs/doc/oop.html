@@ -142,12 +142,12 @@
 <h2 id="self-reference"><a class="header" href="#self-reference">Self-reference</a></h2>
 <p>An object's class is given by <code><span class='Function'>𝕊</span></code>. Remember, a class is an ordinary BQN function! It might be useful for an object to produce another object of the same class (particularly if it's immutable), and an object might also expose a field <code><span class='Value'>class</span><span class='Gets'>⇐</span><span class='Value'>𝕤</span></code> to test whether an object <code><span class='Value'>o</span></code> belongs to a class <code><span class='Value'>c</span></code> with <code><span class='Value'>o.class</span> <span class='Function'>=</span> <span class='Value'>c</span></code>.</p>
 <p>It's not currently possible for an object to know its own value without some outside help, such as a special constructor:</p>
-<pre><span class='Function'>IntrospectiveClass</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
+<pre><span class='Function'>IntrospectiveClass</span> <span class='Gets'>←</span> <span class='Brace'>{</span><span class='Value'>𝕤</span>
   <span class='Value'>obj</span> <span class='Gets'>←</span> <span class='Brace'>{</span>
     <span class='Value'>this</span><span class='Gets'>⇐</span><span class='String'>@</span>
     <span class='Function'>SetThis</span> <span class='Gets'>⇐</span> <span class='Brace'>{</span> <span class='Function'>!</span><span class='Value'>this</span><span class='Function'>≡</span><span class='String'>@</span> <span class='Separator'>⋄</span> <span class='Value'>this</span><span class='Gets'>↩</span><span class='Value'>𝕩</span> <span class='Brace'>}</span>
   <span class='Brace'>}</span>
-  <span class='Value'>obj.setThis</span> <span class='Value'>obj</span>
+  <span class='Value'>obj.</span><span class='Function'>SetThis</span> <span class='Value'>obj</span>
 <span class='Brace'>}</span>
 </pre>
 <p>This is a pretty clunky solution, and exports a useless method <code><span class='Function'>SetThis</span></code> (which gives an error if it's ever called). It would be possible for BQN to define a system value <code><span class='Value'>•this</span></code> that just gets the namespace's value. It would work only at the top level, so it would have to be assigned (<code><span class='Value'>this</span><span class='Gets'>←</span><span class='Value'>•this</span></code>) in order to use it in functions. This means it's always used before the namespace is done being defined, so a drawback is that it introduces the possibility that an object used in a program has undefined fields. Currently a namespace can only be created with all fields set: a block body doesn't have any sort of control flow other than the early exit <code><span class='Head'>?</span></code>, so it can only finish by executing every statement, including every field definition, in order.</p>
