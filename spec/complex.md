@@ -12,4 +12,4 @@ The [numeric literal](literal.md) notation is extended with the character `i`, w
 
 Basic arithmetic functions `+-×÷` are extended to complex numbers. A monadic case for the function `+` is added, which returns the conjugate argument: a number with real part equal to the real part of `𝕩` and imaginary part negated relative to `𝕩`.
 
-The primitive function `⍳` is added: the character `⍳` forms a primitive function [token](token.md), and its value is the function `{𝕨⊢⊘+0j1×𝕩}`. This function multiplies `𝕩` by *i*, then adds `𝕨` if given.
+The primitive function `⍳` is added: the character `⍳` forms a primitive function [token](token.md), and its value is the function `{𝕨⊢⊘+0i1×𝕩}`. This function multiplies `𝕩` by *i*, then adds `𝕨` if given.
