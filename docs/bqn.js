@@ -259,7 +259,11 @@ let divide = (x,w) => {
 let power = (x,w) => {
   if (isnum(x)) {
     if (!has(w)) return Math.exp(x);
-    if (isnum(w)) return Math.pow(w===0?0:w,x);
+    if (isnum(w)) {
+      // JS is incompatible with IEEE; go with IEEE
+      if (!isFinite(x) && Math.abs(w)===1) return w===-1 && x!=x ? x : 1;
+      else return Math.pow(w===0?0:w,x);
+    }
   }
   throw Error("⋆: Arguments must be numbers");
 }
