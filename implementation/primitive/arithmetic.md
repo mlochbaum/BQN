@@ -23,19 +23,19 @@ A function of an atom and a boolean array, or a monadic function on a boolean ar
 
 Several cases where either one argument is an atom, or both arguments match, have a trivial result. Either the result value is constant, or it matches the argument.
 
-| Constant   | Constant  |  Identity
-|------------|-----------|-----------
-|            |           | `a+0`
-| `a-a`      |           | `a-0`
-| `a¬a`      |           | `a¬1`
-|            | `a×0`\*   | `a×1`
-|            | `a∨1`     | `a∨0`
-| `a÷a`\*    | `0÷a`\*   | `a÷1`
-|            | `a⋆0`     | `a⋆1`
-|            |           | `¯∞⌊a`, `∞⌈n`
-| `a>a` etc. |           | `a⌊a`, `a⌈a`
+| Constant   | Constant     |  Identity
+|------------|--------------|-----------
+|            |              | `a+0`
+| `a-a`      |              | `a-0`
+| `a¬a`      |              | `a¬1`
+|            | `a×0`\*      | `a×1`
+|            | `a∨1`        | `a∨0`
+| `a÷a`\*    | `0÷a`\*      | `a÷1`
+|            | `a⋆0`, `1⋆a` | `a⋆1`
+|            |              | `¯∞⌊a`, `∞⌈n`
+| `a>a` etc. |              | `a⌊a`, `a⌈a`
 
-None of the constant column entries work for NaNs, except `a⋆0` which really is always 1. Starred entries have some values of `a` that result in NaN instead of the expected constant: `0` for division and `∞` for multiplication. This means that constant-result `÷` always requires checking for NaN while the other entries work for integers without a check.
+None of the constant column entries work for NaNs, except `a⋆0` and `1⋆a` which really are always 1. Starred entries have some values of `a` that result in NaN instead of the expected constant: `0` for division and `∞` for multiplication. This means that constant-result `÷` always requires checking for NaN while the other entries work for integers without a check.
 
 ### Division and modulus
 
