@@ -390,7 +390,7 @@ under←{
   }⍟(>⟜(IsArray 2⊑⊢))
   Expand2 ← {
     xf‿xa‿xi‿xq ← 𝕩
-    E ← { f‿a‿i‿q←𝕩 ⋄ {f‿a‿𝕩‿q _s}⍟(1-IsStruct)⌜⍟(0<≠f) i }
+    E ← { f‿a‿i‿q←𝕩 ⋄ {f‿a‿𝕩‿q _s}⍟(1-IsStruct)⌜⍟(0<≠f) <⍟(1-IsArray) i }
     i ← (E 1 Expand IsStruct◶{xf‿xa‿𝕩‿xq}‿(1⊑Decompose))⌜ xi
     ⟨⟩‿@‿i‿⟨1,1⟩
   }
