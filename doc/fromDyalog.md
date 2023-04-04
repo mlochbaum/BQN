@@ -164,7 +164,7 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>f@v</code> </td><td colspan=2> <code>f⌾(v⊸⊏)</code>                   </td></tr>
 <tr><td> <code>f⍠B</code> </td><td colspan=2> Uh                                     </td></tr>
 <tr><td> <code>f⌸</code>  </td><td><code>⊐⊔↕∘≠</code></td><td><code>⊐⊸⊔</code>       </td></tr>
-<tr><td> <code>f⌺B</code> </td><td colspan=2> <code>↕</code>                         </td></tr>
+<tr><td> <code>f⌺B</code> </td><td colspan=2> <code>B⊸↕</code>                       </td></tr>
 <tr><td> <code>A⌶</code>  </td><td colspan=2> <code>•Something</code>                </td></tr>
 <tr><td> <code>f&</code>  </td><td colspan=2> Nothing yet                            </td></tr>
 </table>
