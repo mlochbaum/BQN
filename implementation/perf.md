@@ -9,11 +9,11 @@ Anyway, BQN's dick is pretty fast. Compiles its own compiler in 2ms. Builds this
 - Flat lists, particularly integers and characters. CBQN rarely loses to other array languages, and can beat idiomatic C.
 - Multidimensional arrays. CBQN has less optimization, and sometimes falls back to the self-hosted runtime which has implementations using a lot of scalar code. These can be slow, but not pathologically so.
 
-Currently we aim for high performance on a single CPU core, and are focusing on 64-bit x86 and ARM. CBQN doesn't use additional cores or a GPU for acceleration. The Singeli build does use x86 vector instructions up to AVX2 (2013) if present, and has preliminary support for ARM NEON. Singeli is assumed for the discussion here, and without it there are a few more slow cases, particularly comparisons.
+Currently we aim for high performance on a single CPU core, and are focusing on 64-bit x86 and ARM. These both have vector extensions that are always present (SSE2 and NEON respectively); the Singeli build uses these, as well as x86 extensions AVX2 and BMI2 if the architecture specified at compile time includes them. Singeli is assumed for the discussion here, as without it there are some slow cases, particularly comparisons. CBQN doesn't use additional cores or a GPU for acceleration.
 
 ## Performance resources
 
-The spotty optimization coverage means that it's more accurate to say CBQN can be fast, not that it will be fast. Have to learn how to use it. Definitely ask on the forum if you're having performance troubles so you can find some tricks to use or request improvements.
+It's more accurate to say CBQN can be fast, not that it will be fast: it all depends on how you use it. Definitely ask on the forum if you're having performance troubles so you can improve your technique.
 
 There are two measurement tools in the [time](../spec/system.md#time) system values. `•MonoTime` is a high-precision timer for performance measurements; you can take a time before and after some operation or section of a program and subtract them to get a time in seconds (a profiling tool to do this automatically would be nice, but we don't have one). More convenient for small snippets, `•_timed` returns the time to evaluate `𝔽𝕩`, averaging over `𝕨` runs if given. For two-argument functions you can write `w⊸F•_timed x` or `F´•_timed w‿x`.
 
@@ -34,7 +34,7 @@ Array operations are the way to get the most value out of an array language ([ba
 
 I publish BQN benchmarks of array operations in [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html), and also use it to compare against J and Dyalog. I find that in all cases, if BQN is better it's because of fundamental superiority, and if it's worse it's just a case that we're meaning to improve but haven't gotten to yet. Mostly BQN is ahead, even by 2x or more in many cases. Now, I do tend to benchmark things that dzaima or I are actively working on speeding up, but at this point I've gotten to all the list operations that are important for performance. The slow cases remaining are almost all searching and sorting on larger types, 4-byte integers and floats.
 
-We've been mainly working on list operations instead of getting into multi-dimensional stuff. Dyalog is definitely better when making significant use of higher-rank arrays. Not sure about J.
+We're beginning to work on multi-dimensional operations, and have ended up substantially faster than Dyalog at a few things. However, Dyalog's coverage is much broader so it most likely will be faster overall if a lot of arrays of rank 2 or more are used. Similar with J, although I believe it doesn't have quite as many optimizations. K stores all arrays as nested lists, so it can't be as fast on high-rank arrays unless the last axis is long.
 
 ## Faster than C?
 
