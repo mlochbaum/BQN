@@ -145,7 +145,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   "Punctuation : ; ? outside block top level"_err_(G) (1=bt)<gx M bH
   {"Empty statement or expression"_err_(𝕩/0∾G) (4+⊑bB)>𝕩/0∾gx}1⊸«⊸∧1∾gb
   dl←«⊸∨dc←r=4                              # Dot left
-  r-↩(𝕩=⊑bG)>ec←«dc<0≤r+p                   # Role ¯4 for exports: ⊑bG is ⇐
+  r-↩(𝕩=⊑bG)>(»r≤¯2)∨ec←«dc<0≤r+p           # Role ¯4 for exports: ⊑bG is ⇐
   "Invalid assignment or stranding use"_err_(↕≠) ((¯4⊸<∧≤⟜¯2)r)>(ec∨𝕩=2+⊑bG)∧»dc<0≤r
   "Can't use export statement as expression"_err_(G) (0<bt)<g⊏¯4=r
   "Can't use export statement as predicate"_err_(↕≠) (»¯4=r)∧𝕩=pred
