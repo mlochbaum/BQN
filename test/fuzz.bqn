@@ -171,7 +171,15 @@ _testDyFold ← {
   i‿l ← ¯1 (⊑⋈↓) 𝕨 gen.Arith 1 + RandBound 𝕩
   modop {m←𝕩 ⋄ ! i⊸(𝕨_m) _testConsistent_ FlatMatch l }⌜ 𝕗
 }
-testMonScan‿testDyScan ← testMonFold‿testDyFold
+_testMonScan ← {
+  l ← 𝕨 gen.Arith (∨`⌾⌽ 𝕩 ≥ ·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
+  Pad ← (𝕨 gen.Arith 1⌾⊑∘≢∘⊢)⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘⊢)
+  modop {m←𝕩 ⋄ ! 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
+}
+_testDyScan ← {
+  i‿l ← 𝕨⊸gen.Arith¨ 1⊸↓⊸⋈ (∧`𝕩≥·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
+  modop {m←𝕩 ⋄ ! i⊸(𝕨_m) _testConsistent_ FlatMatch l }⌜ 𝕗
+}
 
 _testMonStruct ← { # ⥊≍⌽⍉⊏
   k ← 3|1+ ⌽‿⊏ ⊐ 𝕗
