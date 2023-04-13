@@ -1,0 +1,163 @@
+<head>
+  <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../style.css" rel="stylesheet"/>
+  <title>BQN Tutorial: The Square of Power</title>
+</head>
+<div class="nav">(<a href="https://github.com/mlochbaum/BQN">github</a>) / <a href="../index.html">BQN</a> / <a href="index.html">tutorial</a></div>
+<h1 id="tutorial-the-square-of-power"><a class="header" href="#tutorial-the-square-of-power">Tutorial: The Square of Power</a></h1>
+<p>The square of power will organize your view of algorithms and bring your programming to a more advanced level. Its four representations seem distinct, but are joined by a square helix travelling from the infinite to nothing.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgInRoaXMgaXMgYSBzdHJpbmcgIgoKKCtgJyAnPXMp4oqUcwoKKC8xLcucK2DigbwvMOKIvicgJz1zKeKKlCgnICfiiaBzKS9zCgooLytg4oG8LycgJz1zKeKKlMKvMeKGk3M=">↗️</a><pre>    <span class='Value'>s</span> <span class='Gets'>←</span> <span class='String'>&quot;this is a string &quot;</span>
+
+    <span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='String'>' '</span><span class='Function'>=</span><span class='Value'>s</span><span class='Paren'>)</span><span class='Function'>⊔</span><span class='Value'>s</span>
+⟨ "this" " is" " a" " string" " " ⟩
+
+    <span class='Paren'>(</span><span class='Function'>/</span><span class='Number'>1</span><span class='Function'>-</span><span class='Modifier'>˜</span><span class='Function'>+</span><span class='Modifier'>`⁼</span><span class='Function'>/</span><span class='Number'>0</span><span class='Function'>∾</span><span class='String'>' '</span><span class='Function'>=</span><span class='Value'>s</span><span class='Paren'>)</span><span class='Function'>⊔</span><span class='Paren'>(</span><span class='String'>' '</span><span class='Function'>≠</span><span class='Value'>s</span><span class='Paren'>)</span><span class='Function'>/</span><span class='Value'>s</span>
+⟨ "this" "is" "a" "string" ⟩
+
+    <span class='Paren'>(</span><span class='Function'>/+</span><span class='Modifier'>`⁼</span><span class='Function'>/</span><span class='String'>' '</span><span class='Function'>=</span><span class='Value'>s</span><span class='Paren'>)</span><span class='Function'>⊔</span><span class='Number'>¯1</span><span class='Function'>↓</span><span class='Value'>s</span>
+⟨ "this" " is" " a" " string" ⟩
+</pre>
+<p>Examine a related puzzle. We need to know the number of <code><span class='String'>'i'</span></code> characters in each word. One way is <code><span class='Function'>+</span><span class='Modifier'>´¨</span><span class='String'>'i'</span><span class='Function'>=</span><span class='Value'>w</span></code>, where <code><span class='Value'>w</span></code> is the list of words. But there's no need to form the list of words. As a first step, filtering both arguments can group the <code><span class='String'>'i'</span></code> characters only, not words.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgInRoaXMgaXMgYSBzdHJpbmcgIgooK2BzPScgJykg4oqU4peLKChzPSdpJyniirgvKSBz">↗️</a><pre>    <span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span><span class='Paren'>)</span> <span class='Function'>⊔</span><span class='Modifier2'>○</span><span class='Paren'>((</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span><span class='Paren'>)</span><span class='Modifier2'>⊸</span><span class='Function'>/</span><span class='Paren'>)</span> <span class='Value'>s</span>
+⟨ "i" "i" ⟨⟩ "i" ⟩
+</pre>
+<p>The answer is the count of each group. The characters being grouped are irrelevant, which means monadic Group gives the answer too. More importantly, <code><span class='Function'>≠</span><span class='Modifier'>¨</span><span class='Function'>⊔</span></code> <a href="../doc/replicate.html#inverse">is equivalent</a> to <code><span class='Function'>/</span><span class='Modifier'>⁼</span></code>.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgInRoaXMgaXMgYSBzdHJpbmcgIgriiaDCqOKKlCAocz0naScpLytgcz0nICcKCi/igbwocz0naScpLytgcz0nICc=">↗️</a><pre>    <span class='Function'>≠</span><span class='Modifier'>¨</span><span class='Function'>⊔</span> <span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span>
+⟨ 1 1 0 1 ⟩
+
+    <span class='Function'>/</span><span class='Modifier'>⁼</span><span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span>
+⟨ 1 1 0 1 ⟩
+</pre>
+<p>So <code><span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span></code> tells which word each <code><span class='String'>'i'</span></code> is in, and <code><span class='Function'>/</span><span class='Modifier'>⁼</span></code> counts them. Another solution begins with <code><span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span></code>, to tell how many <code><span class='String'>'i'</span></code>s come before each space in total. The answer is not this total, but the number of <code><span class='String'>'i'</span></code>s <em>between</em> the spaces, whose prefix sum <code><span class='Function'>+</span><span class='Modifier'>`</span></code> gives the total. Undoing the sum takes care of this. But the number of eyes between time remains elusive.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgInRoaXMgaXMgYSBzdHJpbmcgIgorYOKBvChzPScgJykvK2BzPSdpJw==">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>`⁼</span><span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span>
+⟨ 1 1 0 1 ⟩
+</pre>
+<p>The two solutions are very similar.</p>
+<pre> <span class='Function'>/</span><span class='Modifier'>⁼</span><span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span>
+<span class='Function'>+</span><span class='Modifier'>`⁼</span><span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span>
+</pre>
+<p>So we have <code><span class='Paren'>(</span><span class='Function'>/</span><span class='Modifier'>⁼</span><span class='Value'>a</span><span class='Paren'>)</span><span class='Function'>≡</span><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>`⁼</span><span class='Value'>b</span><span class='Paren'>)</span></code>, which also implies <code><span class='Value'>a</span><span class='Function'>≡</span><span class='Paren'>(</span><span class='Function'>/+</span><span class='Modifier'>`⁼</span><span class='Value'>b</span><span class='Paren'>)</span></code> and <code><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>/</span><span class='Modifier'>⁼</span><span class='Value'>a</span><span class='Paren'>)</span><span class='Function'>≡</span><span class='Value'>b</span></code>. If we know how many spaces come before each i, we can use these relations to get the number of i's before each space.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgInRoaXMgaXMgYSBzdHJpbmcgIgriiqIgd2kg4oaQIChzPSdpJykvK2BzPScgJyAgIyBXb3JkIGluZGV4IG9mIGVhY2ggaQoKK2Av4oG8IHdpCgoocz0nICcpLytgcz0naSc=">↗️</a><pre>    <span class='Function'>⊢</span> <span class='Value'>wi</span> <span class='Gets'>←</span> <span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span>  <span class='Comment'># Word index of each i
+</span>⟨ 0 1 3 ⟩
+
+    <span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>/</span><span class='Modifier'>⁼</span> <span class='Value'>wi</span>
+⟨ 1 2 2 3 ⟩
+
+    <span class='Paren'>(</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>' '</span><span class='Paren'>)</span><span class='Function'>/+</span><span class='Modifier'>`</span><span class='Value'>s</span><span class='Function'>=</span><span class='String'>'i'</span>
+⟨ 1 2 2 3 ⟩
+</pre>
+<p>How can there be two different ways to translate back and forth, when the situation is completely symmetric by swapping the i and space characters? What if we use the same translator again, and not its inverse?</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgInRoaXMgaXMgYSBzdHJpbmcgIgriiqIgd2kg4oaQIChzPSdpJykvK2BzPScgJyAgIyBXb3JkIGluZGV4IG9mIGVhY2ggaQorYC/igbwrYC/igbwgd2k=">↗️</a><pre>    <span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>/</span><span class='Modifier'>⁼</span><span class='Function'>+</span><span class='Modifier'>`</span><span class='Function'>/</span><span class='Modifier'>⁼</span> <span class='Value'>wi</span>
+⟨ 0 1 3 4 ⟩
+</pre>
+<p>A value is added at the end. The loop is saying that if we had a fourth i, which we don't, there would be 4 spaces in front, which I guess would be true if you just added it at the end. Can we go the other way? Does that work?</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=cyDihpAgInRoaXMgaXMgYSBzdHJpbmcgIgriiqIgd2kg4oaQIChzPSdpJykvK2BzPScgJyAgIyBXb3JkIGluZGV4IG9mIGVhY2ggaQovK2Digbwgd2k=">↗️</a><pre>    <span class='Function'>/+</span><span class='Modifier'>`⁼</span> <span class='Value'>wi</span>
+⟨ 1 2 2 ⟩
+</pre>
+<p>Now it drops a value. Weird.</p>
+<h2 id="square-helix-proves-1-infinity-is-4"><a class="header" href="#square-helix-proves-1-infinity-is-4">Square helix proves 1 infinity is 4</a></h2>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=NOKAvzTipYooMTbipYrin6gvLC3in5zCu+KfqSko4oqiwrt78J2VjvCdlal9y5xgy5wpPDDigL8w4oC/MuKAvzDigL804oC/MQ==">↗️</a><pre>    <span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Function'>⥊</span><span class='Paren'>(</span><span class='Number'>16</span><span class='Function'>⥊</span><span class='Bracket'>⟨</span><span class='Function'>/</span><span class='Separator'>,</span><span class='Function'>-</span><span class='Modifier2'>⟜</span><span class='Function'>»</span><span class='Bracket'>⟩</span><span class='Paren'>)(</span><span class='Function'>⊢»</span><span class='Brace'>{</span><span class='Function'>𝕎</span><span class='Value'>𝕩</span><span class='Brace'>}</span><span class='Modifier'>˜`˜</span><span class='Paren'>)</span><span class='Function'>&lt;</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>2</span><span class='Ligature'>‿</span><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>4</span><span class='Ligature'>‿</span><span class='Number'>1</span>
+┌─                                                                   
+╵ ⟨ 0 0 2 0 4 1 ⟩ ⟨ 2 2 4 4 4 4 5 ⟩ ⟨ 2 0 2 0 0 0 1 ⟩ ⟨ 0 0 2 2 6 ⟩  
+  ⟨ 0 0 2 0 4 ⟩   ⟨ 2 2 4 4 4 4 ⟩   ⟨ 2 0 2 0 0 0 ⟩   ⟨ 0 0 2 2 ⟩    
+  ⟨ 0 0 2 0 ⟩     ⟨ 2 2 ⟩           ⟨ 2 0 ⟩           ⟨ 0 0 ⟩        
+  ⟨ 0 0 ⟩         ⟨⟩                ⟨⟩                ⟨⟩             
+                                                                    ┘
+</pre>
+<svg viewBox='-280 -220 560 440'>
+  <g font-size='18px' fill='currentColor' stroke-linecap='round' text-anchor='middle' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-200' y='-200' width='400' height='400'/>
+    <g class='bluegreen' stroke-width='2' style='fill:none' opacity='0.7'><path class='M-4 -10l-4 10l4 10M4 -10l4 10l-4 10' style='fill:none' d='M-4 -10l-4 10l4 10M4 -10l4 10l-4 10'/></g>
+    <g class='yellow' stroke-width='2'>
+      <line x1='143' y1='143' x2='-143' y2='143'/>
+      <line x1='-143' y1='143' x2='-143' y2='-143'/>
+      <line x1='-143' y1='-143' x2='143' y2='-143'/>
+      <line x1='143' y1='-143' x2='103' y2='103'/>
+      <line x1='103' y1='103' x2='-103' y2='103'/>
+      <line x1='-103' y1='103' x2='-103' y2='-103'/>
+      <line x1='-103' y1='-103' x2='103' y2='-103'/>
+      <line x1='103' y1='-103' x2='83' y2='83'/>
+      <line x1='83' y1='83' x2='-83' y2='83'/>
+      <line x1='-83' y1='83' x2='-43' y2='-43'/>
+      <line x1='-43' y1='-43' x2='43' y2='-43'/>
+      <line x1='43' y1='-43' x2='63' y2='63'/>
+      <line x1='63' y1='63' x2='-63' y2='63'/>
+      <line x1='-63' y1='63' x2='-23' y2='-23'/>
+      <line x1='-23' y1='-23' x2='23' y2='-23'/>
+      <line x1='23' y1='-23' x2='3' y2='3'/>
+      <line x1='3' y1='3' x2='-3' y2='3'/>
+      <line x1='-3' y1='3' x2='-3' y2='-3'/>
+      <line x1='-3' y1='-3' x2='3' y2='-3'/>
+      <line x1='3' y1='-3' x2='3' y2='3'/>
+    </g>
+    <text dy='0.32em' x='16' y='16'>1</text>
+    <text dy='0.32em' x='36' y='36'>1</text>
+    <text dy='0.32em' x='56' y='56'>1</text>
+    <text dy='0.32em' x='76' y='76'>2</text>
+    <text dy='0.32em' x='96' y='96'>5</text>
+    <text dy='0.32em' x='116' y='116'>7</text>
+    <text dy='0.32em' x='136' y='136'>7</text>
+    <text dy='0.32em' x='-16' y='16'>1</text>
+    <text dy='0.32em' x='-36' y='36'>0</text>
+    <text dy='0.32em' x='-56' y='56'>0</text>
+    <text dy='0.32em' x='-76' y='76'>1</text>
+    <text dy='0.32em' x='-96' y='96'>3</text>
+    <text dy='0.32em' x='-116' y='116'>2</text>
+    <text dy='0.32em' x='-136' y='136'>0</text>
+    <text dy='0.32em' x='-16' y='-16'>0</text>
+    <text dy='0.32em' x='-36' y='-36'>3</text>
+    <text dy='0.32em' x='-56' y='-56'>4</text>
+    <text dy='0.32em' x='-76' y='-76'>4</text>
+    <text dy='0.32em' x='-96' y='-96'>4</text>
+    <text dy='0.32em' x='-116' y='-116'>5</text>
+    <text dy='0.32em' x='-136' y='-136'>5</text>
+    <text dy='0.32em' x='16' y='-16'>0</text>
+    <text dy='0.32em' x='36' y='-36'>3</text>
+    <text dy='0.32em' x='56' y='-56'>1</text>
+    <text dy='0.32em' x='76' y='-76'>0</text>
+    <text dy='0.32em' x='96' y='-96'>0</text>
+    <text dy='0.32em' x='116' y='-116'>1</text>
+    <text dy='0.32em' x='136' y='-136'>0</text>
+    <g font-size='22px'>
+      <text dy='0.32em' x='0' y='170'><tspan class='Function'>-</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>»</tspan></text>
+      <text dy='0.32em' x='170' y='0'><tspan class='Function'>/</tspan></text>
+      <text dy='0.32em' x='0' y='-170'><tspan class='Function'>-</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>»</tspan></text>
+      <text dy='0.32em' x='-170' y='0'><tspan class='Function'>/</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<svg viewBox='-280 -220 560 440'>
+  <g font-size='18px' fill='currentColor' stroke-linecap='round' text-anchor='middle' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-200' y='-200' width='400' height='400'/>
+    <g stroke-width='3'>
+      <path class='green' style='fill:none' d='M-136 76L-136 -76l-11 18M76 -136L-76 -136l18 -11M136 -76L136 76l11 -18M-76 136L76 136l-18 11'/>
+      <path class='purple' style='fill:none' d='M-124 -76L-124 76l11 -18M-76 -124L76 -124l-18 11M124 76L124 -76l-11 18M76 124L-76 124l18 -11'/>
+    </g>
+    <g font-size='22px'>
+      <text dy='0.32em' x='0' y='160'><tspan class='Function'>+</tspan><tspan class='Modifier'>`</tspan></text>
+      <text dy='0.32em' x='0' y='-160'><tspan class='Function'>+</tspan><tspan class='Modifier'>`</tspan></text>
+      <text dy='0.32em' x='160' y='0'><tspan class='Function'>/</tspan></text>
+      <text dy='0.32em' x='-160' y='0'><tspan class='Function'>/</tspan></text>
+      <text dy='0.32em' x='0' y='100'><tspan class='Function'>-</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>»</tspan></text>
+      <text dy='0.32em' x='0' y='-100'><tspan class='Function'>-</tspan><tspan class='Modifier2'>⟜</tspan><tspan class='Function'>»</tspan></text>
+      <text dy='0.32em' x='100' y='0'><tspan class='Function'>/</tspan><tspan class='Modifier'>⁼</tspan></text>
+      <text dy='0.32em' x='-100' y='0'><tspan class='Function'>/</tspan><tspan class='Modifier'>⁼</tspan></text>
+    </g>
+    <text dy='0.32em' x='-130' y='-106'>0 2 2 3</text>
+    <text dy='0.32em' x='130' y='-106'>0 2 0 1</text>
+    <text dy='0.32em' x='130' y='154'>1 1 3</text>
+    <text dy='0.32em' x='-130' y='154'>1 0 2</text>
+    <g font-family='sans' font-size='16'>
+      <text dy='0.32em' x='-130' y='-154'>Target</text>
+      <text dy='0.32em' x='130' y='-154'>Division</text>
+      <text dy='0.32em' x='130' y='106'>Divider</text>
+      <text dy='0.32em' x='-130' y='106'>Division</text>
+      <text dy='0.32em' x='-130' y='-134'>indices</text>
+      <text dy='0.32em' x='130' y='-134'>lengths</text>
+      <text dy='0.32em' x='130' y='126'>counts</text>
+      <text dy='0.32em' x='-130' y='126'>endpoints</text>
+    </g>
+  </g>
+</svg>
+
