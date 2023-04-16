@@ -56,6 +56,112 @@ All right, how can I so confidently claim that CBQN can—sometimes—be faster 
 
 Small real-world problems can still show a major difference. In my first talk at Dyalog ([video](https://dyalog.tv/Dyalog17/?v=2KnrDmZov4U), [zipped slides](https://www.dyalog.com/uploads/conference/dyalog17/presentations/D08_Moving_Bits_Faster_in_Dyalog_16.zip)), as well as a follow-up next year ([video](https://dyalog.tv/Dyalog18/?v=-6no6N3i9Tg), [zipped slides](https://www.dyalog.com/user-meetings/uploads/conference/dyalog18/presentations/D15_The_Interpretive_Advantage.zip)), I considered the problem of replacing every CRLF line ending in a file with just the second character LF. BQN nails this one, breaking even with C at a little under 200 bytes and hitting 4x C's speed on inputs of a few thousand bytes or more in my testing.
 
+<details><summary>(Benchmark details)</summary>
+
+The benchmark is run with a CRLF every 100 characters on average, placed with a simple LCG for reproducibility. This is just the number I picked in the Dyalog presentation and isn't particularly favorable to BQN, as it only gets an advantage from sparse Replicate at lower densities like 1/1000 and branching C code would be penalized at higher ones like 1/4. C code is also taken from the Dyalog talk. gcc 12.2.1 generates short branching code with the `if`-based function, while clang 15.0.7 converts both functions to branchless and unrolls by a factor of 4. The two are very close in speed with density 1/100, and gcc is slightly faster at lower densities and much slower at high ones.
+
+lineending.bqn:
+
+    cr‿lf ← @+13‿10
+    CRLF_to_LF ← (cr⊸≠ ∨ ·«lf⊸≠)⊸/
+
+    n ← 1e6 ⋄ m ← n÷100
+    r ← 29 ⋄ LCG ← {(1-˜2⋆31)|16807×𝕩}
+    str ← {i←(n-1)|r ⋄ r LCG↩ ⋄ cr⌾(i⊸⊑)lf⌾((i+1)⊸⊑)𝕩}⍟m @+100|↕n
+
+    ls ← ≤⟜n⊸/ ⥊(10⋆2+↕5)×⌜1‿3
+    Disp ← { •Out "ns/elt" ∾˜ ∾ ∾⟜" "¨ ¯7‿8 ↑⟜•Repr¨ 𝕩 }
+    {𝕊l: Disp l ⋈ 1e9×l÷˜ (⌊1e8÷l) CRLF_to_LF•_timed l↑str}¨ ls
+
+lineending.c:
+
+    #include "stdlib.h"
+    #include "stdio.h"
+    #include "time.h"
+
+    #if 0
+    // Branchless
+    __attribute((noinline)) void crlf_to_lf(char* dst, char* src, size_t n) {
+      int was_cr = 0;
+      for (size_t i=0; i<n; i++) {
+        char c = src[i];
+        dst -= (was_cr && c=='\n');
+        dst[i] = c;
+        was_cr = (c=='\r');
+      }
+    }
+    #else
+    __attribute((noinline)) void crlf_to_lf(char* dst, char* src, size_t n) {
+      int was_cr = 0;
+      for (size_t i=0; i<n; i++) {
+        char c = src[i];
+        if (was_cr && c=='\n') dst--;
+        dst[i] = c;
+        was_cr = (c=='\r');
+      }
+    }
+    #endif
+
+    static size_t monoclock(void) {
+      struct timespec ts;
+      clock_gettime(CLOCK_MONOTONIC, &ts);
+      return 1000000000*ts.tv_sec + ts.tv_nsec;
+    }
+
+    int main(int argc, char **argv) {
+      int n = 1000000, m = n/100;
+      char *str = malloc(n*sizeof(char)),
+           *dst = malloc(n*sizeof(char));
+      for (size_t i=0; i<n; i++) str[i] = (char)(i%100);
+      for (size_t i=0, r=29; i<m; i++) {
+        size_t j = r%(n-1); str[j] = '\r'; str[j+1] = '\n';
+        r = (16807*r) % ((1ull<<31)-1);
+      }
+      for (size_t l=100, l0=l; l<=n; l=l==l0?3*l:(l0*=10)) {
+        size_t k = 100000000/l;
+        size_t t = monoclock();
+        for (size_t i=0; i<k; i++) crlf_to_lf(dst, str, l);
+        t = monoclock()-t;
+        printf("%7ld %f ns/elt\n", l, (double)t / (l*k));
+      }
+    }
+
+And the benchmark run, on [Skylake i5-6200U](https://www.intel.com/content/www/us/en/products/sku/88193/intel-core-i56200u-processor-3m-cache-up-to-2-80-ghz/specifications.html):
+
+    $ clang --version
+    clang version 15.0.7
+    Target: x86_64-pc-linux-gnu
+    Thread model: posix
+    InstalledDir: /usr/bin
+
+    $ bqn --version
+    CBQN on commit 37a32eb15aa5b84c6de0ff38e3e6a8bb9deace27
+    built with FFI, singeli native, replxx
+
+    $ clang -O3 -march=native lineending.c && ./a.out 
+        100 0.962381 ns/elt
+        300 0.984179 ns/elt
+       1000 0.954827 ns/elt
+       3000 0.945883 ns/elt
+      10000 0.940789 ns/elt
+      30000 0.942023 ns/elt
+     100000 0.944624 ns/elt
+     300000 0.946744 ns/elt
+    1000000 0.949474 ns/elt
+
+    $ bqn lineending.bqn 
+        100 1.704639 ns/elt
+        300 0.722982 ns/elt
+       1000 0.375611 ns/elt
+       3000 0.266764 ns/elt
+      10000 0.246397 ns/elt
+      30000 0.232525 ns/elt
+     100000 0.233962 ns/elt
+     300000 0.249174 ns/elt
+    1000000 0.279573 ns/elt
+
+</details>
+
 Larger problems are more mixed. Our best real-world comparison on a comparable problem is the [compiler benchmark](bootbench.md), which showed a 35% advantage for the BQN implementation. [Here](codfns.md#is-it-a-good-idea) I described compiling as being intermediate in terms of how good it is for array programming. Naturally array-oriented tasks like data crunching can be better, although C can auto-vectorize simpler ones. And as array programming is a limited programming, there's no guarantee a problem will fit. If you have to use sequential code for a significant part of the program, BQN will end up a lot slower.
 
 Another test case is JSON parsing. While I haven't comprehensively benchmarked [json.bqn](https://github.com/mlochbaum/bqn-libs/blob/master/primes.bqn), it runs at 20 to 50 MB/s for typical structures, which is competitive with some C parsers but well short of more optimized efforts like RapidJSON or simdjson.
