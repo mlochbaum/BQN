@@ -20,6 +20,8 @@ The major benefit of transposing with kernels is to combine multiple reads that 
 
 A matrix in SIMD registers can be transposed with unpack instructions in a [butterfly](https://en.wikipedia.org/wiki/Butterfly_diagram) pattern. This takes `k` layers for a `2⋆k` by `2⋆k` matrix, where each layer pairs up all registers. So the asymptotic cost for `n` elements is linear times an extra factor of `4⋆⁼n`.
 
+Sizes that aren't an even multiple of the kernel side length can be handled either by performing a strided scalar transpose on the leftover bit, or by overlapping kernels. I've found that the scalar transpose is slow enough that it only makes sense with a single leftover row or column.
+
 ### Interleaving
 
 A single fixed-size kernel breaks down when one axis is smaller than the kernel length. Handling these cases well calls for a different strategy that I call interleaving or uninterleaving, depending on orientation. Interleaving can transpose a few long rows into a long matrix with short rows, while uninterleaving goes the other way. Generally, an approach that works for one can be run backwards to do the other. The differences between interleaving and a general kernel are that writes (or reads for uninterleaving) are entirely contiguous, and that the two subarray dimensions aren't the same. One dimension is forced by the matrix shape, and the other should be chosen as large as possible while fitting in a register. Or multiple registers, if you're brave enough. Alignment is a significant annoyance here, unless the smaller axis length is a power of two.
@@ -44,7 +46,13 @@ This is rather hard to fix, and ad-hoc approaches (including supposedly cache-ef
 
 ## Arbitrary reordering
 
-Moving lots of axes around quickly gets hard to think about. Here's what I've found so far. Most of these methods work in some way for repeated axis indices (that is, taking diagonals) too.
+Moving lots of axes around quickly gets hard to think about. Here's what I've found so far. Most of these methods work in some way for repeated axis indices (that is, merging axes by taking diagonals) too.
+
+### The outer loop
+
+Unlike a 2D transpose, the basic implementation of an arbitrary reordering is not so obvious. It "should" be a loop with a variable amount of nesting. However it's written, actually looping is not a competitive strategy. But it's still needed, because the fast strategies don't handle the entire transpose: they're base cases, that take up bottom few result axes.
+
+The easy and non-recursive way to reorder axes is with a result index vector: increment it at each step and adjust the argument position accordingly. A base case that takes up multiple axes just means the loop should only go over the first few result axes instead of all of them. Because incrementing an index is slow, it might also make sense to break off a level of looping at the bottom and implement it with a direct for loop.
 
 ### Axis simplification
 
@@ -54,26 +62,24 @@ Sometimes the transpose isn't as complicated as it appears. The following are us
 - Two axes that begin and end next to each other can be treated as one larger axis.
 - Axes at the end that don't change can be absorbed into a total "element size".
 
+An efficient way to apply these rules is to compute for each result axis the length and corresponding argument stride—these two lists fully describe the transpose. To get a simplified length and stride, traverse these backwards. Skip any length-1 axes, and combine an axis with the one below if its stride is equal to the length-times-stride of that axis. This stride makes it so moving one step on the higher axis is equivalent to moving the full length along the lower one. This method works fine with merged axes, which are just unusual strides.
+
 Particularly after dropping length-1 axes, some transposes might get down to 1 or 0 axes, which means they're no-ops.
 
 ### The bottom line
 
 When there's a large enough fixed axis at the bottom, most of the work of transpose is just moving large chunks of data. If these moves are done with memcpy or similar, it doesn't matter what the structure around them is, as the limiting factor is memory bandwidth.
 
-A similar principle applies if, for example, the last *two* axes switch places, but stay at the end, provided their product is large enough. Then the transpose is a bunch of 2D transposes. If each of these is done efficiently, then the outer structure can be anything.
+A similar principle applies if, for example, the last *two* axes switch places, but stay at the end, provided their product is large enough. Then the transpose is a bunch of 2D transposes. If each of these is done efficiently, then the outer structure can be anything. Less obviously, a strided 2D transpose (that is, one that has side lengths and argument/result strides specified independently) can be used any time the last axis changes. Set the argument stride to the stride of whichever axis turns into the last result axis, and the result stride to the stride of whichever axis comes from the last argument axis. This does require the last argument axis not to be merged with any other axis, or equivalently for there to be some result axis with stride 1.
 
-### Decomposition
-
-Before spending a tremendous amount of effort on optimizing strange transpose arrangements it's probably worth looking into transposing multiple times instead. I don't know whether this can beat a single-pass method in any case, but it's certainly simpler a lot of the time. But finding an algorithm which will make good decompositions can be pretty hard still.
-
-Dyalog splits a general boolean transposes into an axis rotation, which swaps two groups of axes and thus works like a matrix transpose, and a second transpose that fixes the last axis. Since length-1 axes have been eliminated, that last transpose works with at least 2 bits at a time, so the worst case is *slightly* better than moving single bits around but still not great.
-
-### Recursion
-
-Unlike a 2D transpose, the basic implementation of an arbitrary reordering is not so obvious. It "should" be a loop with a variable amount of nesting. Of course, you could get rid of this nesting by working with index vectors, but that's very slow. The way Dyalog handles it is with a recursive function that does a layer of looping. Inside the loop it either calls itself or a base case, which is passed by a function pointer for flexibility. There are actually two loops, one that does one axis and one that does two at once. The single-axis version is only called at the top level in case there's an axis left over, so most of the work is done in this double-loop case.
-
-Of course larger loops are possible as well. But most of the time it's really the base case that's important. The base case also handles two axes most of the time, but can incorporate all the 2D optimizations like kernels.
+As a result, any axis reordering (without merged axes) where the last argument and last result axis are both long can be performed quickly. If these axes are the same, use memcpy, and if not, use strided 2D transposes. It's short axes that are an issue.
 
 ### Indices
 
-One thing I noticed when working with BQN is that CBQN's dyadic `⍉` sometimes beat Dyalog's, despite using the BQN runtime instead of a native implementation. The runtime just constructs all the (ravel) indices for the output with a big addition table `+⌜´`, then selects. I think this is actually a good strategy for handling trailing axes if there are a lot of small ones. Construct the index table for the bottom few axes of the result—which don't have to correspond to the bottom axes of the argument, even though for cache reasons it'd be nice if they did. Then the base case for tranpose is simply selecting using these axes.
+One thing I noticed when working with BQN is that CBQN's dyadic `⍉` sometimes beat Dyalog's, despite using the BQN runtime instead of a native implementation. The runtime just constructs all the (ravel) indices for the output with a big addition table `+⌜´`, then selects. I think this is actually a good catch-all strategy for handling trailing axes in case they're small. Construct the index table for the bottom few axes of the result—which don't have to correspond to the bottom axes of the argument, even though for cache reasons it'd be nice if they did. Then the base case for tranpose is simply selecting using these axes.
+
+### Decomposition
+
+Another possibility that may be worth looking into is splitting one reordering into two or more. I don't know whether this can beat a single-pass method in any case, but it's certainly simpler a lot of the time. But finding an algorithm which will make good decompositions can be pretty hard still.
+
+Dyalog splits a general boolean transposes into an axis rotation, which swaps two groups of axes and thus works like a matrix transpose, and a second transpose that fixes the last axis. Since length-1 axes have been eliminated, that last transpose works with at least 2 bits at a time, so the worst case is *slightly* better than moving single bits around but still not great.
