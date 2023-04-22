@@ -4,6 +4,10 @@
 
 The dyadic arithmetic functions are `+-×÷⋆√⌊⌈|¬∧∨<>≠=≤≥`. There are also monadic arithmetic functions, but they're mostly easy to optimize.
 
+## Negative zero
+
+IEEE defines the float value -0. But to make sure integer-valued floats can be consistently optimized as integers, it's best to treat it identically to 0 (this is much easier than trying to not produce -0s, as a negative number times 0 is -0). To convert a number to 0 if it's -0, just add 0. This needs to be done in `÷` for `𝕩`, in `⋆` for `𝕨`, and in `√` for both arguments if it's defined separately. Also in `•math.Atan2` for both arguments if defined.
+
 ## Boolean functions
 
 Many arithmetic functions give boolean results when both arguments are boolean. Because there are only 16 possible functions like this, they overlap a lot. Here's a categorization:
