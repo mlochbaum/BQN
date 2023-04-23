@@ -541,7 +541,7 @@ under←{
 ≢ ↩ IsArray◶(↕0)‿≢ ⊘ (1-Match)
 
 IF ← ⊢⊣!∘≡  # Intersect fill
-IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF´⟩∘⥊
+IEF← (0<≠)◶⟨⊢_fillBy_ Fill, ⊢_fillBy_ IF⟜ToArray´⟩∘⥊
 HasFill ← 0=·Fill⊢_fillBy_(@⍟(3≤Type∘⊣))⟜(↕0)
 _fillMerge_ ← {(0<≠∘⥊)◶⟨(𝔾○≢⥊⟨⟩˙)_fillBy_⊢⟜Fill⍟HasFill, 𝔽 ⊣_fillBy_⊢ IEF⟩}
 Merge←{
