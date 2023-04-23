@@ -689,8 +689,9 @@ Windows←{
 EncCell ← {
   f←𝕨↑≢𝕩 ⋄ c←1×´s←𝕨Cell𝕩 ⋄ d←⥊𝕩
   i←s⥊↕c
-  E←{e←Fill d⊢_fillBy_(0⍟(3≤Type)⊣)↕0 ⋄ (d⊣_fillBy_⊢˜e˙⌜i)Fill𝕩}
-  f⥊ E⍟(0=≠) {d⊏˜(c×𝕩)⊸+⌜i}⌜↕1×´f
+  t←{d⊏˜(c×𝕩)⊸+⌜i}⌜↕1×´f
+  e←Fill d⊢_fillBy_(0⍟(3≤Type)⊣)↕0
+  (d⊣_fillBy_⊢˜e˙⌜i) Fill f⥊t
 }
 EncRank ← (>⟜0×1+≥⟜=)◶⟨<⊢,EncCell,<⌜_fillBy_<⊢⟩
 _cells ← {
