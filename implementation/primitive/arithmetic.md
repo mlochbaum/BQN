@@ -72,7 +72,7 @@ Table also admits faster overflow checking for well-behaved functions like `+-¬
 
 Dyadic arithmetic can be applied to various combinations of axes with leading-axis extension, Table (`⌜`), and the Cells (`˘`) and Rank (`⎉`) modifiers. Cells is of course `⎉¯1`, and Table is `⎉0‿∞`, so the general case is arithmetic applied with the Rank operator any number of times.
 
-An application of Rank is best described in terms of its frame ranks, not cells ranks. If `a` and `b` are these ranks, then there are `a⌊b` shared frame axes and `a(⌈-⌊)b` non-shared axes from the argument with the higher-rank frame. Repeating on rank applications from the outside in, with a final rank 0 inherent in the arithmetic itself, the two sets of argument axes are partitioned into sets of shared and non-shared axes. For example consider `+⌜˘⎉4‿3` on arguments of ranks 6 and 8.
+An application of Rank is best described in terms of its frame ranks, not cell ranks. If `a` and `b` are these ranks, then there are `a⌊b` shared frame axes and `a(⌈-⌊)b` non-shared axes from the argument with the higher-rank frame. Repeating on rank applications from the outside in, with a final rank 0 inherent in the arithmetic itself, the two sets of argument axes are partitioned into sets of shared and non-shared axes. For example consider `+⌜˘⎉4‿3` on arguments of ranks 6 and 8.
 
 - The `⎉4‿3` implies frame ranks of 6-4=2 and 8-3=5. This gives 2 shared axes (label 0 below), then 3 non-shared axes from `𝕩` (label 1).
 - The `˘` takes a shared axis (label 2).
@@ -84,7 +84,11 @@ An application of Rank is best described in terms of its frame ranks, not cells 
 
 An axis set behaves like a single axis, and any adjacent axis sets of the same type (for example, non-shared from `𝕨`) can be combined. Length-1 axes can be ignored as well, so a simplification pass [like transpose](transpose.md#axis-simplification) might make sense.
 
-Then the implementation needs to expand this mapping quickly. As usual, long axes are easy and short axes are harder. It's best to take enough result axes so that a cell is not too small, then use a slow outer loop (for example, based on index lists) to call that inner loop.
+Then the implementation needs to expand this mapping quickly. As usual, long axes are easy and short axes are harder. It's best to take enough result axes so that a cell is not too small, then use a slow outer loop (for example, based on index lists) to call that inner loop. One result axis can be split in blocks if the cell size would be too small without it, but too big with it.
+
+Because a result cell should be much larger than a cache line, there's no need for the outer loop to traverse these cells in order—that is, the axes can be moved around to iterate in a transposed order. An easy way to do this is to represent each result axis with a length, stride in the result, and stride in both arguments; axes represented this way can be freely rearranged. It's best to iterate over shared axes first (outermost), then non-shared axes, because a non-shared axis means cells in the other argument are repeated, and if it's placed last then no other cells will be used between those repeated accesses. If both arguments have non-shared axes then a blocked order that keeps the repeated cells in cache might be best, but it's complicated to implement.
+
+### Base cases
 
 The scalar-vector, vector-vector cases work as base cases on one axis, and Table and leading-axis are two two-axis cases. There's also a flipped Table `˜⌜˜` and a trailing-axis case like `⎉1`. Representing each result axis with "w" if it comes from `𝕨` only, "x" for `𝕩` only, and "wx" for shared, we can organize these cases.
 
@@ -95,4 +99,6 @@ The scalar-vector, vector-vector cases work as base cases on one axis, and Table
 - wx-x, wx-w (leading)
 - w-wx, x-wx (trailing)
 
-That's six two-axis combinations; the remaining three possibilities w-w, x-x, and wx-wx are simplifiable.
+That's six two-axis combinations; the remaining three possibilities w-w, x-x, and wx-wx are simplifiable. Trailing-axis agreement takes half of Table like leading-axis agreement, but it's the reshaping half instead of replicate.
+
+The general case is to expand the arguments with Replicate along various axes so that they have the same shape as the result, and then use vector-vector arithmetic. More concretely, insert a length-1 axis into the argument for each non-shared axis in the other argument. Then replicate these axes to to required length. This can be done one axis at a time from the bottom up, or by constructing an array of indices and applying them at once, and probably other ways as well.
