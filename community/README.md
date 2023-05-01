@@ -4,18 +4,20 @@
 
 This page gathers links to work by the community. To get in touch, please use our [chat forums](forums.md).
 
-There are a few repositories [tagged BQN](https://github.com/topics/bqn) on Github, but also lots of BQN entries on these sites that encourage shorter-form programming:
+Here are some places to find BQN libraries and examples:
 
+- [Awesome BQN](https://github.com/pellertson/awesome-bqn), curated list of Github repositories
+- Repositories [tagged BQN](https://github.com/topics/bqn) on Github
 - [Rosetta Code](https://rosettacode.org/wiki/Category:BQN)
 - Stack Exchange [Code Golf & Coding Challenges](https://codegolf.stackexchange.com/search?tab=newest&q=BQN)
 - Codidact [Code Golf](https://codegolf.codidact.com/posts/search?utf8=%E2%9C%93&search=BQN&sort=age)
+- [Links and retrospectives](aoc.md) on the many BQN solutions published for [Advent of Code](https://adventofcode.com/)
 
 See also:
 
-- [Links and retrospectives](aoc.md) on the many BQN solutions published for [Advent of Code](https://adventofcode.com/)
-- Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
 - Sylvia's [BQN-oriented blog](https://saltysylvi.github.io/blog/index.html) and [tacit to block converter](https://saltysylvi.github.io/bqn-tacit-helper/)
 - Thibault Barbie's [blog](https://thibaultbarbie.github.io/) also covers BQN.
+- Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
 - Miguel Raz's [Anki deck](https://github.com/miguelraz/miguelraz.github.io/blob/e772dc681330b37544a55d38b3d1537699616420/ankis/bqn-glyphs.apkg), from [this page](https://miguelraz.github.io/teaching/) of resources.
 - Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs, and a few of Conor Hoekstra's [videos](https://www.youtube.com/c/codereport/videos) have BQN sections as well.
 - Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh?tab=notebooks) based on BQN.
