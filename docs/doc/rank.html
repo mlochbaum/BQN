@@ -123,7 +123,7 @@
                           ┘
 
     <span class='Function'>∾</span><span class='Modifier'>˘</span> <span class='Value'>s</span>
-<span class='Error'>Error: >: Elements didn't have equal shapes (contained shapes ⟨11⟩ and ⟨14⟩)</span>
+<span class='Error'>Error: ˘: Incompatible result shapes (encountered shapes ⟨11⟩ and ⟨14⟩)</span>
 
     <span class='Function'>&lt;</span><span class='Modifier2'>∘</span><span class='Function'>∾</span><span class='Modifier'>˘</span> <span class='Value'>s</span>
 ⟨ "wordsgohere" "someotherwords" ⟩
@@ -140,7 +140,7 @@
 </pre>
 <p>If you <em>want</em> to use this one-to-many behavior with an array, it'll take more work: since you're really only mapping over one argument, <a href="hook.html">bind</a> the other inside Cells.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YSDihpAgJ2EnICsgM+KAv+KImCDipYog4oaVMjQgICMgQSBjaGFyYWN0ZXIgYXJyYXkKIuKImOKImCIgwrvLmCBhCgoi4oiY4oiYIuKKuMK7y5ggYQ==">↗️</a><pre>    <span class='String'>&quot;∘∘&quot;</span> <span class='Function'>»</span><span class='Modifier'>˘</span> <span class='Value'>a</span>
-<span class='Error'>Error: ˘: Leading axis of arguments not equal (⟨2⟩ ≡ ≢𝕨, 3‿8 ≡ ≢𝕩)</span>
+<span class='Error'>Error: ˘: Argument frames don't agree (⟨2⟩ ≡ ≢𝕨, 3‿8 ≡ ≢𝕩, common frame of 1 axes)</span>
 
     <span class='String'>&quot;∘∘&quot;</span><span class='Modifier2'>⊸</span><span class='Function'>»</span><span class='Modifier'>˘</span> <span class='Value'>a</span>
 ┌─          
