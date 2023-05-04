@@ -6,9 +6,23 @@ BQN's random number utilities are provided by [system functions](../../spec/syst
 
 ## Random number generation
 
-CBQN is currently using wyrand, part of the [wyhash](https://github.com/wangyi-fudan/wyhash) library. It's extremely fast, passes the expected test suites, and no one's raised any concerns about it yet (but it's very new). It uses only 64 bits of state and doesn't have extra features like jump ahead.
+CBQN is currently using wyrand, part of the [wyhash](https://github.com/wangyi-fudan/wyhash) library. It's extremely fast, passes the expected test suites, and no one's raised any concerns about it yet that I know of. It uses only 64 bits of state and doesn't have extra features like jump ahead.
 
 Other choices are [xoshiro++](https://prng.di.unimi.it/) and [PCG](https://www.pcg-random.org/). The authors of these algorithms (co-author for xoshiro) hate each other very much and have spent quite some time slinging mud at each other. As far as I can tell they both have the normal small bias in favor of their own algorithms but are wildly unfair towards the other side, choosing misleading examples and inflating minor issues. I think both generators are good but find the case for xoshiro a little more convincing, and I think it's done better in third-party benchmarks.
+
+## Shuffling
+
+`rand.Deal` shuffles the natural numbers `↕𝕩`. To shuffle arbitrary values an extra selection is needed, which adds a little overhead for small values but can be more than double the cost for large ones (depending on available algorithms). So it may also make sense to have a `rand.Shuffle` defined as `{(𝕨 Deal ≠𝕩) ⊏ 𝕩}`.
+
+For small sizes the [Knuth shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle) works great. Initialize the whole result at the start; don't try anything fancy since it's only going to add branching. For large sizes CBQN uses one 256-way or smaller split as described below.
+
+Knuth shuffle makes random accesses by design, so if the result doesn't fit in cache there's going to be a serious slowdown. Sorting-based strategies mitigate this: the two methods I've found in the literature are Rao-Sandelius, like quicksort, and [MergeShuffle](https://arxiv.org/abs/1508.03167), like mergesort. A typical implementation of Rao-Sandelius sends each value to a random half in-place by swapping, and then the halves are shuffled. In fact, Sandelius described both decimal and binary methods, but his target hardware was… actual physical card decks, which don't have the same implementation issues present on CPUs. In MergeShuffle, halves are shuffled then merged, but the required merging technique is more sophisticated. However, I've found that the SIMD implementation presented by the authors is not actually too fast (once [corrected](https://github.com/axel-bacher/mergeshuffle/issues/1)) and branchlessly iterating over set bits of the random word works better.
+
+MergeShuffle initially follows the naive strategy of choosing from one half or the other at random, with a single bit. On its own this is biased: the actual chance of selecting from a list should be proportional to the number of elements remaining in it. But at any given point the elements that _have_ been chosen are shuffled, assuming the initial lists were. This is true by symmetry because merge selections are made independently with the same probability, so given the number of selections, any ordering is equally likely. Then MergeShuffle stops when it would try to get an element from an empty list, and shuffles the remaining elements into the result one at a time.
+
+The same argument applies to multi-way merging, and more obliquely to splitting. Splitting is like radix sorting, which would typically require counting partition sizes. But it also works to make fixed-size partitions in the result, and stop when one runs out. The partitions have gaps between them but can be packed together by moving them as they're shuffled. Multi-way can be several times faster than binary because it does fewer moves—binary needs one per bit.
+
+Merging or splitting with two partitions is special in that it can be implemented in place with swapping; I don't think other numbers support this in general. But in `Deal` the first round of splitting has an implicit argument `↕𝕩`, so the split can be performed directly into result space with only an index and ending position for each partition. Merging or splitting each of these partitions would take a fraction of the space, but one 256-way split seems fine for CBQN as it only runs into cache trouble at sizes in the billions.
 
 ## Simple random sample
 
