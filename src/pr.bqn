@@ -1,8 +1,9 @@
 #!/usr/bin/env bqn
 
 # Process BQN runtime
-rtt ← ('0'-˜⊑)⍟= ⊑ •args∾2   # Runtime type: 0, 1, or all
-rtn ← 2⊸≤◶⥊‿↕ rtt # File numbers included
+rtt ← ('0'-˜⊑)⍟= ⊑ •args∾2  # Runtime type: 0, 1, or all
+rtn ← 2⊸≤◶⥊‿↕ rtt           # File numbers included
+final‿extra ← (1↓•args) (⊣∾≠⊸↓) ""‿""
 
 glyphs ← •Import "glyphs.bqn"
 
@@ -17,8 +18,9 @@ in0‿out0 ← ⟨"∩⍝+-×⌊=≤≢⥊⊑↕⌜⊘", "⌊⌈|<>≠≥⊢⊣�
 in2 ← alias∾keep
 out2 ← ∾glyphs
 in‿out ← rtt ⊑ ⟨in0,out0⟩‿⟨⍷in2∾out0,out2⟩‿⟨in2,out2⟩
+in ∾↩ extra
 
-inputs ⇐ ⟨out0, (⍋Typ)⊸⊏in2⟩
+inputs ⇐ ⟨out0, ((⍋Typ)⊸⊏in2)∾extra⟩
 need ⇐ Typ⊸⊔ in
 
 GetRepls ← { c‿n←𝕩 ⋄ ⟨c,c⊣⌾((c∊⥊¨in)⊸/)n⟩∾¨⟨def,⥊¨alias⟩ }
@@ -26,7 +28,8 @@ GetRepls ← { c‿n←𝕩 ⋄ ⟨c,c⊣⌾((c∊⥊¨in)⊸/)n⟩∾¨⟨def,�
 ⟨E_proc⟩ ← glyphs‿GetRepls •Import "pp.bqn"
 
 rslt ← "⟨"∾"⟩"«∾","⊸∾¨out  # Output all primitives
-raw ← (•FChars "r"∾'0'⊸+∾".bqn"˙)¨ rtn
+raw ← ∾ (•FLines "r"∾'0'⊸+∾".bqn"˙)¨ rtn
+raw (¬final∊˜' '⊣´¨⊢)⊸/⍟(1=rtt)↩
 {𝕤⋄ raw∾˜↩⟨"glyphs←"""∾out∾"%"""⟩ ⋄ rslt∾˜↩"{PrimInd↩⊑𝕩⊐<⋄𝕩‿SetPrims‿SetInv}"}⍟⊢ ∨´1=rtn
 raw ∾↩ ⟨rslt⟩
 src ⇐ E_proc ∾∾⟜(@+10)¨ raw
