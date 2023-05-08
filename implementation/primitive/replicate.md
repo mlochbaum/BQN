@@ -30,7 +30,7 @@ The running sum method needs to be modified slightly: instead of incrementing re
 
 ### Constant replicate
 
-The case where `𝕨` is constant is useful for outer products and leading-axis extension, where elements of one argument need to be repeated a few times. This connection is also discussed in [Expanding Bits](https://www.dyalog.com/blog/2018/06/expanding-bits-in-shrinking-time/).
+The case where `𝕨` is constant is useful for outer products and leading-axis extension ([this section](arithmetic.md#table-and-leading-axis)), where elements of one argument need to be repeated a few times. This connection is also discussed in [Expanding Bits](https://www.dyalog.com/blog/2018/06/expanding-bits-in-shrinking-time/).
 
 The same approaches apply, but the branches in the branchless ones become a lot more predictable. So the obvious loops are now okay instead of bad even for small values. C compilers will generate decent code for constant small numbers—better for powers of two, but still not optimal it seems?
 
