@@ -13,7 +13,7 @@ Currently we aim for high performance on a single CPU core, and are focusing on 
 
 ## Performance resources
 
-It's more accurate to say CBQN can be fast, not that it will be fast: it all depends on how you use it. Definitely ask on the forum if you're having performance troubles so you can improve your technique.
+It's more accurate to say CBQN can be fast, not that it will be fast: it's all about how you use it. Definitely ask on the forum if you're having performance troubles so you can improve your technique.
 
 There are two measurement tools in the [time](../spec/system.md#time) system values. `•MonoTime` is a high-precision timer for performance measurements; you can take a time before and after some operation or section of a program and subtract them to get a time in seconds (a profiling tool to do this automatically would be nice, but we don't have one). More convenient for small snippets, `•_timed` returns the time to evaluate `𝔽𝕩`, averaging over `𝕨` runs if given. For two-argument functions you can write `w⊸F•_timed x` or `F´•_timed w‿x`.
 
@@ -23,6 +23,8 @@ There are two measurement tools in the [time](../spec/system.md#time) system val
 CBQN also has a `)time` command that prints the time taken by an entire expression, not counting compilation time. And a `)profile` command that samples where time was spent by the line—execution naturally has to be spread over several lines for this to be useful, and should take at least a few milliseconds too.
 
 The [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html) tool has a page showing primitive benchmarks with some explanations.
+
+If BQN isn't meeting your needs, there's always option to hook up with C by FFI: see the [spec](../spec/system.md#foreign-function-interface). Also the [CBQN docs](https://github.com/dzaima/CBQN/blob/master/docs/system.md#ffi), which say how much of that is actually implemented now. FFI calls have low overhead (tens of nanoseconds), but may require copying as data goes in or out.
 
 ## Versus other array languages
 
