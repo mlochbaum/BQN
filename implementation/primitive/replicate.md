@@ -32,9 +32,14 @@ The running sum method needs to be modified slightly: instead of incrementing re
 
 The case where `𝕨` is constant is useful for outer products and leading-axis extension ([this section](arithmetic.md#table-and-leading-axis)), where elements of one argument need to be repeated a few times. This connection is also discussed in [Expanding Bits](https://www.dyalog.com/blog/2018/06/expanding-bits-in-shrinking-time/).
 
-The same approaches apply, but the branches in the branchless ones become a lot more predictable. So the obvious loops are now okay instead of bad even for small values. C compilers will generate decent code for constant small numbers—better for powers of two, but still not optimal it seems?
+The same approaches work, but the branches in the branchless ones become a lot more predictable. So the obvious loops are now okay instead of bad even for small values. C compilers will generate decent code for constant small numbers—better for powers of two, but still not optimal it seems?
 
-For top performance, the result should be constructed from one shuffle per output, and some haggling with lanes for odd values in AVX. This means the number of shuffle constants is the value of `𝕨`, so as the numbers get larger there's a question of how much space in the binary you're willing to devote to it. Although it's not really so bad because the overhead for non-specialized code gets lower as `𝕨` increases. But JIT compiling would be very useful here, of course.
+For top performance, the result should be constructed from one shuffle per output, and some haggling with lanes for odd values in AVX. But this takes `𝕨` shuffle instructions, so handle all constants lower than some bound is quadratic in code size (JIT compiling might help, but generating a lot of code is bad for short `𝕩`). CBQN has a complicated mix of AVX2 methods to get high peformance with tolerable code size. From fastest to slowest:
+
+- Sizes 2 to 7 have dedicated shuffle code.
+- Small composite sizes `𝕨=l×f`, where `f` has a dedicated shuffle, are split into `l/f/𝕩`.
+- Other small sizes use a function that always reads 1 vector and writes 4 per iteration, using shuffle vectors from a table to generate them. This requires tail handling and uses some tricks to pack the tables to a reasonable size.
+- Sizes where one element fills multiple vectors write broadcasted vectors, overlapping the last two writes to avoid any tail handling. There are unrolled loops for less than 4 vectors.
 
 ## Booleans
 
