@@ -931,7 +931,8 @@ SwapFnInverse ← INF _lookup_ ⟨
   '∨', (¬√∘¬)⊘(-˜÷1-⊣)
   '¬', IA∘0⊘(+-1˙)
 ⟩
-SwapInverse ← {DIsSwap◶⟨SwapFnInverse𝕩˙,FuncInverse 1⊸⊑⟩ Decompose𝕩}
+SwSwInv ← SwapFnInverse{𝕎⊘𝕏}FuncInverse  # Assume monadic Fn˜˜⁼ is Fn˜⁼
+SwapInverse ← {DIsSwap◶⟨SwapFnInverse𝕩˙, SwSwInv 1⊸⊑⟩ Decompose𝕩}
 ⌜ ↩ _table
 ¨ ↩ _each
 ∾ ↩ Join           ⊘ JoinTo
