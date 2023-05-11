@@ -31,6 +31,7 @@ _isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
 IsJoin ← '∾'_isGlyph
 IsTable ← '⌜'_isGlyph
 DIsConst ← (4=0⊸⊑)◶0‿('˙'_isGlyph 2⊸⊑)
+DIsSwap  ← (4=0⊸⊑)◶0‿('˜'_isGlyph 2⊸⊑)
 
 Split2 ← { s←2⊸×⌜↕(≠𝕩)÷2 ⋄ ⟨s⊏𝕩,(1⊸+⌜s)⊏𝕩⟩ }
 _lookup_ ← {
@@ -919,7 +920,7 @@ PrimInverse ← INF _lookup_ ⟨
   '/', IndicesInv ⊘ (IA∘0)
   '⊔', GroupIndsInv ⊘ GroupInv
 ⟩
-SwapInverse ← INF _lookup_ ⟨
+SwapFnInverse ← INF _lookup_ ⟨
   '+', ÷⟜2⊘(-˜)
   '-', IA∘0⊘+
   '×', √⊘(÷˜)
@@ -930,6 +931,7 @@ SwapInverse ← INF _lookup_ ⟨
   '∨', (¬√∘¬)⊘(-˜÷1-⊣)
   '¬', IA∘0⊘(+-1˙)
 ⟩
+SwapInverse ← {DIsSwap◶⟨SwapFnInverse𝕩˙,FuncInverse 1⊸⊑⟩ Decompose𝕩}
 ⌜ ↩ _table
 ¨ ↩ _each
 ∾ ↩ Join           ⊘ JoinTo
