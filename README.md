@@ -36,7 +36,7 @@ BQN **will provide**:
 - Libraries with interfaces for common file formats like JSON and CSV
 - A standard system to install and use libraries and packages, and support for package managers
 
-I think BQN is a good choice for learning and enjoying array programming, scripting, prototyping, and number crunching at a single-CPU scale. For some examples of BQN in action, this repository holds the dreaded [self-hosted compiler](src/c.bqn) and the friendlier [markdown processor](md.bqn) used to generate the site. See also my scripts at [bqn-libs](https://github.com/mlochbaum/bqn-libs), this [gnuplot interface](https://github.com/frasiyav/BQN-Gnuplot/blob/main/Gnuplot.bqn), examples on [RosettaCode](https://rosettacode.org/wiki/Category:BQN), or something else from the [community](community/README.md) page.
+I think BQN is a good choice for learning and enjoying array programming, scripting, prototyping, and number crunching at a single-CPU scale. For some examples of BQN in action, this repository holds the dreaded [self-hosted compiler](src/c.bqn) and the friendlier [markdown processor](md.bqn) used to generate the site. See also my scripts at [bqn-libs](https://github.com/mlochbaum/bqn-libs), examples on [RosettaCode](https://rosettacode.org/wiki/Category:BQN), or something else from the [community](community/README.md) page.
 
 ## What kind of name is "BQN"?
 
