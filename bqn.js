@@ -30,8 +30,8 @@ let ff = (fr,fw,o) => resolve => (x,w) => {
   if (has(w)) { fs.writeFileSync(f,fw(x),o); return str(f); }
   else { return fr(fs.readFileSync(f,o)); }
 };
-let fchars = ff(str,unstr,"utf-8");
-let flines = ff(s=>strlist(s.replace(/\n$/,'').split('\n')),s=>s.map(unstr).join('\n')+'\n',"utf-8");
+let fchars = ff(str,x=>req1str("•FChars",x),"utf-8");
+let flines = ff(s=>strlist(s.replace(/\n$/,'').split('\n')),s=>s.map(x=>req1str("•FLines",x)).join('\n')+'\n',"utf-8");
 let fbytes = ff(s=>list(Array.from(s).map(c=>String.fromCodePoint(c))),s=>Buffer.from(s.map(c=>c.codePointAt(0))));
 sysvals.fchars = withres("•FChars",fchars);
 sysvals.flines = withres("•FLines",flines);

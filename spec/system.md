@@ -140,11 +140,11 @@ File access functions read or write files, either by manipulating files as a who
 
 Functions `Chars`, `Lines`, and `Bytes` are all ambivalent. If only `𝕩` is given, then it is a filename, and the result is the contents of the file in the appropriate format. If there are two arguments, then `𝕨` is the filename and `𝕩` is the desired contents. These are written to the file, overwriting its contents, and the absolute filename `𝕨` is returned. The three formats are:
 
-- Chars: BQN characters, or UTF-32. The file is assumed to be UTF-8 encoded.
-- Lines: BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.
-- Bytes: Single-byte values, stored as BQN characters from `@` to `@+255`.
+- Chars: List of BQN characters, effectively UTF-32. The file is assumed to be UTF-8 encoded.
+- Lines: List of BQN strings. The file is decoded as with chars, then split into lines by CR, LR, or CRLF line endings.
+- Bytes: List of single-byte values, stored as BQN characters from `@` to `@+255`.
 
-The `MapBytes` function only takes one argument, a filename, and returns an array matching the result of `Bytes`. However, the array data should be [memory-mapped](https://en.wikipedia.org/wiki/Memory-mapped_file) allowing it to be loaded into memory on use. The array and arrays derived from it (such as slices) may change in value if the underlying file is modified after `MapBytes` is called.
+The `MapBytes` function only takes one argument, a filename, and returns an array matching the result of `Bytes`. However, the array data should be [memory-mapped](https://en.wikipedia.org/wiki/Memory-mapped_file) allowing it to be loaded into memory on use. Undefined behavior, including a crash or writing arbitrary memory, may result if the underlying file is modified after `MapBytes` is called, and the result or slices of it are still used.
 
 The following short names can also be provided for file access. They can be provided, and use the definitions from above even if `•file` is not provided.
 
