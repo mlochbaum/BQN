@@ -20,7 +20,7 @@ You've probably seen it before. Sort Up (`∧`) reorders the [major cells](array
 
         ∨ "δαβγ"
 
-Sort Down always [matches](match.md) Sort Up [reversed](reverse.md), `⌽∘∧`. The reason for this is that BQN's array ordering is a [total order](https://en.wikipedia.org/wiki/Total_order), meaning that if one array doesn't come earlier or later than another array in the ordering then the two arrays match. Since any two non-matching argument cells are strictly ordered, they will have one ordering in `∧` and the opposite ordering in `∨`. After the reverse, any pair of non-matching cells are ordered the same way in `⌽∘∧` and `∨`. Since these two results have the same major cells in the same order, they match. However, note that the results will not always behave identically because Match doesn't take [fill elements](fill.md) into account (if you're curious, take a look at `⊑¨∨⟨↕0,""⟩` versus `⊑¨⌽∘∧⟨↕0,""⟩`).
+Sort Down always [matches](match.md) Sort Up [reversed](reverse.md), `⌽∘∧`. The reason for this is that BQN's array ordering is a [total order](https://en.wikipedia.org/wiki/Total_order), meaning that if one array doesn't come earlier or later than another array in the ordering then the two arrays match. Since any two non-matching argument cells are strictly ordered, they will have one ordering in `∧` and the opposite ordering in `∨`. After the reverse, any pair of non-matching cells are ordered the same way in `⌽∘∧` and `∨`. Since these two results have the same major cells in the same order, they match. However, note that the results will not always behave identically because Match doesn't take [fill elements](fill.md) into account (if you're curious, take a look at `1↑¨∨⟨↕0,""⟩` versus `1↑¨⌽∘∧⟨↕0,""⟩`).
 
 ## Grade
 
