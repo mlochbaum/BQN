@@ -100,7 +100,7 @@ let set = (d, id, v) => {
 let merge = x => { return call(runtime[13],x); }
 
 let chkM = (v,m) => { if (m.m!==v) throw Error("Runtime: Only a "+v+"-modifier can be called as a "+v+"-modifier"); }
-let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
+let genjs = (B, p, L, isRepl) => { // Bytecode -> Javascript compiler
   let rD = 0;
   let r = L?"let l=0;try{":"";
   let set = L?"setc":"set"
@@ -119,7 +119,7 @@ let genjs = (B, p, L) => { // Bytecode -> Javascript compiler
       case  1:         { r+= rP("D["+num()+"](e)");                                                                           break; }
       case  6:         { rD--;                                                                                                break; }
       case  7:         { if(rD!==1) throw Error("Internal compiler error: Wrong stack size"); r+= "return v0;";               break loop; }
-      case  8:         { r+= "e.ns=e.vid.ns;return e;";                                                                       break loop; }
+      case  8:         { if(isRepl) throw Error("Can't make namespace as REPL result"); r+= "e.ns=e.vid.ns;return e;";        break loop; }
       case 11:case 12:
       case 13:case 14: { let o=B[p-1]; let n=num(); rD-=n; let l="llst(["+(new Array(n).fill().map((_,i)=>rV(rD+i)).join(","))+"])";
                          r+=rP(o==13?"merge("+l+")":l); if(o==14)r+=rV(rD-1)+".merge=1;";                                     break; }
@@ -160,7 +160,7 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
       let ns = {}; if (vex) vex.forEach((e,j)=>{if(e)ns[vid[j]]=j+sp;});
       vid = (new Array(sp).fill(null)).concat(vid); vid.src=src; vid.ns=ns;
       if (T) ns.names = vid.names = T[2][0].map(s=>s.join(""));
-      return [genjs(B, pos, L), vid];
+      return [genjs(B, pos, L, has(env)), vid];
     }
 
     let ginpreview = e => L ? (e + ".inpreview=inpreview()") : "";
