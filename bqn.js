@@ -44,8 +44,15 @@ sysvals.file = dynsys(state => {
     // Paths and parsing
     path: p,
     at: (x,w) => {
-      let e="•file.At";
-      return str(has(w)?path.join(req1str(e,w),req1str(e,x)):res(e)(x));
+      let e = "•file.At";
+      let base = has(w) ? req1str(e,w) : unstr(p);
+      let rel  = req1str(e,x);
+      if (path.isAbsolute(rel)) return rel;
+      if (!has(base)) throw Error("Using relative path with no absolute base path known");
+      if (rel.length==0) return base;
+      if (base.length==0) return rel;
+      let b = path.sep === base[base.length-1] ? base : base + path.sep;
+      return b + rel;
     },
     name:      (x,w) => str(path.basename(req1str("•file.Name",x,w))),
     extension: (x,w) => str(path.extname (req1str("•file.Extension",x,w))),
@@ -94,6 +101,7 @@ sysvals.file = dynsys(state => {
         let s=fs.statSync(f); return list([s.uid,s.gid],0);
       }
     },
+    realpath: (x,w) => fs.realpathSync(res("•file.RealPath")(x)),
 
     // Access
     rename:    (x,w) => {let r=res("•file.Rename"),f=r(w); fs.renameSync  (r(x),f); return str(f);},
