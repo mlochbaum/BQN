@@ -73,8 +73,6 @@ The right argument is a filename, which may be relative or absolute. Relative pa
 
 The system namespace value `•file` deals with file operations. For the purposes of `•file`, paths in the filesystem are always strings. As with `•Import`, file paths may be relative or absolute, and relative paths are relative to `•path`, except in `•file.At` which allows `𝕨` to specify an alternate base directory. The value `•path` used for a particular instance of `•file` is determined by the file that contains that instance.
 
-When a `•file` function returns a file path or portion of a path, the path is always absolute and canonical, with `.` and `..` components removed.
-
 Possible fields of `•file` are given in the subsections below.
 
 ### File paths
@@ -91,6 +89,8 @@ The following functions manipulate paths and don't access files. Each takes a re
 | `Extension` | File extension, including leading dot
 | `Parts`     | List of parent, base name, and extension
 
+The path returned by `At` is not simplified to remove `.` or `..`: it contains all components of the two joined paths.
+
 ### File metadata
 
 Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path `𝕩`, and some functions also allow new data in `𝕨`. The returned data in any case is the specified property.
@@ -105,6 +105,7 @@ Metadata functions may query information about a file or directory but do not re
 | `Size`        | Total size in bytes
 | `Permissions` | Query or set file permissions
 | `Owner`       | Query or set owner user ID and group ID number
+| `RealPath`    | Canonical path of file
 
 Times are Unix timestamps, that is, non-leap seconds since the Unix epoch, as used by [time](#time) system values. File permissions on Unix are a three-element list of numbers giving the permissions for the owner, group, and other users. The file type is one of the following characters for the POSIX file types, matching Unix `ls -l` with `'f'` instead of `'-'`.
 
@@ -115,6 +116,8 @@ Times are Unix timestamps, that is, non-leap seconds since the Unix epoch, as us
 - `'s'`: Socket
 - `'b'`: Block device
 - `'c'`: Character device
+
+`RealPath` converts the argument file to an equivalent one without any components that are `.` or `..` or symlinks. This requires the directories along the path to check if they are symlinks.
 
 ### File access
 
@@ -146,7 +149,7 @@ Functions `Chars`, `Lines`, and `Bytes` are all ambivalent. If only `𝕩` is gi
 
 The `MapBytes` function only takes one argument, a filename, and returns an array matching the result of `Bytes`. However, the array data should be [memory-mapped](https://en.wikipedia.org/wiki/Memory-mapped_file) allowing it to be loaded into memory on use. Undefined behavior, including a crash or writing arbitrary memory, may result if the underlying file is modified after `MapBytes` is called, and the result or slices of it are still used.
 
-The following short names can also be provided for file access. They can be provided, and use the definitions from above even if `•file` is not provided.
+The following short names can also be provided for file access. If so, they use the definitions from above even if `•file` is not provided.
 
 | Name       | Equivalent
 |------------|---------------

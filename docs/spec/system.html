@@ -162,7 +162,6 @@
 <p><code><span class='Function'>•Exit</span></code> immediately terminates the running BQN process. If the argument is a valid return code (on Unix, an integer), it is returned; otherwise, the default return code (the one returned when the end of the program is reached) is used.</p>
 <h2 id="files"><a class="header" href="#files">Files</a></h2>
 <p>The system namespace value <code><span class='Value'>•file</span></code> deals with file operations. For the purposes of <code><span class='Value'>•file</span></code>, paths in the filesystem are always strings. As with <code><span class='Function'>•Import</span></code>, file paths may be relative or absolute, and relative paths are relative to <code><span class='Value'>•path</span></code>, except in <code><span class='Value'>•file.</span><span class='Function'>At</span></code> which allows <code><span class='Value'>𝕨</span></code> to specify an alternate base directory. The value <code><span class='Value'>•path</span></code> used for a particular instance of <code><span class='Value'>•file</span></code> is determined by the file that contains that instance.</p>
-<p>When a <code><span class='Value'>•file</span></code> function returns a file path or portion of a path, the path is always absolute and canonical, with <code><span class='Value'>.</span></code> and <code><span class='Value'>..</span></code> components removed.</p>
 <p>Possible fields of <code><span class='Value'>•file</span></code> are given in the subsections below.</p>
 <h3 id="file-paths"><a class="header" href="#file-paths">File paths</a></h3>
 <p>The following functions manipulate paths and don't access files. Each takes a relative or absolute path <code><span class='Value'>𝕩</span></code>, and <code><span class='Function'>At</span></code> may also take a base directory <code><span class='Value'>𝕨</span></code>.</p>
@@ -204,6 +203,7 @@
 </tr>
 </tbody>
 </table>
+<p>The path returned by <code><span class='Function'>At</span></code> is not simplified to remove <code><span class='Value'>.</span></code> or <code><span class='Value'>..</span></code>: it contains all components of the two joined paths.</p>
 <h3 id="file-metadata"><a class="header" href="#file-metadata">File metadata</a></h3>
 <p>Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path <code><span class='Value'>𝕩</span></code>, and some functions also allow new data in <code><span class='Value'>𝕨</span></code>. The returned data in any case is the specified property.</p>
 <table>
@@ -246,6 +246,10 @@
 <td><code><span class='Function'>Owner</span></code></td>
 <td>Query or set owner user ID and group ID number</td>
 </tr>
+<tr>
+<td><code><span class='Function'>RealPath</span></code></td>
+<td>Canonical path of file</td>
+</tr>
 </tbody>
 </table>
 <p>Times are Unix timestamps, that is, non-leap seconds since the Unix epoch, as used by <a href="#time">time</a> system values. File permissions on Unix are a three-element list of numbers giving the permissions for the owner, group, and other users. The file type is one of the following characters for the POSIX file types, matching Unix <code><span class='Value'>ls</span> <span class='Function'>-</span><span class='Value'>l</span></code> with <code><span class='String'>'f'</span></code> instead of <code><span class='String'>'-'</span></code>.</p>
@@ -258,6 +262,7 @@
 <li><code><span class='String'>'b'</span></code>: Block device</li>
 <li><code><span class='String'>'c'</span></code>: Character device</li>
 </ul>
+<p><code><span class='Function'>RealPath</span></code> converts the argument file to an equivalent one without any components that are <code><span class='Value'>.</span></code> or <code><span class='Value'>..</span></code> or symlinks. This requires the directories along the path to check if they are symlinks.</p>
 <h3 id="file-access"><a class="header" href="#file-access">File access</a></h3>
 <p>File access functions read or write files, either by manipulating files as a whole or interacting with the contents. Whole-file functions cannot overwrite target files: that is, <code><span class='Function'>Rename</span></code> and <code><span class='Function'>Copy</span></code> must give an error if a file exists at <code><span class='Value'>𝕨</span></code>, and <code><span class='Function'>CreateDir</span></code> if a file exists at <code><span class='Value'>𝕩</span></code>, while <code><span class='Function'>Chars</span></code>, <code><span class='Function'>Lines</span></code>, and <code><span class='Function'>Bytes</span></code> can overwrite the contents of an existing file <code><span class='Value'>𝕨</span></code>. However, these three functions must give an error if <code><span class='Value'>𝕨</span></code> exists and is a directory.</p>
 <table>
@@ -323,7 +328,7 @@
 <li>Bytes: List of single-byte values, stored as BQN characters from <code><span class='String'>@</span></code> to <code><span class='String'>@</span><span class='Function'>+</span><span class='Number'>255</span></code>.</li>
 </ul>
 <p>The <code><span class='Function'>MapBytes</span></code> function only takes one argument, a filename, and returns an array matching the result of <code><span class='Function'>Bytes</span></code>. However, the array data should be <a href="https://en.wikipedia.org/wiki/Memory-mapped_file">memory-mapped</a> allowing it to be loaded into memory on use. Undefined behavior, including a crash or writing arbitrary memory, may result if the underlying file is modified after <code><span class='Function'>MapBytes</span></code> is called, and the result or slices of it are still used.</p>
-<p>The following short names can also be provided for file access. They can be provided, and use the definitions from above even if <code><span class='Value'>•file</span></code> is not provided.</p>
+<p>The following short names can also be provided for file access. If so, they use the definitions from above even if <code><span class='Value'>•file</span></code> is not provided.</p>
 <table>
 <thead>
 <tr>
