@@ -17,10 +17,18 @@ sysvals.show = (x,w) => { show(x); return x; };
 sysvals.out = (x,w) => { console.log(req1str("•Out",x,w)); return x; };
 sysvals.exit = (x,w) => process.exit(Number.isInteger(x)?x:0);
 
-let dir = f=>f==='/'?f:f+'/'; // BQN uses trailing slash
+let dir = f=>f===path.sep?f:f+path.sep; // BQN uses trailing slash
+let pathjoin = (base, rel) => {
+  if (path.isAbsolute(rel)) return rel;
+  if (!has(base)) throw Error("Using relative path with no absolute base path known");
+  if (rel.length==0) return base;
+  if (base.length==0) return rel;
+  let b = path.sep === base[base.length-1] ? base : base + path.sep;
+  return b + rel;
+}
 let getres = p => {
   let res;
-  if (p) { p=unstr(p); res = (e,f)=>path.resolve(p,f); }
+  if (p) { p=unstr(p); res = (e,f)=>pathjoin(p,f); }
   else { res = (e,f) => { if (!path.isAbsolute(f)) throw Error(e+": Paths must be absolute when not running from a file"); return f; }; }
   return e => (x,w) => res(e,req1str(e,x,w));
 }
@@ -44,15 +52,8 @@ sysvals.file = dynsys(state => {
     // Paths and parsing
     path: p,
     at: (x,w) => {
-      let e = "•file.At";
-      let base = has(w) ? req1str(e,w) : unstr(p);
-      let rel  = req1str(e,x);
-      if (path.isAbsolute(rel)) return rel;
-      if (!has(base)) throw Error("Using relative path with no absolute base path known");
-      if (rel.length==0) return base;
-      if (base.length==0) return rel;
-      let b = path.sep === base[base.length-1] ? base : base + path.sep;
-      return b + rel;
+      let r = v => req1str("•file.At",v);
+      return str(pathjoin(has(w)?r(w):unstr(p), r(x)));
     },
     name:      (x,w) => str(path.basename(req1str("•file.Name",x,w))),
     extension: (x,w) => str(path.extname (req1str("•file.Extension",x,w))),
