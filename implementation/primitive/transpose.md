@@ -10,7 +10,7 @@ Monadic transpose in BQN always exchanges one axis with the rest. As mentioned [
 
 The scalar approach is simply to set `res[i][j] = arg[j][i]` in a loop. Doing the writes in order and the reads out of order (so, `i` is the outer loop here) seems to be slightly faster. This is fine most of the time, but suffers slightly when the inner loop is very short, and can be improved with SIMD.
 
-My talk "Moving Bits Faster in Dyalog 16.0" ([video](https://dyalog.tv/Dyalog17/?v=2KnrDmZov4U), [slides](https://www.dyalog.com/user-meetings/uploads/conference/dyalog18/presentations/D15_The_Interpretive_Advantage.zip)) discusses optimizations for the boolean case, where a scalar loop is particularly bad because reading or writing a single bit is so slow. Booleans can be a little easier to work with than larger units, although there are also some unique issues to be addressed because they can only be accessed in aligned groups, while SIMD vectors don't have to be aligned.
+My talk "Moving Bits Faster in Dyalog 16.0" ([video](https://dyalog.tv/Dyalog17/?v=2KnrDmZov4U), [slides](https://www.dyalog.com/uploads/conference/dyalog17/presentations/D08_Moving_Bits_Faster_in_Dyalog_16.zip)) discusses optimizations for the boolean case, where a scalar loop is particularly bad because reading or writing a single bit is so slow. Booleans can be a little easier to work with than larger units, although there are also some unique issues to be addressed because they can only be accessed in aligned groups, while SIMD vectors don't have to be aligned.
 
 ### Kernels
 
