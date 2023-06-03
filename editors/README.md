@@ -58,9 +58,9 @@ Don't use the root-based directory `/Library/Keyboard Layouts/` for the first st
 
 ### Cross-editor support
 
-[bqnlsp](https://git.sr.ht/~detegr/bqnlsp) implements [Language Server Protocol](https://en.wikipedia.org/wiki/Language_Server_Protocol) support for BQN, including syntax highlighting, code evaluation, and error reporting. After building, see instructions for [VSCode](https://git.sr.ht/~detegr/bqnlsp/tree/master/item/editors/vscode/README.md), [Neovim](https://git.sr.ht/~detegr/bqnlsp/tree/master/item/editors/neovim/nvim-lspconfig/README.md), or [Helix](https://github.com/helix-editor/helix/wiki/How-to-install-the-default-language-servers#bqn).
+[bqnlsp](https://git.sr.ht/~detegr/bqnlsp) implements [Language Server Protocol](https://en.wikipedia.org/wiki/Language_Server_Protocol) support for BQN, which allows code evaluation with error reporting. After building, see instructions for [VSCode](https://git.sr.ht/~detegr/bqnlsp/tree/master/item/editors/vscode/README.md), [Neovim](https://git.sr.ht/~detegr/bqnlsp/tree/master/item/editors/neovim/nvim-lspconfig/README.md), or [Helix](https://github.com/helix-editor/helix/wiki/How-to-install-the-default-language-servers#bqn).
 
-[tree-sitter-bqn](https://github.com/shnarazk/tree-sitter-bqn) implements [tree-sitter](https://tree-sitter.github.io/tree-sitter/) support, and includes instructions for [Helix](https://github.com/shnarazk/tree-sitter-bqn).
+[tree-sitter-bqn](https://github.com/shnarazk/tree-sitter-bqn) implements [tree-sitter](https://tree-sitter.github.io/tree-sitter/) support, and includes instructions for [Helix](https://github.com/shnarazk/tree-sitter-bqn). Many other editors such as Neovim and emacs allow for tree-sitter integration.
 
 ### Vim
 
