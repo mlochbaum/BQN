@@ -37,6 +37,9 @@
 </ul>
 <p>Don't use the root-based directory <code><span class='Function'>/Library/Keyboard</span> <span class='Function'>Layouts/</span></code> for the first step, as this will silently fail.</p>
 <h2 id="text-editors"><a class="header" href="#text-editors">Text editors</a></h2>
+<h3 id="cross-editor-support"><a class="header" href="#cross-editor-support">Cross-editor support</a></h3>
+<p><a href="https://git.sr.ht/~detegr/bqnlsp">bqnlsp</a> implements <a href="https://en.wikipedia.org/wiki/Language_Server_Protocol">Language Server Protocol</a> support for BQN, including syntax highlighting, code evaluation, and error reporting. After building, see instructions for <a href="https://git.sr.ht/~detegr/bqnlsp/tree/master/item/editors/vscode/README.md">VSCode</a>, <a href="https://git.sr.ht/~detegr/bqnlsp/tree/master/item/editors/neovim/nvim-lspconfig/README.md">Neovim</a>, or <a href="https://github.com/helix-editor/helix/wiki/How-to-install-the-default-language-servers#bqn">Helix</a>.</p>
+<p><a href="https://github.com/shnarazk/tree-sitter-bqn">tree-sitter-bqn</a> implements <a href="https://tree-sitter.github.io/tree-sitter/">tree-sitter</a> support, and includes instructions for <a href="https://github.com/shnarazk/tree-sitter-bqn">Helix</a>.</p>
 <h3 id="vim"><a class="header" href="#vim">Vim</a></h3>
 <p>Copy or symlink all files into the corresponding directories in <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.vim</span></code>. Add the following two lines to <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.vim</span><span class='Function'>/</span><span class='Value'>filetype.vim</span></code>:</p>
 <pre>  <span class='Value'>au</span><span class='Function'>!</span> <span class='Function'>BufRead</span><span class='Separator'>,</span><span class='Function'>BufNewFile</span> <span class='Value'>*.bqn</span> <span class='Value'>setf</span> <span class='Value'>bqn</span>
@@ -48,14 +51,14 @@
 </pre>
 <p>Then run <code><span class='Head'>:</span><span class='Function'>PlugInstall</span></code>.</p>
 <h4 id="neovim-interactivity"><a class="header" href="#neovim-interactivity">Neovim interactivity</a></h4>
-<p>See <a href="https://git.sr.ht/~detegr/nvim-bqn">this repository</a> for an additional plugin that provides bindings to run BQN code as you're editing it.</p>
+<p>See <a href="https://git.sr.ht/~detegr/nvim-bqn">nvim-bqn</a> for an additional plugin that provides bindings to run BQN code as you're editing it.</p>
 <h3 id="emacs"><a class="header" href="#emacs">Emacs</a></h3>
 <p>Emacs support now lives on <a href="https://github.com/museoa/bqn-mode">museoa/bqn-mode</a>. Clone and add the following two lines to your init file (usually <code><span class='Value'>~</span><span class='Function'>/</span><span class='Value'>.emacs.d</span><span class='Function'>/</span><span class='Value'>init.el</span></code>), replacing the path appropriately.</p>
 <pre><span class='Paren'>(</span><span class='Value'>add</span><span class='Function'>-</span><span class='Value'>to</span><span class='Function'>-</span><span class='Value'>list</span> <span class='String'>'</span><span class='Value'>load</span><span class='Function'>-</span><span class='Value'>path</span> <span class='String'>&quot;/path/to/bqn-mode&quot;</span><span class='Paren'>)</span>
 <span class='Paren'>(</span><span class='Value'>require</span> <span class='String'>'</span><span class='Value'>bqn</span><span class='Function'>-</span><span class='Value'>mode</span><span class='Paren'>)</span>
 </pre>
 <h3 id="vs-code"><a class="header" href="#vs-code">VS Code</a></h3>
-<p>See <a href="https://github.com/razetime/bqn-vscode">this repository</a>, or install directly through <a href="https://marketplace.visualstudio.com/items?itemName=razetime.bqn-language&ssr=false#overview">Visual Studio Marketplace</a> or <a href="https://open-vsx.org/extension/razetime/bqn-language">Open VSX Registry</a>.</p>
+<p>See <a href="https://github.com/razetime/bqn-vscode">bqn-vscode</a>, or install directly through <a href="https://marketplace.visualstudio.com/items?itemName=razetime.bqn-language&ssr=false#overview">Visual Studio Marketplace</a> or <a href="https://open-vsx.org/extension/razetime/bqn-language">Open VSX Registry</a>.</p>
 <h3 id="kakoune"><a class="header" href="#kakoune">Kakoune</a></h3>
 <p>Copy or symlink <code><span class='Value'>kak</span><span class='Function'>/</span><span class='Value'>autoload</span><span class='Function'>/</span><span class='Value'>filetype</span><span class='Function'>/</span><span class='Value'>bqn.kak</span></code> into <code><span class='Value'>autoload</span><span class='Function'>/</span><span class='Value'>filetype</span></code> in your Kakoune config directory (probably <code><span class='Value'>.config</span><span class='Function'>/</span><span class='Value'>kak</span><span class='Function'>/</span></code>).</p>
 <h2 id="alternate-layouts"><a class="header" href="#alternate-layouts">Alternate layouts</a></h2>
