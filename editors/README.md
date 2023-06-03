@@ -56,6 +56,12 @@ Don't use the root-based directory `/Library/Keyboard Layouts/` for the first st
 
 ## Text editors
 
+### Cross-editor support
+
+[bqnlsp](https://git.sr.ht/~detegr/bqnlsp) implements [Language Server Protocol](https://en.wikipedia.org/wiki/Language_Server_Protocol) support for BQN, including syntax highlighting, code evaluation, and error reporting. After building, see instructions for [VSCode](https://git.sr.ht/~detegr/bqnlsp/tree/master/item/editors/vscode/README.md), [Neovim](https://git.sr.ht/~detegr/bqnlsp/tree/master/item/editors/neovim/nvim-lspconfig/README.md), or [Helix](https://github.com/helix-editor/helix/wiki/How-to-install-the-default-language-servers#bqn).
+
+[tree-sitter-bqn](https://github.com/shnarazk/tree-sitter-bqn) implements [tree-sitter](https://tree-sitter.github.io/tree-sitter/) support, and includes instructions for [Helix](https://github.com/shnarazk/tree-sitter-bqn).
+
 ### Vim
 
 Copy or symlink all files into the corresponding directories in `~/.vim`. Add the following two lines to `~/.vim/filetype.vim`:
@@ -73,7 +79,7 @@ Then run `:PlugInstall`.
 
 #### Neovim interactivity
 
-See [this repository](https://git.sr.ht/~detegr/nvim-bqn) for an additional plugin that provides bindings to run BQN code as you're editing it.
+See [nvim-bqn](https://git.sr.ht/~detegr/nvim-bqn) for an additional plugin that provides bindings to run BQN code as you're editing it.
 
 ### Emacs
 
@@ -84,7 +90,7 @@ Emacs support now lives on [museoa/bqn-mode](https://github.com/museoa/bqn-mode)
 
 ### VS Code
 
-See [this repository](https://github.com/razetime/bqn-vscode), or install directly through [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=razetime.bqn-language&ssr=false#overview) or [Open VSX Registry](https://open-vsx.org/extension/razetime/bqn-language).
+See [bqn-vscode](https://github.com/razetime/bqn-vscode), or install directly through [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=razetime.bqn-language&ssr=false#overview) or [Open VSX Registry](https://open-vsx.org/extension/razetime/bqn-language).
 
 ### Kakoune
 
