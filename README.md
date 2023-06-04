@@ -29,14 +29,14 @@ Looking for a modern, powerful language centered on Ken Iverson's array programm
 - A low-dependency C implementation using bytecode compilation: [installation](running.md)
 - [System functions](spec/system.md) for math, files, and I/O (including a C FFI)
 - [Documentation](doc/README.md) with examples, visuals, explanations, and rationale for features
+- [Libraries](https://github.com/mlochbaum/bqn-libs) with interfaces for common file formats like JSON and CSV
 
 BQN **will provide**:
 
 - State of the art array [performance](implementation/perf.md): CBQN beats the fastest array languages much of the time, but not always!
-- Libraries with interfaces for common file formats like JSON and CSV
 - A standard system to install and use libraries and packages, and support for package managers
 
-I think BQN is a good choice for learning and enjoying array programming, scripting, prototyping, and number crunching at a single-CPU scale. For some examples of BQN in action, this repository holds the dreaded [self-hosted compiler](src/c.bqn) and the friendlier [markdown processor](md.bqn) used to generate the site. See also my scripts at [bqn-libs](https://github.com/mlochbaum/bqn-libs), examples on [RosettaCode](https://rosettacode.org/wiki/Category:BQN), or something else from the [community](community/README.md) page.
+I think BQN is a good choice for learning and enjoying array programming, scripting, prototyping, and number crunching at a single-CPU scale. For some examples of BQN in action, this repository holds the dreaded [self-hosted compiler](src/c.bqn) and the friendlier [markdown processor](md.bqn) used to generate the site. See also [awesome BQN](https://github.com/pellertson/awesome-bqn) repositories, examples on [RosettaCode](https://rosettacode.org/wiki/Category:BQN), or something else from the [community](community/README.md) page.
 
 ## What kind of name is "BQN"?
 
