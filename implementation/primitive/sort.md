@@ -8,9 +8,11 @@ There's a large divide between ordering compound data and simple data. For compo
 
 ## On quicksort versus merge sort
 
-Merge sort is better. It is deterministic, stable, and has optimal worst-case performance. Its pattern handling is better: while merge sort handles "horizontal" patterns and quicksort does "vertical" ones, merge sort gets useful work out of *any* sequence of runs but in-place quicksort will quickly mangle its analogue until it may as well be random.
+Merge sort is a nicer algorithm: it's deterministic and has optimal worst-case performance. But partitioning is a nicer operation: more parallel, has a stable out-of-place form but is much easier to do in-place. And partitioning can reduce the range of the data enough to use an extremely quick counting sort or other methods. Outside of sorting, partitioning is also a natural fit for binary search, where it's mandatory for sensible cache behavior with large enough arguments.
 
-But that doesn't mean merge sort is always faster. Quicksort seems to work a little better branchlessly. For sorting, quicksort's partitioning can reduce the range of the data enough to use an extremely quick counting sort. Partitioning is also a natural fit for binary search, where it's mandatory for sensible cache behavior with large enough arguments. So it can be useful. But it doesn't merge, and can't easily be made to merge, and that's a shame.
+The fastest methods end up using quicksort for the generic case and merge sort for special cases. One of these is for smaller arrays where choosing a pivot is too hard; merge competes with other options like insertion sort and sorting networks.
+
+It's the patterns that get you. An adaptive merge sort is good at handling sequences of runs, while a quicksort can handle inputs with few unique values. These can be tested for, but they're also oversimplified. Adaptive merge sort is good if any of its merges are easy, which can happen if the array is scrambled at the small scale and ordered at a larger scale. Quicksort is harder to pin down, as various base cases might exploit many kinds of structure. Ultimately, I don't think you can know what the cost of one method or the other will be exactly, so there will always be cases where you choose the wrong one.
 
 The same applies to the general categories of partitioning sorts (quicksort, radix sort, samplesort) and merging sorts (mergesort, timsort, multimerges). Radix sort is a weird one: very fast on lots of inputs, but not adaptive at all, and in fact actively un-adaptive on common patterns from cache associativity. Very hard to know when it's a good choice.
 
@@ -22,7 +24,9 @@ Binary searches are very easy to get wrong. Do not write `(hi+lo)/2`: it's not s
 
 Array comparisons are expensive. The goal here is almost entirely to minimize the number of comparisons. Which is a much less complex goal than to get the most out of modern hardware, so the algorithms here are simpler.
 
-For **Sort** and **Grade**, use Timsort. It's time-tested and shows no signs of weakness (but do be sure to pick up a fix for the bug discovered in 2015 in formal verification). Hardly different from optimal comparison numbers on random data, and outstanding pattern handling. Grade can be done either by selecting from the original array to order indices or by moving the data around in the same order as the indices. I think the second of these ends up being substantially better for small-ish elements.
+For **Sort**, I think Timsort with Powersort-based merging is a solid choice. Hardly different from optimal comparison numbers on random data, and it's good at natural runs. Orson Peters points out as part of his work on Glidesort that quicksort is better at low-cardinality inputs, and that these do show up in real datasets. However, Glidesort itself is more targetted towards simple data, and so it's overcomplicated in the compound case while also missing important optimizations like galloping merge that reduce comparisons. It seems more work is needed!
+
+**Grade** should use the same method as Sort, and can be done either by selecting from the original array to order indices or by moving the data around in the same order as the indices. I think the second of these ends up being substantially better for small-ish elements.
 
 For **Bins**, use a branching binary search: see [On binary search](#on-binary-search) above. But there are also interesting (although, I expect, rare) cases where only one argument is compound. Elements of this argument should be reduced to fit the type of the other argument, then compared to multiple elements. For the right argument, this just means reducing before doing whatever binary search is appropriate to the left argument. If the left argument is compound, its elements should be used as partitions. Then switch back to binary search only when the partitions get very small—probably one element.
 
@@ -31,12 +35,13 @@ For **Bins**, use a branching binary search: see [On binary search](#on-binary-s
 The name of the game here is "branchless".
 
 For **Sort**:
-- Insertion sort is best for small data (*maybe* [quadsort](https://github.com/scandum/quadsort), but I worry about the cache footprint if you just sort a small array somewhere in a long loop).
+- For small sizes, it seems best to handle some fixed sizes with sorting networks (see [ipnsort](https://github.com/Voultapher/sort-research-rs)) or merging ([quadsort](https://github.com/scandum/quadsort)), and finish with an insertion sort. More code than a plain insertion sort, but significantly faster.
 - Then [counting sort](#distribution-sorts) for 1-byte types (and obviously for 1-bit regardless of length).
 - Branchless [quicksorts](#quicksort) are the solid choice for larger types, particularly since they can track ranges and call counting and other distribution sorts when appropriate.
+- Scanning for runs in order to use a mergesort is probably a good idea though.
 - But for 2- and 4-byte data, [radix sort](#radix-sort) can be a lot faster? For 2-byte sort, I think it's a better bridge than fluxsort between insertion and counting sort (but scan for sortedness first); for 4-byte, hard to say.
 
-**Grade** is basically the same (now that fluxsort gives us a good stable quicksort), except moves get more expensive relative to comparisons. Counting sort needs to be switch to the much slower bucket sort.
+**Grade** is basically the same (now that fluxsort gives us a good stable quicksort), except moves get more expensive relative to comparisons. Counting sort needs to be changed to the much slower bucket sort.
 
 A branchless binary search is adequate for **Bins** but in many cases—very small or large `𝕨`, and small range—there are better methods.
 
@@ -44,7 +49,7 @@ A branchless binary search is adequate for **Bins** but in many cases—very sma
 
 Both counting and bucket sort are small-range algorithms that begin by counting the number of each possible value. Bucket sort, as used here, means that the counts are then used to place values in the appropriate position in the result in another pass. Counting sort does not read from the initial values again and instead reconstructs them from the counts. It might be written `(//⁼)⌾(-⟜min)` in BQN, relying on the extension of `/⁼` to unsorted arguments.
 
-Bucket sort can be used for Grade or sort-by (`⍋⊸⊏`), but counting sort only works for sorting itself. It's not-even-unstable: there's no connection between result values and the input values except that they are constructed to be equal. But with [fast Indices](replicate.md#non-booleans-to-indices), counting sort is vastly more powerful, and is effective with a range four to eight times the argument length. This is large enough that it might pose a memory usage problem, but the memory use can be made arbitrarily low by partitioning.
+Bucket sort can be used for Grade or sort-by (`⍋⊸⊏`), but counting sort only works for sorting itself. It's not-even-unstable: there's no connection between result values and the input values except that they are constructed to be equal. But with [fast Indices](replicate.md#indices), counting sort is vastly more powerful, and is effective with a range four to eight times the argument length. This is large enough that it might pose a memory usage problem, but the memory use can be made arbitrarily low by partitioning.
 
 I developed [Robin Hood Sort](https://github.com/mlochbaum/rhsort) as an algorithm with similar properties to bucket sort that relies on uniformly-distributed data rather than a small range. It uses a buffer a few times larger than the input array, and inserts values in a manner similar to a hash table with linear probing, shifting large clumps out if they appear—they're merge-sorted back in at the end. Like counting sort, the substantial memory use can be cut down by partitioning. And a random selection of `√n` samples is enough to make a good decision about whether to use it (see [candidate selection](#candidate-selection)), which is a good fit for quicksorts. Of course this can only be probabilistic, so it's still important that RHsort has decent worst-case performance. When quadsort is used for merging, the worst case appears to be about half as fast as fluxsort, very solid.
 
