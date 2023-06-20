@@ -792,6 +792,7 @@ let sysvals = {
   bqn:dynsys_copy(makebqnfn("•BQN",r=>run(...r))), rebqn, primitives,
   type, glyph, decompose, fmt:fmt1, repr, currenterror, unixtime,
   js:dojs, parsefloat, math:mathns, ns:nsns, rand,
+  while: m2((f,g)=>(x,w)=>{while(call(g,x,w))x=call(f,x,w);return x;}),
   listsys: dynsys(_ => list(Object.keys(sysvals).sort().map(str)))
 };
 
