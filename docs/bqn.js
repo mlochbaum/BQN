@@ -670,6 +670,11 @@ let parsefloat = (x,w) => {
   return parseFloat(n);
 }
 
+let whileop = m2((f,g)=>(x,w)=>{
+  let bool = n => { if (0!==n&&1!==n) throw Error("•_while_: 𝔾 result must be 0 or 1"); return n; }
+  while(bool(call(g,x,w))) x=call(f,x,w);
+  return x;
+});
 let isint = n => isnum(n) && n===(n|0);
 let isnat = n => isint(n) && n>=0;
 let fact = (x,w) => {
@@ -791,8 +796,7 @@ let rand = (() => {
 let sysvals = {
   bqn:dynsys_copy(makebqnfn("•BQN",r=>run(...r))), rebqn, primitives,
   type, glyph, decompose, fmt:fmt1, repr, currenterror, unixtime,
-  js:dojs, parsefloat, math:mathns, ns:nsns, rand,
-  while: m2((f,g)=>(x,w)=>{while(call(g,x,w))x=call(f,x,w);return x;}),
+  js:dojs, parsefloat, math:mathns, ns:nsns, rand, while:whileop,
   listsys: dynsys(_ => list(Object.keys(sysvals).sort().map(str)))
 };
 
