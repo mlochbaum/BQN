@@ -11,6 +11,7 @@ All system values described in the BQN specification are optional: an implementa
 | Section | Contents
 |---------|---------
 | [Execution](#execution) | `•BQN`, `•ReBQN`, `•primitives`
+| [Control](#control) | `•_while_`
 | [Scripts](#scripts) | `•Import`, `•args`, `•Exit`, …
 | [Files](#files) ([paths](#file-paths), [metadata](#file-metadata), [access](#file-access), [opened](#open-file-object)) | `•file`, `•FChars`, `•FLines`, `•FBytes`
 | [Input and output](#input-and-output) ([terminal](#terminal-io)) | `•Out`, `•Show`, `•Repr`, `•Fmt`, …, `•term`
@@ -42,6 +43,14 @@ The left argument to `•BQN` or the result of `•ReBQN`, if given, is a list o
 | `scope`       | `"none"`, `"read"`, `"modify"` or list of name-setting pairs
 
 The option `repl` indicates how variables are retained across calls: with "none" they are not saved; with "strict", they are saved and can't be redefined; and with "loose" they may be redefined. Each element in `primitives` gives the glyph and value for a primitive to be made available. The value must have an operation type and its type determines the primitive's role. `system` in general gives the list of system values to be made available, with shorthand values to indicate all currently-available ones, none of them, or only a subset that cannot be used to interact with anything outside of the execution context. `scope` indicates allowed interaction with the scope in which `•ReBQN` is *called* (not loaded): with "read" variables may be read and with "modify" they may be read or modified.
+
+## Control
+
+| Name        | Summary
+|-------------|---------------------
+| `•_while_`  | Run `𝔽` as long as `𝔾` returns `1`
+
+The 2-modifier `•_while_` repeatedly checks `𝕨𝔾v`, where `v` is initially `𝕩`. The result must be `0` or `1`, or this causes an error. If `0`, it returns `v`, and if `1` it updates `v` to `𝕨𝔽v` and starts again. An equivalent implementation minus the boolean check is `{𝕨(𝕨𝕊𝔽)⍟𝔾𝕩}`. However, this code consumes stack space with every call in a BQN implementation without tail call optimization. `•_while_` should use only a constant amount of memory.
 
 ## Scripts
 
@@ -89,7 +98,7 @@ The following functions manipulate paths and don't access files. Each takes a re
 | `Extension` | File extension, including leading dot
 | `Parts`     | List of parent, base name, and extension
 
-The path returned by `At` is not simplified to remove `.` or `..`: it contains all components of the two joined paths.
+The path returned by `At` is not simplified to remove `.` or `..`: it contains all components of the two joined paths. If `𝕩` is an absolute path, it returns `𝕩`. If `𝕩` is empty, it returns `𝕨` unchanged.
 
 ### File metadata
 
