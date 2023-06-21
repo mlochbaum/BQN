@@ -12,7 +12,8 @@ The most useful control structures introduced here are collected as shortened de
 
     If      ← {𝕏⍟𝕎@}´                 # Also Repeat
     IfElse  ← {c‿T‿F: c◶F‿T@}
-    While   ← {𝕩{𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}𝕨@}´  # While 1‿{... to run forever
+    While   ← {𝕩•_while_𝕨@}´          # While 1‿{... to run forever
+    While   ← {𝕩{𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}𝕨@}´  # Without the system value
     DoWhile ← {𝕏@ ⋄ While 𝕨‿𝕩}´
     For     ← {I‿C‿P‿A: I@ ⋄ While⟨C,P∘A⟩}
 
@@ -209,7 +210,11 @@ Because the condition is run repeatedly, it has to be a function, and can't be a
 
 ### Low-stack version
 
-The above version of `While` will fail in a fairly small number of iterations, because it consumes a new stack frame with each iteration. While tail call optimization could solve this, detecting the tail call in a compound function like `𝕊∘𝔾⍟𝔽` is technically difficult and would introduce overhead into a BQN interpreter. However, there is a method to make the number of required stack frames logarithmic in the number of iterations instead of linear:
+The above version of `While` will fail in a fairly small number of iterations, because it consumes a new stack frame with each iteration. While tail call optimization could solve this, detecting the tail call in a compound function like `𝕊∘𝔾⍟𝔽` is technically difficult and would introduce overhead into a BQN interpreter. There's [a system value](../spec/system.md#control) to evaluate as fast as possible without the memory use:
+
+    While ← {𝕩•_while_𝕨@}´
+
+However, there's also a trick that doesn't use a system value—although with the potential issue that `𝔾` may be called extra times after it returns `0`. It makes the number of required stack frames logarithmic in the number of iterations instead of linear.
 
     While ← {𝕩{𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}𝕨@}´
 

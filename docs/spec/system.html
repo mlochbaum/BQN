@@ -21,6 +21,10 @@
 <td><code><span class='Function'>•BQN</span></code>, <code><span class='Function'>•ReBQN</span></code>, <code><span class='Value'>•primitives</span></code></td>
 </tr>
 <tr>
+<td><a href="#control">Control</a></td>
+<td><code><span class='Modifier2'>•_while_</span></code></td>
+</tr>
+<tr>
 <td><a href="#scripts">Scripts</a></td>
 <td><code><span class='Function'>•Import</span></code>, <code><span class='Value'>•args</span></code>, <code><span class='Function'>•Exit</span></code>, …</td>
 </tr>
@@ -114,6 +118,22 @@
 </tbody>
 </table>
 <p>The option <code><span class='Value'>repl</span></code> indicates how variables are retained across calls: with &quot;none&quot; they are not saved; with &quot;strict&quot;, they are saved and can't be redefined; and with &quot;loose&quot; they may be redefined. Each element in <code><span class='Value'>primitives</span></code> gives the glyph and value for a primitive to be made available. The value must have an operation type and its type determines the primitive's role. <code><span class='Value'>system</span></code> in general gives the list of system values to be made available, with shorthand values to indicate all currently-available ones, none of them, or only a subset that cannot be used to interact with anything outside of the execution context. <code><span class='Value'>scope</span></code> indicates allowed interaction with the scope in which <code><span class='Function'>•ReBQN</span></code> is <em>called</em> (not loaded): with &quot;read&quot; variables may be read and with &quot;modify&quot; they may be read or modified.</p>
+<h2 id="control"><a class="header" href="#control">Control</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Modifier2'>•_while_</span></code></td>
+<td>Run <code><span class='Function'>𝔽</span></code> as long as <code><span class='Function'>𝔾</span></code> returns <code><span class='Number'>1</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>The 2-modifier <code><span class='Modifier2'>•_while_</span></code> repeatedly checks <code><span class='Value'>𝕨</span><span class='Function'>𝔾</span><span class='Value'>v</span></code>, where <code><span class='Value'>v</span></code> is initially <code><span class='Value'>𝕩</span></code>. The result must be <code><span class='Number'>0</span></code> or <code><span class='Number'>1</span></code>, or this causes an error. If <code><span class='Number'>0</span></code>, it returns <code><span class='Value'>v</span></code>, and if <code><span class='Number'>1</span></code> it updates <code><span class='Value'>v</span></code> to <code><span class='Value'>𝕨</span><span class='Function'>𝔽</span><span class='Value'>v</span></code> and starts again. An equivalent implementation minus the boolean check is <code><span class='Brace'>{</span><span class='Value'>𝕨</span><span class='Paren'>(</span><span class='Value'>𝕨</span><span class='Function'>𝕊𝔽</span><span class='Paren'>)</span><span class='Modifier2'>⍟</span><span class='Function'>𝔾</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code>. However, this code consumes stack space with every call in a BQN implementation without tail call optimization. <code><span class='Modifier2'>•_while_</span></code> should use only a constant amount of memory.</p>
 <h2 id="scripts"><a class="header" href="#scripts">Scripts</a></h2>
 <table>
 <thead>
@@ -203,7 +223,7 @@
 </tr>
 </tbody>
 </table>
-<p>The path returned by <code><span class='Function'>At</span></code> is not simplified to remove <code><span class='Value'>.</span></code> or <code><span class='Value'>..</span></code>: it contains all components of the two joined paths.</p>
+<p>The path returned by <code><span class='Function'>At</span></code> is not simplified to remove <code><span class='Value'>.</span></code> or <code><span class='Value'>..</span></code>: it contains all components of the two joined paths. If <code><span class='Value'>𝕩</span></code> is an absolute path, it returns <code><span class='Value'>𝕩</span></code>. If <code><span class='Value'>𝕩</span></code> is empty, it returns <code><span class='Value'>𝕨</span></code> unchanged.</p>
 <h3 id="file-metadata"><a class="header" href="#file-metadata">File metadata</a></h3>
 <p>Metadata functions may query information about a file or directory but do not read to or write from it. Each takes a path <code><span class='Value'>𝕩</span></code>, and some functions also allow new data in <code><span class='Value'>𝕨</span></code>. The returned data in any case is the specified property.</p>
 <table>
