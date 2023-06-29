@@ -80,6 +80,8 @@ Under is useful with [scans](scan.md), as discussed in a section on [reverse sca
 
         ∧`⌾⌽ 1‿0‿1‿0‿1‿1‿1
 
+Structural Under is the same concept as a (lawful) [lens](https://ncatlab.org/nlab/show/lens+%28in+computer+science%29) in functional programming (see also [bidirectional transformation](https://en.wikipedia.org/wiki/Bidirectional_transformation)). Lenses are usually defined as getter/setter pairs, but BQN's restriction to structural functions makes an implicit setter work even for polymorphic array functions.
+
 ## Computational Under
 
 Computational Under is based on [Undo](undo.md) (`⁼`), and applies whenever structural Under doesn't. It's still limited, because Undo doesn't work on many or even most functions. One common use is with the square function `×˜`, for computations such as finding the magnitude of a vector, or a [root-mean-square](https://en.wikipedia.org/wiki/Root_mean_square) average like the one below.
