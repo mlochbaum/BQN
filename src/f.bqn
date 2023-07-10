@@ -93,11 +93,11 @@
   ⟩
 
   # Format part of a compound operation; return precedence‿string
+  Paren ← "("∾∾⟜")"
   _dispOp_ ← {
     FmtComp ← Type (3≤⊣)◶⟨0⋈·𝔽⊢, 𝕊⟩ ⊢
     k ← ⊑ d ← Decomp 𝕩
     p ← k ⊑ "00321111"-'0'
-    Paren ← "("∾∾⟜")"
     FromComp ← ∾(⌽⍟(p>1)·-0=↕∘≠)(+⟜⊑Paren∘⊢⍟((2⌊p)≤⊣)1⊸⊑)⟜FmtComp¨⊢
     s ← (2⌊|k)◶⟨⥊∘FF𝕩˙,𝕨𝔾⊢,FromComp⟩ 1↓d
     s ↩ ∾⟜"{𝔽}"⍟(3>·Type ¯1⊑d˙)⍟(2≤p) s
@@ -128,7 +128,7 @@
     (1<≠)◶⟨"⟨"∾"⟩"«∾,1↓∾⟩("‿"∾ReprAtom)¨
     "⟨"∾"⟩"«·∾(","∾RR)¨
   ⟩⟩
-  ReprArr ← (2⌊=)◶⟨"<"∾RR∘⊑,ReprList,≢∾⟜"⥊"⊸∾○ReprList⥊⟩
+  ReprArr ← (2⌊=)◶⟨Paren"<"∾RR∘⊑,ReprList,Paren≢∾⟜"⥊"⊸∾○ReprList⥊⟩
   ReprDat ← (0=Type)◶⟨ReprAtom,ReprArr⟩
   ReprOp ← 1⊑ RR _dispOp_ ("Can't represent block"!0˙)
   Repr ← Type (3≤⊣)◶⟨ReprDat⊢,ReprOp⟩ ⊢
