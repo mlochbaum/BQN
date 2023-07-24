@@ -38,7 +38,7 @@ A fill element can be either `0`, `' '`, or an array of valid fill elements. If 
 
 In addition to the requirements below, the fill element for the value of a string literal is `' '`.
 
-### Required functions
+### Required function fills
 
 Combinators `⊣⊢!˙˜´˝∘○⊸⟜⊘◶⍟` do not affect fill element computation: if the combinator calls a function that computes a fill element, then that fill element must be retained if the result is passed to other functions or returned. `⍟` constructs arrays if its right operand is or contains arrays, and the fill elements of these arrays are not specified; converting `𝕩` to a fill element is a reasonable choice in some cases but not others.
 
