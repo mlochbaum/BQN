@@ -70,11 +70,11 @@ Regardless of which cases for Undo are supported, the result of a call, and whet
 
 ### Required functions
 
-Function inverses are given for one or two arguments, with cases where inverse support is not required left blank.
+Function inverses are given for monadic and dyadic calls, with cases where inverse support is not required left blank.
 
 For arithmetic functions the implementations below may in some cases not give the closest inverse (that is, there may be some other `y` so that `F y` is closer to `x` than `F F⁼x`). Even in these cases the exact functions given below must be used.
 
-| Fn  | 1     | 2
+| Fn  | Monad | Dyad
 |-----|-------|-------
 | `+` | `+`   | `-˜`
 | `-` | `-`   | `-`
@@ -86,13 +86,13 @@ For arithmetic functions the implementations below may in some cases not give th
 
 Unlike these inverses, the logarithm function—base *e* for `⋆⁼𝕩` and base `𝕨` for `𝕨⋆⁼𝕩`—does not have any strict precision requirements.
 
-| Fn  | 1     | 2
+| Fn  | Monad | Dyad
 |-----|-------|-------
 | `⋆` | `Log` | `÷˜○Log`
 
 The following structural functions have unique inverses, except in a few cases. Dyadic `⍉` with repeated axes is excluded, and monadic `<` can only be inverted on a rank-0 array. Dyadic `⊣` is invertible only if the arguments match, and in this case any return value is valid, but in BQN the shared argument value is returned. For `/⁼` the argument must be a list of natural numbers (it's extended to handle any such list even though the range consists of non-descending ones), and the result's fill element is 0.
 
-| Fn  | 1                   | 2
+| Fn  | Monad               | Dyad
 |-----|---------------------|-------
 | `⊢` | `⊢`                 | `⊢`
 | `⊣` | `⊢`                 | `{!𝕨≡𝕩⋄𝕩}`
@@ -111,7 +111,7 @@ For a data value `k`, the inverse `𝕨k⁼𝕩` with or without a left argument
 
 Several primitives are easily and uniquely undone, but doing so is not important for BQN programming. These primitives are listed below along with suggested algorithms to undo them. Unlike the implementations above, these functions are not valid in all cases, and the inputs must be validated or the results checked in order to use them.
 
-| Fn  | 1      | 2
+| Fn  | Monad  | Dyad
 |-----|--------|-------
 | `×` | `⊢`    |
 | `∧` | `⊢`    |
@@ -127,7 +127,7 @@ Several primitives are easily and uniquely undone, but doing so is not important
 
 The following cases of Self/Swap must be supported.
 
-| Fn   | 1     | 2
+| Fn   | Monad | Dyad
 |------|-------|-------
 | `+˜` | `÷⟜2` | `+⁼`
 | `-˜` |       | `+`
