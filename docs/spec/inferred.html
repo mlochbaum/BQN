@@ -126,14 +126,14 @@
 <p>When working with limited-precision numbers, it may be difficult or impossible to exactly invert the operand function. Instead, it is generally acceptable to perform a computation that, if done with unlimited precision, would exactly invert <code><span class='Function'>𝔽</span></code> computed with unlimited precision. This principle is the basis for the numeric inverses specified below. It is also acceptable to find an inverse by numeric methods, provided that the error in the inverse value found relative to an unlimited-precision inverse can be kept close to the inherent error in the implementation's number format.</p>
 <p>Regardless of which cases for Undo are supported, the result of a call, and whether it is an error, must depend only on the values of the inputs <code><span class='Function'>𝔽</span></code>, <code><span class='Value'>𝕩</span></code>, and (if present) <code><span class='Value'>𝕨</span></code>.</p>
 <h3 id="required-functions"><a class="header" href="#required-functions">Required functions</a></h3>
-<p>Function inverses are given for one or two arguments, with cases where inverse support is not required left blank.</p>
+<p>Function inverses are given for monadic and dyadic calls, with cases where inverse support is not required left blank.</p>
 <p>For arithmetic functions the implementations below may in some cases not give the closest inverse (that is, there may be some other <code><span class='Value'>y</span></code> so that <code><span class='Function'>F</span> <span class='Value'>y</span></code> is closer to <code><span class='Value'>x</span></code> than <code><span class='Function'>F</span> <span class='Function'>F</span><span class='Modifier'>⁼</span><span class='Value'>x</span></code>). Even in these cases the exact functions given below must be used.</p>
 <table>
 <thead>
 <tr>
 <th>Fn</th>
-<th>1</th>
-<th>2</th>
+<th>Monad</th>
+<th>Dyad</th>
 </tr>
 </thead>
 <tbody>
@@ -179,8 +179,8 @@
 <thead>
 <tr>
 <th>Fn</th>
-<th>1</th>
-<th>2</th>
+<th>Monad</th>
+<th>Dyad</th>
 </tr>
 </thead>
 <tbody>
@@ -196,8 +196,8 @@
 <thead>
 <tr>
 <th>Fn</th>
-<th>1</th>
-<th>2</th>
+<th>Monad</th>
+<th>Dyad</th>
 </tr>
 </thead>
 <tbody>
@@ -254,8 +254,8 @@
 <thead>
 <tr>
 <th>Fn</th>
-<th>1</th>
-<th>2</th>
+<th>Monad</th>
+<th>Dyad</th>
 </tr>
 </thead>
 <tbody>
@@ -312,8 +312,8 @@
 <thead>
 <tr>
 <th>Fn</th>
-<th>1</th>
-<th>2</th>
+<th>Monad</th>
+<th>Dyad</th>
 </tr>
 </thead>
 <tbody>
