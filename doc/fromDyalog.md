@@ -91,9 +91,13 @@ Glyphs `+-×÷⌊⌈|⊣⊢⍉` have nearly the same meaning in BQN as APL. The 
 
 Modifiers are a little harder. Many have equivalents in some cases, but Dyalog sometimes chooses different functionality based on whether the operand is an array. In BQN an array is always treated as a constant function.
 
-| BQN    | `¨` | `⌜`  | `˝` | `` ` `` | `⎉`  | `⍟` | `˜` | `∘`  | `○` | `⟜` |
-|:------:|:---:|:----:|:---:|:-------:|:----:|:---:|:---:|:----:|:---:|:---:|
-| Dyalog | `¨` | `∘.` | `⌿` |   `⍀`   | `⍤A` | `⍣` | `⍨` | `⍤f` | `⍥` | `∘` |
+| BQN    | `¨` | `⌜`  | `˝` | `` ` `` | `˘`   | `⎉`  |
+|:------:|:---:|:----:|:---:|:-------:|:-----:|:----:|
+| Dyalog | `¨` | `∘.` | `⌿` |   `⍀`   | `⍤¯1` | `⍤A` |
+
+| BQN    | `⁼`   | `⍟` | `˜` | `∘`  | `○` | `⟜` |
+|:------:|:-----:|:---:|:---:|:----:|:---:|:---:|
+| Dyalog | `⍣¯1` | `⍣` | `⍨` | `⍤f` | `⍥` | `∘` |
 
 Some other BQN modifiers have been proposed as future Dyalog extensions:
 
@@ -105,7 +109,7 @@ Some other BQN modifiers have been proposed as future Dyalog extensions:
 
 The tables below give approximate implementations of Dyalog primitives for the ones that aren't the same. First- and last-axis pairs are also mostly omitted. BQN just has the first-axis form, and you can get the last-axis form with `⎉1`.
 
-The form `F⍣G` (Power with a function right operand; Power limit) must be implemented with recursion instead of primitives because it performs unbounded iteration. The modifier `_while_ ← {𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}` provides similar functionality without risk of stack overflow. It's discussed [here](control.md#low-stack-version) and called as `Fn _while_ Cond arg`.
+The form `F⍣G` (Power with a function right operand; Power limit) can't be implemented with primitives alone because it performs unbounded iteration. Typically `Fn •_while_ Cond arg` should be used for this functionality. The definition `_while_ ← {𝔽⍟𝔾∘𝔽_𝕣_𝔾∘𝔽⍟𝔾𝕩}` also works; it's more complicated than you might expect to avoid stack overflow, as discussed [here](control.md#low-stack-version).
 
 <table>
 <tr><th colspan=3>Functions</th></tr>
@@ -113,6 +117,7 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>*</code> </td><td colspan=2><code>⋆</code></td>                                      </tr>
 <tr><td> <code>⍟</code> </td><td colspan=2><code>⋆⁼</code></td>                                     </tr>
 <tr><td> <code>!</code> </td><td><code>×´1+↕</code>            </td><td> <code>(-÷○(×´)1⊸+)⟜↕˜</code></td></tr>
+<tr><td> …              </td><td><code>•math.Fact</code>       </td><td> <code>•math.Comb˜</code></td></tr>
 <tr><td> <code>○</code> </td><td> <code>π⊸×</code>             </td><td> <code>•math</code></td>    </tr>
 <tr><td> <code>~</code> </td><td> <code>¬</code>               </td><td> <code>¬∘∊/⊣</code></td>    </tr>
 <tr><td> <code>?</code> </td><td> <code>•rand.Range⚇0</code>   </td><td> <code>•rand.Deal</code></td></tr>
@@ -163,7 +168,7 @@ The form `F⍣G` (Power with a function right operand; Power limit) must be impl
 <tr><td> <code>f⍥g</code> </td><td colspan=2> <code>f○g</code>                       </td></tr>
 <tr><td> <code>f@v</code> </td><td colspan=2> <code>f⌾(v⊸⊏)</code>                   </td></tr>
 <tr><td> <code>f⍠B</code> </td><td colspan=2> Uh                                     </td></tr>
-<tr><td> <code>f⌸</code>  </td><td><code>⊐⊔↕∘≠</code></td><td><code>⊐⊸⊔</code>       </td></tr>
+<tr><td> <code>f⌸</code>  </td><td><code>⊔⊐</code>   </td><td><code>⊐⊸⊔</code>       </td></tr>
 <tr><td> <code>f⌺B</code> </td><td colspan=2> <code>B⊸↕</code>                       </td></tr>
 <tr><td> <code>A⌶</code>  </td><td colspan=2> <code>•Something</code>                </td></tr>
 <tr><td> <code>f&</code>  </td><td colspan=2> Nothing yet                            </td></tr>
