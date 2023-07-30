@@ -65,6 +65,7 @@ Tokenize←{System‿vars←𝕨
   nd←(t=⊑bN)>«t M bD⋄rr←t=bR                # Namespace dot; 𝕣
   w←»⊸<l←rr∨nd<t M bN(⊣⋈-˜)○⊑bW             # Word chars l, start w
   us←t=¯1++´bA⋄sy←t=⊑bW                     # Underscore, system dot
+  {!⟨𝕩/is,"𝕣 can only appear as 𝕣, _𝕣, or _𝕣_"⟩}⍟(∨´)rr∧((»<«)us)∨(»∨«)us(<∨∧⟜(»∧«))l
   {!⟨is/˜us∧w+`⊸⊏0∾𝕩,"Words can't only have underscores"⟩}⍟(∨´)w(/<1(⊢/«)(∨/⊣))l>us
   wk←(¬w/rr)×na⌊∘÷˜(⊑bA)-˜w/t               # Kind of word from first char
   t-↩na×l∧t≥na+⊑bA                          # Case-insensitive
@@ -77,7 +78,6 @@ Tokenize←{System‿vars←𝕨
   if←(»⌈`)⊸<ig←(i>us)×+`w>n                 # Identifier groups and first character
   fr←(1=wi/wt)<if/rr                        # Identifier is 𝕣-based
   w↩if∨n∧w0←w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr          # Don't produce an identifier for 𝕣
-  {!⟨𝕩/is,"𝕣 can't be used with other word characters"⟩}⍟(∨´)(i>us)∧(rr⊸≠∨if⊸<)ig⊏0∾fr
   {!⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/rr<if
   ig⊏↩1-˜0∾+`⊸×¬fr
   id←vars⊸∾⌾⊑(ws∾2)⊔ig⊔t⊏charSet            # ⟨Identifiers, system values⟩
