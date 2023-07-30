@@ -75,17 +75,19 @@ Tokenize←{System‿vars←𝕨
   i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
-  if←(»⌈`)⊸<ig←(i>us∨rr)×+`w>n∨rr∨us∧«rr    # Identifier groups and first character
-  w↩if∨rr∨n∧w0←w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr       # Don't produce an identifier for 𝕣
+  iu←w>n∨fr←rr∨us∧«rr                       # Starts of 𝕣 tokens, and non-𝕣 identifiers
+  if←(»⌈`)⊸<ig←(i>us∨rr)×+`iu               # Identifier groups and first character
+  wu←if∨n∧w⋄ws←iu/sy                        # Starts of non-𝕣 words; system identifiers
   {!⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/if
   id←vars⊸∾⌾⊑(ws∾2)⊔(ig-1)⊔t⊏charSet        # ⟨Identifiers, system values⟩
 
   # Deduplicate literals and identifiers; other cleanup
-  ki←(wt⍒⊸⊏/w>rr)∾(ci∾/si)⊏+`»f             # Indices in t
+  ki←((wt/˜¬w/fr)⍒⊸⊏/wu)∾(ci∾/si)⊏+`»f      # Indices in t
   k←id∾num‿chr‿str⋄k(⊢>¯1»⌈`)⊸/¨˜↩j←⊐¨k     # IDs j into uniques k
   k↩System⌾(1⊸⊑)k                           # System value lookup
-  wf←¬l∨t M bW⋄is/˜↩wf∨w0⋄ie/˜↩wf∨>⟜«l      # Index management for...
-  t↩(w∨wf)/(vars≠⊸↓∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t  # Add IDs; remove words/whitespace
+  wf←¬l∨t M bW⋄is/˜↩wf∨w⋄ie/˜↩wf∨>⟜«l       # Index management for...
+  t↩(vars≠⊸↓∾j++`vd»kk←≠¨k)⌾(ki⊸⊏)t         # Add IDs
+  t/˜↩rr∨wu∨wf                              # Remove words/whitespace
   t-↩t(M×-⟜⊑)bS                             # Separators are equivalent
   p←≠`1¨sb←¯1↓1↓/1(∾≠∾˜)t=sep               # Separator group boundaries (excludes leading and trailing)
   eb←3‿5‿7+⊑bB                              # End brackets that allow separators
