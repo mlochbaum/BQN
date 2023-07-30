@@ -75,12 +75,10 @@ Tokenize←{System‿vars←𝕨
   i←l>n←l∧(+`w)⊏0∾¬wi                       # Identifier/Number masks
   num←is ReadNums○(((0∾us)<∨⟜«0∾n)/0⊸∾) t×l # Numbers
   ir←(us/˜«⊸<i)(⊢+∧⟜(2⊸=))wi/wk             # Identifier role
-  if←(»⌈`)⊸<ig←(i>us)×+`w>n                 # Identifier groups and first character
-  fr←(1=wi/wt)<if/rr                        # Identifier is 𝕣-based
-  w↩if∨n∧w0←w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr          # Don't produce an identifier for 𝕣
-  {!⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/rr<if
-  ig⊏↩1-˜0∾+`⊸×¬fr
-  id←vars⊸∾⌾⊑(ws∾2)⊔ig⊔t⊏charSet            # ⟨Identifiers, system values⟩
+  if←(»⌈`)⊸<ig←(i>us∨rr)×+`w>n∨rr∨us∧«rr    # Identifier groups and first character
+  w↩if∨rr∨n∧w0←w⋄ws←1=0⊸<⊸/wt/˜↩¬w/rr       # Don't produce an identifier for 𝕣
+  {!⟨is⊏˜𝕩/𝕨,"Numbers can't start with underscores"⟩}⍟(∨´⊢)⟜(ws<(⊑bA)>⊏⟜t)/if
+  id←vars⊸∾⌾⊑(ws∾2)⊔(ig-1)⊔t⊏charSet        # ⟨Identifiers, system values⟩
 
   # Deduplicate literals and identifiers; other cleanup
   ki←(wt⍒⊸⊏/w>rr)∾(ci∾/si)⊏+`»f             # Indices in t
