@@ -112,14 +112,19 @@ ReadNums←{
   "Portion of a number is empty"_err_𝕨 (1«s)∧n∨s
   "Ill-formed decimal or exponent use"_err_(s/𝕎) ¬(0⊸=∨»⊸<)s/𝕩
   "π and ∞ must occur alone"_err_𝕨 (p∨i)>1(»∧(p∧«e)∨«)z∨n>»e
-  f←(17≥¬(⊢-T)+`)⊸∧g←(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m # No leading 0s; max 17 digits
-  l←(¯1∾π‿1∾↕10)⊏˜(¬d)/f×𝕩-1+⊑bN            # Digit lookup, with ∞ as 1 to avoid ∞×0
-  v←(>⟜«0≤l)/0(0⊸≤××⟜10⊸+)`l                # Numeric values—mantissas and exponents
-  v×↩1‿¯1⊏˜(r←>⟜»m)/»n                      # Negate if ¯
-  vm←c/z                                    # Mask of mantissas in l
-  dp←vm/f(--»⊸-(<×⊢)⊏⟜(I1T«d)⊸-)○(/>⟜«)g    # Decimal position
-  t←10⋆|ee←dp-˜vm/«v×¬vm                    # Power of 10
-  t÷˜⌾((0>ee)⊸/)t×⌾((0<ee)⊸/)vm/v×(r/i)⊏1‿∞ # Correct ∞ then ×10⋆ee
+  l←(¬(⊢-T)·+`d⊸<)g←(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m  # No leading 0s
+  k‿dp←d¬⊸(/⋈1⊸»⊸/)○((d∨>⟜«g)⊸/)l           # Length, decimal position
+  NN←(1«0⊸=)/0(0⊸≤××⟜10⊸+)`⊏⟜(¯1∾π‿1∾↕10)   # Digit lookup has ∞ as 1 to avoid ∞×0
+  PN←NN(«⊸>∨d⊸<)/(𝕩-1+⊑bN)⊸×                # Evaluate numbers given mask
+  va←(∨´k>15)◶PN‿{                          # Numeric values—mantissas and exponents
+    𝕩∧↩20≥l⋄k⌊↩20                           # Cap at 20 digits
+    𝕩>↩f←𝕩∧l≤(+`»⊸<𝕩)⊏0∾te←0⌈k-15           # Handle trailing ≤15 normally
+    (1e15×PN f)⊸+⌾((te>0)⊸/) PN 𝕩           # Leading part
+  } g
+  v←va×1‿¯1⊏˜(r←>⟜»m)/»n                    # Negate if ¯
+  vm←c/○(1»«)z                              # Mask of mantissas in v
+  q←10⋆|ee←vm/(k-dp)-˜«v×¬vm                # Power of 10
+  q÷˜⌾((0>ee)⊸/)q×⌾((0<ee)⊸/)vm/v×(r/i)⊏1‿∞ # Correct ∞ then ×10⋆ee
 }
 
 
