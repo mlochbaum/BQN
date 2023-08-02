@@ -84,6 +84,18 @@ All of these methods can write past the end of the result (and an AVX2 masked wr
 
 Finally, when you don't have a shuffle instruction, the best method I know is just to generate indices in blocks using a table and select with those one at a time.
 
+### Boolean compress
+
+When you don't have pext you have to emulate it. The only good published method I know of is in Hacker's Delight 7-6, due to Guy Steele. And I found a different way, which I'll call pairwise, when working at Dyalog. Both take log²(w) instructions for word size w using generic instructions; Guy Steele's comes down to log(w) with carry-less multiply. Comparing the two really makes it seem like the extra log(w) factor is incidental, but I haven't been able to get rid of it.
+
+The basic movement strategy is the masked shift `(x & m)>>sh | (x &~ m)`. Combining shifts for `sh` of 1, 2, 4, up to `2⋆k-1`, with variable masks, any variable shift strictly less than `2⋆k` can be obtained. Each bit needs to eventually be shifted down by the number of zeros below it. The challenge is producing these masks, which need to line up with bits of `x` at the time it's shifted.
+
+My method resolves this by building up groups with pairwise combination: at each step only the top group in a pair moves, by the number of zeros in the bottom group. So the top groups can be pulled out and shifted together, and the mask when it's shifted spans both top and bottom groups. Zero counts come from pairwise sums, and the final one can be used to get the total number of 1s needed for Compress's loop. To avoid the wide shifts in later steps, stop, get total counts with a multiply (e.g. by 0x010101...), and finish with sequential shifts. SIMD variable shifts could also be used for these last steps. The masked shifting wastes nearly a whole bit: for example merging groups of size 4 may need a shift anywhere from 0 to 4, requiring 3 bits but the top one's only used for 4 exactly! I found some twiddling that mitigates this by not using this bit but instead leaving a group out of the shifted part if it would shift by 0.
+
+Guy Steele shifts each bit directly by the right amount, that is, the number of zeros below it. So the first shift mask is ``≠`»¬𝕨``, and later shifts are also constructed with xor-scan, but where `𝕨` is filtered to every other bit, then every 4th, and so on. This filtering uses the result of `` ≠` ``, leading to a long dependency chain. Also the bits originating from `𝕨` have to be shifted down along with `𝕩`. Overall, I've found it's slower than pairwise when using shifts and xors for the xor-scan, and faster when using carry-less multiply by the all-1s word. Margins of nearly 2x in both cases.
+
+Multiple rounds of xor-scan is a complicated thing to do, considering that all it _does_ do is a prefix sum that could just as easily be (carry-ful) multiplication! It feels like going from 8 bits to 64 in the pairwise method, which I now use sequential shifts for, should have some Guy Steele version that's parallel and reasonably fast. The issue is that the shift amounts, which are 6-bit numbers, have to be moved along with the groups, which are 0 to 8 bits. So if this process brings two of them too close, they'll overlap and get mangled.
+
 ### Sparse compress
 
 When `𝕨` is sparse (or `𝕩` for Indices), that is, has a small sum relative to its length, there are methods that lower the per-input cost by doing more work for each output.
