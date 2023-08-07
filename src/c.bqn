@@ -28,7 +28,7 @@ Pl←∾⟜("s"/˜1<≠)   # Pluralize
 _tmpl←{∾𝕗{𝕎𝕩}¨<𝕩} # Template
 # Convert characters to numbers, mostly the same as tokens
 CharCode←charSet{
-  ErrUnknownChars←!⟨"Unknown character"⊸Pl,": ",⊢⟩_tmpl
+  ErrUnknownChars←!⟨"Unknown character"⊸Pl,": ","'"⊸(∾∾⊣)⍟(1=≠)⟩_tmpl
   Chk ← ⊢⊣ErrUnknownChars∘(≠/⊣)⍟≢⟜(⊏⟜𝕗)
   (! "Character set conflict: "∾gf/˜0⊸∾)⍟(∨´) 1(↓=-⊸↓)gf←(g←⍋𝕗)⊏𝕗
   ⊢ Chk g⊏˜1-˜1⌈gf⍋⊢
