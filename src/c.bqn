@@ -344,7 +344,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
                24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,¯1↓rc←7+nf⟩
   # Instruction source positions
   ui←8‿13‿14(⊏⟜(»+`)+⟜↕¨⊏)(≠idor)∾≠¨oil  # at,oa+…,fl locations
-  oj←(g⊏˜∾⟨at-1‿0/˜≠¨ai‿hj,oa,fa⟩)⌾((∾ui)⊸⊏)oi
+  oj←(∾1⊸+⌾(2⊸⊑)⊏⟜g¨⟨at-1‿0/˜≠¨ai‿hj,oa,fa-1⟩)⌾((∾ui)⊸⊏)oi
   ind←⟨oj,(g⊏˜fa⊏IT»¬ro∨ma)⌾((¯1⊑ui)⊸⊏)oj⟩(¯1∾˜or⊸⊏)⊸⊏¨i‿e
   # Indices for multi-body blocks
   cm∨↩(fx∧1≠cw)∨0<ut↩ut⌾(ch⊸/)ch            # Dyad- and inverse-only generate as multiple
