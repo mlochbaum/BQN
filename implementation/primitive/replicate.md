@@ -88,6 +88,8 @@ Finally, when you don't have a shuffle instruction, the best method I know is ju
 
 When you don't have pext you have to emulate it. The two good published methods I know are described in Hacker's Delight. The one given in 7-4 is due to Guy Steele, and sketched in 7-6 is another method I'll call "pairwise"—the book says it isn't practical in software but it works well if finished with sequential shifts. Both take log²(w) instructions for word size w using generic instructions; comparing the two makes it seem like the extra log(w) factor is incidental, but I haven't been able to get rid of it. However, they also vectorize, and are log(w) with the right instruction support: carry-less multiply (x86 PCLMUL, NEON) for Guy Steele and vector-variable shifts (AVX2, SVE) for pairwise.
 
+On Zen, Zen+, and Zen 2 architectures, pext is micro-coded as a loop over set bits and should not be used. The cost ranges from a few cycles to hundreds; measurements such as uops.info apparently use an argument that's 0 or close to it, so they underreport.
+
 Slowest to fastest with 64-bit words on x86:
 * Guy Steele generic
 * Pairwise generic, sequential shifts after reaching 8 bits
