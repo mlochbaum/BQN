@@ -28,7 +28,7 @@ When working with a sequence of data such as text, daily measurements, or audio 
 
         +` -⟜» s   # Same as s
 
-In this way `»` refers to a sequence containing the previous element at each position. By default the array's fill is used for the element before the first, and a right argument can be given to provide a different one.
+In this way `»` refers to a sequence containing the previous element at each position. By default the array's fill is used for the element before the first, and a left argument can be given to provide a different one.
 
         ∞ » s
 
