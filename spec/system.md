@@ -16,6 +16,7 @@ All system values described in the BQN specification are optional: an implementa
 | [Files](#files) ([paths](#file-paths), [metadata](#file-metadata), [access](#file-access), [opened](#open-file-object)) | `•file`, `•FChars`, `•FLines`, `•FBytes`
 | [Input and output](#input-and-output) ([terminal](#terminal-io)) | `•Out`, `•Show`, `•Repr`, `•Fmt`, …, `•term`
 | [Interface](#interface) ([FFI](#foreign-function-interface)) | `•SH`, `•FFI`
+| [Platform](#platform) | `•platform`
 | [Operation properties](#operation-properties) | `•Type`, `•Glyph`, `•Source`, `•Decompose`
 | [Namespaces](#namespaces) | `•ns`
 | [Time](#time) | `•UnixTime`, `•Delay`, `•_timed`, …
@@ -241,6 +242,28 @@ A **pointer** such as `*u8` comes from a BQN list. If the symbol `&` is used rat
 The letter `a` indicates that a **BQN value** is to be passed directly, interpreted in whatever way makes sense for the implementation. A plain `*` indicates an **opaque pointer**, to be mapped to a BQN value of namespace type. The behavior of this value is not yet specified. The **array** and **struct** types indicate C structs and arrays, and correspond to BQN lists.
 
 The `bqn` value in a `conv` term indicates a BQN element type to be used. It can be appear after the whole type, or any member of a struct, and applies to the final component (that is, `type` term) of the type *and* one preceding `*`, `&`, or `[n]` if present (if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._cast`. The C type is treated as pure data, a stream of bits. For a prefix `*` or `&`, the data in question is the region of memory pointed to.
+
+## Platform
+
+The platform is the set of mechanisms responsible for evaluating the current instance of BQN, including CPU, operating system, host language, and the BQN implementation itself, when applicable. System namespace `•platform` contains information about it.
+
+| Name              | Summary
+|-------------------|--------------------------
+| `os`              | Operating system: "linux", "windows"
+| `environment`     | What evaluates the implementation: "native", "wasm", "jvm"
+| `cpu.arch`        | Instruction set architecture of the CPU: "x86-64", "aarch64"
+| `bqn.impl`        | Name of the BQN implementation: "CBQN", "JS BQN"
+| `bqn.implVersion` | Implementation-specific version numbering
+
+`os`, `environment`, and `cpu.arch` are reported in all lowercase. The value `"unknown"` is used if that aspect of the platform can't be determined, and `"none"` if it's not present.
+
+The operating system is the tool that manages system resources such as processes, files, and devices. When there are multiple OS layers, for example when using a VM or compatibility layer, the one that directly interfaces with BQN (the lowest or "most virtual") should be chosen.
+
+The environment is the system that evaluates the BQN implementation, generally either the hardware itself ("native") or a language runtime such as Javascript, the JVM, WebAssembly (Wasm), or Julia.
+
+Namespace `•platform.cpu` reports CPU information, with `arch` giving its base instruction set architecture. When run on an emulated CPU the emulated architecture may be reported, that is, native-compiled BQN implementations may simply report their compilation target.
+
+Namespace `•platform.bqn` reports information about the implementation of BQN in use. The format of its name and version numbering can be freely chosen by the implementation. Taken together, these should uniquely identify the source code of the running implementation if possible.
 
 ## Operation properties
 
