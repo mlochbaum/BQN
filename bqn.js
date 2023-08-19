@@ -132,6 +132,18 @@ sysvals.getline = () => {
   return str(r.slice(0,-1));
 }
 
+sysvals.platform = dynsys(_ => {
+  let ja = ['ia32', 'x64',    'arm',     'arm64'  ];
+  let ba = ['x86',  'x86-64', 'aarch32', 'aarch64'];
+  let a = process.arch; let ai = ja.indexOf(a);
+  let cpu = makens(["arch"], [str(ai>=0 ? ba[ai] : a)]);
+  let bqn = makens(["impl"], [str("JS BQN")]);
+  return makens(
+    ["os",                  "environment","cpu","bqn"],
+    [str(process.platform), str("nodejs"), cpu,  bqn ]
+  );
+});
+
 sysargs.resolve = sysargs.parres = getres();
 let push_state = st => { st.parres = st.resolve; }
 let update_state = (st,w) => {
