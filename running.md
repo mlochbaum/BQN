@@ -45,6 +45,10 @@ Support in the following languages has been implemented:
 
 The file [docs/bqn.js](docs/bqn.js) is zero-dependency Javascript, and can be loaded from HTML or Node.js. For command line use, call the Node.js script [bqn.js](bqn.js), passing a file and `•args`, or `-e` to execute all remaining arguments directly and print the results.
 
+## BQN.rkt
+
+[BQN.rkt](https://github.com/Nesuniken/BQN.rkt) is an independent implementation entirely in Racket, with primitives that operate on native Racket arrays (as these are multi-dimensional) and a compiler that converts from BQN to Racket syntax. It's incomplete as of this writing.
+
 ## dzaima/BQN
 
 [dzaima/BQN](https://github.com/dzaima/BQN/) is an implementation in Java created by modifying the existing dzaima/APL, and should be easy to run on desktop Linux and Android. It was historically the main implementation, but is now updated only to stay up to date with language changes. Major missing functionality is dyadic Depth (`⚇`) and set functions `⊐⊒∊⍷` with rank >1, and there are various small differences from the BQN spec, mostly to do with rank, handling of atoms, fills, and headers. It uses UTF-16 instead of UTF-32, so that characters like `𝕩` don't behave correctly.
