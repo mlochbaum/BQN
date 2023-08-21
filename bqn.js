@@ -133,14 +133,15 @@ sysvals.getline = () => {
 }
 
 sysvals.platform = dynsys(_ => {
-  let ja = ['ia32', 'x64',    'arm',     'arm64'  ];
-  let ba = ['x86',  'x86-64', 'aarch32', 'aarch64'];
+  let ja = ["ia32", "x64",    "arm",     "arm64"  ];
+  let ba = ["x86",  "x86-64", "aarch32", "aarch64"];
   let a = process.arch; let ai = ja.indexOf(a);
   let cpu = makens(["arch"], [str(ai>=0 ? ba[ai] : a)]);
   let bqn = makens(["impl"], [str("JS BQN")]);
+  let os = process.platform; if (os==="win32") os="windows";
   return makens(
-    ["os",                  "environment","cpu","bqn"],
-    [str(process.platform), str("nodejs"), cpu,  bqn ]
+    ["os",    "environment","cpu","bqn"],
+    [str(os), str("nodejs"), cpu,  bqn ]
   );
 });
 

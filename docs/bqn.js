@@ -793,10 +793,14 @@ let rand = (() => {
   return makens(["range", "deal", "subset"], [range, deal, subset]);
 })();
 
-let platform = dynsys(_ => makens(
-  ["environment", "bqn"],
-  ["javascript",  makens(["impl"],[str("JS BQN")])]
-));
+let platform = dynsys(_ => {
+  let unk = str("unknown");
+  let ns = (k,v) => makens([k], [v]);
+  return makens(
+    ["os", "environment",     "cpu",          "bqn"],
+    [unk,  str("javascript"), ns("arch",unk), ns("impl",str("JS BQN"))]
+  );
+});
 
 let sysvals = {
   bqn:dynsys_copy(makebqnfn("•BQN",r=>run(...r))), rebqn, primitives,
