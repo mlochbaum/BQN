@@ -113,8 +113,9 @@ ReadNums←{
   "Portion of a number is empty"_err_𝕨 (1«s)∧n∨s
   "Ill-formed decimal or exponent use"_err_(s/𝕎) ¬(0⊸=∨»⊸<)s/𝕩
   "π and ∞ must occur alone"_err_𝕨 (p∨i)>1(»∧(p∧«e)∨«)z∨n>»e
-  l←(¬(⊢-T)·+`d⊸<)g←(«≤(d<𝕩≠⊑bD)>○I1T¬)⊸∧m  # No leading 0s
-  k‿dp←d¬⊸(/⋈1⊸»⊸/)○((d∨>⟜«g)⊸/)l           # Length, decimal position
+  l←(¬(⊢-T)·+`d⊸<)g←(«≤(d<y←𝕩≠⊑bD)>○I1T¬)⊸∧m# No leading 0s
+  la←d×(»¬(⊢-T)+`)⌾⌽¬g∨y                    # Adjust dp for dropped 0s after decimal
+  k‿dp←d¬⊸(/⋈1⊸»⊸/)○((d∨>⟜«g)⊸/)l-la        # Length, decimal position
   NN←(1«0⊸=)/0(0⊸≤××⟜10⊸+)`⊏⟜(¯1∾π‿1∾↕10)   # Digit lookup has ∞ as 1 to avoid ∞×0
   PN←NN(«⊸>∨d⊸<)/(𝕩-1+⊑bN)⊸×                # Evaluate numbers given mask
   va←(∨´k>15)◶PN‿{                          # Numeric values—mantissas and exponents
