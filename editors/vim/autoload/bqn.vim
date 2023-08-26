@@ -6,6 +6,6 @@ fu bqn#t() "toggle status line
  let&ls=2|let&stl='%{bqn#l()}'
 endf
 fu bqn#l() "render content of status line
- let c=substitute(getline('.')[col('.')-1:],'\(\_.\)\_.*','\1','')
+ let c=substitute(getline('.')[col('.')-1:]." ",'\(\_.\)\_.*','\1','')
  for x in s:a|if c=~#x[:len(c)-1]|retu x|en|endfo|retu c
 endf
