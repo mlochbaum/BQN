@@ -6,14 +6,21 @@
 , Separator
 : Header separator
 ; Body separator
+? Predicate
+. Decimal, Namespace field
 ( Begin expression
 ) End expression
 { Begin function or modifier
 } End function or modifier
 ⟨ Begin list
 ⟩ End list
+[ Begin array
+] End array
 ‿ Strand
 · Nothing
+∞ Infinity
+¯ Minus
+π Pi
 @ Null character
 ' Character
 " String (list of characters)
@@ -83,6 +90,7 @@
 ⌾ Under | {𝔾⁼∘𝔽○𝔾} | OR {(𝔾𝕩)↩𝕨𝔽○𝔾𝕩⋄𝕩} Apply 𝔽 over 𝔾, then undo 𝔾
 ⊘ Valences | {𝔽𝕩;𝕨𝔾𝕩} | Apply 𝔽 if there's one argument but 𝔾 if there are two
 ◶ Choose | {f←(𝕨𝔽𝕩)⊑𝕘 ⋄ 𝕨F𝕩} | Select one of the functions in list 𝕘 based on 𝔽
+⎊ Catch
 ˘ Cells
 ⎉ Rank
 ¨ Each
