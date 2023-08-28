@@ -7,5 +7,5 @@ fu bqn#t() "toggle status line
 endf
 fu bqn#l() "render content of status line
  let c=substitute(getline('.')[col('.')-1:]." ",'\(\_.\)\_.*','\1','')
- for x in s:a|if c=~#x[:len(c)-1]|retu x|en|endfo|retu c
+ for x in s:a|if c=~#'\V'.x[:len(c)-1]|retu x|en|endfo|retu c
 endf
