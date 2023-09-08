@@ -22,6 +22,7 @@ See also:
 - Miguel Raz's [Anki deck](https://github.com/miguelraz/miguelraz.github.io/blob/e772dc681330b37544a55d38b3d1537699616420/ankis/bqn-glyphs.apkg), from [this page](https://miguelraz.github.io/teaching/) of resources
 - Asher Mancinelli's [youtube channel](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) includes walkthroughs of BQN programs, and a few of Conor Hoekstra's [videos](https://www.youtube.com/c/codereport/videos) have BQN sections as well.
 - Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh?tab=notebooks) based on BQN.
+- [barbell](https://github.com/jhvst/barbell) templating system with [blog post](https://juuso.dev/blogPosts/barbell/barbell.html) about Under.
 - [bqrpn](https://yiyus.info/bqrpn/) is a reverse-Polish calculator powered by BQN in Javascript.
 - [bqnsweeper](https://dancek.github.io/bqnsweeper/) is a minesweeper game that shows you its BQN source code.
 
