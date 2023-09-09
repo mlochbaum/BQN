@@ -16,7 +16,7 @@
 </pre>
 <p>To pass, the right argument must be exactly the number <code><span class='Number'>1</span></code>; any other value causes an error. For example, an array of <code><span class='Number'>1</span></code>s still causes an error; use <code><span class='Function'>∧</span><span class='Modifier'>´</span><span class='Function'>⥊</span></code> to convert a boolean array to a single boolean that indicates whether all of its values are true.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ISAo4oinPeKIqOKMvsKsKeKMnMucIOKGlTIKCiEg4oinwrTipYogKOKIpz3iiKjijL7CrCnijJzLnCDihpUy">↗️</a><pre>    <span class='Function'>!</span> <span class='Paren'>(</span><span class='Function'>∧=∨</span><span class='Modifier2'>⌾</span><span class='Function'>¬</span><span class='Paren'>)</span><span class='Modifier'>⌜˜</span> <span class='Function'>↕</span><span class='Number'>2</span>
-<span class='Error'>Error: 2‿2⥊1‿1‿1‿1</span>
+<span class='Error'>Error: (2‿2⥊1‿1‿1‿1)</span>
 
     <span class='Function'>!</span> <span class='Function'>∧</span><span class='Modifier'>´</span><span class='Function'>⥊</span> <span class='Paren'>(</span><span class='Function'>∧=∨</span><span class='Modifier2'>⌾</span><span class='Function'>¬</span><span class='Paren'>)</span><span class='Modifier'>⌜˜</span> <span class='Function'>↕</span><span class='Number'>2</span>
 1
