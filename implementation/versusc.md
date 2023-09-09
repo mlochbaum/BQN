@@ -54,7 +54,7 @@ A major factor that separates low- and high-performance programs in both C and B
 
 All right, how can I so confidently claim that CBQN can—sometimes—be faster than C in practice? First off, there's a certain class of problems where it's routine: BQN primitives. Every one that does anything, really. Scan, Transpose, Indices, Sort, Modulus, Reshape. And so on. We write the ordinary C implementation, and it's just not good enough, so we have to use lookup tables, SIMD, blocked multi-pass techniques, and more. A 10x improvement over ordinary C code is completely normal. But this is the best possible case for BQN; combinations of primitives never do so well.
 
-Small real-world problems can still show a major difference. In my first talk at Dyalog ([video](https://dyalog.tv/Dyalog17/?v=2KnrDmZov4U), [zipped slides](https://www.dyalog.com/uploads/conference/dyalog17/presentations/D08_Moving_Bits_Faster_in_Dyalog_16.zip)), as well as a follow-up next year ([video](https://dyalog.tv/Dyalog18/?v=-6no6N3i9Tg), [zipped slides](https://www.dyalog.com/uploads/conference/dyalog18/presentations/D15_The_Interpretive_Advantage.zip)), I considered the problem of replacing every CRLF line ending in a file with just the second character LF. BQN nails this one, breaking even with C at a little under 200 bytes and hitting 4x C's speed on inputs of a few thousand bytes or more in my testing.
+Small real-world problems can still show a major difference. In my first talk at Dyalog ([video](https://dyalog.tv/Dyalog17/?v=2KnrDmZov4U), [zipped slides](https://www.dyalog.com/uploads/conference/dyalog17/presentations/D08_Moving_Bits_Faster_in_Dyalog_16.zip)), as well as a follow-up next year ([video](https://dyalog.tv/Dyalog18/?v=-6no6N3i9Tg), [zipped slides](https://www.dyalog.com/uploads/conference/dyalog18/presentations/D15_The_Interpretive_Advantage.zip)), I considered the problem of replacing every CRLF line ending in a file with just the second character LF. BQN nails this one, breaking even with C at a little under 200 bytes and hitting 5x C's speed on inputs of a few thousand bytes or more in my testing. That's with AVX-512 disabled; with it BQN is over 10x faster until cache becomes a bottleneck.
 
 <details><summary>(Benchmark details)</summary>
 
@@ -71,7 +71,7 @@ lineending.bqn:
 
     ls ← ≤⟜n⊸/ ⥊(10⋆2+↕5)×⌜1‿3
     Disp ← { •Out "ns/elt" ∾˜ ∾ ∾⟜" "¨ ¯7‿8 ↑⟜•Repr¨ 𝕩 }
-    {𝕊l: Disp l ⋈ 1e9×l÷˜ (⌊1e8÷l) CRLF_to_LF•_timed l↑str}¨ ls
+    {𝕊l: Disp l ⋈ 1e9×l÷˜ (⌊5e8÷l) CRLF_to_LF•_timed l↑str}¨ ls
 
 lineending.c:
 
@@ -118,7 +118,7 @@ lineending.c:
         r = (16807*r) % ((1ull<<31)-1);
       }
       for (size_t l=100, l0=l; l<=n; l=l==l0?3*l:(l0*=10)) {
-        size_t k = 100000000/l;
+        size_t k = 500000000/l;
         size_t t = monoclock();
         for (size_t i=0; i<k; i++) crlf_to_lf(dst, str, l);
         t = monoclock()-t;
@@ -126,47 +126,62 @@ lineending.c:
       }
     }
 
-And the benchmark run, on [Skylake i5-6200U](https://www.intel.com/content/www/us/en/products/sku/88193/intel-core-i56200u-processor-3m-cache-up-to-2-80-ghz/specifications.html):
+And the benchmark run, on [Tiger Lake i5-1135G7](https://www.intel.com/content/www/us/en/products/sku/208658/intel-core-i51135g7-processor-8m-cache-up-to-4-20-ghz/specifications.html):
 
     $ clang --version
     clang version 15.0.7
-    Target: x86_64-pc-linux-gnu
+    Target: x86_64-unknown-linux-gnu
     Thread model: posix
     InstalledDir: /usr/bin
 
-    $ bqn --version
-    CBQN on commit 37a32eb15aa5b84c6de0ff38e3e6a8bb9deace27
-    built with FFI, singeli native, replxx
+    $ clang -O3 -march=native lineending.c && ./a.out
+        100 0.613074 ns/elt
+        300 0.574972 ns/elt
+       1000 0.560992 ns/elt
+       3000 0.556508 ns/elt
+      10000 0.555551 ns/elt
+      30000 0.554987 ns/elt
+     100000 0.554504 ns/elt
+     300000 0.554786 ns/elt
+    1000000 0.555487 ns/elt
 
-    $ clang -O3 -march=native lineending.c && ./a.out 
-        100 0.962381 ns/elt
-        300 0.984179 ns/elt
-       1000 0.954827 ns/elt
-       3000 0.945883 ns/elt
-      10000 0.940789 ns/elt
-      30000 0.942023 ns/elt
-     100000 0.944624 ns/elt
-     300000 0.946744 ns/elt
-    1000000 0.949474 ns/elt
+    $ bqn --version
+    CBQN on commit 0d2631a2278fab44164f4619a1a8c295fe674fa0
+    built with FFI, singeli x86-64 avx2 bmi2 pclmul, replxx
 
     $ bqn lineending.bqn 
-        100 1.704639 ns/elt
-        300 0.722982 ns/elt
-       1000 0.375611 ns/elt
-       3000 0.266764 ns/elt
-      10000 0.246397 ns/elt
-      30000 0.232525 ns/elt
-     100000 0.233962 ns/elt
-     300000 0.249174 ns/elt
-    1000000 0.279573 ns/elt
+        100 0.893145 ns/elt
+        300 0.396408 ns/elt
+       1000 0.187448 ns/elt
+       3000 0.127288 ns/elt
+      10000 0.106085 ns/elt
+      30000 0.094272 ns/elt
+     100000 0.096406 ns/elt
+     300000 0.095310 ns/elt
+    1000000 0.107455 ns/elt
+
+    $ bqn --version
+    CBQN on commit 0d2631a2278fab44164f4619a1a8c295fe674fa0
+    built with FFI, singeli native x86-64, replxx
+
+    $ bqn lineending.bqn 
+        100 0.838992 ns/elt
+        300 0.319644 ns/elt
+       1000 0.129420 ns/elt
+       3000 0.072258 ns/elt
+      10000 0.052556 ns/elt
+      30000 0.050635 ns/elt
+     100000 0.053703 ns/elt
+     300000 0.052985 ns/elt
+    1000000 0.078744 ns/elt
 
 </details>
 
 Larger problems are more mixed. Our best real-world comparison on a comparable problem is the [compiler benchmark](bootbench.md), which showed a 35% advantage for the BQN implementation. [Here](codfns.md#is-it-a-good-idea) I described compiling as being intermediate in terms of how good it is for array programming. Naturally array-oriented tasks like data crunching can be better, although C can auto-vectorize simpler ones. And as array programming is a limited programming, there's no guarantee a problem will fit. If you have to use sequential code for a significant part of the program, BQN will end up a lot slower.
 
-Another test case is JSON parsing. While I haven't comprehensively benchmarked [json.bqn](https://github.com/mlochbaum/bqn-libs/blob/master/primes.bqn), it runs at 20 to 50 MB/s for typical structures, which is competitive with some C parsers but well short of more optimized efforts like RapidJSON or simdjson.
+Another test case is JSON parsing. While I haven't comprehensively benchmarked [json.bqn](https://github.com/mlochbaum/bqn-libs/blob/master/primes.bqn), it runs at 40 to 100 MB/s for typical structures, which is competitive with some C parsers but well short of more optimized efforts like RapidJSON or simdjson.
 
-I spent some time optimizing the prime sieve in [primes.bqn](https://github.com/mlochbaum/bqn-libs/blob/master/primes.bqn) for bqn-libs, and ended up with a `PrimesTo` function that computes the primes under a billion in 2.2 seconds. This is in the ballpark of typical C wheel sieves. It's actually faster than J's `p:`, which is implemented in C and takes 7.1 seconds, but is beaten by [ngn/k's](https://codeberg.org/ngn/k/src/branch/master/4.c) at 1.2 seconds. The serious sieves like one [by Kim Walisch](https://github.com/kimwalisch/primesieve/) with piles of cache-aware code run much faster than any of these.
+I spent some time optimizing the prime sieve in [primes.bqn](https://github.com/mlochbaum/bqn-libs/blob/master/primes.bqn) for bqn-libs, and ended up with a `PrimesTo` function that computes the primes under a billion in 1.1 seconds. This is in the ballpark of typical C wheel sieves. It's actually faster than J's `p:`, which is implemented in C and takes 3.1 seconds, but is beaten by [ngn/k's](https://codeberg.org/ngn/k/src/branch/master/4.c) at 0.7 seconds. The serious sieves like one [by Kim Walisch](https://github.com/kimwalisch/primesieve/) with piles of cache-aware code run much faster than any of these.
 
 ## When to use BQN?
 
@@ -184,7 +199,7 @@ On the other end, some programs naturally work in terms of long arrays, and thes
 
 BQN has definite disadvantages relative to C, because it doesn't have static type information and doesn't do a significant amount of optimization when it compiles—every primitive is a function call, except the operands to some modifiers like `+´`. To make up for this, there are a number of advantages that are perhaps less obvious. Broadly speaking, a C program contains more optimization information than a BQN one, but this information (even if it's well chosen!) can tie the compiler down and prevent optimization as much as it can enable it.
 
-Now, I can't really say it's impossible for some future C compiler to sift out what information is important and what isn't, and build a program that's perfectly suited to what you want to do. It would be fighting its own source language to get there, and may have to do crazy things like guess constraints on program input that you expect but haven't checked for. Besides, if you're hoping for radical implementation improvements, you might bet on the language that's a few years old, not the one that's been around for 50?
+Now, I can't really say it's impossible for some future C compiler to sift out what information is important and what isn't, and build a program that's perfectly suited to what you want to do. It would be fighting its own source language to get there, and may have to do crazy things like guess constraints on program input that you expect but haven't checked for. And if you're hoping for radical implementation improvements, you might bet on the language that's a few years old, not the one that's been around for 50?
 
 ### High-level versus low-level
 
@@ -202,7 +217,7 @@ I view getting the balance between [loop fusion and fission](https://en.wikipedi
 
 A C compiler decides what it's going to do at compile time, before it's even caught a whiff of the data that'll be processed (all right, profile-guided optimization is a decent sniff in that direction, but no touching). CBQN decides what to do again every time a primitive is called. This has some overhead, but it also means these calls can adapt to conditions as they change.
 
-An example is selection, `⊏`. If you select from any old array of 1-byte values, it'll pick one element at a time and take around 0.5ns per selection. If you select from a *small* array, say 32 values or less, CBQN will load them into vector registers and do the selection with shuffle instructions, reaching under 0.1ns per selection. That includes a range check, that C is supposedly speeding your code up by ignoring! By having the high-level information of a known right argument range, and checking it dynamically, BQN goes much faster in certain cases.
+An example is selection, `⊏`. If you select from any old array of 1-byte values, it'll pick one element at a time (okay, call a gather instruction that then loads one at a time) which I measure at 0.2ns per selection. If you select from a *small* array, say 32 values or less, CBQN will load them into vector registers and do the selection with shuffle instructions, 0.04ns per selection. That includes a range check, that C is supposedly speeding your code up by ignoring! By having the high-level information of a known right argument range, and checking it dynamically, BQN goes much faster in certain cases.
 
 As a SIMD programmer in C you might write code that uses vector shuffles as well, but probably only for an array whose length is known statically. BQN's dynamic checking allows it to take advantage of this case exactly when it comes up. And sure, you could do this sort of check in C, but at that point, you're kind of writing a BQN VM.
 
@@ -231,4 +246,4 @@ There are a few things the C compilers of today (2023) don't seem able to genera
 
 - Multiple comparisons with the result in a bitmask. x86 has the very useful `movmsk` family of instructions to move a bit from each element of a vector register into a general-purpose register. As far as I know, portable C can't get at the full result of this—clang can use it to test if any comparison is true, but nothing else. Since C doesn't really treat packed-bit formats as native, recognizing the conditions where `movmsk` could be used is pretty tough. Still, it closes off optimization opportunities in many places.
 
-- Conditional-move instructions. Various things like binary search and branchless merges turn into a guessing game because compilers have all sorts of [weird](https://kristerw.github.io/2022/05/24/branchless/) and sometimes [buggy](https://github.com/llvm/llvm-project/issues/39374) (can it really be… it's finally fixed!) heuristics for determing whether `if (cond) a=b` should use a consistently fast branchless instruction or a branch that could be slightly faster or many times slower. Really fixing this would require compiler extension though. I would definitely support an intrinsic that you can apply to a condition that says "don't you dare branch on this" (with an error if it's not possible). A `__branchless_choice(cond, a, b)` intrinsic also makes a lot of sense to me.
+- Conditional-move instructions. Various things like binary search and branchless merges turn into a guessing game because compilers have all sorts of [weird](https://kristerw.github.io/2022/05/24/branchless/) and sometimes [buggy](https://github.com/llvm/llvm-project/issues/39374) (can it really be… it's finally fixed!) heuristics for determining whether `if (cond) a=b` should use a consistently fast branchless instruction or a branch that could be slightly faster or many times slower. Really fixing this would require compiler extension though. I would definitely support an intrinsic that you can apply to a condition that says "don't you dare branch on this" (with an error if it's not possible). A `__branchless_choice(cond, a, b)` intrinsic also makes a lot of sense to me.
