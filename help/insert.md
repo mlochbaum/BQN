@@ -19,8 +19,6 @@ Fold over cells of `𝕩` with `𝔽` from end to start, that is, insert `𝔽` 
 
 Monadic insert, but use `𝕨` as initial right argument.
 
-If
-
         b ← 3‿3 ⥊ ↕9
 
         1‿1‿1 +˝ b
