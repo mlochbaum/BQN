@@ -125,8 +125,10 @@ ReadNums←{
   } g
   v←va×1‿¯1⊏˜(r←>⟜»m)/»n                    # Negate if ¯
   vm←c/○(1»«)z                              # Mask of mantissas in v
-  q←10⋆|ee←vm/(k-dp)-˜«v×¬vm                # Power of 10
-  q÷˜⌾((0>ee)⊸/)q×⌾((0<ee)⊸/)vm/v×(r/i)⊏1‿∞ # Correct ∞ then ×10⋆ee
+  mn←vm/v×(r/i)⊏1‿∞                         # Mantissa, correcting ∞
+  ee←vm/(k-dp)-˜«v×¬vm                      # Power of 10
+  a←(0⌈ee)+ee-b←ee⌈¯308                     # Subnormal handling
+  b÷⟜(10⋆-)˜⌾((0>b)⊸/)a 10⊸⋆⊸×⌾((0≠a)⊸/)mn  # mn×10⋆ee
 }
 
 
