@@ -17,6 +17,8 @@ As for programming precedent, stack-based languages such as Forth go from left t
 - Milan Lajtoš is working on the Fluent language for his "new kind of paper". Its LtR nature is mentioned in [this post](https://mlajtos.mu/posts/new-kind-of-paper-2).
 - Adám Brudzewsky and others did some investigation into LtR APL specifically in the [LPA/NQB thread](https://topanswers.xyz/apl?q=1660).
 
+Contrarily, the BQN-inspired language Uiua is stack-based but evaluates RtL, a decision [defended here](https://www.uiua.org/rtl).
+
 ## General considerations
 
 English text is read left to right. This in itself is not decisive in either direction: many contend that the way to read a function is first to read the function, then its argument. Although I usually read the other way, I do find that order to be useful sometimes.
