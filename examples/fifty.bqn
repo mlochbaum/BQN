@@ -11,14 +11,13 @@
 # Also not all the functions are here yet
 # https://www.jsoftware.com/papers/50/
 # TODO: 18, 32, 41
-# Some of the above are purely speculative snippets on the website, and may not be added to this example.
 
 # Utilities
 Words ← (⊢-˜¬×+`)∘=⟜' '⊸⊔  # Split string on spaces
 Rand ← •rand.Range
-BConv ← {⌽⊑¨(<0‿𝕩){a‿b 𝕊 𝕩:⟨𝕩|b,⌊b÷𝕩⟩}`⌽𝕨} # Substitute for one case of ⊤
-Enc←{+´𝕩×⌽×`⌽1«𝕨} # Substitute for one case of ⊥
-_fix ← {𝔽∘⊢⍟≢⟜𝔽_𝕣∘⊢⍟≢⟜𝔽𝕩} # Substitute for ⍣≡
+BConv ← {⌽⊑¨(<0‿𝕩){·‿b 𝕊 𝕩:⟨𝕩|b,⌊b÷𝕩⟩}`⌽𝕨}  # Substitute for one case of ⊤
+Enc ← {+´𝕩×⌽×`⌽1«𝕨}  # Substitute for one case of ⊥
+_fix ← {𝔽∘⊢⍟≢⟜𝔽_𝕣∘⊢⍟≢⟜𝔽𝕩}  # Substitute for ⍣≡
 Binary ← 2{⌽𝕗|⌊∘÷⟜𝕗⍟(↕1+·⌊𝕗⋆⁼1⌈⊢)} 
 
 # 0
@@ -124,7 +123,8 @@ CentralLimit ← { 41 ↑ /⁼ (5×↕40) ⍋ +˝ Rand 𝕩⥊21 }
 PN ← {1≥𝕩 ? 0≤𝕩; -´+˝𝕊¨Rec 𝕩}
 Rec ← {𝕩 - (÷⟜2 (×⎉1) ¯1‿1 +⌜ 3⊸×) 1+↕⌈√𝕩×2÷3}
 ! 1‿1‿2‿3‿5‿7 ≡ PN¨↕6
-# APL/J string manipulation approach doesn't work here, we have to mimic with first class functions
+# APL/J string manipulation approach doesn't work because •BQN can't access outside variables
+# Use first class functions instead
 Cond ← {1≥𝕩}, Base ← {0≤𝕩}, _gen←{-´+˝𝔽¨Rec 𝕩}
 _memo ← { 𝕨 c‿b‿g _𝕣 𝕩:
   t ← (1+𝕨⋈𝕩)⥊¯1
@@ -150,7 +150,7 @@ SeventeenTwentyNine ← {F:
   d ← ⍷⊸⊐⊸⊔ ⥊t
   ⌊´ ⊑¨ (2=≠¨)⊸/ d
 }
-# ! 1729 ≡ SeventeenTwentyNine⟨⟩  # slow
+! 1729 ≡ SeventeenTwentyNine⟨⟩
 
 # 19
 Permutations ← {𝕊0:1‿0⥊0; ∾˝(0∾˘1+𝕊𝕩-1)⊸⊏˘⍒˘=⌜˜↕𝕩}
@@ -229,8 +229,9 @@ KnightsTour ← {
 ! (KnightsTour 6) ≡ 6‿6⥊0‿9‿20‿35‿6‿11‿21‿32‿7‿10‿19‿26‿8‿1‿34‿25‿12‿5‿33‿22‿31‿16‿27‿18‿2‿15‿24‿29‿4‿13‿23‿30‿3‿14‿17‿28
 
 # 27
-# Since this is an interactive game we are first defining the functions outside for test requirements
 moo ← {
+  # The main game is interactive, but we move these functions outside
+  # to define Verify for testing
   Univ  ← {(1=(⌈´·≠¨⊔)⎉1 t)/t←𝕩(BConv⟜⊑)⎉1‿0↕×´𝕩}
 
   Guess ← {𝕩⊏˜•rand.Range≠𝕩} 
@@ -254,7 +255,6 @@ moo ← {
     pr
   } Univ
 }
-
 
 ! 480‿126‿23‿1 moo.Verify ⟨
   4⥊10
@@ -283,11 +283,9 @@ Divisors←{p‿e←<˘Pco2 𝕩, p ×´∘⋆⎉1 Odometer 1+e}
 # 29
 Ind←{(⥊𝕨)⊏˜(<≢𝕨)Enc¨∾⌜´𝕩}
 Ind1←{(⥊𝕨)⊏˜+⌜´𝕩×⌽×`⌽1«≢𝕨}
-# We do not have syntax to exclude axes in BQN,
-# So we will add that functionality. A '∘' is a
-# missing axis.
+# Support missing axes since ⊏ doesn't. Value ∘ indicates a missing axis.
 EInd←{b←{∘}≡¨𝕩,𝕨 Ind (↕¨b/≢𝕨)⌾(b⊸/)𝕩}
-{
+! {
   x←Rand¨5‿7‿11⥊100
   i←Rand¨2‿3⥊5 ⋄ j←Rand¨6⥊7 ⋄ k←Rand¨4‿1‿1⥊11
   ! (i‿j‿k⊏x) ≡ x Ind i‿j‿k
@@ -301,8 +299,8 @@ EInd←{b←{∘}≡¨𝕩,𝕨 Ind (↕¨b/≢𝕨)⌾(b⊸/)𝕩}
 Transpose←{(⥊𝕩)⊏˜(>⥊¨↕(≢𝕩)⌊˝∘+⎉1‿∞(⌈´≢𝕩)×¬b)+˝∘×⎉1‿∞(≢𝕩)⊸Enc˘⍉ b←𝕨=⌜↕0⌈1+⌈´𝕨}
 # Version with infinity does not work (no infinite ranges):
 # Transpose1←{(⥊𝕩)⊏˜(>⥊¨↕(≢𝕩)⌊˝∘+⎉1‿∞ ∞×¬b)+˝∘×⎉1‿∞(≢𝕩)⊸Enc˘⍉b←𝕨=⌜↕0⌈1+⌈´𝕨}
-Transpose2←{𝕩⊑˜(<<𝕨)⊏¨⥊¨↕⌊´¨(⊐𝕨⊏˜⍋𝕨)⊔(≢𝕩)⊏˜⍋𝕨} # Functional Conf 2017, Roger Hui
-{
+Transpose2←{𝕩⊑˜(<<𝕨)⊏¨⥊¨↕⌊´¨(⊐∧𝕨)⊔(≢𝕩)⊏˜⍋𝕨} # Functional Conf 2017, Roger Hui
+! {
   y← Rand¨5‿13‿19‿17‿11 ⥊ 100
   x← 2‿1‿2‿0‿1 
   z←x⍉y
@@ -316,7 +314,7 @@ Transpose2←{𝕩⊑˜(<<𝕨)⊏¨⥊¨↕⌊´¨(⊐𝕨⊏˜⍋𝕨)⊔(≢�
 MF ← {>(⌈´≢¨𝕩)⊸↑¨𝕩} # Merge with fill
 Inv  ← {MF¨<˘⍉𝕩}
 Vert ← {⍉><˘⍟(2≤=)¨𝕩}
-{
+! {
   tx ← [
     ⟨"John"  , 'M', "USA", 26⟩
     ⟨"Mary"  , 'F', "UK" , 24⟩
@@ -347,7 +345,7 @@ _ob ← {𝔽¨(+⌜´↕¨≢𝕩)⊔𝕩}
 School ← +´_ob ×⌜
 Carry←{(⊢ ↓˜ 0=⊑){1↓+˝0‿¯1⌽˘0∾˜˘⌊(÷⟜10≍10⊸|)𝕩}_fix 0∾𝕩}
 # 'Multiply' using FFT is pending
-{
+! {
   m ← 4‿6⥊↕23
   # ⊢_ob m
   x←3‿2‿3‿9‿0‿4‿2
@@ -370,7 +368,7 @@ Tc←{𝕊𝕩: 0𝕊𝕩; (⊑𝕩)=⊑⌽𝕩 ? ⍷𝕨 ; (𝕨∾𝕨⊏𝕩)
 Tc2←{/⊑˘ (⊢∨∨˝∘∧⎉1‿∞˜)_fix(↕≠𝕩)=⌜𝕩}
 # Third tc implementation needs matrix division, which is present in bqn-libs.
 # For brevity's sake, we will avoid it.
-{
+! {
   i←↕19
   b←i=⌜2+i      # edges are (i,2+i)
   t←(⊢∨∨˝∘∧⎉1‿∞˜)_fix b  # transitive closure of b
@@ -388,15 +386,14 @@ Fib←{1≥𝕩 ? 𝕩 ; (𝕊𝕩-2)+𝕊𝕩-1}
 Fib1←{𝕊𝕩: 0‿1𝕊𝕩; 0=𝕩 ? ⊑𝕨 ; (1↓𝕨∾+´𝕨)𝕊𝕩-1}
 Fib2←{⊑+`∘⌽⍟𝕩↕2}
 Fib3←{⌊0.5+r÷˜(2÷˜1+r←√5)⋆𝕩}
-# Once •math.GCD supports fractions
-# Fib4←{1•math.GCD+⟜÷´0∾𝕩⥊1}
+# Fib4←{1•math.GCD+⟜÷´0∾𝕩⥊1}  # Once •math.GCD supports fractions
 Fib5 ← ⊑ ↕ +˝∘•math.Comb⎉1‿∞ ⌽∘↕
 PDX←+˝∘×⎉1‿∞
 Fib6a←{0‿1⊑(=⌜˜↕2)PDX´PDX˜⍟(/⌽Binary 𝕩)∨⌜˜↕2}
 Fib7←{⌊r÷˜-´𝕩⋆˜2÷˜1+1‿¯1×r←5⋆0.5}
 Fib8←{+´ (∾·(↓⟜0‿1¨)¬)⍟𝕩 ⥊0}
 
-{
+! {
   res←0‿1‿1‿2‿3‿5‿8‿13‿21‿34
   ! res ≡ Fib ¨↕10
   ! res ≡ Fib1¨↕10
