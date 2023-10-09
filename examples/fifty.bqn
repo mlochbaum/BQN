@@ -17,8 +17,14 @@ Words ← (⊢-˜¬×+`)∘=⟜' '⊸⊔  # Split string on spaces
 Rand ← •rand.Range
 BConv ← {⌽⊑¨(<0‿𝕩){·‿b 𝕊 𝕩:⟨𝕩|b,⌊b÷𝕩⟩}`⌽𝕨}  # Substitute for one case of ⊤
 Enc ← {+´𝕩×⌽×`⌽1«𝕨}  # Substitute for one case of ⊥
+Binary ← 2{⌽𝕗|⌊∘÷⟜𝕗⍟(↕1+·⌊𝕗⋆⁼1⌈⊢)}  # Substitute for 2⊥⍣¯1
 _fix ← {𝔽∘⊢⍟≢⟜𝔽_𝕣∘⊢⍟≢⟜𝔽𝕩}  # Substitute for ⍣≡
-Binary ← 2{⌽𝕗|⌊∘÷⟜𝕗⍟(↕1+·⌊𝕗⋆⁼1⌈⊢)}
+# One case of matrix division:
+# Solve lower triangular matrix equation by forward substitution
+SolveLTri ← { t 𝕊 b:
+  Row ← { new←b÷○⊏𝕩 ⋄ b↩b-⟜(×⌜⟜new)○(1⊸↓)𝕩 ⋄ new }
+  > (↕∘≠ Row∘↓¨ ⊢) <˘⍉t
+}
 
 # 0
 ArrayLogic ← (>-<)⟜0
@@ -381,8 +387,8 @@ _pow ← {𝔽´𝔽˜⍟(/2|⌊∘÷⟜2⍟(↕1+·⌊2⋆⁼⊢)𝕩)𝕨}
 # 35
 Tc←{𝕊𝕩: 0𝕊𝕩; (⊑𝕩)=⊑⌽𝕩 ? ⍷𝕨 ; (𝕨∾𝕨⊏𝕩) 𝕊 𝕩⊏𝕩}
 Tc2←{/⊑˘ (⊢∨∨˝∘∧⎉1‿∞˜)_fix(↕≠𝕩)=⌜𝕩}
-# Third tc implementation needs matrix division, which is present in bqn-libs.
-# For brevity's sake, we will avoid it.
+# Can also use Solve from bqn-libs matrix.bqn in place of SolveLTri˜⍉
+Tc3←{/ (1↑˜≠𝕩) SolveLTri˜⍉ (=⌜˜↕≠𝕩)-(↕≠𝕩)=⌜˜𝕩+𝕩=⊢´𝕩}
 ! {
   i←↕19
   b←i=⌜2+i      # edges are (i,2+i)
@@ -394,6 +400,7 @@ Tc2←{/⊑˘ (⊢∨∨˝∘∧⎉1‿∞˜)_fix(↕≠𝕩)=⌜𝕩}
   res←0‿1‿4‿7‿9‿12‿14‿16‿18‿20
   ! res ≡ Tc x
   ! (1↓res) ≡ Tc2 x
+  ! (¯1↓res) ≡ Tc3 x
 }
 
 # 36
@@ -449,12 +456,6 @@ Ack ← {
 # F←{𝕊 _H 𝕩 ? 𝕊 𝕩; ⟨⟩}
 
 # 41
-# Solve lower triangular matrix equation by forward substitution
-# since we have no matrix division primitive
-SolveLTri ← { t 𝕊 b:
-  Row ← { new←b÷○⊏𝕩 ⋄ b↩b-⟜(×⌜⟜new)○(1⊸↓)𝕩 ⋄ new }
-  > (↕∘≠ Row∘↓¨ ⊢) <˘⍉t
-}
 Cholesky ← {
   1≥≠𝕩 ? √𝕩 ;
   n←≠𝕩
