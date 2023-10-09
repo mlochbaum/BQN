@@ -10,7 +10,7 @@
 # Still about APL history though
 # Also not all the functions are here yet
 # https://www.jsoftware.com/papers/50/
-# TODO: 18, 41
+# TODO: 18
 
 # Utilities
 Words ← (⊢-˜¬×+`)∘=⟜' '⊸⊔  # Split string on spaces
@@ -447,6 +447,36 @@ Ack ← {
 # If _H solves the halting problem (𝔽 _H 𝕩 is 1 iff 𝔽𝕩 halts) then the
 # following function causes a paradox.
 # F←{𝕊 _H 𝕩 ? 𝕊 𝕩; ⟨⟩}
+
+# 41
+# Solve lower triangular matrix equation by forward substitution
+# since we have no matrix division primitive
+SolveLTri ← { t 𝕊 b:
+  Row ← { new←b÷○⊏𝕩 ⋄ b↩b-⟜(×⌜⟜new)○(1⊸↓)𝕩 ⋄ new }
+  > (↕∘≠ Row∘↓¨ ⊢) <˘⍉t
+}
+Cholesky ← {
+  1≥≠𝕩 ? √𝕩 ;
+  n←≠𝕩
+  p←⌈n÷2
+  q←⌊n÷2
+  x←⟨p,p⟩↑𝕩 ⋄ y←⟨p,-q⟩↑𝕩 ⋄ z←⟨-q,-q⟩↑𝕩
+  l0 ← 𝕊 x
+  l1 ← 𝕊 z - (t←+⍉ly) +˝∘×⎉¯1‿∞ ly ← l0 SolveLTri y
+  ∾ [l0‿(p‿q⥊0), t‿l1]
+}
+! {
+  a ← [
+    231‿  42‿ ¯63‿ 16‿ 26
+     42‿ 199‿¯127‿¯68‿ 53
+    ¯63‿¯127‿ 245‿ 66‿¯59
+     16‿ ¯68‿  66‿112‿¯75
+     26‿  53‿ ¯59‿¯75‿ 75
+  ]
+  l ← Cholesky a
+  ! ∧´⥊ 1e8 > a |∘- l +˝∘×⎉¯1‿∞ +⍉l
+  ! ∧´⥊ (0≠l) ≤ ≥⌜˜↕≠l
+}
 
 # 42
 Minors ← {(/¨≠⟜<↕≠𝕩)(⍉⊏)⎉0‿∞ 𝕩}⎉2⍟2
