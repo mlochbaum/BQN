@@ -8,9 +8,7 @@
 # A history of APL in 50 functions
 # But they're BQN functions
 # Still about APL history though
-# Also not all the functions are here yet
 # https://www.jsoftware.com/papers/50/
-# TODO: 18
 
 # Utilities
 Words ← (⊢-˜¬×+`)∘=⟜' '⊸⊔  # Split string on spaces
@@ -158,6 +156,34 @@ SeventeenTwentyNine ← {F:
 }
 ! 1729 ≡ SeventeenTwentyNine⟨⟩
 
+# 18
+WinSimple ← { 𝕊 h:
+  m ← ≠h
+  s ← (≠⌜˜↕m) +˝∘×⎉¯1‿∞ h  # or s←+´⊸-h
+  m|(↕m)-s
+}
+Win ← {
+  # winning strategy based on group table 𝕨 for hat numbering 𝕩
+  ! ∧´𝕩∊↕m←≠𝕩
+  w←𝕨⊣m|+⌜˜↕m      # default is + modulo m
+  ! m‿m≡≢w
+  ! ⍉⊸≡w           # must be abelian
+  g←⊏⊸⊐w           # standardize group table
+  GS←(⋈⊑g˙)¨       # group operation
+  GI←{⊑0⊐˜𝕩⊏g}¨    # inverses
+  (↕m) GS GI (≠⌜˜↕m) GS´∘×⎉¯1‿∞ 𝕩
+}
+Mgrp ← {𝕩|×⌜˜/1=𝕩•math.GCD↕𝕩}
+! {
+  h ← 1‿9‿5‿6‿2‿0‿8‿8‿12‿4‿6‿10‿0
+  ! 1 = +´ h = WinSimple h
+  h88 ← •rand.Range˜ 88
+  ! 1 = +´ h88 = WinSimple h88
+  ! 1 = +´ h88 = Win h88
+  coprimes ← / 88 = (+´1=•math.GCD⟜↕)¨ ↕1000
+  ! ∧´ {1 = +´ h88 = (Mgrp 𝕩) Win h88}¨ coprimes
+}
+
 # 19
 Permutations ← {𝕊0:1‿0⥊0; ∾˝(0∾˘1+𝕊𝕩-1)⊸⊏˘⍒˘=⌜˜↕𝕩}
 ! (6‿3⥊0‿1‿2‿0‿2‿1‿1‿0‿2‿1‿2‿0‿2‿0‿1‿2‿1‿0) ≡ Permutations 3
@@ -261,7 +287,6 @@ moo ← {
     pr
   } Univ
 }
-
 ! 480‿126‿23‿1 moo.Verify ⟨
   4⥊10
   ⟨
@@ -378,7 +403,14 @@ Multiply ← {
 }
 
 # 33
-# need ⊤, and then we need an inverse for ⊤, which I doubt is possible.
+# It's more consistent to define Base2 taking bits to value, because
+# Base2 Binary 𝕩 is 𝕩 for natural numbers but Binary Base2 𝕩 drops
+# leading zeros.
+Base2 ← {𝕊⁼𝕩: Binary 𝕩; 2⊸×⊸+˜´⌽𝕩}
+Josephus ← 1⊸⌽⌾(Base2⁼)
+! ∧´ 1 = Josephus¨ 2⋆↕10
+! ∧´ 2 = {(1+𝕩) -○(Josephus¨) 𝕩} 10⋆1+↕5
+! 7‿1‿19‿5 ≡ Josephus¨ 7‿16‿25‿34
 
 # 34
 _pow ← {𝔽´𝔽˜⍟(/2|⌊∘÷⟜2⍟(↕1+·⌊2⋆⁼⊢)𝕩)𝕨}
@@ -509,6 +541,10 @@ CRT ← {
 }
 ! 2‿¯1‿1 ≡ 4 XEA 6
 ! 12‿9 ≡ 4‿1 CRT 6‿3
+
+# 45
+# If you have complex support:
+# ! 0 = 1 + ⋆π×0i1
 
 # 46
 Sieve←{
