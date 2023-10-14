@@ -13,11 +13,10 @@ I've thought about adding some sort of pipe notation (the `$` character is open)
 As for programming precedent, stack-based languages such as Forth go from left to right. In Java-style object-oriented programming, methods go from left to right. This style of "method chaining" is particularly prevalent in Javascript.
 
 - There's an [APL Wiki category](https://aplwiki.com/wiki/Category:Left_to_right) that gathers some left-to-right languages. [Jelly](https://github.com/DennisMitchell/jellylanguage) is likely the most widely used of these, but being a code golfing language it's explicitly designed for brevity first and usability second.
-- [xs](https://github.com/smabie/xs) is a concatenative (or stack-based) array language not yet on APL Wiki.
 - Milan Lajtoš is working on the Fluent language for his "new kind of paper". Its LtR nature is mentioned in [this post](https://mlajtos.mu/posts/new-kind-of-paper-2).
 - Adám Brudzewsky and others did some investigation into LtR APL specifically in the [LPA/NQB thread](https://topanswers.xyz/apl?q=1660).
 
-Contrarily, the BQN-inspired language Uiua is stack-based but evaluates RtL, a decision [defended here](https://www.uiua.org/rtl).
+Contrarily, the BQN-inspired language Uiua is stack-based but evaluates RtL, a decision [defended here](https://www.uiua.org/rtl). [xs](https://aplwiki.com/wiki/Xs) takes this approach as well.
 
 ## General considerations
 
