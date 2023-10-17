@@ -101,6 +101,30 @@ sysvals.plot = (x,w) => {
 }
 sysvals.setplot = (x,w) => { startPlot(); setPlot(x,w); }
 
+sysvals.play = (x,w) => {
+  let sh = x.sh, rk = sh?sh.length:0;
+  if (rk==0 || rk>2) throw Error("•Play: 𝕩 must have rank 1 or 2");
+  let c = rk==2 ? sh[0] : 1;
+  if (c==0 || c>2) throw Error("•Play: 𝕩 must have 1 or 2 rows");
+  let n = x.length / c;
+  let s = x.length * 2;
+  let r = 44100;
+  let u = (k,a) => { let r=[]; while(k--){r.push(a&0xff);a/=256;} return String.fromCharCode(...r); }
+  let wav = "RIFF"+u(4,36+s)+"WAVEfmt "+u(4,16)+u(2,1)+u(2,c)+u(4,r)+u(4,r*c*2)+u(2,c*2)+u(2,16)+"data"+u(4,s);
+  let bd = 1<<15
+  for (let i=0;i<n;i++) for (let j=0;j<c;j++) {
+    let v = x[i+n*j];
+    if (typeof v !== "number") throw Error("•Play: 𝕩 must be an array of numbers");
+    wav += u(2, floor(Math.max(-bd, Math.min(bd-1, v*bd+Math.random()-Math.random()))));
+  }
+  let au = new Audio("data:audio/wav;base64,"+btoa(wav));
+  setExplain = () => doc.explain.innerHTML = ''; setExplain();
+  doc.explain.appendChild(au);
+  au.controls = true;
+  au.play();
+  return '\0';
+}
+
 let highlightErr = (s, e) => {
   let h = doc.highlight;
   h.style.height = doc.code.clientHeight+"px";
