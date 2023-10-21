@@ -710,19 +710,24 @@ let gcd = (x,w) => {
 }
 let lcm = (x,w) => w===0 ? 0 : (w / gcd(x,w)) * x;
 let pervfn = f => { f.prim=null; return runtime[61](f,0); } // ⚇
-let mathfn = f => {
+let mathfn = (f,dy) => {
   let p=pervfn(f);
-  return f!==Math.atan2 && f!==Math.hypot
+  return !dy
     ? ((x,w) => {if ( has(w)) throw Error("Left argument not allowed"); return p(x);})
     : ((x,w) => {if (!has(w)) throw Error("Left argument required");    return p(x,w);});
 }
+let mathfn_pick = f => mathfn(f, f===Math.atan2 || f===Math.hypot);
 let trig = "cos cosh sin sinh tan tanh".split(" ");
-let mathkeys = trig.concat(trig.map(n=>"a"+n),"cbrt expm1 hypot log10 log1p log2 round trunc atan2".split(" "));
+let mathkeys = trig.concat(trig.map(n=>"a"+n),"atan2 cbrt expm1 hypot log10 log1p log2 round trunc".split(" "));
 let mathns = makens(
   mathkeys.concat(["fact","comb","gcd","lcm"]),
-  mathkeys.map(k=>mathfn(Math[k])).concat([fact,comb,gcd,lcm].map(pervfn))
+  mathkeys.map(k=>mathfn_pick(Math[k])).concat([fact,comb,gcd,lcm].map(pervfn))
 );
 trig.map((_,i)=>{let f=mathns[i],g=mathns[i+trig.length]; f.inverse=g; g.inverse=f;});
+(m_atan2 => {
+  m_atan2. inverse = mathfn((x,w)=>w*Math.tan(x), 1);
+  m_atan2.sinverse = mathfn((x,w)=>w/Math.tan(x), 1);
+})(mathns[2*trig.length]);
 
 let nsns = (() => {
   let keys = (x,w) => {
