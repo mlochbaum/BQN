@@ -711,7 +711,10 @@ let gcd = (x,w) => {
 let lcm = (x,w) => w===0 ? 0 : (w / gcd(x,w)) * x;
 let pervfn = f => { f.prim=null; return runtime[61](f,0); } // ⚇
 let mathfn = (f,dy) => {
-  let p=pervfn(f);
+  let p = pervfn((x,w) => {
+    if (!isnum(x) || (dy && !isnum(w))) throw Error("Arguments must be numbers");
+    return f(x,w);
+  });
   return !dy
     ? ((x,w) => {if ( has(w)) throw Error("Left argument not allowed"); return p(x);})
     : ((x,w) => {if (!has(w)) throw Error("Left argument required");    return p(x,w);});
