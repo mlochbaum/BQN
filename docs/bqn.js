@@ -728,8 +728,8 @@ let mathns = makens(
 );
 trig.map((_,i)=>{let f=mathns[i],g=mathns[i+trig.length]; f.inverse=g; g.inverse=f;});
 (m_atan2 => {
-  m_atan2. inverse = mathfn((x,w)=>w*Math.tan(x), 1);
-  m_atan2.sinverse = mathfn((x,w)=>w/Math.tan(x), 1);
+  m_atan2. inverse = mathfn((x,w)=>w*Math.tan(x)  , 1);
+  m_atan2.sinverse = mathfn((x,w)=>w/Math.tan(x+0), 1);
 })(mathns[2*trig.length]);
 
 let nsns = (() => {
