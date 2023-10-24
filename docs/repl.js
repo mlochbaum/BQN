@@ -99,7 +99,7 @@ sysvals.plot = (x,w) => {
   setExplain = () => doc.explain.innerHTML = '';
   return '\0';
 }
-sysvals.setplot = (x,w) => { startPlot(); setPlot(x,w); }
+sysvals.setplot = (x,w) => { startPlot(); return setPlot(x,w); }
 
 sysvals.play = (x,w) => {
   let sh = x.sh, rk = sh?sh.length:0;
