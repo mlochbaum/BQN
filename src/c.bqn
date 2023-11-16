@@ -239,7 +239,7 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   nr×↩¬nx∨↩(0≠ir)∧1=nr                      # Assume 𝕎 can't be Nothing
   ir↩(ir×0=nr)-nr                           # Include nothingness
   r-↩(r=¯4)∧1»r=¯1                          # Lone ⇐ to role ¯5
-  "Dot must be preceded by a subject"_err_(⍋∘rev) (r=4)>»r=0
+  Nei↩⍋∘rev⋄"Dot must be preceded by a subject"_nerr (r=4)∧2»nr⌈2×r≠0
   r(×⟜¬-⊢)↩dl                               # Namespace and dot to ¯1
 
   # Reorder for parsing
