@@ -7,13 +7,13 @@ How fast is the performance-oriented BQN implementation, [CBQN](https://github.c
 Anyway, BQN's dick is pretty fast. Compiles its own compiler in a millisecond. Builds this whole site—a megabyte or so of markdown—in well under a second. Lists the primes under a billion in one second. That sort of thing. For CBQN right now, performance splits into three major cases:
 - Scalar code, mostly using atoms. CBQN is faster than other array languages and on par with lightweight interpreters (not JIT compilers).
 - Flat lists, particularly integers and characters. CBQN rarely loses to other array languages, and can beat idiomatic C.
-- Multidimensional arrays. CBQN has less optimization, and sometimes falls back to the self-hosted runtime which has implementations using a lot of scalar code. These can be slow, but not pathologically so.
+- Multidimensional arrays. CBQN has less optimization, and can easily drop down to scalar speeds when SIMD code is possible. But it's usually fine when the last axis is long, and I'm not sure there _are_ any languages that consistently handle a short last axis well? Futhark maybe.
 
-Currently we aim for high performance on a single CPU core, and are focusing on 64-bit x86 and ARM. These both have vector extensions that are always present (SSE2 and NEON respectively); the Singeli build uses these, as well as x86 extensions AVX2 and BMI2 if the architecture specified at compile time includes them. Singeli is assumed for the discussion here, as without it there are some slow cases, particularly comparisons. CBQN doesn't use additional cores or a GPU for acceleration.
+Currently we aim for high performance on a single CPU core, and are focusing on 64-bit x86 and ARM. These both have vector extensions that are always present (SSE2 and NEON respectively); these are used by default, and for x86 other extensions like AVX2 and BMI2 are used if the architecture specified at compile time includes them. CBQN doesn't use additional cores or a GPU for acceleration.
 
 ## Performance resources
 
-It's more accurate to say CBQN can be fast, not that it will be fast: it's all about how you use it. Definitely ask on the forum if you're having performance troubles so you can improve your technique.
+It's more accurate to say CBQN can be fast, not that it will be fast: it's all about how you use it. Definitely ask on the forum if you're struggling with performance so you can improve your technique.
 
 There are two measurement tools in the [time](../spec/system.md#time) system values. `•MonoTime` is a high-precision timer for performance measurements; you can take a time before and after some operation or section of a program and subtract them to get a time in seconds (a profiling tool to do this automatically would be nice, but we don't have one). More convenient for small snippets, `•_timed` returns the time to evaluate `𝔽𝕩`, averaging over `𝕨` runs if given. For two-argument functions you can write `w⊸F•_timed x` or `F´•_timed w‿x`.
 
@@ -24,7 +24,7 @@ CBQN also has a `)time` command that prints the time taken by an entire expressi
 
 The [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html) tool has a page showing primitive benchmarks with some explanations.
 
-If BQN isn't meeting your needs, there's always option to hook up with C by FFI: see the [spec](../spec/system.md#foreign-function-interface). Also the [CBQN docs](https://github.com/dzaima/CBQN/blob/master/docs/system.md#ffi), which say how much of that is actually implemented now. FFI calls have low overhead (tens of nanoseconds), but may require copying as data goes in or out.
+If BQN isn't meeting your needs, there's always the option to hook up with C by FFI: see the [spec](../spec/system.md#foreign-function-interface). Also the [CBQN docs](https://github.com/dzaima/CBQN/blob/master/docs/system.md#ffi), which say how much of that is actually implemented now. FFI calls have low overhead (tens of nanoseconds), but may require copying as data goes in or out.
 
 ## Versus other array languages
 
@@ -34,9 +34,9 @@ The implementations I use for comparison are Dyalog APL, ngn/k, and J. I don't b
 
 Array operations are the way to get the most value out of an array language ([background reading](https://aplwiki.com/wiki/Performance)), so these languages tend to focus on them. But BQN tries to be usable in less array-oriented situations as well, and is faster for scalar code in the simple cases I've measured—things like naive Fibonacci or folding with a function that does some arithmetic. Dyalog is uniformly slow on such things, 5–10x worse than BQN. J is a bit better with tacit code and worse with explicit, 3–15x worse than BQN. And I measure ngn/k around 2x worse than BQN. For context, BQN is just slower than LuaJIT with the JIT off (which is still a fast interpreter), and I usually expect it to be about 10x slower than C in cases where C operations are compiling to single instructions (e.g. excluding auto-vectorization).
 
-I publish BQN benchmarks of array operations in [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html), and also use it to compare against J and Dyalog. I find that in all cases, if BQN is better it's because of fundamental superiority, and if it's worse it's just a case that we're meaning to improve but haven't gotten to yet. Mostly BQN is ahead, even by 2x or more in many cases. Now, I do tend to benchmark things that dzaima or I are actively working on speeding up, but at this point I've gotten to all the list operations that are important for performance. The slow cases remaining are almost all searching and sorting on larger types, 4-byte integers and floats.
+I publish BQN benchmarks of array operations in [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html), and also use it to compare against J and Dyalog. I find that in all cases, if BQN is better it's because of fundamental superiority, and if it's worse it's just a case that we're meaning to improve but haven't gotten to yet. Mostly BQN is ahead, often by 2x or more. Now, I do tend to benchmark things that dzaima or I are actively working on speeding up, but at this point I've gotten to all the list operations that are important for performance. I do know some non-benchmarked cases with characters, or two arguments with different-width numbers, don't end up using the fastest code and are slower than bencharray would suggest.
 
-We're beginning to work on multi-dimensional operations, and have ended up substantially faster than Dyalog at a few things. However, Dyalog's coverage is much broader so it most likely will be faster overall if a lot of arrays of rank 2 or more are used. Similar with J, although I believe it doesn't have quite as many optimizations. K stores all arrays as nested lists, so it can't be as fast on high-rank arrays unless the last axis is long.
+We're beginning to work on multi-dimensional operations, and have ended up substantially faster than Dyalog at a few things. However, Dyalog's coverage is broader so it most likely will be faster overall if a lot of arrays of rank 2 or more are used. Similar with J, although I believe it doesn't have quite as many optimizations. K stores all arrays as nested lists, so it can't be as fast on high-rank arrays unless the last axis is long.
 
 ## Faster than C?
 
@@ -47,7 +47,7 @@ I don't mean that it's common! Just, it's not that weird, and could happen to an
 CBQN is in fact written in C, and, uh, BQN and Singeli that compiles to C. But it's not the kind of C you'd generally write unless the performance stakes are very high. Here are the major factors that make it fast:
 - Dynamically-chosen number and character types, and packed bit-booleans
 - Multiple algorithms with selection by inspecting arguments
-- Code using SIMD and other instruction sets
-Each of these can have a huge impact, and takes more thinking, writing, and debugging (if you think auto-vectorization can save you from writing SIMD code, you're sadly mistaken. I am exactly the one to know). The reason CBQN can take on this level of optimization is that it's actually a pretty small program. An average primitive *could* be implemented in 20 or so lines of C. By convincing the BQN programmer to concentrate their code into a fairly small number of primitives, we can expend a lot of effort writing hundreds of lines, and speed up BQN programs.
+- Code using SIMD and other special instruction sets
+Each of these can have a huge impact, and demands more thinking, writing, and debugging (if you think auto-vectorization can save you from writing SIMD code, you're sadly mistaken. I am exactly the one to know). The reason CBQN can take on this level of optimization is that it's actually a pretty small program. An average primitive *could* be implemented in 20 or so lines of C. By convincing the BQN programmer to concentrate their code into a fairly small number of primitives, we can expend a lot of effort writing hundreds of lines, and speed up BQN programs.
 
 You expected more discussion? Well, now I'm kinda tired… just kidding, there's a [whole page on this](versusc.md).
