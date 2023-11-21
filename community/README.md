@@ -20,6 +20,7 @@ See also:
 - More blogs [on Medium](https://medium.com/tag/bqn)
 - On Youtube, [David Zwitser](https://www.youtube.com/channel/UCB3UHjYTmi8jSVmn31SNF8A) makes games; [Conor Hoekstra](https://www.youtube.com/c/codereport/videos) and [Asher Mancinelli](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) walk through smaller programs.
 - Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
+- Razetime's [learn X in Y minutes](https://razetime.github.io/learnxinyminutes-docs/bqn)
 - Miguel Raz's [Anki deck](https://github.com/miguelraz/miguelraz.github.io/blob/e772dc681330b37544a55d38b3d1537699616420/ankis/bqn-glyphs.apkg), from [this page](https://miguelraz.github.io/teaching/) of resources
 - Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh?tab=notebooks) based on BQN.
 - [barbell](https://github.com/jhvst/barbell) templating system with [blog post](https://juuso.dev/blogPosts/barbell/barbell.html) about Under.
