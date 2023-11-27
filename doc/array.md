@@ -115,7 +115,7 @@ The contents of an array are its elements, but it also makes sense to split up a
 
         1 ⊏ 2‿3‿4 ×⌜ 1‿5‿8‿11  # Major cell 1
 
-A major cell still has an array structure: it retains all the axes of the original array other than the first. So it has its own major cells, identified by the index `i` of the original major cell and `j` within it. These are also cells of the original array. Generalizing, a **cell** with index list `l` is defined to be the array of all elements whose indices begin with `l`. In an array with rank `r`, the cell rank is `r-≠l`, and cells grouped using this rank. An `r`-cell must have an empty cell index, so that it includes all elements—it's the entire array! An `r-1` cell, also called a ¯1-cell, is a major cell. A 0-cell has an index of length `r`, and contains a single element.
+A major cell still has an array structure: it retains all the axes of the original array other than the first. So it has its own major cells, identified by the index `i` of the original major cell and `j` within it. These are also cells of the original array. Generalizing, a **cell** with index list `l` is defined to be the array of all elements whose indices begin with `l`. In an array with rank `r`, the cell rank is `r-≠l`, and cells can be grouped using this rank. An `r`-cell must have an empty cell index, so that it includes all elements—it's the entire array! An `r-1` cell, also called a ¯1-cell, is a major cell. A 0-cell has an index of length `r`, and contains a single element.
 
 Cells are the center of the [leading axis model](leading.md) used to structure many array primitives.
 
