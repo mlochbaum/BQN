@@ -22,6 +22,7 @@ All these websites run BQN, in your browser unless marked with "server-side" (JS
 |------|-------|--------|---------
 | [Online REPL](https://mlochbaum.github.io/BQN/try.html) | One-shot | JS | "Explain", error marker
 | [BQNPAD](https://bqnpad.mechanize.systems/)      | Session  | JS, Wasm | Preview, syntax coloring
+| [BQN Editor](https://bqn.funmaker.moe/)          | One-shot | JS | Coloring, images, audio
 | [Attempt This Online](https://ato.pxeger.com/run?1=m704qTBvwYKlpSVpuhZoFJQGAA) | TIO | CBQN | Server-side
 | [Do Stuff Online](https://dso.surge.sh/#bqn)     | TIO | JS
 | [Razetime](https://razetime.github.io/bqn-repl/) | Session  | JS
