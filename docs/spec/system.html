@@ -53,6 +53,10 @@
 <td><code><span class='Value'>•ns</span></code></td>
 </tr>
 <tr>
+<td><a href="#data-structures">Data structures</a></td>
+<td><code><span class='Function'>•HashMap</span></code></td>
+</tr>
+<tr>
 <td><a href="#time">Time</a></td>
 <td><code><span class='Function'>•UnixTime</span></code>, <code><span class='Function'>•Delay</span></code>, <code><span class='Modifier'>•_timed</span></code>, …</td>
 </tr>
@@ -664,6 +668,48 @@
 </tbody>
 </table>
 <p><code><span class='Function'>Keys</span></code> returns field names as strings, normalized in the sense that all underscores are removed and alphabetic characters are converted to lowercase. The order of the names is unspecified. <code><span class='Function'>Has</span></code> and <code><span class='Function'>Get</span></code> accept names with any spelling. <code><span class='Function'>Get</span></code> causes an error if <code><span class='Value'>𝕩</span></code> isn't the name of a field of <code><span class='Value'>𝕨</span></code>, while <code><span class='Function'>Has</span></code> causes an error only if it isn't a string, returning <code><span class='Number'>0</span></code> for any string that isn't a valid name.</p>
+<h2 id="data-structures"><a class="header" href="#data-structures">Data structures</a></h2>
+<p>The system function <code><span class='Function'>•HashMap</span></code> creates a mutable object from the list of initial keys <code><span class='Value'>𝕨</span></code> and values <code><span class='Value'>𝕩</span></code> that maintains an association mapping keys to values. It has the following fields:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class='Function'>Count</span></code></td>
+<td>return the number of keys present</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Keys</span></code></td>
+<td>return all keys as a list in the order they were set</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Values</span></code></td>
+<td>return all values corresponding to the keys</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Has</span></code></td>
+<td>return <code><span class='Number'>1</span></code> if key <code><span class='Value'>𝕩</span></code> is present and <code><span class='Number'>0</span></code> otherwise</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Get</span></code></td>
+<td>return value for key <code><span class='Value'>𝕩</span></code>, and <code><span class='Value'>𝕨</span></code> or error if not found</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Set</span></code></td>
+<td>set value for key <code><span class='Value'>𝕨</span></code> to <code><span class='Value'>𝕩</span></code>, possibly replacing an existing value</td>
+</tr>
+<tr>
+<td><code><span class='Function'>Delete</span></code></td>
+<td>remove the entry for key <code><span class='Value'>𝕩</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Fields <code><span class='Function'>Count</span></code>, <code><span class='Function'>Keys</span></code>, and <code><span class='Function'>Values</span></code> take one argument and ignore it. <code><span class='Function'>Set</span></code> and <code><span class='Function'>Delete</span></code> return the map object itself.</p>
+<p>Any BQN value can be used as a key, and two keys are considered the same if they match (as in <code><span class='Function'>≡</span></code>). The initial key list <code><span class='Value'>𝕨</span></code> passed to <code><span class='Function'>•HashMap</span></code> can't contain duplicates, that is, the function errors if <code><span class='Function'>¬∧</span><span class='Modifier'>´</span><span class='Function'>∊</span><span class='Value'>𝕨</span></code>. This key list defines the initial ordering used by <code><span class='Function'>Keys</span></code>, which may then be modified by <code><span class='Function'>Set</span></code> and <code><span class='Function'>Delete</span></code>. When <code><span class='Function'>Set</span></code> adds a key that's not currently present, that key is added to the end of the ordering. When <code><span class='Function'>Delete</span></code> removes a key, it's removed from the ordering, and will be added to the end if set again.</p>
 <h2 id="time"><a class="header" href="#time">Time</a></h2>
 <table>
 <thead>

@@ -19,6 +19,7 @@ All system values described in the BQN specification are optional: an implementa
 | [Platform](#platform) | `•platform`
 | [Operation properties](#operation-properties) | `•Type`, `•Glyph`, `•Source`, `•Decompose`
 | [Namespaces](#namespaces) | `•ns`
+| [Data structures](#data-structures) | `•HashMap`
 | [Time](#time) | `•UnixTime`, `•Delay`, `•_timed`, …
 | [Math](#math) | `•math`
 | [Random generation](#random-generation) | `•rand`, `•MakeRand`
@@ -315,6 +316,24 @@ The system namespace `•ns` contains functionality for working with namespaces.
 | `Get`  | Current value in `𝕨` of the field named `𝕩`
 
 `Keys` returns field names as strings, normalized in the sense that all underscores are removed and alphabetic characters are converted to lowercase. The order of the names is unspecified. `Has` and `Get` accept names with any spelling. `Get` causes an error if `𝕩` isn't the name of a field of `𝕨`, while `Has` causes an error only if it isn't a string, returning `0` for any string that isn't a valid name.
+
+## Data structures
+
+The system function `•HashMap` creates a mutable object from the list of initial keys `𝕨` and values `𝕩` that maintains an association mapping keys to values. It has the following fields:
+
+| Name     | Summary
+|----------|-------------------------------
+| `Count`  | return the number of keys present
+| `Keys`   | return all keys as a list in the order they were set
+| `Values` | return all values corresponding to the keys
+| `Has`    | return `1` if key `𝕩` is present and `0` otherwise
+| `Get`    | return value for key `𝕩`, and `𝕨` or error if not found
+| `Set`    | set value for key `𝕨` to `𝕩`, possibly replacing an existing value
+| `Delete` | remove the entry for key `𝕩`
+
+Fields `Count`, `Keys`, and `Values` take one argument and ignore it. `Set` and `Delete` return the map object itself.
+
+Any BQN value can be used as a key, and two keys are considered the same if they match (as in `≡`). The initial key list `𝕨` passed to `•HashMap` can't contain duplicates, that is, the function errors if `¬∧´∊𝕨`. This key list defines the initial ordering used by `Keys`, which may then be modified by `Set` and `Delete`. When `Set` adds a key that's not currently present, that key is added to the end of the ordering. When `Delete` removes a key, it's removed from the ordering, and will be added to the end if set again.
 
 ## Time
 
