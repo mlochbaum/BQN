@@ -84,6 +84,9 @@ You can name it, you can write `⊑⟨Expr⟩` or `(Expr)˙0`, and if it doesn't
 ### Can't Reduce or Scan over arrays jointly
 Each allows you to move along two arrays simultaneously (sure, three isn't good, but you can usually split into two Each-ed functions). Reduce and Scan are stuck with one, so you might need to pass in a list of tuples. Scan also encourages you to pack a few values into the result, leaving you the same annoying structure. A nested-transpose primitive, similar to `<˘⍉>`, would help a lot.
 
+### Can't return from inner functions
+This is an issue with using functions as control flow. For example, when looping through an array with Each, you can't decide to exit early. In a curly-brace language you would just use a for loop and a return. In BQN, the planned feature was a block return like `label←` to jump out of a block with header name `label`. This was never implemented anywhere. Predicates cover some of the simpler use cases, and when they were added I decided early returns weren't worth the added complexity and dropped the idea.
+
 ### Axis ordering is big-endian
 The most natural ordering for polynomial coefficients and base representations is little-endian, because it aligns element `i` of the list with power `i` of the argument or base. It also allows a forward scan instead of a reverse one. Array axes go the other way. However, there are advantages to this ordering as well. For example, it's common to act only on the first few axes, so having them at the beginning of the array is good (`≠a ←→ ⊑∘≢a`).
 
@@ -141,7 +144,7 @@ Only `⍋⍒` use array ordering rather than just array equality or numeric orde
 Evaluating a derived function does a lot of work that often can't be connected with any particular source location. This is why stack traces don't dig into tacit functions, for now at least. For the interactive side of debugging, `•Show` is so powerful in tacit code that I'm not sure this is even an issue, but it's still worth keeping in mind if BQN adds a more traditional debugger. And it's troublesome for implementers, who tend to rely on stepping through opcodes.
 
 ### No access to fast high-precision sum
-Fold has a specific order of application, which must be used for `` +` ``. But other orders can be both faster and more precise (in typical cases) by enabling greater parallelism. Generally ties into the question of providing precision control for a program: it could be fixed by a flag that enables BQN to optimize as long as the results will be at least as precise (relative to the same program in infinite precision) as the spec. Absent this feature it will probably be provided with `•math.Sum`.
+Fold has a specific order of application, which must be used for `+´`. But other orders can be both faster and more precise (in typical cases) by enabling greater parallelism. This is exposed by `•math.Sum`, but arithmetic in a system function is ugly. Generally ties into the question of providing precision control for a program: it could be fixed by a flag that enables BQN to optimize as long as the results will be at least as precise (relative to the same program in infinite precision) as the spec.
 
 ### No one right way to check if a value is an array
 The mathematical approach is `0<≡𝕩`, which can be slow without runtime support, while the efficient approach is `0=•Type𝕩`, which is ugly and uses a system function for something that has nothing at all to do with the system. These are minor flaws, but programmers shouldn't have to hesitate about which one they want to use.
@@ -253,11 +256,6 @@ BQN bounced between these some at first; eventually I decided it really needed t
 
 ### "Modifier" and "composition" terminology
 1-modifiers and 2-modifiers used to be called "modifiers" and "compositions", respectively, and sometimes "operators" collectively. The new names are much better, although they do leave a disconnect between the names for modifiers, and those for their inputs—"operands".
-
-### Can't return from inner functions
-Fixed by adding block returns such as `label←` to jump out of a block with header name `label`. Hopefully these don't cause too many new problems.
-
-This was an issue with using functions as control flow. For example, when looping through an array with Each, you can't decide to exit early. In a curly-brace language you would just use a for loop and a return. In BQN, we need… longjmp? Maybe not as crazy as it sounds, and potentially worth it in exchange for replacing control structures.
 
 ### Ambivalent explicit functions
 Fixed with multiple bodies: if there are two bodies with no headers such as `{2×𝕩;𝕨-𝕩}`, they are the monadic and dyadic case.
