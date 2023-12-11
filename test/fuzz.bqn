@@ -86,10 +86,22 @@ RandShape1 ← 1⊸∾⍟(0=≠) RandShape
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
 gen ← {
   getGen ← •Import "fuzzgen.bqn"
-  Generate ← {
-    s ← 𝕨 Range⊘⊣ 2⋆31
+  Generate ← { 𝕨𝕊t:
+    s ← 𝕨 Range⊘⊣ 2⋆31  # Random seed
     AsFn ← (GetGen •MakeRand s)⊸•ns.Get⍟=
-    Squeeze {=◶⊑‿(AsFn∘⊑{{∾}≡𝕨?𝕎𝕩;(2=≠𝕩)◶⟨𝕎⊑,𝕎´⟩𝕩}·𝕊¨1⊸↓)𝕩} 𝕩
+    d ← Squeeze {=◶⊑‿(AsFn∘⊑{{∾}≡𝕨?𝕎𝕩;(2=≠𝕩)◶⟨𝕎⊑,𝕎´⟩𝕩}·𝕊¨⌾⌽1⊸↓)𝕩} 𝕩
+    {seed⇐s, template⇐t, data⇐d}
+  }
+  Dat ⇐ {𝕩.data}⍟(6=•Type)
+  # Formatting for error output
+  Format ⇐ {
+    6≠•Type𝕩 ? •Repr𝕩 ;
+    TrimPar ← (¯1↓1⊸↓)⍟('('=⊑)
+    TxtApply ← {{∾}≡𝕨?"∾"∾' '⌾⊑∾"‿"⊸∾¨𝕩;∾⟜" "⊸∾´⌽⌾(2⊸↑)⍟(3=≠)⟨𝕨⟩∾TrimPar⌾(¯1⊸⊑)𝕩}
+    FmtTemp ← {=◶⟨•Repr⊑,"("∾")"∾˜=◶⟨•Repr,"g."⊸∾⟩∘⊑TxtApply·𝕊¨1⊸↓⟩𝕩}
+    ∾⟨"{g←", •Repr 𝕩.seed, "•Import""fuzzgen.bqn""⋄"
+      TrimPar FmtTemp 𝕩.template
+      "}"⟩
   }
 
   RN ← (0⌈-⟜1) ⌊ 1‿RandRank‿RandBound _randChoose
@@ -133,12 +145,18 @@ gen ← {
   ⟩_flat
 }
 
-_testConsistent_ ← {Match←𝔾
+_testConsistent_ ← {Match←𝔾 ⋄ F←𝔽
   Arr ← 0=•Type
   ListVar ← Arr◶(5⥊@)‿ListVariations
   Var ← Arr∘⊢◶⊢‿Variation
-  v ← <˘⍉> (5⌊´≠¨)⊸(((0∾Rand⌾(-⟜1))⟜≠⊏⊢)¨) ListVar¨ a←𝕨⋈𝕩
-  (ClearRefs@) ⊢ (∧´ ⊏ Match¨ 1⊸↓) (𝕨 (𝔽⊑∘⊢)⊘(𝔽´⊢) Var¨⟜a)¨ v
+  v ← <˘⍉> (5⌊´≠¨)⊸(((0∾Rand⌾(-⟜1))⟜≠⊏⊢)¨) ListVar¨ a←gen.Dat¨o←𝕨⋈𝕩
+  c ← (∧´ ⊏ Match¨ 1⊸↓) r ← (𝕨 (F⊑∘⊢)⊘(F´⊢) Var¨⟜a)¨ v
+  {c?@;                             # If results don't match:
+    •Show f ⋄ •Out∘gen.Format¨o     # Output function and arguments
+    •Show >(⊏⟜(>v)⋈⊑⊑r˙)¨⊔⊐Match⌜˜r # And variations grouped by result
+  }
+  ClearRefs@
+  c
 }
 
 FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
@@ -160,7 +178,7 @@ _testDyArith ← {f←𝕗
     (Atom¨ 𝕨⊸gen.Arith¨ sh)_t¨ f
     {
       k←𝕩
-      rca ← Atom¨⟨gen.Char,gen.Arith⟩{k𝕎𝕩}¨sh
+      rca ← Atom¨⟨gen.Char,gen.Arith⟩{gen.Dat k𝕎𝕩}¨sh
       Fit ← -⟜(@+1-˜17×2⋆16)⌈-⟜@⌊⊢
       # Remove -⟜@ to test full-range ¬ (extended from 1+-)
       ⟨⌽⍟(Rand 2)-∘Fit⟜-`,Fit`,(-⟜@⌊1+Fit)`⟩ { (𝕎rca)_t 𝕩 }¨¨ pmn
@@ -171,21 +189,21 @@ _testDyArith ← {f←𝕗
 
 _testMonFold ← {
   l ← 𝕨 gen.Arith RandBound 𝕩
-  Pad ← gen.Arith∘1⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘⊢)  # Avoid missing identity
+  Pad ← gen.Arith∘1⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘gen.Dat∘⊢)  # Avoid missing identity
   modop {m←𝕩 ⋄ ! 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
 }
 _testDyFold ← {
-  i‿l ← ¯1 (⊑⋈↓) 𝕨 gen.Arith 1 + RandBound 𝕩
-  modop {m←𝕩 ⋄ ! i⊸(𝕨_m) _testConsistent_ FlatMatch l }⌜ 𝕗
+  i‿l ← ¯1 (⊑⋈↓) gen.Dat 𝕨 gen.Arith 1 + RandBound 𝕩
+  modop {m←𝕩 ⋄ ! i 𝕨_m _testConsistent_ FlatMatch l }⌜ 𝕗
 }
 _testMonScan ← {
   l ← 𝕨 gen.Arith (∨`⌾⌽ 𝕩 ≥ ·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
-  Pad ← (𝕨 gen.Arith 1⌾⊑∘≢∘⊢)⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘⊢)
+  Pad ← (𝕨 gen.Arith 1⌾⊑∘≢∘gen.Dat∘⊢)⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘gen.Dat∘⊢)
   modop {m←𝕩 ⋄ ! 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
 }
 _testDyScan ← {
   i‿l ← 𝕨⊸gen.Arith¨ 1⊸↓⊸⋈ (∧`𝕩≥·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
-  modop {m←𝕩 ⋄ ! i⊸(𝕨_m) _testConsistent_ FlatMatch l }⌜ 𝕗
+  modop {m←𝕩 ⋄ ! i 𝕨_m _testConsistent_ FlatMatch l }⌜ 𝕗
 }
 
 _testMonStruct ← { # ⥊≍⌽⍉⊏
@@ -223,11 +241,11 @@ _testDySearch ← { # ⊐⊒∊⍋⍒
   sh ← RandShape1 𝕩
   k ← ⍋‿⍒⊐𝕗
   a‿b ← 𝕨⊸gen.Arith¨ ⟨sh, (0⊸<◶⟨-⟜⌊RandShape∘𝕩,RandShape⟩·⌊𝕩÷1⌈×´)⊸∾ 1↓sh⟩
-  as ← (⊐k) ⊏ {𝕏a}¨(⍷k)⊏∧‿∨‿⊢
+  as ← (⊐k) ⊏ {𝕏gen.Dat a}¨(⍷k)⊏∧‿∨‿⊢
   as { ! 𝕨 𝕏 _testConsistent_ ≡ b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
 }
 
-RandRep ← -⟜((0⌊1⊸↑)⊸»)∘∧ 1⊸+⊸gen.Index⟜⥊
+RandRep ← -⟜((0⌊1⊸↑)⊸»)∘∧ 1⊸+⊸({𝕩.data}gen.Index)⟜⥊
 _testIndices ← { # /⊔
   (RandRep○RandBound˜ 𝕩)⊸{ ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
@@ -237,8 +255,8 @@ _testSelect ← { # /⊏⊔
   d ← 𝕨 gen.Struct sh
   RandInd ← ∧○(0⊸≠)◶⟨⟨⟩,gen.Index⟜(⥊‿RandShape _randChoose)˜⟩
   g ← ({⊏} = 𝕗) ⊏ RandRep‿RandInd
-  g { ! (n𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
-  g { ! (l𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
+  g { ! (n         𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
+  g { ! (l gen.Dat∘𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
 }
 
 cases ← [
