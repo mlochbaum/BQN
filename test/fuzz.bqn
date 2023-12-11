@@ -53,9 +53,6 @@ RandRank ← 4 _randUnbounded
 
 Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 
-# 𝕨 positive (not zero) integers summing to 𝕩
-RandPart ← ¯1 (⊢-») (Subset∾⊢)○(-⟜1)
-
 # 𝕩 is maximum bound plus 1 for both functions
 ⟨RandBound,RandShape⟩ ← {
   RandBound ⇐ ⟨
@@ -88,42 +85,52 @@ RandShape1 ← 1⊸∾⍟(0=≠) RandShape
 
 # 𝕨 is 2⋆⁼bits in type; 𝕩 is shape
 gen ← {
-  RandInt ← { (1⊸<⊸×m÷2) -˜ 𝕩 Rand m←2⋆2⋆𝕨 }
-
-  floats ← ⟨2⋆¯1074,2⋆¯1022,(2-2⋆¯52)×2⋆1023⟩
-  RandFloat ← ⟨
-    (floats∾2⋆0‿8‿32‿100)_randChoose × Range⟜0 - 2÷˜Rand∘3
-    ⊢ (Rand⟜≠⊏⊢) (Rand(⊣≥⌈´⊸⌊)3+Rand∘+)˜∘≠⊸/∘(∾⟜-0∾floats∾∞)
-  ⟩_randChoose
-
-  RandTyped ← =⟜6◶⟨RandInt,RandFloat⊢⟩
+  getGen ← •Import "fuzzgen.bqn"
+  Generate ← {
+    s ← 𝕨 Range⊘⊣ 2⋆31
+    AsFn ← (GetGen •MakeRand s)⊸•ns.Get⍟=
+    Squeeze {=◶⊑‿(AsFn∘⊑{{∾}≡𝕨?𝕎𝕩;(2=≠𝕩)◶⟨𝕎⊑,𝕎´⟩𝕩}·𝕊¨1⊸↓)𝕩} 𝕩
+  }
 
   RN ← (0⌈-⟜1) ⌊ 1‿RandRank‿RandBound _randChoose
   RandSplit ← ⌽⍟(Rand∘2) (-≍⊢)⟜RN
-  Combine ← (⍋Rand˜∘≠)⊸⊏⍟(Rand∘2) ∾
+
+  _a ← {⟨𝔽⟩∾⋈}                # Apply function symbolically
+  _ra← {(⋈Rand∘≠⊸⊑∘𝕗)∾⋈}      # Same, choosing randomly from list
+  _flat ← { <∘⊢ ⥊_a 𝔽⟜(×´⥊) } # Generate list, then reshape
 
   _Rec_ ← {
     S ← {𝕨R𝕩}
     R ← ⟨
-      𝔽                                       # Random
-      ∧‿∨_randChoose 𝔽                        # Sort
-      ⊢ ⟨⥊,RandPart˜⟜≠/⊢⟩_randChoose S⟜(1⌈RN) # Repeat
-      Combine <⊸(𝔾‿⊢_randChoose⊸S¨)⟜RandSplit # Partition
+      𝔽                                  # Random
+      ∧‿∨_ra 𝔽                           # Sort
+      ⊢ ⟨⥊,"Stretch"⟩_ra S⟜(1⌈RN)        # Repeat
+      "Shuffle"_a⍟(Rand∘2) ⟨∾⟩ ∾ <⊸(𝔾‿⊢_randChoose⊸S¨)⟜RandSplit # Partition
     ⟩{ 8⊸≤◶⟨0,Rand∘(≠𝕗)⟩◶𝕗 }
-    ⊢ ⥊ R⟜(×´⥊)
+    R _flat
   }
 
-  Arith ⇐ Squeeze RandTyped _Rec_ Rand
+  floats ← ⟨2⋆¯1074,2⋆¯1022,(2-2⋆¯52)×2⋆1023⟩
+  RandFloat ← ⟨
+    (floats∾2⋆0‿8‿32‿100)_randChoose ×_a (2÷˜Rand∘3) -˜_a⍟(0≠⊣) "Unit"_a
+    ⊢ "Sel"_a ·<(Rand(⊣≥⌈´⊸⌊)3+Rand∘+)˜∘≠⊸/∘(∾⟜-0∾floats∾∞)
+  ⟩_randChoose
+  RandTyped ← =⟜6◶⟨"Int"_a, RandFloat⊢⟩
+  Arith ⇐ Generate RandTyped _Rec_ Rand
 
   ContractRange ← (⟨≍⟜0,0≍-⟩_randChoose·RN-˜´)⊸+
-  RandInterval ← (⊑∘⊣ + -˜´⊸(Rand˜)) _Rec_ ContractRange
+  RandInterval ← <⊸("Interval"_a) _Rec_ ContractRange
 
-  Index ⇐ Squeeze (0⊸≍ ⊣ ·!0⊸<)⊸RandInterval
+  Index ⇐ Generate (0⊸≍ ⊣ ·!0⊸<)⊸RandInterval
 
-  ch_end ← 17×2⋆16 ⋄ surr ← (2⋆11)×27+↕2
-  Char ⇐ Squeeze @ + ·(1≠surr⊸⍋)⊸× (0≍ch_end⌊2⋆2⋆⊣)⊸RandInterval
+  ch_end ← 17×2⋆16
+  ChR ← 0≍ch_end⌊2⋆2⋆⊣
+  Char ⇐ Generate ·"ToChar"_a ChR⊸RandInterval
 
-  Struct ⇐ ⊢ ⥊ =⟜6◶⟨RandInt‿(@+(ch_end⌊2⋆2⋆⊣)Rand˜⊢)_randChoose,RandFloat⊢⟩⟜(×´⥊)
+  Struct ⇐ Generate =⟜6◶⟨
+    ⟨"Int"_a, "ToChar"_a <∘ChR⊸("Interval"_a)⟩_randChoose
+    "Unit"_a⊢
+  ⟩_flat
 }
 
 _testConsistent_ ← {Match←𝔾
