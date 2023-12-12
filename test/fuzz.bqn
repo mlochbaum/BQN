@@ -94,7 +94,7 @@ gen ← {
     s ← 𝕨 Range⊘⊣ 2⋆31  # Random seed
     AsFn ← (GetGen •MakeRand s)⊸•ns.Get⍟=
     d ← Squeeze {=◶⊑‿(AsFn∘⊑{{∾}≡𝕨?𝕎𝕩;(2=≠𝕩)◶⟨𝕎⊑,𝕎´⟩𝕩}·𝕊¨⌾⌽1⊸↓)𝕩} 𝕩
-    {seed⇐s, template⇐t, data⇐d}
+    {1≥≠⥊d? d ; seed⇐s, template⇐t, data⇐d}
   }
   Dat ⇐ {𝕩.data}⍟(6=•Type)
   # Formatting for error output
@@ -179,12 +179,12 @@ _testDyArith ← {f←𝕗
   ch ← 0<+´≠¨ pmn ← (∊⟜f⥊¨⊢) +‿-‿¬
   {
     sh ← RandDyShape 𝕩
-    Atom ← ⊑⍟(Rand∘2)⍟(⟨⟩≡≢)
+    Atom ← ⊑⍟(Rand∘2)⍟(0==)⍟(0=•Type)
     _t ← { 𝕏 _testConsistent_ FlatMatch´ 𝕗 }
     (Atom¨ 𝕨⊸gen.Arith¨ sh)_t¨ f
     {
       k←𝕩
-      rca ← Atom¨⟨gen.Char,gen.Arith⟩{gen.Dat k𝕎𝕩}¨sh
+      rca ← gen.Dat¨Atom¨⟨gen.Char,gen.Arith⟩{k𝕎𝕩}¨sh
       Fit ← -⟜(@+1-˜17×2⋆16)⌈-⟜@⌊⊢
       # Remove -⟜@ to test full-range ¬ (extended from 1+-)
       ⟨⌽⍟(Rand 2)-∘Fit⟜-`,Fit`,(-⟜@⌊1+Fit)`⟩ { (𝕎rca)_t 𝕩 }¨¨ pmn
@@ -204,7 +204,7 @@ _testDyFold ← {
 }
 _testMonScan ← {
   l ← 𝕨 gen.Arith (∨`⌾⌽ 𝕩 ≥ ·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
-  Pad ← (𝕨 gen.Arith 1⌾⊑∘≢∘gen.Dat∘⊢)⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘gen.Dat∘⊢)
+  Pad ← (𝕨 gen.Arith 1⌾⊑∘≢∘gen.Dat∘⊢)⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘⊢)
   modop {m←𝕩 ⋄ 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
 }
 _testDyScan ← {
@@ -251,7 +251,7 @@ _testDySearch ← { # ⊐⊒∊⍋⍒
   as { 𝕨 𝕏 _testConsistent_ ≡ b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
 }
 
-RandRep ← -⟜((0⌊1⊸↑)⊸»)∘∧ 1⊸+⊸({𝕩.data}gen.Index)⟜⥊
+RandRep ← -⟜((0⌊1⊸↑)⊸»)∘∧ 1⊸+⊸(gen.Dat gen.Index)⟜⥊
 _testIndices ← { # /⊔
   (RandRep○RandBound˜ 𝕩)⊸{ 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
