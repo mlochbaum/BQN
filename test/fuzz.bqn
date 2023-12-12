@@ -7,6 +7,7 @@ Fuzz testing. Options:
   -r: Random seed, u to use •UnixTime then print (1)
   -b: Maximum bound (1e3)
   -z: Don't generate large zero-product shapes (0)
+  -o: Show full function output when it fails a test (0)
   -n: Number of iterations (100)
   -t: Element type (0 3 4 5 6)
   -p: Primitives: both | mon%dy | mon%dy%both
@@ -14,17 +15,17 @@ Fuzz testing. Options:
 
 Any number of types or bounds can be given; all combinations are tested."
 
-  o ← "-h"‿"--help"‿"-b"‿"-z"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
+  o ← "-h"‿"--help"‿"-b"‿"-z"‿"-o"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
   oo ← (≠o) = oi ← o ⊐ a←•args
   •Exit∘•Out∘help⍟(∨´2⊸>) oi
 
   opts ← 2↓o≠⊸↑ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
-  bounds‿zerobound‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
+  bounds‿zerobound‿showres‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
   _default_ ← { (∾"Only one "‿𝕘‿" can be given") ! 1≥≠𝕨 ⋄ 𝕩𝔽∘⊣´𝕨 }
   num ⊢_default_"iteration number"↩ 100
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
   bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
-  zerobound ↩ 0⊣´zerobound
+  zerobound‿showres 0⊸(⊣´)¨↩
   seed "u"⊸≡◶⟨•BQN,•Show(2⋆31)|⌊∘•UnixTime⟩_default_"random seed"↩ 1
 
   modop ∾↩
@@ -153,7 +154,8 @@ _testConsistent_ ← {Match←𝔾 ⋄ F←𝔽
   c ← (∧´ ⊏ Match¨ 1⊸↓) r ← (𝕨 (F⊑∘⊢)⊘(F´⊢) Var¨⟜a)¨ v
   {c?@;                             # If results don't match:
     •Show f ⋄ •Out∘gen.Format¨o     # Output function and arguments
-    •Show >(⊏⟜(>v)⋈⊑⊑r˙)¨⊔⊐Match⌜˜r # And variations grouped by result
+    gv ← (⍒≠¨)⊸⊏ ⊔⊐Match⌜˜r         # Variations grouped by result
+    •Show ⊏˘⍟(¬opts.showres) >(⊏⟜(>v)⋈⊑⊑r˙)¨ gv
   }
   ClearRefs@
   c
