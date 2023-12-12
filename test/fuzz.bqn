@@ -94,8 +94,8 @@ gen ← {
   Generate ← { 𝕨𝕊p:
     s ← 𝕨 Range⊘⊣ 2⋆31  # Random seed
     AsFn ← (GetGen •MakeRand s)⊸•ns.Get⍟=
-    d ← Squeeze {=◶⊑‿(AsFn∘⊑{{∾}≡𝕨?𝕎𝕩;(2=≠𝕩)◶⟨𝕎⊑,𝕎´⟩𝕩}·𝕊¨⌾⌽1⊸↓)𝕩} 𝕩
-    {1≥≠⥊d? d ; seed⇐s, proc⇐p, data⇐d}
+    d ← Squeeze {=◶⊑‿(AsFn∘⊑(∊⟜∾‿⊢⌾<∘⊣)◶⟨{(2=≠𝕩)◶⟨𝕎⊑,𝕎´⟩𝕩}⟜(𝕊¨⌾⌽),{𝕎𝕩}⟜(𝕊¨)⟩1⊸↓)𝕩} p
+    {1≥≠⥊d?∧´⥊0≠•Type¨d? d ; seed⇐s, proc⇐p, data⇐d}
   }
   # Convert generator to array
   Arr ⇐ {𝕩.data}⍟(6=•Type)
@@ -108,7 +108,7 @@ gen ← {
   Format ⇐ {
     6≠•Type𝕩 ? •Repr𝕩 ;
     TrimPar ← (¯1↓1⊸↓)⍟('('=⊑)
-    TxtApply ← {{∾}≡𝕨?"∾"∾' '⌾⊑∾"‿"⊸∾¨𝕩;∾⟜" "⊸∾´⌽⌾(2⊸↑)⍟(3=≠)⟨𝕨⟩∾TrimPar⌾(¯1⊸⊑)𝕩}
+    TxtApply ← {∊⟜"∾"‿"⊢"⌾<𝕨?((𝕨≡"∾")/"∾ ")∾1↓∾"‿"⊸∾¨𝕩;∾⟜" "⊸∾´⌽⌾(2⊸↑)⍟(3=≠)⟨𝕨⟩∾TrimPar⌾(¯1⊸⊑)𝕩}
     FmtTemp ← {=◶⟨•Repr⊑,"("∾")"∾˜=◶⟨•Repr,"g."⊸∾⟩∘⊑TxtApply·𝕊¨1⊸↓⟩𝕩}
     ∾⟨"{g←", •Repr 𝕩.seed, "•Import""fuzzgen.bqn""⋄"
       TrimPar FmtTemp 𝕩.proc
@@ -145,8 +145,14 @@ gen ← {
   ContractRange ← (⟨⋈⟜0,0⋈-⟩_randChoose·RN-˜´)⊸+
   RandInterval ← <⊸("Interval"_a) _Rec_ ContractRange
 
-  Index ⇐ Generate (0⊸⋈ ⊣ ·!0⊸<)⊸RandInterval
-  Replic ⇐ Generate ·"Diffs"_a (0⋈1+⊣) RandInterval ⥊∘⊢
+  IndSub ← (0⊸⋈ ⊣ ·!0⊸<)⊸RandInterval
+  Index ⇐ Generate∘IndSub
+  _multi ← {
+    0≠•Type𝕩 ? Generate 𝕨𝔽𝕩 ;
+    (2⌊≠)◶⟨⊢,Generate·⋈_a⊑,Generate⟨⊢⟩∾⊢⟩ 𝕨𝔽¨𝕩
+  }
+  IndMulti ⇐ ∧○(0⊸≠)◶⟨<⟨⟩, IndSub⟜(⥊‿RandShape _randChoose)˜⟩_multi
+  Replic ⇐ ("Diffs"_a (0⋈1+⊣) RandInterval ⥊∘⊢) _multi
 
   ch_end ← 17×2⋆16
   ChR ← 0⋈ch_end⌊2⋆2⋆⊣
@@ -269,10 +275,9 @@ _testSelect ← { # /⊏⊔
   l‿sh ← (⍋≠¨)⊸⊏ RandShape¨ 𝕩‿𝕩
   n ← RandBound 𝕩
   d ← 𝕨 gen.Struct sh
-  RandInd ← ∧○(0⊸≠)◶⟨⟨⟩,gen.Index⟜(⥊‿RandShape _randChoose)˜⟩
-  g ← ({⊏} = 𝕗) ⊏ gen.Replic‿RandInd
-  g { (n         𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
-  g { (l gen.Arr∘𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
+  g ← ({⊏} = 𝕗) ⊏ gen.Replic‿gen.IndMulti
+  g { (n 𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
+  g { (l 𝕎 l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
 }
 
 cases ← [
