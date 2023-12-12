@@ -5,6 +5,7 @@ GetGen ← { 𝕊 ⟨Range,Subset,Deal⟩: # 𝕩 is a •MakeRand instance
 
   Sel ⇐ Range⟜≠⊏⊢
   Shuffle ⇐ Deal∘≠⊸⊏
+  Diffs ⇐ -⟜((0⌊1⊸↑)⊸»)∘∧
 
   # 𝕨 positive (not zero) integers summing to 𝕩
   Part ← ¯1 (⊢-») (Subset∾⊢)○(-⟜1)
