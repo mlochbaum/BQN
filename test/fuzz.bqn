@@ -8,6 +8,7 @@ Fuzz testing. Options:
   -b: Maximum bound (1e3)
   -z: Don't generate large zero-product shapes (0)
   -o: Show full function output when it fails a test (0)
+  -f: Failures allowed before stopping (1)
   -n: Number of iterations (100)
   -t: Element type (0 3 4 5 6)
   -p: Primitives: both | mon%dy | mon%dy%both
@@ -15,23 +16,25 @@ Fuzz testing. Options:
 
 Any number of types or bounds can be given; all combinations are tested."
 
-  o ← "-h"‿"--help"‿"-b"‿"-z"‿"-o"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
+  o ← "-h"‿"--help"‿"-b"‿"-z"‿"-o"‿"-f"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
   oo ← (≠o) = oi ← o ⊐ a←•args
   •Exit∘•Out∘help⍟(∨´2⊸>) oi
 
   opts ← 2↓o≠⊸↑ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
-  bounds‿zerobound‿showres‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
+  bounds‿zerobound‿showres‿numfail‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
   _default_ ← { (∾"Only one "‿𝕘‿" can be given") ! 1≥≠𝕨 ⋄ 𝕩𝔽∘⊣´𝕨 }
   num ⊢_default_"iteration number"↩ 100
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
   bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
-  zerobound‿showres 0⊸(⊣´)¨↩
+  zerobound‿showres‿numfail ⊣´¨˜↩ 0‿0‿1
   seed "u"⊸≡◶⟨•BQN,•Show(2⋆31)|⌊∘•UnixTime⟩_default_"random seed"↩ 1
 
   modop ∾↩
   prims ((⊢-˜¬×+`+2×·¬∨´)'%'⊸=)¨⊸(⊔○∾)↩
   "At most three %-separated primitive groups allowed" ! 3≥≠prims
   prims ↩ 2 (↑((¬∘∊/⊣)∾⊢)¨⊏) 3 ↑ prims
+
+  Failed ⇐ {𝕊: •Exit∘1⍟(0⊸=) numfail -↩ 1}
 }
 
 Squeeze‿ListVariations‿Variation‿ClearRefs ← •internal
@@ -156,6 +159,7 @@ _testConsistent_ ← {Match←𝔾 ⋄ F←𝔽
     •Show f ⋄ •Out∘gen.Format¨o     # Output function and arguments
     gv ← (⍒≠¨)⊸⊏ ⊔⊐Match⌜˜r         # Variations grouped by result
     •Show ⊏˘⍟(¬opts.showres) >(⊏⟜(>v)⋈⊑⊑r˙)¨ gv
+    opts.Failed@
   }
   ClearRefs@
   c
@@ -164,7 +168,7 @@ _testConsistent_ ← {Match←𝔾 ⋄ F←𝔽
 FlatMatch ← ≡◶⟨∧´∘⥊=∨∧○(≠˜),1⟩
 
 _testMonArith ← {
-  (𝕨 gen.Arith RandShape 𝕩)⊸{ ! 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
+  (𝕨 gen.Arith RandShape 𝕩)⊸{ 𝕏 _testConsistent_ FlatMatch 𝕨 }¨ 𝕗
 }
 
 RandDyShape ← {
@@ -176,7 +180,7 @@ _testDyArith ← {f←𝕗
   {
     sh ← RandDyShape 𝕩
     Atom ← ⊑⍟(Rand∘2)⍟(⟨⟩≡≢)
-    _t ← { ! 𝕏 _testConsistent_ FlatMatch´ 𝕗 }
+    _t ← { 𝕏 _testConsistent_ FlatMatch´ 𝕗 }
     (Atom¨ 𝕨⊸gen.Arith¨ sh)_t¨ f
     {
       k←𝕩
@@ -192,26 +196,26 @@ _testDyArith ← {f←𝕗
 _testMonFold ← {
   l ← 𝕨 gen.Arith RandBound 𝕩
   Pad ← gen.Arith∘1⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘gen.Dat∘⊢)  # Avoid missing identity
-  modop {m←𝕩 ⋄ ! 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
+  modop {m←𝕩 ⋄ 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
 }
 _testDyFold ← {
   i‿l ← ¯1 (⊑⋈↓) gen.Dat 𝕨 gen.Arith 1 + RandBound 𝕩
-  modop {m←𝕩 ⋄ ! i 𝕨_m _testConsistent_ FlatMatch l }⌜ 𝕗
+  modop {m←𝕩 ⋄ i 𝕨_m _testConsistent_ FlatMatch l }⌜ 𝕗
 }
 _testMonScan ← {
   l ← 𝕨 gen.Arith (∨`⌾⌽ 𝕩 ≥ ·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
   Pad ← (𝕨 gen.Arith 1⌾⊑∘≢∘gen.Dat∘⊢)⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘gen.Dat∘⊢)
-  modop {m←𝕩 ⋄ ! 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
+  modop {m←𝕩 ⋄ 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
 }
 _testDyScan ← {
   i‿l ← 𝕨⊸gen.Arith¨ 1⊸↓⊸⋈ (∧`𝕩≥·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
-  modop {m←𝕩 ⋄ ! i 𝕨_m _testConsistent_ FlatMatch l }⌜ 𝕗
+  modop {m←𝕩 ⋄ i 𝕨_m _testConsistent_ FlatMatch l }⌜ 𝕗
 }
 
 _testMonStruct ← { # ⥊≍⌽⍉⊏
   k ← 3|1+ ⌽‿⊏ ⊐ 𝕗
   sh ← k ⊏ {𝕏𝕨}` (1+⌈´k) ↑ ⟨RandShape 𝕩, 1⊸∾⍟(0=≠), 1⊸∾⍟(0=⊑)⟩
-  ((⊐sh) ⊏ 𝕨⊸gen.Struct¨ ⍷sh) { ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
+  ((⊐sh) ⊏ 𝕨⊸gen.Struct¨ ⍷sh) { 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 
 _testDyStruct ← { # ⥊↑↓↕⌽⍉ (no overtake)
@@ -222,34 +226,34 @@ _testDyStruct ← { # ⥊↑↓↕⌽⍉ (no overtake)
   RT ← (-RR¨⊢)K
   p‿r ← <˘⍉> ⟨⟨⥊,(0∾1⊸↓)⍟(sh>○(0=×´)⊢)∘l⟩, ⟨↓,l‿RT _randChoose⟩
               ⟨⌽,RT+˜⟩, ⟨↑,RT⟩, ⟨↕,0 RR¨ 1+K⟩, ⟨⍉,(⍋⊏⊐)Rand˜∘≠⟩⟩
-  (r⊏˜p⊐𝕗) { ! (𝕎sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
+  (r⊏˜p⊐𝕗) { (𝕎sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
 }
 
 _testDim ← { # ≠=≢
-  (𝕨 gen.Struct RandShape 𝕩)⊸{ ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
+  (𝕨 gen.Struct RandShape 𝕩)⊸{ 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 
 _testCombine ← { # ≍∾«»
   a ← 𝕨 gen.Struct sh ← RandShape1 𝕩
   bs ← (RandBound 1⊸+)⌾⊑⍟({≍}≠𝕗) sh
   swap ← (Rand 2)⊑{𝔽}‿˜
-  ((⊐bs) ⊏ 𝕨⊸gen.Struct¨ ⍷bs) { ! a 𝕏 _testConsistent_ ≡ _swap 𝕨 }¨ 𝕗
+  ((⊐bs) ⊏ 𝕨⊸gen.Struct¨ ⍷bs) { a 𝕏 _testConsistent_ ≡ _swap 𝕨 }¨ 𝕗
 }
 
 _testMonSearch ← { # ⊐⊒∊⍷∧∨⍋⍒
-  (𝕨 gen.Arith RandShape1 𝕩)⊸{ ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
+  (𝕨 gen.Arith RandShape1 𝕩)⊸{ 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 _testDySearch ← { # ⊐⊒∊⍋⍒
   sh ← RandShape1 𝕩
   k ← ⍋‿⍒⊐𝕗
   a‿b ← 𝕨⊸gen.Arith¨ ⟨sh, (0⊸<◶⟨-⟜⌊RandShape∘𝕩,RandShape⟩·⌊𝕩÷1⌈×´)⊸∾ 1↓sh⟩
   as ← (⊐k) ⊏ {𝕏gen.Dat a}¨(⍷k)⊏∧‿∨‿⊢
-  as { ! 𝕨 𝕏 _testConsistent_ ≡ b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
+  as { 𝕨 𝕏 _testConsistent_ ≡ b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
 }
 
 RandRep ← -⟜((0⌊1⊸↑)⊸»)∘∧ 1⊸+⊸({𝕩.data}gen.Index)⟜⥊
 _testIndices ← { # /⊔
-  (RandRep○RandBound˜ 𝕩)⊸{ ! 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
+  (RandRep○RandBound˜ 𝕩)⊸{ 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 _testSelect ← { # /⊏⊔
   l‿sh ← (⍋≠¨)⊸⊏ RandShape¨ 𝕩‿𝕩
@@ -257,8 +261,8 @@ _testSelect ← { # /⊏⊔
   d ← 𝕨 gen.Struct sh
   RandInd ← ∧○(0⊸≠)◶⟨⟨⟩,gen.Index⟜(⥊‿RandShape _randChoose)˜⟩
   g ← ({⊏} = 𝕗) ⊏ RandRep‿RandInd
-  g { ! (n         𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
-  g { ! (l gen.Dat∘𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
+  g { (n         𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
+  g { (l gen.Dat∘𝕎¨l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
 }
 
 cases ← [
