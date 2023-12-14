@@ -212,20 +212,21 @@ _testDyArith ← {f←𝕗
   }
 }
 
+NoIdent ← ⊑∊⟜√‿|‿≤‿<  # Operands not allowed for empty fold
 _testMonFold ← {
-  l ← 𝕨 gen.Arith RandBound 𝕩
-  Pad ← gen.Arith∘1⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘⊢)  # Avoid missing identity
-  modop {m←𝕩 ⋄ 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
+  l ← 𝕨 gen.Arith 1 ⌈ b ← 0×RandBound 𝕩
+  Cut ← 0⊸↑⍟(¬NoIdent∘⊣)⍟(0=b)  # Avoid missing identity
+  modop {m←𝕩 ⋄ 𝕨_m _testConsistent_ FlatMatch 𝕨 Cut l }⌜ 𝕗
 }
 _testDyFold ← {
-  _a ← gen._apply
-  i‿l ← ¯1 (⊑_a⋈↓_a) 𝕨 gen.Arith 1 + RandBound 𝕩
+  i‿l ← ¯1 (⊑⟜gen.Arr⋈↓gen._apply) 𝕨 gen.Arith 1 + RandBound 𝕩
   modop {m←𝕩 ⋄ i 𝕨_m _testConsistent_ FlatMatch l }⌜ 𝕗
 }
 _testMonScan ← {
-  l ← 𝕨 gen.Arith (∨`⌾⌽ 𝕩 ≥ ·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
-  Pad ← (𝕨 gen.Arith 1⌾⊑∘≢∘⊢)⍟(⊑∊⟜√‿|‿≤‿<)⍟(0=≠∘⊢)
-  modop {m←𝕩 ⋄ 𝕨_m _testConsistent_ FlatMatch 𝕨 Pad l }⌜ 𝕗
+  e ← 0=⊑ s ← RandShape1 𝕩
+  l ← 𝕨 gen.Arith (∨`⌾⌽ 𝕩 ≥ ·×`1⌾⊑)⊸/∘(1⌾⊑)⍟e s
+  Cut ← 0⊸↑⍟(¬{(NoIdent𝕨)∧𝕩≡{˝}}´∘⊣)⍟e
+  modop {m←𝕩 ⋄ 𝕨_m _testConsistent_ FlatMatch 𝕨‿m Cut l }⌜ 𝕗
 }
 _testDyScan ← {
   i‿l ← 𝕨⊸gen.Arith¨ 1⊸↓⊸⋈ (∧`𝕩≥·×`1⌾⊑)⊸/⍟(0=⊑) RandShape1 𝕩
