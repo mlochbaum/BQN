@@ -245,9 +245,10 @@ _testDyStruct ← { # ⥊↑↓↕⌽⍉ (no overtake)
   K ← (Rand 1+≠)⊸↑
   RR ← ⋈ ⟨⊑⊸+,⊢´⊸-⟩_randChoose RandBound∘¬˜
   RT ← (-RR¨⊢)K
-  p‿r ← <˘⍉> ⟨⟨⥊,(0∾1⊸↓)⍟(sh>○(0=×´)⊢)∘l⟩, ⟨↓,l‿RT _randChoose⟩
-              ⟨⌽,RT+˜⟩, ⟨↑,RT⟩, ⟨↕,0 RR¨ 1+K⟩, ⟨⍉,(⍋⊏⊐)Rand˜∘≠⟩⟩
-  (r⊏˜p⊐𝕗) { (𝕎sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
+  Atom ← ⊑⍟(Rand∘2)⍟(1=≠)
+  [p,r] ← ⍉ [⟨⥊,(0∾1⊸↓)⍟(sh>○(0=×´)⊢)∘l⟩, ⟨↓,l‿RT _randChoose⟩
+             ⟨⌽,RT+˜⟩, ⟨↑,RT⟩, ⟨↕,0 RR¨ 1+K⟩, ⟨⍉,(⍋⊏⊐)Rand˜∘≠⟩]
+  (r⊏˜p⊐𝕗) { (Atom 𝕎sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
 }
 
 _testDim ← { # ≠=≢
@@ -263,12 +264,14 @@ _testCombine ← { # ≍∾«»
 
 _testMonSearch ← { # ⊐⊒∊⍷∧∨⍋⍒
   (𝕨 gen.Arith RandShape1 𝕩)⊸{ 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
+  (𝕨 gen.Char  RandShape1 𝕩)⊸{ 𝕏 _testConsistent_ ≡ 𝕨 }¨ 𝕗
 }
 _testDySearch ← { # ⊐⊒∊⍋⍒
   sh ← RandShape1 𝕩
+  ss ← ⟨sh, (0⊸<◶⟨-⟜⌊RandShape∘𝕩,RandShape⟩·⌊𝕩÷1⌈×´)⊸∾ 1↓sh⟩
+  a‿b ← 𝕨⊸((0=Rand 4) ⊑ gen.Arith‿gen.Char)¨ ss
   k ← ⍋‿⍒⊐𝕗
-  a‿b ← 𝕨⊸gen.Arith¨ ⟨sh, (0⊸<◶⟨-⟜⌊RandShape∘𝕩,RandShape⟩·⌊𝕩÷1⌈×´)⊸∾ 1↓sh⟩
-  as ← (⊐k) ⊏ {𝕏a}¨(⍷k)⊏{𝕏gen._apply}¨⌾(2⊸↑)∧‿∨‿⊢
+  as ← (⊐k) ⊏ {𝕏a}¨ (⍷k)⊏{𝕏gen._apply}¨⌾(2⊸↑) ∧‿∨‿⊢
   as { 𝕨 𝕏 _testConsistent_ ≡ b }¨ {𝕏˜}⍟(∊˙⊸=)¨ 𝕗
 }
 
@@ -282,6 +285,8 @@ _testSelect ← { # /⊏⊔
   g ← ({⊏} = 𝕗) ⊏ gen.Replic‿gen.IndMulti
   g { (n 𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
   g { (l 𝕎 l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
+  GR ← 𝕨 gen.Struct⟜RandShape1 ·⌊𝕩÷1⊸⌈
+  { (𝕏 _testConsistent_ ≡)⟜GR Range 2⋆Range 8 }¨ ∊⟜⟨/⟩⊸/ 𝕗
 }
 
 cases ← [
