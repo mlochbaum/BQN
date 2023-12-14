@@ -7,6 +7,7 @@ Fuzz testing. Options:
   -r: Random seed, u to use •UnixTime then print (1)
   -b: Maximum bound (1e3)
   -z: Don't generate large zero-product shapes (0)
+  -v: Show description of each test before it runs (0)
   -o: Show full function output when it fails a test (0)
   -f: Failures allowed before stopping (1)
   -n: Number of iterations (100)
@@ -16,17 +17,17 @@ Fuzz testing. Options:
 
 Any number of types or bounds can be given; all combinations are tested."
 
-  o ← "-h"‿"--help"‿"-b"‿"-z"‿"-o"‿"-f"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
+  o ← "-h"‿"--help"‿"-b"‿"-z"‿"-v"‿"-o"‿"-f"‿"-n"‿"-t"‿"-p"‿"-m"‿"-r"
   oo ← (≠o) = oi ← o ⊐ a←•args
   •Exit∘•Out∘help⍟(∨´2⊸>) oi
 
   opts ← 2↓o≠⊸↑ a ⊔˜ (¬-˜⊢× oi⊏˜ ↕∘≠⌈`∘×¬)oo
-  bounds‿zerobound‿showres‿numfail‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
+  bounds‿zerobound‿verbose‿showres‿numfail‿num‿types‿prims‿modop‿seed ⇐ •BQN¨¨⌾(¯3⊸↓) opts
   _default_ ← { (∾"Only one "‿𝕘‿" can be given") ! 1≥≠𝕨 ⋄ 𝕩𝔽∘⊣´𝕨 }
   num ⊢_default_"iteration number"↩ 100
   types ↩ 0‿3‿4‿5‿6⍟(0=≠) types
   bounds ↩ ⟨1e3⟩⍟(0=≠) bounds
-  zerobound‿showres‿numfail ⊣´¨˜↩ 0‿0‿1
+  zerobound‿verbose‿showres‿numfail ⊣´¨˜↩ 0‿0‿0‿1
   seed "u"⊸≡◶⟨•BQN,•Show(2⋆31)|⌊∘•UnixTime⟩_default_"random seed"↩ 1
 
   modop ∾↩
@@ -169,9 +170,11 @@ _testConsistent_ ← {Match←𝔾 ⋄ F←𝔽
   ListVar ← Arr◶(5⥊@)‿ListVariations
   Var ← Arr∘⊢◶⊢‿Variation
   v ← <˘⍉> (5⌊´≠¨)⊸(((0∾Rand⌾(-⟜1))⟜≠⊏⊢)¨) ListVar¨ a←gen.Arr¨o←𝕨⋈𝕩
+  Describe ← {𝕊: •Show f ⋄ •Out∘gen.Format¨o}
+  Describe⍟opts.verbose @
   c ← (∧´ ⊏ Match¨ 1⊸↓) r ← (𝕨 (F⊑∘⊢)⊘(F´⊢) Var¨⟜a)¨ v
   {c?@;                             # If results don't match:
-    •Show f ⋄ •Out∘gen.Format¨o     # Output function and arguments
+    Describe⍟(¬opts.verbose) @      # Output function and arguments
     gv ← (⍒≠¨)⊸⊏ ⊔⊐Match⌜˜r         # Variations grouped by result
     •Show ⊏˘⍟(¬opts.showres) >(⊏⟜(>v)⋈⊑⊑r˙)¨ gv
     opts.Failed@
