@@ -5,6 +5,7 @@
 Commentary on the best methods I know for implementing various primitives. Often there are many algorithms that are viable in different situations, and in these cases I try to discuss the tradeoffs.
 
 - [Arithmetic](arithmetic.md)
+- [Fold and Scan](fold.md)
 - [Replicate](replicate.md)
 - [Sorting](sort.md)
 - [Searching](search.md)
