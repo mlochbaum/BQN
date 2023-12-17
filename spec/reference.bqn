@@ -483,14 +483,14 @@ Transpose←(0<=)◶⟨ToArray,(=-1˙)⊸ReorderAxes⟩
 Cmp ← ⌈○IsArray◶{ # No arrays
   𝕨(>-<)𝕩
 }‿{ # At least one array
-  e←𝕨-˜○(∨´0=≢)𝕩
-  𝕨(e=0)◶e‿{
+  ed←-´e←𝕨⋈○(∧´0<≢)𝕩
+  𝕨(ed=0)◶ed‿{
     # Backup ordering by rank
     c←𝕨×∘-○(IsArray+=)𝕩
     # l is the number of elements to compare
     # Also update backup ordering c if lengths differ
     s←≢𝕨 ⋄ t←≢𝕩 ⋄ r←𝕨⌊○=𝕩
-    l←s{i←+´∧`𝕨=𝕩⋄m←×´i↑𝕨⋄{c↩×-´𝕩⋄m×↩⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i⋄m}○(r↑⌽)t
+    l←s{i←+´∧`𝕨=𝕩⋄m←(×´e)×´i↑𝕨⋄{c↩×-´𝕩⋄m×↩⌊´𝕩}∘(⊑¨⟜𝕨‿𝕩)⍟(r⊸>)i⋄m}○(r↑⌽)t
     # Compare elements, stopping at the first difference
     a←⥊𝕨⋄b←⥊𝕩
     Trav←(=⟜l)◶{Trav∘(1+𝕩)⍟(0⊸=)a Cmp○(𝕩⊸⊑)b}‿c
