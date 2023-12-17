@@ -183,8 +183,9 @@ Pick1←{
   i ← 0(⊑⟜𝕨+⊑⟜s×⊢)´-↕⊸¬≠𝕨  # Compute index with a reverse fold
   i ⊑ ⥊𝕩
 }
+Pick1E ← (0=≠∘⥊∘⊣)◶⟨1,0==∘⊢⟩◶⊣‿Pick1  # Return 𝕨 if empty and 0<=𝕩
 # Recurse if depth is greater than 1
-Pickd ← {∨´⥊IsArray¨𝕨}◶Pick1‿{Pickd⟜𝕩¨𝕨}
+Pickd ← {∨´⥊IsArray¨𝕨}◶Pick1E‿{Pickd⟜𝕩¨𝕨}
 Pick ← IsArray◶⥊‿⊢⊸Pickd
 First ← {!0<≠𝕩 ⋄ 0⊑𝕩} Deshape
 

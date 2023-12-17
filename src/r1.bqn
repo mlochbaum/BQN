@@ -274,7 +274,7 @@ Pick0←{
   "𝕨⊑𝕩: 𝕩 must be a list when 𝕨 is a number" ! 1==𝕩
   𝕩⊑˜(≠𝕩)NormIndP𝕨
 }
-Pick1←{
+Pick1←(0=≠∘⥊∘⊣)◶⟨1,0==∘⊢⟩◶(⊣_fillBy_⊢)‿{
   "𝕨⊑𝕩: Indices in compound 𝕨 must be lists" ! 1==𝕨
   "𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩" ! 𝕨=○≠s←≢𝕩
   i←0⋄𝕨{i↩(𝕩NormIndP𝕨)+𝕩×i}¨s

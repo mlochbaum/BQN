@@ -157,7 +157,7 @@ Each element in an array `s⥊e` is associated with an *index*, which is a list 
 
 **Range** (`↕`) is extended to apply to a list of natural numbers, in addition to the provided case of a single natural number (an enclosed natural number `𝕩` should still result in an error). For a list `𝕩`, the result is an array of shape `𝕩` in which the value at a given index is that index, as a list of natural numbers. That is, `i≡i⊑↕𝕩` for any list of natural numbers `i` with `∧´i<𝕩`.
 
-**Pick** (`⊑`) is extended to array left arguments. In this case, it requires every depth-1 array in the nested structure of `𝕨` to be a valid index list for `𝕩`, and every atom to be contained in one of these lists. The result is `𝕨` with each index list replaced by the element of `𝕩` at that index. In the simple case where `𝕨` itself is an index list, the result is the element of `𝕩` at index `𝕨`.
+**Pick** (`⊑`) is extended to array left arguments. In this case, an array in the nested structure of `𝕨` is considered an index if it has depth 1, and either it's non-empty or `𝕩` is a unit. Each of these arrays must be a valid index list for `𝕩`, and every atom in `𝕨` must contained in one of these lists. The result is `𝕨` with each index list replaced by the element of `𝕩` at that index. In the simple case where `𝕨` itself is an index list, the result is the element of `𝕩` at index `𝕨`.
 
 **First** (`⊑`) simply takes the first element of its argument in index order, with an error if `𝕩` is empty.
 

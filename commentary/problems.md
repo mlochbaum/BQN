@@ -209,7 +209,7 @@ In Dyalog APL, Interval Index is identical to Index Of if the left argument has 
 ### Empty left argument to Select
 Select chooses whether `𝕨` maps to axes of `𝕩` or selects from the first axis based only on its depth. An empty array has depth 1, so it selects no major cells. However, it could also select from no axes (a no-op) and in some contexts the other behavior would be surprising.
 
-There's a similar problem with `⟨⟩` as a left argument to `⊑`: it could be a list of no indices, or a length-0 index. Currently it's treated as an index, causing errors when `𝕨` is a variable-length list of indices. This could be mostly fixed with backwards compatibility by choosing the other way when `𝕩` has nonzero rank.
+There's a similar problem with `⟨⟩` as a left argument to `⊑`: it could be a list of no indices, or a length-0 index. This has been mostly fixed by checking the rank of `𝕩`, because a length-0 index can only apply to a rank-0 array, so the problem now only appears in the rare case that `𝕩` is a unit.
 
 ### Special names other than 𝕣 can't be written as modifiers
 I decided that it was better to allow `𝕨_m_𝕩` to work with no spaces than to allow `_𝕩` to be a modifier, and this rule also helps keep tokenization simple. But to apply `𝕩` as a modifier you have to give it a different name. Could actually be a good thing in that it encourages you to stick to functions, as they're nicer in lots of other ways.
