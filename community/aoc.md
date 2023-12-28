@@ -2,9 +2,81 @@
 
 # Advent of Code
 
+[Advent of Code 2023](https://adventofcode.com/2023) had 225 solutions published by 31 programmers. Anyone cool has moved to [Uiua](https://www.uiua.org/), and also Github's new search leaves out tons of repositories so I can't find them as well as I did before. Below, problems solved in BQN are shown in green, and problems solved in other languages in faint red. Each name links to the repository where these are published.
+
+<!--GEN
+nam ← ⟨"dzaima","frasiyav","dlozeve","Jack Franklin","Rampoina","Donnie Mattingly","Manolo Martínez","Sylvia","Mark Nelson","Tim Marinin","Michael Percival","Caleb Quilley","Cheery Chen","Ryan Bethke","grhkm21","Jamie Bayne","Terrence Reilly","Tyler","Conor Hoekstra","Zenna","David Zwitser","Akshay Nair","Ethan Carlsson","Joshua Suskalo","Zack","Olivia Palmu","Giorgio Dell'Immagine","Eric Zhang","Max Siling","ven","Brian E"⟩
+sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿18‿19‿20‿21‿22‿23,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿13‿14‿15‿16‿17‿18‿19‿21,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15,1‿2‿3‿4‿5‿6‿8‿9‿11‿16‿18,1‿2‿3‿4‿5‿6‿7‿9‿10‿11‿13,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11,1‿2‿4‿6‿7‿8‿9‿11‿12‿21,1‿2‿3‿4‿5‿6‿7‿8‿9‿11,1‿2‿3‿4‿5‿6‿7‿8‿9‿11,1‿2‿3‿4‿5‿6‿7‿8‿9,1‿2‿3‿4‿6‿7‿8,1‿2‿3‿4‿6‿7‿8,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6,1‿2‿3‿4,1‿4‿6,1‿2‿3,1‿2‿3,1‿2‿3,1‿2,1‿2,⟨9⟩,⟨4⟩,⟨3⟩,⟨2⟩,⟨1⟩,⟨1⟩,⟨1⟩⟩
+als ← ⟨⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,⟨⟩,⟨⟩,⟨⟩,2‿3‿5‿7,⟨4⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,1‿2‿3‿4‿5‿6‿7‿8‿10‿11‿12‿13‿14,1‿2‿3‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿17‿19‿21‿24‿25,1‿2‿4‿5‿6,1‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿23‿24‿25,2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,2‿3‿4,⟨⟩⟩
+link← ⟨"https://github.com/dzaima/aoc/tree/master/2023/BQN","https://github.com/frasiyav/AoC2023","https://git.sr.ht/~dlozeve/aoc2023/tree","https://github.com/jhfranklin/aoc/tree/main/2023","https://codeberg.org/Rampoina/aoc/src/branch/master/2023","https://github.com/donniemattingly/aoc2023","https://github.com/manolomartinez/advent_of_code/tree/main/2023","https://github.com/saltysylvi/bqn-aoc/tree/main/2023","https://github.com/anadrome/aoc2023","https://github.com/timmarinin/aoc2023","https://github.com/mpizzzle/AdventOfCode/tree/master/2023","https://github.com/icendoan/aoc/tree/main/2023","https://github.com/qqii/advent-of-code-2023/tree/master","https://github.com/RKBethke/aoc23-bqn/tree/main/src","https://github.com/grhkm21/advent-of-code-2023/tree/master/bqn","https://github.com/qualiaa/aoc/tree/master/2023","https://github.com/terrencepreilly/advent/tree/main/2023","https://github.com/DataKinds/aoc2023","https://github.com/codereport/Advent-of-Code-2023","https://github.com/azenna/advent-of-code-2023/tree/main/bqn","https://github.com/DavidZwitser/Advent-of-Code-BQN-2023","https://github.com/phenax/adventure-of-coditudes-2023/tree/main/src","https://github.com/ethancarlsson/advent_2023/tree/master/solutions","https://git.sr.ht/~srasu/bqn-aoc/tree/main/item/src/aoc2023","https://github.com/zphixon/aoc2023/tree/main/src","https://github.com/RocketRace/aoc2023","https://github.com/gio54321/aoc-2023","https://github.com/ekzhang/aoc23-alpha.git","https://github.com/GoldsteinE/aoc2023","https://github.com/vendethiel/advent23","https://github.com/Brian-ED/BQN-Advent-Of-Code/tree/main/2023"⟩
+
+Ge ← "g"⊸At⊸Enc
+
+w ← (w0←128) +           (tw←20) × 0.4+m←25
+h ← (h0← 56) + (he←18) + (th←12) ×     n←≠nam
+wh ← w‿h
+out← 40‿10
+
+pa ← "class=Paren|stroke=currentColor|fill=none"
+rc ← At "class=code|stroke-width=1|rx=6"
+gt ← "stroke-width=1|font-size=10px|fill=currentColor"
+Path ← "path" Elt "d"⊸⋈⊘(⊣∾"d"⋈⊢)
+
+Ct ← (/¯∞⊸»<-⟜1)⊸(⊏⋈¨«˜⟜≠-⊣)¨ -⟜1
+Bp ← (0<≠¨)⊸/ (h0+th×0.25+↕n) (∾((w0+⊑∘⊢)∾⊣∾1⊑⊢)¨)¨ tw×Ct
+Bars ← (Path·∾("M h"⥊˜≠)∾¨FmtNum)¨ Bp
+
+((-out÷2)∾wh+out) SVG gt Ge ∾⥊¨ ⟨
+  <"rect" Elt rc∾(Pos 0‿0)∾"width"‿"height"≍˘FmtNum wh
+  pa Ge Path¨ <∘∾˘("M "⊸∾˘"VHH")∾¨FmtNum (w0‿0∾0≍˘⟨h0-6,h-he⟩)∾˘1‿2/⌽wh
+  "text-anchor=middle" Ge ⟨
+    ("text" Attr "font-size"‿"20px"∾Pos⟨w0+tw×m÷2,h0-32⟩) Enc "Day"
+    "font-size=11px" Ge ⍉((w0+tw×0.5+↕m)Pos∘⋈⌜⟨h0-10,h+12-he⟩) "text"⊸Attr⊸Enc¨ FmtNum 1+↕25
+  ⟩
+  link ("a"Attr"xlink:href"⊸⋈)⊸Enc¨ (10 ("fill"‿"currentColor"∾Pos∘⋈)¨h0+th×0.5+↕n) "text"⊸Attr⊸Enc¨ nam
+  "stroke-width=6|class=green|opacity=0.9" Ge Bars sol
+  "stroke-width=6|class=red|opacity=0.2" Ge Bars als
+⟩
+-->
+
+The number of BQN solutions for each of the 25 days is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2023/stats). The BQN solutions are scaled to be visible here: there are 7789 times more valid AoC submissions than published BQN solutions overall.
+
+<!--GEN
+aoc ← 298417‿201102‿146690‿144405‿108415‿102430‿86636‿86013‿75074‿63039‿57531‿43562‿41636‿42069‿43100‿34516‿23259‿27881‿27740‿20699‿22465‿14934‿15448‿14362‿11163
+bqn ← 27‿24‿21‿20‿14‿18‿15‿13‿13‿7‿11‿4‿5‿4‿4‿4‿2‿4‿3‿2‿4‿2‿2‿1‿1
+
+width ← 256
+pad   ← 40‿40
+pad1  ← 40‿10+pad
+
+pc ← At "class=red|r=4"
+gr ← "stroke-width=1.2|font-size=13px|text-anchor=end|fill=currentColor"
+
+col ← "class"⊸⋈¨"red"‿"green"
+lab ← "Solutions in:"‿"Anything"‿"BQN"
+win ← ⌈´¨ pts ← <∘∾˘ xy ← ⍉> ((↕≠)⋈÷⟜(+´))¨ aoc‿bqn
+ar  ← ÷2
+dim ← width (⊣≍×) ar
+Scale ← ¬⌾(1⊸⊑) ÷⟜win
+line ← (/≠¨⊏xy) ⊔ FmtNum ⍉> dim×Scale pts
+((-pad1÷2)∾dim+pad1) SVG gr Ge ∾⥊¨ ⟨
+  <"rect" Elt rc∾(Pos-pad÷2)∾"width"‿"height"≍˘FmtNum dim+pad
+  ((col∾¨⊢)⌾(1⊸↓)(Pos(⊑dim)⊸⋈)¨18×0.5+↕3) "text"⊸Attr⊸Enc¨ lab
+  "text-anchor=middle|opacity=0.8" Ge "text"⊸Attr⊸Enc˜´¨ ⟨
+    ⟨"day", "dy"‿"1em"∾Pos dim×0.5‿1⟩
+    ⟨"count", "transform"‿"rotate(-90)"∾"dy"‿"-0.35em"∾Pos ⌽dim×0‿¯0.5⟩
+  ⟩
+  <pa At⊸Path ∾("M VH")∾¨FmtNum dim(×∾⌽∘⊣)1‿0×Scale 0
+  col ≍⟜"style"‿"fill:none"⊸Path⟜('M'⌾⊑∘∾·⥊ "L "∾¨⎉1⊢)¨ line
+⟩
+-->
+
+## Year 2022
+
 [Advent of Code 2022](https://adventofcode.com/2022) was about twice the BQN event that 2021 was, with 406 solutions published by 46 programmers. Below, problems solved in BQN are shown in green, and problems solved in other languages in faint red. Each name links to the repository where these are published.
 
 <!--GEN
+{
 nam ← ⟨"Tim Cooijmans","frasiyav","dzaima","sterni","Sylvia","Jack Franklin","Michael Percival","Caleb Quilley","Raghu R","Narazaki Shuji","Rampoina","Samuel","Joshua Suskalo","eissplitter","Dimitri Lozeve","Karim Elmougi","Mitchell Kember","Choram","Antti Keränen","Juuso Haavisto","Johnny","Olodus","N`hlest","Brian E","Hannu Hartikainen","Skye Soss","akamayu ouo","ynk","Toma","Dunya Kirkali","Perigord","James Sully","axelbdt","Ben Dean","dankeyy","Conor Hoekstra","Alpha Chen","David Cromp","Akshay Nair","Asher Harvey-Smith","extorious","Felix Riedel","Doug Kelkhoff","Adam Juraszek","calebowens","mycf"⟩
 sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿15‿17‿18‿20‿21‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿21‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿18‿21,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿14‿15‿17‿18‿20,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿15‿16‿20‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿12‿14‿15‿21,3‿4‿5‿6‿7‿8‿12‿14‿17‿18‿23‿24‿25,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13,1‿2‿3‿4‿5‿6‿8‿9‿10‿11‿18‿20,1‿2‿3‿4‿5‿6‿8‿9‿10‿11‿12‿13,1‿2‿3‿4‿5‿6‿7‿8‿10‿11‿12‿13,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11,1‿2‿3‿4‿5‿6‿7‿8‿9‿10,1‿2‿3‿4‿5‿6‿7‿8‿9‿10,1‿2‿3‿4‿5‿6‿7‿8‿9,1‿2‿3‿4‿6‿8‿9‿10,1‿2‿3‿4‿5‿6‿7‿8,5‿6‿7‿8‿9‿10‿11,1‿2‿3‿4‿5‿6‿7,2‿3‿4‿6‿8‿18,1‿2‿3‿4‿5‿6,1‿2‿3‿5‿12,1‿2‿6‿8‿10,1‿2‿3‿6‿8,1‿2‿3‿4‿6,9‿13‿14‿15,1‿3‿6‿8,1‿2‿3‿4,1‿2‿3‿4,1‿8‿9,1‿6‿8,1‿5‿6,1‿2‿3,1‿25,1‿2,1‿2,⟨6⟩,⟨4⟩,⟨3⟩,⟨2⟩,⟨1⟩⟩
 als ← ⟨⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,16‿17‿18‿19‿20‿21‿22‿23‿24‿25,11‿12‿13‿14‿17‿18‿19‿21‿22‿23‿24,⟨⟩,1‿2‿9‿10‿11‿13‿15‿16‿19‿20‿21‿22,⟨⟩,⟨⟩,⟨7⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,5‿7‿11,⟨⟩,1‿2‿3‿4,⟨⟩,⟨⟩,⟨⟩,4‿6‿7‿8‿9‿10‿11‿13‿14‿15‿16‿17‿18‿24‿25,3‿4‿5‿7‿9‿11‿12,4‿5‿7‿9‿10‿11‿12‿13‿15‿18‿20‿21‿23,⟨⟩,1‿2‿3‿4‿5‿6‿7‿8‿10‿11‿12‿16,2‿4‿5‿7‿9‿10‿11‿12‿13,⟨⟩,⟨⟩,2‿3‿4‿5‿6‿7‿10,2‿3‿4‿5,2‿3‿4‿7‿8‿9‿10‿11‿12‿13‿14‿15‿18‿20‿21‿23‿25,⟨⟩,2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿18‿20‿21‿23,⟨⟩,⟨⟩,1‿2‿3‿4‿5‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿20‿21,⟨⟩,1‿2‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿17‿18‿19‿20‿21‿22‿23‿24‿25,1‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿16‿18‿22‿23‿24‿25,2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12‿13‿14‿15‿18‿21‿25⟩
@@ -37,11 +109,13 @@ Bars ← (Path·∾("M h"⥊˜≠)∾¨FmtNum)¨ Bp
   "stroke-width=6|class=green|opacity=0.9" Ge Bars sol
   "stroke-width=6|class=red|opacity=0.2" Ge Bars als
 ⟩
+}
 -->
 
 The number of BQN solutions for each of the 25 days is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2022/stats). The BQN solutions are scaled to be visible here: there are 4842 times more valid AoC submissions than published BQN solutions overall.
 
 <!--GEN
+{
 aoc ← 256181‿216402‿188454‿169211‿145588‿143103‿105620‿105066‿86105‿82936‿71690‿55014‿48181‿45716‿41487‿25845‿25051‿27531‿16105‿20732‿23484‿18213‿16578‿14345‿17381
 bqn ← 38‿34‿33‿29‿26‿33‿21‿29‿22‿21‿15‿14‿12‿11‿12‿5‿6‿9‿3‿7‿7‿3‿4‿4‿8
 
@@ -69,6 +143,7 @@ line ← (/≠¨⊏xy) ⊔ FmtNum ⍉> dim×Scale pts
   <pa At⊸Path ∾("M VH")∾¨FmtNum dim(×∾⌽∘⊣)1‿0×Scale 0
   col ≍⟜"style"‿"fill:none"⊸Path⟜('M'⌾⊑∘∾·⥊ "L "∾¨⎉1⊢)¨ line
 ⟩
+}
 -->
 
 ## Year 2021
