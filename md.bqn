@@ -736,4 +736,4 @@ ConvertFile ← {
 
 ConvertFile¨ •args
 
-Markdown  # Used by tester test/commonmark.bqn
+Markdown  # Used by tester test/markdown.bqn
