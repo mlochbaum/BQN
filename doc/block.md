@@ -218,7 +218,7 @@ Destructuring with a header is limited, as it can only match a particular struct
 
         CheckPair ← { 𝕊⟨a,b⟩: a<b? "ok" ; "not ok" }
 
-        CheckPair ⟨3,8⟩    # Succeeds destructuring
+        CheckPair ⟨3,8⟩    # Succeeds in destructuring
 
         CheckPair ⟨1,4,5⟩  # Not a pair
 
