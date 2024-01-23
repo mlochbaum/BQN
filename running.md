@@ -29,7 +29,6 @@ All these websites run BQN, in your browser unless marked with "server-side" (JS
 | [ktye/zoo](https://ktye.github.io/zoo/index.html#bqn) | Session | JS | Many array languages
 | [Observable](https://observablehq.com/@lsh/bqn)  | Notebook | JS | For import in Observable
 | [BQN-80](https://dancek.github.io/bqn-80)        | One-shot | JS | Create animations
-| [WeekGolf](https://www.weekgolf.net)             | Challenge | CBQN | Code golf, server-side
 
 Details about CBQN as well as the Javascript and other implementations follow.
 
