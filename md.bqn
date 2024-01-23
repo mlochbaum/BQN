@@ -134,7 +134,6 @@ Html ← {open 𝕊 contents:
 # Elements are added just after the given position in 𝕩, in the order
 # they appear in ∾add.
 Modify ← { ⟨include,add,pos⟩𝕊𝕩:
-  •Show include
   ((/include)∾(≠¨add)/pos) ⍋⊸⊏ (include/𝕩)∾∾add
 }
 
@@ -433,7 +432,6 @@ Markdown ← {filename𝕊𝕩:
     remSpace ← I2M ⥊ ((1<-˜˝˘)∧·∧˝˘' '=⊏⟜𝕩)⊸/ -⟜0‿1˘ codeBounds
     codeMask ∧↩ ¬ remSpace
     include ← ¬ remSpace ∨ ≠` I2M ⥊ ctInds
-    •Show "initial"‿include
     codeBounds ↩ ⥊ -⟜1‿0˘ codeBounds
     unused ← actual ∧ include ∧ ¬ codeMask
 
@@ -503,7 +501,6 @@ Markdown ← {filename𝕊𝕩:
     eInds ∾↩ ⟨codeBounds⟩
     eTags ← ∾ eInds ≠⊸⥊¨ 2‿2‿1 / ("<"‿"</"∾¨·<∾⟜">")¨ "em"‿"strong"‿"code"
     eInds ∾↩
-    •Show "emp"‿include
 
     # Remove backslashes used for escaping
     include ∧↩ codeMask ∨ 1 « actual
@@ -549,8 +546,8 @@ Markdown ← {filename𝕊𝕩:
   lineType -↩ codeMask ∧ 1 = lineType
   
   # Lines that are thematic breaks
-  breakMask ← nonEmptyMask ∧ (blanks ≤ 3) ∧ {(3≤+´⊏0∾˘⌾⍉bw/nw)∧∨´bw←∧´˘(𝕩∊" 	")⊸∨˘nw←"*-_"=⌜𝕩}¨𝕩
-  # lineType 6¨⌾(breakMask⊸/)↩
+  breakMask ← nonEmptyMask ∧ (blanks ≤ 3) ∧ {(3≤+´⊏0∾˜˘⌾⍉bw/nw)∧∨´bw←∧´˘(𝕩∊" 	")⊸∨˘nw←"*-_"=⌜𝕩}¨𝕩
+  lineType 6¨⌾(breakMask⊸/)↩
 
   # Tables are made up of rows that would otherwise be paragraph rows.
   # They are indicated by the delimiter row, consisting of only a few
