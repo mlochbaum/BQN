@@ -19,6 +19,6 @@ RunTest ← {
   ⟨exp≡out,in,exp,out,2⊑𝕩⟩
 }
 
-ignore ← (2 ⊏˘ tests) ∊ ⟨"47","85"⟩
+ignore ← (2 ⊏˘ tests) ∊ ⟨"85"⟩
 res ← 1 ↓˘ (¬⊏˘)⊸/ RunTest˘ tests /˜ ignore < testSection ∊ •args
 •Show res

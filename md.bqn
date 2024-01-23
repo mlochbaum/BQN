@@ -382,6 +382,10 @@ Markdown ← {filename𝕊𝕩:
     (1¨ <⊸∾ codeMask⊸GetMultiHighlights)⊸Modify 𝕩
   }⟜JoinLines
   ProcHtmlBlock ← extensions◶JoinLines‿(<⟜2◶ProcComment‿ProcHtml)
+  
+  # Thematic Breaks
+  # Can be a p
+  ProcBreak ← ∾("<hr />"∾lf)¨
 
   dig ← '0'+↕10
   [lineChars,lineClas,procFns] ← ⍉[
@@ -392,6 +396,7 @@ Markdown ← {filename𝕊𝕩:
     "-+*" ‿ LenBullet   ‿ ProcBullet
   # dig   ‿ LenListNum  ‿ ProcListNum
     "<"   ‿ IsHtmlBlock ‿ ProcHtmlBlock
+    ""    ‿ 0           ‿ ProcBreak
   ]
 
   ######
@@ -540,6 +545,10 @@ Markdown ← {filename𝕊𝕩:
   # A header can't have 4 spaces of indentation. If it doesn't become
   # part of a code block, it will be included in a paragraph.
   lineType -↩ codeMask ∧ 1 = lineType
+  
+  # Lines that are thematic breaks
+  breakMask ← nonEmptyMask ∧ (blanks ≤ 3) ∧ {(∨´3≤+´˘nw)∧∨´∧´˘(𝕩∊" 	")⊸∨˘nw←"*-_"=⌜𝕩}¨𝕩
+  lineType 6¨⌾(breakMask⊸/)↩
 
   # Tables are made up of rows that would otherwise be paragraph rows.
   # They are indicated by the delimiter row, consisting of only a few
