@@ -19,6 +19,11 @@ RunTest ← {
   ⟨exp≡out,in,exp,out,2⊑𝕩⟩
 }
 
-ignore ← (2 ⊏˘ tests) ∊ ⟨"85"⟩
-res ← 1 ↓˘ (¬⊏˘)⊸/ RunTest˘ tests /˜ ignore < testSection ∊ •args
-•Show res
+{0=≠•args ?
+  •Out "Pass test sections as arguments; shows array of non-matching entries"
+  •Out "Available sections: "∾2↓1⌽∾""", """⊸∾¨ ⍷testSection
+;
+  ignore ← (2 ⊏˘ tests) ∊ ⟨"47","85"⟩
+  res ← 1 ↓˘ (¬⊏˘)⊸/ RunTest˘ tests /˜ ignore < testSection ∊ •args
+  •Show res
+}
