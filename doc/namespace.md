@@ -52,7 +52,7 @@ Second, a namespace might be used in a [destructuring](expression.md#destructuri
 
     ⟨alias⇐a, b, c0‿c1⇐c, b2⇐b⟩ ← example
 
-If aliasing with `⇐` is never used (or each use is parenthesized), the names can be given as a strand with `‿`.
+If aliasing with `⇐` is never used, the names can be given as a strand with `‿`.
 
     c‿a ← example
 
