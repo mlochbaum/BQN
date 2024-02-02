@@ -223,8 +223,7 @@ Types are to be interpreted according to the C ABI appropriate for the platform 
     conv  = type ( ":" bqn )?
     type  = ( "i" | "u" | "f" ) nat          # number
           | "a"                              # BQN object
-          | "*"                              # opaque pointer
-          | ( "*" | "&" ) type               # pointer
+          | ( "*" | "&" ) type?              # pointer
           | "[" nat "]" type                 # array
           | "{" ( conv ( "," conv )* )? "}"  # struct
     bqn   = ( "i" | "u" | "f" | "c" ) nat
@@ -238,11 +237,30 @@ By default, the returned function takes a list of arguments `𝕩`, requires `�
 
 Beginning with the type declarations themselves, a **number** such as `f32` corresponds to a C type with the given quality (`i` for signed integer, `u` for unsigned, `f` for floating-point) and width in bits. The corresponding BQN value is a number, and should be converted exactly for integers and with rounding for decreasing-type conversions. For conversions to or from an integer type, attempting to convert a value to a type that can't contain it, or one outside of the exactly representable integer range (`-2⋆53` to `2⋆53` for IEEE doubles), results in an error.
 
-A **pointer** such as `*u8` comes from a BQN list. If the symbol `&` is used rather than `*`, the pointer is called **mutable** and its contents after the function call completes are also returned as an element of the result. If there is any mutable pointer, the result is a list, unless the result type is `"&"`, in which case there must be exactly one mutable pointer and the result is its value alone. These prefixes can only be used in arguments, meaning that a BQN value is provided, and this value determines the length of both the input and the mutable result.
+A **pointer** such as `*u8` comes from a BQN list (or a pointer object, as discussed in the next paragraph). If the symbol `&` is used rather than `*`, the pointer is called **mutable** and its contents after the function call completes are also returned as an element of the result. If there is any mutable pointer, the result is a list, unless the result type is `"&"`, in which case there must be exactly one mutable pointer and the result is its value alone. These prefixes can only be used in arguments, meaning that a BQN value is provided, and this value determines the length of both the input and the mutable result.
 
-The letter `a` indicates that a **BQN value** is to be passed directly, interpreted in whatever way makes sense for the implementation. A plain `*` indicates an **opaque pointer**, to be mapped to a BQN value of namespace type. The behavior of this value is not yet specified. The **array** and **struct** types indicate C structs and arrays, and correspond to BQN lists.
+When the result contains a pointer type, that value will be returned as a new [pointer object](#pointer-objects) with the given type. Furthermore, a pointer in an argument accepts a pointer object whose element type is compatible with the specified one. A bare pointer type `*` or `&` can't accept a list, but allows any pointer. When used with `&`, the object is included in the result unchanged.
+
+The letter `a` indicates that a **BQN value** is to be passed directly, interpreted in whatever way makes sense for the implementation. The **array** and **struct** types indicate C structs and arrays, and correspond to BQN lists.
 
 The `bqn` value in a `conv` term indicates a BQN element type to be used. It can be appear after the whole type, or any member of a struct, and applies to the final component (that is, `type` term) of the type *and* one preceding `*`, `&`, or `[n]` if present (if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._cast`. The C type is treated as pure data, a stream of bits. For a prefix `*` or `&`, the data in question is the region of memory pointed to.
+
+### Pointer objects
+
+A pointer object encapsulates a pointer into memory, and can be used in FFI functions. It has an element type, or is untyped (represented by an empty type string `""`). Additionally, pointers returned by `Field` don't allow (non-zero) offsets.
+
+| Name     | Summary
+|----------|-------------------------------
+| `Read`   | Read value at offset `𝕩`
+| `Write`  | Write value `𝕩` at offset `𝕨⊣0`
+| `Cast`   | Return a new pointer to the same location with type `𝕩`
+| `Field`  | Return a new pointer to field number `𝕩`
+
+An untyped pointer gives an error on any `Read` or `Write` call, and a pointer that doesn't allow offsets gives an error if the offset isn't `0`. A BQN value to be written is converted in the same way as an FFI argument of the pointer's element type, and a value to be read is converted like an FFI result. This relies on the C ABI for layout details, and could be modelled as an FFI interface to a C function that writes to, or reads from, a pointer.
+
+The argument to `Cast` is an element type, or `""`, and the result is accordingly a typed or untyped pointer.
+
+`Field` gives an error unless the pointer's element type is a struct or array. It must be a natural number less than the length of that type. The result is a pointer that points to the field with that index, with the type of that field. It doesn't allow offsets.
 
 ## Platform
 
