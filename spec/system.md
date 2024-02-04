@@ -247,20 +247,24 @@ The `bqn` value in a `conv` term indicates a BQN element type to be used. It can
 
 ### Pointer objects
 
-A pointer object encapsulates a pointer into memory, and can be used in FFI functions. It has an element type, or is untyped (represented by an empty type string `""`). Additionally, pointers returned by `Field` don't allow (non-zero) offsets.
+A pointer object encapsulates a pointer into memory, and can be used in FFI functions. It is either untyped (represented by an empty type string `""`), or has an element type and a stride in bytes.
 
 | Name     | Summary
 |----------|-------------------------------
 | `Read`   | Read value at offset `𝕩`
 | `Write`  | Write value `𝕩` at offset `𝕨⊣0`
+| `Add`    | Return a new pointer offset by `𝕩`
+| `Sub`    | Offset by `-𝕩`, or return the offset from `𝕩` to this pointer
 | `Cast`   | Return a new pointer to the same location with type `𝕩`
-| `Field`  | Return a new pointer to field number `𝕩`
+| `Field`  | Return a new pointer to field number `𝕩`, maintaining stride
 
-An untyped pointer gives an error on any `Read` or `Write` call, and a pointer that doesn't allow offsets gives an error if the offset isn't `0`. A BQN value to be written is converted in the same way as an FFI argument of the pointer's element type, and a value to be read is converted like an FFI result. This relies on the C ABI for layout details, and could be modelled as an FFI interface to a C function that writes to, or reads from, a pointer.
+An untyped pointer gives an error on any `Read`, `Write`, `Add`, or `Sub`. Offsets must be integers, and are multiplied by the pointer stride, giving a displacement in bytes, in order to add it to the location. A BQN value to be written is converted in the same way as an FFI argument of the pointer's element type, and a value to be read is converted like an FFI result. This relies on the C ABI for layout details, and could be modelled as an FFI interface to a C function that writes to, or reads from, a pointer.
 
-The argument to `Cast` is an element type, or `""`, and the result is accordingly a typed or untyped pointer.
+`Add` and `Sub`, with an integer argument, return a new pointer, maintaining the argument type and stride. When the argument to `Sub` is a pointer, it must be typed, and the two pointers must have compatible types and the same stride. The result is the difference in bytes between the pointers, divided by the common stride. If the difference wasn't an even multiple of the stride, `Sub` gives an error.
 
-`Field` gives an error unless the pointer's element type is a struct or array. It must be a natural number less than the length of that type. The result is a pointer that points to the field with that index, with the type of that field. It doesn't allow offsets.
+The argument to `Cast` is an element type, or `""`, and the result is accordingly a typed or untyped pointer. If typed, the returned pointer's stride is the width of its element type; that is, the original pointer's stride is ignored.
+
+`Field` gives an error unless the pointer's element type is a struct or array. It must be a natural number less than the length of that type. The result is a pointer that points to the field with that index, with the type of that field and the stride of the original pointer.
 
 ## Platform
 
