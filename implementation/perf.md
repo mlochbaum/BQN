@@ -24,7 +24,7 @@ CBQN also has a `)time` command that prints the time taken by an entire expressi
 
 The [bencharray](https://mlochbaum.github.io/bencharray/pages/summary.html) tool has a page showing primitive benchmarks with some explanations.
 
-If BQN isn't meeting your needs, there's always the option to hook up with C by FFI: see the [spec](../spec/system.md#foreign-function-interface). Also the [CBQN docs](https://github.com/dzaima/CBQN/blob/master/docs/system.md#ffi), which say how much of that is actually implemented now. FFI calls have low overhead (tens of nanoseconds), but may require copying as data goes in or out.
+If BQN isn't meeting your needs, there's always the option to hook up with C by FFI: see the [spec](../spec/system.md#foreign-function-interface-ffi). Also the [CBQN docs](https://github.com/dzaima/CBQN/blob/master/docs/system.md#ffi), which say how much of that is actually implemented now. FFI calls have low overhead (tens of nanoseconds), but may require copying as data goes in or out.
 
 ## Versus other array languages
 

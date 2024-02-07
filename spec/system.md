@@ -15,7 +15,7 @@ All system values described in the BQN specification are optional: an implementa
 | [Scripts](#scripts) | `•Import`, `•args`, `•Exit`, …
 | [Files](#files) ([paths](#file-paths), [metadata](#file-metadata), [access](#file-access), [opened](#open-file-object)) | `•file`, `•FChars`, `•FLines`, `•FBytes`
 | [Input and output](#input-and-output) ([terminal](#terminal-io)) | `•Out`, `•Show`, `•Repr`, `•Fmt`, …, `•term`
-| [Interface](#interface) ([FFI](#foreign-function-interface)) | `•SH`, `•FFI`
+| [Interface](#interface) ([FFI](#foreign-function-interface-ffi)) | `•SH`, `•FFI`
 | [Platform](#platform) | `•platform`
 | [Operation properties](#operation-properties) | `•Type`, `•Glyph`, `•Source`, `•Decompose`
 | [Namespaces](#namespaces) | `•ns`
@@ -212,7 +212,7 @@ The argument to `•SH` is a list of strings giving the command and its argument
 
 The arguments to `•FFI` are a file path for `𝕨` (interpreted relative to `•path` if necessary, like `•file` functions), and a function descriptor for `𝕩`, which gives the function name, argument and result types, and information about how to convert these values. The format of `𝕩` is described in the next section. The result is a BQN function that calls the specified function. This call can crash, mutate values, or invoke other unexpected behavior if the function interferes with memory used by BQN.
 
-### Foreign Function Interface
+### Foreign Function Interface (FFI)
 
 In a call to `•FFI`, `𝕩` follows the pattern `"result"‿"fn"‿"arg0"‿"arg1"‿...`, that is, a string for the *result type*, one for the *function name*, and any number of strings indicating *argument types*. `𝕩` must always be a list.
 
