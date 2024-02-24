@@ -177,7 +177,7 @@ And the benchmark run, on [Tiger Lake i5-1135G7](https://www.intel.com/content/w
 
 </details>
 
-Larger problems are more mixed. Our best real-world comparison on a comparable problem is the [compiler benchmark](bootbench.md), which showed a 35% advantage for the BQN implementation. [Here](codfns.md#is-it-a-good-idea) I described compiling as being intermediate in terms of how good it is for array programming. Naturally array-oriented tasks like data crunching can be better, although C can auto-vectorize simpler ones. And as array programming is a limited programming, there's no guarantee a problem will fit. If you have to use sequential code for a significant part of the program, BQN will end up a lot slower.
+Larger problems are more mixed. Our best real-world comparison on a comparable problem is the [compiler benchmark](bootbench.md), which showed a 35% advantage for the BQN implementation. [Here](codfns.md#is-it-a-good-idea) I described compiling as being intermediate in terms of how good it is for array programming. Naturally array-oriented tasks like data crunching can be better, although C can auto-vectorize simpler ones. And as flat array programming is a limited paradigm, there's no guarantee a problem will fit. If you have to use sequential code for a significant part of the program, BQN will end up a lot slower.
 
 Another test case is JSON parsing. While I haven't comprehensively benchmarked [json.bqn](https://github.com/mlochbaum/bqn-libs/blob/master/json.bqn), it runs at 40 to 100 MB/s for typical structures, which is competitive with some C parsers but well short of more optimized efforts like RapidJSON or simdjson.
 

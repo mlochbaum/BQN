@@ -6,8 +6,8 @@ The replicate family of functions contains not just primitives but powerful tool
 
 | Normal                  | Boolean
 |-------------------------|--------
-| [Indices](#indices)     | [Where](#booleans-to-indices)
-| [Replicate](#replicate) | [Compress](#compress)
+| [Indices](#indices)     | [Where](#booleans)
+| [Replicate](#replicate) | [Compress](#booleans)
 | ([by constant](#constant-replicate))
 
 ## Indices
