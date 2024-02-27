@@ -142,8 +142,8 @@ The tables below give approximate implementations of J primitives. J has a whole
 | `{::`|                         | `⊑`
 | `}.` | `1⊸↓`                   | `↓`
 | `}:` | `¯1⊸↓`                  |
-| `".` | `•BQN`                  |
-| `":` | `•Fmt`                  |
+| `".` | `•BQN` (or `•ParseFloat`) |
+| `":` | `•Fmt` (or `•Repr`)     |
 | `?`  | `•rand.Range⚇0`         | `•rand.Deal`
 | `e.` | `><∘∾∊¨⊢`               | `∊`
 | `E.` |                         | `⍷`
