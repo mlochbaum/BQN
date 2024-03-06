@@ -22,7 +22,7 @@ See also:
 - Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
 - Razetime's [learn X in Y minutes](https://razetime.github.io/learnxinyminutes-docs/bqn)
 - Miguel Raz's [Anki deck](https://github.com/miguelraz/miguelraz.github.io/blob/e772dc681330b37544a55d38b3d1537699616420/ankis/bqn-glyphs.apkg), from [this page](https://miguelraz.github.io/teaching/) of resources
-- Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh?tab=notebooks) based on BQN.
+- Lukas Hermann writes some [Observable notebooks](https://observablehq.com/@lsh) based on BQN.
 - [barbell](https://github.com/jhvst/barbell) templating system with [blog post](https://juuso.dev/blogPosts/barbell/barbell.html) about Under.
 - [bqrpn](https://yiyus.info/bqrpn/) is a reverse-Polish calculator powered by BQN in Javascript.
 - [bqnsweeper](https://dancek.github.io/bqnsweeper/) is a minesweeper game that shows you its BQN source code.
