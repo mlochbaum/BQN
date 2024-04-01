@@ -21,8 +21,8 @@ Multiplication by a constant factor with `×∧÷`, such as `k×v` or `v÷k`, ma
 The following scans `` F` `` have ordered results. Since ``F`⌾⌽`` applies `⌽` to the result of `` F` ``, it gives the opposite ordering.
 | Prim | Bool | Order
 |------|------|------
-| `⌊`  | `×∧` | Ascending
-| `⌈`  | `+∨` | Descending
+| `⌊`  | `×∧` | Descending
+| `⌈`  | `+∨` | Ascending
 
 Other primitives have the effects listed below.
 
