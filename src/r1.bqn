@@ -320,8 +320,8 @@ Reverse←{
   l←≠𝕩
   ((l-1)⊸-⌜↕l) ⊏ 𝕩
 }
-RotReduce ← {
-  "𝕨⌽𝕩: 𝕨 must consist of integers" ! Int𝕨
+RotCheck ← ("𝕨⌽𝕩: 𝕨 must consist of integers" ! Int)⊸⊢
+RotReduce ← RotCheck⊸{
   𝕩+↩0=𝕩 ⋄ r←𝕨-𝕩×⌊𝕨÷𝕩
   "𝕨⌽𝕩: 𝕨 too large" ! r<𝕩
   r
@@ -330,7 +330,7 @@ RotL ← ↓∾↑
 Rot ← (1==∘⊢)◶⟨RotL⟜(↕≠)⊏⊢,RotL⟩
 Rotate ← ⟨"⌽"
   IsAtom, 0,0
-  (RotReduce⟜≠ Rot ⊢)⍟(0<≠∘⊢)
+  (0<≠∘⊢)◶⟨RotCheck⊸⊢, RotReduce⟜≠ Rot ⊢⟩
   (RotReduce RotL ·↕⊢)
 ⟩_multiAxis⟜ToArray _fillBy_ ⊢
 
