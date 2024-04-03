@@ -68,6 +68,7 @@ Sigmoid ← (40≤|)◶⟨1(-÷+)˜⋆,×⟩
 
   z ← opts.zerobound
   Squash ← {                       # Multiply by constant so product is ≤𝕨
+    0=𝕨 ? 0×𝕩 ;                    # Avoid division by 0
     a←(∧`𝕨>×`÷⊢⋆1+↕∘≠)⊸/∘∨⍟z 𝕩     # Numbers that don't need to go below 1, if z
     ⌊ 𝕩 × (≠a) √ Sigmoid⊸÷1⌈𝕨÷˜×´a
   }
