@@ -99,7 +99,9 @@ But `𝕩` can also be a list of numeric arrays. In this case the indices `↕�
 
 ### Multidimensional grouping
 
-Dyadic Group allows the right argument to be grouped along multiple axes by using a nested left argument. In this case, `𝕨` must be a list of numeric lists, and the result has rank `≠𝕨` while its elements—as always—have the same rank as `𝕩`. The result shape is `1+⌈´¨𝕨`, while the shape of element `i⊑𝕨⊔𝕩` is `i+´∘=¨𝕨`. If every element of `𝕨` is sorted ascending and has no ¯1s, we have `𝕩≡∾𝕨⊔𝕩`, that is, [Join](join.md#join) is the inverse of partitioning.
+Dyadic Group allows the right argument to be grouped along multiple axes by using a nested left argument. In this case, `𝕨` must be a list of numeric arrays, and the result has rank `≠𝕨`. Assuming for now that all elements of `𝕨` are lists, each result element has the same rank as `𝕩`. The result shape is `1+⌈´¨𝕨`, while the shape of element `i⊑𝕨⊔𝕩` is `i+´∘=¨𝕨`. If every element of `𝕨` is a list in ascending order with no ¯1s, we have `𝕩≡∾𝕨⊔𝕩`, that is, [Join](join.md#join) is the inverse of partitioning.
+
+If there are non-list arrays in `𝕨`, these correspond to multiple axes in `𝕩` but only one axis of the result. Each of these groups of axes is treated as a single axis in index order, as though `𝕩` were reshaped to convert each into exactly one axis, and `⥊¨` were applied to `𝕨`.
 
 Here we split up a rank-2 array into a rank-2 array of rank-2 arrays. Along the first axis we simply separate the first pair and second pair of rows—a partition. Along the second axis we separate odd from even indices.
 
