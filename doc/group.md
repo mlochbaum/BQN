@@ -105,6 +105,8 @@ If there are non-list arrays in `𝕨`, these correspond to multiple axes in `�
 
 Here we split up a rank-2 array into a rank-2 array of rank-2 arrays. Along the first axis we simply separate the first pair and second pair of rows—a partition. Along the second axis we separate odd from even indices.
 
+        (10×↕4)+⌜↕7
+
         ⟨0‿0‿1‿1,0‿1‿0‿1‿0‿1‿0⟩ ⊔ (10×↕4)+⌜↕7
 
 Each group `i⊑𝕨⊔𝕩` is composed of the cells `j<¨⊸⊏𝕩` such that `i≢j⊑¨𝕨`. The groups retain their array structure and ordering along each argument axis. Using multidimensional [Replicate](replicate.md) we can say that `i⊑𝕨⊔𝕩` is `(i=𝕨)/𝕩`.
