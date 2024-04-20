@@ -44,15 +44,14 @@ Folder [autohotkey-win](https://github.com/mlochbaum/BQN/tree/master/editors/aut
 
 The [XCompose](https://github.com/mlochbaum/BQN/blob/master/editors/XCompose) file, although created for XKB, is also usable with [WinCompose](https://github.com/samhocevar/wincompose).
 
-### Mac
+### macOS
 
-There are two keyboard layouts: [one](https://github.com/mlochbaum/BQN/blob/master/editors/BQN.keylayout) enables BQN keys with the `Alt` modifier, and [another](https://github.com/mlochbaum/BQN/blob/master/editors/BQN_backslash.keylayout) uses the standard `\` prefix.
+There are three keyboard layouts: [BQN US](https://github.com/mlochbaum/BQN/blob/master/editors/BQN.keylayout) and [BQN Dvorak](https://github.com/mlochbaum/BQN/blob/master/editors/BQN_Dvorak.keylayout) enable BQN keys with the <kbd>option ⌥</kbd> modifier, and [another](https://github.com/mlochbaum/BQN/blob/master/editors/BQN_backslash.keylayout) uses the standard `\` prefix.
 
 To install:
-- Copy the appropriate `.keylayout` file to `~/Library/Keyboard Layouts/`.
-- Navigate to System Preferences > Keyboard > Input Sources > + > Others > BQN.
-- Restart, then enable the BQN keyboard with System Preferences > Keyboard > Input Sources > BQN US.
-Don't use the root-based directory `/Library/Keyboard Layouts/` for the first step, as this will silently fail.
+- Copy the appropriate `.keylayout` file to `~/Library/Keyboard Layouts/`. (Don't use the root-based directory `/Library/Keyboard Layouts/` as it will silently fail.)
+- Navigate to System Settings > Keyboard > Input Sources > Edit > + > Others > BQN...
+- Log out and log back in, then enable the BQN keyboard with System Settings > Keyboard > Input Sources > BQN...
 
 ## Text editors
 
