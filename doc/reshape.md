@@ -126,7 +126,7 @@ Here's an example of the four cases. If we try to turn five elements into two ro
 
 A computed length can be useful to input an array without using nested [notation](arrayrepr.md#brackets): for example, if you have a table with rows of three elements, you might write it as one long list, using `∘‿3⥊⟨…⟩` to get it back to the appropriate shape. `∘` is definitely the value to use here, as it will check that you haven't missed or added an element.
 
-Computed Reshape might also be used in actual data processing: for example, to sum a list in groups of four, you might first reshape it using `↑‿4` for the shape, then average the rows. Here the code `↑` is useful because added fill elements of `0` won't change the sum, so that if the last group doesn't have four elements (`9‿7` below), it will still be summed correctly.
+Computed Reshape might also be used in actual data processing: for example, to sum a list in groups of four, you might first reshape it using `↑‿4` for the shape, then sum the rows. Here the code `↑` is useful because added fill elements of `0` won't change the sum, so that if the last group doesn't have four elements (`9‿7` below), it will still be summed correctly.
 
         +´˘ ↑‿4 ⥊ ⟨0,2,1,1, 5,9,6,4, 3,3,3,3, 9,7⟩
 
