@@ -250,18 +250,19 @@ Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
   lm←(0¨sll)∾˜(5+⊑bB)-˜l0⊏𝕩                 # List merge, adding 2 for []
 
   # Parsing part 1
-  a←(¯5⊸<∧≤⟜¯3)r⋄ps←a<r<0                   # a: assignment, ps: part separator
+  a←(¯5⊸<∧≤⟜¯3)r⋄am←𝕩=2+⊑bG⋄ps←a<r<0        # a: assignment; am: modify; ps: part separator
   tr←1≤er←ir⊏˜IT»ps                         # er: expression role; tr: train or modifier expression
   no←0⌈-ir⋄ne←0⌈-er⋄nei↩g⋄nx⊏˜↩gr           # Nothing value; expression
   "Nothing (·) cannot be assigned"_nerr ne×a
   "Can't use Nothing (·) as predicate"_nerr ne×𝕩=pred
-  oa←⌽/hg<op←(er<2)∧r≥2⋄ro←op∨«op∧m2←r=3    # op: active modifiers; ro: mod or right operand
-  "Missing operand"_nerr (hg<op)×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
+  oa←⌽/oe←hg<op←(»am<a)<(er<2)∧r≥2          # op: active modifiers; oa: applied
+  ro←op∨«op∧m2←r=3                          # ro: mod or right operand; m2: 2-modifier
+  "Missing operand"_nerr oe×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
   s←𝕩=sep⋄fo←𝕩∊⟨2+⊑bB,1+⊑bH⟩                # Separators, function open { or ;
   ls←s∧fo<○IT lo←𝕩BE˜4+⊑bB                  # List Separators: after ⟨lo, not {fo
   "Double subjects (missing ‿?)"_err_(G) ∧⟜«ro»⊸∨⊸<r=0
   "Can't use export statement as expression"_err_(G) ps<0‿0»¯4=r
-  mm←𝕩=2+⊑bG⋄ma←tr<mm∧«ir≥1⋄mm∧↩1»ps        # Modified assignment; monadic modified
+  ma←tr<am∧«ir≥1⋄mm←am∧1»ps        # Modified assignment; monadic modified
   "No right-hand side in non-modified assignment"_err_(G) ma<mm
   os←↕∘≠⊸(⊣-T)⌾⌽¬ro∨ma                      # Operator skip: distance rightward to derived function start
   at←1+⊏⟜os⊸+ai←/a                          # Assignment target
