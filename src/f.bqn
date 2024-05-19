@@ -92,13 +92,17 @@
     FmtMixed
   ⟩
 
+  # Word-forming characters need to be separated by spaces
+  IsWordChar ← ∊⟜(∧"¯π∞_") ∨ (⥊∧"0AaÀàØø"+0≍˘10∾2/26‿23‿7)⊸(2|⍋)
+
   # Format part of a compound operation; return precedence‿string
   Paren ← "("∾∾⟜")"
   _dispOp_ ← {
     FmtComp ← Type (3≤⊣)◶⟨0⋈·𝔽⊢, 𝕊⟩ ⊢
     k ← ⊑ d ← Decomp 𝕩
     p ← k ⊑ "00321111"-'0'
-    FromComp ← ∾(⌽⍟(p>1)·-0=↕∘≠)(+⟜⊑Paren∘⊢⍟((2⌊p)≤⊣)1⊸⊑)⟜FmtComp¨⊢
+    JW ← ∾ (∧˝∘IsWordChar (⊢´¨¯1⊸↓)≍(⊣´¨1⊸↓)) 0⊸∾⊸(↑⟜" "⊸∾¨)⍟(∨´⊣) ⊢
+    FromComp ← JW (⌽⍟(p>1)·-0=↕∘≠) (+⟜⊑Paren∘⊢⍟((2⌊p)≤⊣)1⊸⊑)⟜FmtComp¨ ⊢
     s ← (2⌊|k)◶⟨⥊∘FF𝕩˙,𝕨𝔾⊢,FromComp⟩ 1↓d
     s ↩ ∾⟜"{𝔽}"⍟(3>·Type ¯1⊑d˙)⍟(2≤p) s
     p‿s
