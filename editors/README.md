@@ -96,6 +96,10 @@ See [bqn-vscode](https://github.com/razetime/bqn-vscode), or install directly th
 
 Copy or symlink `kak/autoload/filetype/bqn.kak` into `autoload/filetype` in your Kakoune config directory (probably `.config/kak/`).
 
+### Micro
+
+See [micro-bqn](https://github.com/0racle/micro-bqn).
+
 ## Alternate layouts
 
 All files here use the BQN layout designed for qwerty, which will generally be jumbled in another layout (for example the key for `r` will still type `↑`, but it may not be above `c`, which types `↓`). The [remap.bqn](remap.bqn) script allows you to remap some files in this repository to a new layout. See `$ ./remap.bqn -h` for usage. Support for a new layout can be added in the `keys` array of the script, but do watch for string alignment with the doubled quote character.
