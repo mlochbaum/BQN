@@ -75,7 +75,7 @@ Primitives:
 - [Self-search functions: `⊐⊒∊⍷`](selfcmp.md)
 - [Shift functions: `»«`](shift.md)
 - [Solo, Couple, and Merge: `≍>`](couple.md)
-- [Take and Drop: `↑`](take.md)
+- [Take and Drop: `↑↓`](take.md)
 - [Transpose: `⍉`](transpose.md)
 - [Under: `⌾`](under.md)
 - [Undo: `⁼`](undo.md)
