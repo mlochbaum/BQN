@@ -102,7 +102,7 @@ See [micro-bqn](https://github.com/0racle/micro-bqn).
 
 ### Zed
 
-See [zed-bqn](https://github.com/DavidZwitser/zed-bqn).
+BQN support as implemented by [zed-bqn](https://github.com/DavidZwitser/zed-bqn) can be installed from the extension tab.
 
 ## Alternate layouts
 
