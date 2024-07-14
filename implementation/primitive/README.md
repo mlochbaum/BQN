@@ -10,6 +10,7 @@ Commentary on the best methods I know for implementing various primitives. Often
 - [Sorting](sort.md)
 - [Searching](search.md)
 - [Sortedness flags](flagsort.md)
+- [Select](select.md)
 - [Transpose](transpose.md)
 - [Take and Drop](take.md)
 - [Randomness](random.md)

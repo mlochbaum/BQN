@@ -24,7 +24,7 @@ For example, a lookup table algorithm for dyadic `⊐` might traverse `𝕨`, wr
 
 Set operations can be handled with a packed bit table, but reading a bit is slower so this should be done only if the space savings are really needed. With sparse lookups this seems to be very rare.
 
-A 1-byte lookup can be packed into vector registers for extra-fast searching. To look up a byte, select the appropriate byte from the table with the top 5 bits, and a mask from another table with the bottom 3. Put these together and pack into bits with compare-movemask.
+A 1-bit lookup can be packed into vector registers for extra-fast searching, as described in [small-range selection](select.md#small-range-selection).
 
 ## Hash tables
 
