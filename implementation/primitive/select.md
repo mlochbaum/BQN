@@ -44,6 +44,7 @@ Taking any vector register out of `𝕨`, several cases might apply:
 - Only the first few indices fall within a vector of `𝕩`. An option is to use a shuffle for these indices, then start over with a vector beginning at the one after.
 - All indices fit into a vector of `𝕩`. They can be handled with a shuffle, and possibly the `𝕩` values could be retained for the next iteration.
 - All indices are the same. Copying the selected element of `𝕩` is still a shuffle, but maybe the same vector works for more indices too? Hitting the speed of memset if there are many equal indices would be nice.
+- Indices are consecutive, always increasing by exactly 1. The corresponding elements of `𝕩` can be copied as a unit.
 
 In the second case (partial shuffle), the number of handled indices can be found by comparing the index vector to the maximum allowed index (for example, first index plus 15), then using count-trailing-zeros on the resulting mask.
 
@@ -54,8 +55,13 @@ A method with less branching is to take statistics in blocks. These might be use
 - Scalar selection.
 - Take a vector of indices, do as many as possible (it's at least 1), repeat until finished.
 - A hybrid dense/sparse method like the one just discussed.
-- Full vector selection, requiring indices 16 apart to differ by ≤16.
+- Full vector selection, requiring indices 16 apart to differ by ≤16 in the 1-byte case.
 - memset, requiring indices to all be the same.
+- memcpy, requiring indices to be consecutive.
+
+So an example of a complex statistic is to test, for each index, whether the difference from the one before is at most 1 (so, the selection is equivalent to `(+´bool)⊏𝕩` for some `bool`). If this holds, the full vector selection method—pick one vector from `𝕨` and one from `𝕩` beginning at the first index, apply a shuffle, write, move to the next vector—can be used. If additionally the range is equal to the length, the differences all have to be 1, so that memcpy can be used.
+
+The index range is a very easy statistic to compute, as it's just first minus last. In fact it's possible to pick the chunk size from a target range, using a binary search (which can stop at vector alignment or coarser since there's no need to find an exact element boundary, although if the range is 1 it's better to find it so the leftovers don't cause the range of the _next_ section to be greater than 1). Since 1-byte indices are usually faster to work with, one approach might be to test if the next 64 indices (untested number for concreteness only) fit into a range of 256, handling them sparsely if not. If they are small-range then split into a few cases: range of 1, range 16, and range 256. In each case, keep increasing the chunk size by 64 as long as it stays in this range, or up to some maximum length chosen to avoid cache issues. Then in the range-1 case, copy that one element, in the range-16 case pick a single vector from `𝕩` and shuffle it, and in the range-256 case copy the indices to a 1-byte buffer while taking statistics and choose what to do based on those. It's some sort of telescoping fractal around the sparse/dense boundary. The possibilities just keep going.
 
 ## Select-cells
 
