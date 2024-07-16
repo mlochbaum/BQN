@@ -50,9 +50,9 @@ Moving lots of axes around quickly gets hard to think about. Here's what I've fo
 
 ### The outer loop
 
-Unlike a 2D transpose, the basic implementation of an arbitrary reordering is not so obvious. It "should" be a loop with a variable amount of nesting. However it's written, actually looping is not a competitive strategy. But it's still needed, because the fast strategies don't handle the entire transpose: they're base cases, that take up bottom few result axes.
+Unlike a 2D transpose, the basic implementation of an arbitrary reordering is not so obvious. It "should" be a loop with a variable amount of nesting. However it's written, actually looping is not a competitive strategy. But it's still needed, because the fast strategies don't handle the entire transpose: they're base cases, that take up the bottom few result axes.
 
-The easy and non-recursive way to reorder axes is with a result index vector: increment it at each step and adjust the argument position accordingly. A base case that takes up multiple axes just means the loop should only go over the first few result axes instead of all of them. Because incrementing an index is slow, it might also make sense to break off a level of looping at the bottom and implement it with a direct for loop.
+The easy and non-recursive way to reorder axes is with a result index vector: increment it at each step and adjust the argument position accordingly. A base case that takes up multiple axes just means the loop should only go over the first few result axes instead of all of them. Because incrementing such an index is slow, it might also make sense to break off a level of looping at the bottom and implement it with a direct for loop.
 
 ### Axis simplification
 
