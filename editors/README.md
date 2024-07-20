@@ -14,8 +14,6 @@ Both the online REPL and CBQN support backslash input with no configuration requ
 
 [This bookmarklet](https://abrudz.github.io/lb/bqn) enables BQN input in any webpage in your **browser**.
 
-[This userscript](https://gist.github.com/dzaima/35ca0ce12b5e215a62460f00e693984f) highlights BQN code on **GitHub**. The highlighting library [prism.js](https://prismjs.com/) also supports BQN.
-
 For **Android**, [this fork](https://github.com/dzaima/hackerskeyboard/releases/latest) adds APL and BQN to Hacker's Keyboard.
 
 For **iPhone**, [this repository](https://github.com/gitonthescene/APLKeyboard) includes a BQN keyboard for the Pythonista IDE.
