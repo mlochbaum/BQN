@@ -508,7 +508,7 @@ let compgen = sys => {
 }
 let sysargs = {runtime, glyphs:glyphs.map(str)};
 let compile = compgen(sysargs)(sysargs);
-let bqn = src => run(...compile(src));
+export let bqn = src => run(...compile(src));
 runtime[43] = rtAssert;
 
 // Formatter
