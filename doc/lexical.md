@@ -41,7 +41,7 @@ A scope can view and [modify](expression.md#assignment) (with `↩`) variables i
         Count 1
         Count 5
 
-So the `Count` function above increments and prints a global `counter` by a global amount `inc`, which is visible in `Count` because it's visible everywhere. Or, not quite… if a block defines its *own* copy of `inc`, then it will lose access to the outer one. However, code that comes before that definition can still see the outer variable. So it can copy its value at the start of the block (this won't reflect later changes to the value. Don't shadow variables you want to use!).
+So the `Count` function above increments a global `counter` by a global amount `inc`, which is visible in `Count` because it's visible everywhere. Or, not quite… if a block defines its *own* copy of `inc`, then it will lose access to the outer one. However, code that comes before that definition can still see the outer variable. So it can copy its value at the start of the block (this won't reflect later changes to the variable. Don't shadow variables you want to use!).
 
         { inc←3 ⋄ inc }  # inc is shadowed
 
@@ -114,7 +114,7 @@ Neither the specification nor a typical implementation keep track of what is and
 
 ### Environments form a tree
 
-So a block has access to every environment that it might need a variable from, for as long as it needs. This idea is a little fuzzy, so let's clarify by describing how an implementation would support figure out what can access where.
+So a block has access to every environment that it might need a variable from, for as long as it needs. This idea is a little fuzzy, so let's clarify by describing how an implementation would figure out what can access where.
 
 The mechanism is that each environment can have a *parent* environment (the topmost environment, which corresponds to the entire program, has no parent). When a variable is accessed, it might be in the current environment, or its parent, or that environment's parent, and so on. Every environment corresponds to one block in the source code, and its parent corresponds to the parent block, so a compiler can figure out how many levels up it will have to go based on the source code.
 
