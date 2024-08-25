@@ -35,7 +35,7 @@
 <td align="right">2012</td>
 <td>I</td>
 <td>I</td>
-<td>Hook operators <code><span class='Modifier2'>⊸⟜</span></code> (as <code><span class='Value'>hH</span></code>)</td>
+<td>Hook operators <code><span class='Modifier2'>⊸⟜</span></code> (as <code><span class='Value'>hH</span></code>), Pair <code><span class='Function'>⋈</span></code> (as <code><span class='Head'>;</span></code>)</td>
 <td></td>
 </tr>
 <tr>
@@ -63,7 +63,7 @@
 <td align="right">2018</td>
 <td>Dyalog</td>
 <td>Last, Brudzewsky</td>
-<td><a href="https://aplwiki.com/wiki/Array_notation">Array notation</a> <code><span class='Bracket'>⟨⟩</span></code></td>
+<td><a href="https://aplwiki.com/wiki/Array_notation">Array notation</a> <code><span class='Bracket'>⟨⟩</span></code>, <code><span class='Bracket'>[]</span></code></td>
 <td></td>
 </tr>
 <tr>
@@ -179,7 +179,7 @@
 <td><a href="https://chat.stackexchange.com/transcript/52405?m=55093689#55093689">0</a></td>
 </tr>
 <tr>
-<td align="right"></td>
+<td align="right">-09</td>
 <td></td>
 <td></td>
 <td>Affine characters and null literal <code><span class='String'>@</span></code></td>
@@ -193,11 +193,25 @@
 <td><a href="https://chat.stackexchange.com/transcript/message/55528973#55528973">0</a></td>
 </tr>
 <tr>
-<td align="right"></td>
+<td align="right">-10</td>
 <td><a href="https://en.wikipedia.org/wiki/Common_Lisp">CL</a>, BQN</td>
 <td>w/ Mårtenson, dzaima</td>
 <td>Import/export <code><span class='Gets'>⇐</span></code></td>
 <td><a href="https://chat.stackexchange.com/transcript/message/55661706#55661706">0</a>, <a href="https://chat.stackexchange.com/transcript/message/55767519#55767519">1</a></td>
+</tr>
+<tr>
+<td align="right">2021-09</td>
+<td></td>
+<td>Jesús Galán López</td>
+<td>Monadic modification <code><span class='Value'>a</span> <span class='Function'>F</span><span class='Gets'>↩</span></code></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">-11</td>
+<td></td>
+<td>Discord user &quot;el&quot;</td>
+<td><code><span class='Nothing'>·</span></code> as no-op assignment target</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -218,9 +232,16 @@
 <p>In YAG meetings, I suggested adopting <a href="https://aplwiki.com/wiki/APL%5Civ">APL\iv</a>'s convention that variable case must match variable type in order to achieve a context-free grammar. Adám, a proponent of case-insensitive names, pointed out that the case might indicate the type the programmer wanted to use instead of the value's type, creating cross roles. Although I considered swapping subjects and functions, I ended up using exactly the conventions of his APL <a href="https://abrudz.github.io/style/#nc">style guide</a>.</p>
 <h4 id="headers"><a class="header" href="#headers">Headers</a></h4>
 <p>The idea of dfn headers is very common in the APL community, to the extent that it's hard to say which proposals lead to the form now used in BQN. A+ has headers which are similar but go outside the braces, and BQN headers aren't all that different from tradfn headers either. I found when creating BQN2NGN that ngn/apl allows dfns to include a monadic and dyadic case, separated by a semicolon. Some time later I realized that the ability to include multiple bodies is very powerful with headers because it enables a primitive sort of pattern matching, something I already wanted to squeeze into the language. I discussed this with dzaima, who added header support to dzaima/BQN almost immediately and was thus able to investigate the details of the format.</p>
+<p>A &quot;return from block&quot; syntax <code><span class='Function'>Name</span><span class='Gets'>→</span></code>, creating a monadic function that cuts execution short and returns its argument from the block with the given name, was specified to go along with block headers, and is the main reason name-only headers (labels) exist. It was never implemented anywhere, and eventually I decided it was probably not worth the complication and removed it from the spec.</p>
 <h4 id="group"><a class="header" href="#group">Group</a></h4>
 <p>I've been fiddling with the idea of function or map inversion (preimage creation, really) for several years, and in fact independently discovered something very similar to K's Group function <code><span class='Function'>=</span></code>, which is an excellent tool for languages that have dictionaries. I liked this approach as it didn't have all the ordering issues that J's Key has. However, I also didn't really want to introduce dictionaries to BQN, as they have a very strange relation to multidimensional arrays—are arrays like dictionaries with multiple keys, or dictionaries with a single vector key? I've been a proponent of <code><span class='Function'>/</span><span class='Modifier'>⁼</span></code> as a programming tool for <a href="http://www.jsoftware.com/pipermail/programming/2010-September/020302.html">much longer</a>. I'd also developed a sophisticated view of <a href="https://aplwiki.com/wiki/Partition_representations">partition representations</a> while studying an extension to Dyalog's Partitioned Enclose proposed by Adám and included in Dyalog 18.0. I finally put all this together while fighting with Key to develop BQN's compiler: I realized that if the &quot;key&quot; argument was restricted to array indices, then it would make sense for the result to be an array, and that this was simply the &quot;target indices&quot; partition representation minus the requirement that those indices be nondecreasing.</p>
 <h4 id="before--and-after-"><a class="header" href="#before--and-after-">Before <code><span class='Modifier2'>⊸</span></code> and After <code><span class='Modifier2'>⟜</span></code></a></h4>
 <p>It happens that BQN's Before (<code><span class='Modifier2'>⊸</span></code>) and After (<code><span class='Modifier2'>⟜</span></code>) modifiers are identical to I's hook (<code><span class='Value'>h</span></code>) and backhook (<code><span class='Function'>H</span></code>), but it took some time to arrive at this point. The hook function in I comes from J's 2-train, also called hook (I had probably seen Roger Hui's <a href="https://code.jsoftware.com/wiki/Essays/Hook_Conjunction%3F">remarks</a> that he would prefer hook to be a conjunction, with 2-trains indicating composition instead, but I don't think Roger has proposed a reverse hook). But the model for Before and After was initially APL's Compose (<code><span class='Modifier2'>∘</span></code>) and the complement <a href="https://aplwiki.com/wiki/Reverse_Compose">Reverse Compose</a> that Adám created for Extended Dyalog APL. I noticed the similarity to Bind and decided to unify Binds and Composes at around the same time that I picked the symbols <code><span class='Modifier2'>⊸⟜</span></code>. However, I kept the idea that the one-argument case should be simple composition unless the bound operand had a subject role. Eventually I decided the violation of <a href="problems.html#syntactic-type-erasure">syntactic type erasure</a> was too inconsistent and settled on the current definition. Now I think these forms are better even ignoring constant functions, although I do occasionally run into cases where I'd like to use APL's Compose.</p>
 <h4 id="constant-modifier"><a class="header" href="#constant-modifier">Constant modifier</a></h4>
 <p>The idea of a constant function is nothing new; I named it <code><span class='Value'>k</span></code> in I, taking influence from the <a href="https://en.wikipedia.org/wiki/SKI_combinator_calculus">SKI</a> calculus. It was actually Adám who suggested adding it to Dyalog with the glyph <code><span class='Value'>⍨</span></code>, although I was the one who campaigned for it and introduced it to the public in version 18.0. It wasn't initially clear that a dedicated modifier was needed in BQN because the treatment of data types as constant functions seems to fill this role, but I eventually found that I needed a constant function returning a function too often to leave it out.</p>
+<h4 id="pair"><a class="header" href="#pair">Pair</a></h4>
+<p>Enlist/Pair (<code><span class='Function'>⋈</span></code>) is an obvious enough primitive, and was in Adám's Extended Dyalog APL as <code><span class='Value'>⍮</span></code> in 2018, and in I as <code><span class='Head'>;</span></code> in 2012—but because I uses nested lists, its version can also be interpreted as <code><span class='Function'>≍</span></code>. Initially I wanted to see if just <code><span class='Function'>≍</span></code> would work out, although now I think only <code><span class='Function'>⋈</span></code> would be better than only <code><span class='Function'>≍</span></code>. When dzaima pointed out its absence just hours after learning about BQN, <a href="https://chat.stackexchange.com/transcript/message/54577476#54577476">my reply</a> also stated I had no character for it. I don't know when exactly I hit on <code><span class='Function'>⋈</span></code>, but I first posted about the character in April 2021 (a feature I liked about it is that it also suggests <code><span class='Value'>⋉</span></code> and <code><span class='Value'>⋊</span></code> for prepending and appending an element to a list), and added it to the language in October.</p>
+<h4 id="namespaces"><a class="header" href="#namespaces">Namespaces</a></h4>
+<p>I designed the namespace system as a way to pack code into modules, in particular to allow a file to define multiple exported values while having its own privately accessible scope. There was some initial complication to avoid immediately exposing namespaces as first-class values, requiring each namespace to be unpacked where it was created, but this restriction was lifted before long. I consulted with dzaima on various details of the destructuring syntax, particularly aliasing.</p>
+<h4 id="high-rank-array-notation"><a class="header" href="#high-rank-array-notation">High-rank array notation</a></h4>
+<p>While array notation with <code><span class='Bracket'>⟨⟩</span></code> was initially supported in the language, the flat rank-increasing version <code><span class='Bracket'>[]</span></code> was reserved but not implemented until June 2022. Most of the delay was just laziness in specifying and implementing a minor feature, but I did question whether special syntax just for <code><span class='Function'>&gt;</span><span class='Bracket'>⟨⟩</span></code> was worth it (I'm still not sure, really). The main value is that it can be used as an assignment target like <code><span class='Brace'>{</span><span class='Function'>𝕊</span><span class='Bracket'>[</span><span class='Value'>a</span><span class='Separator'>,</span><span class='Value'>b</span><span class='Bracket'>]</span><span class='Head'>:</span><span class='Value'>…</span><span class='Brace'>}</span></code>, a feature that also makes the design slightly less trivial.</p>

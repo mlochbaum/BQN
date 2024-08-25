@@ -21,11 +21,11 @@ The table documents when I encountered features or interesting decisions in BQN.
 | Date | Source | Person | Feature | Link
 |-----:|--------|--------|---------|-----
 | 2009 | J      | Iverson, Hui, Whitney, etc. | Array programming, function-level programming, leading axis theory, tacit programming
-| 2012 | I      | I | Hook operators `⊸⟜` (as `hH`)
+| 2012 | I      | I | Hook operators `⊸⟜` (as `hH`), Pair `⋈` (as `;`)
 | 2014 | J      | Smith | Occurrence count and Progressive Index-Of (`⊒`) | [0](http://www.jsoftware.com/pipermail/programming/2014-June/037746.html), [1](http://www.jsoftware.com/pipermail/programming/2016-January/044047.html)
 | 2016 | [Dyalog](https://aplwiki.com/wiki/Dyalog_APL) | Scholes | dfns `{}`
 | 2017 | Dyalog | | Structural Under
-| 2018 | Dyalog | Last, Brudzewsky | [Array notation](https://aplwiki.com/wiki/Array_notation) `⟨⟩`
+| 2018 | Dyalog | Last, Brudzewsky | [Array notation](https://aplwiki.com/wiki/Array_notation) `⟨⟩`, `[]`
 |      | [APL\iv](https://aplwiki.com/wiki/APL%5Civ) | ktye | Variable case/type connection
 |      | [Extended](https://github.com/abrudz/dyalog-apl-extended) | Brudzewsky | Computed axes in reshape
 | 2019 | Iridescence | | Prefix, Suffix, Windows
@@ -42,9 +42,11 @@ The table documents when I encountered features or interesting decisions in BQN.
 |      | | dzaima | Inverse headers `𝕊⁼:` | [0](https://chat.stackexchange.com/transcript/52405?m=54639280#54639280), [1](https://chat.stackexchange.com/transcript/message/55860071#55860071)
 |      | | w/ dzaima | Headers `:` | [0](https://chat.stackexchange.com/transcript/52405?m=54768112#54768112), [1](https://chat.stackexchange.com/transcript/message/54776688#54776688)
 |  -07 | | | Symbols for computed axes in `⥊` | [0](https://chat.stackexchange.com/transcript/52405?m=55093689#55093689)
-|      | | | Affine characters and null literal `@` | [0](https://chat.stackexchange.com/transcript/52405?m=55438211#55438211)
+|  -09 | | | Affine characters and null literal `@` | [0](https://chat.stackexchange.com/transcript/52405?m=55438211#55438211)
 |      | | | Shift functions | [0](https://chat.stackexchange.com/transcript/message/55528973#55528973)
-|      | [CL](https://en.wikipedia.org/wiki/Common_Lisp), BQN | w/ Mårtenson, dzaima | Import/export `⇐` | [0](https://chat.stackexchange.com/transcript/message/55661706#55661706), [1](https://chat.stackexchange.com/transcript/message/55767519#55767519)
+|  -10 | [CL](https://en.wikipedia.org/wiki/Common_Lisp), BQN | w/ Mårtenson, dzaima | Import/export `⇐` | [0](https://chat.stackexchange.com/transcript/message/55661706#55661706), [1](https://chat.stackexchange.com/transcript/message/55767519#55767519)
+| 2021-09 | | Jesús Galán López | Monadic modification `a F↩`
+|  -11 | | Discord user "el" | `·` as no-op assignment target
 
 ## Features
 
@@ -80,6 +82,8 @@ In YAG meetings, I suggested adopting [APL\iv](https://aplwiki.com/wiki/APL%5Civ
 
 The idea of dfn headers is very common in the APL community, to the extent that it's hard to say which proposals lead to the form now used in BQN. A+ has headers which are similar but go outside the braces, and BQN headers aren't all that different from tradfn headers either. I found when creating BQN2NGN that ngn/apl allows dfns to include a monadic and dyadic case, separated by a semicolon. Some time later I realized that the ability to include multiple bodies is very powerful with headers because it enables a primitive sort of pattern matching, something I already wanted to squeeze into the language. I discussed this with dzaima, who added header support to dzaima/BQN almost immediately and was thus able to investigate the details of the format.
 
+A "return from block" syntax `Name→`, creating a monadic function that cuts execution short and returns its argument from the block with the given name, was specified to go along with block headers, and is the main reason name-only headers (labels) exist. It was never implemented anywhere, and eventually I decided it was probably not worth the complication and removed it from the spec.
+
 #### Group
 
 I've been fiddling with the idea of function or map inversion (preimage creation, really) for several years, and in fact independently discovered something very similar to K's Group function `=`, which is an excellent tool for languages that have dictionaries. I liked this approach as it didn't have all the ordering issues that J's Key has. However, I also didn't really want to introduce dictionaries to BQN, as they have a very strange relation to multidimensional arrays—are arrays like dictionaries with multiple keys, or dictionaries with a single vector key? I've been a proponent of `/⁼` as a programming tool for [much longer](http://www.jsoftware.com/pipermail/programming/2010-September/020302.html). I'd also developed a sophisticated view of [partition representations](https://aplwiki.com/wiki/Partition_representations) while studying an extension to Dyalog's Partitioned Enclose proposed by Adám and included in Dyalog 18.0. I finally put all this together while fighting with Key to develop BQN's compiler: I realized that if the "key" argument was restricted to array indices, then it would make sense for the result to be an array, and that this was simply the "target indices" partition representation minus the requirement that those indices be nondecreasing.
@@ -91,3 +95,15 @@ It happens that BQN's Before (`⊸`) and After (`⟜`) modifiers are identical t
 #### Constant modifier
 
 The idea of a constant function is nothing new; I named it `k` in I, taking influence from the [SKI](https://en.wikipedia.org/wiki/SKI_combinator_calculus) calculus. It was actually Adám who suggested adding it to Dyalog with the glyph `⍨`, although I was the one who campaigned for it and introduced it to the public in version 18.0. It wasn't initially clear that a dedicated modifier was needed in BQN because the treatment of data types as constant functions seems to fill this role, but I eventually found that I needed a constant function returning a function too often to leave it out.
+
+#### Pair
+
+Enlist/Pair (`⋈`) is an obvious enough primitive, and was in Adám's Extended Dyalog APL as `⍮` in 2018, and in I as `;` in 2012—but because I uses nested lists, its version can also be interpreted as `≍`. Initially I wanted to see if just `≍` would work out, although now I think only `⋈` would be better than only `≍`. When dzaima pointed out its absence just hours after learning about BQN, [my reply](https://chat.stackexchange.com/transcript/message/54577476#54577476) also stated I had no character for it. I don't know when exactly I hit on `⋈`, but I first posted about the character in April 2021 (a feature I liked about it is that it also suggests `⋉` and `⋊` for prepending and appending an element to a list), and added it to the language in October.
+
+#### Namespaces
+
+I designed the namespace system as a way to pack code into modules, in particular to allow a file to define multiple exported values while having its own privately accessible scope. There was some initial complication to avoid immediately exposing namespaces as first-class values, requiring each namespace to be unpacked where it was created, but this restriction was lifted before long. I consulted with dzaima on various details of the destructuring syntax, particularly aliasing.
+
+#### High-rank array notation
+
+While array notation with `⟨⟩` was initially supported in the language, the flat rank-increasing version `[]` was reserved but not implemented until June 2022. Most of the delay was just laziness in specifying and implementing a minor feature, but I did question whether special syntax just for `>⟨⟩` was worth it (I'm still not sure, really). The main value is that it can be used as an assignment target like `{𝕊[a,b]:…}`, a feature that also makes the design slightly less trivial.
