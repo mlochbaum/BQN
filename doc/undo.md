@@ -25,9 +25,9 @@ If `𝔽` can be inverted exactly, then Undo just does that (or tries). However,
 
 Don't worry, this isn't 'nam. Undo doesn't always satisfy `𝕩 ≡ 𝔽⁼ 𝔽 𝕩`, but it *does* obey `𝕩 ≡ 𝔽 𝔽⁼ 𝕩`. That is, it gives one possible argument that could have been passed to `𝔽`, just not necessarily the one that actually was. BQN is conservative in how it uses this freedom, so that it won't for example make up new elements entirely to find an inverse: `1⊸↓` is one function that it could undo but won't. It's usually used when there's an obvious or standard way to pick which of the possible values should be returned.
 
-In a BQN with floating-point numbers, computations are approximate, so the inverse is allowed to be approximate as well (any error should still be very small though).
+The Undo rule is proven by some practically-motivated exceptions in cases where it would otherwise force an error, the most significant being when `𝔽` is `/` (see [Indices inverse](replicate.md#inverse)) or `F⁼`. And in a BQN with floating-point numbers, computations are approximate, so the inverse is allowed to be approximate as well (any error should still be very small though).
 
-        6 - √⁼√6
+        6 - ×˜ ×˜⁼ 6
 
 ## What's supported?
 
