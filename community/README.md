@@ -15,10 +15,9 @@ Here are some places to find BQN libraries and examples:
 
 See also:
 
-- Sylvia's [BQN-oriented blog](https://saltysylvi.github.io/blog/index.html) and [tacit to block converter](https://saltysylvi.github.io/bqn-tacit-helper/)
-- Thibault Barbie's [blog](https://thibaultbarbie.github.io/) also covers BQN
-- More blogs [on Medium](https://medium.com/tag/bqn)
+- BQN blogging by [Sylvia](https://saltysylvi.github.io/blog/index.html), [Thibault Barbie](https://thibaultbarbie.github.io/), and [Ramón Panadés-Barrueta](https://panadestein.github.io/blog/), with more [on Medium](https://medium.com/tag/bqn).
 - On Youtube, [David Zwitser](https://www.youtube.com/channel/UCB3UHjYTmi8jSVmn31SNF8A) makes games; [Conor Hoekstra](https://www.youtube.com/c/codereport/videos) and [Asher Mancinelli](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) walk through smaller programs.
+- Sylvia's [tacit to block converter](https://saltysylvi.github.io/bqn-tacit-helper/)
 - Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
 - Razetime's [learn X in Y minutes](https://razetime.github.io/learnxinyminutes-docs/bqn)
 - Miguel Raz's [Anki deck](https://github.com/miguelraz/miguelraz.github.io/blob/e772dc681330b37544a55d38b3d1537699616420/ankis/bqn-glyphs.apkg), from [this page](https://miguelraz.github.io/teaching/) of resources
