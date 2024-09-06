@@ -723,6 +723,7 @@ ConvertFile ← {
   h1 ← (2≤≠)◶0‿("# "≡2⊸↑)¨⊸/md
   "Wrong number of titles in "‿𝕩 ∾⊸! 1=≠h1
   head ← "head" Html lf∾JoinLines "  "⊸∾¨⟨
+    RQ "<meta charset='utf-8'>"
     "shortcut icon' type='image/x-icon" Link "favicon.ico"
     "stylesheet" Link "style.css"
     "title" Html ("BQN"∾":"⊸(¬∘∊/⊣)∾" "∾⊢)⍟(¬·∨´"BQN"⍷⊢) Clean 2↓⊑h1
