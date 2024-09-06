@@ -725,6 +725,7 @@ ConvertFile ← {
   head ← "head" Html lf∾JoinLines "  "⊸∾¨⟨
     "shortcut icon' type='image/x-icon" Link "favicon.ico"
     "stylesheet" Link "style.css"
+    RQ "<meta charset='utf-8'>"
     "title" Html ("BQN"∾":"⊸(¬∘∊/⊣)∾" "∾⊢)⍟(¬·∨´"BQN"⍷⊢) Clean 2↓⊑h1
   ⟩
   repo ← "("∾")"∾˜ "a href='"‿repoURL‿"'" ∾⊸Html "github"
