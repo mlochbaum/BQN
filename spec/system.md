@@ -66,7 +66,7 @@ The 2-modifier `•_while_` repeatedly checks `𝕨𝔾v`, where `v` is initiall
 | `•wdpath`  | Shell's working directory path
 | `•Exit`    | Leave the top-level running program
 
-`•Import` loads another BQN script. The script is evaluated in its own isolated scope, and its result is either the result of the last line, or a module if it exports with `⇐` at the top level. If it is a module, then it must be destructured immediately unless first-class namespaces are possible.
+`•Import` loads another BQN script. The script is evaluated in its own isolated scope. Like a block, its result is either the result of the last line, or a namespace if it exports with `⇐` at the top level.
 
 The right argument is a filename, which may be relative or absolute. Relative paths are taken relative to the source file where this instance of `•Import` was written. The left argument, if given, is the list of arguments that should be passed through to the file as `•args`. If no left argument is given then `⟨⟩` is used for `•args`. However, the behavior is different in this case. The same file will only be loaded once in a given BQN program by `•Import` calls with no left argument: the first such call saves the returned value, even if it is mutable, and subsequent calls return this saved value. To avoid this and reload the file, pass a left argument of `⟨⟩`.
 
