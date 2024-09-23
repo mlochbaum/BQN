@@ -2,7 +2,7 @@
 
 # Specification: BQN token formation
 
-This page describes BQN's token formation rules (token formation is also called scanning). Most tokens in BQN are a single character long, but quoted characters and strings, identifiers, and numbers can consist of multiple characters, and comments, spaces, and tabs are discarded during token formation.
+This page describes BQN's token formation rules (token formation is also called scanning). Most tokens in BQN are a single character long, but quoted characters and strings, identifiers, and numbers can consist of multiple characters, and comments, spaces, and tabs are discarded during token formation. Additionally, identifier, literal, and primitive tokens are assigned a syntactic role that determines how they are seen by the grammar. The case-insensitive matching of identifiers and special names is described in the [scoping rules](scope.md), not here.
 
 BQN source code should be considered as a series of unicode code points, which we refer to as "characters". Implementers should note that not all languages treat unicode code points as atomic, as exposing the UTF-8 or UTF-16 representation instead is common. For a language such as JavaScript that uses UTF-16, the double-struck characters `𝕨𝕩𝕗𝕘𝕤𝕎𝕏𝔽𝔾𝕊𝕣` are represented as two 16-bit surrogate characters, but BQN treats them as a single unit. The line feed (LF) and carriage return (CR) characters are both considered newline characters.
 
@@ -12,7 +12,7 @@ A comment consists of the hash character `#` and any following text until (not i
 
 Identifiers and numeric literals share the same token formation rule. These tokens are formed from the *numeric characters* `¯∞π0123456789` and *alphabetic characters* `_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ` and the oddball `𝕣`. Additionally, `.` is considered a numeric character if it is followed immediately by a digit (`0123456789`); otherwise it forms its own token. Any sequence of these characters adjacent to each other forms a single token, which is a *numeric literal* if it begins with a numeric character and an *identifier* if it begins with an alphabetic character. If a token begins with an underscore then its first non-underscore character must be alphabetic: for example, `_99` is not a valid token. Numeric literals are also subject to [numeric literal rules](literal.md), which specify which numeric literals are valid and which numbers they represent. If the token contains `𝕣` it must be either `𝕣`, `_𝕣`, or `_𝕣_` and is considered a special name (see below). As the value taken by this identifier can only be a modifier, the uppercase character `ℝ` is not allowed.
 
-The *system dot* `•` always attaches to the token containing the next character, which must not be a whitespace character, `#`, or `•`. This combined token is valid only if its name matches a defined [system value](system.md), ignoring underscores and letter case as with identifiers (but in the unlikely case that system values with numeric names are defined, they need not follow the numeric literal rules). Its role is the same as the role the remainder of the token would have if not preceded by `•`, and it is considered a literal for grammar purposes.
+The *system dot* `•` always attaches to the token containing the next character, which must not be a whitespace character, `#`, or `•`. This combined token is valid only if its name matches a defined [system value](system.md), ignoring underscores and letter case as with identifiers (but in the unlikely case that system values with numeric names are defined, they need not follow the numeric literal rules). A token beginning with a system dot is treated as a literal in the grammar, and is therefore called a *system literal* here.
 
 Following these steps, the whitespace characters space and tab are ignored, and do not form tokens. These characters and the newline characters, which do form tokens, are the only whitespace characters allowed.
 
@@ -27,4 +27,22 @@ Otherwise, a single character forms a token. Only the specified set of character
 | Special name          | `𝕨𝕩𝕗𝕘𝕤𝕎𝕏𝔽𝔾𝕊`
 | Punctuation           | `←⇐↩(){}⟨⟩[]‿·⋄,.;:?` and newlines
 
-In the BQN [grammar specification](grammar.md), the three primitive classes are grouped into terminals `Fl`, `_ml`, and `_cl`, while the punctuation characters are identified separately as keywords such as `"←"`. The special names are handled specially. The uppercase versions `𝕎𝕏𝔽𝔾𝕊` and lowercase versions `𝕨𝕩𝕗𝕘𝕤` are two spellings of the five underlying inputs and function.
+## Syntactic role
+
+Literal, primitive, and identifier tokens are assigned to terminals in the grammar according to their *syntactic role*. The four possible roles are subject, function, 1-modifier, and 2-modifier.
+
+- Numeric literals, character literals including the null literal, and string literals have a subject role.
+- Primitives have a function, 1-modifier, or 2-modifier role according to their class.
+- A system literal has the same role it would have if it appeared without the `•`.
+- An identifier token may have any role depending on its spelling, as defined below.
+
+The role of an identifier token may depend on its first character, and on whether the last character is an underscore, as shown in the table below. If the identifier starts with a lowercase letter, it has a subject role, and if it starts with an uppercase letter, then it has a function role. If it starts with an underscore, the identifier is a modifier, specifically a 2-modifier if it ends with another underscore and a 1-modifier if not.
+
+| First character              | Trailing underscore | Role
+|------------------------------|---------------------|-----
+| `abcdefghijklmnopqrstuvwxyz` | Any                 | Subject
+| `ABCDEFGHIJKLMNOPQRSTUVWXYZ` | Any                 | Function
+| `_`                          | No                  | 1-modifier
+| `_`                          | Yes                 | 2-modifier
+
+The special names `𝕨𝕩𝕗𝕘𝕤𝕣` my be considered to have a subject role, `𝕎𝕏𝔽𝔾𝕊` to have a function role, and `_𝕣` and `_𝕣_` to have 1-modifier and 2-modifier roles. However, special names are treated individually in the grammar specification rather than being grouped by role.
