@@ -83,5 +83,6 @@ Primitives:
 - [Windows: `↕`](windows.md)
 
 Environment:
+- [Foreign Function Interface (FFI)](ffi.md)
 - [Embedded BQN](embed.md)
 - [ReBQN](rebqn.md)

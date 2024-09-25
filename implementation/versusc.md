@@ -227,7 +227,7 @@ There's also data-based checking, or [adaptive algorithms](https://en.wikipedia.
 
 ### Primitives versus C libraries
 
-BQN can call C code through its FFI, but it has a little call overhead and often requires copying data so it's not the fastest interface. C can also call into CBQN as a library, with similar issues. But isn't it possible to make C library functions for BQN primitives—in fact, don't many such library functions like sorting and binary searching already exist?
+BQN can call C code through its [FFI](../doc/ffi.md), but it has a little call overhead and often requires copying data so it's not the fastest interface. C can also call into CBQN as a library, with similar issues. But isn't it possible to make C library functions for BQN primitives—in fact, don't many such library functions like sorting and binary searching already exist?
 
 In principle this is a fine strategy; it's something we do a fair amount internally within BQN. Practically speaking, well first I have to admit that I know very little about these libraries. It seems clear enough that stdlib implementations are a joke as far as performance goes, so we are talking about C++ stuff like Abseil, Folly, or Boost. I'm still kind of skeptical, but what little knowledge I have about these is from looking at documentation and not finding functions that seemed useful (for implementing APL) and looking at source code and benchmarks and not seeing anything that seemed impressive. If anyone would, say, use these to implement some BQN primitives faster than CBQN's Singeli versions I'd change my mind real fast.
 

@@ -27,7 +27,7 @@ Looking for a modern, powerful language centered on Ken Iverson's array programm
 
 - A simple, consistent, and [stable](commentary/stability.md) array programming language
 - A low-dependency C implementation using bytecode compilation: [installation](running.md)
-- [System functions](spec/system.md) for math, files, and I/O (including a C FFI)
+- [System functions](spec/system.md) for math, files, and I/O (including a [C FFI](doc/ffi.md))
 - [Documentation](doc/README.md) with examples, visuals, explanations, and rationale for features
 - [Libraries](https://github.com/mlochbaum/bqn-libs) with interfaces for common file formats like JSON and CSV
 
