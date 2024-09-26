@@ -10,7 +10,7 @@ This is a list. Wait for it…
 
         ⟨1, 2, 3⟩ + 1
 
-There we go. Now in BQN arrays are not just lists, which are a 1-dimensional data structure, but can have any number of dimensions. In this tutorial we're going to discuss lists only, leaving the 5-dimensional stuff for later. So we're really only seeing the power of [K](https://aplwiki.com/wiki/K), an APL-family language that only uses lists (and dictionaries, which BQN doesn't have). K was powerful enough for Arthur Whitney to found [two](https://en.wikipedia.org/wiki/Kx_Systems) [companies](https://shakti.com/) and make millions and millions of dollars, and BQN's compiler also runs almost entirely on lists, so this is probably enough power for one webpage.
+There we go. Now in BQN arrays are not just lists, which are a 1-dimensional data structure, but can have any number of dimensions. In this tutorial we're going to discuss lists only, leaving the 5-dimensional stuff for later. So we're really only seeing the power of [K](https://aplwiki.com/wiki/K), an APL-family language that only uses lists (for arrays; there are also dictionaries). K was powerful enough for Arthur Whitney to found [two](https://en.wikipedia.org/wiki/Kx_Systems) [companies](https://shakti.com/) and make millions and millions of dollars, and BQN's compiler also runs almost entirely on lists, so this is probably enough power for one webpage.
 
 ## List notation
 
