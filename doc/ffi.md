@@ -38,7 +38,7 @@ For a more complicated example, here's a function that counts the number of cycl
             uint32_t j = i, pj = p[j];
             count += pj >= i;
             while (pj > i) {
-                p[j] = i;
+                p[j] = i;  //# Danger! Read on...
                 j = pj;
                 pj = p[j];
             }
@@ -53,14 +53,14 @@ With that compiled to `cyc.so`, we can call it using the following BQN code. The
     •Show CycC ≠⊸⋈ p    # 3
     •Show p             # ⟨ 0 2 4 3 1 ⟩
 
-The cycles are 0, 124, and 3, so that checks out. But `cycles` modifies its argument `p`, with the line `p[j] = i`. Is the BQN list `p` changed when this happens? The check on the last line says no, which is good because BQN arrays are supposed to be immutable. What happens in this case is that CBQN stores `p` with 8 bits per element, so to widen it to 32 bits it copies to temporary memory. And in fact CBQN assumes the C function won't modify a `*`-typed argument, so to avoid issues in the case that `p` _does_ have 32-bit elements it should be passed in as `≠⊸⋈ •internal.Unshare p`.
+The cycles are 0, 124, and 3, so that checks out. But `cycles` modifies its argument `p`, with the line `p[j] = i`. Is the BQN list `p` changed when this happens? The check on the last line says no. But this isn't the rule! CBQN assumes the C function won't modify a `*`-typed argument, and makes no guarantees about what happens if it does. What happens in this case is that `p` is stored using 8 bits per element, so to widen it to 32 bits it's copied to temporary memory. If `p` had 32-bit elements, then it would be modified, violating the basic assumption that BQN arrays are immutable. Identical arrays are often stored as references based on immutability, but they'd all change with the mutation, causing behavior that's impossible in normal BQN and tricky to debug!
 
-But what if we want to see the modifications? Many C functions use pointer modification as a way to return multiple values, so the FFI supports this. With `&` instead of `*`, the values after calling the function are returned as an extra result (and the original argument is always copied to avoid changes to aliased values).
+So how does the FFI deal with mutation—besides making this call well-defined, what if we want to see the modifications? Many C functions use pointer modification as a way to return multiple values. With `&` instead of `*`, the original argument is always copied to avoid changes to aliased values, and after calling the function, that copy is returned as an extra result—so to match `CycC` above, you'd have to throw in a `⊑` to discard it.
 
     cycles ← "cyc.so" •FFI "u32"‿"cycles"‿"u32"‿"&u32"
     •Show Cycles ≠⊸⋈ ⍋"cycle"  # ⟨ 3 ⟨ 0 1 1 3 1 ⟩ ⟩
 
-The original result might not be wanted in this case. You can ignore it (relying on `u32` not being stack-allocated!) by using `""` for the result type, but then you get a 1-element list, for consistency with the case with multiple `&` arguments. Similar to `>` on a single argument, you can use `"&"` for the result to get a single mutated argument returned directly.
+In some cases you may only want to get this mutated value back. You can ignore the C result (relying on `u32` not being stack-allocated!) by using `""` for the result type, but then you get a 1-element list, for consistency with the case with multiple `&` arguments. Similar to `>` on a single argument, you can use `"&"` for the result to get a single mutated argument returned directly.
 
     cycI ← "cyc.so" •FFI "&"‿"cycles"‿"u32"‿"&u32"
     •Show CycI ≠⊸⋈ ⍋"cycle"  # ⟨ 0 1 1 3 1 ⟩
