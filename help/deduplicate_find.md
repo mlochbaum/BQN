@@ -20,7 +20,7 @@ Unique major cells of `𝕩`.
 
 Mark the top left location of the occurrences of `𝕨` in `𝕩` with a 1, and other locations with 0.
 
-Result is the same shape as `(≢𝕨)↕x`.
+Result is the same shape as `(≢𝕨)↕𝕩`.
 
         "string" ⍷ "substring"
 
