@@ -4,7 +4,7 @@
 
 CBQN is the primary offline implementation, and has [build instructions in its own repository](https://github.com/dzaima/CBQN). Here and elsewhere it's expected to be installed as `bqn`. For Windows, build in [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) or go to the [repository](https://github.com/vylsaz/cbqn-win-docker-build) for the docker builds linked below ([WinBQN](https://github.com/actalley/WinBQN) is another system that's currently unmaintained).
 
-Third-party packages are available for several platforms. Because they run on an unknown target system, none of these packages are built with the highest-performance settings. If you need top speed (you probably don't!) you should compile CBQN for the target hardware instead.
+Third-party packages are available for several platforms. Because they run on an unknown target system, none of these packages except Spack+`o3n` are built with the highest-performance settings. If you need top speed (you probably don't!) you should compile CBQN for the target hardware instead.
 
 | OS/distro        | Package                                      | Type
 |------------------|----------------------------------------------|--------------
@@ -12,6 +12,7 @@ Third-party packages are available for several platforms. Because they run on an
 | Arch AUR         | `cbqn-git`                                   | Source
 | Nix              | `cbqn`                                       | Source/Binary
 | Guix             | `cbqn`                                       | Source/Binary
+| Spack            | `cbqn`                                       | Source
 | iOS              | [Arrayground](https://apps.apple.com/us/app/arrayground/id6453522556) | App ([source](https://github.com/x86y/ibeacon))
 
 For tools related to running BQN, see the [editor plugins](editors/README.md) and [fonts page](https://mlochbaum.github.io/BQN/fonts.html). Also, [Beacon](https://github.com/x86y/beacon) is a cross-platform IDE just for BQN!
