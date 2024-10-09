@@ -26,7 +26,7 @@ C and CBQN ultimately sum an array of floats with the same machine code, but the
 
 C requires the programmer to specify the types used, and more generally a statically typed language is one where the type of a particular value is fixed based on the source code (or each copy of the value, with generics or other code generation mechanisms).
 
-BQN uses dynamic types, but in each array it tries to determine a common element type: for example it might notice that every element can be represented as a signed two-byte integer. The type is stored only once in the array header, and all elements are packed into memory using the appropriate type. So the two-byte integer array would be stored using a fixed-size header (which mostly consists of the shape and other non-type things), then two bytes for each element.
+BQN uses dynamic types, but in each array it tries to determine a common [element type](../primitive/types.md): for example it might notice that every element can be represented as a signed two-byte integer. The type is stored only once in the array header, and all elements are packed into memory using the appropriate type. So the two-byte integer array would be stored using a fixed-size header (which mostly consists of the shape and other non-type things), then two bytes for each element.
 
 I sometimes think of C's approach to types as **temporally homogeneous**, because once you write a function, a call one minute has the same types as a call the next, and BQN's as **spatially homogeneous**, because in an array each element has the same type as another one address over.
 
@@ -81,7 +81,7 @@ However, I would be very interested in compiling BQN's stack-based IR using thes
 
 A very early example of JIT compilation, [APL\3000](https://aplwiki.com/wiki/APL%5C3000), begins by compiling each function for the exact types it's called with on the first call and recompiles for more general types when its assumptions are broken. This keeps the program from spending all its time compiling, but also can't optimize a function well over multiple types; given how cheap memory is now I think it's better to compile multiple versions more readily.
 
-I wrote in more detail about various strategies in the page on [dynamic compilation](https://mlochbaum.github.io/BQN/implementation/compile/dynamic.html). For one example of an advanced approach, my guess as to the best framework—given unlimited time to implement it—to deal with large arrays on a typical computer is to layer many strategies together:
+I wrote in more detail about various strategies in the page on [dynamic compilation](dynamic.md). For one example of an advanced approach, my guess as to the best framework—given unlimited time to implement it—to deal with large arrays on a typical computer is to layer many strategies together:
 
 - At the largest scale, execution is dynamic
 - When possible, a few upcoming primitives are statically analyzed together and probably fused
