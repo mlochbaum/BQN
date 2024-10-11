@@ -103,3 +103,22 @@ So we know that step that widens permutation units from `h` to `2×h` swaps bit 
 A swap-halves function can be a rotate instruction on elements of width `2×h`, or can be done with a shuffle on elements of width `h` or smaller.
 
 The total data to permute width `l` is 2+4+…`l÷2` bits, or `l-2`. It can be precomputed for each odd factor `f<l` (which covers larger factors too, since `f+k×l` permutes as `f`). Then it just needs to be read from a table and unpacked into individual mask vectors. These mask vectors could also be computed directly with multiplication and some bit shuffling; I'm not sure how this would compare in speed.
+
+### Collecting bits
+
+The bits to be passed into the modular permutation need to be collected from the argument (possibly after some processing), one bit out of each `f`. Or, in the other direction, they need to be distributed to the result. This can be done by generating a bitmask of the required position in each register. Then an argument register is and-ed with the bitmask and or-ed into a running total. But generating the bitmask is slow. For example, with row size under 64, updating the mask `m` for the next word is `m>>r | m<<l` for appropriately-chosen shifts `l` and `r`: this is a lot of instructions at each step! For small factors, an unrolled loop with saved masks works; for larger factors, it gets to be a lot of code, and eventually you'll run out of registers.
+
+Since one modular permutation is needed for every `f` expanded registers, a better approach is to structure it as a loop of length `f` and unroll this loop. An unrolled iteration handling 4 adjacent registers works with a mask that combines the selected bits from all those registers, and at the end of the iteration it's advanced by 4 steps—this is the same operation as advancing once, just with different shifts. So that contains iterations 0|1|2|3, then 4|5|6|7, and so on. In addition to this "horizontal" mask we need 4 pre-computed "vertical" masks to distinguish within an iteration: one mask combines register 0 of each iteration 0|4|8|…, another does 1|5|9|…, and so on. So the intersection of one horizontal and one vertical mask correctly handles a particular register. The unrolled iteration applies the vertical mask to each of the 4 registers, and the horizontal one to them as a whole. So:
+- When extracting, add `h & ((i0&v0) | ... | (i3&v3))` to the running total.
+- When depositing, set `c = h & p`, and use `c&v0`, ... `c&v3`.
+where `h` is the horizontal mask and `v0`…`v3` are vertical ones, `i0`…`i3` are input registers, and `p` is a combined output resulting from a permutation.
+
+For the partial iteration at the end, the combined mask stops working! Take `f←15` for example. The last iteration starts at register 12, and the mask will combine iterations 12, 13, and 14, but also 15, which is iteration 0 of the _next_ length-`f` loop. This means `h&v0` contains iterations 0 and 12, so it will incorrectly pick out extra bits. The last iteration also has a variable length, so a dedicated loop with a single-register mask is a fine approach.
+
+### Handling even factors
+
+When the size of a row is a multiple of two, it's no longer relatively prime to the register size. In general, a given size needs to be split into a power of two times an odd number, and some other method is needed to handle powers to two. Fortunately SIMD architectures usually have some useful instructions for this; generic code may not be so fast.
+
+It's possible to apply these methods in completely separate calls. For example, `28/𝕩` is `4/7/𝕩`, and `∧˝˘𝕩` on rows of length 28 can be implemented as reductions of length 4 then 7, that is, `∧˝˘∧˝⎉1 ∘‿7‿4⥊𝕩`. This is great with 4 and larger powers of two if they have a solid SIMD implementation; place the power of two on the larger side.
+
+A multiple of 2 or maybe 4 can be fused in as well. To avoid permuting any extra registers, it should be placed just before the permutation (for a fold; after for expansion). That is, condense every `2×f` bits from `f` registers of the argument, and again from the next `f` registers. Then pack every other bit of these two registers together. This gives a register where each half needs to be permuted, which can be done with the normal permutation code either by skipping the last iteration or zeroing out the mask for it.
