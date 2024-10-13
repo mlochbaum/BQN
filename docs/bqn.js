@@ -539,7 +539,7 @@ let fmtErr = e => {
     let c=Array(cl).fill(0); c[j]=1;
     for (let h=1;h<k;h++) c[j=Math.max(j,is[h]-o+(pair?h%2:0))]^=1;
     if (pair) for (let h=1;h<cl;h++) c[h]^=c[h-1];
-    let add = ['',m.join(''),c.map(t=>t?'^':' ').join('')];
+    let add = ['',m.join(''),c.map((t,i)=>t?'^':m[i]=='\t'?m[i]:' ').join('')];
     loc = add.concat(ol?['(and other lines)']:[], loc);
   }
   if (a) w=w?fmt(w).replace(/^/gm,'! '):'! Error';
