@@ -133,7 +133,7 @@ ReadNums←{
 }
 
 
-Parse ← {r‿vn‿i‿e‿def←𝕨⋄nv←≠vn
+Parse ← {r‿nv‿i‿e‿def←𝕨
   ErrMismatchedBrackets←{
     # Horrible stack-based algorithm
     S←⊑⟜𝕩 ⋄ K‿D←{⋈∾¨⟜(𝕏⋈)˜}¨↓‿↑     # Select; Keep; Discard
@@ -369,6 +369,6 @@ Compile←{
   defaults←⟨⟩‿(!∘"System values not supported"¨)‿⟨⟩‿(↕0)
   prims‿Sys‿vars‿redef ← ∾⟜(≠↓defaults˙) ⋈⍟(4<≠)𝕨
   ⟨tok,role,val,t0,t1⟩←tx←sys‿vars Tokenize 𝕩
-  ⟨oc,prim,blk,bdy,oi⟩←⟨role,⊑val,t0,t1,redef»0¨vars⟩ Parse tok
+  ⟨oc,prim,blk,bdy,oi⟩←⟨role,≠⊑val,t0,t1,redef»0¨vars⟩ Parse tok
   ⟨oc, ∾⟨prim⊏prims⟩∾1↓val, <˘⍉>blk, <˘⍉>bdy, oi, tx⟩
 }
