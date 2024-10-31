@@ -41,8 +41,9 @@ charRole←4∾˜∾⥊¨˜⟜(≠↑cgl˙)⟨1,2,3,¯1,¯1,¯3,¯1‿0,¯2,0,¬
 T←⌈`× ⋄ IT←↕∘≠⊸T ⋄ I1T←(1+↕∘≠)⊸T
 PN←1(∾/∾˜)(∨/⊣)  # Partitioned-none: partitions where 𝕨<𝕩 is never 1
 
-# Source to ⟨tokens, roles, number of identifiers, literals⟩
-# Identifiers then literal tokens are numbered starting at vi
+# Source to ⟨tokens, roles, values, start indices, end indices⟩
+# Values are ⟨names, system values, numbers, characters, strings⟩
+# Tokens ≥vi index into ∾values; start/end indices map back to source
 Tokenize←{System‿vars←𝕨
   # Resolve comments and strings
   c←𝕩='#'⋄s←/0‿0⊸«⊸∧sm←𝕩='''⋄d←/dm←𝕩='"'
