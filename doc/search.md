@@ -159,7 +159,7 @@ The searched-in argument is treated as a list of its [major cells](array.md#cell
 
         rows ⊐ [["row","row","col"],["rho","cow","col"]]
 
-So the result rank of `⊐` is always `𝕨¬○=𝕩`, with a result shape `(1-˜=𝕨)↓≢𝕩`, and `𝕨⊐𝕩` fails if `1>=𝕩` or the result rank would be negative. In the list case, we have `1==𝕩` (so the first condition holds), and the result rank resolves to `=𝕨` (which can't be negative, so the second holds as well). The cell rank of `𝕩` is 0, and the fact that a 0-cell of `𝕩` gives a 0-cell of the result is what causes the shape arithmetic to be so simple.
+So the result rank of `⊐` is always `𝕩¬○=𝕨`, with a result shape `(¬=𝕨)↓≢𝕩`, and `𝕨⊐𝕩` fails if `1>=𝕨` or the result rank would be negative. In the list case, we have `1==𝕨` (so the first condition holds), and the result rank resolves to `=𝕩` (which can't be negative, so the second holds as well). The cell rank of `𝕩` is 0, and the fact that a 0-cell of `𝕩` gives a 0-cell of the result is what causes the shape arithmetic to be so simple.
 
 For Member of, the arguments are reversed relative to Index of, but otherwise everything's the same. This differs from APL, where entries are always elements, not cells. Many APL designers consider the APL definition to be a failure of foresight and would prefer BQN's definition—or rather A+'s or J's definition, as these languages were actually the first to use it. The rank-aware version is more flexible, as it allows both searching for elements and searching for rows. APL would return the first result in both cases below.
 
