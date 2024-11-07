@@ -22,13 +22,86 @@ A matrix in SIMD registers can be transposed with unpack instructions in a [butt
 
 Sizes that aren't an even multiple of the kernel side length can be handled either by performing a strided scalar transpose on the leftover bit, or by overlapping kernels. I've found that the scalar transpose is slow enough that it only makes sense with a single leftover row or column.
 
-### Interleaving
+### Short kernels
 
-A single fixed-size kernel breaks down when one axis is smaller than the kernel length. Handling these cases well calls for a different strategy that I call interleaving or uninterleaving, depending on orientation. Interleaving can transpose a few long rows into a long matrix with short rows, while uninterleaving goes the other way. Generally, an approach that works for one can be run backwards to do the other. The differences between interleaving and a general kernel are that writes (or reads for uninterleaving) are entirely contiguous, and that the two subarray dimensions aren't the same. One dimension is forced by the matrix shape, and the other should be chosen as large as possible while fitting in a register. Or multiple registers, if you're brave enough. Alignment is a significant annoyance here, unless the smaller axis length is a power of two.
+A single fixed-size kernel breaks down when one axis is smaller than the kernel length. However, it's possible to handle these cases quickly using packing and unpacking for powers of two, and the [modular permutation](fold.md#the-modular-bit-permutation) for odd factors. For an argument or result width of w where w is small, the kernel will work on w vectors, divided by any power of 2. Short rows will be packed into these, and for performance they should be loaded as aligned vectors.
 
-The boolean case can use methods similar to those described [for Take and Drop](take.md#bit-interleaving-and-uninterleaving). For example, to transpose `k` long rows, interleave each row to place `k-1` zeros between each bit, then or results from the different rows together at the appropriate offsets.
+<!--GEN
+d ← 17
+pad ← 0.2‿0.2
 
-The case with non-booleans and SIMD should be simpler, as it can be done with byte shuffles. The complication is reading from or writing to the side with long rows. I think the right approach is to read or write most of a register at once, and split it up as part of the shuffling. It's probably enough to have one precomputed index vector and add an offset to it as necessary.
+rc ← At "class=code|stroke-width=1.5|rx=12"
+Ge ← "g"⊸At⊸Enc
+g  ← "font-family=BQN,monospace|font-size=11px|text-anchor=middle"
+pg ← "class=lilac|stroke-width=2|stroke-linecap=round"
+hg ← "stroke=currentColor|fill=none|opacity=0.4|stroke-width=12|stroke-linecap=round"
+tg ← "fill=currentColor"
+bg ← "class=yellow"
+
+Text ← ("text" Attr "dy"‿"0.32em"∾(Pos d⊸×))⊸Enc
+Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ ·FmtNum d⊸×
+Rp ← Pos⊸∾⟜("width"‿"height"≍˘FmtNum)○(d⊸×)
+Path ← "path" Elt "d"⋈(∾∾¨⟜(FmtNum d×⊢))
+CmpL ← <(⊣˝˘⊣´)≍˘(⊢˝˘⊢´)
+Tr_icon ← {⟨
+  Line 𝕩+⌜0⋈2×𝕨
+  "circle" Elt "cx"‿"cy"‿"r" ≍˘FmtNum d×(𝕩+𝕨)∾0.9×𝕨
+⟩}
+Arrow ← {
+  a ← 3.6‿1.8
+  "M l l m L m l l " Path {(𝕨⊸+∾-∾(-⊸∾-⌾⊑)∾𝕩∾-∾⊢∾-⌾⊑)a}˝ ⍉(⋈⟜-1.5)⊸+⌾⊏𝕩
+}
+
+MP ← {𝕨|𝕩×↕𝕨}
+RotC ← {(-𝕨)⊸⌽⌾((𝕨≤(2×𝕨)||⟜↕´≢𝕩)⊸/˘)𝕩}
+
+sh ← k‿l ← 7‿16
+dat ← ⋈⌜´ "A0"+↕¨⌽sh
+steps ← >⟨
+  rs_dat ← ⥊⟜(↕×´) sh
+  pc_dat ← (⍋MP´sh) ⊏ rs_dat
+  rc_dat ← (k|-↕l) ⌽˘⌾⍉ pc_dat
+  rr_dat ← (↕k) ⌽˘ rc_dat
+  pr_dat ← (MP˜´sh)⊸⊏˘ rr_dat
+⟩
+dsh ← 3 + sh ⋄ px0 ← ⟨k+4,3⟩
+spos ← > {⋈˜⌜´(dsh×𝕩)+↕¨sh}¨ ⟨0‿0,0‿1,0‿2,1‿2,2‿2⟩
+stepx‿sposx ← ⟨rs_dat, sh⥊⋈˜⌜´px0+↕¨⌽sh⟩ ∾¨ steps‿spos
+
+rowm ← 4=k⌊∘÷˜stepx
+colm ← 1=k|stepx
+hlp ← (1-˜rowm+2×colm) ⊔○⥊ sposx
+hlc ← "red"‿"bluegreen"‿"purple"
+
+shf ← ¯1.5‿¯2
+dim ← (4+2×shf)-˜3×⌽dsh
+
+(d×((-∾+˜)pad)+shf∾dim) SVG g Ge ⟨
+  "rect" Elt rc ∾ shf Rp dim
+  hlc {("class="∾𝕨) Ge ("rect" Elt -⟜0.4 Rp 0.8¨)¨ 𝕩}¨ hlp
+  bg Ge Line¨ CmpL⊸∾˝ +⟜(0.5×[1‿1,¯1‿1])¨ (¯1↓·⊢˝˘∘‿k⥊⊢)˘2↑sposx
+  pg Ge ⟨
+    Line¨ ∾⟨
+      ([⟨l-0.4,¯0.6⟩,0‿0]+≍˘´)¨ steps ⊐⊸⊔○{⥊⊣˝⎉1  2↑𝕩} spos
+      ([0‿0,⟨k-0.4,¯0.6⟩]+≍˘´)¨ steps ⊐⊸⊔○{⥊⊣˝⎉2 ¯2↑𝕩} spos
+      (<⊣´⥊2⊏spos) +⟜{ [⋈˜¯2.5+0.3×𝕩, 0.6⋈1.4+  𝕩]}¨ ↕5
+      (<⊢´⥊2⊏spos) -⟜{⌽[⋈˜¯2.5+0.3×𝕩, 0.6⋈2.4+3×𝕩]}¨ ↕5
+    ⟩
+    "M l vl " Path (⟨2÷˜k-1,¯1⟩+⊑sposx)(-∾⊢∾¯3∾⊢)0.5‿1
+  ⟩
+  tg Ge sposx Text¨ stepx⊏⥊dat
+  hg Ge (4 Tr_icon ⌽dsh+2‿0)∾<Arrow ⟨¯0.5,2÷˜k+1⟩+(0‿k-˜sh+⌽px0)≍˘⊑⊢˝spos
+⟩
+-->
+
+For an odd width `w`, the modular permutation works by moving through a representation where elements are stored along a wrapping diagonal: element `i` gets position (vector index, index within vector) `w‿v|i` where `w` is the number of vectors and `v` is the length of each. All `w×v` positions are unique by the Chinese remainder theorem. The steps are symmetric around this representation, with a permutation and a shearing step on each side. Here are the steps when starting with a short width:
+- Load contiguous rows into packed vectors
+- Permute each column by virtually reordering the registers (free)
+- Rotate each column by its index modulo `w`
+- Rotate each row by its index
+- Permute each row with a shuffle (can be combined with previous)
+- Store each vector as part of a result row
+The shearing step is where most of the work happens because it's the only step that transfers elements between registers. It can be performed with `⌈2⋆⁼w` steps, each one handling a fixed power of two smaller than `w`. The step for `2⋆i` rotates each column whose index has that bit set, by blending a given register with another whose index differs by `2⋆i`.
 
 ### Cache-efficient orderings
 

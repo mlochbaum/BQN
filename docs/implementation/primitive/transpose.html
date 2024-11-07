@@ -16,10 +16,895 @@
 <p>The major benefit of transposing with kernels is to combine multiple reads that would be scattered in ordinary scalar iteration (if writes are in-order). It costs about the same to read one element as one 32-byte register, so the larger read clearly gets a lot more done with the same memory load. But transposing huge numbers of elements in registers gets expensive, so at some point the CPU load will be big enough that increasing the kernel size is no longer worth it.</p>
 <p>A matrix in SIMD registers can be transposed with unpack instructions in a <a href="https://en.wikipedia.org/wiki/Butterfly_diagram">butterfly</a> pattern. This takes <code><span class='Value'>k</span></code> layers for a <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>k</span></code> by <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>k</span></code> matrix, where each layer pairs up all registers. So the asymptotic cost for <code><span class='Value'>n</span></code> elements is linear times an extra factor of <code><span class='Number'>4</span><span class='Function'>⋆</span><span class='Modifier'>⁼</span><span class='Value'>n</span></code>.</p>
 <p>Sizes that aren't an even multiple of the kernel side length can be handled either by performing a strided scalar transpose on the leftover bit, or by overlapping kernels. I've found that the scalar transpose is slow enough that it only makes sense with a single leftover row or column.</p>
-<h3 id="interleaving"><a class="header" href="#interleaving">Interleaving</a></h3>
-<p>A single fixed-size kernel breaks down when one axis is smaller than the kernel length. Handling these cases well calls for a different strategy that I call interleaving or uninterleaving, depending on orientation. Interleaving can transpose a few long rows into a long matrix with short rows, while uninterleaving goes the other way. Generally, an approach that works for one can be run backwards to do the other. The differences between interleaving and a general kernel are that writes (or reads for uninterleaving) are entirely contiguous, and that the two subarray dimensions aren't the same. One dimension is forced by the matrix shape, and the other should be chosen as large as possible while fitting in a register. Or multiple registers, if you're brave enough. Alignment is a significant annoyance here, unless the smaller axis length is a power of two.</p>
-<p>The boolean case can use methods similar to those described <a href="take.html#bit-interleaving-and-uninterleaving">for Take and Drop</a>. For example, to transpose <code><span class='Value'>k</span></code> long rows, interleave each row to place <code><span class='Value'>k</span><span class='Function'>-</span><span class='Number'>1</span></code> zeros between each bit, then or results from the different rows together at the appropriate offsets.</p>
-<p>The case with non-booleans and SIMD should be simpler, as it can be done with byte shuffles. The complication is reading from or writing to the side with long rows. I think the right approach is to read or write most of a register at once, and split it up as part of the shuffling. It's probably enough to have one precomputed index vector and add an offset to it as necessary.</p>
+<h3 id="short-kernels"><a class="header" href="#short-kernels">Short kernels</a></h3>
+<p>A single fixed-size kernel breaks down when one axis is smaller than the kernel length. However, it's possible to handle these cases quickly using packing and unpacking for powers of two, and the <a href="fold.html#the-modular-bit-permutation">modular permutation</a> for odd factors. For an argument or result width of w where w is small, the kernel will work on w vectors, divided by any power of 2. Short rows will be packed into these, and for performance they should be loaded as aligned vectors.</p>
+<svg viewBox='-28.9 -37.4 958.8 516.8'>
+  <g font-family='BQN,monospace' font-size='11px' text-anchor='middle'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-25.5' y='-34' width='952' height='510'/>
+    <g class='red'>
+      <rect x='44.2' y='248.2' width='13.6' height='13.6'/>
+      <rect x='78.2' y='248.2' width='13.6' height='13.6'/>
+      <rect x='95.2' y='248.2' width='13.6' height='13.6'/>
+      <rect x='112.2' y='248.2' width='13.6' height='13.6'/>
+      <rect x='129.2' y='248.2' width='13.6' height='13.6'/>
+      <rect x='146.2' y='248.2' width='13.6' height='13.6'/>
+      <rect x='197.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='231.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='248.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='-6.8' y='27.2' width='13.6' height='13.6'/>
+      <rect x='10.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='27.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='520.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='554.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='571.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='316.2' y='61.2' width='13.6' height='13.6'/>
+      <rect x='333.2' y='61.2' width='13.6' height='13.6'/>
+      <rect x='350.2' y='61.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='-6.8' width='13.6' height='13.6'/>
+      <rect x='877.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='894.2' y='44.2' width='13.6' height='13.6'/>
+      <rect x='639.2' y='61.2' width='13.6' height='13.6'/>
+      <rect x='656.2' y='78.2' width='13.6' height='13.6'/>
+      <rect x='673.2' y='95.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='163.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='197.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='214.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='231.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='248.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='265.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='333.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='367.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='384.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='401.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='418.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='435.2' width='13.6' height='13.6'/>
+    </g>
+    <g class='bluegreen'>
+      <rect x='61.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='197.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='214.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='231.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='265.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='282.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='299.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='316.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='333.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='367.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='384.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='401.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='418.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='435.2' width='13.6' height='13.6'/>
+      <rect x='10.2' y='-6.8' width='13.6' height='13.6'/>
+      <rect x='129.2' y='-6.8' width='13.6' height='13.6'/>
+      <rect x='248.2' y='-6.8' width='13.6' height='13.6'/>
+      <rect x='95.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='61.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='180.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='27.2' y='44.2' width='13.6' height='13.6'/>
+      <rect x='146.2' y='44.2' width='13.6' height='13.6'/>
+      <rect x='-6.8' y='61.2' width='13.6' height='13.6'/>
+      <rect x='112.2' y='61.2' width='13.6' height='13.6'/>
+      <rect x='231.2' y='61.2' width='13.6' height='13.6'/>
+      <rect x='78.2' y='78.2' width='13.6' height='13.6'/>
+      <rect x='197.2' y='78.2' width='13.6' height='13.6'/>
+      <rect x='44.2' y='95.2' width='13.6' height='13.6'/>
+      <rect x='163.2' y='95.2' width='13.6' height='13.6'/>
+      <rect x='333.2' y='-6.8' width='13.6' height='13.6'/>
+      <rect x='452.2' y='-6.8' width='13.6' height='13.6'/>
+      <rect x='571.2' y='-6.8' width='13.6' height='13.6'/>
+      <rect x='316.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='435.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='554.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='418.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='401.2' y='44.2' width='13.6' height='13.6'/>
+      <rect x='520.2' y='44.2' width='13.6' height='13.6'/>
+      <rect x='384.2' y='61.2' width='13.6' height='13.6'/>
+      <rect x='503.2' y='61.2' width='13.6' height='13.6'/>
+      <rect x='367.2' y='78.2' width='13.6' height='13.6'/>
+      <rect x='486.2' y='78.2' width='13.6' height='13.6'/>
+      <rect x='350.2' y='95.2' width='13.6' height='13.6'/>
+      <rect x='469.2' y='95.2' width='13.6' height='13.6'/>
+      <rect x='639.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='656.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='673.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='690.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='724.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='741.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='758.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='775.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='792.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='809.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='826.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='877.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='894.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='639.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='656.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='673.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='690.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='724.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='741.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='758.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='775.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='792.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='809.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='826.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='860.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='877.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='894.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='639.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='656.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='673.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='690.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='724.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='741.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='758.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='775.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='792.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='809.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='826.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='860.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='877.2' y='350.2' width='13.6' height='13.6'/>
+      <rect x='894.2' y='350.2' width='13.6' height='13.6'/>
+    </g>
+    <g class='purple'>
+      <rect x='61.2' y='248.2' width='13.6' height='13.6'/>
+      <rect x='214.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='537.2' y='27.2' width='13.6' height='13.6'/>
+      <rect x='860.2' y='10.2' width='13.6' height='13.6'/>
+      <rect x='843.2' y='180.2' width='13.6' height='13.6'/>
+      <rect x='707.2' y='350.2' width='13.6' height='13.6'/>
+    </g>
+    <g class='yellow'>
+      <line x1='161.5' x2='161.5' y1='178.5' y2='433.5'/>
+      <line x1='110.5' x2='110.5' y1='-8.5' y2='8.5'/>
+      <line x1='229.5' x2='229.5' y1='-8.5' y2='8.5'/>
+      <line x1='76.5' x2='76.5' y1='8.5' y2='25.5'/>
+      <line x1='195.5' x2='195.5' y1='8.5' y2='25.5'/>
+      <line x1='42.5' x2='42.5' y1='25.5' y2='42.5'/>
+      <line x1='161.5' x2='161.5' y1='25.5' y2='42.5'/>
+      <line x1='8.5' x2='8.5' y1='42.5' y2='59.5'/>
+      <line x1='127.5' x2='127.5' y1='42.5' y2='59.5'/>
+      <line x1='246.5' x2='246.5' y1='42.5' y2='59.5'/>
+      <line x1='93.5' x2='93.5' y1='59.5' y2='76.5'/>
+      <line x1='212.5' x2='212.5' y1='59.5' y2='76.5'/>
+      <line x1='59.5' x2='59.5' y1='76.5' y2='93.5'/>
+      <line x1='178.5' x2='178.5' y1='76.5' y2='93.5'/>
+      <line x1='25.5' x2='25.5' y1='93.5' y2='110.5'/>
+      <line x1='144.5' x2='144.5' y1='93.5' y2='110.5'/>
+    </g>
+    <g class='lilac' stroke-width='2' stroke-linecap='round'>
+      <line x1='265.2' x2='312.8' y1='0' y2='0'/>
+      <line x1='265.2' x2='312.8' y1='17' y2='34'/>
+      <line x1='265.2' x2='312.8' y1='34' y2='68'/>
+      <line x1='265.2' x2='312.8' y1='51' y2='102'/>
+      <line x1='265.2' x2='312.8' y1='68' y2='17'/>
+      <line x1='265.2' x2='312.8' y1='85' y2='51'/>
+      <line x1='265.2' x2='312.8' y1='102' y2='85'/>
+      <line x1='646' x2='646' y1='282.2' y2='329.8'/>
+      <line x1='663' x2='765' y1='282.2' y2='329.8'/>
+      <line x1='680' x2='884' y1='282.2' y2='329.8'/>
+      <line x1='697' x2='731' y1='282.2' y2='329.8'/>
+      <line x1='714' x2='850' y1='282.2' y2='329.8'/>
+      <line x1='731' x2='697' y1='282.2' y2='329.8'/>
+      <line x1='748' x2='816' y1='282.2' y2='329.8'/>
+      <line x1='765' x2='663' y1='282.2' y2='329.8'/>
+      <line x1='782' x2='782' y1='282.2' y2='329.8'/>
+      <line x1='799' x2='901' y1='282.2' y2='329.8'/>
+      <line x1='816' x2='748' y1='282.2' y2='329.8'/>
+      <line x1='833' x2='867' y1='282.2' y2='329.8'/>
+      <line x1='850' x2='714' y1='282.2' y2='329.8'/>
+      <line x1='867' x2='833' y1='282.2' y2='329.8'/>
+      <line x1='884' x2='680' y1='282.2' y2='329.8'/>
+      <line x1='901' x2='799' y1='282.2' y2='329.8'/>
+      <line x1='603.5' x2='603.5' y1='10.2' y2='23.8'/>
+      <line x1='608.6' x2='608.6' y1='10.2' y2='40.8'/>
+      <line x1='613.7' x2='613.7' y1='10.2' y2='57.8'/>
+      <line x1='618.8' x2='618.8' y1='10.2' y2='74.8'/>
+      <line x1='623.9' x2='623.9' y1='10.2' y2='91.8'/>
+      <line x1='890.8' x2='860.2' y1='144.5' y2='144.5'/>
+      <line x1='890.8' x2='809.2' y1='139.4' y2='139.4'/>
+      <line x1='890.8' x2='758.2' y1='134.3' y2='134.3'/>
+      <line x1='890.8' x2='707.2' y1='129.2' y2='129.2'/>
+      <line x1='890.8' x2='656.2' y1='124.1' y2='124.1'/>
+      <path d='M93.5 153l8.5 17v-51l8.5 17'/>
+    </g>
+    <g fill='currentColor'>
+      <text dy='0.32em' x='51' y='187'>A0</text>
+      <text dy='0.32em' x='68' y='187'>A1</text>
+      <text dy='0.32em' x='85' y='187'>A2</text>
+      <text dy='0.32em' x='102' y='187'>A3</text>
+      <text dy='0.32em' x='119' y='187'>A4</text>
+      <text dy='0.32em' x='136' y='187'>A5</text>
+      <text dy='0.32em' x='153' y='187'>A6</text>
+      <text dy='0.32em' x='51' y='204'>B0</text>
+      <text dy='0.32em' x='68' y='204'>B1</text>
+      <text dy='0.32em' x='85' y='204'>B2</text>
+      <text dy='0.32em' x='102' y='204'>B3</text>
+      <text dy='0.32em' x='119' y='204'>B4</text>
+      <text dy='0.32em' x='136' y='204'>B5</text>
+      <text dy='0.32em' x='153' y='204'>B6</text>
+      <text dy='0.32em' x='51' y='221'>C0</text>
+      <text dy='0.32em' x='68' y='221'>C1</text>
+      <text dy='0.32em' x='85' y='221'>C2</text>
+      <text dy='0.32em' x='102' y='221'>C3</text>
+      <text dy='0.32em' x='119' y='221'>C4</text>
+      <text dy='0.32em' x='136' y='221'>C5</text>
+      <text dy='0.32em' x='153' y='221'>C6</text>
+      <text dy='0.32em' x='51' y='238'>D0</text>
+      <text dy='0.32em' x='68' y='238'>D1</text>
+      <text dy='0.32em' x='85' y='238'>D2</text>
+      <text dy='0.32em' x='102' y='238'>D3</text>
+      <text dy='0.32em' x='119' y='238'>D4</text>
+      <text dy='0.32em' x='136' y='238'>D5</text>
+      <text dy='0.32em' x='153' y='238'>D6</text>
+      <text dy='0.32em' x='51' y='255'>E0</text>
+      <text dy='0.32em' x='68' y='255'>E1</text>
+      <text dy='0.32em' x='85' y='255'>E2</text>
+      <text dy='0.32em' x='102' y='255'>E3</text>
+      <text dy='0.32em' x='119' y='255'>E4</text>
+      <text dy='0.32em' x='136' y='255'>E5</text>
+      <text dy='0.32em' x='153' y='255'>E6</text>
+      <text dy='0.32em' x='51' y='272'>F0</text>
+      <text dy='0.32em' x='68' y='272'>F1</text>
+      <text dy='0.32em' x='85' y='272'>F2</text>
+      <text dy='0.32em' x='102' y='272'>F3</text>
+      <text dy='0.32em' x='119' y='272'>F4</text>
+      <text dy='0.32em' x='136' y='272'>F5</text>
+      <text dy='0.32em' x='153' y='272'>F6</text>
+      <text dy='0.32em' x='51' y='289'>G0</text>
+      <text dy='0.32em' x='68' y='289'>G1</text>
+      <text dy='0.32em' x='85' y='289'>G2</text>
+      <text dy='0.32em' x='102' y='289'>G3</text>
+      <text dy='0.32em' x='119' y='289'>G4</text>
+      <text dy='0.32em' x='136' y='289'>G5</text>
+      <text dy='0.32em' x='153' y='289'>G6</text>
+      <text dy='0.32em' x='51' y='306'>H0</text>
+      <text dy='0.32em' x='68' y='306'>H1</text>
+      <text dy='0.32em' x='85' y='306'>H2</text>
+      <text dy='0.32em' x='102' y='306'>H3</text>
+      <text dy='0.32em' x='119' y='306'>H4</text>
+      <text dy='0.32em' x='136' y='306'>H5</text>
+      <text dy='0.32em' x='153' y='306'>H6</text>
+      <text dy='0.32em' x='51' y='323'>I0</text>
+      <text dy='0.32em' x='68' y='323'>I1</text>
+      <text dy='0.32em' x='85' y='323'>I2</text>
+      <text dy='0.32em' x='102' y='323'>I3</text>
+      <text dy='0.32em' x='119' y='323'>I4</text>
+      <text dy='0.32em' x='136' y='323'>I5</text>
+      <text dy='0.32em' x='153' y='323'>I6</text>
+      <text dy='0.32em' x='51' y='340'>J0</text>
+      <text dy='0.32em' x='68' y='340'>J1</text>
+      <text dy='0.32em' x='85' y='340'>J2</text>
+      <text dy='0.32em' x='102' y='340'>J3</text>
+      <text dy='0.32em' x='119' y='340'>J4</text>
+      <text dy='0.32em' x='136' y='340'>J5</text>
+      <text dy='0.32em' x='153' y='340'>J6</text>
+      <text dy='0.32em' x='51' y='357'>K0</text>
+      <text dy='0.32em' x='68' y='357'>K1</text>
+      <text dy='0.32em' x='85' y='357'>K2</text>
+      <text dy='0.32em' x='102' y='357'>K3</text>
+      <text dy='0.32em' x='119' y='357'>K4</text>
+      <text dy='0.32em' x='136' y='357'>K5</text>
+      <text dy='0.32em' x='153' y='357'>K6</text>
+      <text dy='0.32em' x='51' y='374'>L0</text>
+      <text dy='0.32em' x='68' y='374'>L1</text>
+      <text dy='0.32em' x='85' y='374'>L2</text>
+      <text dy='0.32em' x='102' y='374'>L3</text>
+      <text dy='0.32em' x='119' y='374'>L4</text>
+      <text dy='0.32em' x='136' y='374'>L5</text>
+      <text dy='0.32em' x='153' y='374'>L6</text>
+      <text dy='0.32em' x='51' y='391'>M0</text>
+      <text dy='0.32em' x='68' y='391'>M1</text>
+      <text dy='0.32em' x='85' y='391'>M2</text>
+      <text dy='0.32em' x='102' y='391'>M3</text>
+      <text dy='0.32em' x='119' y='391'>M4</text>
+      <text dy='0.32em' x='136' y='391'>M5</text>
+      <text dy='0.32em' x='153' y='391'>M6</text>
+      <text dy='0.32em' x='51' y='408'>N0</text>
+      <text dy='0.32em' x='68' y='408'>N1</text>
+      <text dy='0.32em' x='85' y='408'>N2</text>
+      <text dy='0.32em' x='102' y='408'>N3</text>
+      <text dy='0.32em' x='119' y='408'>N4</text>
+      <text dy='0.32em' x='136' y='408'>N5</text>
+      <text dy='0.32em' x='153' y='408'>N6</text>
+      <text dy='0.32em' x='51' y='425'>O0</text>
+      <text dy='0.32em' x='68' y='425'>O1</text>
+      <text dy='0.32em' x='85' y='425'>O2</text>
+      <text dy='0.32em' x='102' y='425'>O3</text>
+      <text dy='0.32em' x='119' y='425'>O4</text>
+      <text dy='0.32em' x='136' y='425'>O5</text>
+      <text dy='0.32em' x='153' y='425'>O6</text>
+      <text dy='0.32em' x='51' y='442'>P0</text>
+      <text dy='0.32em' x='68' y='442'>P1</text>
+      <text dy='0.32em' x='85' y='442'>P2</text>
+      <text dy='0.32em' x='102' y='442'>P3</text>
+      <text dy='0.32em' x='119' y='442'>P4</text>
+      <text dy='0.32em' x='136' y='442'>P5</text>
+      <text dy='0.32em' x='153' y='442'>P6</text>
+      <text dy='0.32em' x='0' y='0'>A0</text>
+      <text dy='0.32em' x='17' y='0'>A1</text>
+      <text dy='0.32em' x='34' y='0'>A2</text>
+      <text dy='0.32em' x='51' y='0'>A3</text>
+      <text dy='0.32em' x='68' y='0'>A4</text>
+      <text dy='0.32em' x='85' y='0'>A5</text>
+      <text dy='0.32em' x='102' y='0'>A6</text>
+      <text dy='0.32em' x='119' y='0'>B0</text>
+      <text dy='0.32em' x='136' y='0'>B1</text>
+      <text dy='0.32em' x='153' y='0'>B2</text>
+      <text dy='0.32em' x='170' y='0'>B3</text>
+      <text dy='0.32em' x='187' y='0'>B4</text>
+      <text dy='0.32em' x='204' y='0'>B5</text>
+      <text dy='0.32em' x='221' y='0'>B6</text>
+      <text dy='0.32em' x='238' y='0'>C0</text>
+      <text dy='0.32em' x='255' y='0'>C1</text>
+      <text dy='0.32em' x='0' y='17'>C2</text>
+      <text dy='0.32em' x='17' y='17'>C3</text>
+      <text dy='0.32em' x='34' y='17'>C4</text>
+      <text dy='0.32em' x='51' y='17'>C5</text>
+      <text dy='0.32em' x='68' y='17'>C6</text>
+      <text dy='0.32em' x='85' y='17'>D0</text>
+      <text dy='0.32em' x='102' y='17'>D1</text>
+      <text dy='0.32em' x='119' y='17'>D2</text>
+      <text dy='0.32em' x='136' y='17'>D3</text>
+      <text dy='0.32em' x='153' y='17'>D4</text>
+      <text dy='0.32em' x='170' y='17'>D5</text>
+      <text dy='0.32em' x='187' y='17'>D6</text>
+      <text dy='0.32em' x='204' y='17'>E0</text>
+      <text dy='0.32em' x='221' y='17'>E1</text>
+      <text dy='0.32em' x='238' y='17'>E2</text>
+      <text dy='0.32em' x='255' y='17'>E3</text>
+      <text dy='0.32em' x='0' y='34'>E4</text>
+      <text dy='0.32em' x='17' y='34'>E5</text>
+      <text dy='0.32em' x='34' y='34'>E6</text>
+      <text dy='0.32em' x='51' y='34'>F0</text>
+      <text dy='0.32em' x='68' y='34'>F1</text>
+      <text dy='0.32em' x='85' y='34'>F2</text>
+      <text dy='0.32em' x='102' y='34'>F3</text>
+      <text dy='0.32em' x='119' y='34'>F4</text>
+      <text dy='0.32em' x='136' y='34'>F5</text>
+      <text dy='0.32em' x='153' y='34'>F6</text>
+      <text dy='0.32em' x='170' y='34'>G0</text>
+      <text dy='0.32em' x='187' y='34'>G1</text>
+      <text dy='0.32em' x='204' y='34'>G2</text>
+      <text dy='0.32em' x='221' y='34'>G3</text>
+      <text dy='0.32em' x='238' y='34'>G4</text>
+      <text dy='0.32em' x='255' y='34'>G5</text>
+      <text dy='0.32em' x='0' y='51'>G6</text>
+      <text dy='0.32em' x='17' y='51'>H0</text>
+      <text dy='0.32em' x='34' y='51'>H1</text>
+      <text dy='0.32em' x='51' y='51'>H2</text>
+      <text dy='0.32em' x='68' y='51'>H3</text>
+      <text dy='0.32em' x='85' y='51'>H4</text>
+      <text dy='0.32em' x='102' y='51'>H5</text>
+      <text dy='0.32em' x='119' y='51'>H6</text>
+      <text dy='0.32em' x='136' y='51'>I0</text>
+      <text dy='0.32em' x='153' y='51'>I1</text>
+      <text dy='0.32em' x='170' y='51'>I2</text>
+      <text dy='0.32em' x='187' y='51'>I3</text>
+      <text dy='0.32em' x='204' y='51'>I4</text>
+      <text dy='0.32em' x='221' y='51'>I5</text>
+      <text dy='0.32em' x='238' y='51'>I6</text>
+      <text dy='0.32em' x='255' y='51'>J0</text>
+      <text dy='0.32em' x='0' y='68'>J1</text>
+      <text dy='0.32em' x='17' y='68'>J2</text>
+      <text dy='0.32em' x='34' y='68'>J3</text>
+      <text dy='0.32em' x='51' y='68'>J4</text>
+      <text dy='0.32em' x='68' y='68'>J5</text>
+      <text dy='0.32em' x='85' y='68'>J6</text>
+      <text dy='0.32em' x='102' y='68'>K0</text>
+      <text dy='0.32em' x='119' y='68'>K1</text>
+      <text dy='0.32em' x='136' y='68'>K2</text>
+      <text dy='0.32em' x='153' y='68'>K3</text>
+      <text dy='0.32em' x='170' y='68'>K4</text>
+      <text dy='0.32em' x='187' y='68'>K5</text>
+      <text dy='0.32em' x='204' y='68'>K6</text>
+      <text dy='0.32em' x='221' y='68'>L0</text>
+      <text dy='0.32em' x='238' y='68'>L1</text>
+      <text dy='0.32em' x='255' y='68'>L2</text>
+      <text dy='0.32em' x='0' y='85'>L3</text>
+      <text dy='0.32em' x='17' y='85'>L4</text>
+      <text dy='0.32em' x='34' y='85'>L5</text>
+      <text dy='0.32em' x='51' y='85'>L6</text>
+      <text dy='0.32em' x='68' y='85'>M0</text>
+      <text dy='0.32em' x='85' y='85'>M1</text>
+      <text dy='0.32em' x='102' y='85'>M2</text>
+      <text dy='0.32em' x='119' y='85'>M3</text>
+      <text dy='0.32em' x='136' y='85'>M4</text>
+      <text dy='0.32em' x='153' y='85'>M5</text>
+      <text dy='0.32em' x='170' y='85'>M6</text>
+      <text dy='0.32em' x='187' y='85'>N0</text>
+      <text dy='0.32em' x='204' y='85'>N1</text>
+      <text dy='0.32em' x='221' y='85'>N2</text>
+      <text dy='0.32em' x='238' y='85'>N3</text>
+      <text dy='0.32em' x='255' y='85'>N4</text>
+      <text dy='0.32em' x='0' y='102'>N5</text>
+      <text dy='0.32em' x='17' y='102'>N6</text>
+      <text dy='0.32em' x='34' y='102'>O0</text>
+      <text dy='0.32em' x='51' y='102'>O1</text>
+      <text dy='0.32em' x='68' y='102'>O2</text>
+      <text dy='0.32em' x='85' y='102'>O3</text>
+      <text dy='0.32em' x='102' y='102'>O4</text>
+      <text dy='0.32em' x='119' y='102'>O5</text>
+      <text dy='0.32em' x='136' y='102'>O6</text>
+      <text dy='0.32em' x='153' y='102'>P0</text>
+      <text dy='0.32em' x='170' y='102'>P1</text>
+      <text dy='0.32em' x='187' y='102'>P2</text>
+      <text dy='0.32em' x='204' y='102'>P3</text>
+      <text dy='0.32em' x='221' y='102'>P4</text>
+      <text dy='0.32em' x='238' y='102'>P5</text>
+      <text dy='0.32em' x='255' y='102'>P6</text>
+      <text dy='0.32em' x='323' y='0'>A0</text>
+      <text dy='0.32em' x='340' y='0'>A1</text>
+      <text dy='0.32em' x='357' y='0'>A2</text>
+      <text dy='0.32em' x='374' y='0'>A3</text>
+      <text dy='0.32em' x='391' y='0'>A4</text>
+      <text dy='0.32em' x='408' y='0'>A5</text>
+      <text dy='0.32em' x='425' y='0'>A6</text>
+      <text dy='0.32em' x='442' y='0'>B0</text>
+      <text dy='0.32em' x='459' y='0'>B1</text>
+      <text dy='0.32em' x='476' y='0'>B2</text>
+      <text dy='0.32em' x='493' y='0'>B3</text>
+      <text dy='0.32em' x='510' y='0'>B4</text>
+      <text dy='0.32em' x='527' y='0'>B5</text>
+      <text dy='0.32em' x='544' y='0'>B6</text>
+      <text dy='0.32em' x='561' y='0'>C0</text>
+      <text dy='0.32em' x='578' y='0'>C1</text>
+      <text dy='0.32em' x='323' y='17'>J1</text>
+      <text dy='0.32em' x='340' y='17'>J2</text>
+      <text dy='0.32em' x='357' y='17'>J3</text>
+      <text dy='0.32em' x='374' y='17'>J4</text>
+      <text dy='0.32em' x='391' y='17'>J5</text>
+      <text dy='0.32em' x='408' y='17'>J6</text>
+      <text dy='0.32em' x='425' y='17'>K0</text>
+      <text dy='0.32em' x='442' y='17'>K1</text>
+      <text dy='0.32em' x='459' y='17'>K2</text>
+      <text dy='0.32em' x='476' y='17'>K3</text>
+      <text dy='0.32em' x='493' y='17'>K4</text>
+      <text dy='0.32em' x='510' y='17'>K5</text>
+      <text dy='0.32em' x='527' y='17'>K6</text>
+      <text dy='0.32em' x='544' y='17'>L0</text>
+      <text dy='0.32em' x='561' y='17'>L1</text>
+      <text dy='0.32em' x='578' y='17'>L2</text>
+      <text dy='0.32em' x='323' y='34'>C2</text>
+      <text dy='0.32em' x='340' y='34'>C3</text>
+      <text dy='0.32em' x='357' y='34'>C4</text>
+      <text dy='0.32em' x='374' y='34'>C5</text>
+      <text dy='0.32em' x='391' y='34'>C6</text>
+      <text dy='0.32em' x='408' y='34'>D0</text>
+      <text dy='0.32em' x='425' y='34'>D1</text>
+      <text dy='0.32em' x='442' y='34'>D2</text>
+      <text dy='0.32em' x='459' y='34'>D3</text>
+      <text dy='0.32em' x='476' y='34'>D4</text>
+      <text dy='0.32em' x='493' y='34'>D5</text>
+      <text dy='0.32em' x='510' y='34'>D6</text>
+      <text dy='0.32em' x='527' y='34'>E0</text>
+      <text dy='0.32em' x='544' y='34'>E1</text>
+      <text dy='0.32em' x='561' y='34'>E2</text>
+      <text dy='0.32em' x='578' y='34'>E3</text>
+      <text dy='0.32em' x='323' y='51'>L3</text>
+      <text dy='0.32em' x='340' y='51'>L4</text>
+      <text dy='0.32em' x='357' y='51'>L5</text>
+      <text dy='0.32em' x='374' y='51'>L6</text>
+      <text dy='0.32em' x='391' y='51'>M0</text>
+      <text dy='0.32em' x='408' y='51'>M1</text>
+      <text dy='0.32em' x='425' y='51'>M2</text>
+      <text dy='0.32em' x='442' y='51'>M3</text>
+      <text dy='0.32em' x='459' y='51'>M4</text>
+      <text dy='0.32em' x='476' y='51'>M5</text>
+      <text dy='0.32em' x='493' y='51'>M6</text>
+      <text dy='0.32em' x='510' y='51'>N0</text>
+      <text dy='0.32em' x='527' y='51'>N1</text>
+      <text dy='0.32em' x='544' y='51'>N2</text>
+      <text dy='0.32em' x='561' y='51'>N3</text>
+      <text dy='0.32em' x='578' y='51'>N4</text>
+      <text dy='0.32em' x='323' y='68'>E4</text>
+      <text dy='0.32em' x='340' y='68'>E5</text>
+      <text dy='0.32em' x='357' y='68'>E6</text>
+      <text dy='0.32em' x='374' y='68'>F0</text>
+      <text dy='0.32em' x='391' y='68'>F1</text>
+      <text dy='0.32em' x='408' y='68'>F2</text>
+      <text dy='0.32em' x='425' y='68'>F3</text>
+      <text dy='0.32em' x='442' y='68'>F4</text>
+      <text dy='0.32em' x='459' y='68'>F5</text>
+      <text dy='0.32em' x='476' y='68'>F6</text>
+      <text dy='0.32em' x='493' y='68'>G0</text>
+      <text dy='0.32em' x='510' y='68'>G1</text>
+      <text dy='0.32em' x='527' y='68'>G2</text>
+      <text dy='0.32em' x='544' y='68'>G3</text>
+      <text dy='0.32em' x='561' y='68'>G4</text>
+      <text dy='0.32em' x='578' y='68'>G5</text>
+      <text dy='0.32em' x='323' y='85'>N5</text>
+      <text dy='0.32em' x='340' y='85'>N6</text>
+      <text dy='0.32em' x='357' y='85'>O0</text>
+      <text dy='0.32em' x='374' y='85'>O1</text>
+      <text dy='0.32em' x='391' y='85'>O2</text>
+      <text dy='0.32em' x='408' y='85'>O3</text>
+      <text dy='0.32em' x='425' y='85'>O4</text>
+      <text dy='0.32em' x='442' y='85'>O5</text>
+      <text dy='0.32em' x='459' y='85'>O6</text>
+      <text dy='0.32em' x='476' y='85'>P0</text>
+      <text dy='0.32em' x='493' y='85'>P1</text>
+      <text dy='0.32em' x='510' y='85'>P2</text>
+      <text dy='0.32em' x='527' y='85'>P3</text>
+      <text dy='0.32em' x='544' y='85'>P4</text>
+      <text dy='0.32em' x='561' y='85'>P5</text>
+      <text dy='0.32em' x='578' y='85'>P6</text>
+      <text dy='0.32em' x='323' y='102'>G6</text>
+      <text dy='0.32em' x='340' y='102'>H0</text>
+      <text dy='0.32em' x='357' y='102'>H1</text>
+      <text dy='0.32em' x='374' y='102'>H2</text>
+      <text dy='0.32em' x='391' y='102'>H3</text>
+      <text dy='0.32em' x='408' y='102'>H4</text>
+      <text dy='0.32em' x='425' y='102'>H5</text>
+      <text dy='0.32em' x='442' y='102'>H6</text>
+      <text dy='0.32em' x='459' y='102'>I0</text>
+      <text dy='0.32em' x='476' y='102'>I1</text>
+      <text dy='0.32em' x='493' y='102'>I2</text>
+      <text dy='0.32em' x='510' y='102'>I3</text>
+      <text dy='0.32em' x='527' y='102'>I4</text>
+      <text dy='0.32em' x='544' y='102'>I5</text>
+      <text dy='0.32em' x='561' y='102'>I6</text>
+      <text dy='0.32em' x='578' y='102'>J0</text>
+      <text dy='0.32em' x='646' y='0'>A0</text>
+      <text dy='0.32em' x='663' y='0'>H0</text>
+      <text dy='0.32em' x='680' y='0'>O0</text>
+      <text dy='0.32em' x='697' y='0'>F0</text>
+      <text dy='0.32em' x='714' y='0'>M0</text>
+      <text dy='0.32em' x='731' y='0'>D0</text>
+      <text dy='0.32em' x='748' y='0'>K0</text>
+      <text dy='0.32em' x='765' y='0'>B0</text>
+      <text dy='0.32em' x='782' y='0'>I0</text>
+      <text dy='0.32em' x='799' y='0'>P0</text>
+      <text dy='0.32em' x='816' y='0'>G0</text>
+      <text dy='0.32em' x='833' y='0'>N0</text>
+      <text dy='0.32em' x='850' y='0'>E0</text>
+      <text dy='0.32em' x='867' y='0'>L0</text>
+      <text dy='0.32em' x='884' y='0'>C0</text>
+      <text dy='0.32em' x='901' y='0'>J0</text>
+      <text dy='0.32em' x='646' y='17'>J1</text>
+      <text dy='0.32em' x='663' y='17'>A1</text>
+      <text dy='0.32em' x='680' y='17'>H1</text>
+      <text dy='0.32em' x='697' y='17'>O1</text>
+      <text dy='0.32em' x='714' y='17'>F1</text>
+      <text dy='0.32em' x='731' y='17'>M1</text>
+      <text dy='0.32em' x='748' y='17'>D1</text>
+      <text dy='0.32em' x='765' y='17'>K1</text>
+      <text dy='0.32em' x='782' y='17'>B1</text>
+      <text dy='0.32em' x='799' y='17'>I1</text>
+      <text dy='0.32em' x='816' y='17'>P1</text>
+      <text dy='0.32em' x='833' y='17'>G1</text>
+      <text dy='0.32em' x='850' y='17'>N1</text>
+      <text dy='0.32em' x='867' y='17'>E1</text>
+      <text dy='0.32em' x='884' y='17'>L1</text>
+      <text dy='0.32em' x='901' y='17'>C1</text>
+      <text dy='0.32em' x='646' y='34'>C2</text>
+      <text dy='0.32em' x='663' y='34'>J2</text>
+      <text dy='0.32em' x='680' y='34'>A2</text>
+      <text dy='0.32em' x='697' y='34'>H2</text>
+      <text dy='0.32em' x='714' y='34'>O2</text>
+      <text dy='0.32em' x='731' y='34'>F2</text>
+      <text dy='0.32em' x='748' y='34'>M2</text>
+      <text dy='0.32em' x='765' y='34'>D2</text>
+      <text dy='0.32em' x='782' y='34'>K2</text>
+      <text dy='0.32em' x='799' y='34'>B2</text>
+      <text dy='0.32em' x='816' y='34'>I2</text>
+      <text dy='0.32em' x='833' y='34'>P2</text>
+      <text dy='0.32em' x='850' y='34'>G2</text>
+      <text dy='0.32em' x='867' y='34'>N2</text>
+      <text dy='0.32em' x='884' y='34'>E2</text>
+      <text dy='0.32em' x='901' y='34'>L2</text>
+      <text dy='0.32em' x='646' y='51'>L3</text>
+      <text dy='0.32em' x='663' y='51'>C3</text>
+      <text dy='0.32em' x='680' y='51'>J3</text>
+      <text dy='0.32em' x='697' y='51'>A3</text>
+      <text dy='0.32em' x='714' y='51'>H3</text>
+      <text dy='0.32em' x='731' y='51'>O3</text>
+      <text dy='0.32em' x='748' y='51'>F3</text>
+      <text dy='0.32em' x='765' y='51'>M3</text>
+      <text dy='0.32em' x='782' y='51'>D3</text>
+      <text dy='0.32em' x='799' y='51'>K3</text>
+      <text dy='0.32em' x='816' y='51'>B3</text>
+      <text dy='0.32em' x='833' y='51'>I3</text>
+      <text dy='0.32em' x='850' y='51'>P3</text>
+      <text dy='0.32em' x='867' y='51'>G3</text>
+      <text dy='0.32em' x='884' y='51'>N3</text>
+      <text dy='0.32em' x='901' y='51'>E3</text>
+      <text dy='0.32em' x='646' y='68'>E4</text>
+      <text dy='0.32em' x='663' y='68'>L4</text>
+      <text dy='0.32em' x='680' y='68'>C4</text>
+      <text dy='0.32em' x='697' y='68'>J4</text>
+      <text dy='0.32em' x='714' y='68'>A4</text>
+      <text dy='0.32em' x='731' y='68'>H4</text>
+      <text dy='0.32em' x='748' y='68'>O4</text>
+      <text dy='0.32em' x='765' y='68'>F4</text>
+      <text dy='0.32em' x='782' y='68'>M4</text>
+      <text dy='0.32em' x='799' y='68'>D4</text>
+      <text dy='0.32em' x='816' y='68'>K4</text>
+      <text dy='0.32em' x='833' y='68'>B4</text>
+      <text dy='0.32em' x='850' y='68'>I4</text>
+      <text dy='0.32em' x='867' y='68'>P4</text>
+      <text dy='0.32em' x='884' y='68'>G4</text>
+      <text dy='0.32em' x='901' y='68'>N4</text>
+      <text dy='0.32em' x='646' y='85'>N5</text>
+      <text dy='0.32em' x='663' y='85'>E5</text>
+      <text dy='0.32em' x='680' y='85'>L5</text>
+      <text dy='0.32em' x='697' y='85'>C5</text>
+      <text dy='0.32em' x='714' y='85'>J5</text>
+      <text dy='0.32em' x='731' y='85'>A5</text>
+      <text dy='0.32em' x='748' y='85'>H5</text>
+      <text dy='0.32em' x='765' y='85'>O5</text>
+      <text dy='0.32em' x='782' y='85'>F5</text>
+      <text dy='0.32em' x='799' y='85'>M5</text>
+      <text dy='0.32em' x='816' y='85'>D5</text>
+      <text dy='0.32em' x='833' y='85'>K5</text>
+      <text dy='0.32em' x='850' y='85'>B5</text>
+      <text dy='0.32em' x='867' y='85'>I5</text>
+      <text dy='0.32em' x='884' y='85'>P5</text>
+      <text dy='0.32em' x='901' y='85'>G5</text>
+      <text dy='0.32em' x='646' y='102'>G6</text>
+      <text dy='0.32em' x='663' y='102'>N6</text>
+      <text dy='0.32em' x='680' y='102'>E6</text>
+      <text dy='0.32em' x='697' y='102'>L6</text>
+      <text dy='0.32em' x='714' y='102'>C6</text>
+      <text dy='0.32em' x='731' y='102'>J6</text>
+      <text dy='0.32em' x='748' y='102'>A6</text>
+      <text dy='0.32em' x='765' y='102'>H6</text>
+      <text dy='0.32em' x='782' y='102'>O6</text>
+      <text dy='0.32em' x='799' y='102'>F6</text>
+      <text dy='0.32em' x='816' y='102'>M6</text>
+      <text dy='0.32em' x='833' y='102'>D6</text>
+      <text dy='0.32em' x='850' y='102'>K6</text>
+      <text dy='0.32em' x='867' y='102'>B6</text>
+      <text dy='0.32em' x='884' y='102'>I6</text>
+      <text dy='0.32em' x='901' y='102'>P6</text>
+      <text dy='0.32em' x='646' y='170'>A0</text>
+      <text dy='0.32em' x='663' y='170'>H0</text>
+      <text dy='0.32em' x='680' y='170'>O0</text>
+      <text dy='0.32em' x='697' y='170'>F0</text>
+      <text dy='0.32em' x='714' y='170'>M0</text>
+      <text dy='0.32em' x='731' y='170'>D0</text>
+      <text dy='0.32em' x='748' y='170'>K0</text>
+      <text dy='0.32em' x='765' y='170'>B0</text>
+      <text dy='0.32em' x='782' y='170'>I0</text>
+      <text dy='0.32em' x='799' y='170'>P0</text>
+      <text dy='0.32em' x='816' y='170'>G0</text>
+      <text dy='0.32em' x='833' y='170'>N0</text>
+      <text dy='0.32em' x='850' y='170'>E0</text>
+      <text dy='0.32em' x='867' y='170'>L0</text>
+      <text dy='0.32em' x='884' y='170'>C0</text>
+      <text dy='0.32em' x='901' y='170'>J0</text>
+      <text dy='0.32em' x='646' y='187'>A1</text>
+      <text dy='0.32em' x='663' y='187'>H1</text>
+      <text dy='0.32em' x='680' y='187'>O1</text>
+      <text dy='0.32em' x='697' y='187'>F1</text>
+      <text dy='0.32em' x='714' y='187'>M1</text>
+      <text dy='0.32em' x='731' y='187'>D1</text>
+      <text dy='0.32em' x='748' y='187'>K1</text>
+      <text dy='0.32em' x='765' y='187'>B1</text>
+      <text dy='0.32em' x='782' y='187'>I1</text>
+      <text dy='0.32em' x='799' y='187'>P1</text>
+      <text dy='0.32em' x='816' y='187'>G1</text>
+      <text dy='0.32em' x='833' y='187'>N1</text>
+      <text dy='0.32em' x='850' y='187'>E1</text>
+      <text dy='0.32em' x='867' y='187'>L1</text>
+      <text dy='0.32em' x='884' y='187'>C1</text>
+      <text dy='0.32em' x='901' y='187'>J1</text>
+      <text dy='0.32em' x='646' y='204'>A2</text>
+      <text dy='0.32em' x='663' y='204'>H2</text>
+      <text dy='0.32em' x='680' y='204'>O2</text>
+      <text dy='0.32em' x='697' y='204'>F2</text>
+      <text dy='0.32em' x='714' y='204'>M2</text>
+      <text dy='0.32em' x='731' y='204'>D2</text>
+      <text dy='0.32em' x='748' y='204'>K2</text>
+      <text dy='0.32em' x='765' y='204'>B2</text>
+      <text dy='0.32em' x='782' y='204'>I2</text>
+      <text dy='0.32em' x='799' y='204'>P2</text>
+      <text dy='0.32em' x='816' y='204'>G2</text>
+      <text dy='0.32em' x='833' y='204'>N2</text>
+      <text dy='0.32em' x='850' y='204'>E2</text>
+      <text dy='0.32em' x='867' y='204'>L2</text>
+      <text dy='0.32em' x='884' y='204'>C2</text>
+      <text dy='0.32em' x='901' y='204'>J2</text>
+      <text dy='0.32em' x='646' y='221'>A3</text>
+      <text dy='0.32em' x='663' y='221'>H3</text>
+      <text dy='0.32em' x='680' y='221'>O3</text>
+      <text dy='0.32em' x='697' y='221'>F3</text>
+      <text dy='0.32em' x='714' y='221'>M3</text>
+      <text dy='0.32em' x='731' y='221'>D3</text>
+      <text dy='0.32em' x='748' y='221'>K3</text>
+      <text dy='0.32em' x='765' y='221'>B3</text>
+      <text dy='0.32em' x='782' y='221'>I3</text>
+      <text dy='0.32em' x='799' y='221'>P3</text>
+      <text dy='0.32em' x='816' y='221'>G3</text>
+      <text dy='0.32em' x='833' y='221'>N3</text>
+      <text dy='0.32em' x='850' y='221'>E3</text>
+      <text dy='0.32em' x='867' y='221'>L3</text>
+      <text dy='0.32em' x='884' y='221'>C3</text>
+      <text dy='0.32em' x='901' y='221'>J3</text>
+      <text dy='0.32em' x='646' y='238'>A4</text>
+      <text dy='0.32em' x='663' y='238'>H4</text>
+      <text dy='0.32em' x='680' y='238'>O4</text>
+      <text dy='0.32em' x='697' y='238'>F4</text>
+      <text dy='0.32em' x='714' y='238'>M4</text>
+      <text dy='0.32em' x='731' y='238'>D4</text>
+      <text dy='0.32em' x='748' y='238'>K4</text>
+      <text dy='0.32em' x='765' y='238'>B4</text>
+      <text dy='0.32em' x='782' y='238'>I4</text>
+      <text dy='0.32em' x='799' y='238'>P4</text>
+      <text dy='0.32em' x='816' y='238'>G4</text>
+      <text dy='0.32em' x='833' y='238'>N4</text>
+      <text dy='0.32em' x='850' y='238'>E4</text>
+      <text dy='0.32em' x='867' y='238'>L4</text>
+      <text dy='0.32em' x='884' y='238'>C4</text>
+      <text dy='0.32em' x='901' y='238'>J4</text>
+      <text dy='0.32em' x='646' y='255'>A5</text>
+      <text dy='0.32em' x='663' y='255'>H5</text>
+      <text dy='0.32em' x='680' y='255'>O5</text>
+      <text dy='0.32em' x='697' y='255'>F5</text>
+      <text dy='0.32em' x='714' y='255'>M5</text>
+      <text dy='0.32em' x='731' y='255'>D5</text>
+      <text dy='0.32em' x='748' y='255'>K5</text>
+      <text dy='0.32em' x='765' y='255'>B5</text>
+      <text dy='0.32em' x='782' y='255'>I5</text>
+      <text dy='0.32em' x='799' y='255'>P5</text>
+      <text dy='0.32em' x='816' y='255'>G5</text>
+      <text dy='0.32em' x='833' y='255'>N5</text>
+      <text dy='0.32em' x='850' y='255'>E5</text>
+      <text dy='0.32em' x='867' y='255'>L5</text>
+      <text dy='0.32em' x='884' y='255'>C5</text>
+      <text dy='0.32em' x='901' y='255'>J5</text>
+      <text dy='0.32em' x='646' y='272'>A6</text>
+      <text dy='0.32em' x='663' y='272'>H6</text>
+      <text dy='0.32em' x='680' y='272'>O6</text>
+      <text dy='0.32em' x='697' y='272'>F6</text>
+      <text dy='0.32em' x='714' y='272'>M6</text>
+      <text dy='0.32em' x='731' y='272'>D6</text>
+      <text dy='0.32em' x='748' y='272'>K6</text>
+      <text dy='0.32em' x='765' y='272'>B6</text>
+      <text dy='0.32em' x='782' y='272'>I6</text>
+      <text dy='0.32em' x='799' y='272'>P6</text>
+      <text dy='0.32em' x='816' y='272'>G6</text>
+      <text dy='0.32em' x='833' y='272'>N6</text>
+      <text dy='0.32em' x='850' y='272'>E6</text>
+      <text dy='0.32em' x='867' y='272'>L6</text>
+      <text dy='0.32em' x='884' y='272'>C6</text>
+      <text dy='0.32em' x='901' y='272'>J6</text>
+      <text dy='0.32em' x='646' y='340'>A0</text>
+      <text dy='0.32em' x='663' y='340'>B0</text>
+      <text dy='0.32em' x='680' y='340'>C0</text>
+      <text dy='0.32em' x='697' y='340'>D0</text>
+      <text dy='0.32em' x='714' y='340'>E0</text>
+      <text dy='0.32em' x='731' y='340'>F0</text>
+      <text dy='0.32em' x='748' y='340'>G0</text>
+      <text dy='0.32em' x='765' y='340'>H0</text>
+      <text dy='0.32em' x='782' y='340'>I0</text>
+      <text dy='0.32em' x='799' y='340'>J0</text>
+      <text dy='0.32em' x='816' y='340'>K0</text>
+      <text dy='0.32em' x='833' y='340'>L0</text>
+      <text dy='0.32em' x='850' y='340'>M0</text>
+      <text dy='0.32em' x='867' y='340'>N0</text>
+      <text dy='0.32em' x='884' y='340'>O0</text>
+      <text dy='0.32em' x='901' y='340'>P0</text>
+      <text dy='0.32em' x='646' y='357'>A1</text>
+      <text dy='0.32em' x='663' y='357'>B1</text>
+      <text dy='0.32em' x='680' y='357'>C1</text>
+      <text dy='0.32em' x='697' y='357'>D1</text>
+      <text dy='0.32em' x='714' y='357'>E1</text>
+      <text dy='0.32em' x='731' y='357'>F1</text>
+      <text dy='0.32em' x='748' y='357'>G1</text>
+      <text dy='0.32em' x='765' y='357'>H1</text>
+      <text dy='0.32em' x='782' y='357'>I1</text>
+      <text dy='0.32em' x='799' y='357'>J1</text>
+      <text dy='0.32em' x='816' y='357'>K1</text>
+      <text dy='0.32em' x='833' y='357'>L1</text>
+      <text dy='0.32em' x='850' y='357'>M1</text>
+      <text dy='0.32em' x='867' y='357'>N1</text>
+      <text dy='0.32em' x='884' y='357'>O1</text>
+      <text dy='0.32em' x='901' y='357'>P1</text>
+      <text dy='0.32em' x='646' y='374'>A2</text>
+      <text dy='0.32em' x='663' y='374'>B2</text>
+      <text dy='0.32em' x='680' y='374'>C2</text>
+      <text dy='0.32em' x='697' y='374'>D2</text>
+      <text dy='0.32em' x='714' y='374'>E2</text>
+      <text dy='0.32em' x='731' y='374'>F2</text>
+      <text dy='0.32em' x='748' y='374'>G2</text>
+      <text dy='0.32em' x='765' y='374'>H2</text>
+      <text dy='0.32em' x='782' y='374'>I2</text>
+      <text dy='0.32em' x='799' y='374'>J2</text>
+      <text dy='0.32em' x='816' y='374'>K2</text>
+      <text dy='0.32em' x='833' y='374'>L2</text>
+      <text dy='0.32em' x='850' y='374'>M2</text>
+      <text dy='0.32em' x='867' y='374'>N2</text>
+      <text dy='0.32em' x='884' y='374'>O2</text>
+      <text dy='0.32em' x='901' y='374'>P2</text>
+      <text dy='0.32em' x='646' y='391'>A3</text>
+      <text dy='0.32em' x='663' y='391'>B3</text>
+      <text dy='0.32em' x='680' y='391'>C3</text>
+      <text dy='0.32em' x='697' y='391'>D3</text>
+      <text dy='0.32em' x='714' y='391'>E3</text>
+      <text dy='0.32em' x='731' y='391'>F3</text>
+      <text dy='0.32em' x='748' y='391'>G3</text>
+      <text dy='0.32em' x='765' y='391'>H3</text>
+      <text dy='0.32em' x='782' y='391'>I3</text>
+      <text dy='0.32em' x='799' y='391'>J3</text>
+      <text dy='0.32em' x='816' y='391'>K3</text>
+      <text dy='0.32em' x='833' y='391'>L3</text>
+      <text dy='0.32em' x='850' y='391'>M3</text>
+      <text dy='0.32em' x='867' y='391'>N3</text>
+      <text dy='0.32em' x='884' y='391'>O3</text>
+      <text dy='0.32em' x='901' y='391'>P3</text>
+      <text dy='0.32em' x='646' y='408'>A4</text>
+      <text dy='0.32em' x='663' y='408'>B4</text>
+      <text dy='0.32em' x='680' y='408'>C4</text>
+      <text dy='0.32em' x='697' y='408'>D4</text>
+      <text dy='0.32em' x='714' y='408'>E4</text>
+      <text dy='0.32em' x='731' y='408'>F4</text>
+      <text dy='0.32em' x='748' y='408'>G4</text>
+      <text dy='0.32em' x='765' y='408'>H4</text>
+      <text dy='0.32em' x='782' y='408'>I4</text>
+      <text dy='0.32em' x='799' y='408'>J4</text>
+      <text dy='0.32em' x='816' y='408'>K4</text>
+      <text dy='0.32em' x='833' y='408'>L4</text>
+      <text dy='0.32em' x='850' y='408'>M4</text>
+      <text dy='0.32em' x='867' y='408'>N4</text>
+      <text dy='0.32em' x='884' y='408'>O4</text>
+      <text dy='0.32em' x='901' y='408'>P4</text>
+      <text dy='0.32em' x='646' y='425'>A5</text>
+      <text dy='0.32em' x='663' y='425'>B5</text>
+      <text dy='0.32em' x='680' y='425'>C5</text>
+      <text dy='0.32em' x='697' y='425'>D5</text>
+      <text dy='0.32em' x='714' y='425'>E5</text>
+      <text dy='0.32em' x='731' y='425'>F5</text>
+      <text dy='0.32em' x='748' y='425'>G5</text>
+      <text dy='0.32em' x='765' y='425'>H5</text>
+      <text dy='0.32em' x='782' y='425'>I5</text>
+      <text dy='0.32em' x='799' y='425'>J5</text>
+      <text dy='0.32em' x='816' y='425'>K5</text>
+      <text dy='0.32em' x='833' y='425'>L5</text>
+      <text dy='0.32em' x='850' y='425'>M5</text>
+      <text dy='0.32em' x='867' y='425'>N5</text>
+      <text dy='0.32em' x='884' y='425'>O5</text>
+      <text dy='0.32em' x='901' y='425'>P5</text>
+      <text dy='0.32em' x='646' y='442'>A6</text>
+      <text dy='0.32em' x='663' y='442'>B6</text>
+      <text dy='0.32em' x='680' y='442'>C6</text>
+      <text dy='0.32em' x='697' y='442'>D6</text>
+      <text dy='0.32em' x='714' y='442'>E6</text>
+      <text dy='0.32em' x='731' y='442'>F6</text>
+      <text dy='0.32em' x='748' y='442'>G6</text>
+      <text dy='0.32em' x='765' y='442'>H6</text>
+      <text dy='0.32em' x='782' y='442'>I6</text>
+      <text dy='0.32em' x='799' y='442'>J6</text>
+      <text dy='0.32em' x='816' y='442'>K6</text>
+      <text dy='0.32em' x='833' y='442'>L6</text>
+      <text dy='0.32em' x='850' y='442'>M6</text>
+      <text dy='0.32em' x='867' y='442'>N6</text>
+      <text dy='0.32em' x='884' y='442'>O6</text>
+      <text dy='0.32em' x='901' y='442'>P6</text>
+    </g>
+    <g stroke='currentColor' fill='none' opacity='0.4' stroke-width='12' stroke-linecap='round'>
+      <line x1='323' x2='459' y1='204' y2='340'/>
+      <circle cx='391' cy='272' r='61.2'/>
+      <path d='M248.2 438.6l-61.2 -30.6l61.2 -30.6m-61.2 30.6L612 408m-61.2 -30.6l61.2 30.6l-61.2 30.6'/>
+    </g>
+  </g>
+</svg>
+
+<p>For an odd width <code><span class='Value'>w</span></code>, the modular permutation works by moving through a representation where elements are stored along a wrapping diagonal: element <code><span class='Value'>i</span></code> gets position (vector index, index within vector) <code><span class='Value'>w</span><span class='Ligature'>‿</span><span class='Value'>v</span><span class='Function'>|</span><span class='Value'>i</span></code> where <code><span class='Value'>w</span></code> is the number of vectors and <code><span class='Value'>v</span></code> is the length of each. All <code><span class='Value'>w</span><span class='Function'>×</span><span class='Value'>v</span></code> positions are unique by the Chinese remainder theorem. The steps are symmetric around this representation, with a permutation and a shearing step on each side. Here are the steps when starting with a short width:</p>
+<ul>
+<li>Load contiguous rows into packed vectors</li>
+<li>Permute each column by virtually reordering the registers (free)</li>
+<li>Rotate each column by its index modulo <code><span class='Value'>w</span></code></li>
+<li>Rotate each row by its index</li>
+<li>Permute each row with a shuffle (can be combined with previous)</li>
+<li>Store each vector as part of a result row</li>
+</ul>
+<p>The shearing step is where most of the work happens because it's the only step that transfers elements between registers. It can be performed with <code><span class='Function'>⌈</span><span class='Number'>2</span><span class='Function'>⋆</span><span class='Modifier'>⁼</span><span class='Value'>w</span></code> steps, each one handling a fixed power of two smaller than <code><span class='Value'>w</span></code>. The step for <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code> rotates each column whose index has that bit set, by blending a given register with another whose index differs by <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code>.</p>
 <h3 id="cache-efficient-orderings"><a class="header" href="#cache-efficient-orderings">Cache-efficient orderings</a></h3>
 <p>There's some amount of literature on addressing cache issues in transpose. The theory is that by writing in index order, for instance, writes are perfectly cached but reads are very poorly cached. However, in CBQN testing with SIMD kernels, the orderings discussed here were not useful: it was best to simply loop in source order. I think the main reason for this is that an AVX2 register is an entire half the size of a cache line, so revisiting the same line is not that useful, and it confuses whatever predictor is trying to make sure the right lines are available.</p>
 <p>The basic cache-friendliness tool is blocking: for example, split the array into blocks of a few kilobytes, transposing each before moving to the next. Multi-layer caches could in theory (but not in practice, it seems) demand multiple layers of blocking, but a cache-oblivious layout—named for its ability to perform well regardless of what layers of cache exist—skips over this mess and adds layers fractally at all scales. Here's <a href="https://en.algorithmica.org/hpc/external-memory/oblivious/#matrix-transposition">one presentation</a> of this idea. A simpler recursive implementation is to just halve the longer side of the matrix at each step. At the other complexity extreme, Hilbert curves offer better locality and can be traced without recursion. A recent <a href="https://dl.acm.org/doi/10.1145/3555353">paper</a> with <a href="https://github.com/JoaoAlves95/HPC-Cache-Oblivious-Transposition">source code</a> offers a SIMD scheme to generate the curve that even the authors say is pointless for transpose because the overhead was low enough already. But it also explains the non-SIMD aspects well, if you have the time.</p>
