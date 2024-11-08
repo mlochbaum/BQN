@@ -34,7 +34,7 @@ rc ← At "class=code|stroke-width=1.5|rx=12"
 Ge ← "g"⊸At⊸Enc
 g  ← "font-family=BQN,monospace|font-size=11px|text-anchor=middle"
 pg ← "class=lilac|stroke-width=2|stroke-linecap=round"
-hg ← "stroke=currentColor|fill=none|opacity=0.4|stroke-width=12|stroke-linecap=round"
+hg ← "stroke=currentColor|fill=none|opacity=0.4|stroke-linecap=round"
 tg ← "fill=currentColor"
 bg ← "class=yellow"
 
@@ -43,13 +43,14 @@ Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ ·FmtNum d⊸×
 Rp ← Pos⊸∾⟜("width"‿"height"≍˘FmtNum)○(d⊸×)
 Path ← "path" Elt "d"⋈(∾∾¨⟜(FmtNum d×⊢))
 CmpL ← <(⊣˝˘⊣´)≍˘(⊢˝˘⊢´)
-Tr_icon ← {⟨
+Tr_icon ← {"stroke-width=14" Ge ⟨
   Line 𝕩+⌜0⋈2×𝕨
-  "circle" Elt "cx"‿"cy"‿"r" ≍˘FmtNum d×(𝕩+𝕨)∾0.9×𝕨
+  "circle" Elt "cx"‿"cy"‿"r" ≍˘ FmtNum d×(𝕩+𝕨)∾0.9×𝕨
 ⟩}
 Arrow ← {
   a ← 3.6‿1.8
-  "M l l m L m l l " Path {(𝕨⊸+∾-∾(-⊸∾-⌾⊑)∾𝕩∾-∾⊢∾-⌾⊑)a}˝ ⍉(⋈⟜-1.5)⊸+⌾⊏𝕩
+  p ← {(𝕨⊸+∾-∾(-⊸∾-⌾⊑)∾𝕩∾-∾⊢∾-⌾⊑)a}˝ ⍉(⋈⟜-1.5)⊸+⌾⊏𝕩
+  "stroke-width=10" Ge "M l l m L m l l " Path p
 }
 
 MP ← {𝕨|𝕩×↕𝕨}
@@ -60,8 +61,8 @@ dat ← ⋈⌜´ "A0"+↕¨⌽sh
 steps ← >⟨
   rs_dat ← ⥊⟜(↕×´) sh
   pc_dat ← (⍋MP´sh) ⊏ rs_dat
-  rc_dat ← (k|-↕l) ⌽˘⌾⍉ pc_dat
-  rr_dat ← (↕k) ⌽˘ rc_dat
+  rc_dat ← (-↕l) ⌽˘⌾⍉ pc_dat
+  rr_dat ← ( ↕k) ⌽˘ rc_dat
   pr_dat ← (MP˜´sh)⊸⊏˘ rr_dat
 ⟩
 dsh ← 3 + sh ⋄ px0 ← ⟨k+4,3⟩
@@ -85,23 +86,37 @@ dim ← (4+2×shf)-˜3×⌽dsh
       ([⟨l-0.4,¯0.6⟩,0‿0]+≍˘´)¨ steps ⊐⊸⊔○{⥊⊣˝⎉1  2↑𝕩} spos
       ([0‿0,⟨k-0.4,¯0.6⟩]+≍˘´)¨ steps ⊐⊸⊔○{⥊⊣˝⎉2 ¯2↑𝕩} spos
       (<⊣´⥊2⊏spos) +⟜{ [⋈˜¯2.5+0.3×𝕩, 0.6⋈1.4+  𝕩]}¨ ↕5
-      (<⊢´⥊2⊏spos) -⟜{⌽[⋈˜¯2.5+0.3×𝕩, 0.6⋈2.4+3×𝕩]}¨ ↕5
+      (<⊢´⥊2⊏spos) -⟜{⌽[⋈˜¯1.3-0.3×𝕩, 0.6⋈2.4+3×𝕩]}¨ ↕5
     ⟩
-    "M l vl " Path (⟨2÷˜k-1,¯1⟩+⊑sposx)(-∾⊢∾¯3∾⊢)0.5‿1
+    "M l vl " Path (⟨2÷˜k-1,¯1⟩+⊑sposx)(-∾⊢∾¯3∾⊢)0.6‿0.9
   ⟩
   tg Ge sposx Text¨ stepx⊏⥊dat
   hg Ge (4 Tr_icon ⌽dsh+2‿0)∾<Arrow ⟨¯0.5,2÷˜k+1⟩+(0‿k-˜sh+⌽px0)≍˘⊑⊢˝spos
 ⟩
 -->
 
-For an odd width `w`, the modular permutation works by moving through a representation where elements are stored along a wrapping diagonal: element `i` gets position (vector index, index within vector) `w‿v|i` where `w` is the number of vectors and `v` is the length of each. All `w×v` positions are unique by the Chinese remainder theorem. The steps are symmetric around this representation, with a permutation and a shearing step on each side. Here are the steps when starting with a short width:
+For an odd width `w`, elements are stored in `w` vectors of length `v`. The modular permutation kernel works by moving through an ordering with elements are stored along a wrapping diagonal: element `i` gets position `w‿v|i` (vector index, index within vector). All `w×v` positions are unique by the Chinese remainder theorem. Essentially, we move the single-step direction from horizontal (second axis) to diagonal (both axes) to vertical (first axis). So the steps are symmetric around this ordering, with a permutation and a shearing step on each side. Here's what to do when starting with a short width:
 - Load contiguous rows into packed vectors
 - Permute each column by virtually reordering the registers (free)
-- Rotate each column by its index modulo `w`
-- Rotate each row by its index
+- Rotate each column forward by its index
+- Rotate each row backwards by its index
 - Permute each row with a shuffle (can be combined with previous)
 - Store each vector as part of a result row
-The shearing step is where most of the work happens because it's the only step that transfers elements between registers. It can be performed with `⌈2⋆⁼w` steps, each one handling a fixed power of two smaller than `w`. The step for `2⋆i` rotates each column whose index has that bit set, by blending a given register with another whose index differs by `2⋆i`.
+The shearing step that rotates columns is where most of the work happens because it's the only step that transfers elements between registers. It can be performed with `⌈2⋆⁼w` steps, each one handling a fixed power of two smaller than `w`. The step for `2⋆i` rotates each column whose index has that bit set, by blending a given register with another whose index differs by `2⋆i`.
+
+To explain why this works, and nail down the exact permutation operations used, we'll initially number the elements in index order. So the index of element `i` in the initial kernel is `⟨⌊i÷w, w|i⟩`, it should end up at `⟨w|i, ⌊i÷w⟩` (note that computing an element's position from its value is the opposite of the normal array selection). The initial reshaping into vector registers puts element `i` at `⟨⌊i÷v, v|i⟩`. Our register permutation will move row `j` to `w|v×j`, thus sending element `i` from row `⌊i÷v` to `w|v×⌊i÷v`, but by the definition of `|`, this is equal to `w|i-v|i`! Now we rotate, we add the horizontal index to the vertical, modulo `w`, moving from `⟨w|i-v|i, v|i⟩` to `⟨w|i, v|i⟩`. The remaining steps are entirely symmetrical: performed in the same order, they would move from `⟨w|i, ⌊i÷w⟩` to `⟨w|i, v|i⟩`, affecting the second index instead of the first. Doing them backwards connects to the previous result. In sum, element `i` moves through the following positions:
+
+    ⟨⌊i÷w,    w|i⟩
+    ⟨⌊i÷v,    v|i⟩      # w‿v⥊
+    ⟨w|i-v|i, v|i⟩      # (⍋w|v×↕w)⊏
+    ⟨w|i,     v|i⟩      # (-↕v)⌽˘⌾⍉
+    ⟨w|i,     v|i-w|i⟩  # (↕w)⌽˘
+    ⟨w|i,     ⌊i÷w⟩     # (v|w×↕v)⊸⊏˘
+
+The BQN code for each step is in the comments. Below, it's all run on the indices `i`:
+
+        w‿v←7‿16
+        (v|w×↕v)⊸⊏˘ (↕w)⌽˘ (-↕v)⌽˘⌾⍉ (⍋w|v×↕w)⊏ w‿v⥊ ↕w×v
 
 ### Cache-efficient orderings
 
