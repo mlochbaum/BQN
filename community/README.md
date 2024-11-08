@@ -15,7 +15,7 @@ Here are some places to find BQN libraries and examples:
 
 See also:
 
-- BQN blogging by [Sylvia](https://saltysylvi.github.io/blog/index.html), [Thibault Barbie](https://thibaultbarbie.github.io/), [Ramón Panadés-Barrueta](https://panadestein.github.io/blog/), and [Tony Zorman](https://tony-zorman.com/posts/volutes-in-bqn.html), with more [on Medium](https://medium.com/tag/bqn).
+- BQN blogging by [Sylvia](https://saltysylvi.github.io/blog/index.html), [Thibault Barbie](https://thibaultbarbie.github.io/), [Ramón Panadés-Barrueta](https://panadestein.github.io/blog/), and [Tony Zorman](https://tony-zorman.com/tags/BQN.html), with more [on Medium](https://medium.com/tag/bqn).
 - On Youtube, [David Zwitser](https://www.youtube.com/channel/UCB3UHjYTmi8jSVmn31SNF8A) makes games; [Conor Hoekstra](https://www.youtube.com/c/codereport/videos) and [Asher Mancinelli](https://www.youtube.com/channel/UCZ5sL4E662VP1ZwC4h85ttQ) walk through smaller programs.
 - Sylvia's [tacit to block converter](https://saltysylvi.github.io/bqn-tacit-helper/)
 - Some reference pages: [compact functions](https://pastebin.com/raw/ynsghrHM), [big everything](https://gist.github.com/dzaima/52b47f898c5d43f72dc2637d6cdadedd)
