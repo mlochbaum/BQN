@@ -92,7 +92,7 @@ See [bqn-vscode](https://github.com/mk12/bqn-vscode), or install directly throug
 
 ### Kakoune
 
-Copy or symlink `kak/autoload/filetype/bqn.kak` into `autoload/filetype` in your Kakoune config directory (probably `.config/kak/`).
+Copy or symlink [kak/autoload/filetype/bqn.kak](https://github.com/mlochbaum/BQN/tree/master/editors/kak/autoload/filetype/bqn.kak) into `autoload/filetype` in your Kakoune config directory (probably `~/.config/kak/`).
 
 ### Micro
 
