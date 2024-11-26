@@ -256,6 +256,7 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   no←0⌈-ir⋄ne←0⌈-er⋄nei↩g⋄nx⊏˜↩gr           # Nothing value; expression
   "Nothing (·) cannot be assigned"_nerr ne×a
   "Can't use Nothing (·) as predicate"_nerr ne×𝕩=pred
+  "Modifier expression can only have one component"_err_(G) »⊸∧(er<2)<r≥0
   oa←⌽/oe←hg<op←(»am<a)<(er<2)∧r≥2          # op: active modifiers; oa: applied
   ro←op∨«op∧m2←r=3                          # ro: mod or right operand; m2: 2-modifier
   "Missing operand"_nerr oe×2(«⌈m2×»)no⌈2×m2≥ro∨r∊↕2
