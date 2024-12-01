@@ -208,7 +208,7 @@ Bars ← (Path·∾("M h"⥊˜≠)∾¨FmtNum)¨ Bp
 }
 -->
 
-Some wrote about aspects of the Advent experience: Leah explained her solutions for [day 6](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) and [day 9](https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html), Hannu [reflected](https://hannuhartikainen.fi/blog/advent-of-bqn/) on the choice of BQN, and Raghu [commented on](https://razetime.github.io/blog1/2022/01/09/aoc-bqn.html) each problem.
+Some wrote about aspects of the Advent experience: Leah explained her solutions for [day 6](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) and [day 9](https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html), Hannu [reflected](https://hannuhartikainen.fi/blog/advent-of-bqn/) on the choice of BQN, and Raghu [commented on](https://razetime.github.io/blog/2022/01/09/aoc-bqn.html) each problem.
 
 The number of BQN solutions for each of the 25 days is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2021/stats). The BQN solutions are scaled to be visible here: there are 6827 times more valid AoC submissions than published BQN solutions overall.
 
