@@ -516,7 +516,7 @@ under←{
     }
     _at_ ← {(↕≠𝕩)𝔽⍟((𝔾𝕩)=⊣)¨𝕩}
     Set ← 0⊸{ (𝕨≥≠root)◶⟨≢⥊(1+𝕨)⊸𝕊_at_(𝕨⊑root˙)∘⥊, Set1⟩ _fillBy_ ⊢ 𝕩 }
-    IsArray∘root◶⟨0⊑v˙, Set⟩ x
+    IsArray∘root◶⟨0⊑v˙, 𝕘◶⟨0,0∨´IsErr⌜∘v⟩◶⟨Set,Err˙⟩⟩ x
   }
 
   _indRec ← {
@@ -534,7 +534,8 @@ under←{
     val←𝕨𝔽○𝔾𝕩
     s←𝕘 SFN⊸{𝕎𝕩} InitS 𝕩
     root‿ind‿⟨d,rec⟩ ← IsStruct◶⟨0‿Err‿⟨0,0⟩,0‿2‿3⊏1⊑Decompose⟩ s
-    IsErr◶⟨root‿𝕩 _insert_ rec, {𝕏val}·Inverse𝔾˙⟩ val‿d GetInserts ind
+    Comp ← {𝕏val}·Inverse𝔾˙
+    IsErr◶⟨Comp⍟IsErr root‿𝕩 _insert_ rec, Comp⟩ val‿d GetInserts ind
   }
 }
 
