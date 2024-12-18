@@ -270,7 +270,16 @@ let power = (x,w) => {
 let log = (x,w) => {
   if (isnum(x)) {
     if (!has(w)) return Math.log(x);
-    if (isnum(w)) return Math.log(x)/Math.log(w);
+    if (isnum(w)) {
+      let r = Math.log(x) / Math.log(w);
+      if (w == Math.floor(w)) { // Avoid bad floor or ceiling of log
+        let u = 4.440892098500626e-16 * r;
+        let rr = Math.round(r), rd = Math.abs(r-rr);
+        let sgd = (x,y) => (x > y) - (x < y);
+        if (rd <= u && sgd(x,Math.round(x)) != sgd(r,rr)) r = rr;
+      }
+      return r;
+    }
   }
   throw Error("⋆⁼: Arguments must be numbers");
 }
