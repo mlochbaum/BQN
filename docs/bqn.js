@@ -154,13 +154,13 @@ let run = (B,O,F,S,L,T,src,env) => { // Bytecode, Objects, Blocks, Bodies, Locat
   let D = F.map(([type,imm,ind],i) => {
     let I = imm ? 0 : 3; // Operand start
     let sp = (type===0?0:type+1) + I;
-    let useenv = i===0 && env;
+    let useenv = i===0 && has(env);
     let gen = j => {
       let [pos,varam,vid,vex] = S[j];
       let ns = {}; if (vex) vex.forEach((e,j)=>{if(e)ns[vid[j]]=j+sp;});
       vid = (new Array(sp).fill(null)).concat(vid); vid.src=src; vid.ns=ns;
       if (T) ns.names = vid.names = T[2][0].map(s=>s.join(""));
-      return [genjs(B, pos, L, has(env)), vid];
+      return [genjs(B, pos, L, useenv), vid];
     }
 
     let ginpreview = e => L ? (e + ".inpreview=inpreview()") : "";
