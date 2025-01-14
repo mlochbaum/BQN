@@ -156,6 +156,100 @@ map global bqn '\'     ':exec i\<ret>'
 # Commands
 # ‾‾‾‾‾‾‾‾
 
+# insert BQN symbol by name
+# map e.g. as follows : map buffer insert <c-j> '<esc>:insert-bqn<ret>'
+define-command -hidden insert-bqn %{
+prompt command: -menu -shell-script-candidates %{ cat<<EOF
+× \\= Sign Multiply
+÷ <minus> Recipical Divide
+⋆ \\+ Exponential Power
+√ \\_ Square root Root
+⌊ \\b Floor Minimum
+⌈ \\B Ceiling Maximum
+∧ \\t SortUp And
+∨ \\v SortDown Or
+¬ \\~ Not Span
+| | AbsoluteValue Modulus
+≤ \\< LessOrEqual
+< < Enclose LessThan
+> > Merge GreaterThan
+≥ \\> GreaterOrEqual
+= = Rank Equal
+≠ \\/ Length NotEqual
+≡ \\m Depth Match
+≢ \\M Shape NotMatch
+⊣ \\{ Identity Left
+⊢ \\} Identity Right
+⥊ \\z Deshape Reshape
+∾ \\, Join JoinTo
+≍ \\. Solo Couple
+⋈ \\Z Enclose Pair
+↑ \\r Prefixes Take
+↓ \\c Suffixes Drop
+↕ \\d Range Windows
+« \\H ShiftBefore ReplaceEnd
+» \\L ShiftAfter ReplaceStart
+⌽ \\q Reverse Rotate
+⍉ \\a Transpose ReorderAxis
+⍋ \\T GradeUp BinsUp
+⍒ \\V GradeDown BinsDown
+⊏ \\i FirstCell Select
+⊑ \\I First Pick
+⊐ \\o Classify IndexOf
+⊒ \\O VisitCount AdvanceIndexOf
+∊ \\e MarkFirst MemberOf
+⍷ \\E Deduplicate Find
+⊔ \\u GroupIndices Group
+/ / Indices Replicate
+! ! Assert AssertMsg
+˙ \\" _constant
+˜ \\\` _self _swap
+˘ \\1 _cells
+¨ \\2 _each
+⁼ \\3 _undo
+⌜ \\4 _table
+´ \\5 _fold
+˝ \\6 _insert
+\` \` _scan
+∘ \\j _atop_
+○ \\k _over_
+⊸ \\h _bind_before_
+⟜ \\l _bind_after_
+⌾ \\K _under_
+⊘ \\% _valences_
+◶ \\$ _choose_
+⎊ \\^ _catch_
+⎉ \\! _rank_
+⚇ \\@ _depth_
+⍟ \\# _repeat_
+← \\[ DEFINE
+⇐ \\? EXPORT
+↩ ' CHANGE
+⋄ \\; SEPERATOR
+⟨ \\( BEGIN LIST
+⟩ \\) END LIST
+‿ <space> STRAND
+· \\: NOTHING
+• \\0 SYSTEM
+𝕨 \\w left argument
+𝕎 \\W left argument function
+𝕩 \\x right argument
+𝕏 \\X right argument function
+𝕗 \\f left operand
+𝔽 \\F left operand function
+𝕘 \\g right operand
+𝔾 \\G right operand function
+𝕤 \\s self
+𝕊 \\S self function
+𝕣 \\R self modifier
+¯ \\9 minus
+π \\p constant pi
+∞ \\8 constant infinity
+@ @ constant null character
+# # COMMENT
+EOF
+} %{ exec %sh{ printf 'i%s' "$(printf %s "$kak_text" | cut -d ' ' -f 1)" } }}
+
 define-command -hidden bqn-indent-on-new-line %`
     evaluate-commands -draft -itersel %_
         # preserve previous line indent
