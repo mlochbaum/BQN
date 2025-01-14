@@ -61,7 +61,7 @@ declare-user-mode bqn
 #               +              +                   + Conjugate      | Add
 #               -              -                   - Negate         | Subtract
 map global bqn '='     ':exec i×<ret>' -docstring '× Sign           | Multiply'
-map global bqn <minus> ':exec i÷<ret>' -docstring '÷ Recipical      | Divide'
+map global bqn <minus> ':exec i÷<ret>' -docstring '÷ Reciprocal     | Divide'
 map global bqn '+'     ':exec i⋆<ret>' -docstring '⋆ Exponential    | Power'
 map global bqn '_'     ':exec i√<ret>' -docstring '√ Square root    | Root'
 map global bqn 'b'     ':exec i⌊<ret>' -docstring '⌊ Floor          | Minimum'
@@ -161,7 +161,7 @@ map global bqn '\'     ':exec i\<ret>'
 define-command -hidden insert-bqn %{
 prompt command: -menu -shell-script-candidates %{ cat<<EOF
 × \\= Sign Multiply
-÷ <minus> Recipical Divide
+÷ <minus> Reciprocal Divide
 ⋆ \\+ Exponential Power
 √ \\_ Square root Root
 ⌊ \\b Floor Minimum
