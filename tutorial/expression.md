@@ -188,7 +188,7 @@ With three examples you may have noticed that 1-modifiers tend to cluster at the
 
 Made it to the last role, the 2-modifier (if you think something's been skipped, you're free to call subjects 0-modifiers. They don't modify anything. Just not when other people can hear you). To introduce them we'll use Atop (`∘`), which composes two functions as in mathematics. The resulting function allows one or two arguments like any BQN function: these are all passed to the function on the right, and the result of that application is passed to the function on the left. So the function on the left is only ever called with one argument.
 
-        3 ×˜∘+ 4  # Square of 3 plus 4
+        3 ×˜∘+ 4  # Square of the sum of 3 and 4
         -∘(×˜) 5  # Negative square of 5
 
 <!--GEN
