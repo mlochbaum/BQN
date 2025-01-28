@@ -6,6 +6,7 @@ Pages in this directory discuss advanced compilation strategies for BQN, that is
 
 - [Array language compilation in context](intro.md), an introduction to the subject
 - [Dynamic compilation](dynamic.md), discussing high-level strategies
+- [Loop fusion in array languages](fusion.md)
 
 The self-hosted bytecode compiler isn't really documented, but there are some related resources elsewhere. I held a few early chat discussions on building an array-based compiler, but aborted these because the interactive format wasn't doing too much.
 
