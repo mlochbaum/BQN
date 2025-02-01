@@ -81,7 +81,7 @@ _perv←{ # Pervasion
 }
 
 # Sorting
-CLE ← (≤⟜∞≤·=˜⊢)≤≤  # Place NaNs after other numbers
+CLE ← (<⟜@≤·=˜⊢)≤≤  # Place NaNs after other numbers
 Cmp0 ← CLE˜-CLE
 Cmp1 ← (0<1×´≢∘⊢)◶⟨1, IsArray∘⊢◶(1-2×≤)‿{𝕨Cmp1𝕩}⟜(0⊑⥊)⟩
 CmpLen ← {
