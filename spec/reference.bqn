@@ -513,8 +513,8 @@ _bins←{
   𝕨 (0<≠𝕨)◶⟨0⎉c∘⊢,+˝LE⎉¯1‿∞⟩ 𝕩  # Number of 𝕨 cells preceding or matching each 𝕩 cell
 }
 
-# ⊐˜ ranks without breaking ties and ⍋∘⍋ breaks ties, so the
-# difference after adjusting ⊐˜ is the occurrence count
-OccurrenceCount ← ⊐˜(⊢-⊏)⍋∘⍋
+# In the result of ⍋⍋, matching cells get consecutive indices
+# Select with ⊐˜ to get the first, and subtract for the occurrence count
+OccurrenceCount ← (⊢-⊏)⟜(⍋⍋)⊐˜
 # Tag each cell with an occurrence count, then search
 ProgressiveIndexOf ← {𝕨⊐○(((≢∾2˙)⥊≍˘⟜OccurrenceCount∘⥊)𝕨⊸⊐)𝕩}
