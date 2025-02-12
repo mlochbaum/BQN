@@ -241,7 +241,7 @@
   0 0 0 0 0 0  
               ┘
     <span class='Function'>/</span><span class='Value'>r</span>
-<span class='Error'>Error: /: Argument must have rank 1 (3‿6 ≡ ≢𝕩)</span>
+<span class='Error'>Error: /𝕩: 𝕩 must have rank 1 (3‿6 ≡ ≢𝕩)</span>
 </pre>
 <p>Error. But the two 1s are located at <code><span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>3</span></code> and <code><span class='Number'>1</span><span class='Ligature'>‿</span><span class='Number'>2</span></code>. What's wrong with those? First, let's note that you can find these indices if you need to, using Replicate. Make the list of all indices <code><span class='Function'>↕≢</span><span class='Value'>𝕩</span></code>, and filter <a href="compose.html#over">Over</a> <a href="reshape.html#deshape">Deshape</a> (<code><span class='Modifier2'>○</span><span class='Function'>⥊</span></code>).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=4oqiIHIg4oaQIDHCqOKMvigz4oC/OOKKj+KliikgM+KAvzbipYowCi/il4vipYrin5wo4oaV4omiKSBy">↗️</a><pre>    <span class='Function'>/</span><span class='Modifier2'>○</span><span class='Function'>⥊</span><span class='Modifier2'>⟜</span><span class='Paren'>(</span><span class='Function'>↕≢</span><span class='Paren'>)</span> <span class='Value'>r</span>

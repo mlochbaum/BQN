@@ -65,7 +65,7 @@
 "two"
 
     <span class='Number'>0</span> <span class='Function'>⊏</span> <span class='Function'>&lt;</span><span class='Number'>5</span>  <span class='Comment'># No first axis to select from
-</span><span class='Error'>Error: ⊏: 𝕩 cannot be a unit</span>
+</span><span class='Error'>Error: 𝕨⊏𝕩: 𝕩 cannot be a unit</span>
 </pre>
 <p>As a major cell, the result has rank one less than <code><span class='Value'>𝕩</span></code> and shape <code><span class='Number'>1</span><span class='Function'>↓≢</span><span class='Value'>𝕩</span></code>. Of course <code><span class='Value'>𝕩</span></code> must have at least one axis to select along, or there are no major cells and you'll get an error.</p>
 <p>The index <code><span class='Value'>𝕨</span></code> has to be an integer less than <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code>. It can be negative, in which case it must be greater than or equal to <code><span class='Function'>-≠</span><span class='Value'>𝕩</span></code>. Negative indices select from the end of <code><span class='Value'>𝕩</span></code>, in that <code><span class='Number'>¯1</span></code> indicates the last major cell and <code><span class='Function'>-≠</span><span class='Value'>𝕩</span></code> indicates the first. If <code><span class='Function'>≠</span><span class='Value'>𝕩</span></code> is 0, then no index is valid.</p>
@@ -75,7 +75,7 @@
     ┘
 
     <span class='Number'>0</span> <span class='Function'>⊏</span> <span class='String'>&quot;&quot;</span>
-<span class='Error'>Error: ⊏: Indexing out-of-bounds (0∊𝕨, 0≡≠𝕩)</span>
+<span class='Error'>Error: 𝕨⊏𝕩: Indexing out-of-bounds (0∊𝕨, 0≡≠𝕩)</span>
 </pre>
 <h3 id="first-cell"><a class="header" href="#first-cell">First Cell</a></h3>
 <p>The monadic case First Cell (<code><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>) is identical to <code><span class='Number'>0</span><span class='Function'>⊏</span><span class='Value'>𝕩</span></code>. It has the same restrictions: <code><span class='Value'>𝕩</span></code> must have rank 1 or more, and length 1 or more.</p>
@@ -91,7 +91,7 @@
 "abc"
 
     <span class='Function'>⊏</span> <span class='String'>'a'</span>
-<span class='Error'>Error: ⊏: Argument cannot be an atom</span>
+<span class='Error'>Error: ⊏𝕩: 𝕩 cannot be an atom</span>
 </pre>
 <h2 id="first-axis-selection"><a class="header" href="#first-axis-selection">First-axis selection</a></h2>
 <p>If <code><span class='Value'>𝕨</span></code> is an array of numbers (including any empty array), then each number indicates a major cell of <code><span class='Value'>𝕩</span></code>. In the simplest case, a list of numbers gives a result with the same rank as <code><span class='Value'>𝕩</span></code> but the length of <code><span class='Value'>𝕨</span></code>.</p>

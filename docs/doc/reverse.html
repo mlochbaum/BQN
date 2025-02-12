@@ -21,7 +21,7 @@
      ┘
 
     <span class='Function'>⌽</span> <span class='String'>'c'</span>
-<span class='Error'>Error: ⌽: Argument cannot be a unit</span>
+<span class='Error'>Error: ⌽𝕩: 𝕩 cannot be a unit</span>
 </pre>
 <p>You can't reverse an atom or rank-0 array because it has no axes to reverse along, or it could be said no ordering to reverse.</p>
 <p>To reverse along an axis other than the first, use <a href="rank.html#cells">Cells</a> (<code><span class='Modifier'>˘</span></code>) or <a href="rank.html#rank">Rank</a> (<code><span class='Modifier2'>⎉</span></code>).</p>
@@ -63,7 +63,7 @@
                 ┘
 
     <span class='Number'>2</span> <span class='Function'>⌽</span> <span class='String'>'c'</span>  <span class='Comment'># No axes to rotate
-</span><span class='Error'>Error: ⌽: 𝕩 must have rank at least 1 for atom 𝕨</span>
+</span><span class='Error'>Error: 𝕨⌽𝕩: 𝕩 must have rank at least 1 for atom 𝕨</span>
 </pre>
 <p>Elements are always rotated to the left, so that entry <code><span class='Value'>i</span></code> of the result is entry <code><span class='Value'>𝕨</span><span class='Function'>+</span><span class='Value'>i</span></code> of the argument—or rather, entry <code><span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>|</span><span class='Value'>𝕨</span><span class='Function'>+</span><span class='Value'>i</span></code> to enable elements to cycle around. This can be seen directly by using the <a href="range.html">range</a> <code><span class='Function'>↕</span><span class='Value'>n</span></code> as an argument: then the value of <code><span class='Value'>𝕩</span></code> at index <code><span class='Value'>i</span></code> is just <code><span class='Value'>i</span></code>.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MiDijL0g4oaVNg==">↗️</a><pre>    <span class='Number'>2</span> <span class='Function'>⌽</span> <span class='Function'>↕</span><span class='Number'>6</span>
