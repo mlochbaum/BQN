@@ -29,6 +29,13 @@ The Undo rule is proven by some practically-motivated exceptions in cases where 
 
         6 - ×˜ ×˜⁼ 6
 
+### Left argument
+
+The left argument to Undo is treated as fixed—it solves for the right argument only. That is, `𝕨 𝔽⁼ 𝕩` is equivalent to `𝕨˙⊸𝔽⁼ 𝕩`, and we have the rule `𝕩 ≡ 𝕨 𝔽 𝕨 𝔽⁼ 𝕩`. Because [Repeat follows](repeat.md#left-argument) the same convention, `𝔽⁼` is exactly the same as `𝔽⍟¯1`.
+
+        3⊸×⁼ 12  # 3×4 is 12
+        3 ×⁼ 12
+
 ## What's supported?
 
 For the full list, see [the specification](../spec/inferred.md#undo). An individual implementation might support a lot more functionality than is required, so if you're not concerned about portability just try out whatever function you're interested in.
