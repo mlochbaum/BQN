@@ -83,7 +83,7 @@ map global bqn '}'     ':exec i⊢<ret>' -docstring '⊢ Identity       | Right'
 map global bqn 'z'     ':exec i⥊<ret>' -docstring '⥊ Deshape        | Reshape'
 map global bqn ','     ':exec i∾<ret>' -docstring '∾ Join           | JoinTo'
 map global bqn '.'     ':exec i≍<ret>' -docstring '≍ Solo           | Couple'
-map global bqn 'Z'     ':exec i⋈<ret>' -docstring '⋈ Enclose        | Pair'
+map global bqn 'Z'     ':exec i⋈<ret>' -docstring '⋈ Enlist         | Pair'
 map global bqn 'r'     ':exec i↑<ret>' -docstring '↑ Prefixes       | Take'
 map global bqn 'c'     ':exec i↓<ret>' -docstring '↓ Suffixes       | Drop'
 map global bqn 'd'     ':exec i↕<ret>' -docstring '↕ Range          | Windows'
@@ -183,7 +183,7 @@ prompt command: -menu -shell-script-candidates %{ cat<<EOF
 ⥊ \\z Deshape Reshape
 ∾ \\, Join JoinTo
 ≍ \\. Solo Couple
-⋈ \\Z Enclose Pair
+⋈ \\Z Enlist Pair
 ↑ \\r Prefixes Take
 ↓ \\c Suffixes Drop
 ↕ \\d Range Windows
