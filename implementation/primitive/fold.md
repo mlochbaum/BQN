@@ -4,6 +4,8 @@
 
 Folds and scans with some arithmetic primitives like `+`, `⌈`, and boolean `≠` are staples of array programming. Fortunately these cases are also suitable for SIMD implementation. There is also the minor note that it's worth optimizing folds with `⊣` or `⊢` that give the first and last element (or cell), and the scan `` ⊣` `` broadcasts the first cell to the entire array, which has some uses like ``⊣`⊸≡`` to test if all cells match.
 
+When implementing SIMD scans, it's crucial to allow processing of a word or vector to begin before the previous one is completed, to benefit from instruction-level parallelism. Generally a good way to do this is to perform a scan just on that unit, and only then fix it up with a carry. For example, for `` +` ``, scan within a vector, then broadcast the last element of the previous vector of sums and add it to the scan.
+
 My talk "Implementing Reduction" ([video](https://dyalog.tv/Dyalog19/?v=TqmpSP8Knvg), [slides](https://www.dyalog.com/uploads/conference/dyalog19/presentations/D09_Implementing_Reduction.zip)) quickly covers some ideas about folding, particularly on high-rank arrays. The slides have illustrations of some extra algorithms not discussed in the talk.
 
 ## Associative arithmetic
@@ -29,7 +31,19 @@ Other folds `∧∨<>≤≥` can be shortcut: they depend only on the first inst
 | `>´` |  `2\|𝕩⊐0`
 | `≥´` | `¬2\|𝕩⊐1`
 
-Boolean scans are more varied. For `∨`, the result switches from all `0` to all `1` after the first `1`, and the other way around for `∧`. For `≠`, the associative optimization gives a word-at-a-time algorithm with power-of-two shifts, and other possibilities with architecture support are [discussed below](#xor-scan). The scan `` <` `` turns off every other 1 in groups of 1s. It's used in simdjson for backslash escaping, and they [describe in detail](https://github.com/simdjson/simdjson/blob/ac78c62/src/generic/stage1/json_escape_scanner.h#L96) a method that uses subtraction for carrying. And `` >` `` flips to all 0 at the first bit if it's a 0 or the *second* 1 bit otherwise. `` ≤` `` is ``<`⌾¬``, and `` ≥` `` is ``>`⌾¬``.
+Boolean scans are more varied. For `∨`, the result switches from all `0` to all `1` after the first `1`, and the other way around for `∧`. For `≠`, the associative optimization gives a word-at-a-time algorithm with power-of-two shifts, and other possibilities with architecture support are [discussed below](#xor-scan). The scan `` <` `` turns off every other 1 in groups of 1s. It's used in simdjson for backslash escaping, and they [describe in detail](https://github.com/simdjson/simdjson/blob/ac78c62/src/generic/stage1/json_escape_scanner.h#L96) a method that uses subtraction for carrying. And `` >` `` flips to all 0 at the first bit if it's a 0 or the *second* 1 bit otherwise; ``∧`¬⌾(1⊸↓)`` is one implementation. `` ≤` `` is ``<`⌾¬``, and `` ≥` `` is ``>`⌾¬``.
+
+Simple sequences for a few scans are given below. `` ∧` `` and `` ∨` `` on lists only call for one evaluation where the first 0 or 1 bit is found, but also have nice segmented forms that can be used for a row-scan like ``∧`˘``. Here `even` is the even bits `0x555…`, and `odd` is the odd bits `even<<1` or `0xAAA…`.
+
+<table>
+<tr><th>Scan</th><th>C code (word)</th><th>C code (segment starts <code>m</code>)</th></tr>
+<tr><td align="center"><code>∧`</code></td><td><code>x | -x</code>    </td><td><code>t = (x &~ m) >> 1; (x - t) ^ t</code></td></tr>
+<tr><td align="center"><code>∨`</code></td><td><code>x &~ (x+1)</code></td><td><code>t = (x |  m) >> 1; (t - x) ^ t</code></td></tr>
+<tr><td align="center"><code><`</code></td><td colspan=2><code>t = odd  | (x<<1); x & (odd ^ (t - x))</code></td></tr>
+<tr><td align="center"><code>≤`</code></td><td colspan=2><code>t = even & (x<<1); x | (odd ^ (t - x))</code></td></tr>
+</table>
+
+Handling carries in lists for `` <` `` and `` ≤` `` is possible by modifying `x<<1`, but for shorter dependency chains you modify the result. For example, for `` <` ``, a carry of 1 means all the result bits corresponding to trailing 1s in `x` need to be flipped. If the result from the previous word is `c` with type `u64`, the result should by xor-ed with `-(c>>63) & x &~ (x+1)`, where the shared `x &` can be factored out. Note that for `` ≤` ``, the "passive" bit is 1 and so -1 is the right initial carry.
 
 ### Xor scan
 
