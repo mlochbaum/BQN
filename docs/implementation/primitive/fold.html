@@ -12,7 +12,324 @@
 <h2 id="associative-arithmetic"><a class="header" href="#associative-arithmetic">Associative arithmetic</a></h2>
 <p>The arithmetic operations <code><span class='Function'>+×</span></code> on integers, and <code><span class='Function'>⌈⌊</span></code> on all types, are associative and commutative (and for <code><span class='Value'>•math.</span><span class='Function'>Sum</span></code>, float addition may be considered commutative for optimization). This allows for folds and scans to be reordered in a way that's suitable for SIMD evaluation, where without some insight into the operand function they would be inherently sequential. Also, <code><span class='Function'>-</span><span class='Modifier'>´</span></code> can be performed by negating every other value then summing, and monadic <code><span class='Function'>¬</span><span class='Modifier'>´</span></code> is <code><span class='Brace'>{</span><span class='Paren'>(</span><span class='Function'>¬</span><span class='Number'>2</span><span class='Function'>|≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>+-</span><span class='Modifier'>´</span><span class='Value'>𝕩</span><span class='Brace'>}</span></code>.</p>
 <p>For these operands, a fold can be done simply by combining two vector registers at a time, with a final pairwise reduction at the end. An overflowing operation like <code><span class='Function'>+</span></code> needs to be performed at double width (or possibly 32-bit for 8-bit values), and moved to a full-width accumulator once that's exhausted.</p>
-<p>The technique for a fast prefix sum is described in Singeli's <a href="https://github.com/mlochbaum/Singeli/blob/master/doc/minfilter.md">min-filter tutorial</a> beginning at &quot;we have some vector scan code already&quot;. There's also a treatment <a href="https://en.algorithmica.org/hpc/algorithms/prefix/">here</a>, but the blocking method seems overcomplicated given that incorporating the carry after summing a register is enough to get rid of dependency chains.</p>
+<h3 id="scan-architecture"><a class="header" href="#scan-architecture">Scan architecture</a></h3>
+<p>There's lots of research on <a href="https://en.wikipedia.org/wiki/Prefix_sum#Parallel_algorithms">parallel scan</a> with broadly useful ideas. Relevant ideas also show up in ALU design, where the shifting, broadcasting, and sequential algorithms below correspond to <a href="https://en.wikipedia.org/wiki/Kogge%E2%80%93Stone_adder">Kogge-Stone</a>, Sklansky, and ripple-carry adders. A fast CPU prefix sum is described in Singeli's <a href="https://github.com/mlochbaum/Singeli/blob/master/doc/minfilter.md">min-filter tutorial</a> beginning at &quot;we have some vector scan code already&quot;. There's also a treatment <a href="https://en.algorithmica.org/hpc/algorithms/prefix/">here</a>, but the blocking method seems overcomplicated when incorporating the carry after summing a register is enough to take care of dependency chains.</p>
+<p>Three associative scan algorithms make for useful components on a CPU core. The red paths show how, in each, an output involves every input up to its position exactly once.</p>
+<svg viewBox='-47.2 -8 684.8 259'>
+  <g fill='currentColor' stroke-linecap='round' text-anchor='middle' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-31.2' y='0' width='652.8' height='243'/>
+    <g class='bluegreen' opacity='0.4' stroke-width='1'>
+      <rect x='202.8' y='63' width='88.8' height='99'/>
+      <rect x='298.8' y='63' width='88.8' height='99'/>
+    </g>
+    <g stroke-width='2'>
+      <g stroke='currentColor'>
+        <line x1='0' x2='0' y1='54' y2='216'/>
+        <line x1='24' x2='24' y1='54' y2='216'/>
+        <line x1='48' x2='48' y1='54' y2='216'/>
+        <line x1='72' x2='72' y1='54' y2='216'/>
+        <line x1='96' x2='96' y1='54' y2='216'/>
+        <line x1='120' x2='120' y1='54' y2='216'/>
+        <line x1='144' x2='144' y1='54' y2='216'/>
+        <line x1='168' x2='168' y1='54' y2='216'/>
+        <line x1='211.2' x2='211.2' y1='54' y2='216'/>
+        <line x1='235.2' x2='235.2' y1='54' y2='216'/>
+        <line x1='259.2' x2='259.2' y1='54' y2='216'/>
+        <line x1='283.2' x2='283.2' y1='54' y2='216'/>
+        <line x1='307.2' x2='307.2' y1='54' y2='216'/>
+        <line x1='331.2' x2='331.2' y1='54' y2='216'/>
+        <line x1='355.2' x2='355.2' y1='54' y2='216'/>
+        <line x1='379.2' x2='379.2' y1='54' y2='216'/>
+        <line x1='422.4' x2='422.4' y1='54' y2='216'/>
+        <line x1='446.4' x2='446.4' y1='54' y2='216'/>
+        <line x1='470.4' x2='470.4' y1='54' y2='216'/>
+        <line x1='494.4' x2='494.4' y1='54' y2='216'/>
+        <line x1='518.4' x2='518.4' y1='54' y2='216'/>
+        <line x1='542.4' x2='542.4' y1='54' y2='216'/>
+        <line x1='566.4' x2='566.4' y1='54' y2='216'/>
+        <line x1='590.4' x2='590.4' y1='54' y2='216'/>
+        <line x1='24' x2='48' y1='69.8' y2='102'/>
+        <line x1='72' x2='96' y1='69.8' y2='102'/>
+        <line x1='120' x2='144' y1='69.8' y2='102'/>
+        <line x1='144' x2='168' y1='69.8' y2='102'/>
+        <line x1='0' x2='48' y1='117.8' y2='150'/>
+        <line x1='24' x2='72' y1='117.8' y2='150'/>
+        <line x1='48' x2='96' y1='117.8' y2='150'/>
+        <line x1='96' x2='144' y1='117.8' y2='150'/>
+        <line x1='120' x2='168' y1='117.8' y2='150'/>
+        <line x1='0' x2='96' y1='165.8' y2='198'/>
+        <line x1='48' x2='144' y1='165.8' y2='198'/>
+        <line x1='72' x2='168' y1='165.8' y2='198'/>
+        <line x1='355.2' x2='379.2' y1='69.8' y2='102'/>
+        <line x1='235.2' x2='259.2' y1='117.8' y2='150'/>
+        <line x1='331.2' x2='355.2' y1='117.8' y2='150'/>
+        <line x1='331.2' x2='379.2' y1='117.8' y2='150'/>
+        <line x1='283.2' x2='307.2' y1='165.8' y2='198'/>
+        <line x1='283.2' x2='355.2' y1='165.8' y2='198'/>
+        <line x1='283.2' x2='379.2' y1='165.8' y2='198'/>
+        <line x1='542.4' x2='566.4' y1='169.914' y2='177.429'/>
+        <line x1='566.4' x2='590.4' y1='190.486' y2='198'/>
+      </g>
+      <g class='red' stroke-width='3'>
+        <line x1='0' x2='0' y1='54' y2='69.8'/>
+        <line x1='24' x2='24' y1='54' y2='165.8'/>
+        <line x1='48' x2='48' y1='54' y2='69.8'/>
+        <line x1='72' x2='72' y1='54' y2='117.8'/>
+        <line x1='96' x2='96' y1='54' y2='69.8'/>
+        <line x1='120' x2='120' y1='54' y2='216'/>
+        <line x1='211.2' x2='211.2' y1='54' y2='69.8'/>
+        <line x1='235.2' x2='235.2' y1='54' y2='117.8'/>
+        <line x1='259.2' x2='259.2' y1='54' y2='69.8'/>
+        <line x1='283.2' x2='283.2' y1='54' y2='165.8'/>
+        <line x1='307.2' x2='307.2' y1='54' y2='69.8'/>
+        <line x1='331.2' x2='331.2' y1='54' y2='216'/>
+        <line x1='422.4' x2='422.4' y1='54' y2='67.057'/>
+        <line x1='446.4' x2='446.4' y1='54' y2='87.629'/>
+        <line x1='470.4' x2='470.4' y1='54' y2='108.2'/>
+        <line x1='494.4' x2='494.4' y1='54' y2='128.771'/>
+        <line x1='518.4' x2='518.4' y1='54' y2='149.343'/>
+        <line x1='542.4' x2='542.4' y1='54' y2='216'/>
+        <line x1='0' x2='24' y1='69.8' y2='102'/>
+        <line x1='48' x2='72' y1='69.8' y2='102'/>
+        <line x1='96' x2='120' y1='69.8' y2='102'/>
+        <line x1='72' x2='120' y1='117.8' y2='150'/>
+        <line x1='24' x2='120' y1='165.8' y2='198'/>
+        <line x1='211.2' x2='235.2' y1='69.8' y2='102'/>
+        <line x1='259.2' x2='283.2' y1='69.8' y2='102'/>
+        <line x1='307.2' x2='331.2' y1='69.8' y2='102'/>
+        <line x1='235.2' x2='283.2' y1='117.8' y2='150'/>
+        <line x1='283.2' x2='331.2' y1='165.8' y2='198'/>
+        <line x1='422.4' x2='446.4' y1='67.057' y2='74.571'/>
+        <line x1='446.4' x2='470.4' y1='87.629' y2='95.143'/>
+        <line x1='470.4' x2='494.4' y1='108.2' y2='115.714'/>
+        <line x1='494.4' x2='518.4' y1='128.771' y2='136.286'/>
+        <line x1='518.4' x2='542.4' y1='149.343' y2='156.857'/>
+      </g>
+      <g class='code' style='stroke:currentColor' stroke-width='2'>
+        <circle cx='24' cy='102' r='5'/>
+        <circle cx='48' cy='102' r='5'/>
+        <circle cx='72' cy='102' r='5'/>
+        <circle cx='96' cy='102' r='5'/>
+        <circle cx='120' cy='102' r='5'/>
+        <circle cx='144' cy='102' r='5'/>
+        <circle cx='168' cy='102' r='5'/>
+        <circle cx='48' cy='150' r='5'/>
+        <circle cx='72' cy='150' r='5'/>
+        <circle cx='96' cy='150' r='5'/>
+        <circle cx='120' cy='150' r='5'/>
+        <circle cx='144' cy='150' r='5'/>
+        <circle cx='168' cy='150' r='5'/>
+        <circle cx='96' cy='198' r='5'/>
+        <circle cx='120' cy='198' r='5'/>
+        <circle cx='144' cy='198' r='5'/>
+        <circle cx='168' cy='198' r='5'/>
+        <circle cx='235.2' cy='102' r='5'/>
+        <circle cx='283.2' cy='102' r='5'/>
+        <circle cx='331.2' cy='102' r='5'/>
+        <circle cx='379.2' cy='102' r='5'/>
+        <circle cx='259.2' cy='150' r='5'/>
+        <circle cx='283.2' cy='150' r='5'/>
+        <circle cx='355.2' cy='150' r='5'/>
+        <circle cx='379.2' cy='150' r='5'/>
+        <circle cx='307.2' cy='198' r='5'/>
+        <circle cx='331.2' cy='198' r='5'/>
+        <circle cx='355.2' cy='198' r='5'/>
+        <circle cx='379.2' cy='198' r='5'/>
+        <circle cx='446.4' cy='74.571' r='5'/>
+        <circle cx='470.4' cy='95.143' r='5'/>
+        <circle cx='494.4' cy='115.714' r='5'/>
+        <circle cx='518.4' cy='136.286' r='5'/>
+        <circle cx='542.4' cy='156.857' r='5'/>
+        <circle cx='566.4' cy='177.429' r='5'/>
+        <circle cx='590.4' cy='198' r='5'/>
+      </g>
+      <g class='bluegreen' opacity='0.4' style='stroke:currentColor'>
+        <circle cx='235.2' cy='102' r='5'/>
+        <circle cx='283.2' cy='102' r='5'/>
+        <circle cx='331.2' cy='102' r='5'/>
+        <circle cx='379.2' cy='102' r='5'/>
+        <circle cx='259.2' cy='150' r='5'/>
+        <circle cx='283.2' cy='150' r='5'/>
+        <circle cx='355.2' cy='150' r='5'/>
+        <circle cx='379.2' cy='150' r='5'/>
+      </g>
+    </g>
+    <g font-size='18px'>
+      <text dy='0.32em' x='84' y='29'>Shifting</text>
+      <text dy='0.32em' x='295.2' y='29'>Broadcasting</text>
+      <text dy='0.32em' x='506.4' y='29'>Sequential</text>
+    </g>
+  </g>
+</svg>
+
+<p>Shifting by powers of two is useful on units small enough that a shift is a single instruction (a curiosity is that the different shifts can be done in any order). When there are boundaries such as vector lanes, an alternative is to scan two halves separately and then correct the later one with broadcasted &quot;carries&quot;, crossing the boundary only once. With no associative reordering, the sequential method minimizes total operations. CPU algorithms should be sequential at the top (per-core) level but lower levels need to make use of the processor's parallelism to be fast.</p>
+<p>The recursive step in broadcasting hints at a way to tie together any lower-level and higher-level scan algorithm. This step makes up the &quot;Bottom-Up Parallel Scan&quot; in <a href="https://ashinkarov.github.io/pubs/2022-scan.html">Parallel Scan as a Multidimensional Array Problem</a>. Divide the input into chunks of length <code><span class='Value'>k</span></code> (rather than necessarily halves), and perform a scan on each. Then take the last element of each scanned chunk, propagate carries with an <em>exclusive</em> scan, and broadcast each result to combine it with the chunk it came from. It's typical to have one-register chunks and use a basic sequential scan for the carries: an entire register operation to combine two carries may be wasteful but packing and unpacking carries would be slower.</p>
+<a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=ayDihpAgNCAgICAgICAgIyBVbml0IHNpemUK4oqiIHZlYyDihpAg4oaVMTAgICMgQXJndW1lbnQKCuKKoiBzIOKGkCArYMuYIOKGkeKAv2sg4qWKIHZlYyAgIyBTY2FuIGVhY2ggdW5pdAoK4oqiIGMg4oaQIMK7ICtgIOKKosudy5ggcyAgIyBTY2FuIGNhcnJpZXMgZnJvbSBsYXN0IHJvdwoKKOKJoHZlYykg4qWKIGMgKyBz">↗️</a><pre>    <span class='Value'>k</span> <span class='Gets'>←</span> <span class='Number'>4</span>        <span class='Comment'># Unit size
+</span>    <span class='Function'>⊢</span> <span class='Value'>vec</span> <span class='Gets'>←</span> <span class='Function'>↕</span><span class='Number'>10</span>  <span class='Comment'># Argument
+</span>⟨ 0 1 2 3 4 5 6 7 8 9 ⟩
+
+    <span class='Function'>⊢</span> <span class='Value'>s</span> <span class='Gets'>←</span> <span class='Function'>+</span><span class='Modifier'>`˘</span> <span class='Function'>↑</span><span class='Ligature'>‿</span><span class='Value'>k</span> <span class='Function'>⥊</span> <span class='Value'>vec</span>  <span class='Comment'># Scan each unit
+</span>┌─            
+╵ 0  1  3  6  
+  4  9 15 22  
+  8 17 17 17  
+             ┘
+
+    <span class='Function'>⊢</span> <span class='Value'>c</span> <span class='Gets'>←</span> <span class='Function'>»</span> <span class='Function'>+</span><span class='Modifier'>`</span> <span class='Function'>⊢</span><span class='Modifier'>˝˘</span> <span class='Value'>s</span>  <span class='Comment'># Scan carries from last row
+</span>⟨ 0 6 28 ⟩
+
+    <span class='Paren'>(</span><span class='Function'>≠</span><span class='Value'>vec</span><span class='Paren'>)</span> <span class='Function'>⥊</span> <span class='Value'>c</span> <span class='Function'>+</span> <span class='Value'>s</span>
+⟨ 0 1 3 6 10 15 21 28 36 45 ⟩
+</pre>
+<p>The dependency-cutting property of broadcasting can be demonstrated even in a scalar context, scanning both elements in a group and carries sequentially. With a group size of 4, the number of operations jumps from 4 to 7 per group, but the critical path is reduced from 4 to 1.</p>
+<svg viewBox='-97.8 -8 585.6 288'>
+  <g fill='currentColor' stroke-linecap='round' text-anchor='middle' font-family='BQN,monospace'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-33.8' y='0' width='457.6' height='272'/>
+    <g class='bluegreen' opacity='0.4' stroke-width='1'>
+      <rect x='-9.1' y='52.7' width='96.2' height='68.68'/>
+      <rect x='94.9' y='52.7' width='96.2' height='68.68'/>
+      <rect x='198.9' y='52.7' width='96.2' height='68.68'/>
+      <rect x='302.9' y='52.7' width='96.2' height='68.68'/>
+    </g>
+    <g stroke-width='2'>
+      <g stroke='currentColor'>
+        <line x1='0' x2='0' y1='47.6' y2='255'/>
+        <line x1='26' x2='26' y1='47.6' y2='255'/>
+        <line x1='52' x2='52' y1='47.6' y2='255'/>
+        <line x1='78' x2='78' y1='47.6' y2='255'/>
+        <line x1='104' x2='104' y1='47.6' y2='255'/>
+        <line x1='130' x2='130' y1='47.6' y2='255'/>
+        <line x1='156' x2='156' y1='47.6' y2='255'/>
+        <line x1='182' x2='182' y1='47.6' y2='255'/>
+        <line x1='208' x2='208' y1='47.6' y2='255'/>
+        <line x1='234' x2='234' y1='47.6' y2='255'/>
+        <line x1='260' x2='260' y1='47.6' y2='255'/>
+        <line x1='286' x2='286' y1='47.6' y2='255'/>
+        <line x1='312' x2='312' y1='47.6' y2='255'/>
+        <line x1='338' x2='338' y1='47.6' y2='255'/>
+        <line x1='364' x2='364' y1='47.6' y2='255'/>
+        <line x1='390' x2='390' y1='47.6' y2='255'/>
+        <line x1='312' x2='338' y1='57.734' y2='68.944'/>
+        <line x1='234' x2='260' y1='79.079' y2='90.289'/>
+        <line x1='338' x2='364' y1='79.079' y2='90.289'/>
+        <line x1='260' x2='286' y1='100.423' y2='111.633'/>
+        <line x1='364' x2='390' y1='100.423' y2='111.633'/>
+        <line x1='78' x2='104' y1='123.902' y2='154.322'/>
+        <line x1='78' x2='130' y1='123.902' y2='154.322'/>
+        <line x1='78' x2='156' y1='123.902' y2='154.322'/>
+        <line x1='182' x2='208' y1='166.591' y2='197.011'/>
+        <line x1='182' x2='260' y1='166.591' y2='197.011'/>
+        <line x1='182' x2='286' y1='166.591' y2='197.011'/>
+        <line x1='286' x2='312' y1='209.28' y2='239.7'/>
+        <line x1='286' x2='338' y1='209.28' y2='239.7'/>
+        <line x1='286' x2='364' y1='209.28' y2='239.7'/>
+        <line x1='286' x2='390' y1='209.28' y2='239.7'/>
+      </g>
+      <g class='red' stroke-width='3'>
+        <line x1='0' x2='0' y1='47.6' y2='57.734'/>
+        <line x1='26' x2='26' y1='47.6' y2='79.079'/>
+        <line x1='52' x2='52' y1='47.6' y2='100.423'/>
+        <line x1='78' x2='78' y1='47.6' y2='123.902'/>
+        <line x1='104' x2='104' y1='47.6' y2='57.734'/>
+        <line x1='130' x2='130' y1='47.6' y2='79.079'/>
+        <line x1='156' x2='156' y1='47.6' y2='100.423'/>
+        <line x1='182' x2='182' y1='47.6' y2='166.591'/>
+        <line x1='208' x2='208' y1='47.6' y2='57.734'/>
+        <line x1='234' x2='234' y1='47.6' y2='255'/>
+        <line x1='0' x2='26' y1='57.734' y2='68.944'/>
+        <line x1='104' x2='130' y1='57.734' y2='68.944'/>
+        <line x1='208' x2='234' y1='57.734' y2='68.944'/>
+        <line x1='26' x2='52' y1='79.079' y2='90.289'/>
+        <line x1='130' x2='156' y1='79.079' y2='90.289'/>
+        <line x1='52' x2='78' y1='100.423' y2='111.633'/>
+        <line x1='156' x2='182' y1='100.423' y2='111.633'/>
+        <line x1='78' x2='182' y1='123.902' y2='154.322'/>
+        <line x1='182' x2='234' y1='166.591' y2='197.011'/>
+      </g>
+      <g class='code' style='stroke:currentColor' stroke-width='2'>
+        <circle cx='26' cy='68.944' r='5'/>
+        <circle cx='130' cy='68.944' r='5'/>
+        <circle cx='234' cy='68.944' r='5'/>
+        <circle cx='338' cy='68.944' r='5'/>
+        <circle cx='52' cy='90.289' r='5'/>
+        <circle cx='156' cy='90.289' r='5'/>
+        <circle cx='260' cy='90.289' r='5'/>
+        <circle cx='364' cy='90.289' r='5'/>
+        <circle cx='78' cy='111.633' r='5'/>
+        <circle cx='182' cy='111.633' r='5'/>
+        <circle cx='286' cy='111.633' r='5'/>
+        <circle cx='390' cy='111.633' r='5'/>
+        <circle cx='104' cy='154.322' r='5'/>
+        <circle cx='130' cy='154.322' r='5'/>
+        <circle cx='156' cy='154.322' r='5'/>
+        <circle cx='182' cy='154.322' r='5'/>
+        <circle cx='208' cy='197.011' r='5'/>
+        <circle cx='234' cy='197.011' r='5'/>
+        <circle cx='260' cy='197.011' r='5'/>
+        <circle cx='286' cy='197.011' r='5'/>
+        <circle cx='312' cy='239.7' r='5'/>
+        <circle cx='338' cy='239.7' r='5'/>
+        <circle cx='364' cy='239.7' r='5'/>
+        <circle cx='390' cy='239.7' r='5'/>
+      </g>
+      <g class='bluegreen' opacity='0.4' style='stroke:currentColor'>
+        <circle cx='26' cy='68.944' r='5'/>
+        <circle cx='130' cy='68.944' r='5'/>
+        <circle cx='234' cy='68.944' r='5'/>
+        <circle cx='338' cy='68.944' r='5'/>
+        <circle cx='52' cy='90.289' r='5'/>
+        <circle cx='156' cy='90.289' r='5'/>
+        <circle cx='260' cy='90.289' r='5'/>
+        <circle cx='364' cy='90.289' r='5'/>
+        <circle cx='78' cy='111.633' r='5'/>
+        <circle cx='182' cy='111.633' r='5'/>
+        <circle cx='286' cy='111.633' r='5'/>
+        <circle cx='390' cy='111.633' r='5'/>
+      </g>
+    </g>
+    <g font-size='18px'>
+      <text dy='0.32em' x='195' y='22.6'>Sequential broadcasting</text>
+    </g>
+  </g>
+</svg>
+
+<p>One way to express this is to replace the sequential loop body <code><span class='Value'>dst</span><span class='Bracket'>[</span><span class='Value'>i</span><span class='Bracket'>]</span> <span class='Function'>=</span> <span class='Value'>c</span> <span class='Function'>+=</span> <span class='Value'>src</span><span class='Bracket'>[</span><span class='Value'>i</span><span class='Bracket'>]</span><span class='Head'>;</span> <span class='Function'>++</span><span class='Value'>i</span><span class='Head'>;</span></code> with the following using a sub-accumulator <code><span class='Value'>t</span></code>:</p>
+<pre><span class='Value'>t</span> <span class='Function'>+=</span> <span class='Value'>src</span><span class='Bracket'>[</span><span class='Value'>i</span><span class='Bracket'>]</span><span class='Head'>;</span>
+<span class='Value'>int</span> <span class='Value'>r</span> <span class='Function'>=</span> <span class='Value'>dst</span><span class='Bracket'>[</span><span class='Value'>i</span><span class='Bracket'>]</span> <span class='Function'>=</span> <span class='Value'>c</span> <span class='Function'>+</span> <span class='Value'>t</span><span class='Head'>;</span>
+<span class='Value'>if</span> <span class='Paren'>(</span><span class='Function'>++</span><span class='Value'>i%k</span> <span class='Function'>==</span> <span class='Number'>0</span><span class='Paren'>)</span> <span class='Brace'>{</span> <span class='Value'>c</span> <span class='Function'>=</span> <span class='Value'>r</span><span class='Head'>;</span> <span class='Value'>t</span> <span class='Function'>=</span> <span class='Number'>0</span><span class='Head'>;</span> <span class='Brace'>}</span>
+</pre>
+<p>But of course you have to unroll by <code><span class='Value'>k</span></code> for any real speed. I was able to measure about a 40% speedup this way for prefix sums of 4-byte ints in gcc, compiling with <code><span class='Function'>-O3</span> <span class='Function'>-</span><span class='Value'>fno</span><span class='Function'>-</span><span class='Value'>tree</span><span class='Function'>-</span><span class='Value'>vectorize</span></code> to keep it from pessimizing with SIMD. Most of it was from unrolling, as shown by clang which did a standard 4-way unroll to go 25% faster on the sequential version. But when I tried broadcasting, clang undid it, using associativity to reduce the number of additions and the performance.</p>
+<table>
+<thead>
+<tr>
+<th>Unrolled by:</th>
+<th>1</th>
+<th>2</th>
+<th>4</th>
+<th>8</th>
+<th>(clang)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time (ns/element)</td>
+<td>0.34</td>
+<td>0.25</td>
+<td>0.21</td>
+<td>0.22</td>
+<td>0.25</td>
+</tr>
+<tr>
+<td>Instructions per cycle</td>
+<td>3.5</td>
+<td>4.5</td>
+<td>4.5</td>
+<td>3.9</td>
+<td>2.6</td>
+</tr>
+</tbody>
+</table>
+<p>Multiple layers can of course be tied together this way. For boolean scans in AVX2 you might combine a SWAR method on 64-bit words with broadcasting for the 4 words of a vector (or is that two sequential layers?) and sequential scan above this level. Framing this in terms of subdividing at the vector level and then the word level is subtly different from subdividing at the word level and then subdividing the scan on carries. What I've done is closer to the latter: scan each word, obtain carries, scan the carries and combine with the previous carry-of-carries, then shift over by one to make it an exclusive scan with the last one going into next step.</p>
 <h2 id="booleans"><a class="header" href="#booleans">Booleans</a></h2>
 <p>Boolean folds <code><span class='Function'>≠=+-</span></code> can be optimized with associative methods. <code><span class='Function'>≠</span></code> is the associative xor function, and <code><span class='Function'>=</span><span class='Modifier'>´</span><span class='Value'>𝕩</span></code> is <code><span class='Paren'>(</span><span class='Number'>2</span><span class='Function'>|≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>=≠</span><span class='Modifier'>´</span><span class='Value'>𝕩</span></code>. For <code><span class='Function'>+</span><span class='Modifier'>´</span></code> there's a dedicated popcount instruction, but also <a href="https://arxiv.org/abs/1611.07612">Faster Population Counts Using AVX2 Instructions</a> are possible. This method is well-known enough that clang produces the AVX2 code given a loop that sums popcounts. For <code><span class='Function'>-</span><span class='Modifier'>´</span></code>, flip every other bit beforehand and subtract half the length, that is, <code><span class='Paren'>(</span><span class='Function'>+</span><span class='Modifier'>´</span><span class='Value'>𝕩</span><span class='Function'>≠</span><span class='Number'>2</span><span class='Function'>|↕≠</span><span class='Value'>𝕩</span><span class='Paren'>)</span><span class='Function'>-⌊</span><span class='Number'>2</span><span class='Function'>÷</span><span class='Modifier'>˜</span><span class='Function'>≠</span><span class='Value'>𝕩</span></code>. Another case that's been studied is <code><span class='Function'>+</span><span class='Modifier'>˝</span></code> on an array with cells of 8, 16, 32, or 64 bits, called <a href="https://github.com/mklarqvist/positional-popcount">positional popcount</a>.</p>
 <p>Other folds <code><span class='Function'>∧∨&lt;&gt;≤≥</span></code> can be shortcut: they depend only on the first instance of a 0 (for <code><span class='Function'>∧&lt;&gt;</span></code>) or 1 (for <code><span class='Function'>∨≤≥</span></code>). Specifically we have the following on a boolean list, omitting <code><span class='Function'>⊑</span></code> in the right column:</p>

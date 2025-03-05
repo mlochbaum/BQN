@@ -14,7 +14,129 @@ The arithmetic operations `+×` on integers, and `⌈⌊` on all types, are asso
 
 For these operands, a fold can be done simply by combining two vector registers at a time, with a final pairwise reduction at the end. An overflowing operation like `+` needs to be performed at double width (or possibly 32-bit for 8-bit values), and moved to a full-width accumulator once that's exhausted.
 
-The technique for a fast prefix sum is described in Singeli's [min-filter tutorial](https://github.com/mlochbaum/Singeli/blob/master/doc/minfilter.md) beginning at "we have some vector scan code already". There's also a treatment [here](https://en.algorithmica.org/hpc/algorithms/prefix/), but the blocking method seems overcomplicated given that incorporating the carry after summing a register is enough to get rid of dependency chains.
+### Scan architecture
+
+There's lots of research on [parallel scan](https://en.wikipedia.org/wiki/Prefix_sum#Parallel_algorithms) with broadly useful ideas. Relevant ideas also show up in ALU design, where the shifting, broadcasting, and sequential algorithms below correspond to [Kogge-Stone](https://en.wikipedia.org/wiki/Kogge%E2%80%93Stone_adder), Sklansky, and ripple-carry adders. A fast CPU prefix sum is described in Singeli's [min-filter tutorial](https://github.com/mlochbaum/Singeli/blob/master/doc/minfilter.md) beginning at "we have some vector scan code already". There's also a treatment [here](https://en.algorithmica.org/hpc/algorithms/prefix/), but the blocking method seems overcomplicated when incorporating the carry after summing a register is enough to take care of dependency chains.
+
+Three associative scan algorithms make for useful components on a CPU core. The red paths show how, in each, an output involves every input up to its position exactly once.
+
+<!--GEN
+Ge ← "g"⊸At⊸Enc
+g  ← "fill=currentColor|stroke-linecap=round|text-anchor=middle|font-family=BQN,monospace"
+rc ← At "class=code|stroke-width=1.5|rx=12"
+og ← "class=code|style=stroke:currentColor|stroke-width=2"
+hg ← "class=bluegreen|opacity=0.4"
+
+Text ← ("text" Attr "dy"‿"0.32em"∾ Pos)⊸Enc
+Rect ← "rect" Elt Pos⊸∾⟜("width"‿"height"≍˘FmtNum)˝{𝔽⊘(∾⟜𝔽)}
+Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ FmtNum
+Circle ← "circle" Elt "cx"‿"cy"‿"r"≍˘FmtNum
+
+{
+dx‿dy ← d ← 24‿36
+ty ← dy × 1.5‿6
+label ← "Shifting"‿"Broadcasting"‿"Sequential"
+ix ← ↕8 ⋄ ox ← (0.8+≠ix)×↕≠label
+li ← 5
+ss ← ⟨
+  (-⊸↓⋈¨↓)⟜ix¨ 2⋆↕3
+  {m←(2×𝕩)|ix⋄(𝕩×m=𝕩-1)⋈¨○(/⟜ix)𝕩≤m}¨ 2⋆↕3
+  <∘⋈˘2↕ix
+⟩
+sp ← ∾ ox {
+  sy ← (⊑ty) + 4×dy× ↕⊸∾⊸÷ ≠𝕩
+  (dx×𝕨+∾𝕩) ≍¨ (≠¨𝕩)/1(-⊸↓((⊣+11+0.1×-˜)⋈¨⊢)↓)sy
+}¨ ss
+sr ← ∾{r←⟨⟩⋄⟨li⟩{r∾↩<f←(⊢´¨𝕨)∊𝕩⋄𝕩∾⊑¨f/𝕨}´𝕩⋄∾⌽r}¨ss
+tx ← dx×ox+⌜ix
+dim ← (d×2.6‿0.75) + ⊢´¨(⥊tx)‿ty ⋄ sh ← d×¯1.3‿0
+Links ← {
+  e ← ((⥊⊏⎉1⟜tx)¨⟨↕1+li,li⟩) ≍˘¨ ty
+  (⍉0‿¯1⊏⊢)¨(⊐⊏˘)⊸⊔ ∾e(1⌽⌽⊸∾)⍉¨𝕩
+}
+HlRect ← <∘(Rect≍˘⟜(1.75‿2.75×dy))∘(-˜`(-⊸⋈0.35×dx)+0‿¯1⊸⊏)
+
+(((-∾+˜)16‿8)+sh∾dim) SVG g Ge ⟨
+  rc Rect sh≍dim
+  (hg∾"|stroke-width=1") Ge HlRect˘ 2‿∘⥊1⊏tx
+  "stroke-width=2" Ge ⟨
+    "stroke=currentColor" Ge Line¨ (⥊tx ≍˜⊸≍¨ <ty) ∾ sr¬⊸/sp
+    "class=red|stroke-width=3" Ge Line¨ Links⊸∾ sr/sp
+    og Ge sc ← Circle∘∾⟜5¨ 1⊏˘¨sp
+    (hg∾"|style=stroke:currentColor") Ge 8↑(1=/≠∘∾¨ss)/sc
+  ⟩
+  "font-size=18px" Ge (((+˝÷≠)˘tx)⋈¨25-˜⊑ty) Text¨ label
+⟩
+}
+-->
+
+Shifting by powers of two is useful on units small enough that a shift is a single instruction (a curiosity is that the different shifts can be done in any order). When there are boundaries such as vector lanes, an alternative is to scan two halves separately and then correct the later one with broadcasted "carries", crossing the boundary only once. With no associative reordering, the sequential method minimizes total operations. CPU algorithms should be sequential at the top (per-core) level but lower levels need to make use of the processor's parallelism to be fast.
+
+The recursive step in broadcasting hints at a way to tie together any lower-level and higher-level scan algorithm. This step makes up the "Bottom-Up Parallel Scan" in [Parallel Scan as a Multidimensional Array Problem](https://ashinkarov.github.io/pubs/2022-scan.html). Divide the input into chunks of length `k` (rather than necessarily halves), and perform a scan on each. Then take the last element of each scanned chunk, propagate carries with an *exclusive* scan, and broadcast each result to combine it with the chunk it came from. It's typical to have one-register chunks and use a basic sequential scan for the carries: an entire register operation to combine two carries may be wasteful but packing and unpacking carries would be slower.
+
+        k ← 4        # Unit size
+        ⊢ vec ← ↕10  # Argument
+
+        ⊢ s ← +`˘ ↑‿k ⥊ vec  # Scan each unit
+
+        ⊢ c ← » +` ⊢˝˘ s  # Scan carries from last row
+
+        (≠vec) ⥊ c + s
+
+The dependency-cutting property of broadcasting can be demonstrated even in a scalar context, scanning both elements in a group and carries sequentially. With a group size of 4, the number of operations jumps from 4 to 7 per group, but the critical path is reduced from 4 to 1.
+
+<!--GEN
+{
+dx‿dy ← d ← 26‿34
+ty ← dy × 1.4‿7.5
+label ← ⋈"Sequential broadcasting"
+ix ← ↕16 ⋄ ox ← (0.8+≠ix)×↕≠label
+ss ← ⟨
+  {(<˘<⎉1 1⍉2↕˘𝕩) ∾ ⊢´⊸(⋈¨)˝¨<˘2↕𝕩} ∘‿4⥊ix
+ #{(𝕩∾¨𝕨«⟨⟩¨𝕩)∾<(⊢´⍟3𝕩)⋈¨⍷∾∾𝕨}˝⌽ (<∘⋈˘2↕⊢)˘ ∘‿4⥊ix
+⟩
+li ← 9
+sp ← ∾ ox {
+  sy ← (⊑ty) + 5.65×dy× ÷⟜(⊢´) +`0∾0.5⋆3>↕≠𝕩
+  (dx×𝕨+∾𝕩) ≍¨ (≠¨𝕩)/1(-⊸↓((⊣+8+0.1×-˜)⋈¨⊢)↓)sy
+}¨ ss
+sr ← ∾{r←⟨⟩⋄⟨li⟩{r∾↩<f←(⊢´¨𝕨)∊𝕩⋄𝕩∾⊑¨f/𝕨}´𝕩⋄∾⌽r}¨ss
+tx ← dx×ox+⌜ix
+dim ← (d×2.6‿0.5) + ⊢´¨(⥊tx)‿ty ⋄ sh ← d×¯1.3‿0
+Links ← {
+  e ← ((⥊⊏⎉1⟜tx)¨⟨↕1+li,li⟩) ≍˘¨ ty
+  (⍉0‿¯1⊏⊢)¨(⊐⊏˘)⊸⊔ ∾e(1⌽⌽⊸∾)⍉¨𝕩
+}
+HlRect ← <∘(Rect≍˘⟜(1.55‿2.02×dy))∘(-˜`(-⊸⋈0.35×dx)+0‿¯1⊸⊏)
+
+(((-∾+˜)64‿8)+sh∾dim) SVG g Ge ⟨
+  rc Rect sh≍dim
+  (hg∾"|stroke-width=1") Ge HlRect˘ 4‿∘⥊0⊏tx
+  "stroke-width=2" Ge ⟨
+    "stroke=currentColor" Ge Line¨ (⥊tx ≍˜⊸≍¨ <ty) ∾ sr¬⊸/sp
+    "class=red|stroke-width=3" Ge Line¨ Links⊸∾ sr/sp
+    og Ge sc ← Circle∘∾⟜5¨ 1⊏˘¨sp
+    (hg∾"|style=stroke:currentColor") Ge 12↑sc
+  ⟩
+  "font-size=18px" Ge (((+˝÷≠)˘tx)⋈¨25-˜⊑ty) Text¨ label
+⟩
+}
+-->
+
+One way to express this is to replace the sequential loop body `dst[i] = c += src[i]; ++i;` with the following using a sub-accumulator `t`:
+
+    t += src[i];
+    int r = dst[i] = c + t;
+    if (++i%k == 0) { c = r; t = 0; }
+
+But of course you have to unroll by `k` for any real speed. I was able to measure about a 40% speedup this way for prefix sums of 4-byte ints in gcc, compiling with `-O3 -fno-tree-vectorize` to keep it from pessimizing with SIMD. Most of it was from unrolling, as shown by clang which did a standard 4-way unroll to go 25% faster on the sequential version. But when I tried broadcasting, clang undid it, using associativity to reduce the number of additions and the performance.
+
+| Unrolled by:           | 1    | 2    | 4    | 8    | (clang) |
+|------------------------|------|------|------|------|---------|
+| Time (ns/element)      | 0.34 | 0.25 | 0.21 | 0.22 | 0.25    |
+| Instructions per cycle | 3.5  | 4.5  | 4.5  | 3.9  | 2.6     |
+
+Multiple layers can of course be tied together this way. For boolean scans in AVX2 you might combine a SWAR method on 64-bit words with broadcasting for the 4 words of a vector (or is that two sequential layers?) and sequential scan above this level. Framing this in terms of subdividing at the vector level and then the word level is subtly different from subdividing at the word level and then subdividing the scan on carries. What I've done is closer to the latter: scan each word, obtain carries, scan the carries and combine with the previous carry-of-carries, then shift over by one to make it an exclusive scan with the last one going into next step.
 
 ## Booleans
 
