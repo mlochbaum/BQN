@@ -191,9 +191,45 @@ Boolean folds on short rows can be implemented as a segmented scan, or windowed 
 
 This section describes how to perform and use the permutation sending the bit at position `n|f×i` to position `i` within each group of `n←2⋆k` bits, where `f` is odd. It's done by a series of swaps, conditionally exchanging pairs of bits separated by a power of two, starting at `n÷2` and ending at 2. Each swap is a self-inverse, so doing them in the opposite order results in the opposite permutation taking position `i` to `n|f×i`.
 
-The direction we focus on here can extract one bit from every `f`, so it's useful for boolean fold-cells and select-cells picking out a single column. In the other direction, it can spread bits out in the same way, which can be used for take-cells but is most powerful in [Replicate by constant](replicate.md#constant-replicate) since this also applies to broadcasting as used in Table and leading axis extension.
+The direction we focus on here can extract one bit from every `f`, so it's useful for boolean fold-cells and select-cells picking out a single column. In the other direction, it can spread bits out in the same way: this most directly applies to [take-cells](take.md#bit-interleaving-and-uninterleaving) but also works for [Replicate by constant](replicate.md#constant-replicate), and thus broadcasting for Table and leading axis extension.
 
 ### Decomposing into swaps
+
+<!--GEN
+{
+lgs ← "stroke=currentColor|opacity=0.05"‿"class=purple"‿"class=red"
+rgs ← "class=code"‿"fill=none|stroke=currentColor"
+bg ← "stroke-width=4|stroke=currentColor|stroke-linecap=butt"
+_step ← { h 𝕗_𝕣 i:
+  l ← 2×h ⋄ B ← {(l|𝕩) - h|𝕩}
+  (i - B i) + B 𝕗×i
+}
+s ← > ⊏˜` ss ← (2⋆↕ln) 3 _step¨ <↕n←2⋆ln←4
+
+d ← 34‿56
+y ← +`»1.27⋆↕≠s
+np ← ⋈˜⌜´ 0‿1+(⌽d)×⟨y,↕n⟩
+dim ← ¯4‿3⊸+⌾⊏ d⊸×˘ 1.1‿0.7 (-≍+˜)⊸+ 0¨⊸≍ ⟨n-1, ⊢´y⟩
+rh ← ⊢´ rd ← 11‿13
+
+lines ← Line¨ ⥊≍¨´<⎉1¨d×⟨↕∘≠⊸(≍˘)˘1↓>ss, (⋈⟜-0.21)⊸+˘2↕y⟩
+
+(⥊64‿8(-≍+˜)⊸+dim) SVG g Ge ⟨
+  rc Rect dim
+  "class=yellow|text-anchor=end|font-size=14" Ge ⟨
+    "opacity=0.25|stroke-width=4" Ge (Line d×¯0.5‿0.42⊸+)¨ ∾⟨
+      (2⊸× ⋈˜⊸≍¨ ¯0.8⋈¨y⊏˜{2|𝕩?0;1+𝕊𝕩÷2}¨) 1↓↕n÷2
+      (0‿n≍⋈˜)¨ y
+    ⟩
+    ((⟨1,0.5+rh⟩+d⊸×)¨¯0.5⋈¨y) Text¨ FmtNum 2⋆1+↕ln
+  ⟩
+  "stroke-width=2.5" Ge 1↓lgs Ge¨ (⥊(>+2×<)˝˘2↕s) ⊔ lines
+  "stroke-width=0.2" Ge   rgs Ge¨< (Rect (rd-0.2)⊸(-˜≍2×⊣))¨ np
+  bg Ge (2×rh×n÷˜1+s) (Line (0⋈⊣)(⊢≍˘-˜)((-1⊸+)⌾⊑rd)⊸+)¨ np
+  np Text¨ FmtNum s
+⟩
+}
+-->
 
 First we'll prove that a modular permutation does actually decompose into swap operations. Here's the intuitive case: consider the permutation where index `i` has value `16|5×i` (meaning, that's the original index of the bit that ends up at `i`). At positions `i` and `8+i`, `i<8`, we have `16|5×i` and `16|5×(8+i)` or `16|8+5×i`. These values are different, but both are congruent to `5×i` (mod 8), so one of them is `8|5×i` and the other is `8+8|5×i`. These are the values at positions `i` and `8+i` in the permutation that applies `8|5×i` within each byte, so to extend that permutation from size 8 to size 16 what we need to do is swap these bits if `16|5×i` isn't equal to `8|5×i`.
 
@@ -243,6 +279,33 @@ The total data to permute width `l` is 2+4+…`l÷2` bits, or `l-2`. It can be p
 ### Collecting bits
 
 The bits to be passed into the modular permutation need to be collected from the argument (possibly after some processing), one bit out of each `f`. Or, in the other direction, they need to be distributed to the result. This can be done by generating a bitmask of the required position in each register. Then an argument register is and-ed with the bitmask and or-ed into a running total. But generating the bitmask is slow. For example, with row size under 64, updating the mask `m` for the next word is `m>>r | m<<l` for appropriately-chosen shifts `l` and `r`: this is a lot of instructions at each step! For small factors, an unrolled loop with saved masks works; for larger factors, it gets to be a lot of code, and eventually you'll run out of registers.
+
+<!--GEN
+{
+g ← "fill=currentColor|text-anchor=middle|font-family=BQN,monospace"
+lc ← ("stroke-width"‿"10" ∾ "stroke"‿"opacity"≍˘⊢)¨ ⟨
+  "#521f5e"‿"0.1", "#991814"‿"0.25", "#7f651c"‿"0.1"
+⟩
+
+d ← 72‿36
+txy ← tx‿ty ← d × 0.9‿1.1 ∾¨ 2.2‿2.5 + ↕¨4‿6
+rd ← 0¨⊸≍ dimx‿dimy ← (0.8×d) + ⊢´¨txy
+tp ← (0⋈¨4⥊-⊸⋈11)⊸+⌾(1↓⊏) ⍉⋈⌜´txy
+
+(⥊ 192‿8 (-≍+˜)⊸+ rd) SVG g Ge ⟨
+  rc Rect rd
+  lc "g"⊸Attr⊸Enc¨ Line¨¨ ((¯1(↓⋈↑)⊑)∾1⊸↓) ⟨
+    ((18(⊣⋈-˜)dimx)˙≍⋈˜)¨ 1↓ty
+    (⋈˜≍( 8(⊣⋈-˜)dimy)˙)¨ 1↓tx
+  ⟩
+  "28"‿"18"‿"20" "font-size="⊸∾⊸Ge¨ (+⌜´0<↕¨∘≢)⊸⊔ tp Text¨ {
+    Or ← 1⊸⌽⊸(∾⟜"|"⊸∾˜¨⌾(3↑1⊸↓))⌾(¯1⊸⊏)
+    t ← ⟨"&"⟩ ∾ (0=↕4) (∾⟜"|"⊸∾´ +⟜1⊸↑∾⟨"…"⟩∾-⟜2⊸↑)¨ <˘⍉𝕩
+    Or t ∾ {< ∾⟜"|…|"⊸∾´ ↑¨˜⟜(-⊸⋈⌈○≠´) 0‿¯1⊏𝕩}⊸∾˘ 𝕩
+  } ⌽‿4 ⥊ FmtNum ↕21
+⟩
+}
+-->
 
 Since one modular permutation is needed for every `f` expanded registers, a better approach is to structure it as a loop of length `f` and unroll this loop. An unrolled iteration handling 4 adjacent registers works with a mask that combines the selected bits from all those registers, and at the end of the iteration it's advanced by 4 steps—this is the same operation as advancing once, just with different shifts. So that contains iterations 0|1|2|3, then 4|5|6|7, and so on. In addition to this "horizontal" mask we need 4 pre-computed "vertical" masks to distinguish within an iteration: one mask combines register 0 of each iteration 0|4|8|…, another does 1|5|9|…, and so on. So the intersection of one horizontal and one vertical mask correctly handles a particular register. The unrolled iteration applies the vertical mask to each of the 4 registers, and the horizontal one to them as a whole. So:
 - When extracting, add `h & ((i0&v0) | ... | (i3&v3))` to the running total.
