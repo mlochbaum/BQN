@@ -117,6 +117,87 @@
 <p>When <code><span class='Value'>𝕨</span></code> is sparse (or <code><span class='Value'>𝕩</span></code> for Indices), that is, has a small sum relative to its length, there are methods that lower the per-input cost by doing more work for each output.</p>
 <p>The best known sparse method is to work on a full word of bits. At each step, find the first index with count-trailing-zeros, and then remove that bit with a bitwise and, <code><span class='Value'>w</span> <span class='Value'>&amp;</span><span class='Function'>=</span> <span class='Value'>w</span><span class='Function'>-</span><span class='Number'>1</span></code> in C. However, this method has a loop whose length is the number of 1s in the word, a variable. CPUs are very good at predicting this length in benchmarks, but in practice it's likely to be less predictable! In CBQN it's only used for densities below 1/128, one bit every two words.</p>
 <p>For marginal cases, I found a branchless algorithm that can work on blocks of up to <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Number'>11</span></code> elements. The idea is to split each word into a few segments, and write the bits and relative offset for each segment to the appropriate position in the result of a zeroed buffer. Then traverse the buffer, maintaining bits and a cumulative offset. At each step, the index is obtained from those bits with count-trailing-zeros just as in the branching algorithm. The bits will all be removed exactly when the next segment is reached, so new values from the buffer can be incorporated just by adding them.</p>
+<svg viewBox='-40 -80 1056 404'>
+  <g fill='currentColor' font-family='BQN,monospace' font-size='16'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-24' y='-72' width='1024' height='388'/>
+    <rect class='bluegreen' opacity='0.3' x='950' y='-60' width='36' height='364'/>
+    <path stroke-width='1' stroke='currentColor' fill='none' d='M4 -8h-10v146h10M4 150h-10v146h10'/>
+    <g class='bluegreen' stroke-width='3' stroke-linecap='round'>
+      <line x1='238' x2='282' y1='5' y2='0'/>
+      <line x1='238' x2='282' y1='56' y2='36'/>
+      <line x1='238' x2='282' y1='107' y2='180'/>
+      <line x1='238' x2='282' y1='163' y2='180'/>
+      <line x1='238' x2='282' y1='214' y2='180'/>
+      <line x1='238' x2='282' y1='265' y2='288'/>
+      <line x1='606' x2='650' y1='0' y2='0'/>
+      <line x1='606' x2='650' y1='36' y2='36'/>
+      <line x1='606' x2='650' y1='72' y2='72'/>
+      <line x1='606' x2='650' y1='108' y2='108'/>
+      <line x1='606' x2='650' y1='144' y2='144'/>
+      <line x1='606' x2='650' y1='180' y2='180'/>
+      <line x1='606' x2='650' y1='216' y2='216'/>
+      <line x1='606' x2='650' y1='252' y2='252'/>
+      <line x1='606' x2='650' y1='288' y2='288'/>
+      <line x1='670' x2='670' y1='12' y2='24'/>
+      <line x1='670' x2='670' y1='48' y2='60'/>
+      <line x1='670' x2='670' y1='84' y2='96'/>
+      <line x1='670' x2='670' y1='120' y2='132'/>
+      <line x1='670' x2='670' y1='156' y2='168'/>
+      <line x1='670' x2='670' y1='192' y2='204'/>
+      <line x1='670' x2='670' y1='228' y2='240'/>
+      <line x1='670' x2='670' y1='264' y2='276'/>
+    </g>
+    <text dy='0.33em' x='20' y='-48'>words split 24+24+16</text>
+    <text dy='0.33em' x='288' y='-48'>zeroed buffer  <tspan class='String'>+</tspan>  bits | <tspan class='Modifier'>add</tspan><<24</text>
+    <text dy='0.33em' x='656' y='-48'>trailing zeros of <tspan class='Number'>↓</tspan>   +  8×<tspan class='Modifier'>↓</tspan> =</text>
+    <text dy='0.33em' x='656' y='-20'>                         <tspan class='Modifier'>(¯2)</tspan></text>
+    <text dy='0.33em' x='0' y='5'>00000000000000000000000<tspan class='Number'>1</tspan></text>
+    <text dy='0.33em' x='0' y='56'><tspan class='Number'>1</tspan>00000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>000000<tspan class='Number'>1</tspan>00000</text>
+    <text dy='0.33em' x='0' y='107'>0000000000000000</text>
+    <text dy='0.33em' x='0' y='163'>000000000000000000000000</text>
+    <text dy='0.33em' x='0' y='214'>0000<tspan class='Number'>1</tspan><tspan class='Number'>1</tspan>0000000000<tspan class='Number'>1</tspan>0000000</text>
+    <text dy='0.33em' x='0' y='265'>0000000000<tspan class='Number'>1</tspan>00000</text>
+    <text dy='0.33em' x='0' y='23'>sum=<tspan class='String'>1</tspan>, dest=<tspan class='String'>0</tspan>, add=<tspan class='Modifier'>2</tspan></text>
+    <text dy='0.33em' x='0' y='74'>sum=<tspan class='String'>4</tspan>, dest=<tspan class='String'>1</tspan>, add=<tspan class='Modifier'>3</tspan></text>
+    <text dy='0.33em' x='0' y='125'>sum=<tspan class='String'>0</tspan>, dest=<tspan class='String'>5</tspan>, add=<tspan class='Modifier'>3</tspan></text>
+    <text dy='0.33em' x='0' y='181'>sum=<tspan class='String'>0</tspan>, dest=<tspan class='String'>5</tspan>, add=<tspan class='Modifier'>2</tspan></text>
+    <text dy='0.33em' x='0' y='232'>sum=<tspan class='String'>3</tspan>, dest=<tspan class='String'>5</tspan>, add=<tspan class='Modifier'>3</tspan></text>
+    <text dy='0.33em' x='0' y='283'>sum=<tspan class='String'>1</tspan>, dest=<tspan class='String'>8</tspan>, add=<tspan class='Modifier'>3</tspan></text>
+    <text dy='0.33em' x='288' y='0'>00000000000000000000000<tspan class='Number'>1</tspan> | <tspan class='Modifier'>2</tspan><<24</text>
+    <text dy='0.33em' x='288' y='36'><tspan class='Number'>1</tspan>00000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>000000<tspan class='Number'>1</tspan>00000 | <tspan class='Modifier'>3</tspan><<24</text>
+    <text dy='0.33em' x='288' y='72'>0</text>
+    <text dy='0.33em' x='288' y='108'>0</text>
+    <text dy='0.33em' x='288' y='144'>0</text>
+    <text dy='0.33em' x='288' y='180'>0000<tspan class='Number'>1</tspan><tspan class='Number'>1</tspan>0000000000<tspan class='Number'>1</tspan>0000000 | <tspan class='Modifier'>8</tspan><<24</text>
+    <text dy='0.33em' x='288' y='216'>0</text>
+    <text dy='0.33em' x='288' y='252'>0</text>
+    <text dy='0.33em' x='288' y='288'>0000000000<tspan class='Number'>1</tspan>0000000000000 | <tspan class='Modifier'>3</tspan><<24</text>
+    <text dy='0.33em' x='656' y='0'>00000000000000000000000<tspan class='Number'>1</tspan>,<tspan class='Modifier'>  0</tspan></text>
+    <text dy='0.33em' x='656' y='36'><tspan class='Number'>1</tspan>00000000101000000100000,<tspan class='Modifier'>  3</tspan></text>
+    <text dy='0.33em' x='656' y='72'>000000000<tspan class='Number'>1</tspan>01000000100000,<tspan class='Modifier'>  3</tspan></text>
+    <text dy='0.33em' x='656' y='108'>00000000000<tspan class='Number'>1</tspan>000000100000,<tspan class='Modifier'>  3</tspan></text>
+    <text dy='0.33em' x='656' y='144'>000000000000000000<tspan class='Number'>1</tspan>00000,<tspan class='Modifier'>  3</tspan></text>
+    <text dy='0.33em' x='656' y='180'>0000<tspan class='Number'>1</tspan>1000000000010000000,<tspan class='Modifier'> 11</tspan></text>
+    <text dy='0.33em' x='656' y='216'>00000<tspan class='Number'>1</tspan>000000000010000000,<tspan class='Modifier'> 11</tspan></text>
+    <text dy='0.33em' x='656' y='252'>0000000000000000<tspan class='Number'>1</tspan>0000000,<tspan class='Modifier'> 11</tspan></text>
+    <text dy='0.33em' x='656' y='288'>0000000000<tspan class='Number'>1</tspan>0000000000000,<tspan class='Modifier'> 14</tspan></text>
+    <text dy='0.33em' x='934' y='0'>→  23</text>
+    <text dy='0.33em' x='934' y='36'>→  24</text>
+    <text dy='0.33em' x='934' y='72'>→  33</text>
+    <text dy='0.33em' x='934' y='108'>→  35</text>
+    <text dy='0.33em' x='934' y='144'>→  42</text>
+    <text dy='0.33em' x='934' y='180'>→  92</text>
+    <text dy='0.33em' x='934' y='216'>→  93</text>
+    <text dy='0.33em' x='934' y='252'>→ 104</text>
+    <text dy='0.33em' x='934' y='288'>→ 122</text>
+    <g font-size='12'><text dy='0.33em' x='20' y='-28'>(little-endian bit order)</text></g>
+    <g font-size='26'>
+      <text dy='0.33em' x='-4' y='-42'><tspan class='Value'>𝕩</tspan></text>
+      <text dy='0.33em' x='950' y='-42'><tspan class='Function'>/</tspan><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
 <h3 id="grouped-compress"><a class="header" href="#grouped-compress">Grouped compress</a></h3>
 <p>The sparse method can also be adapted to find groups of 1s instead of individual 1s, by searching for the first 1 and then the first 0 after that. This is useful if <code><span class='Value'>𝕨</span></code> changes value rarely, that is, if <code><span class='Function'>+</span><span class='Modifier'>´</span><span class='Function'>»</span><span class='Modifier2'>⊸</span><span class='Function'>&lt;</span><span class='Value'>𝕨</span></code> is small. Computing this value can be expensive so it's best to compute the threshold first, then update it in blocks and stop if it exceeds the threshold.</p>
 <p>For copying medium-sized cells with memcpy, all the branching here is pretty cheap relative to the actual operation, and it may as well be used all the time. This may not be true for smaller cells copied with overwriting, but I haven't implemented overwriting so I'm not sure.</p>

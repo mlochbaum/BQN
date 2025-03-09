@@ -114,6 +114,66 @@ The best known sparse method is to work on a full word of bits. At each step, fi
 
 For marginal cases, I found a branchless algorithm that can work on blocks of up to `2⋆11` elements. The idea is to split each word into a few segments, and write the bits and relative offset for each segment to the appropriate position in the result of a zeroed buffer. Then traverse the buffer, maintaining bits and a cumulative offset. At each step, the index is obtained from those bits with count-trailing-zeros just as in the branching algorithm. The bits will all be removed exactly when the next segment is reached, so new values from the buffer can be incorporated just by adding them.
 
+<!--GEN
+Ge ← "g"⊸At⊸Enc
+g  ← "fill=currentColor|font-family=BQN,monospace|font-size=16"
+rc ← "class=code|stroke-width=1.5|rx=12"
+pe ← "path"At"stroke-width=1|stroke=currentColor|fill=none"
+
+Text ← ("text" Attr "dy"‿"0.33em"∾Pos)⊸Enc
+Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ FmtNum
+Rect ← "rect"{𝕗⊘(𝕗At⊣)} Elt Pos⊸∾⟜("width"‿"height"≍˘FmtNum)˝∘⊢
+
+nw ← 2
+input ← (2×64) ↑/⁼ 23‿24‿33‿35‿42‿92‿93‿104‿122
+po ← ¯1 ⌽ off ← ⥊nw/≍3‿3‿2
+groups← (8×off) /⊸⊔ input
+dest ← »+` popc ← +´¨groups
+gg ← dest ⊔ groups 24⊸↑⊸⋈¨ po
+gs ← (<⟨24⥊0,¯2⟩) (»∨`)⊸∧⌾⊑⊸(+´)` gg
+
+y0 ← 5 + (51⊸× + 5×3⊸≤) ↕≠groups ⋄ yh ← 18+y0
+yt ← ⊑ y1 ← 36 × ↕≠gg
+x0‿x1‿x2‿x3 ← +`0‿288‿368‿320
+dim ← 24‿72 (-∘⊣≍2⊸×⊸+) x3⋈(⊢´y1)-44
+x0t ← x0 + 20
+
+Tspan ← {⟨"<tspan class='"∾𝕩∾"'>", "</tspan>"⟩}
+tBit‿tAdd‿tSum ← ts ← Tspan¨ "Number"‿"Modifier"‿"String"
+CBit‿CAdd‿CSum ← {𝕨∾∾⟜𝕩}´¨ ts
+
+_hl ← { i←𝔽/𝕩 ⋄ ⟨1¨𝕩, ⥊tBit˘i, ⥊i-⌜1‿0⟩ Modify '0'+𝕩 }
+FmtBW ← {∾𝕨‿" | "‿𝕩‿"<<24"}⟜CAdd
+
+(⥊ 16‿8 (-≍+˜)⊸+ dim) SVG g Ge ⟨
+  rc Rect dim
+  "class=bluegreen|opacity=0.3" Rect (-˜`x3+¯26‿10)≍˘(1‿¯2×12)+⊢˝˘dim
+  pe Elt "d"⋈∾(∾"M hvh"∾¨⟜FmtNum(x0+4)∾∾⟜(10(-⊸∾∾⊣)7-˜3×51))¨ 13-˜0‿3⊏y0
+  "class=bluegreen|stroke-width=3|stroke-linecap=round" Ge Line¨ ∾⟨
+    (x1-50‿6)⊸≍¨ y0⋈¨dest⊏y1
+    ((x2-50‿6)≍⋈˜)¨ y1
+    ((⋈˜14+x2)≍(⋈⟜-12)⊸+)¨ <˘2↕y1
+  ⟩
+  Text¨´¨ ⟨
+    ⟨x0t‿x1‿x2⋈¨48-˜yt, ⟨
+      "words split 24+24+16"
+      (∾⟨"zeroed buffer  ",CSum"+","  bits"⟩) FmtBW "add"
+      ∾⟨"trailing zeros of ",CBit"↓","   +  8×",CAdd"↓"," ="⟩
+    ⟩⟩
+    ⋈¨⟨x2⋈¯20+yt, (25⥊' ')∾CAdd"(¯2)"⟩
+    ⟨x0⋈¨y0, ⊢_hl¨ groups⟩
+    ⟨x0⋈¨yh, ∾⟜", "⊸∾¨´ {n‿(b‿e)‿v: (n∾"=")⊸∾¨ (b∾∾⟜e)¨ FmtNum v}¨ ⟨
+      "sum"‿tSum‿popc, "dest"‿tSum‿dest, "add"‿tAdd‿po
+    ⟩⟩
+    ⟨x1⋈¨y1, (0<≠)◶⟨"0", ⊢_hl⊸FmtBW⟜•Repr´+´⟩¨ gg⟩
+    ⟨x2⋈¨y1, ⊑_hl⊸{𝕨∾","∾CAdd ¯3↑𝕩}⟜•Repr´¨ gs⟩
+    ⟨(x3-42)⋈¨y1, {"→"∾¯4↑•Repr𝕩}¨ {(⊑/𝕨)+8×𝕩}´¨gs⟩
+  ⟩
+  "font-size=12" Ge ⟨x0t,28-˜yt⟩ Text "(little-endian bit order)"
+  "font-size=26" Ge ⟨x0-4, x3-26⟩ ⋈⟜(yt-42)⊸Text⟜Highlight¨ "𝕩"‿"/𝕩"
+⟩
+-->
+
 ### Grouped compress
 
 The sparse method can also be adapted to find groups of 1s instead of individual 1s, by searching for the first 1 and then the first 0 after that. This is useful if `𝕨` changes value rarely, that is, if `+´»⊸<𝕨` is small. Computing this value can be expensive so it's best to compute the threshold first, then update it in blocks and stop if it exceeds the threshold.
