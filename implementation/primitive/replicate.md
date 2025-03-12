@@ -34,12 +34,20 @@ The case where `𝕨` is constant is useful for outer products and leading-axis 
 
 The same approaches work, but the branches in the branchless ones become a lot more predictable. So the obvious loops are now okay instead of bad even for small values. C compilers will generate decent code for constant small numbers—better for powers of two, but still not optimal it seems?
 
-For top performance, the result should be constructed from one shuffle per output, and some haggling with lanes for odd values in AVX. But this takes `𝕨` shuffle instructions, so handling all constants up to some bound is quadratic in code size (JIT compiling might help, but generating a lot of code is bad for short `𝕩`). CBQN has a complicated mix of AVX2 methods to get high peformance with tolerable code size. From fastest to slowest:
+For top performance, the result should be constructed from one shuffle per output, and some haggling with lanes for odd values in AVX. But this takes `𝕨` shuffle instructions, so handling all constants up to some bound is quadratic in code size (JIT compiling might help, but generating a lot of code is bad for short `𝕩`). On 1- to 8-byte types, CBQN has a complicated mix of AVX2 methods to get high peformance with tolerable code size. From fastest to slowest:
 
 - Sizes 2 to 7 have dedicated shuffle code.
 - Small composite sizes `𝕨=l×f`, where `f` has a dedicated shuffle, are split into `l/f/𝕩`.
 - Other small sizes use a function that always reads 1 vector and writes 4 per iteration, using shuffle vectors from a table to generate them. This requires tail handling and uses some tricks to pack the tables to a reasonable size.
 - Sizes where one element fills multiple vectors write broadcasted vectors, overlapping the last two writes to avoid any tail handling. There are unrolled loops for less than 4 vectors.
+
+#### Constant replicate boolean
+
+On booleans, we also use a mix of methods, which for small constants is based on factoring into a power of two times an odd number. Divisors of 8 are handled with various ad-hoc shuffling (and sometimes we replicate by 8 and then replicate as 1-byte data). Odd factors less than 64 are always handled with the [modular permutation](fold.md#the-modular-bit-permutation). This alone can only place each bit at its initial index times `𝕨`, so to spread each bit we want to shift up by `𝕨` and subtract. A key trick is to rotate the permuted word, which combines all the bits, instead of shifting after splitting it up. When handling the lowest `𝕨` bits of each word, the top bit will be there but the bottom bit won't, so you have to subtract 1 if any of the bottom `𝕨` bits of the top bit is set—with this, any cross-word carrying is eliminated!
+
+With AVX2 we can also get useful work out of the modular permutation above width 64 and up to 256, by constructing a boundary mask that always has one bit: it is the boundary in each word that has one, or is the same as the previous mask. This is constructed as `1<<(s&63)`, where the shift amount `s` is equal to the distance from the end of a given word to the previous boundary—that is, a negative number in the range [-`𝕨`,0). Then bitwise-and with a permuted 64-bit word picks out the bit value that should go at the end of the word. If `s >= -64`, then this is the entire word, and otherwise the other bit can be incorporated using the rotation trick and some xor-based logic. I haven't found an analogue of the horizontal-vertical mask decomposition for `𝕨<64`; the distance tracking and shifting is substantially slower.
+
+Otherwise, the scalar method for `𝕨>64` is, for each bit in `𝕩`, to write a boundary word and then some number of constant words. This can be done with a fixed number of writes, increasing the speed at smaller `𝕨` by avoiding branch prediction. Every iteration writes `w/64 - 1` or `w/64` constant words. First write the last one, then `w/64 - 1` from the starting point. They'll overlap if necessary to give the right length.
 
 ## Booleans
 
