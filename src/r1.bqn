@@ -728,7 +728,7 @@ Reshape←{
     Chk ← ⊢ ⊣ "𝕨⥊𝕩: Shape must be exact when reshaping with ∘" ! ⌊⊸=
     a←(2⌊t)◶⟨Chk,⌊,⌈⟩n÷lp
     s↩p⊣◶⊢‿a¨s
-    {d∾↩(Fill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
+    {d∾˜_fillBy_⊢˜↩(Fill d)⌜↕𝕩-n⋄n}⍟(n⊸<)⍟(3=t)lp×a
   } s
   s⥊{
     "𝕨⥊𝕩: Can't produce non-empty array from empty 𝕩" ! 0<n
