@@ -68,7 +68,7 @@ BQN can detect lots of structural functions when written [tacitly](tacit.md); se
 
         ⌽⌾(⊢↑˜≠÷2˙) "abcdef"
 
-But you can't use a computation that uses array values, such as `10⊸+⌾((<⊸5)⊸/)` to add 10 to each element below 5. This is because Under can change the array values, so that the function `𝔾` doesn't select the same elements before and after applying it (contrarily, Under can't change array structure, or at least not the parts that matter to `𝔾`). To use a dynamic selection function, compute the mask or indices based on a copy of the argument and use those as part of `𝔾`.
+But you can't use a computation that uses array values, such as `10⊸+⌾((<⟜5)⊸/)` to add 10 to each element below 5. This is because Under can change the array values, so that the function `𝔾` doesn't select the same elements before and after applying it (contrarily, Under can't change array structure, or at least not the parts that matter to `𝔾`). To use a dynamic selection function, compute the mask or indices based on a copy of the argument and use those as part of `𝔾`.
 
         {10⊸+⌾((𝕩<5)⊸/)𝕩} 3‿8‿2‿2‿6
 
