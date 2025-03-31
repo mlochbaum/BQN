@@ -62,4 +62,4 @@ system ← {𝕨⊸FindSys⊏𝕩˙}´⟨
   Show⍟(t=1)∘BQN¨ (t<2)◶⟨•file.Chars¨, 1⊸↓⟩ •args
 ;@}
 
-BQN  # Return the evaluator so it can be •Include d from BQN
+BQN  # Return the evaluator to allow •Import from BQN
