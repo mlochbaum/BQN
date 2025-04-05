@@ -188,13 +188,13 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)cq
   "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓cq
   cc←(⍋⍋«co)⊏c∾/cs                          # Case close
-  hi←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh              # Header component indices
-  un←0=us←swap_undo(≠∘⊣-⊐)hi⊏𝕩
-  "Invalid Undo header syntax"_err_(HI) un<(»⊸≥∨(1»un)∧2⊸=)us
-  ut←un/»us⋄hi/˜↩0=us                       # Undo type: 0 normal, 1 ⁼, 2 ˜⁼
+  hiu←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh             # Header component indices
+  un←0=us←swap_undo(≠∘⊣-⊐)hiu⊏𝕩
+  ut←un/»us⋄hi←un/hiu                       # Undo type: 0 normal, 1 ⁼, 2 ˜⁼
   hr←(⊏⟜ns×⊏⟜r)rev⊏˜hi                      # Header component roles
   hl←2=hn←(1⊸»+«)hc←¯1=hr                   # hl: is label, hc: is :
   "Only one header per body allowed"_err_(hc/HI) (g⊏˜1+gi⊏˜hc/hi)⊏hf
+  "Invalid Undo header syntax"_err_(HIU) un<(»⊸≥∨(1»un)∧2⊸=)us
   ho←(»∨·«(hr=3)∧⊢)hl<hy←2≤hr               # Header operands
   "Missing operand in header"_err_(HI) (ut∧hr=3)∨ho∧hc∨hy
   hm←¬ho∨ha←ho<(0=hr)∧1=hn                  # Mask for main name; header arguments
