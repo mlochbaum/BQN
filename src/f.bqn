@@ -131,7 +131,7 @@
   ⟩⟩
   ReprArr ← (2⌊=)◶⟨Paren"<"∾RR∘⊑,ReprList,Paren≢∾⟜"⥊"⊸∾○ReprList⥊⟩
   ReprDat ← (0=Type)◶⟨ReprAtom,ReprArr⟩
-  ReprOp ← 1⊑ RR _dispOp_ ("Can't represent block"!0˙)
+  ReprOp ← 1⊑ RR _dispOp_ (!"Can't represent "∾"block"‿"namespace"⊑˜6=⊣)
   Repr ← Type (3≤⊣)◶⟨ReprDat⊢,ReprOp⟩ ⊢
 
   # Convert Fmt from matrix to string
