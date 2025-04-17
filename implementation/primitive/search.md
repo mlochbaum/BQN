@@ -24,7 +24,7 @@ For example, a lookup table algorithm for dyadic `⊐` might traverse `𝕨`, wr
 
 Set operations can be handled with a packed bit table, but reading a bit is slower so this should be done only if the space savings are really needed. With sparse lookups this seems to be very rare.
 
-A 1-bit lookup can be packed into vector registers for extra-fast searching, as described in [small-range selection](select.md#small-range-selection).
+A 1-bit lookup can be packed into vector registers for extra-fast searching, as described in [small-range selection](select.md#small-range-selection). Constructing it quickly is harder but sometimes possible: [(Ab)using gf2p8affineqb to turn indices into bits](https://www.corsix.org/content/abusing-gf2p8affineqb-indices-into-bits) gives an AVX-512 method assuming a range of 64. For longer vectors no such trickery is needed: bits in the table need to be flipped at most 256 times, so the task is to search for values not yet in the table, and it's fine to do a slow update when one is found.
 
 ## Hash tables
 
