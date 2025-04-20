@@ -914,7 +914,7 @@ PrimInverse ← INF _lookup_ ⟨
   '∧', ⊢_invChk_∧⊘(÷˜)
   '∨', ⊢_invChk_∨⊘(-˜÷1-⊣)
   '¬', ¬
-  '≠', {B←0⊸=∨1⊸=⋄IX B𝕩⋄IA B𝕨⋄𝕩≠𝕨} _perv
+  '≠', IA∘0 ⊘ ({B←0⊸=∨1⊸=⋄IX B𝕩⋄IA B𝕨⋄𝕩≠𝕨} _perv)
   '<', {IX IsArray𝕩⋄IX 0==𝕩⋄0⊑⥊𝕩}⊘(IA∘0)
   '⊢', ⊢
   '⊣', ⊢⊘(⊢⊣IX∘≡)
