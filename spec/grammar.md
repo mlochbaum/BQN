@@ -9,7 +9,7 @@ The symbols `s`, `F`, `_m`, and `_c_` are identifier tokens with subject, functi
 A program is a list of statements. Almost all statements are expressions. Namespace export statements, and valueless results stemming from `·`, or `𝕨` in a monadic block function, can be used as statements but not expressions.
 
     PROGRAM  = ⋄? ( STMT ⋄ )* STMT ⋄?
-    STMT     = EXPR | nothing | EXPORT
+    STMT     = EXPR | noExpr | EXPORT
     ⋄        = ( "⋄" | "," | LF | CR )+
     EXPR     = subExpr | FuncExpr | _m1Expr | _m2Expr_
     EXPORT   = LHS_ELT? "⇐"
@@ -21,6 +21,7 @@ Here we define the "atomic" forms of functions and modifiers, which are either s
     _mod1    = ( atom "." )? _m  | _ml  | "(" _m1Expr  ")" | _blMod1
     Func     = ( atom "." )?  F  |  Fl  | "(" FuncExpr ")" |  BlFunc
     atom     = ( atom "." )?  s  |  sl  | "(" subExpr  ")" |  blSub | array
+    nothing  =                     "·"  | "(" noExpr   ")"
     array    = "⟨" ⋄? ( ( EXPR ⋄ )* EXPR ⋄? )? "⟩"
              | "[" ⋄?   ( EXPR ⋄ )* EXPR ⋄?    "]"
     subject  = atom | ANY ( "‿" ANY )+
@@ -52,8 +53,8 @@ Subject expressions consist mainly of function application. We also define nothi
 
     arg      = subject
              | ( subject | nothing )? Derv subExpr
-    nothing  = "·"
-             | ( subject | nothing )? Derv nothing
+    noExpr   = nothing
+             | ( subject | nothing )? Derv noExpr
     subExpr  = arg
              | lhs ASGN subExpr
              | lhs Derv "↩" subExpr?      # Modified assignment
