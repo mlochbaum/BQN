@@ -5,9 +5,11 @@
 Documents in this directory give context on how BQN was designed or remark on aspects of the language.
 
 - [Problems with BQN](problems.md)
-- [BQN development history](history.md)
+- [BQN's development history](history.md)
 - [Why use BQN?](why.md)
 - [Is BQN stable?](stability.md)
 - [What is a primitive?](primitive.md)
 - [Notes on left-to-right ordering](ltr.md)
 - [Notes on primitive overloading](overload.md)
+- [Is BQN mathematics?](math.md)
+- [Five-year review of BQN design](fiveyears.md)
