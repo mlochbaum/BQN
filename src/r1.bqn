@@ -362,14 +362,16 @@ _fillByPure_←{
 _each  ← {𝕨𝔽⌜⊘(𝔽_eachd)_fillByPure_𝔽○ToArray𝕩}
 _table ← {𝕨𝔽⌜_fillByPure_𝔽○ToArray𝕩}
 
-match←{(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
+_matchF ← {rec ← {(0⊑𝕨)◶(1⊑𝕨)‿𝕩}´⟨
   ⟨=○IsArray, 0⟩
-  ⟨IsArray∘⊢, =⟩
+  ⟨IsArray∘⊢, 𝔽⟩
   ⟨=○=      , 0⟩
   ⟨MatchS○≢ , 0⟩
-  {1×´⥊𝕨Match¨𝕩}
-⟩
-Depth←IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
+  {1×´⥊𝕨Rec¨𝕩}
+⟩}
+Match ← =_matchF
+MatchR ← =◶⟨0=+○(=˜),1⟩_matchF
+Depth ← IsArray◶0‿{1+0⌈´Depth⌜⥊𝕩}
 
 Join1←{
   # List of lists
@@ -511,7 +513,7 @@ under←{
       "Cannot modify fill with Structural Under"!1∧´@⊸>⌜i
       gl←l GroupLen i ⋄ v⊏˜↩gl GroupOrd i
       j←0⋄Adv←{(j+↩𝕩)-1}⊑v˙
-      CM←"⌾: Incompatible result elements in structural Under"!Match
+      CM←"⌾: Incompatible result elements in structural Under"!MatchR
       s⥊(↕l)2⊸⌊◶⟨⊑⟜d,Adv,Adv{(𝕨CM(j-𝕩)⊸+⊑v˙)⌜↕𝕩-1⋄𝕨}⊢⟩¨gl
     }
     _at_ ← {(↕≠𝕩)𝔽⍟((𝔾𝕩)=⊣)¨𝕩}
