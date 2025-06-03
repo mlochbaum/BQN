@@ -159,7 +159,7 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   "Invalid assignment or stranding use"_err_(↕≠) ((¯4⊸<∧≤⟜¯2)r)>(ec∨𝕩=2+⊑bG)∧»dc<0≤r
   "Can't use export statement as expression"_err_(G) (0<bt)<g⊏¯4=r
   "Can't use export statement as predicate"_err_(↕≠) (»¯4=r)∧𝕩=pred
-  "Dot must be followed by a name"_err_(↕≠) dc>«𝕩 M vi‿nv
+  "Dot must be followed by a name (or digit to form a number)"_err_(↕≠) dc>«𝕩 M vi‿nv
   sr←»⌾(((⍋⊏⟜dl)⊸⊏g)⊸⊏)sl←«⊸∨r=¯2⋄ns←¬sl∨sr # Strand right and left; not stranded
   cp←𝕩=1+⊑bB                                # Closed paren
   nr←(IT¬cp)⊏(𝕩=2+⊑bI)+2×𝕩=⊑bO              # Nothingness role: 1 for 𝕨, 2 for ·
