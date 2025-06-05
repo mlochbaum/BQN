@@ -41,19 +41,20 @@
     '┐'⌾(0‿¯1⊸⊑) 2 Enframe 1 PadH ' '¨𝕩
   }‿{
     ≍(1<≠)◶⟨"⟨⟩",'↕'⌾⊑·∾·"‿"⊸∾¨FN¨⟩≢𝕩
-  })
+  })∘⊢
 
-  _paddingJoin ← {  # 𝕗 is 1 to left align and ¯1 to right align
-    s ← ≢¨ 𝕩
+  PaddingJoin ← { n 𝕊 f:
+    s ← ≢¨ f
     w ← (0<=)◶⟨⥊,⌈˝⍟(=-1˙)⟩1⊑¨s
     h ← ⌈˝⎉1⍟(0<=) ⊑¨s
-    o ← <∘∾⎉2 ≍⍟(0⌈2-=) (h ⋈⌜ 𝕗×w¬(-𝕗×≠w)↑1) ↑¨ 𝕩
+    a ← {⍉ (-w) ↑˘¨⌾((∧˝⍟(=-1˙)n)⊸/) ⍉⁼𝕩}⍟(1<=) f  # Pad numeric columns
+    o ← <∘∾⎉2 ≍⍟(0⌈2-=) (h ⋈⌜ w¬(-≠w)↑1) ↑¨ a
     2 PadH (1⊸⌽⊸≡⥊h)◶⟨PadVMixed,PadV∘>⟩ o
   }
 
-  _fmtMixedP ← {
+  FmtNonEmpty ← {
     r ← =𝕩
-    Join ← r Enframe 𝕗 _paddingJoin
+    Join ← r Enframe ((1<=)◶⟨@,1=Type¨⟩𝕩)⊸PaddingJoin
     𝕨 (∨´<⟜∞)◶(Join <⊸(Fmt¨))‿{
       p ← ⟨r>1,2⟩  # Outer padding
       o ← ¯1((0+⌜´(1(1+×)`⊢)⌾⌽×↕¨)∘↓⋈⌜2×↕∘⊑)≢𝕩  # Offset
@@ -62,10 +63,8 @@
       Join f
     } 𝕩
   }
-  FmtMixed ← 1 _fmtMixedP
 
-  FmtSimple ← (≠(0⊸<+≤)+´)∘(⥊<@˙)∘⊢◶{ # Depth 1
-    # All characters
+  FmtCharArr ← {
     r ← =𝕩 ⋄ 𝕩 ↩ ><¨0↓𝕩  # Ensure rank>0 and ' ' for fill
     k ← ∞⍟(0⊸=) -≠ c ← ¯1↓≢𝕩
     q ← "'"""⊑˜0<r
@@ -74,20 +73,12 @@
     CSub ← { 𝕩 + (𝕩(=×'␡'-⊢)@+127) + ('␀'-@)×𝕩<@+32 }
     𝕩 ↩ (1≠r)◶⟨(1+q=⊢)⊸/,Csub⟩ 𝕩
     (r Enframe 1 PadH PadV)⍟(1≠r) ≍ (q⌾⊑c⥊(¯1⊑1∾c)↑'·') ∾⎉k 𝕩 ∾⎉k c-⊸↑q
-  }‿{
-    # Not homogeneous, or empty
-    (∨´0=≢)◶⟨𝕨⊸FmtMixed,FmtEmpty⟩ 𝕩
-  }‿{
-    # All numbers
-    𝕨 ¯1 _fmtMixedP 𝕩
   }
 
+  FmtArr ← (0<≠)◶⟨2,∧´2=Type¨⟩∘⥊∘⊢◶FmtNonEmpty‿FmtCharArr‿FmtEmpty
+
   # Format data type
-  FmtDat ← (2⌊≡∘⊢)◶⟨
-    ≍ ReprAtom∘⊢
-    (∨´∘⥊3≤Type⌜∘⊢)◶FmtSimple‿FmtMixed
-    FmtMixed
-  ⟩
+  FmtDat ← (0=Type∘⊢)◶⟨≍ ReprAtom∘⊢, FmtArr⟩
 
   # Word-forming characters need to be separated by spaces
   IsWordChar ← ∊⟜(∧"¯π∞_") ∨ (⥊∧"0AaÀàØø"+0≍˘10∾2/26‿23‿7)⊸(2|⍋)
