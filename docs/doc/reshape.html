@@ -182,7 +182,7 @@
 <p>These values are just BQN primitives of course. They're not called by Reshape or anything like that; the primitives are just chosen to suggest the corresponding functionality.</p>
 <p>Here's an example of the four cases. If we try to turn five elements into two rows, <code><span class='Modifier2'>∘</span></code> gives an error, <code><span class='Function'>⌊</span></code> drops the last element, <code><span class='Function'>⌽</span></code> uses the first element again, and <code><span class='Function'>↑</span></code> uses a fill element (like <code><span class='Number'>6</span><span class='Function'>↑</span><span class='String'>&quot;abcde&quot;</span></code> would).</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=MuKAv+KImCDipYogImFiY2RlIgoKMuKAv+KMiiDipYogImFiY2RlIgoKMuKAv+KMvSDipYogImFiY2RlIgoKMuKAv+KGkSDipYogImFiY2RlIg==">↗️</a><pre>    <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Modifier2'>∘</span> <span class='Function'>⥊</span> <span class='String'>&quot;abcde&quot;</span>
-<span class='Error'>Error: 𝕨⥊𝕩: Shape must be exact when reshaping with ∘</span>
+<span class='Error'>Error: 𝕨⥊𝕩: Shape must be exact when reshaping with ∘ (⟨5⟩ ≡ ≢𝕩, 2 is the product of non-computed axis)</span>
 
     <span class='Number'>2</span><span class='Ligature'>‿</span><span class='Function'>⌊</span> <span class='Function'>⥊</span> <span class='String'>&quot;abcde&quot;</span>
 ┌─    
