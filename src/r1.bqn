@@ -874,10 +874,11 @@ ProgressiveIndexOf ← 0 Fill {
 ⁼ ← {Inverse 𝕗}
 IsConstant ← (3≤Type)◶⟨1 ⋄ DIsConst∘{Decompose𝕩}⊢⟩
 AtopInverse ← {(𝕏𝕎)⊘(𝕏⟜𝕎)}○{Inverse𝕩}
-TrainInverse ← {
+TrainInverse ← '⊣'_isGlyph{
   t‿f‿g‿h←𝕩
   K←¬IsConstant
-  f K∘⊣◶⟨{𝕏⁼{𝕨𝔽𝔾𝕩}(𝕨G⁼⊢)},K∘⊢◶⟨{𝕎⁼𝕩G{SwapInverse𝕗}⊢},INF˙⟩⟩ h
+  I ← K∘⊣◶⟨{𝕏⁼{𝕨𝔽𝔾𝕩}(𝕨G⁼⊢)},K∘⊢◶⟨{𝕎⁼𝕩G{SwapInverse𝕗}⊢},INF˙⟩⟩
+  f 𝔽∘⊣◶⟨I, {INF⊘(⊣𝕏⁼G⁼)}⟩ h
 }
 FuncInverse ← (0⊸⊑ ⊣◶⟨
   {PrimInverse𝕩} 1⊸⊑                     # 0 primitive
