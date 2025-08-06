@@ -8,7 +8,7 @@ The [Transpose](../../doc/transpose.md) primitive `⍉` reorders axes of an arra
 
 Monadic transpose in BQN always exchanges one axis with the rest. As mentioned [below](#axis-simplification), that's equivalent to swapping exactly two axes. This case is easier to implement, but ideas that are useful for this simple transpose always apply to more complex ones as well.
 
-The scalar approach is simply to set `res[i][j] = arg[j][i]` in a loop. Doing the writes in order and the reads out of order (so, `i` is the outer loop here) seems to be slightly faster. This is fine most of the time, but suffers slightly when the inner loop is very short, and can be improved with SIMD.
+The scalar approach is simply to set `res[i][j] = arg[j][i]` in a loop. The loops over `i` and `j` can be nested in either order, but if the inner loop is too short it'll add overhead. So it's best to write both and choose based on which argument axis is longer. For larger arrays, `i` as the outer loop, so that the writes go in order, is less affected by cache issues (but not as good as a [cache-efficient ordering](#cache-efficient-orderings)). SIMD can of course be faster, especially for 2-byte and smaller elements.
 
 My talk "Moving Bits Faster in Dyalog 16.0" ([video](https://dyalog.tv/Dyalog17/?v=2KnrDmZov4U), [slides](https://www.dyalog.com/uploads/conference/dyalog17/presentations/D08_Moving_Bits_Faster_in_Dyalog_16.zip)) discusses optimizations for the boolean case, where a scalar loop is particularly bad because reading or writing a single bit is so slow. Booleans can be a little easier to work with than larger units, although there are also some unique issues to be addressed because they can only be accessed in aligned groups, while SIMD vectors don't have to be aligned.
 
