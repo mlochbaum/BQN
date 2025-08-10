@@ -30,7 +30,7 @@
 <li>Function composition is ordered right-to-left.</li>
 <li>Arrows indicating function types and in diagrams are written left-to-right.</li>
 </ul>
-<p>See page 147 of <a href="http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-169.pdf">this report</a> for a more thorough discussion of how these three contexts interact.</p>
+<p>See page 147 of <a href="http://www.bitsavers.org/pdf/dec/tech_reports/SRC-RR-169.pdf">this report</a> for a more thorough discussion of how these three contexts interact.</p>
 <h2 id="in-apl"><a class="header" href="#in-apl">In APL</a></h2>
 <p>The most pressing problem that LtR ordering would solve is that a sequence of expressions (separated by <code><span class='Separator'>,⋄</span></code> or newlines) runs in source order, while function applications within an expression go the other way. List notation makes it worse, and with large block functions the order's nearly impossible to follow: instead each one should be named, and then they can be assembled into expressions later.</p>
 <p>But LtR introduces a similar problem with assignment: the name really needs to be on the left to allow easily scanning definitions, but this conflicts with the evaluation order. Placing the name on the left would also break inline assignment (where an intermediate result is assigned and execution continues), although many people consider this an anti-pattern anyway.</p>

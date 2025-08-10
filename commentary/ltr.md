@@ -32,7 +32,7 @@ Although mathematical functions are usually evaluated right-to-left, infix opera
 - Function composition is ordered right-to-left.
 - Arrows indicating function types and in diagrams are written left-to-right.
 
-See page 147 of [this report](http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-169.pdf) for a more thorough discussion of how these three contexts interact.
+See page 147 of [this report](http://www.bitsavers.org/pdf/dec/tech_reports/SRC-RR-169.pdf) for a more thorough discussion of how these three contexts interact.
 
 ## In APL
 
