@@ -163,12 +163,12 @@ Next, Fold (`´`) is the higher-order function also known as reduce or accumulat
         +´ 2‿3‿4
         ×´ 2‿3‿4
 
-To match the order of BQN evaluation, Fold moves over its argument array from right to left. You'd get the same result by writing the operand function in between each element of the argument list, but you'd also write the function a lot of times.
+An oddity regarding Fold is that it moves over its argument array from right to left, starting at the last element. It does match BQN evaluation, so you'd get the same result by writing the operand function in between each element of the argument list. But you'd also write the function a lot of times.
 
         -´ 1‿2‿3‿4‿5
         1-2-3-4-5
 
-With this evaluation order, `-´` gives the *alternating sum* of its argument, which comes up in math once in a while. Think of it this way: the left argument of each `-` is a single number, while the right argument is made up of all the numbers to the right subtracted together. So each `-` flips the sign of every number to its right, and every number is negated by all the `-`s to its left. The first number (`1` above) never gets negated, the second is negated once, the third is negated twice, returning it to its original value… the signs alternate.
+With this order, `-´` gives the *alternating sum* of its argument, which comes up in math once in a while. Think of it this way: the left argument of each `-` is a single number, while the right argument is made up of all the numbers to the right subtracted together. So each `-` flips the sign of every number to its right, and every number is negated by all the `-`s to its left. The first number (`1` above) never gets negated, the second is negated once, the third is negated twice, returning it to its original value… the signs alternate.
 
 *Hey, isn't it dissonant that the first, second, and third numbers are negated zero, one, and two times? Not if you call them the zeroth, first, and second…*
 
