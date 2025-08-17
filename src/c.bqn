@@ -183,10 +183,10 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   # Headers
   hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH                       # Case header : and separator ;
   fi←+`cb←b∨cs⋄H←cb¬∘PN⊢                    # Body index fi; which bodies Have a property
-  cq←(H𝕩=pred)∨ch←H hh                      # ch: body has : header ; cq: or ? predicate
+  ca←(cq←H𝕩=pred)∨ch←H hh                   # ch: body has : header ; ca: or ? predicate
   cf←1∾¬co←cb/cs⋄cm←0∾∨⟜«co                 # cf: body is first; cm: body is one of multiple
-  "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)cq
-  "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓cq
+  "Header-less bodies must come last"_err_(/CB) 1(-⊸↓<co∧↓)ca
+  "At most two header-less bodies allowed"_err_(/CB) »⊸∧co>¯1↓ca
   cc←(⍋⍋«co)⊏c∾/cs                          # Case close
   hiu←/hf←hh⊏˜⟜IT⌾((⌽g)⊸⊏)cb∨hh             # Header component indices
   un←0=us←swap_undo(≠∘⊣-⊐)hiu⊏𝕩
@@ -213,7 +213,7 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   "Header with ⁼ must take arguments"_err_(hm/HI) hx<0<ut
   cwh←hc/»hl⌈ha×1+he←0≠hk                   # Body 𝕨 for just headers
   "Header with ˜⁼ must have left argument"_err_(hm/HI) (0=cwh)∧ut2←2=ut
-  cw←(cwh⌈2×ut2)⌾(ch⊸/)1+-⟜«(»cq)<1(⊢<«)cf  # Body 𝕨: 0 no, 1 allowed, 2 required
+  cw←(cwh⌈2×ut2)⌾(ch⊸/)1+-⟜«(»ca)<1(⊢<«)cf  # Body 𝕨: 0 no, 1 allowed, 2 required
   hl/˜↩hm⋄hu←(¬he)⌾(hi⊸⊏)hf                 # hu: mask of header special names
   hj←gi⊏˜he/hi⋄hd←2=he/hk                   # hj: header assignments; hd: which ones destructure
 
@@ -225,7 +225,7 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   "Block header type conflict"_err_(ch/0∾/∘CB) (hr<ch/fr)∨hl<hx<ch/fx
   ft⌈↩1-˜fr↩hr⌾(ch⊸/)fr⋄fx↩hx⊸⌈⌾(ch⊸/)fx
   "Special name outside of any block"_err_(/{(0=fi)∧𝕩 M bI}∘𝕩) 0<⊑fr
-  "Unreachable body"_err_(/CB) 1↓(»⊸∨(¬hl)⌾(ch⊸/)cq)<cm>fx
+  "Unreachable body"_err_(/CB) 1↓(»⊸∨hl⊸≤⌾(ch⊸/)cq)<cm>fx
   fsc←(ft⊏0‿2‿3)+3×fx                       # Special name count
   hv-↩(»+`hc)⊏3×¬ch/fx                      # Header variable slot
 
