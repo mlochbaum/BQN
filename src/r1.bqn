@@ -351,6 +351,14 @@ Replicate←⟨"/"
   RepInd⟜≠ ⊏ ⊢
   RepInd
 ⟩_multiAxis○ToArray _fillBy_ ⊢
+ReplicateInv ← (1==)◶⟨0,0=≠⟩∘⊣◶⟨ToArray⊸{
+  IA 1≥=𝕨
+  IA 1×´(1=Type)◶⟨0,1⊸≤∧⌊⊸=⟩⌜⥊𝕨
+  IX 1≤=𝕩 ⋄ n←≠𝕩
+  U ← {𝕩⊸×⌜↕(IX⌊⊸=)⊸⊢n÷𝕩}⊑
+  L ← »·(IA n=(≠-1˙)⊸⊑)⊸⊢+`
+  𝕨 =◶U‿L⊸⊏ 𝕩
+}, {IX IsArray𝕩⋄𝕩}⟩
 
 IsPure ← {d←Decompose𝕩 ⋄ 2⊸≤◶⟨≤⟜0, (ChPure×´·𝕊⌜1⊸↓)d˙⟩0⊑d}
 ChPure ← (5=0⊸⊑)◶⟨1,('◶'_isGlyph 2⊸⊑)◶⟨1,1×´·IsPure⌜·⥊3⊸⊑⟩⟩
@@ -929,7 +937,7 @@ PrimInverse ← INF _lookup_ ⟨
   '↕', ≢_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
   '⌽', ⌽ ⊘ (-⊸⌽ ⊣ IX∘IsArray∘⊢)
   '⍉', TransposeInv ⊘ ReorderAxesInv
-  '/', IndicesInv ⊘ (IA∘0)
+  '/', IndicesInv ⊘ (ReplicateInv _invChk_ Replicate)
   '⊔', GroupIndsInv ⊘ GroupInv
 ⟩
 SwapFnInverse ← INF _lookup_ ⟨
