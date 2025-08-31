@@ -924,8 +924,8 @@ PrimInverse ← INF _lookup_ ⟨
   '∾', IA∘0 ⊘ (↑‿↓‿⊏ _catInv)
   '≍', {IX 1 =≠𝕩⋄ ⊏𝕩} ⊘ {IX 2 =≠𝕩⋄IX(ToArray𝕨)≡ ⊏𝕩⋄1⊏𝕩}
   '⋈', {IX⟨1⟩≡≢𝕩⋄0⊑𝕩} ⊘ {IX⟨2⟩≡≢𝕩⋄IX        𝕨 ≡0⊑𝕩⋄1⊑𝕩}
-  '↑', ¯1⊸⊑_invChk_↑ ⊘ (IA∘0)
-  '↓',  0⊸⊑_invChk_↓ ⊘ (IA∘0)
+  '↑', {IX 1==𝕩⋄IX 0<≠𝕩⋄(≠-1˙)⊸⊑𝕩}_invChk_↑ ⊘ (IA∘0)
+  '↓', {IX 1==𝕩⋄IX 0<≠𝕩⋄   0   ⊑𝕩}_invChk_↓ ⊘ (IA∘0)
   '↕', ≢_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
   '⌽', ⌽ ⊘ (-⊸⌽ ⊣ IX∘IsArray∘⊢)
   '⍉', TransposeInv ⊘ ReorderAxesInv
