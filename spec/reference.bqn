@@ -27,7 +27,7 @@
 Type       # 0 if 𝕩 is an array, 1 if a number, >1 otherwise
 !          # 𝕩 is 0 or 1; throw an error if it's 0
 ≢          # LIMITED to monadic case
-⥊          # LIMITED to array 𝕩 and (×´𝕨)≡≢𝕩
+⥊          # LIMITED to array 𝕩 and ⟨×´𝕨⟩≡≢𝕩 if dyadic
 ⊑          # LIMITED to natural number 𝕨 and list 𝕩
 _amend     # {𝕨˙⌾(𝕗⊸⊑)𝕩} for list 𝕩
 ↕          # LIMITED to number 𝕩
@@ -120,7 +120,7 @@ _eachd←{
     l←×´(q⊑˜k⊸+)¨↕q≠⊸-k # ×´k↓q, size of a cell in 𝕩 (pairs with a unit)
     a←⥊𝕨 ⋄ b←⥊𝕩
     # In the inner function, 𝕨 indexes into a and (l×𝕨)+𝕩 into b
-    q⥊ (≠a) (⊑⟜a 𝔽 l⊸×⊸+⊑b˙)_table○↕ l
+    q⥊⥊ (≠a) (⊑⟜a 𝔽 l⊸×⊸+⊑b˙)_table○↕ l
   }
   >○=◶⟨𝔽_e,𝔽˜_e˜⟩
 }
