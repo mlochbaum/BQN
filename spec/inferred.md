@@ -145,7 +145,7 @@ Inverses of other modifiers and compound functions are given below. Here the "in
 | Mod     | Inverse              | Requirements
 |---------|----------------------|--------------
 | `¨`     | `{!0<≡𝕩⋄𝕨𝔽⁼¨𝕩}`      |
-| `⌜`     | `{!0<≡𝕩⋄ 𝔽⁼⌜𝕩;}`     | Monadic case only
+| `⌜`     | `{!0<≡𝕩⋄ 𝔽⁼⌜𝕩}`      | Monadic case only
 | `˘`     | `{!0<=𝕩⋄𝕨𝔽⁼˘𝕩}`      |
 | `F∘G`   | `{𝕨G⁼F⁼𝕩}`           |
 | `F G`   |                      |
