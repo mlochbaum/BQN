@@ -87,8 +87,8 @@ map global bqn 'Z'     ':exec i⋈<ret>' -docstring '⋈ Enlist         | Pair'
 map global bqn 'r'     ':exec i↑<ret>' -docstring '↑ Prefixes       | Take'
 map global bqn 'c'     ':exec i↓<ret>' -docstring '↓ Suffixes       | Drop'
 map global bqn 'd'     ':exec i↕<ret>' -docstring '↕ Range          | Windows'
-map global bqn 'H'     ':exec i«<ret>' -docstring '« ShiftBefore    | ReplaceEnd'
-map global bqn 'L'     ':exec i»<ret>' -docstring '» ShiftAfter     | ReplaceStart'
+map global bqn 'L'     ':exec i»<ret>' -docstring '» Nudge          | ShiftBefore'
+map global bqn 'H'     ':exec i«<ret>' -docstring '« NudgeBack      | ShiftAfter'
 map global bqn 'q'     ':exec i⌽<ret>' -docstring '⌽ Reverse        | Rotate'
 map global bqn 'a'     ':exec i⍉<ret>' -docstring '⍉ Transpose      | ReorderAxis'
 map global bqn 'T'     ':exec i⍋<ret>' -docstring '⍋ GradeUp        | BinsUp'
@@ -187,8 +187,8 @@ prompt command: -menu -shell-script-candidates %{ cat<<EOF
 ↑ \\r Prefixes Take
 ↓ \\c Suffixes Drop
 ↕ \\d Range Windows
-« \\H ShiftBefore ReplaceEnd
-» \\L ShiftAfter ReplaceStart
+» \\L Nudge ShiftBefore
+« \\H NudgeBack ShiftAfter
 ⌽ \\q Reverse Rotate
 ⍉ \\a Transpose ReorderAxis
 ⍋ \\T GradeUp BinsUp

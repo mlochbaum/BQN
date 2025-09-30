@@ -66,8 +66,8 @@
 ↑ (\r) Prefixes ; Take
 ↓ (\c) Suffixes ; Drop
 ↕ (\d) Range ; Windows
-« (\H) Shift Before
-» (\L) Shift After
+» (\L) Nudge ; Shift Before
+« (\H) Nudge Back ; Shift After
 ⌽ (\q) Reverse ; Rotate
 ⍉ (\a) Transpose ; Reorder axes
 /      Indices ; Replicate

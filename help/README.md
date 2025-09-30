@@ -33,8 +33,8 @@
 | `↑` | [Prefixes, Take](prefixes_take.md) |
 | `↓` | [Suffixes, Drop](suffixes_drop.md) |
 | `↕` | [Range, Windows](range_windows.md) |
-| `«` | [Nudge Back, Shift Before](shiftbefore.md) |
-| `»` | [Nudge, Shift After](shiftafter.md) |
+| `»` | [Nudge, Shift Before](nudge_shiftbefore.md) |
+| `«` | [Nudge Back, Shift After](nudgeback_shiftafter.md) |
 | `⌽` | [Reverse, Rotate](reverse_rotate.md) |
 | `⍉` | [Transpose, Reorder Axes](transpose_reorderaxes.md) |
 | `/` | [Indices, Replicate](indices_replicate.md) |

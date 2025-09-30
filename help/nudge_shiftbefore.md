@@ -1,4 +1,4 @@
-*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/shiftafter.html).*
+*View this file with results and syntax highlighting [here](https://mlochbaum.github.io/BQN/help/nudge_shiftbefore.html).*
 
 # Right Pointing Double Angle Quotation (`»`)
 
@@ -13,7 +13,7 @@ Remove the last element of `𝕩`, add a cell of fill values to the start of the
 
 
 
-## `𝕨 » 𝕩`: Shift After
+## `𝕨 » 𝕩`: Shift Before
 [→full documentation](../doc/shift.md)
 
 Remove the last `≠𝕨` (length) major cells from `𝕩`, join `𝕨` to the start of `𝕩`. Ranks must match.
