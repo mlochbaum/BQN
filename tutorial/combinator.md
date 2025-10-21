@@ -77,7 +77,7 @@ The comparisons are functions like any other—specifically, they are all two-ar
 
 The return values `0` and `1` are natural choices because BQN has no dedicated boolean type: instead, in BQN, the word *boolean* indicates a number that's 0 or 1, much like "natural number" selects a subset of the possible numbers. This is a choice that might be at odds with your own programming experience, and especially clashes with the world of typed functional programming, where even using the boolean type rather than a dedicated type for an option might be considered a code smell! The design principle guiding this decision, and most of BQN's type system, is that there should only be one type that accomplishes any given programming task. Any distinctions that it has are there because they are really necessary: conflating numbers and characters would make working with strings too difficult, and functions can't really be combined with modifiers because one-argument functions and 1-modifiers take their inputs on different sides.
 
-The advantage of this strategy is that you will spend much less time thinking about types when writing programs. The decisions are already made: if there are a few things, they go in a list; if there a few possible values in a qualitative category then they should be labelled with numbers. And if some value has multiple interpretations then BQN is less likely to require an explicit conversion between these. For example, while the result of `=` might be taking to say *whether* two atoms have equal values, maybe it also says *how many times* the atom on the left appears in the right argument—which is at most one, because there's only one right argument. A silly distinction, or is it? An important property of counts is that we can add them together, for instance, to find how many times the letter "e" appears in a string.
+The advantage of this strategy is that you will spend much less time thinking about types when writing programs. The decisions are already made: if there are a few things, they go in a list; if there are a few possible values in a qualitative category then they should be labelled with numbers. And if some value has multiple interpretations then BQN is less likely to require an explicit conversion between these. For example, while the result of `=` might be taken to say *whether* two atoms have equal values, maybe it also says *how many times* the atom on the left appears in the right argument—which is at most one, because there's only one right argument. A silly distinction, or is it? An important property of counts is that we can add them together, for instance, to find how many times the letter "e" appears in a string.
 
         'e' = "George Boole"
 
@@ -212,7 +212,7 @@ What if we want to call it on eight equally-spaced numbers between 0 and 1? Well
 
         ¬⊸× ↕⊸÷ 8
 
-Our list of arguments stops before reaching 1, because `↕8` doesn't include `8`. If we wanted a list from 0 to 1 *inclusive*, we'd need to divide by `7` (that is, `8-1`) instead of `8`. We can do this as well! But first we need to understand some other ways to apply Before and After.
+Our list of arguments stops before reaching 1, because `↕8` doesn't include `8`. A trick to include it is `↕⊸∾⊸÷`, but a more straightforward approach that keeps the length the same is to divide by `7` (that is, `8-1`) instead of `8`. We can do this as well! But first we need to understand some other ways to apply Before and After.
 
 #### Bind
 

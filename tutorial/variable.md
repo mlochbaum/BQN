@@ -12,6 +12,9 @@ Like that.
 
 ## Defining variables
 
+<!--GEN prim.bqn
+Primitives ⟨ "←%[%Define", "↩%'%Modify" ⟩
+-->
 BQN uses the left-pointing arrow `←` to define variables, as shown above. Most of the time it's best to use it in a plain way, with just the name and its definition, but it's also possible to define multiple variables using list notation, or to define a variable as part of a larger expression that continues to the left (in terms of precedence, `←` behaves like a function, but it isn't one—it's a part of syntax).
 
         pi‿e‿ten ← ⟨ π, ⋆1, 10 ⟩
@@ -34,7 +37,7 @@ It's a little crazy to call them variables if the definition can never change, r
 
         four ↩ 3    # four isn't defined yet
 
-It's an odd distinction to have when your program is just one long sequence of statements, because there's only ever one arrow you can use: it just changes annoyingly after you define the variable for the first time. With multiple scopes this isn't the case: if you start a new scope inside another, then you'll still be able to use variables from the outside scope. Then `↩` lets you change the value of one of these variables while `←` allows you to define your own. If you're coming from a typical curly-brace language, you'd say that `←` both declares and assigns a variable, while `↩` only assigns it.
+It's an odd distinction to have when your program is just one long sequence of statements, because there's only ever one arrow you can use, it just changes annoyingly after you define the variable for the first time. With multiple scopes this isn't the case: if you start a new scope inside another, then you'll still be able to use variables from the outside scope. Then `↩` lets you change the value of one of these variables while `←` allows you to define your own. If you're coming from a typical curly-brace language, you'd say that `←` both declares and assigns a variable, while `↩` only assigns it.
 
 ## Variable roles
 
@@ -87,7 +90,7 @@ While you could build up a script by computing values and assigning them names, 
 
 This strategy allows us to break down a program into smaller parts. However, you can only name a function in this way, not an expression. We'll explain later how to turn an expression into an explicit function. But one thing remains true regardless of how a function is created: functions are just another kind of BQN value, and giving a function a name uses the ordinary definition arrow `←`, not any special syntax.
 
-Even if you define a variable to be a function at first, you're not locked in to that choice. You can modify the variable to have a different value (but remember to change the casing to match the new value's role!). If it's a data value, you'll still be able to call it as a function: it will return itself.
+Even if you define a variable to be a function at first, you're not locked in to that choice. You can modify the variable to have a different value (but remember to change the casing to match the new value's role!). If it's a data value, you'll still be able to call it as a function, in which case it will return itself.
 
         Base2
 
@@ -107,7 +110,7 @@ But say I have a list, and I want to subtract one from one of the elements. With
 
         -⟜1⌾(2⊸⊑) "BQN"  # Wait why did I do that
 
-<!--GEN prim.bqn
+<!--GEN
 Primitives ⟨ "⌾%K%Under", "⊑%I%First%Pick" ⟩
 -->
 Besides using some primitives we haven't seen here, the notation is a little noisy. In return it's very flexible, in that you can apply any function you want, at a location you can select with a large class of BQN functions.
