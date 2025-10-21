@@ -2,6 +2,17 @@
 
 # Advent of Code
 
+Interest in BQN follows a striking seasonal pattern, with a big surge each December at the start of the month. [Advent of Code](https://adventofcode.com/) is to blame, is it possible you're here because of an itch to try this challenge in BQN yourself? You can learn a lot by discussing in the [chat room](forums.md), or comparing your solutions to the ones other programmers publish.
+
+The following resources, where authors wrote about how they approached AoC, might help:
+- [AoC 2024 by NRK](https://nrk.neocities.org/articles/aoc24-bqn) covers BQN setup and features, then walks through days 2 and 25.
+- [AoC 2017 by Tony Zorman](https://tony-zorman.com/posts/aoc-in-bqn.html) is very thorough!
+- [AoC 2021 by Razetime](https://razetime.github.io/blog/2022/01/09/aoc-bqn.html) ([RIP](https://aplwiki.com/wiki/Raghu_Ranganathan)) has brief notes on each day to accompany his solutions; Leah Neukirchen went through [day 6](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) and [day 9](https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html) that year in detail.
+
+If you're good with reading just the solutions there are many more options. Each year I've charted which days repositories have code for (mostly based on filename—I don't check for correctness). The final update has always been January 7th.
+
+## Year 2024
+
 [Advent of Code 2024](https://adventofcode.com/2024) had 414 solutions published by 32 programmers, with a mix of new and returning programmers, even some who are back from 2022 after skipping a year!
 
 <!--GEN
