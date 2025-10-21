@@ -14,6 +14,8 @@ The arithmetic operations `+×` on integers, and `⌈⌊` on all types, are asso
 
 For these operands, a fold can be done simply by combining two vector registers at a time, with a final pairwise reduction at the end. An overflowing operation like `+` needs to be performed at double width (or possibly 32-bit for 8-bit values), and moved to a full-width accumulator once that's exhausted.
 
+Widening can be expensive, depending on available instructions; for larger types an effective trick is to sum lower and upper halves in the original width. The lower half doesn't have to be masked off: using the full value instead adds an error equal to the not-shifted-down upper half, which can be corrected with a subtraction at the end. For example, to sum up to 2^16 `i32` values `v`, sum `v` with wrapping to get `l`, and the signed shift `v>>16` to get `h`. Then the non-wrapping sum is `((i64)h << 16) + (i64)(l - h<<16)`.
+
 ### Scan architecture
 
 There's lots of research on [parallel scan](https://en.wikipedia.org/wiki/Prefix_sum#Parallel_algorithms) with broadly useful ideas. Relevant ideas also show up in ALU design, where the shifting, broadcasting, and sequential algorithms below correspond to [Kogge-Stone](https://en.wikipedia.org/wiki/Kogge%E2%80%93Stone_adder), Sklansky, and ripple-carry adders. A fast CPU prefix sum is described in Singeli's [min-filter tutorial](https://github.com/mlochbaum/Singeli/blob/master/doc/minfilter.md) beginning at "we have some vector scan code already". There's also a treatment [here](https://en.algorithmica.org/hpc/algorithms/prefix/), but the blocking method seems overcomplicated when incorporating the carry after summing a register is enough to take care of dependency chains.
