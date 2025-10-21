@@ -131,4 +131,4 @@ An interesting combination is Occurrence Count applied to the result of [Indices
 
         ⊒ / 2‿3‿4
 
-A more efficient way when `⊒` doesn't have a fast implementation is `` /(¯1⊸⊑↕⊸-⊏⟜»)+` ``, but that's clearly quite a bit more complicated.
+A more efficient way when `⊒` doesn't have a fast implementation is ``↕∘≠⊸-/⟜(»+`)``, but that's clearly quite a bit more complicated.
