@@ -6,7 +6,7 @@ This page gathers links to work by the community. To get in touch, please use ou
 
 Here are some places to find BQN libraries and examples:
 
-- [Awesome BQN](https://github.com/pellertson/awesome-bqn), curated list of Github repositories
+- [Awesome BQN](https://codeberg.org/parker/awesome-bqn), curated list of Github repositories
 - Repositories [tagged BQN](https://github.com/topics/bqn) on Github
 - [Rosetta Code](https://rosettacode.org/wiki/Category:BQN)
 - Stack Exchange [Code Golf & Coding Challenges](https://codegolf.stackexchange.com/search?tab=newest&q=BQN)
