@@ -957,6 +957,7 @@ SwapFnInverse ← INF _lookup_ ⟨
 swapSpecial ← ⟨
   ⟨2 _DIsMod_ '⊸', FuncInverse{(𝔽𝕨)⊘({𝕎𝕏}○𝔽´1‿3⊏𝕩)}⟩
   ⟨1 _DIsMod_ '˜', (SwapFnInverse{𝕎⊘𝕏}FuncInverse) 1⊸⊑⟩ # Assume monadic Fn˜˜⁼ is Fn˜⁼
+  ⟨1 _DIsMod_ '⁼', {INF⊘((SwapFnInverse 𝕩)˜)} 1⊸⊑⟩
 ⟩
 SwapInverse ← (({𝕏⊣}swapFnInverse) {(0⊑𝕨)◶⟨𝕏,1⊑𝕨⟩}´ swapSpecial)⟜{Decompose𝕩}
 ⌜ ↩ _table
