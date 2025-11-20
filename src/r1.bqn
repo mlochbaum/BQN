@@ -30,8 +30,8 @@ _glyphLookup_ ← {
 _isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
 IsJoin ← '∾'_isGlyph
 IsTable ← '⌜'_isGlyph
-DIsConst ← (4=0⊸⊑)◶0‿('˙'_isGlyph 2⊸⊑)
-DIsSwap  ← (4=0⊸⊑)◶0‿('˜'_isGlyph 2⊸⊑)
+_DIsMod_ ← { ((3+𝕗)=0⊸⊑)◶0‿(𝕘_isGlyph 2⊸⊑) } # Decomposition is modifier
+DIsConst ← 1 _DIsMod_ '˙'
 
 Split2 ← { s←2⊸×⌜↕(≠𝕩)÷2 ⋄ ⟨s⊏𝕩,(1⊸+⌜s)⊏𝕩⟩ }
 _lookup_ ← {
@@ -934,7 +934,7 @@ PrimInverse ← INF _lookup_ ⟨
   '⋈', {IX⟨1⟩≡≢𝕩⋄0⊑𝕩} ⊘ {IX⟨2⟩≡≢𝕩⋄IX        𝕨 ≡0⊑𝕩⋄1⊑𝕩}
   '↑', {IX 1==𝕩⋄IX 0<≠𝕩⋄(≠-1˙)⊸⊑𝕩}_invChk_↑ ⊘ (IA∘0)
   '↓', {IX 1==𝕩⋄IX 0<≠𝕩⋄   0   ⊑𝕩}_invChk_↓ ⊘ (IA∘0)
-  '↕', ≢_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
+  '↕', (1==)◶⟨0,(0<≠)◶⟨1,IsAtom 0⊸⊑⟩⟩◶≢‿≠_invChk_↕ ⊘ (IA∘0)  # Should trace edge and invChk
   '⌽', ⌽ ⊘ (-⊸⌽ ⊣ IX∘IsArray∘⊢)
   '⍉', TransposeInv ⊘ ReorderAxesInv
   '/', IndicesInv ⊘ (ReplicateInv _invChk_ Replicate)
@@ -954,8 +954,11 @@ SwapFnInverse ← INF _lookup_ ⟨
   '≍', {IX 2 =≠𝕩⋄IX≡˝𝕩⋄ ⊏𝕩} ⊘ {IX 2 =≠𝕩⋄IX(ToArray𝕨)≡1⊏𝕩⋄ ⊏𝕩}
   '⋈', {IX⟨2⟩≡≢𝕩⋄IX≡´𝕩⋄0⊑𝕩} ⊘ {IX⟨2⟩≡≢𝕩⋄IX        𝕨 ≡1⊑𝕩⋄0⊑𝕩}
 ⟩
-SwSwInv ← SwapFnInverse{𝕎⊘𝕏}FuncInverse  # Assume monadic Fn˜˜⁼ is Fn˜⁼
-SwapInverse ← {DIsSwap◶⟨SwapFnInverse𝕩˙, SwSwInv 1⊸⊑⟩ Decompose𝕩}
+swapSpecial ← ⟨
+  ⟨2 _DIsMod_ '⊸', FuncInverse{(𝔽𝕨)⊘({𝕎𝕏}○𝔽´1‿3⊏𝕩)}⟩
+  ⟨1 _DIsMod_ '˜', (SwapFnInverse{𝕎⊘𝕏}FuncInverse) 1⊸⊑⟩ # Assume monadic Fn˜˜⁼ is Fn˜⁼
+⟩
+SwapInverse ← (({𝕏⊣}swapFnInverse) {(0⊑𝕨)◶⟨𝕏,1⊑𝕨⟩}´ swapSpecial)⟜{Decompose𝕩}
 ⌜ ↩ _table
 ¨ ↩ _each
 ∾ ↩ Join           ⊘ JoinTo
