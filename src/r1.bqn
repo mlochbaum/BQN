@@ -30,8 +30,7 @@ _glyphLookup_ ← {
 _isGlyph ← { (glyphs _qSearch 𝕗) = {PrimInd𝕩} }
 IsJoin ← '∾'_isGlyph
 IsTable ← '⌜'_isGlyph
-_DIsMod_ ← { ((3+𝕗)=0⊸⊑)◶0‿(𝕘_isGlyph 2⊸⊑) } # Decomposition is modifier
-DIsConst ← 1 _DIsMod_ '˙'
+DIsConst ← (4=0⊸⊑)◶0‿('˙'_isGlyph 2⊸⊑)
 
 Split2 ← { s←2⊸×⌜↕(≠𝕩)÷2 ⋄ ⟨s⊏𝕩,(1⊸+⌜s)⊏𝕩⟩ }
 _lookup_ ← {
@@ -888,15 +887,26 @@ TrainInverse ← '⊣'_isGlyph{
   I ← K∘⊣◶⟨{𝕏⁼{𝕨𝔽𝔾𝕩}(𝕨G⁼⊢)},K∘⊢◶⟨{𝕎⁼𝕩G{SwapInverse𝕗}⊢},INF˙⟩⟩
   f 𝔽∘⊣◶⟨I, {INF⊘(⊣𝕏⁼G⁼)}⟩ h
 }
-FuncInverse ← (0⊸⊑ ⊣◶⟨
+_fInvCases ← {
+  IB ← !∘"Can't invert blocks (add an undo header?)"
+  FInv ← (0⊸⊑ ⊣◶(1(↑∾⟨IB˙⟩∾↓)𝕗) ⊢) {Decompose𝕩}
+  Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FInv‿(!∘"Cannot invert modifier"))
+}
+Inverse ← ⟨
   {PrimInverse𝕩} 1⊸⊑                     # 0 primitive
-  (!∘"Can't invert blocks (add an undo header?)")˙  # 1 block
   1⊸⊑ AtopInverse 2⊸⊑                    # 2-train
   TrainInverse                           # 3-train
   1⊸⊑    {𝕏𝕨}⟜{Mod1Inverse𝕩} 2⊸⊑         # 4 1-modifier
   1‿3⊸⊏ {𝕏´𝕨}⟜{Mod2Inverse𝕩} 2⊸⊑         # 5 2-modifier
-⟩ ⊢) {Decompose𝕩}
-Inverse ← Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FuncInverse‿(!∘"Cannot invert modifier"))
+⟩_fInvCases
+
+SwapInverse ← ⟨
+  {SwapPrimInverse𝕩} 1⊸⊑                               # 0 primitive
+  1⊸⊑ AtopInverse⟜{𝕏˜} 2⊸⊑                             # 2-train
+  TrainInverse ⟨0,¬IsConstant,0,1⟩ {𝕏˜}∘⊢⍟{𝕎𝕩}¨ ⊢      # 3-train
+  1⊸⊑ {𝕏𝕨}⟜{SwapMod1Inverse𝕩} 2⊸⊑                      # 4 1-modifier
+  IsArray◶⟨Inverse,0⊸⊑⟩ 1‿3⊸⊏ {(SwapMod2Equiv𝕩)´𝕨} 2⊸⊑ # 5 2-modifier
+⟩_fInvCases
 
 IA ← "⁼: Inverse failed"⊸!
 IX ← "⁼: Inverse does not exist"⊸!
@@ -940,7 +950,7 @@ PrimInverse ← INF _lookup_ ⟨
   '/', IndicesInv ⊘ (ReplicateInv _invChk_ Replicate)
   '⊔', GroupIndsInv ⊘ GroupInv
 ⟩
-SwapFnInverse ← INF _lookup_ ⟨
+SwapPrimInverse ← INF _lookup_ ⟨
   '+', ÷⟜2⊘(-˜)
   '-', IA∘0⊘+
   '×', √⊘(÷˜)
@@ -954,12 +964,6 @@ SwapFnInverse ← INF _lookup_ ⟨
   '≍', {IX 2 =≠𝕩⋄IX≡˝𝕩⋄ ⊏𝕩} ⊘ {IX 2 =≠𝕩⋄IX(ToArray𝕨)≡1⊏𝕩⋄ ⊏𝕩}
   '⋈', {IX⟨2⟩≡≢𝕩⋄IX≡´𝕩⋄0⊑𝕩} ⊘ {IX⟨2⟩≡≢𝕩⋄IX        𝕨 ≡1⊑𝕩⋄0⊑𝕩}
 ⟩
-swapSpecial ← ⟨
-  ⟨2 _DIsMod_ '⊸', FuncInverse{(𝔽𝕨)⊘({𝕎𝕏}○𝔽´1‿3⊏𝕩)}⟩
-  ⟨1 _DIsMod_ '˜', (SwapFnInverse{𝕎⊘𝕏}FuncInverse) 1⊸⊑⟩ # Assume monadic Fn˜˜⁼ is Fn˜⁼
-  ⟨1 _DIsMod_ '⁼', {INF⊘((SwapFnInverse 𝕩)˜)} 1⊸⊑⟩
-⟩
-SwapInverse ← (({𝕏⊣}swapFnInverse) {(0⊑𝕨)◶⟨𝕏,1⊑𝕨⟩}´ swapSpecial)⟜{Decompose𝕩}
 ⌜ ↩ _table
 ¨ ↩ _each
 ∾ ↩ Join           ⊘ JoinTo
@@ -983,6 +987,21 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
   '⊘', {(𝕎⁼)⊘(𝕏⁼)}
   '⊸', IsConstant∘⊣ ⊣◶{INF⊘𝕏}‿⊢ {𝕎⊸(𝕏⁼)}
   '⟜', {(𝕨IsConstant∘⊢◶⟨IA∘0˙,{𝕩𝕎{SwapInverse𝕗}⊢}⟩𝕩)⊘(𝕏⁼𝕎⁼)}
+⟩
+
+SwapMod1Inverse ← INF˙ _lookup_ ⟨
+  '˜', {(SwapInverse𝕩)⊘(𝕏⁼)}
+  '⁼', {INF⊘((SwapInverse𝕩)˜)}
+  '¨', {𝕏˜¨⁼}
+  '⌜', {𝕏˜⌜⁼}
+  '˘', {𝕏˜˘⁼}
+⟩
+SwapMod2Equiv ← ⟨INF⟩ _lookup_ ⟨
+  '∘', {𝕎𝕏˜}
+  '○', {𝕎˜○𝕏}
+  '⊘', {(𝕎˜)⊘(𝕏˜)}
+  '⊸', {𝕏˜⟜𝕎}
+  '⟜', {𝕏⊸(𝕎˜)}
 ⟩
 
 ´ ↩ _fold
