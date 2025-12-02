@@ -7,8 +7,8 @@ body, input {
 }
 body {
   margin: 1em auto;
-  max-width: 46em;
-  padding: 0 0.62em;
+  width: 100%;
+  padding: 0 1em;
   line-height: 1.6;
 }
 .nav {
@@ -293,4 +293,11 @@ svg tspan {
 .yellow    { fill:#5b4b25; stroke:#a27e2a; } text.yellow   ,.yellow    text { fill:#9d7925; stroke:none; }
 .red       { fill:#532923; stroke:#ae251e; } text.red      ,.red       text { fill:#a6221a; stroke:none; }
 .green     { fill:#25431e; stroke:#298221; } text.green    ,.green     text { fill:#298221; stroke:none; }
+}
+
+@media only screen and (min-width: 768px) {
+    body {
+        max-width: 46em;
+        padding: 0 0.62em;
+    }
 }

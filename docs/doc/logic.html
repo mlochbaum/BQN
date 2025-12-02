@@ -1,5 +1,6 @@
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
   <link href="../style.css" rel="stylesheet"/>
   <title>BQN Logic functions: And, Or, Not (also Span)</title>
@@ -114,16 +115,16 @@
 
     <span class='Function'>∧</span><span class='Modifier'>⌜˜</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0.5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 ┌─            
-╵ 0 0    0    
+╵ 0    0   0  
   0 0.25 0.5  
-  0 0.5  1    
+  0  0.5   1  
              ┘
 
     <span class='Function'>∨</span><span class='Modifier'>⌜˜</span> <span class='Number'>0</span><span class='Ligature'>‿</span><span class='Number'>0.5</span><span class='Ligature'>‿</span><span class='Number'>1</span>
 ┌─            
-╵ 0   0.5  1  
+╵   0  0.5 1  
   0.5 0.75 1  
-  1   1    1  
+    1    1 1  
              ┘
 </pre>
 <p>As in logic, any value And 0 is 0, while any value Or 1 is 1. The other boolean values give the identity values for the two functions: 1 and any value gives that value, as does 0 or the value.</p>
