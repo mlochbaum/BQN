@@ -284,8 +284,9 @@ _testSelect ← { # /⊏⊔
   n ← RandBound 𝕩
   d ← 𝕨 gen.Struct sh
   g ← ({⊏} = 𝕗) ⊏ gen.Replic‿gen.IndMulti
-  g { (n 𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }¨ 𝕗
-  g { (l 𝕎 l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟((0<≠l)∨⊔˙⊸≠)¨ 𝕗
+  NZ ← (0<≠∘⊣) ∨ ⊔˙⊸≠  # ⟨⟩⊔𝕩 treated as simple
+  g { (n 𝕎  0⊣´sh) 𝕏 _testConsistent_ ≡ d }⍟(sh⊸NZ)¨ 𝕗
+  g { (l 𝕎 l≠⊸↑sh) 𝕏 _testConsistent_ ≡ d }⍟(l ⊸NZ)¨ 𝕗
   GR ← 𝕨 gen.Struct⟜RandShape1 ·⌊𝕩÷1⊸⌈
   { (𝕏 _testConsistent_ ≡)⟜GR Range 2⋆Range 8 }¨ ∊⟜⟨/⟩⊸/ 𝕗
 }
