@@ -890,7 +890,7 @@ TrainInverse ← '⊣'_isGlyph{
 _fInvCases ← {
   IB ← !∘"Can't invert blocks (add an undo header?)"
   FInv ← (0⊸⊑ ⊣◶(1(↑∾⟨IB˙⟩∾↓)𝕗) ⊢) {Decompose𝕩}
-  Type◶(3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FInv‿(!∘"Cannot invert modifier"))
+  Type◶(1(⊢∾↑)3‿1‿2/{⊢⊣𝕩IX∘≡⊢}‿FInv‿(!∘"Cannot invert modifier"))
 }
 Inverse ← ⟨
   {PrimInverse𝕩} 1⊸⊑                     # 0 primitive
