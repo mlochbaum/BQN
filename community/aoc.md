@@ -9,17 +9,17 @@ The following resources, where authors wrote about how they approached AoC, migh
 - [AoC 2017 by Tony Zorman](https://tony-zorman.com/posts/aoc-in-bqn.html) is very thorough!
 - [AoC 2021 by Razetime](https://razetime.github.io/blog/2022/01/09/aoc-bqn.html) ([RIP](https://aplwiki.com/wiki/Raghu_Ranganathan)) has brief notes on each day to accompany his solutions; Leah Neukirchen went through [day 6](https://leahneukirchen.org/blog/archive/2021/12/counting-lanternfish-with-bqn-and-linear-algebra.html) and [day 9](https://leahneukirchen.org/blog/archive/2021/12/surveying-lava-basins-with-bqn-and-fixpoints.html) that year in detail.
 
-If you're good with reading just the solutions there are many more options. Each year I've charted which days repositories have code for (mostly based on filename—I don't check for correctness). The final update has always been January 7th.
+If you're good with reading just the solutions there are many more options. Each year I've charted which days repositories have code for (mostly based on filename—I don't check for correctness). The final update was January 7th in 2024 and before, and December 24th in 2025.
 
 ## Year 2025
 
-[Advent of Code 2025](https://adventofcode.com/2025) had 129 solutions published by 20 programmers. Something of a subdued year as we switch to a shorter run and no global leaderboard, but both returning and new BQN programmers put up a good fight.
+[Advent of Code 2025](https://adventofcode.com/2025) had 143 solutions published by 21 programmers. Something of a subdued year as we switch to a shorter run and no global leaderboard, but both returning and new BQN programmers put up a good fight.
 
 <!--GEN
-nam ← ⟨"Ramón Panadés","dzaima","Tony Zorman","Jack Franklin","Daniikk1012","Madeline Vergani","Manolo Martínez","Alonzo","Fergus Baker","Caleb Quilley","Jules Wiriath","dlozeve","Rampoina","João R. Manica","Conor Hoekstra","Brian E","Tankor Smash","Michael Percival","Asher Harvey-Smith","Erik Karlén"⟩
-sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿10‿12,1‿2‿3‿4‿5‿6‿7‿8‿9,1‿2‿3‿4‿5‿6‿7‿9,1‿2‿3‿4‿5‿6‿7‿9,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6,3‿6‿12,1‿2‿3,1‿2,1‿2,1‿2,⟨6⟩,⟨1⟩,⟨1⟩⟩
-als ← ⟨⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,1‿2‿3‿4‿5‿7,2‿3‿4‿5‿6‿7‿8,⟨⟩⟩
-link← ⟨"https://codeberg.org/panadestein/aoc/src/branch/main/src/2025","https://github.com/dzaima/aoc/tree/master/2025/BQN","https://codeberg.org/slotThe/advent/src/branch/master/aoc2025/bqn-solutions","https://github.com/jhfranklin/aoc/tree/main/2025","https://github.com/Daniikk1012/aoc-2025","https://github.com/RubenVerg/aoc2025","https://github.com/manolomartinez/advent_of_code/tree/main/2025","https://github.com/alonzo-bazaar/aoc/tree/master/2025","https://codeberg.org/fjebaker/advent-of-code-2025","https://github.com/icendoan/aoc/tree/main/25","https://github.com/Aaalibaba42/aoc/tree/main/bqn/2025","https://git.sr.ht/~dlozeve/advent-of-code/tree/main/item/2025","https://codeberg.org/Rampoina/aoc/src/branch/master/2025","https://github.com/JoaoEdison/aoc2025","https://github.com/codereport/bqn-code/tree/main/aoc/2025","https://github.com/Brian-ED/AdventOfCode/tree/master/BQN/2025","https://github.com/tankorsmash/bqn_adventofcoded/tree/main/src/2025","https://github.com/mpizzzle/AdventOfCode/tree/master/2025","https://github.com/asherbhs/aoc/tree/main/2025","https://github.com/ErikKarlen/advent-of-code/tree/main/2025"⟩
+nam ← ⟨"Ramón Panadés","dzaima","Tony Zorman","Jack Franklin","Daniikk1012","GamingKing2436","Madeline Vergani","Manolo Martínez","Alonzo","Fergus Baker","Caleb Quilley","Jules Wiriath","dlozeve","João R. Manica","Rampoina","Conor Hoekstra","Brian E","Tankor Smash","Michael Percival","Asher Harvey-Smith","Erik Karlén"⟩
+sol ← ⟨1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,2‿3‿4‿5‿6‿7‿8‿9‿10‿11‿12,1‿2‿3‿4‿5‿6‿7‿10‿12,1‿2‿3‿4‿5‿6‿7‿8‿9,1‿2‿3‿4‿5‿6‿7‿9,1‿2‿3‿4‿5‿6‿7‿9,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6‿7,1‿2‿3‿4‿5‿6,1‿2‿3‿4‿5,3‿6‿12,1‿2‿6,1‿2,1‿2,⟨6⟩,⟨1⟩,⟨1⟩⟩
+als ← ⟨⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,⟨6⟩,⟨⟩,⟨⟩,⟨⟩,⟨⟩,1‿2‿3‿4‿5‿7,2‿3‿4‿5‿6‿7‿8,⟨⟩⟩
+link← ⟨"https://codeberg.org/panadestein/aoc/src/branch/main/src/2025","https://github.com/dzaima/aoc/tree/master/2025/BQN","https://codeberg.org/slotThe/advent/src/branch/master/aoc2025/bqn-solutions","https://github.com/jhfranklin/aoc/tree/main/2025","https://github.com/Daniikk1012/aoc-2025","https://github.com/GamingKing2436/aoc/tree/master/2025","https://github.com/RubenVerg/aoc2025","https://github.com/manolomartinez/advent_of_code/tree/main/2025","https://github.com/alonzo-bazaar/aoc/tree/master/2025","https://codeberg.org/fjebaker/advent-of-code-2025","https://github.com/icendoan/aoc/tree/main/25","https://github.com/Aaalibaba42/aoc/tree/main/bqn/2025","https://git.sr.ht/~dlozeve/advent-of-code/tree/main/item/2025","https://github.com/JoaoEdison/aoc2025","https://codeberg.org/Rampoina/aoc/src/branch/master/2025","https://github.com/codereport/bqn-code/tree/main/aoc/2025","https://github.com/Brian-ED/AdventOfCode/tree/master/BQN/2025","https://github.com/tankorsmash/bqn_adventofcoded/tree/main/src/2025","https://github.com/mpizzzle/AdventOfCode/tree/master/2025","https://github.com/asherbhs/aoc/tree/main/2025","https://github.com/ErikKarlen/advent-of-code/tree/main/2025"⟩
 
 Ge ← "g"⊸At⊸Enc
 
@@ -50,11 +50,11 @@ Bars ← (Path·∾("M h"⥊˜≠)∾¨FmtNum)¨ Bp
 ⟩
 -->
 
-The number of BQN solutions for each day is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2025/stats). The BQN solutions are scaled to be visible here: there are 7334 times more valid AoC submissions than published BQN solutions overall.
+The number of BQN solutions for each day is plotted below, along with totals from AoC's [stats page](https://adventofcode.com/2025/stats). The BQN solutions are scaled to be visible here: there are 6841 times more valid AoC submissions than published BQN solutions overall.
 
 <!--GEN
-aoc ← 192009‿130992‿112376‿92378‿87499‿78153‿66070‿49403‿51901‿34375‿31231‿19694
-bqn ← 18‿16‿14‿12‿12‿14‿11‿6‿8‿6‿5‿7
+aoc ← 197055‿134716‿115679‿95299‿90430‿80908‿68567‿51500‿54158‿36135‿32833‿20968
+bqn ← 18‿17‿15‿14‿14‿16‿12‿7‿9‿7‿6‿8
 
 width ← 256
 pad   ← 45‿45
