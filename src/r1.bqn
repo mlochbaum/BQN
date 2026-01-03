@@ -803,9 +803,11 @@ GroupIndsInv ← {
 GroupInv ← {
   IA 1==𝕨
   IA 1×´Nat⌜𝕨
+  n←≠⌜𝕩 ⋄ m←0
+  𝕨≠⊸=◶{IX 𝕩=1-˜≠𝕨⋄m↩𝕩⊑𝕨⋄𝕩↑𝕨}‿⊣↩0+´n
   l←GroupLen𝕨
-  IX l=○≠𝕩
-  IX l MatchS ≠⌜𝕩
+  IX l⌈⟜m⊸=○≠𝕩
+  IX l MatchS l≠⊸↑n
   (PermInv l GroupOrd 𝕨) ⊏ Join 𝕩
 }
 
