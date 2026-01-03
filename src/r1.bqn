@@ -803,6 +803,8 @@ GroupIndsInv ← {
 GroupInv ← {
   IA 1==𝕨
   IA 1×´Nat⌜𝕨
+  IX 1==𝕩
+  IX 1×´(⊣`(0⊸<×=)¨⊢)=⌜𝕩
   n←≠⌜𝕩 ⋄ m←0
   𝕨≠⊸=◶{IX 𝕩=1-˜≠𝕨⋄m↩𝕩⊑𝕨⋄𝕩↑𝕨}‿⊣↩0+´n
   l←GroupLen𝕨
