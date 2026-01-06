@@ -82,7 +82,7 @@ The following instructions are defined (those without names are tentatively rese
 | 1D | MD2R |      |      |          | Bind right operand to 2-modifier
 | 20 | VARO |  X   |      | `D`, `I` | Push local variable `I` from `D` frames up
 | 21 | VARM |  X   |      | `D`, `I` | Push local variable reference `I` from `D` frames up
-| 22 | VARU |  X   |  21  | `D`, `I` | Push and clear local variable `I` from `D` frames up
+| 22 | VARU |  X   |  20  | `D`, `I` | Push and clear local variable `I` from `D` frames up
 | 26 | DYNO |      |      | `I`      | Push named variable `I`
 | 27 | DYNM |      |      | `I`      | Push named variable `I` reference
 | 2A | PRED |  HE  |  06  |          | Check predicate and drop
@@ -97,7 +97,7 @@ The following instructions are defined (those without names are tentatively rese
 | 41 | FLDM |      |  40  | `I`      | Push mutable field `I` from namespace
 | 42 | ALIM |  NS  |      | `I`      | Mutable target aliases field `I`
 
-Stack effects for most instructions are given below. Instructions `FN1O`, `FN2O`, and `TR3O` are identical to `FN1C`, `FN2C`, and `TR3D` except that the indicated values in the higher-numbered instructions may be `·`. The non-checking instructions can be implemented using the checking ones, but avoiding the check could improve speed. `VARU` is identical to `VARM` but indicates that the local variable's value will never be used again, which may be useful for optimization.
+Stack effects for most instructions are given below. Instructions `FN1O`, `FN2O`, and `TR3O` are identical to `FN1C`, `FN2C`, and `TR3D` except that the indicated values in the higher-numbered instructions may be `·`. The non-checking instructions can be implemented using the checking ones, but avoiding the check could improve speed. `VARU` is identical to `VARO` but indicates that the local variable's value will never be used again, which may be useful for optimization.
 
 |  B | Name | Stack effect          | Comments
 |---:|------|-----------------------|--------
