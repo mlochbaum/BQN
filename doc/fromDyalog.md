@@ -95,15 +95,15 @@ Modifiers are a little harder. Many have equivalents in some cases, but Dyalog s
 |:------:|:---:|:----:|:---:|:-------:|:-----:|:----:|
 | Dyalog | `¨` | `∘.` | `⌿` |   `⍀`   | `⍤¯1` | `⍤A` |
 
-| BQN    | `⁼`   | `⍟` | `˜` | `∘`  | `○` | `⟜` |
-|:------:|:-----:|:---:|:---:|:----:|:---:|:---:|
-| Dyalog | `⍣¯1` | `⍣` | `⍨` | `⍤f` | `⍥` | `∘` |
+| BQN    | `⁼`   | `⍟` | `˜` | `∘`  | `○` | `⊸` | `⟜` |
+|:------:|:-----:|:---:|:---:|:----:|:---:|:---:|:---:|
+| Dyalog | `⍣¯1` | `⍣` | `⍨` | `⍤f` | `⍥` | `⍛` | `∘` |
 
 Some other BQN modifiers have been proposed as future Dyalog extensions:
 
-| BQN             | `⌾` | `⚇` | `⊸` |
-|:---------------:|:---:|:---:|:---:|
-| Dyalog proposed | `⍢` [Under](https://aplwiki.com/wiki/Under) | `⍥` [Depth](https://aplwiki.com/wiki/Depth_(operator)) | `⍛` [Reverse Compose](https://aplwiki.com/wiki/Reverse_Compose)
+| BQN             | `⌾` | `⚇` |
+|:---------------:|:---:|:---:|
+| Dyalog proposed | `⍢` [Under](https://aplwiki.com/wiki/Under) | `⍥` [Depth](https://aplwiki.com/wiki/Depth_(operator)) |
 
 ## For writing
 
@@ -163,6 +163,7 @@ The form `F⍣G` (Power with a function right operand; Power limit) can't be imp
 <tr><td> <code>A∘g</code> </td><td> <code>A⊸g</code> </td><td>                       </td></tr>
 <tr><td> <code>f∘B</code> </td><td> <code>f⟜B</code> </td><td>                       </td></tr>
 <tr><td> <code>f∘g</code> </td><td colspan=2> <code>f⟜g</code>                       </td></tr>
+<tr><td> <code>f⍛g</code> </td><td colspan=2> <code>f⊸g</code>                       </td></tr>
 <tr><td> <code>f⍤B</code> </td><td colspan=2> <code>f⎉B</code>                       </td></tr>
 <tr><td> <code>f⍤g</code> </td><td colspan=2> <code>f∘g</code>                       </td></tr>
 <tr><td> <code>f⍥g</code> </td><td colspan=2> <code>f○g</code>                       </td></tr>
