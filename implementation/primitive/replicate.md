@@ -94,25 +94,122 @@ Finally, when you don't have a shuffle instruction, the best method I know is ju
 
 ### Boolean compress
 
-When you don't have pext you have to emulate it. The two good published methods I know are described in Hacker's Delight. The one given in 7-4 is due to Guy Steele, and sketched in 7-6 is another method I'll call "pairwise"—the book says it isn't practical in software but it works well if finished with sequential shifts. Both take log²(w) instructions for word size w using generic instructions; comparing the two makes it seem like the extra log(w) factor is incidental, but I haven't been able to get rid of it. However, they also vectorize, and are log(w) with the right instruction support: carry-less multiply (x86 PCLMUL, NEON) for Guy Steele and vector-variable shifts (AVX2, SVE) for pairwise.
+When you don't have pext you have to emulate it. Two strategies are described in Hacker's Delight, although neither reaches its full potential there. The one given in 7-4 is due to Guy Steele, and sketched in 7-6 is another method I'll call "pairwise", which the book claims isn't practical in software. As shown, both take log²(w) instructions for word size w. I will describe below how Guy Steele's method can be brought down to log(w) using sum-scan rather than xor-scan, and the pairwise method can also be done in log(w) vector instructions if shifting each element by a variable amount is supported. I've found that the pairwise method is best in NEON and slightly better in AVX2 with sufficient optimization, while the modified Guy Steele is best for scalar code and earlier x86 architectures.
 
 On Zen, Zen+, and Zen 2 architectures, pext is micro-coded as a loop over set bits and should not be used. The cost ranges from a few cycles to hundreds; measurements such as uops.info apparently use an argument that's 0 or close to it, so they underreport.
 
-Slowest to fastest with 64-bit words on x86:
-* Guy Steele generic
-* Pairwise generic, sequential shifts after reaching 8 bits
-* Guy Steele PCLMUL, 1 word at a time
-* Guy Steele PCLMUL, 2 at a time (needs double clmuls so it's not 2x faster)
-* Pairwise AVX2, 32- and 64-bit srlv, 4 words at a time
-* BMI2 pext
+<!--GEN
+Ge ← "g"⊸At⊸Enc
 
-The basic movement strategy is the masked shift `(x & m)>>sh | (x &~ m)`. Combining shifts for `sh` of 1, 2, 4, up to `2⋆k-1`, with variable masks, any variable shift strictly less than `2⋆k` can be obtained. Each bit needs to eventually be shifted down by the number of zeros below it. The challenge is producing these masks, which need to line up with bits of `x` at the time it's shifted.
+g  ← "fill=currentColor|font-family=BQN,monospace|font-size=16"
+rc ← "class=code|stroke-width=1.5|rx=12"
 
-The pairwise method resolves this by repeatedly combining pairs: at each step only the top group in a pair moves, by the number of zeros in the bottom group. So the top groups can be pulled out and shifted together, and the mask when it's shifted spans both top and bottom groups. Zero counts come from pairwise sums, and the final one can be used to get the total number of 1s needed for Compress's loop. The masked shifting wastes nearly a whole bit: for example merging groups of size 4 may need a shift anywhere from 0 to 4, requiring 3 bits but the top one's only used for 4 exactly! I found some twiddling that mitigates this by not using this bit but instead leaving a group out of the shifted part if it would shift by 0. To avoid the wide shifts in later steps, stop, get total offsets with a multiply (e.g. by 0x010101…), and finish with sequential shifts. That is, pull out each group with a mask, shift by its offset, and or all these shifted words together. But SIMD variable shifts, if present, are much better.
+Text ← ("text" Attr "dy"‿"0.33em"∾Pos)⊸Enc
+Rect ← "rect"{𝕗⊘(𝕗At⊣)} Elt Pos⊸∾⟜("width"‿"height"≍˘FmtNum)˝∘⊢
+Path ← "path" Elt "d"⊸⋈⊘(⊣∾"d"⋈⊢)
+Lines ← Path (∾ ("M L "⥊˜≠) ∾¨ FmtNum)∘⥊
+VLines‿HLines ← {(Path∘∾∘⥊ 𝕨˘∾¨FmtNum)𝕏˘}´¨ ⟨"M V"‿∾,"M H"‿(⌽⌾(2⊸↑)∾)⟩
 
-Guy Steele shifts each bit directly by the right amount, that is, the number of zeros below it. So the first shift mask is ``≠`»¬𝕨``, and later shifts are also constructed with xor-scan, but where `𝕨` is filtered to every other bit, then every 4th, and so on. This filtering uses the result of `` ≠` ``, leading to a long dependency chain. Also the bits originating from `𝕨` have to be shifted down along with `𝕩`.
+Tspan ← {⟨"<tspan class='"∾𝕩∾"'>", "</tspan>"⟩}
+ts ← Tspan¨ "Number"‿"Modifier"‿"String"
+tw ← 9.6
 
-Multiple rounds of xor-scan is a complicated thing to do, considering that all it _does_ do is a prefix sum that could just as easily be (carry-ful) multiplication! It feels like going from 8 bits to 64 in the pairwise method, which I now use sequential shifts for, should have some Guy Steele version that's parallel and reasonably fast. The issue is that the shift amounts, which are 6-bit numbers, have to be moved along with the groups, which are 0 to 8 bits. So if this process brings two of them too close, they'll overlap and get mangled.
+Hlx ← { ⟨1¨𝕩, ∾(»⊸≠⊸/𝕨)⊏⟨⟩<⊸∾ts, 1-˜/0(∾(≠×+○×)∾˜)𝕨⟩ Modify 𝕩 }
+TA ← {"text" Attr "textLength"‿(Fmt𝕨)∾"dy"‿"0.32em"∾Pos𝕩}
+JoinLines ← {Lines ≍˘⟜(𝕩+⋈⟜-10)˘ (¯3⌈3⌊tw÷˜⌽˘⊸-)⊸+𝕨}¨⟜(<˘2↕⊢)˜
+HlRect ← {∾ (𝕨-9) <∘(Rect-˜`∘⊢≍˘⋈⟜18)˘¨ 𝕩}
+
+pew ← ⊑pext_args ← ∧`'0'-˜⟨
+  "10001000101100111111000100001110"
+  "11000100111011001111101110111011"
+⟩
+p ← ↕2⋆⁼≠ pew
+pgs ← (»≠`)¨ wgs ← ≠`⊸<⍟p ¬pew
+lx‿lz‿xxs‿bps‿bms ← {
+  mxgs ← {s←1 ⋄ {(s×↩2) ⊢ 𝕨(>∨(s⥊0)«∧)𝕩}` 𝕩<⊸∾pgs}¨ pext_args
+  ppw ← (≠↑2⊸/)⍟p 2|↕≠pew
+  mxpw ← {𝕊v: {pew (≠∘⊣↑/)˘⌾(∘‿𝕩⊸⥊) v}¨ 2⋆∾⟜≠p}¨ pext_args
+  ps ← pgs≍ppw ⋄ ms‿xxs ← mxgs≍¨mxpw ⋄ xxs⇐
+  lx ⇐ tw×0.5+ps(⊏˘⊸⊏˜/⊢)¨⟜(≍˘¨˝˘2↕/¨)˘ms
+  lz ⇐ tw×0.5+(≍˘¨˝˘2↕/¨)¬⊏ms
+  bps‿bms ⇐ {∘‿2⥊tw×/0(∾≠∾˜)𝕩}¨¨ ps‿ms
+}
+
+{
+name ← "Guy Steele"‿"Pairwise"
+xw ← tw×n←≠pew
+x0‿x1 ← xs ← 0⋈xw+72
+ya ← 6+22×p
+yb ← 144+38×+`»1.12⋆∾⟜≠p
+dim ← 20‿60 (-∘⊣≍2⊸×⊸+) (x1+xw)⋈(⊢´yb)-28
+
+(⥊ 16‿8 (-≍+˜)⊸+ dim) SVG g Ge ⟨
+  rc Rect dim
+  "class=yellow|stroke-width=4|opacity=0.2" Ge yb JoinLines x0+lz
+  "class=bluegreen|opacity=0.4|stroke-width=1" Ge ⟨
+    ((x1+tw×2⊸×) VLines (8.5-˜⊑yb)≍˘(9+yb)⊏˜{2|𝕩?1;1+𝕊𝕩÷2}¨) 1↓↕n÷2
+    yb HlRect ∾¨˝xs+bms
+  ⟩
+  "class=purple|stroke-width=3" Ge (10+¯1↓yb) HLines¨ ∾¨˝xs+bps
+  "class=purple|stroke-width=1.5" Ge yb JoinLines ∾¨˝xs+lx
+  xw⊸TA⊸Enc¨´¨ ⟨
+    ⟨x0⋈¨ya, (wgs∨2×pgs) Hlx¨ '0'+wgs⟩
+    ⟨xs⋈⌜yb, Hlx⟜('0'⊸+)¨ xxs⟩
+  ⟩
+  ((tw×n¬2⋆p)TA¨x1⋈¨ya) Enc¨ (2×·¬2|↕∘≠)⊸Hlx¨ '0'+(+˝˘∘‿2⊸⥊)⍟p ¬pew
+  "font-size=22|text-anchor=middle" Ge ⟨
+    (xs+xw÷2) ⋈⟜¯32⊸Text¨ name
+    (2-˜ya⊏⊸∾0‿¯1⊏yb) (2÷˜x1+xw)⊸⋈⊸Text⟜Highlight¨ "¬𝕨"‿"𝕨∧𝕩"‿"𝕨/𝕩"
+  ⟩
+⟩
+}
+-->
+
+Both strategies move bits of `𝕩` with the masked shift `(x & m)>>sh | (x &~ m)`. Combining shifts for `sh` of 1, 2, 4, up to `2⋆k-1`, with variable masks, any variable shift strictly less than `2⋆k` can be obtained. Each bit needs to eventually be shifted down by the number of zeros below it. The challenge is producing these masks, which need to line up with bits of `x` at the time it's shifted.
+
+The pairwise method resolves this by repeatedly combining pairs: at each step only the top group in a pair moves, by the number of zeros in the bottom group. So the top groups can be pulled out and shifted together, and the mask when it's shifted spans both top and bottom groups. Zero counts come from pairwise sums, and the final one can be used to get the total number of 1s (needed for Compress's loop). The masked shifting wastes nearly a whole bit: for example merging groups of size 4 may need a shift anywhere from 0 to 4, requiring 3 bits but the top one's only used for 4 exactly! I found some twiddling that mitigates this by not using this bit but instead leaving a group out of the shifted part if it would shift by 0. At larger sizes this sort of shifting gets too slow, hence the need for SIMD variable shifts. A wider shift may also be used to perform a few steps at once, for example to go from 8 to 32 bits in AVX2: get total offsets with a multiply (e.g. by 0x010101…), then apply them individually. That is, pull out each group with a mask, shift by its offset, and or all these shifted words together.
+
+Guy Steele shifts each bit directly by the right amount, that is, the number of zeros below it. The sum ``+`m←¬𝕨`` is constructed bit-by-bit: the first shift mask ``≠`m`` is the bottom bit of the sum, then ``m2←m>≠`m`` is the odd bits giving ``≠`m2`` as the next sum bit, and again with every 4th bit and so on. The code in Hacker's Delight adds an extra shift `m←»¬𝕨` instead of `m←¬𝕨`, and compresses a copy of `m` along with `𝕩`. Neither is needed: the line `mv = mp & m` and all manipulation of `m` can be removed with no change in overall functionality.
+
+All these xor-scans are expensive without a carry-less multiply and high-latency even with it, and it turns out it's possible to save a lot of work by not computing higher bits of the sum at every position. To begin explaining, I find it helpful to think of the movement in terms of how it bubbles the "vacant" bits corresponding to `0` in `𝕨` to the top. After `i` steps of the algorithm, these bits are grouped in runs of `2⋆i`, where the top bit hasn't yet moved. On the next step, runs are paired up, and the lower half of each pair moves up to merge with its partner. That is, `2⋆i` vacant bits are swapped with any number of live bits, by shifting the live bits down `2⋆i` spaces. Live bits must be moved when they have an odd number of runs below them, that is, when bit `i` is 1 in the number of vacant bits below.
+
+<!--GEN
+{
+xw ← tw×n←≠pew ⋄ x1 ← 52 ⋄ yb ← 32+0‿64
+is ← (↕2) + i ← 2 ⋄ ip ← 2⋆i ⋄ IB ← ip≤(2×ip)|⊢
+bqs ← ∘‿2⥊tw×/0(∾≠∾˜) ⊣`⌾⌽˘⌾(∘‿ip⊸⥊) IB+`¬pew
+t0‿t1 ← ¯14‿6 ⋄ ly ← (⊑yb)+`13‿13
+dim ← 16‿28 (-∘⊣≍2⊸×⊸+) ⟨x1+xw,⊢´yb⟩
+JL ← (yb+4‿0) JoinLines x1 + ⟨i⟩⊏⊢
+
+(⥊ 28‿8 (-≍+˜)⊸+ dim) SVG g Ge ⟨
+  rc Rect dim
+  "class=bluegreen|opacity=0.3" Ge ⟨
+    Lines ≍˘⟜(yb-⋈⟜-15)˘ x1 + tw×↕⊸∾⌾(÷⟜ip)n
+    yb HlRect x1 + is⊏⊏bms
+  ⟩
+  "class=yellow|stroke-width=4|opacity=0.2" Ge JL lz
+  "class=purple|stroke-width=5" Ge (11+⊑yb) HLines x1+0‿i⊑bps
+  "class=purple|stroke-width=1.5" Ge JL ⊏lx
+  "class=green|stroke-width=5" Ge (16+⊑yb) HLines x1+bqs
+  yb (xw TA x1⊸⋈)⊸Enc¨ Hlx⟜('0'⊸+)¨ is⊏⊏xxs
+  "font-size=10" Ge ((tw×n)TA x1‿t0) Enc '0'+pew
+  "text-anchor=end" Ge ⟨
+    (x1+tw×(1+↕)⌾(÷⟜ip)n) ⋈⟜t1⊸Text¨ {
+      (IB ({𝕨∾∾⟜𝕩}´Tspan"Function")∘⊢⍟⊣¨ FmtNum) +`+˝˘∘‿ip⥊¬pew
+    }
+    "font-size=12"⊸Ge⌾⊑ (1=↕∘≠)⊸⊔ (t0‿t1∾ly) (x1-6)⊸⋈⊸Text¨ ∾⟨
+      Highlight¨ "𝕨"‿"+`¬𝕨", "bitwise"‿"aligned"
+    ⟩
+  ⟩
+  "stroke=currentColor|stroke-width=0.7" Ge Lines ((x1-4)≍˘x1+⊑¨⟨0‿i⊑bps,bqs⟩) ≍˘○⥊ ly≍˘11‿16+⊑yb
+⟩
+}
+-->
+
+Guy Steele relies on the fact that this bit of the sum is the same as for the initial `𝕨`, because it only changes at the top bit of a run, which hasn't moved yet. The boundaries of the computed masks are placed at these top bits, but they don't have to be. Since the mask value only affects live bits, it's safe to start anywhere within the run of `2⋆i` vacant bits. In particular, if we split `𝕨` into groups of length `2⋆i`, we can use the mask value at the _end_ of the group for all the bits inside: this is equal to the number of zero bits in `𝕨` in or before the group, or, ``+`z``, where `z` is the count of zeros in each group.
+
+The required sums can be computed in log(w) instructions with pairwise combinations. For a given shift amount `2⋆i`, compute counts of size `2⋆i` recursively (beginning with `¬𝕨`), and add them in pairs to get counts of size `2⋆i+1`. This might look like `b8=(c4>>4)&h8; c8=(c4&h8)+b8` where `i` is 3, and `h8` has the low 4 bits set out of every 8. Then recursively get sums of size `2⋆i+1`, and split them into sums of size `2⋆i`, like `s4=(s8-b8)|(s8<<4)`, with a few extra tricks for overflow handling for smaller sizes. After this computation the mask is found by selecting bit `i` of the sum and copying `2⋆i` times. The group size doesn't actually have to be equal to `2⋆i` but just has to be big enough that the sums don't overflow—it's best to compute `s8=c8*0x010101…` and keep to a maximum group size of 8, assuming your machine words aren't wider than 256 bits. The full computation is three passes: one pass up for counts, one down for sums, and a last pass up to actually shift `𝕩`. While the instruction count can be small, this is much worse for latency than Guy Steele's two upwards passes that can be overlapped. In my tests I've found it's always best to compute the 1-shift mask with an xor-scan, as well as the 2-shift if a 64-bit carry-less multiply instruction is available.
 
 ### Sparse compress
 
@@ -123,14 +220,7 @@ The best-known sparse method is to work on a full word of bits. At each step, fi
 For marginal cases, I found a branchless algorithm that can work on blocks of up to `2⋆11` elements. The idea is to split each word into a few segments, and write the bits and relative offset for each segment to the appropriate position in the result of a zeroed buffer. Then traverse the buffer, maintaining bits and a cumulative offset. At each step, the index is obtained from those bits with count-trailing-zeros just as in the branching algorithm. The bits will all be removed exactly when the next segment is reached, so new values from the buffer can be incorporated just by adding them.
 
 <!--GEN
-Ge ← "g"⊸At⊸Enc
-g  ← "fill=currentColor|font-family=BQN,monospace|font-size=16"
-rc ← "class=code|stroke-width=1.5|rx=12"
 pe ← "path"At"stroke-width=1|stroke=currentColor|fill=none"
-
-Text ← ("text" Attr "dy"‿"0.33em"∾Pos)⊸Enc
-Line ← "line" Elt ("xy"≍⌜"12")≍˘○⥊ FmtNum
-Rect ← "rect"{𝕗⊘(𝕗At⊣)} Elt Pos⊸∾⟜("width"‿"height"≍˘FmtNum)˝∘⊢
 
 nw ← 2
 input ← (2×64) ↑/⁼ 23‿24‿33‿35‿42‿92‿93‿104‿122
@@ -146,8 +236,7 @@ x0‿x1‿x2‿x3 ← +`0‿288‿368‿320
 dim ← 24‿72 (-∘⊣≍2⊸×⊸+) x3⋈(⊢´y1)-44
 x0t ← x0 + 20
 
-Tspan ← {⟨"<tspan class='"∾𝕩∾"'>", "</tspan>"⟩}
-tBit‿tAdd‿tSum ← ts ← Tspan¨ "Number"‿"Modifier"‿"String"
+tBit‿tAdd‿tSum ← ts
 CBit‿CAdd‿CSum ← {𝕨∾∾⟜𝕩}´¨ ts
 
 _hl ← { i←𝔽/𝕩 ⋄ ⟨1¨𝕩, ⥊tBit˘i, ⥊i-⌜1‿0⟩ Modify '0'+𝕩 }
@@ -157,10 +246,10 @@ FmtBW ← {∾𝕨‿" | "‿𝕩‿"<<24"}⟜CAdd
   rc Rect dim
   "class=bluegreen|opacity=0.3" Rect (-˜`x3+¯26‿10)≍˘(1‿¯2×12)+⊢˝˘dim
   pe Elt "d"⋈∾(∾"M hvh"∾¨⟜FmtNum(x0+4)∾∾⟜(10(-⊸∾∾⊣)7-˜3×51))¨ 13-˜0‿3⊏y0
-  "class=bluegreen|stroke-width=3|stroke-linecap=round" Ge Line¨ ∾⟨
-    (x1-50‿6)⊸≍¨ y0⋈¨dest⊏y1
-    ((x2-50‿6)≍⋈˜)¨ y1
-    ((⋈˜14+x2)≍(⋈⟜-12)⊸+)¨ <˘2↕y1
+  "class=bluegreen|stroke-width=3|stroke-linecap=round" Ge Lines¨ ⟨
+    (x1-50‿6)⊸(≍˘)˘ y0≍˘dest⊏y1
+    (x2-50‿6)⊸(≍˘)˘ y1
+    ((14+x2)≍˘(⋈⟜-12)⊸+)˘ 2↕y1
   ⟩
   Text¨´¨ ⟨
     ⟨x0t‿x1‿x2⋈¨48-˜yt, ⟨

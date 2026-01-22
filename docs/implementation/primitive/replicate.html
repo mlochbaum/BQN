@@ -102,21 +102,169 @@
 <p>All of these methods can write past the end of the result (and an AVX2 masked write didn't have good performance when I tried it). So there needs to be some way to prevent this from sowing destruction. Overallocating works, and one particular case is that generating 1-byte indices for temporary use can always be done safely in a 256-byte buffer. Since an overallocation in CBQN is permanently wasted space, what we did is to move the result pointer to a small stack-allocated buffer when there's no longer space in the result for a full write. After finishing in that buffer, we copy the values to the real result with one or two vector writes that are appropriately masked.</p>
 <p>Finally, when you don't have a shuffle instruction, the best method I know is just to generate indices in blocks using a table and select with those one at a time.</p>
 <h3 id="boolean-compress"><a class="header" href="#boolean-compress">Boolean compress</a></h3>
-<p>When you don't have pext you have to emulate it. The two good published methods I know are described in Hacker's Delight. The one given in 7-4 is due to Guy Steele, and sketched in 7-6 is another method I'll call &quot;pairwise&quot;—the book says it isn't practical in software but it works well if finished with sequential shifts. Both take log²(w) instructions for word size w using generic instructions; comparing the two makes it seem like the extra log(w) factor is incidental, but I haven't been able to get rid of it. However, they also vectorize, and are log(w) with the right instruction support: carry-less multiply (x86 PCLMUL, NEON) for Guy Steele and vector-variable shifts (AVX2, SVE) for pairwise.</p>
+<p>When you don't have pext you have to emulate it. Two strategies are described in Hacker's Delight, although neither reaches its full potential there. The one given in 7-4 is due to Guy Steele, and sketched in 7-6 is another method I'll call &quot;pairwise&quot;, which the book claims isn't practical in software. As shown, both take log²(w) instructions for word size w. I will describe below how Guy Steele's method can be brought down to log(w) using sum-scan rather than xor-scan, and the pairwise method can also be done in log(w) vector instructions if shifting each element by a variable amount is supported. I've found that the pairwise method is best in NEON and slightly better in AVX2 with sufficient optimization, while the modified Guy Steele is best for scalar code and earlier x86 architectures.</p>
 <p>On Zen, Zen+, and Zen 2 architectures, pext is micro-coded as a loop over set bits and should not be used. The cost ranges from a few cycles to hundreds; measurements such as uops.info apparently use an argument that's 0 or close to it, so they underreport.</p>
-<p>Slowest to fastest with 64-bit words on x86:</p>
-<ul>
-<li>Guy Steele generic</li>
-<li>Pairwise generic, sequential shifts after reaching 8 bits</li>
-<li>Guy Steele PCLMUL, 1 word at a time</li>
-<li>Guy Steele PCLMUL, 2 at a time (needs double clmuls so it's not 2x faster)</li>
-<li>Pairwise AVX2, 32- and 64-bit srlv, 4 words at a time</li>
-<li>BMI2 pext</li>
-</ul>
-<p>The basic movement strategy is the masked shift <code><span class='Paren'>(</span><span class='Value'>x</span> <span class='Value'>&amp;</span> <span class='Value'>m</span><span class='Paren'>)</span><span class='Function'>&gt;&gt;</span><span class='Value'>sh</span> <span class='Function'>|</span> <span class='Paren'>(</span><span class='Value'>x</span> <span class='Value'>&amp;~</span> <span class='Value'>m</span><span class='Paren'>)</span></code>. Combining shifts for <code><span class='Value'>sh</span></code> of 1, 2, 4, up to <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>k</span><span class='Function'>-</span><span class='Number'>1</span></code>, with variable masks, any variable shift strictly less than <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>k</span></code> can be obtained. Each bit needs to eventually be shifted down by the number of zeros below it. The challenge is producing these masks, which need to line up with bits of <code><span class='Value'>x</span></code> at the time it's shifted.</p>
-<p>The pairwise method resolves this by repeatedly combining pairs: at each step only the top group in a pair moves, by the number of zeros in the bottom group. So the top groups can be pulled out and shifted together, and the mask when it's shifted spans both top and bottom groups. Zero counts come from pairwise sums, and the final one can be used to get the total number of 1s needed for Compress's loop. The masked shifting wastes nearly a whole bit: for example merging groups of size 4 may need a shift anywhere from 0 to 4, requiring 3 bits but the top one's only used for 4 exactly! I found some twiddling that mitigates this by not using this bit but instead leaving a group out of the shifted part if it would shift by 0. To avoid the wide shifts in later steps, stop, get total offsets with a multiply (e.g. by 0x010101…), and finish with sequential shifts. That is, pull out each group with a mask, shift by its offset, and or all these shifted words together. But SIMD variable shifts, if present, are much better.</p>
-<p>Guy Steele shifts each bit directly by the right amount, that is, the number of zeros below it. So the first shift mask is <code><span class='Function'>≠</span><span class='Modifier'>`</span><span class='Function'>»¬</span><span class='Value'>𝕨</span></code>, and later shifts are also constructed with xor-scan, but where <code><span class='Value'>𝕨</span></code> is filtered to every other bit, then every 4th, and so on. This filtering uses the result of <code><span class='Function'>≠</span><span class='Modifier'>`</span></code>, leading to a long dependency chain. Also the bits originating from <code><span class='Value'>𝕨</span></code> have to be shifted down along with <code><span class='Value'>𝕩</span></code>.</p>
-<p>Multiple rounds of xor-scan is a complicated thing to do, considering that all it <em>does</em> do is a prefix sum that could just as easily be (carry-ful) multiplication! It feels like going from 8 bits to 64 in the pairwise method, which I now use sequential shifts for, should have some Guy Steele version that's parallel and reasonably fast. The issue is that the shift amounts, which are 6-bit numbers, have to be moved along with the groups, which are 0 to 8 bits. So if this process brings two of them too close, they'll overlap and get mangled.</p>
+<svg viewBox='-36 -68 758.4 493.408'>
+  <g fill='currentColor' font-family='BQN,monospace' font-size='16'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-20' y='-60' width='726.4' height='477.408'/>
+    <g class='yellow' stroke-width='4' opacity='0.2'>
+      <path d='M14.4 154L14.4 172M24 154L24 172M34.6 154L42.2 172M52.8 154L52.8 172M62.4 154L62.4 172M72 154L72 172M93.2 154L108.4 172M120 154L120 172M132.6 154L184.2 172M196.8 154L196.8 172M206.4 154L206.4 172M216 154L216 172M235.2 154L235.2 172M244.8 154L244.8 172M254.4 154L254.4 172M264 154L264 172M302.4 154L302.4 172'/>
+      <path d='M15.4 192L23 214.56M25 192L32.6 214.56M43.2 192L43.2 214.56M52.8 192L52.8 214.56M65.4 192L88.2 214.56M75 192L97.8 214.56M110.4 192L110.4 214.56M120 192L120 214.56M187.2 192L187.2 214.56M196.8 192L196.8 214.56M206.4 192L206.4 214.56M216 192L216 214.56M235.2 192L235.2 214.56M244.8 192L244.8 214.56M254.4 192L254.4 214.56M264 192L264 214.56M302.4 192L302.4 214.56'/>
+      <path d='M27 234.56L49.8 262.227M36.6 234.56L59.4 262.227M46.2 234.56L69 262.227M55.8 234.56L78.6 262.227M91.2 234.56L91.2 262.227M100.8 234.56L100.8 262.227M110.4 234.56L110.4 262.227M120 234.56L120 262.227M188.2 234.56L195.8 262.227M197.8 234.56L205.4 262.227M207.4 234.56L215 262.227M217 234.56L224.6 262.227M235.2 234.56L235.2 262.227M244.8 234.56L244.8 262.227M254.4 234.56L254.4 262.227M264 234.56L264 262.227M302.4 234.56L302.4 262.227'/>
+      <path d='M55.8 282.227L117 315.614M65.4 282.227L126.6 315.614M75 282.227L136.2 315.614M84.6 282.227L145.8 315.614M94.2 282.227L155.4 315.614M103.8 282.227L165 315.614M113.4 282.227L174.6 315.614M123 282.227L184.2 315.614M196.8 282.227L196.8 315.614M206.4 282.227L206.4 315.614M216 282.227L216 315.614M225.6 282.227L225.6 315.614M235.2 282.227L235.2 315.614M244.8 282.227L244.8 315.614M254.4 282.227L254.4 315.614M264 282.227L264 315.614M302.4 282.227L302.4 315.614'/>
+      <path d='M123 335.614L145.8 375.408M132.6 335.614L155.4 375.408M142.2 335.614L165 375.408M151.8 335.614L174.6 375.408M161.4 335.614L184.2 375.408M171 335.614L193.8 375.408M180.6 335.614L203.4 375.408M190.2 335.614L213 375.408M199.8 335.614L222.6 375.408M209.4 335.614L232.2 375.408M219 335.614L241.8 375.408M228.6 335.614L251.4 375.408M238.2 335.614L261 375.408M247.8 335.614L270.6 375.408M257.4 335.614L280.2 375.408M267 335.614L289.8 375.408M302.4 335.614L302.4 375.408'/>
+    </g>
+    <g class='bluegreen' opacity='0.4' stroke-width='1'>
+      <path d='M398.4 135.5V191M417.6 135.5V233.56M436.8 135.5V191M456 135.5V281.227M475.2 135.5V191M494.4 135.5V233.56M513.6 135.5V191M532.8 135.5V334.614M552 135.5V191M571.2 135.5V233.56M590.4 135.5V191M609.6 135.5V281.227M628.8 135.5V191M648 135.5V233.56M667.2 135.5V191'/>
+      <rect x='0' y='135' width='9.6' height='18'/>
+      <rect x='38.4' y='135' width='9.6' height='18'/>
+      <rect x='76.8' y='135' width='9.6' height='18'/>
+      <rect x='96' y='135' width='19.2' height='18'/>
+      <rect x='134.4' y='135' width='57.6' height='18'/>
+      <rect x='220.8' y='135' width='9.6' height='18'/>
+      <rect x='268.8' y='135' width='28.8' height='18'/>
+      <rect x='379.2' y='135' width='9.6' height='18'/>
+      <rect x='417.6' y='135' width='9.6' height='18'/>
+      <rect x='456' y='135' width='9.6' height='18'/>
+      <rect x='475.2' y='135' width='19.2' height='18'/>
+      <rect x='513.6' y='135' width='57.6' height='18'/>
+      <rect x='600' y='135' width='9.6' height='18'/>
+      <rect x='648' y='135' width='28.8' height='18'/>
+      <rect x='0' y='173' width='9.6' height='18'/>
+      <rect x='28.8' y='173' width='9.6' height='18'/>
+      <rect x='76.8' y='173' width='28.8' height='18'/>
+      <rect x='124.8' y='173' width='57.6' height='18'/>
+      <rect x='220.8' y='173' width='9.6' height='18'/>
+      <rect x='268.8' y='173' width='28.8' height='18'/>
+      <rect x='379.2' y='173' width='9.6' height='18'/>
+      <rect x='417.6' y='173' width='9.6' height='18'/>
+      <rect x='456' y='173' width='9.6' height='18'/>
+      <rect x='475.2' y='173' width='19.2' height='18'/>
+      <rect x='513.6' y='173' width='57.6' height='18'/>
+      <rect x='590.4' y='173' width='9.6' height='18'/>
+      <rect x='648' y='173' width='28.8' height='18'/>
+      <rect x='0' y='215.56' width='19.2' height='18'/>
+      <rect x='57.6' y='215.56' width='28.8' height='18'/>
+      <rect x='124.8' y='215.56' width='57.6' height='18'/>
+      <rect x='220.8' y='215.56' width='9.6' height='18'/>
+      <rect x='268.8' y='215.56' width='28.8' height='18'/>
+      <rect x='379.2' y='215.56' width='9.6' height='18'/>
+      <rect x='417.6' y='215.56' width='9.6' height='18'/>
+      <rect x='456' y='215.56' width='28.8' height='18'/>
+      <rect x='494.4' y='215.56' width='19.2' height='18'/>
+      <rect x='532.8' y='215.56' width='48' height='18'/>
+      <rect x='648' y='215.56' width='28.8' height='18'/>
+      <rect x='0' y='263.227' width='48' height='18'/>
+      <rect x='124.8' y='263.227' width='67.2' height='18'/>
+      <rect x='268.8' y='263.227' width='28.8' height='18'/>
+      <rect x='379.2' y='263.227' width='19.2' height='18'/>
+      <rect x='456' y='263.227' width='48' height='18'/>
+      <rect x='532.8' y='263.227' width='48' height='18'/>
+      <rect x='609.6' y='263.227' width='28.8' height='18'/>
+      <rect x='0' y='316.614' width='115.2' height='18'/>
+      <rect x='268.8' y='316.614' width='28.8' height='18'/>
+      <rect x='379.2' y='316.614' width='67.2' height='18'/>
+      <rect x='532.8' y='316.614' width='76.8' height='18'/>
+      <rect x='0' y='376.408' width='144' height='18'/>
+      <rect x='379.2' y='376.408' width='144' height='18'/>
+    </g>
+    <g class='purple' stroke-width='3'>
+      <path d='M19.2 154H28.8M38.4 154H57.6M67.2 154H76.8M96 154H124.8M134.4 154H201.6M211.2 154H220.8M240 154H249.6M259.2 154H268.8M388.8 154H398.4M408 154H417.6M427.2 154H436.8M446.4 154H456M465.6 154H475.2M484.8 154H494.4M504 154H513.6M523.2 154H532.8M542.4 154H552M561.6 154H571.2M580.8 154H590.4M600 154H609.6M619.2 154H628.8M638.4 154H648M657.6 154H667.2M676.8 154H686.4'/>
+      <path d='M28.8 192H57.6M76.8 192H124.8M201.6 192H220.8M249.6 192H268.8M398.4 192H417.6M436.8 192H456M475.2 192H494.4M513.6 192H532.8M552 192H571.2M590.4 192H609.6M628.8 192H648M667.2 192H686.4'/>
+      <path d='M57.6 234.56H124.8M220.8 234.56H268.8M417.6 234.56H456M494.4 234.56H532.8M571.2 234.56H609.6M648 234.56H686.4'/>
+      <path d='M124.8 282.227H268.8M456 282.227H532.8M609.6 282.227H686.4'/>
+      <path d='M268.8 335.614H307.2M532.8 335.614H686.4'/>
+    </g>
+    <g class='purple' stroke-width='1.5'>
+      <path d='M42.2 154L34.6 172M99.8 154L92.2 172M109.4 154L101.8 172M138.2 154L130.6 172M147.8 154L140.2 172M157.4 154L149.8 172M167 154L159.4 172M176.6 154L169 172M186.2 154L178.6 172M489.6 154L489.6 172M528 154L528 172M547.2 154L547.2 172M566.4 154L566.4 172M603.8 154L596.2 172M662.4 154L662.4 172'/>
+      <path d='M31.6 192L16.4 214.56M79.6 192L64.4 214.56M89.2 192L74 214.56M98.8 192L83.6 214.56M479 192L471.4 214.56M488.6 192L481 214.56M516.4 192L501.2 214.56M526 192L510.8 214.56M556.8 192L556.8 214.56M566.4 192L566.4 214.56M593.2 192L578 214.56M672 192L672 214.56'/>
+      <path d='M59.4 234.56L27 262.227M69 234.56L36.6 262.227M78.6 234.56L46.2 262.227M222.6 234.56L190.2 262.227M419.4 234.56L396.6 262.227M498.2 234.56L490.6 262.227M507.8 234.56L500.2 262.227M576 234.56L576 262.227M649.8 234.56L617.4 262.227M659.4 234.56L627 262.227M669 234.56L636.6 262.227'/>
+      <path d='M126.6 282.227L55.8 315.614M136.2 282.227L65.4 315.614M145.8 282.227L75 315.614M155.4 282.227L84.6 315.614M165 282.227L94.2 315.614M174.6 282.227L103.8 315.614M184.2 282.227L113.4 315.614M457.8 282.227L406.2 315.614M467.4 282.227L415.8 315.614M477 282.227L425.4 315.614M486.6 282.227L435 315.614M496.2 282.227L444.6 315.614M611.4 282.227L588.6 315.614M621 282.227L598.2 315.614M630.6 282.227L607.8 315.614'/>
+      <path d='M270.6 335.614L123 375.408M280.2 335.614L132.6 375.408M289.8 335.614L142.2 375.408M534.6 335.614L454.2 375.408M544.2 335.614L463.8 375.408M553.8 335.614L473.4 375.408M563.4 335.614L483 375.408M573 335.614L492.6 375.408M582.6 335.614L502.2 375.408M592.2 335.614L511.8 375.408M601.8 335.614L521.4 375.408'/>
+    </g>
+    <text textLength='307.2' dy='0.32em' x='0' y='6'>0<tspan class='Number'>111</tspan><tspan class='Modifier'>0</tspan><tspan class='Number'>111</tspan>0<tspan class='Number'>1</tspan><tspan class='Modifier'>00</tspan><tspan class='Number'>11</tspan><tspan class='Modifier'>000000</tspan><tspan class='Number'>111</tspan>0<tspan class='Number'>1111</tspan>000<tspan class='Number'>1</tspan></text>
+    <text textLength='307.2' dy='0.32em' x='0' y='28'>00<tspan class='Number'>1</tspan><tspan class='Modifier'>00</tspan><tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan><tspan class='Modifier'>0000</tspan><tspan class='Number'>1</tspan>0000000<tspan class='Number'>1</tspan><tspan class='Modifier'>0</tspan><tspan class='Number'>1</tspan>00<tspan class='Number'>1</tspan><tspan class='Modifier'>0</tspan><tspan class='Number'>1</tspan>0000</text>
+    <text textLength='307.2' dy='0.32em' x='0' y='50'>00000<tspan class='Number'>1</tspan><tspan class='Modifier'>000000</tspan><tspan class='Number'>1</tspan>000000000<tspan class='Number'>1</tspan><tspan class='Modifier'>0000</tspan><tspan class='Number'>1</tspan>0000</text>
+    <text textLength='307.2' dy='0.32em' x='0' y='72'>000000000000<tspan class='Number'>1</tspan><tspan class='Modifier'>00000000000000</tspan><tspan class='Number'>1</tspan>0000</text>
+    <text textLength='307.2' dy='0.32em' x='0' y='94'>000000000000000000000000000<tspan class='Number'>1</tspan><tspan class='Modifier'>0000</tspan></text>
+    <text textLength='307.2' dy='0.32em' x='0' y='144'><tspan class='Number'>1</tspan>0000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>00000<tspan class='Number'>1111</tspan>000<tspan class='Number'>1</tspan>0000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='0' y='182'><tspan class='Number'>1</tspan>0000000<tspan class='Number'>11</tspan>00000<tspan class='Number'>1111</tspan>0000<tspan class='Number'>1</tspan>0000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='0' y='224.56'><tspan class='Number'>1</tspan>00000<tspan class='Number'>11</tspan>0000000<tspan class='Number'>1111</tspan>0000<tspan class='Number'>1</tspan>0000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='0' y='272.227'><tspan class='Number'>1</tspan>0<tspan class='Number'>11</tspan>00000000000<tspan class='Number'>11111</tspan>00000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='0' y='325.614'><tspan class='Number'>1</tspan>0<tspan class='Number'>11</tspan>000<tspan class='Number'>11111</tspan>0000000000000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='0' y='385.408'><tspan class='Number'>1</tspan>0<tspan class='Number'>11</tspan>000<tspan class='Number'>111111</tspan>0<tspan class='Number'>1</tspan>00000000000000000</text>
+    <text textLength='307.2' dy='0.32em' x='379.2' y='144'><tspan class='Number'>1</tspan>0000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>00000<tspan class='Number'>1111</tspan>000<tspan class='Number'>1</tspan>0000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='379.2' y='182'><tspan class='Number'>1</tspan>0000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>00000<tspan class='Number'>1111</tspan>00<tspan class='Number'>1</tspan>00000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='379.2' y='224.56'><tspan class='Number'>1</tspan>0000000<tspan class='Number'>11</tspan>000000<tspan class='Number'>11111</tspan>0000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='379.2' y='272.227'><tspan class='Number'>1</tspan>0000000<tspan class='Number'>11</tspan>000000<tspan class='Number'>11111</tspan>000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>00000</text>
+    <text textLength='307.2' dy='0.32em' x='379.2' y='325.614'><tspan class='Number'>1</tspan>0<tspan class='Number'>11</tspan>000000000000<tspan class='Number'>111111</tspan>0<tspan class='Number'>1</tspan>00000000</text>
+    <text textLength='307.2' dy='0.32em' x='379.2' y='385.408'><tspan class='Number'>1</tspan>0<tspan class='Number'>11</tspan>000<tspan class='Number'>111111</tspan>0<tspan class='Number'>1</tspan>00000000000000000</text>
+    <text textLength='307.2' dy='0.32em' x='379.2' y='6'><tspan class='Modifier'>0</tspan>1<tspan class='Modifier'>1</tspan>1<tspan class='Modifier'>0</tspan>1<tspan class='Modifier'>1</tspan>1<tspan class='Modifier'>0</tspan>1<tspan class='Modifier'>0</tspan>0<tspan class='Modifier'>1</tspan>1<tspan class='Modifier'>0</tspan>0<tspan class='Modifier'>0</tspan>0<tspan class='Modifier'>0</tspan>0<tspan class='Modifier'>1</tspan>1<tspan class='Modifier'>1</tspan>0<tspan class='Modifier'>1</tspan>1<tspan class='Modifier'>1</tspan>1<tspan class='Modifier'>0</tspan>0<tspan class='Modifier'>0</tspan>1</text>
+    <text textLength='297.6' dy='0.32em' x='379.2' y='28'><tspan class='Modifier'>1</tspan>2<tspan class='Modifier'>1</tspan>2<tspan class='Modifier'>1</tspan>0<tspan class='Modifier'>2</tspan>0<tspan class='Modifier'>0</tspan>0<tspan class='Modifier'>2</tspan>1<tspan class='Modifier'>2</tspan>2<tspan class='Modifier'>0</tspan>1</text>
+    <text textLength='278.4' dy='0.32em' x='379.2' y='50'><tspan class='Modifier'>3</tspan>3<tspan class='Modifier'>1</tspan>2<tspan class='Modifier'>0</tspan>3<tspan class='Modifier'>4</tspan>1</text>
+    <text textLength='240' dy='0.32em' x='379.2' y='72'><tspan class='Modifier'>6</tspan>3<tspan class='Modifier'>3</tspan>5</text>
+    <text textLength='163.2' dy='0.32em' x='379.2' y='94'><tspan class='Modifier'>9</tspan>8</text>
+    <g font-size='22' text-anchor='middle'>
+      <text dy='0.33em' x='153.6' y='-32'>Guy Steele</text>
+      <text dy='0.33em' x='532.8' y='-32'>Pairwise</text>
+      <text dy='0.33em' x='343.2' y='4'><tspan class='Function'>¬</tspan><tspan class='Value'>𝕨</tspan></text>
+      <text dy='0.33em' x='343.2' y='142'><tspan class='Value'>𝕨</tspan><tspan class='Function'>∧</tspan><tspan class='Value'>𝕩</tspan></text>
+      <text dy='0.33em' x='343.2' y='383.408'><tspan class='Value'>𝕨</tspan><tspan class='Function'>/</tspan><tspan class='Value'>𝕩</tspan></text>
+    </g>
+  </g>
+</svg>
+
+<p>Both strategies move bits of <code><span class='Value'>𝕩</span></code> with the masked shift <code><span class='Paren'>(</span><span class='Value'>x</span> <span class='Value'>&amp;</span> <span class='Value'>m</span><span class='Paren'>)</span><span class='Function'>&gt;&gt;</span><span class='Value'>sh</span> <span class='Function'>|</span> <span class='Paren'>(</span><span class='Value'>x</span> <span class='Value'>&amp;~</span> <span class='Value'>m</span><span class='Paren'>)</span></code>. Combining shifts for <code><span class='Value'>sh</span></code> of 1, 2, 4, up to <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>k</span><span class='Function'>-</span><span class='Number'>1</span></code>, with variable masks, any variable shift strictly less than <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>k</span></code> can be obtained. Each bit needs to eventually be shifted down by the number of zeros below it. The challenge is producing these masks, which need to line up with bits of <code><span class='Value'>x</span></code> at the time it's shifted.</p>
+<p>The pairwise method resolves this by repeatedly combining pairs: at each step only the top group in a pair moves, by the number of zeros in the bottom group. So the top groups can be pulled out and shifted together, and the mask when it's shifted spans both top and bottom groups. Zero counts come from pairwise sums, and the final one can be used to get the total number of 1s (needed for Compress's loop). The masked shifting wastes nearly a whole bit: for example merging groups of size 4 may need a shift anywhere from 0 to 4, requiring 3 bits but the top one's only used for 4 exactly! I found some twiddling that mitigates this by not using this bit but instead leaving a group out of the shifted part if it would shift by 0. At larger sizes this sort of shifting gets too slow, hence the need for SIMD variable shifts. A wider shift may also be used to perform a few steps at once, for example to go from 8 to 32 bits in AVX2: get total offsets with a multiply (e.g. by 0x010101…), then apply them individually. That is, pull out each group with a mask, shift by its offset, and or all these shifted words together.</p>
+<p>Guy Steele shifts each bit directly by the right amount, that is, the number of zeros below it. The sum <code><span class='Function'>+</span><span class='Modifier'>`</span><span class='Value'>m</span><span class='Gets'>←</span><span class='Function'>¬</span><span class='Value'>𝕨</span></code> is constructed bit-by-bit: the first shift mask <code><span class='Function'>≠</span><span class='Modifier'>`</span><span class='Value'>m</span></code> is the bottom bit of the sum, then <code><span class='Value'>m2</span><span class='Gets'>←</span><span class='Value'>m</span><span class='Function'>&gt;≠</span><span class='Modifier'>`</span><span class='Value'>m</span></code> is the odd bits giving <code><span class='Function'>≠</span><span class='Modifier'>`</span><span class='Value'>m2</span></code> as the next sum bit, and again with every 4th bit and so on. The code in Hacker's Delight adds an extra shift <code><span class='Value'>m</span><span class='Gets'>←</span><span class='Function'>»¬</span><span class='Value'>𝕨</span></code> instead of <code><span class='Value'>m</span><span class='Gets'>←</span><span class='Function'>¬</span><span class='Value'>𝕨</span></code>, and compresses a copy of <code><span class='Value'>m</span></code> along with <code><span class='Value'>𝕩</span></code>. Neither is needed: the line <code><span class='Value'>mv</span> <span class='Function'>=</span> <span class='Value'>mp</span> <span class='Value'>&amp;</span> <span class='Value'>m</span></code> and all manipulation of <code><span class='Value'>m</span></code> can be removed with no change in overall functionality.</p>
+<p>All these xor-scans are expensive without a carry-less multiply and high-latency even with it, and it turns out it's possible to save a lot of work by not computing higher bits of the sum at every position. To begin explaining, I find it helpful to think of the movement in terms of how it bubbles the &quot;vacant&quot; bits corresponding to <code><span class='Number'>0</span></code> in <code><span class='Value'>𝕨</span></code> to the top. After <code><span class='Value'>i</span></code> steps of the algorithm, these bits are grouped in runs of <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code>, where the top bit hasn't yet moved. On the next step, runs are paired up, and the lower half of each pair moves up to merge with its partner. That is, <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code> vacant bits are swapped with any number of live bits, by shifting the live bits down <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code> spaces. Live bits must be moved when they have an odd number of runs below them, that is, when bit <code><span class='Value'>i</span></code> is 1 in the number of vacant bits below.</p>
+<svg viewBox='-44 -36 447.2 168'>
+  <g fill='currentColor' font-family='BQN,monospace' font-size='16'>
+    <rect class='code' stroke-width='1.5' rx='12' x='-16' y='-28' width='391.2' height='152'/>
+    <g class='bluegreen' opacity='0.3'>
+      <path d='M52 17L52 111M90.4 17L90.4 111M128.8 17L128.8 111M167.2 17L167.2 111M205.6 17L205.6 111M244 17L244 111M282.4 17L282.4 111M320.8 17L320.8 111M359.2 17L359.2 111'/>
+      <rect x='52' y='23' width='19.2' height='18'/>
+      <rect x='109.6' y='23' width='28.8' height='18'/>
+      <rect x='176.8' y='23' width='57.6' height='18'/>
+      <rect x='272.8' y='23' width='9.6' height='18'/>
+      <rect x='320.8' y='23' width='28.8' height='18'/>
+      <rect x='52' y='87' width='48' height='18'/>
+      <rect x='176.8' y='87' width='67.2' height='18'/>
+      <rect x='320.8' y='87' width='28.8' height='18'/>
+    </g>
+    <g class='yellow' stroke-width='4' opacity='0.2'>
+      <path d='M79 46L101.8 86M88.6 46L111.4 86M98.2 46L121 86M107.8 46L130.6 86M143.2 46L143.2 86M152.8 46L152.8 86M162.4 46L162.4 86M172 46L172 86M240.2 46L247.8 86M249.8 46L257.4 86M259.4 46L267 86M269 46L276.6 86M287.2 46L287.2 86M296.8 46L296.8 86M306.4 46L306.4 86M316 46L316 86M354.4 46L354.4 86'/>
+    </g>
+    <g class='purple' stroke-width='5'><path d='M109.6 43H176.8M272.8 43H320.8'/></g>
+    <g class='purple' stroke-width='1.5'>
+      <path d='M111.4 46L79 86M121 46L88.6 86M130.6 46L98.2 86M274.6 46L242.2 86'/>
+    </g>
+    <g class='green' stroke-width='5'><path d='M90.4 48H167.2M244 48H282.4'/></g>
+    <text textLength='307.2' dy='0.32em' x='52' y='32'><tspan class='Number'>1</tspan>00000<tspan class='Number'>11</tspan>0000000<tspan class='Number'>1111</tspan>0000<tspan class='Number'>1</tspan>0000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <text textLength='307.2' dy='0.32em' x='52' y='96'><tspan class='Number'>1</tspan>0<tspan class='Number'>11</tspan>00000000000<tspan class='Number'>11111</tspan>00000000<tspan class='Number'>1</tspan>0<tspan class='Number'>1</tspan>0</text>
+    <g font-size='10'><text textLength='307.2' dy='0.32em' x='52' y='-14'>10001000101100111111000100001110</text></g>
+    <g text-anchor='end'>
+      <text dy='0.33em' x='90.4' y='6'>3</text>
+      <text dy='0.33em' x='128.8' y='6'><tspan class='Function'>6</tspan></text>
+      <text dy='0.33em' x='167.2' y='6'><tspan class='Function'>7</tspan></text>
+      <text dy='0.33em' x='205.6' y='6'>9</text>
+      <text dy='0.33em' x='244' y='6'>9</text>
+      <text dy='0.33em' x='282.4' y='6'><tspan class='Function'>12</tspan></text>
+      <text dy='0.33em' x='320.8' y='6'>16</text>
+      <text dy='0.33em' x='359.2' y='6'>17</text>
+      <g font-size='12'>
+        <text dy='0.33em' x='46' y='-14'><tspan class='Value'>𝕨</tspan></text>
+        <text dy='0.33em' x='46' y='45'>bitwise</text>
+        <text dy='0.33em' x='46' y='58'>aligned</text>
+      </g>
+      <text dy='0.33em' x='46' y='6'><tspan class='Function'>+</tspan><tspan class='Modifier'>`</tspan><tspan class='Function'>¬</tspan><tspan class='Value'>𝕨</tspan></text>
+    </g>
+    <g stroke='currentColor' stroke-width='0.7'><path d='M48 45L109.6 43M48 58L90.4 48'/></g>
+  </g>
+</svg>
+
+<p>Guy Steele relies on the fact that this bit of the sum is the same as for the initial <code><span class='Value'>𝕨</span></code>, because it only changes at the top bit of a run, which hasn't moved yet. The boundaries of the computed masks are placed at these top bits, but they don't have to be. Since the mask value only affects live bits, it's safe to start anywhere within the run of <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code> vacant bits. In particular, if we split <code><span class='Value'>𝕨</span></code> into groups of length <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code>, we can use the mask value at the <em>end</em> of the group for all the bits inside: this is equal to the number of zero bits in <code><span class='Value'>𝕨</span></code> in or before the group, or, <code><span class='Function'>+</span><span class='Modifier'>`</span><span class='Value'>z</span></code>, where <code><span class='Value'>z</span></code> is the count of zeros in each group.</p>
+<p>The required sums can be computed in log(w) instructions with pairwise combinations. For a given shift amount <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code>, compute counts of size <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code> recursively (beginning with <code><span class='Function'>¬</span><span class='Value'>𝕨</span></code>), and add them in pairs to get counts of size <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span><span class='Function'>+</span><span class='Number'>1</span></code>. This might look like <code><span class='Value'>b8</span><span class='Function'>=</span><span class='Paren'>(</span><span class='Value'>c4</span><span class='Function'>&gt;&gt;</span><span class='Number'>4</span><span class='Paren'>)</span><span class='Value'>&amp;h8</span><span class='Head'>;</span> <span class='Value'>c8</span><span class='Function'>=</span><span class='Paren'>(</span><span class='Value'>c4&amp;h8</span><span class='Paren'>)</span><span class='Function'>+</span><span class='Value'>b8</span></code> where <code><span class='Value'>i</span></code> is 3, and <code><span class='Value'>h8</span></code> has the low 4 bits set out of every 8. Then recursively get sums of size <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span><span class='Function'>+</span><span class='Number'>1</span></code>, and split them into sums of size <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code>, like <code><span class='Value'>s4</span><span class='Function'>=</span><span class='Paren'>(</span><span class='Value'>s8</span><span class='Function'>-</span><span class='Value'>b8</span><span class='Paren'>)</span><span class='Function'>|</span><span class='Paren'>(</span><span class='Value'>s8</span><span class='Function'>&lt;&lt;</span><span class='Number'>4</span><span class='Paren'>)</span></code>, with a few extra tricks for overflow handling for smaller sizes. After this computation the mask is found by selecting bit <code><span class='Value'>i</span></code> of the sum and copying <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code> times. The group size doesn't actually have to be equal to <code><span class='Number'>2</span><span class='Function'>⋆</span><span class='Value'>i</span></code> but just has to be big enough that the sums don't overflow—it's best to compute <code><span class='Value'>s8</span><span class='Function'>=</span><span class='Value'>c8*</span><span class='Number'>0x010101</span><span class='Value'>…</span></code> and keep to a maximum group size of 8, assuming your machine words aren't wider than 256 bits. The full computation is three passes: one pass up for counts, one down for sums, and a last pass up to actually shift <code><span class='Value'>𝕩</span></code>. While the instruction count can be small, this is much worse for latency than Guy Steele's two upwards passes that can be overlapped. In my tests I've found it's always best to compute the 1-shift mask with an xor-scan, as well as the 2-shift if a 64-bit carry-less multiply instruction is available.</p>
 <h3 id="sparse-compress"><a class="header" href="#sparse-compress">Sparse compress</a></h3>
 <p>When <code><span class='Value'>𝕨</span></code> is sparse (or <code><span class='Value'>𝕩</span></code> for Indices), that is, has a small sum relative to its length, there are methods that lower the per-input cost by doing more work for each output.</p>
 <p>The best-known sparse method is to work on a full word of bits. At each step, find the first index with count-trailing-zeros, and then remove that bit with a bitwise and, <code><span class='Value'>w</span> <span class='Value'>&amp;</span><span class='Function'>=</span> <span class='Value'>w</span><span class='Function'>-</span><span class='Number'>1</span></code> in C. However, this method has a loop whose length is the number of 1s in the word, a variable. CPUs are very good at predicting this length in benchmarks, but in practice it's likely to be less predictable! In CBQN it's only used for densities below 1/128, one bit every two words.</p>
@@ -127,29 +275,9 @@
     <rect class='bluegreen' opacity='0.3' x='950' y='-60' width='36' height='364'/>
     <path stroke-width='1' stroke='currentColor' fill='none' d='M4 -8h-10v146h10M4 150h-10v146h10'/>
     <g class='bluegreen' stroke-width='3' stroke-linecap='round'>
-      <line x1='238' x2='282' y1='5' y2='0'/>
-      <line x1='238' x2='282' y1='56' y2='36'/>
-      <line x1='238' x2='282' y1='107' y2='180'/>
-      <line x1='238' x2='282' y1='163' y2='180'/>
-      <line x1='238' x2='282' y1='214' y2='180'/>
-      <line x1='238' x2='282' y1='265' y2='288'/>
-      <line x1='606' x2='650' y1='0' y2='0'/>
-      <line x1='606' x2='650' y1='36' y2='36'/>
-      <line x1='606' x2='650' y1='72' y2='72'/>
-      <line x1='606' x2='650' y1='108' y2='108'/>
-      <line x1='606' x2='650' y1='144' y2='144'/>
-      <line x1='606' x2='650' y1='180' y2='180'/>
-      <line x1='606' x2='650' y1='216' y2='216'/>
-      <line x1='606' x2='650' y1='252' y2='252'/>
-      <line x1='606' x2='650' y1='288' y2='288'/>
-      <line x1='670' x2='670' y1='12' y2='24'/>
-      <line x1='670' x2='670' y1='48' y2='60'/>
-      <line x1='670' x2='670' y1='84' y2='96'/>
-      <line x1='670' x2='670' y1='120' y2='132'/>
-      <line x1='670' x2='670' y1='156' y2='168'/>
-      <line x1='670' x2='670' y1='192' y2='204'/>
-      <line x1='670' x2='670' y1='228' y2='240'/>
-      <line x1='670' x2='670' y1='264' y2='276'/>
+      <path d='M238 5L282 0M238 56L282 36M238 107L282 180M238 163L282 180M238 214L282 180M238 265L282 288'/>
+      <path d='M606 0L650 0M606 36L650 36M606 72L650 72M606 108L650 108M606 144L650 144M606 180L650 180M606 216L650 216M606 252L650 252M606 288L650 288'/>
+      <path d='M670 12L670 24M670 48L670 60M670 84L670 96M670 120L670 132M670 156L670 168M670 192L670 204M670 228L670 240M670 264L670 276'/>
     </g>
     <text dy='0.33em' x='20' y='-48'>words split 24+24+16</text>
     <text dy='0.33em' x='288' y='-48'>zeroed buffer  <tspan class='String'>+</tspan>  bits | <tspan class='Modifier'>add</tspan><<24</text>
