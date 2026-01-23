@@ -15,7 +15,7 @@ UnEscape ← {
 }
 RunTest ← {
   in‿exp ← UnEscape∘(1↓¯1↓⊢)¨2↑𝕩
-  out ← 0 Markdown (@+10) ((⊢-˜¬×+`)∘=⊔⊢) in
+  out ← 0 Markdown⎊("Runtime Error:"∾•Fmt∘⊢) (@+10) ((⊢-˜¬×+`)∘=⊔⊢) in
   ⟨exp≡out,in,exp,out,2⊑𝕩⟩
 }
 
