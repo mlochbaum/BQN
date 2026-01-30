@@ -94,7 +94,7 @@ Finally, when you don't have a shuffle instruction, the best method I know is ju
 
 ### Boolean compress
 
-When you don't have pext you have to emulate it. Two strategies are described in Hacker's Delight, although neither reaches its full potential there. The one given in 7-4 is due to Guy Steele, and sketched in 7-6 is another method I'll call "pairwise", which the book claims isn't practical in software. As shown, both take log²(w) instructions for word size w. I will describe below how Guy Steele's method can be brought down to log(w) using sum-scan rather than xor-scan, and the pairwise method can also be done in log(w) vector instructions if shifting each element by a variable amount is supported. I've found that the pairwise method is best in NEON and slightly better in AVX2 with sufficient optimization, while the modified Guy Steele is best for scalar code and earlier x86 architectures.
+When you don't have pext you have to emulate it. Two strategies are described in Hacker's Delight, although neither reaches its full potential there. The one given in 7-4 is due to Guy Steele, and sketched in 7-6 is another method I'll call "pairwise", which the book claims isn't practical in software. As shown, both take log²(w) instructions for word size w. I will describe below how Guy Steele's method can be brought down to log(w) using sum-scan rather than xor-scan, and the pairwise method can also be done in log(w) vector instructions if shifting each element by a variable amount is supported. CBQN's implementations work on 64-bit words or vectors of them, and always begin with some version of Guy Steele. The pairwise method is used beginning from size 8 on NEON and 16 on AVX2 to take advantage of per-element shifts.
 
 On Zen, Zen+, and Zen 2 architectures, pext is micro-coded as a loop over set bits and should not be used. The cost ranges from a few cycles to hundreds; measurements such as uops.info apparently use an argument that's 0 or close to it, so they underreport.
 
@@ -150,8 +150,11 @@ dim ← 20‿60 (-∘⊣≍2⊸×⊸+) (x1+xw)⋈(⊢´yb)-28
     ((x1+tw×2⊸×) VLines (8.5-˜⊑yb)≍˘(9+yb)⊏˜{2|𝕩?1;1+𝕊𝕩÷2}¨) 1↓↕n÷2
     yb HlRect ∾¨˝xs+bms
   ⟩
-  "class=purple|stroke-width=3" Ge (10+¯1↓yb) HLines¨ ∾¨˝xs+bps
-  "class=purple|stroke-width=1.5" Ge yb JoinLines ∾¨˝xs+lx
+  "class=purple|stroke-width=1.5" Ge ⟨
+                            (8+ya) HLines¨   ⊏xs+bps
+    "stroke-width=3" Ge (10+¯1↓yb) HLines¨ ∾¨˝xs+bps
+    yb JoinLines ∾¨˝xs+lx
+  ⟩
   xw⊸TA⊸Enc¨´¨ ⟨
     ⟨x0⋈¨ya, (wgs∨2×pgs) Hlx¨ '0'+wgs⟩
     ⟨xs⋈⌜yb, Hlx⟜('0'⊸+)¨ xxs⟩
@@ -165,9 +168,17 @@ dim ← 20‿60 (-∘⊣≍2⊸×⊸+) (x1+xw)⋈(⊢´yb)-28
 }
 -->
 
-Both strategies move bits of `𝕩` with the masked shift `(x & m)>>sh | (x &~ m)`. Combining shifts for `sh` of 1, 2, 4, up to `2⋆k-1`, with variable masks, any variable shift strictly less than `2⋆k` can be obtained. Each bit needs to eventually be shifted down by the number of zeros below it. The challenge is producing these masks, which need to line up with bits of `x` at the time it's shifted.
+Both strategies move bits of `𝕩` with the masked shift `(x & m)>>sh | (x &~ m)`. Guy Steele's method naturally uses fixed shifts 1, 2, 4, up to w/2 with variable masks, while the pairwise method uses fixed masks and variable shift amounts less than or equal to those powers of two. Each bit of `𝕩` needs to eventually be shifted down by the number of zeros in `𝕨` below it, for a maximum possible shift of w-1 if only the top bit is used.
 
-The pairwise method resolves this by repeatedly combining pairs: at each step only the top group in a pair moves, by the number of zeros in the bottom group. So the top groups can be pulled out and shifted together, and the mask when it's shifted spans both top and bottom groups. Zero counts come from pairwise sums, and the final one can be used to get the total number of 1s (needed for Compress's loop). The masked shifting wastes nearly a whole bit: for example merging groups of size 4 may need a shift anywhere from 0 to 4, requiring 3 bits but the top one's only used for 4 exactly! I found some twiddling that mitigates this by not using this bit but instead leaving a group out of the shifted part if it would shift by 0. At larger sizes this sort of shifting gets too slow, hence the need for SIMD variable shifts. A wider shift may also be used to perform a few steps at once, for example to go from 8 to 32 bits in AVX2: get total offsets with a multiply (e.g. by 0x010101…), then apply them individually. That is, pull out each group with a mask, shift by its offset, and or all these shifted words together.
+The pairwise method fits a recursive description: split the arguments in half and compress each side in place, then join them by shifting the top half down by the number of zeros in the bottom half (and also get the total count of zeros by adding counts from the two sides). The width 1 base case would be `w & x` for the compressed data, and `~w` for the zero counts, but all my code uses Guy Steele's method to start at a larger width. If you don't have an instruction to shift all the top halves by different amounts, it's possible to emulate it, but I no longer think this is wanted for the fastest algorithms, so it's collapsed below.
+
+<details><summary>Hopefully obselete</summary>
+
+In order to perform a variable-shift on the top halves, they should be isolated first (it won't be easy to separate them from bottom halves later), and then shifted by powers of two with masks spanning both top and bottom groups. The mask for a shift by `1<<k` is 1 where the zero count has bit `k` set. Naively, this wastes nearly a whole bit: for example merging groups of size 4 may need a shift anywhere from 0 to 4, requiring 3 bits but the top one's only used for 4 exactly! I found some twiddling that mitigates this by not using this bit but instead leaving a group out of the shifted part if it would shift by 0, and tacking on a constant shift by 1 for the rest.
+
+A too-wide shift may also be used to perform a few steps at once, for example to go from 8 to 32 bits in AVX2: get total offsets with a multiply (e.g. by 0x010101…), then apply them individually. That is, pull out each group with a mask, shift by its offset, and or all these shifted words together.
+
+</details>
 
 Guy Steele shifts each bit directly by the right amount, that is, the number of zeros below it. The sum ``+`m←¬𝕨`` is constructed bit-by-bit: the first shift mask ``≠`m`` is the bottom bit of the sum, then ``m2←m>≠`m`` is the odd bits giving ``≠`m2`` as the next sum bit, and again with every 4th bit and so on. The code in Hacker's Delight adds an extra shift `m←»¬𝕨` instead of `m←¬𝕨`, and compresses a copy of `m` along with `𝕩`. Neither is needed: the line `mv = mp & m` and all manipulation of `m` can be removed with no change in overall functionality.
 
