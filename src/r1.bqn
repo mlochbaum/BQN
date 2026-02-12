@@ -677,7 +677,7 @@ ShiftAfter←{
 RangeCheck ← "↕𝕩: 𝕩 must consist of natural numbers"!Nat
 Range ← IsArray◶(↕⊣RangeCheck)‿{
   "↕𝕩: 𝕩 must be a number or list"!1==𝕩 ⋄ RangeCheck⌜𝕩
-  (0⌜𝕩)Fill 0⊸Fill⌜(0<1×´⊢)◶⟨⥊⟜⟨⟩,(<⟨⟩)⋈⊸∾⌜´↕⌜⟩𝕩
+  (0 Fill 0⌜𝕩)Fill 0⊸Fill⌜(0<1×´⊢)◶⟨⥊⟜⟨⟩,(<⟨⟩)⋈⊸∾⌜´↕⌜⟩𝕩
 }
 Windows←{
   "𝕨↕𝕩: 𝕨 must have rank at most 1" ! 1≥=𝕨
