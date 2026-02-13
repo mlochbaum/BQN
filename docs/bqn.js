@@ -1,8 +1,9 @@
 "use strict";
 // Virtual machine
 let has = x => x!==undefined;
-let isnum = x => typeof x === "number"
-let isfunc = x => typeof x === "function"
+let isnum = x => typeof x === "number";
+let ischar = x => typeof x === "string";
+let isfunc = x => typeof x === "function";
 let call = (f,x,w) => {
   if (x===undefined) return x;
   if (!isfunc(f)) return f;
@@ -239,7 +240,7 @@ let plus = (x,w) => {
 }
 let minus = (x,w) => {
   if (!isnum(x)) {
-    if (has(w)&&typeof w==="string") return w.codePointAt(0)-x.codePointAt(0);
+    if (has(w)&&ischar(w)) return w.codePointAt(0)-x.codePointAt(0);
     throw Error("-: Can only negate numbers");
   }
   if (!has(w)) return -x;
@@ -564,7 +565,7 @@ let currenterror = (x,w) => {
 }
 
 let dynsys = f => { f.dynamic=1; return f; }
-let isstr = x => x.sh && x.sh.length==1 && x.every(c=>typeof c==="string");
+let isstr = x => x.sh && x.sh.length==1 && x.every(ischar);
 let unixtime = (x,w) => Date.now()/1000;
 let req1str = (e,x,w) => {
   if (!isstr(x)) throw Error(e+": 𝕩 must be a string");
@@ -577,7 +578,7 @@ let dojs = (x,w) => {
   let toBQN = x => {
     if (isnum(x)) return x;
     if (x===undefined) return '\0';
-    if (typeof x==='string') { if (Array.from(x).length!==1) throw Error("•JS: JS strings are one character; use Array.from for BQN strings"); return x; }
+    if (ischar(x)) { if (Array.from(x).length!==1) throw Error("•JS: JS strings are one character; use Array.from for BQN strings"); return x; }
     if (x instanceof Array) return arr(x.map(toBQN),x.sh||[x.length],has(x.fill)?tofill(toBQN(x.fill)):x.fill);
     if (isfunc(x)) { let f=(a,b)=>toBQN(x(a,b)); f.m=x.m; return f; }
     throw Error("•JS: Unrecognized JS result");
@@ -616,7 +617,7 @@ let addprimitives = (state, p) => {
   req(p.every(e=>e.sh&&e.sh.length===1&&e.sh[0]===2), "Must consist of glyph-primitive pairs");
   let pr=glyphs.map(_=>[]), rt=pr.map(_=>[]);
   p.forEach(([gl,val])=>{
-    req(typeof gl==="string", "Glyphs must be characters");
+    req(ischar(gl), "Glyphs must be characters");
     req(isfunc(val), "Primitives must be operations");
     let k=val.m||0;
     pr[k].push(gl); rt[k].push(val);
