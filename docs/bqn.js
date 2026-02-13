@@ -363,7 +363,7 @@ let group_ord = (x,w) => { // ∾⊔x assuming w=group_len(x)
 let type = x => isfunc(x) ? 3+(x.m||0) : x.sh ? 0 : x.ns ? 6 : 2-isnum(x);
 let tofill = x => isfunc(x) ? undefined
   : x.sh ? arr(x.map(tofill),x.sh,x.fill)
-  : isnum(x)?0 : ' ';
+  : isnum(x)?0 : ischar(x)?' ' : undefined;
 let fill = (x,w) => {
   if (has(w)) {
     return arr(x.slice(),x.sh,tofill(w));
@@ -375,7 +375,7 @@ let fill = (x,w) => {
 }
 let fill_by = (f,g) => (x,w) => {
   let r = f(x,w);
-  let a2fill = x => isfunc(x)?x:isnum(x)?0:' ';
+  let a2fill = x => isnum(x)?0:ischar(x)?' ':x;
   let xf=x.sh?x.fill:a2fill(x);
   if (r.sh&&has(xf)) {
     r = arr(r.slice(),r.sh);
