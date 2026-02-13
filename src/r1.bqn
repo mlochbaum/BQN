@@ -75,7 +75,7 @@ _perv←{ # Pervasion
   R←+○IsArray◶⟨
     𝔽
     {R⌜𝕩}⊘(>○IsArray◶{𝕨˙⊸R⌜𝕩}‿{R⟜(𝕩˙)⌜𝕨}) _fillBy_ {𝕨R𝕩}
-    {𝕨R _eachd𝕩} _fillBy_ {𝕨R𝕩}
+    {𝕨R _eachd𝕩} _fillBy_ {𝕨(3≤Type𝕨)◶R‿⊣𝕩}  # Function 𝕨 may indicate no fill
   ⟩
 }
 
