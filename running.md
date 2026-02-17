@@ -11,6 +11,7 @@ Third-party packages are available for several platforms. Because they run on an
 | Windows download  | [docker build](https://github.com/vylsaz/cbqn-win-docker-build/releases) | Binary
 | Arch AUR          | `cbqn-git`                                   | Source
 | Alpine Linux Edge | `cbqn`                                       | Binary
+| FreeBSD Ports     | `lang/cbqn`                                  | Source
 | Nix               | `cbqn`                                       | Source/Binary
 | Guix              | `cbqn`                                       | Source/Binary
 | Spack             | `cbqn`                                       | Source
