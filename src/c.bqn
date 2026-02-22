@@ -351,7 +351,7 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   oc←or⊏∾idoc∾⟨0¨cn,ob,1¨bk,1+↕≠bk,43¨hq,44¨api,⥊⍉(11+lm+l⊏aa)≍ll,ao,42¨qp,66¨al,vi-˜(al-1)⊏𝕩
                24+oa⊏r,16+(fn/dy+2×fm⌈1=ny)+4×0<fa⊏er,6¨dr,¯1↓rc←7+nf⟩
   # Instruction source positions
-  ui←8‿12‿13(⊏⟜(»+`)+⟜↕¨⊏)(≠idor)∾≠¨oil     # at,oa+…,fl locations
+  ui←8‿12‿13(⊏⟜(0»+`)+⟜↕¨⊏)(≠idor)∾≠¨oil    # at,oa+…,fl locations
   oj←(∾1⊸+⌾(2⊸⊑)⊏⟜g¨⟨at-1‿0/˜≠¨ai‿hj,oa,fa-1⟩)⌾((∾ui)⊸⊏)oi
   ind←⟨oj,(g⊏˜fa⊏IT»¬ro∨ma)⌾((¯1⊑ui)⊸⊏)oj⟩(¯1∾˜or⊸⊏)⊸⊏¨i‿e
   # Indices for multi-body blocks
