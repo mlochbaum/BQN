@@ -76,7 +76,7 @@ li ul {
 }
 @font-face{
   font-family: BQN;
-  src: url(BQN386.ttf) format('truetype');
+  src: url(BQN386.woff2) format('woff2');
 }
 @font-face{
   font-family: Iosevka;
