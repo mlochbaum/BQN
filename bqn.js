@@ -102,7 +102,7 @@ sysvals.file = dynsys(state => {
         let s=fs.statSync(f); return list([s.uid,s.gid],0);
       }
     },
-    realpath: (x,w) => fs.realpathSync(res("•file.RealPath")(x)),
+    realpath: (x,w) => str(fs.realpathSync(res("•file.RealPath")(x))),
 
     // Access
     rename:    (x,w) => {let r=res("•file.Rename"),f=r(w); fs.renameSync  (r(x),f); return str(f);},
