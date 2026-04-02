@@ -17,7 +17,7 @@
 <li>Namespace</li>
 </ul>
 <p>Beyond these, an implementation may define <a href="system.html">system values</a> that create values of other types. The behavior of such values is not specified and is left up to the implementation.</p>
-<p>Of the types specified, the first three are considered <em>data types</em> and the next three <em>operation types</em>. We first describe the operation types and the namespace; the remainder of this page will be dedicated to the data types. A member of any operation type accepts some number of <em>inputs</em> and either returns a <em>result</em> or causes an error; inputs and the result are values of any type. When an operation is given inputs (<em>called</em>), it may produce side effects before returning, such as manipulating variables and calling other operations within its scope, or performing I/O.</p>
+<p>Of the types specified, the first three are considered <em>data types</em> and the next three <em>operation types</em>. We first describe the operation types and the namespace; the remainder of this page will be dedicated to the data types. A member of any operation type accepts some number of <em>inputs</em> and returns a <em>result</em>; inputs and the result are values of any type. An evaluation begins when the operation is given inputs (<em>called</em>), and concludes when it returns or causes an error. It may involve side effects such as manipulating variables and calling other operations within its scope, or performing I/O.</p>
 <ul>
 <li>A <em>function</em> takes one (monadic call) or two (dyadic call) <em>arguments</em>.</li>
 <li>A <em>1-modifier</em> takes one <em>operand</em>.</li>
