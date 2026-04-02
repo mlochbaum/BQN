@@ -140,7 +140,7 @@ In all cases special names still work just like in a headerless function. In thi
       ⟨a,b⟩ ← 𝕩
       …
 
-Unlike these assignments, the header also constrains what inputs the block can take: a monadic 1-modifier like the one above can't take a right operand or left argument, so its body can't contain `𝔾` or `𝕨`. Calling it with a left argument, or a right argument that isn't a two-element list, will result in an error.
+Unlike these assignments, the header also constrains what inputs the block can take: a monadic 1-modifier like the one above can't take a right operand or left argument, so its body can't contain `𝔾` or `𝕨`. Calling it with a left argument, or a right argument that isn't a two-element list (or namespace with fields `a` and `b`), will result in an error.
 
 ### Destructuring
 
