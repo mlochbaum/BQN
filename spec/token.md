@@ -49,4 +49,4 @@ The role of an identifier token may depend on its first character, and on whethe
 | `_`                          | No                  | 1-modifier
 | `_`                          | Yes                 | 2-modifier
 
-The special names `𝕨𝕩𝕗𝕘𝕤𝕣` my be considered to have a subject role, `𝕎𝕏𝔽𝔾𝕊` to have a function role, and `_𝕣` and `_𝕣_` to have 1-modifier and 2-modifier roles. However, special names are treated individually in the grammar specification rather than being grouped by role.
+The special names `𝕨𝕩𝕗𝕘𝕤𝕣` may be considered to have a subject role, `𝕎𝕏𝔽𝔾𝕊` to have a function role, and `_𝕣` and `_𝕣_` to have 1-modifier and 2-modifier roles. However, special names are treated individually in the grammar specification rather than being grouped by role.
