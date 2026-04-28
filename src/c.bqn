@@ -107,13 +107,13 @@ Tokenize←{System‿vars←𝕨
 ReadNums←{
   _err_←{(!/⟜𝔾⋈𝔽)⍟(∨´)}
   EChars←⟨"Letter"⊸Pl," """,⊏⟜charSet,""" not allowed in numbers"⟩_tmpl
-  e‿d‿n‿p‿i←=⟜𝕩¨((⊑bA)+-´"ea")∾+⟜↕´bN       # Masks for e.¯π∞
-  EChars∘(/⟜𝕩)_err_𝕨 (𝕩=bR)∨¬e∨𝕩<⊑bA
-  s←d∨c←e∨z←0=𝕩⋄m←¬n∨c
+  e‿i‿d‿n‿p‿q←=⟜𝕩¨((⊑bA)+"ei"-'a')∾+⟜↕´bN   # Masks for ei.¯π∞
+  EChars∘(/⟜𝕩)_err_𝕨 (𝕩=bR)∨¬e∨i∨𝕩<⊑bA
+  s←d∨c←e∨z←i∨0=𝕩⋄m←¬n∨c
   "Negative sign in the middle of a number"_err_𝕨 n>»c
   "Portion of a number is empty"_err_𝕨 (1«s)∧n∨s
   "Ill-formed decimal or exponent use"_err_(s/𝕎) ¬(0⊸=∨»⊸<)s/𝕩
-  "π and ∞ must occur alone"_err_𝕨 (p∨i)>1(»∧(p∧«e)∨«)z∨n>»e
+  "π and ∞ must occur alone"_err_𝕨 (p∨q)>1(»∧(p∧«e)∨«)z∨n>»e
   l←(¬(⊢-T)·+`d⊸<)g←(«≤(d<y←𝕩≠⊑bD)>○I1T¬)⊸∧m# No leading 0s
   la←d×(»¬(⊢-T)+`)⌾⌽¬g∨y                    # Adjust dp for dropped 0s after decimal
   k‿dp←d¬⊸(/⋈1⊸»⊸/)○((d∨>⟜«g)⊸/)l-la        # Length, decimal position
@@ -126,10 +126,11 @@ ReadNums←{
   } g
   v←va×1‿¯1⊏˜(r←>⟜»m)/»n                    # Negate if ¯
   vm←c/○(1»«)z                              # Mask of mantissas in v
-  mn←vm/v×(r/i)⊏1‿∞                         # Mantissa, correcting ∞
+  mn←vm/v×(r/q)⊏1‿∞                         # Mantissa, correcting ∞
   ee←vm/(k-dp)-˜«v×¬vm                      # Power of 10
   a←(0⌈ee)+ee-b←ee⌈¯308                     # Subnormal handling
-  b÷⟜(10⋆-)˜⌾((0>b)⊸/)a 10⊸⋆⊸×⌾((0≠a)⊸/)mn  # mn×10⋆ee
+  u←b÷⟜(10⋆-)˜⌾((0>b)⊸/)a 10⊸⋆⊸×⌾((0≠a)⊸/)mn# mn×10⋆ee
+  (z/i)(¬⊸/+¯1√⊸×⊣¬⊸/0«×)⍟(∨´⊣)u
 }
 
 
