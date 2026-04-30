@@ -929,6 +929,8 @@ _catInv ← {
     IX (ToArray𝕨)≡d◶⟨l⊸T,C⟩𝕩 ⋄ l Dr 𝕩
   }
 }
+IsCpx ← '⍳'_isGlyph
+_withComplex_ ← { IsCpx◶𝔽‿𝔾 }
 PrimInverse ← INF _lookup_ ⟨
   '+', +⊘(-˜)
   '-', -
@@ -953,7 +955,7 @@ PrimInverse ← INF _lookup_ ⟨
   '⍉', TransposeInv ⊘ ReorderAxesInv
   '/', IndicesInv ⊘ (ReplicateInv _invChk_ Replicate)
   '⊔', GroupIndsInv ⊘ GroupInv
-⟩
+⟩ _withComplex_ {(-𝕏)⊘(𝕏-)}
 SwapPrimInverse ← INF _lookup_ ⟨
   '+', ÷⟜2⊘(-˜)
   '-', IA∘0⊘+
@@ -967,7 +969,7 @@ SwapPrimInverse ← INF _lookup_ ⟨
   '∾', {IX 1≤=𝕩⋄l←⌊2÷˜c←≠𝕩⋄IX c=2×l⋄l(↑(⊢⊣IX∘≡)↓)𝕩} ⊘ (⟨-⊸↑,-⊸↓,(≠-1˙)⊏⊢⟩_catInv)
   '≍', {IX 2 =≠𝕩⋄IX≡˝𝕩⋄ ⊏𝕩} ⊘ {IX 2 =≠𝕩⋄IX(ToArray𝕨)≡1⊏𝕩⋄ ⊏𝕩}
   '⋈', {IX⟨2⟩≡≢𝕩⋄IX≡´𝕩⋄0⊑𝕩} ⊘ {IX⟨2⟩≡≢𝕩⋄IX        𝕨 ≡1⊑𝕩⋄0⊑𝕩}
-⟩
+⟩ _withComplex_ {(2÷˜𝕏⟜-)⊘(𝕏⟜-˜)}
 ⌜ ↩ _table
 ¨ ↩ _each
 ∾ ↩ Join           ⊘ JoinTo
