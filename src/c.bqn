@@ -112,7 +112,8 @@ ReadNums←{
   s←d∨c←e∨z←i∨0=𝕩⋄m←¬n∨c
   "Negative sign in the middle of a number"_err_𝕨 n>»c
   "Portion of a number is empty"_err_𝕨 (1«s)∧n∨s
-  "Ill-formed decimal or exponent use"_err_(s/𝕎) ¬(0⊸=∨»⊸<)s/𝕩
+  "Ill-formed decimal or exponent use"_err_(s/𝕎) ¬(0⊸=∨»⊸<)s/𝕩×¬i
+  "Can't use i more than once in a number"_err_(z/𝕎) »⊸∧z/i
   "π and ∞ must occur alone"_err_𝕨 (p∨q)>1(»∧(p∧«e)∨«)z∨n>»e
   l←(¬(⊢-T)·+`d⊸<)g←(«≤(d<y←𝕩≠⊑bD)>○I1T¬)⊸∧m# No leading 0s
   la←d×(»¬(⊢-T)+`)⌾⌽¬g∨y                    # Adjust dp for dropped 0s after decimal
