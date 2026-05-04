@@ -131,7 +131,7 @@ ReadNums←{
   ee←vm/(k-dp)-˜«v×¬vm                      # Power of 10
   a←(0⌈ee)+ee-b←ee⌈¯308                     # Subnormal handling
   u←b÷⟜(10⋆-)˜⌾((0>b)⊸/)a 10⊸⋆⊸×⌾((0≠a)⊸/)mn# mn×10⋆ee
-  (z/i)(¬⊸/+¯1√⊸×⊣¬⊸/0«×)⍟(∨´⊣)u
+  {r←¬j←z/i⋄(¯1√⊸×j/𝕩)⊸+⌾((r/«j)⊸/)r/𝕩}⍟(∨´i)u
 }
 
 
