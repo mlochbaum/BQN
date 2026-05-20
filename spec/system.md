@@ -220,12 +220,12 @@ The function name is an arbitrary string. In order to look up the appropriate fu
 
 Types are to be interpreted according to the C ABI appropriate for the platform used. The grammar for a result or argument type is given below, using BNF as in the BQN grammar. Quoted values here are single characters: the type isn't tokenized and can't contain spaces. A `•FFI` implementation does not need to support all combinations of types.
 
-    conv  = type ( ":" bqn )?
-    type  = ( "i" | "u" | "f" ) nat          # number
+    type  = ( num | "*" ) ( ":" bqn )?       # primitive
           | "a"                              # BQN object
-          | ( "*" | "&" ) type?              # pointer
+          | ( "*" | "&" ) type               # pointer
           | "[" nat "]" type                 # array
-          | "{" ( conv ( "," conv )* )? "}"  # struct
+          | "{" ( type ( "," type )* )? "}"  # struct
+    num   = ( "i" | "u" | "f" ) nat
     bqn   = ( "i" | "u" | "f" | "c" ) nat
 
     nat   = digit+
@@ -243,7 +243,7 @@ When the result contains a pointer type, that value will be returned as a new [p
 
 The letter `a` indicates that a **BQN value** is to be passed directly, interpreted in whatever way makes sense for the implementation. The **array** and **struct** types indicate C structs and arrays, and correspond to BQN lists.
 
-The `bqn` value in a `conv` term indicates a BQN element type to be used. It can be appear after the whole type, or any member of a struct, and applies to the final component (that is, `type` term) of the type *and* one preceding `*`, `&`, or `[n]` if present (if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._cast`. The C type is treated as pure data, a stream of bits. For a prefix `*` or `&`, the data in question is the region of memory pointed to.
+The `bqn` value in a `type` term indicates a BQN element type to be used. It may appear after the whole type, or any member of a struct, and applies to the final `( num | "*" )` component *and* one preceding `*`, `&`, or `[n]` if present (thus if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._cast`. The C type is treated as pure data, a stream of bits. For a prefix `*` or `&`, the data in question is the region of memory pointed to.
 
 ### Pointer objects
 
