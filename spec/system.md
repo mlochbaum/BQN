@@ -220,11 +220,11 @@ The function name is an arbitrary string. In order to look up the appropriate fu
 
 Types are to be interpreted according to the C ABI appropriate for the platform used. The grammar for a result or argument type is given below, using BNF as in the BQN grammar. Quoted values here are single characters: the type isn't tokenized and can't contain spaces. A `•FFI` implementation does not need to support all combinations of types.
 
-    type  = ( num | "*" ) ( ":" bqn )?       # primitive
-          | "a"                              # BQN object
-          | ( "*" | "&" ) type               # pointer
-          | "[" nat "]" type                 # array
-          | "{" ( type ( "," type )* )? "}"  # struct
+    type  = ( num | "*" ) ( ":" bqn )?         # primitive
+          | "a"                                # BQN object
+          | ( "*" | ( "&" | "⥊" ) "·"? ) type  # pointer
+          | "[" nat "]" type                   # array
+          | "{" ( type ( "," type )* )? "}"    # struct
     num   = ( "i" | "u" | "f" ) nat
     bqn   = ( "i" | "u" | "f" | "c" ) nat
 
@@ -232,18 +232,18 @@ Types are to be interpreted according to the C ABI appropriate for the platform 
     digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
 By default, the returned function takes a list of arguments `𝕩`, requires `𝕨` to be an empty list if present, and returns a value corresponding to the C result. Some argument-specific rules can change this:
-- The result type may also be the empty string `""`, indicating a void or ignored result, or `"&"`, indicating an ignored result, using a mutable argument for the BQN result, as discussed below. It can't contain the character `"&"` otherwise.
+- The result type may also be the empty string `""`, indicating a void or ignored result, or `"&"`, indicating an ignored result, using a mutable argument for the BQN result, as discussed below. It can't contain the character `"&"` or `"⥊"` otherwise.
 - An argument type may be preceded by up to one `>`, and up to one `𝕨` or `𝕩`, in any order. Arguments with `𝕨` are taken from `𝕨` in order, and the others from `𝕩`. If no arguments come from `𝕨`, the BQN function may be called monadically. If an argument type contains `>`, it must be the only value in its BQN argument (`𝕨` or `𝕩`), and that argument will be treated not as a list but as an entire value.
 
 Beginning with the type declarations themselves, a **number** such as `f32` corresponds to a C type with the given quality (`i` for signed integer, `u` for unsigned, `f` for floating-point) and width in bits. The corresponding BQN value is a number, and should be converted exactly for integers and with rounding for decreasing-type conversions. For conversions to or from an integer type, attempting to convert a value to a type that can't contain it, or one outside of the exactly representable integer range (`-2⋆53` to `2⋆53` for IEEE doubles), results in an error.
 
-A **pointer** such as `*u8` comes from a BQN list (or a pointer object, as discussed in the next paragraph). If the symbol `&` is used rather than `*`, the pointer is called **mutable** and its contents after the function call completes are also returned as an element of the result. If there is any mutable pointer, the result is a list, unless the result type is `"&"`, in which case there must be exactly one mutable pointer and the result is its value alone. These prefixes can only be used in arguments, meaning that a BQN value is provided, and this value determines the length of both the input and the mutable result.
+A **pointer** such as `*u8` comes from a BQN list (or a pointer object, as discussed in the next paragraph). If the symbol `&` is used rather than `*`, the pointer is called **mutable**, and by default its contents after the function call completes will become an element of the result. The symbol `⥊` also declares a mutable pointer, but its contents are not initialized before it's passed in: instead the BQN argument is a natural number giving the allocation size, meaning the number of C values that must be safely writeable beginning at the pointer. For mutable pointers, `·` indicates that the modified contents should not be returned to BQN. If there is any returning mutable pointer, the result is a list, unless the result type is `"&"`, in which case there must be exactly one returning mutable pointer and the result is its value alone. These prefixes can only be used in arguments, meaning that a BQN value is provided, and this value determines the length of both the input and the mutable result.
 
-When the result contains a pointer type, that value will be returned as a new [pointer object](#pointer-objects) with the given type. Furthermore, a pointer in an argument accepts a pointer object whose element type is compatible with the specified one. Types are compared recursively for compatibility: they're compatible if all contained types (such as fields of a struct) are compatible, and all other aspects (such as array length) are identical, or if one is an untyped pointer `*` and the other is any pointer. This means a bare pointer type `*` or `&` can't accept a list, but allows any pointer. When used with `&`, the object is included in the result unchanged.
+When the result contains a pointer type, that value will be returned as a new [pointer object](#pointer-objects) with the given type. Furthermore, a `*` or `&` pointer in an argument accepts a pointer object whose element type is compatible with the specified one. Types are compared recursively for compatibility: they're compatible if all contained types (such as fields of a struct) are compatible, and all other aspects (such as array length) are identical, or if one is an untyped pointer `*` and the other is any pointer. This means a bare pointer type `*` or `&` can't accept a list, but allows any pointer. When used with `&`, the object is included in the result unchanged.
 
 The letter `a` indicates that a **BQN value** is to be passed directly, interpreted in whatever way makes sense for the implementation. The **array** and **struct** types indicate C structs and arrays, and correspond to BQN lists.
 
-The `bqn` value in a `type` term indicates a BQN element type to be used. It may appear after the whole type, or any member of a struct, and applies to the final `( num | "*" )` component *and* one preceding `*`, `&`, or `[n]` if present (thus if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._cast`. The C type is treated as pure data, a stream of bits. For a prefix `*` or `&`, the data in question is the region of memory pointed to.
+The `bqn` value in a `type` term indicates a BQN element type to be used. It may appear after the whole type, or any member of a struct, and applies to the final `( num | "*" )` component *and* one preceding `*`, `&`, `&·`, `⥊`, `⥊·`, or `[n]` if present (thus if a type ends in `**`, it applies to both `*`s). This portion of the type corresponds to a BQN list of the given element type, interpreted much like [bitwise](#bitwise-operations) conversion `•bit._cast`. The C type is treated as pure data, a stream of bits. For a prefix `*` or similar, the data in question is the region of memory pointed to.
 
 ### Pointer objects
 
