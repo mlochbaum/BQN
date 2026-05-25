@@ -136,9 +136,9 @@ ReadNums←{
 Parse ← {r‿nv‿i‿e‿def←𝕨
   ErrMismatchedBrackets←{
     # Horrible stack-based algorithm
-    S←⊑⟜𝕩 ⋄ K‿D←{⋈∾¨⟜(𝕏⋈)˜}¨↓‿↑     # Select; Keep; Discard
-    Ma←⋈¯1⊸↓⌾⊑ ⋄ DT←¯1‿0⊸(↓¨∾¨·⌽↑¨) # Match; Discard Top
-    Upd ← {𝕨(2|S)◶⟨K,(0<≠∘⊑∘⊢)◶⟨D,(1≠-○S⟜(¯1⊑⊑))◶⟨Ma⊢, D∾𝕊⟜DT⟩⟩⟩𝕩}
+    o←2|⊑bB ⋄ S←⊑⟜𝕩 ⋄ K‿D←{⋈∾¨⟜(𝕏⋈)˜}¨↓‿↑ # Select; Keep; Discard
+    Ma←⋈¯1⊸↓⌾⊑ ⋄ DT←¯1‿0⊸(↓¨∾¨·⌽↑¨)       # Match; Discard Top
+    Upd ← {𝕨(o≠2|S)◶⟨K,(0<≠∘⊑∘⊢)◶⟨D,(1≠-○S⟜(¯1⊑⊑))◶⟨Ma⊢, D∾𝕊⟜DT⟩⟩⟩𝕩}
     i ← ((⊑⊢⊐⌊´)≠¨)⊸⊑ ∾¨ (⋈⋈˜↕0) ((64⌊≠)⊸↑·(∊⊑¨)⊸/·∾Upd¨)´⌽ /𝕩 M bB
     ("Unmatched bracket" Pl i) _err_ i 1
   }
