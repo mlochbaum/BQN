@@ -224,6 +224,7 @@
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=Q2FzZUFkZCDihpAgewogIDLwnZWKMzogMOKAvzUgOwogIDLwnZWK8J2VqTog4p+oMSwyK/Cdlanin6kgOwogICDwnZWK8J2VqTogMuKAv/CdlakKfQozIENhc2VBZGQgMw==">↗️</a><pre>    <span class='Number'>3</span> <span class='Function'>CaseAdd</span> <span class='Number'>3</span>
 <span class='Error'>Error: No header matched arguments</span>
 </pre>
+<p>A special kind of body is declared with an <a href="undo.html#undo-headers">undo header</a> containing <code><span class='Modifier'>⁼</span></code>. A body like this never applies when the block is called directly, but instead can be run to try to undo the block or a tacit function that involves it.</p>
 <h3 id="case-headers"><a class="header" href="#case-headers">Case headers</a></h3>
 <p>The optional <code><span class='Function'>𝕊</span></code> rule makes for convenient case-matching syntax in one-argument functions.</p>
 <a class="replLink" title="Open in the REPL" target="_blank" href="https://mlochbaum.github.io/BQN/try.html#code=YeKGkGLihpAib3V0ZXIiClRlc3Qg4oaQIHsKICAiYWJjIjogInN0cmluZyIgOwogIOKfqDIsYuKfqTog4oy98J2VqSAgICAgICA7CiAgNTogICAgICJudW1iZXIiIDsKICDwnZWpOiAgICAgImRlZmF1bHQiCn0KVGVzdCA1">↗️</a><pre>    <span class='Function'>Test</span> <span class='Gets'>←</span> <span class='Brace'>{</span>

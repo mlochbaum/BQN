@@ -198,6 +198,8 @@ If no header is compatible, the call results in an error.
 
         3 CaseAdd 3
 
+A special kind of body is declared with an [undo header](undo.md#undo-headers) containing `⁼`. A body like this never applies when the block is called directly, but instead can be run to try to undo the block or a tacit function that involves it.
+
 ### Case headers
 
 The optional `𝕊` rule makes for convenient case-matching syntax in one-argument functions.
