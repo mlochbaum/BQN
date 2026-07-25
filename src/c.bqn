@@ -278,7 +278,7 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   api←/(𝕩=⊑bO)∧ap←aa∧2=no                   # Assignment placeholder
   "Can't use Nothing (·) in lists"_nerr no×ap<ns≤»lo∨ls
   "Can't modify Nothing (·)"_err_(G) mat∧ap
-  "Square brackets can't be empty"_err_(G) (mat<aa)<(𝕩=6+⊑bB)∧1«ps
+  "Square bracket literals can't be empty"_err_(G) (mat<aa)<(𝕩=6+⊑bB)∧1«ps
   ac-↩3×6=ac⋄ah←6=gac                       # Assignment is header; 6→3
   nx⌈↩aa×1=no                               # Prevent assignment to 𝕨 if it's ·
   nf←H ac<xv=vi-˜⊑bG                        # Namespace bodies
