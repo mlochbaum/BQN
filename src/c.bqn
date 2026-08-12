@@ -175,10 +175,10 @@ Parse ← {r‿nv‿i‿e‿def←𝕨
   # Compute parsing ordering gr≡g⊏rev
   BE←=∨+⟜2⊸=                                # Bracket equals: match ⟨[ or ⟩] given ⟨ or ⟩ only
   g↩⍋+`p↩br-˜rev⊏p⋄bp←0(<⋈○(/⟜g)>)g⊏p       # Order by non-brace bracket depth
-  g⊏˜↩⍋g⊏«⊸∨dc⋄gr←g⊏rev                     # Now by dots
+  gr←(gs←⍋g⊏«⊸∨dc)⊏g⊏rev                    # Now by dots
   sll←1+2÷˜0(<-○/>)gr⊏sr-sl⋄l←/g⊏𝕩BE˜5+⊑bB  # Strand length; list starts
   b←br>0⋄c←/br<0⋄bp∾¨↩⟨/b,c⟩                # Block Begin (mask) and Close (index), in matching order
-  g⊏˜↩gs←⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g              # Send strand prefixes *‿ to the end
+  g⊏˜↩gs⊏˜↩⍋gr⊏sl⋄gr↩g⊏rev⋄gi←⍋g            # Send strand prefixes *‿ to the end
 
   # Headers
   hh←𝕩=⊑bH⋄cs←𝕩=1+⊑bH                       # Case header : and separator ;
