@@ -242,4 +242,4 @@ This structure is still controlled by the rules of block bodies: each instance o
 
         { 0=n←≠𝕩 ? ∞ ; n } "abc"
 
-This is the main drawback of predicates relative to guards in APL dfns (also written with `?`), while the advantage is that it allows multiple expressions, or extra conditions, after a `?`. It's not how I would have designed it if I just wanted to make a syntax for if statements, but it's a natural fit for the header system.
+This is the main drawback of predicates relative to guards in APL dfns (written with `:`), while the advantage is that it allows multiple expressions, or extra conditions, after a `?`. It's not how I would have designed it if I just wanted to make a syntax for if statements, but it's a natural fit for the header system.
