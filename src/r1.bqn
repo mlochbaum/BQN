@@ -976,6 +976,7 @@ SwapPrimInverse ← INF _lookup_ ⟨
 Mod1Inverse ← INF˙ _lookup_ ⟨
   '⁼', ⊢
   '˜', {SwapInverse𝕩}
+  '˙', {⊢⊣𝕩˙IX∘≡⊢}
   '¨', {𝕏⁼¨                     ⊣·IX 0<≡∘⊢}
   '⌜', {𝕏⁼⌜⊘(IA∘0)              ⊣·IX 0<≡∘⊢}
   '˘', {(IX∘IsArray⊸⊢𝕏⁼)˘       ⊣·IX 0<=∘⊢}
@@ -996,6 +997,7 @@ Mod2Inverse ← INF˙ _lookup_ ⟨
 SwapMod1Inverse ← INF˙ _lookup_ ⟨
   '˜', {(SwapInverse𝕩)⊘(𝕏⁼)}
   '⁼', {INF⊘((SwapInverse𝕩)˜)}
+  '˙', {⊢⊣𝕩˙IX∘≡⊢}
   '¨', {𝕏˜¨⁼}
   '⌜', {𝕏˜⌜⁼}
   '˘', {𝕏˜˘⁼}
