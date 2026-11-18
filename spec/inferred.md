@@ -165,7 +165,7 @@ Inverses of other modifiers and compound functions are given below. Here the "in
 
 | Mod     | Inverse 
 |---------|---------
-| `` ` `` | `{!0<=𝕩 ⋄ 𝕨 (»𝔽⁼¨⊢){(⊏∾⊏𝔽1⊸↓)⍟(1<≠)⊘𝔽} 𝕩}`
+| `` ` `` | `{!0<=𝕩 ⋄ D←»𝔽⁼¨⊢ ⋄ 𝕨 (⊏∾⊏D 1⊸↓)⍟(1<≠)⊘D 𝕩}`
 
 ### Undo headers
 
